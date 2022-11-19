@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Kale Blankenship
 // Portions Copyright (c) Microsoft Corporation
+
 package amqp
 
 import (
@@ -9,7 +10,7 @@ import (
 )
 
 type SenderOptions struct {
-	// Capabilities is the list of extension capabilities the sender supports/desires.
+	// Capabilities is the list of extension capabilities the sender supports.
 	Capabilities []string
 
 	// Durability indicates what state of the sender will be retained durably.
@@ -48,7 +49,7 @@ type SenderOptions struct {
 	Name string
 
 	// Properties sets an entry in the link properties map sent to the server.
-	Properties map[string]interface{}
+	Properties map[string]any
 
 	// RequestedReceiverSettleMode sets the requested receiver settlement mode.
 	//
@@ -65,6 +66,26 @@ type SenderOptions struct {
 
 	// SourceAddress specifies the source address for this sender.
 	SourceAddress string
+
+	// TargetCapabilities is the list of extension capabilities the sender desires.
+	TargetCapabilities []string
+
+	// TargetDurability indicates what state of the peer will be retained durably.
+	//
+	// Default: DurabilityNone.
+	TargetDurability Durability
+
+	// TargetExpiryPolicy determines when the expiry timer of the peer starts counting
+	// down from the timeout value.  If the link is subsequently re-attached before
+	// the timeout is reached, the count down is aborted.
+	//
+	// Default: ExpirySessionEnd.
+	TargetExpiryPolicy ExpiryPolicy
+
+	// ExpiryTimeout is the duration in seconds that the peer will be retained.
+	//
+	// Default: 0.
+	TargetExpiryTimeout uint32
 }
 
 type ReceiverOptions struct {
@@ -85,7 +106,7 @@ type ReceiverOptions struct {
 	// Default: 5 seconds.
 	BatchMaxAge time.Duration
 
-	// Capabilities is the list of extension capabilities the receiver supports/desires.
+	// Capabilities is the list of extension capabilities the receiver supports.
 	Capabilities []string
 
 	// Credit specifies the maximum number of unacknowledged messages
@@ -142,7 +163,7 @@ type ReceiverOptions struct {
 	Name string
 
 	// Properties sets an entry in the link properties map sent to the server.
-	Properties map[string]interface{}
+	Properties map[string]any
 
 	// RequestedSenderSettleMode sets the requested sender settlement mode.
 	//
@@ -159,6 +180,26 @@ type ReceiverOptions struct {
 
 	// TargetAddress specifies the target address for this receiver.
 	TargetAddress string
+
+	// SenderCapabilities is the list of extension capabilities the receiver desires.
+	SenderCapabilities []string
+
+	// SenderDurability indicates what state of the peer will be retained durably.
+	//
+	// Default: DurabilityNone.
+	SenderDurability Durability
+
+	// SenderExpiryPolicy determines when the expiry timer of the peer starts counting
+	// down from the timeout value.  If the link is subsequently re-attached before
+	// the timeout is reached, the count down is aborted.
+	//
+	// Default: ExpirySessionEnd.
+	SenderExpiryPolicy ExpiryPolicy
+
+	// SenderExpiryTimeout is the duration in seconds that the peer will be retained.
+	//
+	// Default: 0.
+	SenderExpiryTimeout uint32
 }
 
 // LinkFilter is an advanced API for setting non-standard source filters.
@@ -191,10 +232,11 @@ type ReceiverOptions struct {
 //	http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-descriptor-values
 type LinkFilter func(encoding.Filter)
 
-// LinkFilterSource creates or updates the named filter for this LinkFilter.
-func LinkFilterSource(name string, code uint64, value interface{}) LinkFilter {
+// NewLinkFilter creates a new LinkFilter with the specified values.
+// Any preexisting link filter with the same name will be updated with the new code and value.
+func NewLinkFilter(name string, code uint64, value any) LinkFilter {
 	return func(f encoding.Filter) {
-		var descriptor interface{}
+		var descriptor any
 		if code != 0 {
 			descriptor = code
 		} else {
@@ -207,9 +249,10 @@ func LinkFilterSource(name string, code uint64, value interface{}) LinkFilter {
 	}
 }
 
-// LinkFilterSelector creates or updates the selector filter (apache.org:selector-filter:string) for this LinkFilter.
-func LinkFilterSelector(filter string) LinkFilter {
-	return LinkFilterSource(selectorFilter, selectorFilterCode, filter)
+// NewSelectorFilter creates a new selector filter (apache.org:selector-filter:string) with the specified filter value.
+// Any preexisting selector filter will be updated with the new filter value.
+func NewSelectorFilter(filter string) LinkFilter {
+	return NewLinkFilter(selectorFilter, selectorFilterCode, filter)
 }
 
 const (

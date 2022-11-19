@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Kale Blankenship
 // Portions Copyright (c) Microsoft Corporation
+
 package frames
 
 import (
@@ -10,6 +11,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/buffer"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/encoding"
+)
+
+const (
+	TypeAMQP = 0x0
+	TypeSASL = 0x1
 )
 
 /*
@@ -107,7 +113,7 @@ type Source struct {
 	//					distribution-modes. That is, the value MUST be of the same type as
 	//					would be valid in a field defined with the following attributes:
 	//						type="symbol" multiple="true" requires="distribution-mode"
-	DynamicNodeProperties map[encoding.Symbol]interface{} // TODO: implement custom type with validation
+	DynamicNodeProperties map[encoding.Symbol]any // TODO: implement custom type with validation
 
 	// the distribution mode of the link
 	//
@@ -129,7 +135,7 @@ type Source struct {
 	// Indicates the outcome to be used for transfers that have not reached a terminal
 	// state at the receiver when the transfer is settled, including when the source
 	// is destroyed. The value MUST be a valid outcome (e.g., released or rejected).
-	DefaultOutcome interface{}
+	DefaultOutcome any
 
 	// descriptors for the outcomes that can be chosen on this link
 	//
@@ -289,7 +295,7 @@ type Target struct {
 	//					distribution-modes. That is, the value MUST be of the same type as
 	//					would be valid in a field defined with the following attributes:
 	//						type="symbol" multiple="true" requires="distribution-mode"
-	DynamicNodeProperties map[encoding.Symbol]interface{} // TODO: implement custom type with validation
+	DynamicNodeProperties map[encoding.Symbol]any // TODO: implement custom type with validation
 
 	// the extension capabilities the sender supports/desires
 	//
@@ -375,7 +381,7 @@ type PerformOpen struct {
 	IncomingLocales     encoding.MultiSymbol
 	OfferedCapabilities encoding.MultiSymbol
 	DesiredCapabilities encoding.MultiSymbol
-	Properties          map[encoding.Symbol]interface{}
+	Properties          map[encoding.Symbol]any
 }
 
 func (o *PerformOpen) frameBody() {}
@@ -479,7 +485,7 @@ type PerformBegin struct {
 
 	// session properties
 	// http://www.amqp.org/specification/1.0/session-properties
-	Properties map[encoding.Symbol]interface{}
+	Properties map[encoding.Symbol]any
 }
 
 func (b *PerformBegin) frameBody() {}
@@ -681,7 +687,7 @@ type PerformAttach struct {
 
 	// link properties
 	// http://www.amqp.org/specification/1.0/link-properties
-	Properties map[encoding.Symbol]interface{}
+	Properties map[encoding.Symbol]any
 }
 
 func (a *PerformAttach) frameBody() {}
@@ -859,7 +865,7 @@ type PerformFlow struct {
 
 	// link state properties
 	// http://www.amqp.org/specification/1.0/link-state-properties
-	Properties map[encoding.Symbol]interface{}
+	Properties map[encoding.Symbol]any
 }
 
 func (f *PerformFlow) frameBody() {}

@@ -14,8 +14,8 @@ import (
 
 func TestOwnershipLost(t *testing.T) {
 	detachErr := &amqp.DetachError{
-		RemoteError: &amqp.Error{
-			Condition: amqp.ErrorCondition("amqp:link:stolen"),
+		RemoteErr: &amqp.Error{
+			Condition: amqp.ErrCond("amqp:link:stolen"),
 		},
 	}
 
@@ -29,6 +29,6 @@ func TestOwnershipLost(t *testing.T) {
 	require.Equal(t, exported.ErrorCodeOwnershipLost, err.Code)
 
 	require.False(t, IsOwnershipLostError(&amqp.DetachError{}))
-	require.False(t, IsOwnershipLostError(&amqp.ConnectionError{}))
+	require.False(t, IsOwnershipLostError(&amqp.ConnError{}))
 	require.False(t, IsOwnershipLostError(errors.New("definitely not an ownership lost error")))
 }

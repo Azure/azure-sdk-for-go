@@ -197,9 +197,9 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 	}
 
 	receiverOptions := &amqp.ReceiverOptions{
-		SettlementMode: to.Ptr(amqp.ModeFirst),
+		SettlementMode: to.Ptr(amqp.ReceiverSettleModeFirst),
 		Filters: []amqp.LinkFilter{
-			amqp.LinkFilterSelector(pc.offsetExpression),
+			amqp.NewSelectorFilter(pc.offsetExpression),
 		},
 		Properties: props,
 	}

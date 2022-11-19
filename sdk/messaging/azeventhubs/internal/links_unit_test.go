@@ -151,7 +151,7 @@ func TestLinks_ConnectionRecovery(t *testing.T) {
 
 	require.Equal(t, recoverClientCalled, 0)
 
-	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.ConnectionError{})
+	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.ConnError{})
 	require.NoError(t, err)
 	require.Nil(t, links.links["0"], "cache will no longer a link for partition 0")
 

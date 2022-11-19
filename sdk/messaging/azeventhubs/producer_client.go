@@ -207,8 +207,8 @@ func (pc *ProducerClient) getEntityPath(partitionID string) string {
 
 func (pc *ProducerClient) newEventHubProducerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (amqpwrap.AMQPSenderCloser, error) {
 	sender, err := session.NewSender(ctx, entityPath, &amqp.SenderOptions{
-		SettlementMode:              to.Ptr(amqp.ModeMixed),
-		RequestedReceiverSettleMode: to.Ptr(amqp.ModeFirst),
+		SettlementMode:              to.Ptr(amqp.SenderSettleModeMixed),
+		RequestedReceiverSettleMode: to.Ptr(amqp.ReceiverSettleModeFirst),
 		IgnoreDispositionErrors:     true,
 	})
 

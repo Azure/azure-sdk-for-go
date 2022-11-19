@@ -687,7 +687,7 @@ func TestAMQPLinks_Logging(t *testing.T) {
 		messages := endCapture()
 
 		require.Equal(t, []string{
-			"[azsb.Conn] Recovering link for error link detached, reason: *Error(nil)",
+			"[azsb.Conn] Recovering link for error amqp: link closed",
 			"[azsb.Conn] Recovering link only",
 			"[azsb.Conn] Recovered links",
 		}, messages)

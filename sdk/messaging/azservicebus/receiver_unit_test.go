@@ -478,7 +478,8 @@ func TestReceiver_fetchMessages_FirstMessageFailure(t *testing.T) {
 			defer cancel()
 
 			res := receiver.fetchMessages(ctx, amqpReceiver, 3, time.Hour)
-			require.ErrorIs(t, res.Error, &amqp.DetachError{})
+			var detachErr *amqp.DetachError
+			require.ErrorAs(t, res.Error, &detachErr)
 
 			require.Equal(t, []*amqp.Message{
 				{Data: [][]byte{[]byte(("prefetched message 1"))}},

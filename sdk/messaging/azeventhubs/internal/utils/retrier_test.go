@@ -402,7 +402,7 @@ func TestRetryLogging(t *testing.T) {
 			"[TestFunc  ] Attempt 0, within test func",
 			"[TestFunc  ] Attempt 0, resetting",
 			"[testLogEvent] (test_operation) Resetting retry attempts",
-			"[testLogEvent] (test_operation) Retry attempt -1 returned retryable error: link detached, reason: *Error(nil)",
+			"[testLogEvent] (test_operation) Retry attempt -1 returned retryable error: amqp: link closed",
 			"[TestFunc  ] Attempt 0, within test func",
 			"[TestFunc  ] Attempt 0, return nil",
 		}, normalizeRetryLogLines(logs))

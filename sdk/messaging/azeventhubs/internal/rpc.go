@@ -11,7 +11,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
@@ -104,7 +103,7 @@ func closeOrLog(name string, closeable interface {
 	Close(ctx context.Context) error
 }) {
 	if err := closeable.Close(context.Background()); err != nil {
-		log.Writef(exported.EventAuth, "Failed closing %s for RPC Link: %s", name, err.Error())
+		azlog.Writef(exported.EventAuth, "Failed closing %s for RPC Link: %s", name, err.Error())
 	}
 }
 

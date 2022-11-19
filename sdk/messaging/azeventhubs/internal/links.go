@@ -7,7 +7,6 @@ import (
 	"context"
 	"sync"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
@@ -33,7 +32,7 @@ type LinkWithID[LinkT AMQPLink] struct {
 // (for unit testing only)
 type LinksForPartitionClient[LinkT AMQPLink] interface {
 	RecoverIfNeeded(ctx context.Context, partitionID string, lwid *LinkWithID[LinkT], err error) error
-	Retry(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error
+	Retry(ctx context.Context, eventName azlog.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error
 	Close(ctx context.Context) error
 }
 
@@ -108,7 +107,7 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 	}
 }
 
-func (l *Links[LinkT]) Retry(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error {
+func (l *Links[LinkT]) Retry(ctx context.Context, eventName azlog.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error {
 	var prevLinkWithID *LinkWithID[LinkT]
 
 	didQuickRetry := false

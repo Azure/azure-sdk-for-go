@@ -1,4 +1,4 @@
-// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting instead.
+// Deprecated: please use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting instead.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtestservice/armloadtestservice
 
 go 1.18

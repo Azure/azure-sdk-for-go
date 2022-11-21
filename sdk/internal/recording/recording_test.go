@@ -378,6 +378,15 @@ func (s *recordingTests) TearDownSuite() {
 	}
 }
 
+func TestGetEnvVariable(t *testing.T) {
+	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
+	temp := recordMode
+	recordMode = RecordingMode
+	t.Setenv("TEST_VARIABLE", "expected")
+	require.Equal(t, "expected", GetEnvVariable("TEST_VARIABLE", "unexpected"))
+	recordMode = temp
+}
+
 func TestRecordingOptions(t *testing.T) {
 	r := RecordingOptions{
 		UseHTTPS: true,
@@ -386,18 +395,6 @@ func TestRecordingOptions(t *testing.T) {
 
 	r.UseHTTPS = false
 	require.Equal(t, r.baseURL(), "http://localhost:5000")
-
-	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
-	temp := recordMode
-	recordMode = RecordingMode
-	require.NotEqual(t, GetEnvVariable("PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
-	recordMode = temp
-
-	r.UseHTTPS = false
-	require.Equal(t, r.baseURL(), "http://localhost:5000")
-
-	r.UseHTTPS = true
-	require.Equal(t, r.baseURL(), "https://localhost:5001")
 }
 
 var packagePath = "sdk/internal/recording/testdata"

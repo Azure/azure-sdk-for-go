@@ -602,6 +602,7 @@ func (s *Session) deallocateHandle(l *link) {
 	close(l.rx)
 }
 
+//go:noinline
 func (s *Session) muxFrameToLink(l *link, fr frames.FrameBody) {
 	select {
 	case l.rx <- fr:

@@ -152,6 +152,7 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 		case <-ctx.Done():
 			// if we don't send an ack then we're in violation of the protocol
 			go func() {
+				fmt.Println("*** GOT HERE ERROR ***")
 				_ = l.session.txFrame(&frames.PerformDetach{
 					Handle: l.handle,
 					Closed: true,

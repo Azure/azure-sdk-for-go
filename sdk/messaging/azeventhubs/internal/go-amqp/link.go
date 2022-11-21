@@ -123,6 +123,7 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 			}()
 		default:
 			// attach wasn't written to the network, so delete the handle
+			fmt.Println("*** GOT HERE6 ERROR ***")
 			l.session.deallocateHandle(l)
 		}
 		return ctx.Err()

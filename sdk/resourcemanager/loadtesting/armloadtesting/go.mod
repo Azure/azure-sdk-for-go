@@ -20,4 +20,4 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 )
 
-retract [v0.0.0-00000000000000-000000000000, v1.0.1]
+retract [v1.0.0, v1.0.1]

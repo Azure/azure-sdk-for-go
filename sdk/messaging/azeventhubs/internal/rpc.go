@@ -160,6 +160,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 
 	receiver, err := session.NewReceiver(ctx, args.Address, receiverOpts)
 	if err != nil {
+		fmt.Printf("new receiver: %v\n", err)
 		closeOrLog("sender", sender)
 		closeOrLog("session", session)
 		return nil, err

@@ -147,12 +147,13 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 	//
 	// http://docs.oasis-open.org/amqp/core/v1.0/csprd01/amqp-core-transport-v1.0-csprd01.html#doc-idp386144
 	if resp.Source == nil && resp.Target == nil {
+		fmt.Println("*** GOT HERE1 ERROR ***")
 		// wait for detach
 		select {
 		case <-ctx.Done():
 			// if we don't send an ack then we're in violation of the protocol
 			go func() {
-				fmt.Println("*** GOT HERE ERROR ***")
+				fmt.Println("*** GOT HERE2 ERROR ***")
 				_ = l.session.txFrame(&frames.PerformDetach{
 					Handle: l.handle,
 					Closed: true,
@@ -161,8 +162,10 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 			}()
 			return ctx.Err()
 		case <-l.session.done:
+			fmt.Println("*** GOT HERE3 ERROR ***")
 			return l.session.err
 		case fr = <-l.rx:
+			fmt.Println("*** GOT HERE4 ERROR ***")
 			l.session.deallocateHandle(l)
 		}
 
@@ -171,6 +174,7 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 			return fmt.Errorf("unexpected frame while waiting for detach: %#v", fr)
 		}
 
+		fmt.Println("*** GOT HERE5 ERROR ***")
 		// send return detach
 		fr = &frames.PerformDetach{
 			Handle: l.handle,

@@ -1,3 +1,4 @@
+// Deprecated: please use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting instead.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtestservice/armloadtestservice
 
 go 1.18
@@ -19,3 +20,6 @@ require (
 	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
+
+// use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting instead.
+retract [v0.0.0-00000000000000-000000000000, v1.0.1]

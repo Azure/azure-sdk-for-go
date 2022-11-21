@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.1 (2022-11-21)
+
+- Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/loadtesting/armloadtesting instead.
+
 ## 1.0.0 (2022-10-13)
 ### Features Added
 

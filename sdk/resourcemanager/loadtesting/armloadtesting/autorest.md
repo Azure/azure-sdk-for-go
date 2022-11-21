@@ -10,4 +10,5 @@ require:
 license-header: MICROSOFT_MIT_NO_VERSION
 module-version: 1.0.1
 
+# v1.0.0 and v1.0.1 has been retracted because of mistake. When this RP goes GA, it starts at version v1.0.2
 ```

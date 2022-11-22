@@ -138,7 +138,7 @@ func getNewContents(c *delta.Content) []string {
 		}
 	}
 	if len(c.Funcs) > 0 {
-		for _, k := range sortChangeItem(c.Funcs) {
+		for _, k := range sortFuncItem(c.Funcs) {
 			v := c.Funcs[k]
 			params := ""
 			if v.Params != nil {
@@ -219,7 +219,7 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 	}
 	// write function changes
 	if len(b.Funcs) > 0 {
-		for _, k := range sortChangeItem(b.Funcs) {
+		for _, k := range sortFuncItem(b.Funcs) {
 			v := b.Funcs[k]
 			if v.Params != nil {
 				line := fmt.Sprintf("Function `%s` parameter(s) have been changed from `(%s)` to `(%s)`", k, v.Params.From, v.Params.To)
@@ -268,7 +268,7 @@ func getRemovedContent(removed *delta.Content) []string {
 	}
 	// write functions
 	if len(removed.Funcs) > 0 {
-		for _, k := range sortChangeItem(removed.Funcs) {
+		for _, k := range sortFuncItem(removed.Funcs) {
 			line := fmt.Sprintf("Function `%s` has been removed", k)
 			items = append(items, line)
 		}
@@ -300,8 +300,7 @@ func getRemovedContent(removed *delta.Content) []string {
 }
 
 type sortItem interface {
-	delta.Signature | delta.FuncSig | delta.StructDef |
-		exports.Const | exports.TypeAlias | exports.Func | exports.Struct | string
+	delta.Signature | delta.StructDef | exports.Const | exports.TypeAlias | exports.Struct | string
 }
 
 func sortChangeItem[T sortItem](change map[string]T) []string {
@@ -310,11 +309,53 @@ func sortChangeItem[T sortItem](change map[string]T) []string {
 		s = append(s, k)
 	}
 
+	sort.Strings(s)
+	return s
+}
+
+func sortFuncItem[T delta.FuncSig | exports.Func](change map[string]T) []string {
+	s := make([]string, 0, len(change))
+	for k := range change {
+		s = append(s, k)
+	}
+
 	sort.Slice(s, func(i, j int) bool {
-		si := strings.TrimLeft(strings.TrimLeft(s[i], "*"), "New")
-		sj := strings.TrimLeft(strings.TrimLeft(s[j], "*"), "New")
+		si := removePattern(s[i], getReturnValue(change[s[i]]))
+		sj := removePattern(s[j], getReturnValue(change[s[j]]))
 		return si < sj
 	})
 
 	return s
+}
+
+func getReturnValue(t interface{}) string {
+	switch value := t.(type) {
+	case delta.FuncSig:
+		if value.Returns == nil {
+			return ""
+		}
+		return value.Returns.To
+	case exports.Func:
+		if value.Returns == nil {
+			return ""
+		}
+		return *value.Returns
+	}
+	return ""
+}
+
+func removePattern(funcName string, returnValue string) string {
+	funcName = strings.TrimLeft(strings.TrimLeft(funcName, "*"), "New")
+	before, after, b := strings.Cut(funcName, ".")
+	if !b {
+		return funcName
+	}
+
+	if strings.Contains(returnValue, "runtime.Poller") {
+		after = strings.TrimLeft(after, "Begin")
+	} else if strings.Contains(returnValue, "runtime.Pager") {
+		after = strings.TrimLeft(after, "New")
+	}
+
+	return fmt.Sprintf("%s.%s", before, after)
 }

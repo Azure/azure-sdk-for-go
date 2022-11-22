@@ -6,33 +6,42 @@ package model
 import (
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSortChangeItem(t *testing.T) {
-	s := map[string]delta.Signature{
-		"*X":        {},
-		"*NewD":     {},
-		"C":         {},
-		"NewA":      {},
-		"B":         {},
-		"*NewH":     {},
-		"D.Get":     {},
-		"*D.Create": {},
+func TestSortFuncItem(t *testing.T) {
+	get := "PrivateEndpointConnectionsClientGetResponse, error"
+	beginDelete := "*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error"
+	beginCreate := "*runtime.Poller[PrivateEndpointConnectionsClientCreateResponse], error"
+	newListPager := "*runtime.Pager[PrivateEndpointConnectionsClientListResponse]"
+	newClient := "*PrivateEndpointConnectionsClient, error"
+
+	s := map[string]exports.Func{
+		"*PrivateEndpointConnectionsClient.Get": {
+			Returns: &get,
+		},
+		"*PrivateEndpointConnectionsClient.BeginDelete": {
+			Returns: &beginDelete,
+		},
+		"*PrivateEndpointConnectionsClient.BeginCreate": {
+			Returns: &beginCreate,
+		},
+		"*PrivateEndpointConnectionsClient.NewListPager": {
+			Returns: &newListPager,
+		},
+		"NewPrivateEndpointConnectionsClient": {
+			Returns: &newClient,
+		},
 	}
 
-	sortResult := sortChangeItem(s)
-
+	sortResult := sortFuncItem(s)
 	expcted := []string{
-		"NewA",
-		"B",
-		"C",
-		"*NewD",
-		"*D.Create",
-		"D.Get",
-		"*NewH",
-		"*X",
+		"NewPrivateEndpointConnectionsClient",
+		"*PrivateEndpointConnectionsClient.BeginCreate",
+		"*PrivateEndpointConnectionsClient.BeginDelete",
+		"*PrivateEndpointConnectionsClient.Get",
+		"*PrivateEndpointConnectionsClient.NewListPager",
 	}
 	assert.Equal(t, expcted, sortResult)
 }

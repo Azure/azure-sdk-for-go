@@ -674,3 +674,22 @@ func TestVariables(t *testing.T) {
 		require.NoError(t, err)
 	}()
 }
+
+func TestRace(t *testing.T) {
+	temp := recordMode
+	recordMode = LiveMode
+	t.Cleanup(func() { recordMode = temp })
+	for i := 0; i < 4; i++ {
+		t.Run("", func(t *testing.T) {
+			t.Parallel()
+			err := Start(t, "", nil)
+			require.NoError(t, err)
+			GetRecordingId(t)
+			GetVariables(t)
+			IsLiveOnly(t)
+			err = Stop(t, nil)
+			require.NoError(t, err)
+			LiveOnly(t)
+		})
+	}
+}

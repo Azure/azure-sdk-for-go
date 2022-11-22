@@ -94,6 +94,7 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 	debug.Log(1, "TX (attachLink): %s", attach)
 
 	// we use send to have positive confirmation on transmission
+	now := time.Now()
 	send := make(chan encoding.DeliveryState)
 	_ = l.session.txFrame(attach, send)
 
@@ -101,7 +102,7 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 	var fr frames.FrameBody
 	select {
 	case <-ctx.Done():
-		fmt.Println("*** GOT HERE7 ERROR ***")
+		fmt.Printf("*** GOT HERE7 ERROR ***: %s\n", time.Since(now))
 		select {
 		case <-send:
 			// attach was written to the network. assume it was received
@@ -121,7 +122,7 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 					fmt.Println("*** GOT HERE9 ERROR ***")
 				case fr := <-l.rx:
 					// received ack, safe to delete handle
-					fmt.Printf("*** GOT HERE10 ERROR ***: %s", fr)
+					fmt.Printf("*** GOT HERE10 ERROR ***: %s\n", fr)
 					l.session.deallocateHandle(l)
 				}
 			}()

@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"sync"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/debug"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/encoding"
@@ -93,38 +92,15 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 	// send Attach frame
 	debug.Log(1, "TX (attachLink): %s", attach)
 
-	// we use send to have positive confirmation on transmission
-	send := make(chan encoding.DeliveryState)
-	_ = l.session.txFrame(attach, send)
+	_ = l.session.txFrame(attach, nil)
 
 	// wait for response
 	var fr frames.FrameBody
 	select {
 	case <-ctx.Done():
-		select {
-		case <-send:
-			// attach was written to the network. assume it was received
-			// and that the ctx was too short to wait for the ack. in this
-			// case we must send a detach before deallocation
-			go func() {
-				_ = l.session.txFrame(&frames.PerformDetach{
-					Handle: l.handle,
-					Closed: true,
-				}, nil)
-				select {
-				case <-l.session.done:
-					// session has terminated, no need to deallocate in this case
-				case <-time.After(5 * time.Second):
-					debug.Log(3, "link.attach() clean-up timed out waiting for ack")
-				case <-l.rx:
-					// received ack, safe to delete handle
-					l.session.deallocateHandle(l)
-				}
-			}()
-		default:
-			// attach wasn't written to the network, so delete the handle
-			l.session.deallocateHandle(l)
-		}
+		// attach was written to the network. assume it was received
+		// and that the ctx was too short to wait for the ack.
+		go l.muxDetach(nil, nil)
 		return ctx.Err()
 	case <-l.session.done:
 		// session has terminated, no need to deallocate in this case
@@ -151,13 +127,7 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 		select {
 		case <-ctx.Done():
 			// if we don't send an ack then we're in violation of the protocol
-			go func() {
-				_ = l.session.txFrame(&frames.PerformDetach{
-					Handle: l.handle,
-					Closed: true,
-				}, nil)
-				l.session.deallocateHandle(l)
-			}()
+			go l.muxDetach(nil, nil)
 			return ctx.Err()
 		case <-l.session.done:
 			return l.session.err

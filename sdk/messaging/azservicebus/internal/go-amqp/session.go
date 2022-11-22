@@ -117,36 +117,27 @@ func (s *Session) begin(ctx context.Context) error {
 	}
 	debug.Log(1, "TX (NewSession): %s", begin)
 
-	// we use send to have positive confirmation on transmission
-	send := make(chan encoding.DeliveryState)
-	_ = s.txFrame(begin, send)
+	_ = s.txFrame(begin, nil)
 
 	// wait for response
 	var fr frames.Frame
 	select {
 	case <-ctx.Done():
-		select {
-		case <-send:
-			// begin was written to the network.  assume it was
-			// received and that the ctx was too short to wait for
-			// the ack. in this case we must send an end before we
-			// can delete the session
-			go func() {
-				_ = s.txFrame(&frames.PerformEnd{}, nil)
-				select {
-				case <-s.conn.done:
-					// conn has terminated, no need to delete the session
-				case <-time.After(5 * time.Second):
-					debug.Log(3, "NewSession clean-up timed out waiting for PerformEnd ack")
-				case <-s.rx:
-					// received ack that session was closed, safe to delete session
-					s.conn.deleteSession(s)
-				}
-			}()
-		default:
-			// begin wasn't written to the network, so delete session
-			s.conn.deleteSession(s)
-		}
+		// begin was written to the network.  assume it was
+		// received and that the ctx was too short to wait for
+		// the ack.
+		go func() {
+			_ = s.txFrame(&frames.PerformEnd{}, nil)
+			select {
+			case <-s.conn.done:
+				// conn has terminated, no need to delete the session
+			case <-time.After(5 * time.Second):
+				debug.Log(3, "session.begin clean-up timed out waiting for PerformEnd ack")
+			case <-s.rx:
+				// received ack that session was closed, safe to delete session
+				s.conn.deleteSession(s)
+			}
+		}()
 		return ctx.Err()
 	case <-s.conn.done:
 		return s.conn.err()

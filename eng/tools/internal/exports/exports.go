@@ -54,6 +54,8 @@ type Func struct {
 
 	// a comma-delimited list of the return types
 	Returns *string `json:"returns,omitempty"`
+
+	LRO *string `json:"lro,omitempty"`
 }
 
 // Interface contains the list of methods for an interface.

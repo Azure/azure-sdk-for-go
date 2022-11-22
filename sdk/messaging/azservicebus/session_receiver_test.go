@@ -92,8 +92,6 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, "", receiver.SessionID())
 
-	require.Nil(t, receiver.inner.idleTracker, "session receivers do NOT do client-side idle link checking")
-
 	var received []*ReceivedMessage
 
 	receiveCtx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
@@ -523,8 +521,6 @@ func TestSessionReceiverSendFiveReceiveFive_Queue(t *testing.T) {
 	receiver, err := serviceBusClient.AcceptNextSessionForQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
 
-	require.Nil(t, receiver.inner.idleTracker, "no idle link checking for session links")
-
 	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 
 	for i := 0; i < 5; i++ {
@@ -560,8 +556,6 @@ func TestSessionReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 
 	receiver, err := serviceBusClient.AcceptNextSessionForSubscription(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
-
-	require.Nil(t, receiver.inner.idleTracker, "no idle link checking for session links")
 
 	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 

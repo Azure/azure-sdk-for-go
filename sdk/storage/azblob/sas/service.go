@@ -257,7 +257,7 @@ func getCanonicalName(account string, containerName string, blobName string, dir
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type ContainerPermissions struct {
 	Read, Add, Create, Write, Delete, DeletePreviousVersion, List, FilterByTags bool
-	Execute, ModifyOwnership, ModifyPermissions                                 bool // Hierarchical Namespace only
+	Execute, ModifyOwnership, ModifyPermissions, SetImmutabilityPolicy          bool // Hierarchical Namespace only
 }
 
 // String produces the SAS permissions string for an Azure Storage container.
@@ -296,6 +296,9 @@ func (p *ContainerPermissions) String() string {
 	}
 	if p.ModifyPermissions {
 		b.WriteRune('p')
+	}
+	if p.SetImmutabilityPolicy {
+		b.WriteRune('i')
 	}
 	return b.String()
 }
@@ -383,7 +386,6 @@ func (p *BlobPermissions) String() string {
 	if p.Permissions {
 		b.WriteRune('p')
 	}
-
 	return b.String()
 }
 

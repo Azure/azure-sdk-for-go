@@ -485,6 +485,100 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobHTTPHeaders() {
 	_require.EqualValues(h, testcommon.BasicHeaders)
 }
 
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	legalHold := true
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(body), &blockblob.UploadOptions{
+		ImmutabilityPolicyExpiryTime: &currentTime,
+		ImmutabilityPolicyMode:       &policy,
+		LegalHold:                    &legalHold,
+		HTTPHeaders:                  &testcommon.BasicHeaders,
+	})
+
+	_require.Nil(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	policy1 := blob.ImmutabilityPolicyMode("unlocked")
+	_require.Equal(resp.ImmutabilityPolicyMode, &policy1)
+
+	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	_, err = bbClient.StageBlock(context.Background(), blockIDs[0], streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	legalHold := true
+	options := blockblob.CommitBlockListOptions{
+		ImmutabilityPolicyExpiryTime: &currentTime,
+		ImmutabilityPolicyMode:       &policy,
+		LegalHold:                    &legalHold,
+	}
+
+	_, err = bbClient.CommitBlockList(context.Background(), blockIDs, &options)
+	_require.Nil(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	policy1 := blob.ImmutabilityPolicyMode("unlocked")
+	_require.Equal(resp.ImmutabilityPolicyMode, &policy1)
+
+	time.Sleep(time.Second * 7)
+
+	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobMetadataNotEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3339,7 +3433,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	// Perform UploadStream
 	_, err = bbClient.UploadStream(context.Background(), blobContentReader,
 		&blockblob.UploadStreamOptions{
-			BlockSize:   bufferSize,
+			BlockSize:   int64(bufferSize),
 			Concurrency: maxBuffers,
 			Metadata:    testcommon.BasicMetadata,
 			Tags:        testcommon.BasicBlobTagsMap,
@@ -3653,4 +3747,99 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
 	resp, err = bbClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBlobStage() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	var largeBlockSize int64 = blockblob.MaxStageBlockBytes
+	content := make([]byte, largeBlockSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	_, err = bbClient.StageBlock(context.Background(), blockID, rsc, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, nil)
+	_require.Nil(err)
+
+	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
+	_require.Nil(err)
+	_require.Len(resp.BlockList.CommittedBlocks, 1)
+	committed := resp.BlockList.CommittedBlocks
+	_require.Equal(*(committed[0].Name), blockID)
+	_require.Equal(*(committed[0].Size), largeBlockSize)
+	_require.Nil(resp.BlockList.UncommittedBlocks)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockStreamUploadWithDifferentBlockSize() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	var firstBlockSize, secondBlockSize int64 = 2500 * 1024 * 1024, 10 * 1024 * 1024
+	content := make([]byte, firstBlockSize+secondBlockSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+
+	_, err = bbClient.UploadStream(context.Background(), rsc, &blockblob.UploadStreamOptions{
+		BlockSize:   firstBlockSize,
+		Concurrency: 2,
+	})
+	_require.Nil(err)
+
+	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
+	_require.Nil(err)
+	_require.Len(resp.BlockList.CommittedBlocks, 2)
+	_require.Equal(*resp.BlobContentLength, firstBlockSize+secondBlockSize)
+	committed := resp.BlockList.CommittedBlocks
+	_require.Equal(*(committed[0].Size), firstBlockSize)
+	_require.Equal(*(committed[1].Size), secondBlockSize)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	var largeBlockSize, numberOfBlocks int64 = 2500 * 1024 * 1024, 2
+	content := make([]byte, numberOfBlocks*largeBlockSize)
+
+	_, err = bbClient.UploadBuffer(context.Background(), content, &blockblob.UploadBufferOptions{
+		BlockSize:   largeBlockSize,
+		Concurrency: 2,
+	})
+	_require.Nil(err)
+
+	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
+	_require.Nil(err)
+	_require.Len(resp.BlockList.CommittedBlocks, 2)
+	_require.Equal(*resp.BlobContentLength, numberOfBlocks*largeBlockSize)
+	committed := resp.BlockList.CommittedBlocks
+	_require.Equal(*(committed[0].Size), largeBlockSize)
+	_require.Equal(*(committed[1].Size), largeBlockSize)
 }

@@ -641,6 +641,104 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchTrue() {
 	validateAppendBlobPut(_require, abClient)
 }
 
+func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	abName := testcommon.GenerateBlobName(testName)
+	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = abClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = abClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = abClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = abClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	abName := testcommon.GenerateBlobName(testName)
+	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = abClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = abClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendSetLegalHold() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	abName := testcommon.GenerateBlobName(testName)
+	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
+
+	_, err = abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = abClient.SetLegalHold(context.Background(), true, nil)
+	_require.Nil(err)
+
+	// should fail since time has not passed yet
+	_, err = abClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = abClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = abClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+}
+
 func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

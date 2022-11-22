@@ -119,9 +119,9 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 				case <-time.After(5 * time.Second):
 					debug.Log(3, "link.attach() clean-up timed out waiting for ack")
 					fmt.Println("*** GOT HERE9 ERROR ***")
-				case <-l.rx:
+				case fr := <-l.rx:
 					// received ack, safe to delete handle
-					fmt.Println("*** GOT HERE10 ERROR ***")
+					fmt.Printf("*** GOT HERE10 ERROR ***: %s", fr)
 					l.session.deallocateHandle(l)
 				}
 			}()

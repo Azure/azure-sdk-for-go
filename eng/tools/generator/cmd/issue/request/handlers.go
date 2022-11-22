@@ -14,6 +14,7 @@ import (
 func handleSuccess(_ context.Context, _ *query.Client, reqIssue ReleaseRequestIssue, result link.ResolveResult) (*Request, error) {
 	return &Request{
 		RequestLink: reqIssue.IssueLink,
+		TargetDate:  reqIssue.ReleaseDate,
 		ReadmePath:  string(result.GetReadme()),
 		Tag:         reqIssue.Tag,
 		Track:       getTrack(reqIssue),
@@ -24,6 +25,7 @@ func handleDataPlane(_ context.Context, _ *query.Client, reqIssue ReleaseRequest
 	log.Printf("[WARNING] Release request %s is requesting a release from a data-plane readme file `%s`, treat this as a track 2 request by default", reqIssue.IssueLink, result.GetReadme())
 	return &Request{
 		RequestLink: reqIssue.IssueLink,
+		TargetDate:  reqIssue.ReleaseDate,
 		ReadmePath:  string(result.GetReadme()),
 		Tag:         reqIssue.Tag,
 		Track:       Track2,

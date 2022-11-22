@@ -42,8 +42,8 @@ producerClient, err := azeventhubs.NewProducerClient(/* arguments elided for exa
 defer producerClient.Close(context.TODO())
 
 // these calls will lazily create a set of AMQP links using the producerClient's TCP connection.
-producerClient.SendEventBatch(context.TODO(), eventDataBatchForPartition0, nil)
-producerClient.SendEventBatch(context.TODO(), eventDataBatchForPartition1, nil)
+producerClient.SendEventDataBatch(context.TODO(), eventDataBatchForPartition0, nil)
+producerClient.SendEventDataBatch(context.TODO(), eventDataBatchForPartition1, nil)
 ```
 
 ## Clients

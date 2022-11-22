@@ -82,6 +82,39 @@ func setupLiveTest(t *testing.T, options *liveTestOptions) (*Client, func(), str
 	return serviceBusClient, testCleanup, queueName
 }
 
+type liveTestOptionsWithSubscription struct {
+	SubscriptionProperties *admin.SubscriptionProperties
+	TopicProperties        *admin.TopicProperties
+	ClientOptions          *ClientOptions
+}
+
+func setupLiveTestWithSubscription(t *testing.T, options *liveTestOptionsWithSubscription) (client *Client, cleanup func(), topic string, subscription string) {
+	if options == nil {
+		options = &liveTestOptionsWithSubscription{}
+	}
+
+	cs := test.GetConnectionString(t)
+
+	clientOptions, flushKeyFn := enableDebugClientOptions(t, options.ClientOptions)
+	serviceBusClient, err := NewClientFromConnectionString(cs, clientOptions)
+	require.NoError(t, err)
+
+	topic, cleanupTopic := createSubscription(t, cs, options.TopicProperties, options.SubscriptionProperties)
+
+	testCleanup := func() {
+		require.NoError(t, serviceBusClient.Close(context.Background()))
+		flushKeyFn()
+		cleanupTopic()
+
+		// just a simple sanity check that closing twice doesn't cause errors.
+		// it's basically zero cost since all the links and connection are gone from the
+		// first Close().
+		require.NoError(t, serviceBusClient.Close(context.Background()))
+	}
+
+	return serviceBusClient, testCleanup, topic, "sub"
+}
+
 // createQueue creates a queue, automatically setting it to delete on idle in 5 minutes.
 func createQueue(t *testing.T, connectionString string, queueProperties *admin.QueueProperties) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()

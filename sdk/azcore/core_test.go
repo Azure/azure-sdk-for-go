@@ -9,6 +9,10 @@ package azcore
 import (
 	"reflect"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNullValue(t *testing.T) {
@@ -100,4 +104,30 @@ func TestIsNullValueMapSlice(t *testing.T) {
 	if !IsNullValue(nf.Slice) {
 		t.Fatal("expected null slice")
 	}
+}
+
+func TestNewClient(t *testing.T) {
+	client, err := NewClient("package.Client", "v1.0.0", runtime.PipelineOptions{}, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client)
+	require.NotZero(t, client.Pipeline())
+	require.Zero(t, client.Tracer())
+
+	client, err = NewClient("package.Client", "", runtime.PipelineOptions{}, &ClientOptions{
+		Telemetry: policy.TelemetryOptions{
+			Disabled: true,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+}
+
+func TestNewClientError(t *testing.T) {
+	client, err := NewClient("malformed", "v1.0.0", runtime.PipelineOptions{}, nil)
+	require.Error(t, err)
+	require.Nil(t, client)
+
+	client, err = NewClient("package.Client", "malformed", runtime.PipelineOptions{}, nil)
+	require.Error(t, err)
+	require.Nil(t, client)
 }

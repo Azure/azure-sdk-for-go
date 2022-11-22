@@ -1,8 +1,16 @@
 # Release History
 
-## 0.5.0 (Unreleased)
+## 0.5.1 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.5.0 (2022-11-08)
 
 ### Breaking Changes
 * Changed type of `OnlyIfChanged` and `OnlyIfUnchanged` option fields from `bool` to `*azcore.ETag`.
@@ -10,8 +18,6 @@
 ### Bugs Fixed
 * `OnlyIfChanged` and `OnlyIfUnchanged` option fields have no effect
   ([#19297](https://github.com/Azure/azure-sdk-for-go/issues/19297))
-
-### Other Changes
 
 ## 0.4.3 (2022-10-31)
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.3.0 (2022-11-10)
+
+### Bugs Fixed
+
+- $cbs link is properly closed, even on cancellation (#19492)
+
+### Breaking Changes
+
+- ProducerClient.SendEventBatch renamed to ProducerClient.SendEventDataBatch, to align with
+  the name of the type.
 
 ## 0.2.0 (2022-10-17)
 

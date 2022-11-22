@@ -8,11 +8,10 @@ package azquery_test
 
 import (
 	"context"
-	"errors"
-	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
@@ -26,6 +25,27 @@ type queryTest struct {
 	String string
 }
 
+func TestLogsClient(t *testing.T) {
+	client, err := azquery.NewLogsClient(credential, nil)
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	c := cloud.Configuration{
+		ActiveDirectoryAuthorityHost: "https://...",
+		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+			cloud.ResourceManager: {
+				Audience: "",
+				Endpoint: "",
+			},
+		},
+	}
+	opts := azcore.ClientOptions{Cloud: c}
+	cloudClient, err := azquery.NewLogsClient(credential, &azquery.LogsClientOptions{ClientOptions: opts})
+	require.Error(t, err)
+	require.Equal(t, err.Error(), "provided Cloud field is missing Azure Monitor Logs configuration")
+	require.Nil(t, cloudClient)
+}
+
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
 	body := azquery.Body{
@@ -35,24 +55,12 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	testSerde(t, &body)
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
-	if err != nil {
-		t.Fatalf("error with query, %s", err)
-	}
-	if res.Error != nil {
-		t.Fatalf("expected Error to be nil: %s", res.Error)
-	}
-	if res.Render != nil {
-		t.Fatal("expected Render to be nil")
-	}
-	if res.Statistics != nil {
-		t.Fatal("expected Statistics to be nil")
-	}
-	if len(res.Tables) != 1 {
-		t.Fatal("expected one table")
-	}
-	if len(res.Tables[0].Rows) != 100 {
-		t.Fatal("expected 100 rows")
-	}
+	require.NoError(t, err)
+	require.Nil(t, res.Error)
+	require.Nil(t, res.Render)
+	require.Nil(t, res.Statistics)
+	require.Len(t, res.Tables, 1)
+	require.Len(t, res.Tables[0].Rows, 100)
 
 	var queryResults []queryTest
 	for _, table := range res.Tables {
@@ -70,18 +78,10 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 		}
 	}
 
-	if len(queryResults) != 100 {
-		t.Fatal("expected 100 structs")
-	}
-	if queryResults[99].Bool != false {
-		t.Fatal("expected Bool to be false")
-	}
-	if queryResults[99].String != "string value" {
-		t.Fatal("expected String to be 'string value")
-	}
-	if queryResults[99].Long != 1 {
-		t.Fatal("expected Long to be 1")
-	}
+	require.Len(t, queryResults, 100)
+	require.False(t, queryResults[99].Bool)
+	require.Equal(t, queryResults[99].String, "string value")
+	require.Equal(t, queryResults[99].Long, int64(1))
 
 	testSerde(t, &res)
 }
@@ -90,26 +90,14 @@ func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
 	client := startLogsTest(t)
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: to.Ptr("not a valid query")}, nil)
-	if err == nil {
-		t.Fatalf("expected an error")
-	}
-	if res.Error != nil {
-		t.Fatalf("expected Error to be nil: %s", res.Error)
-	}
-	if res.Tables != nil {
-		t.Fatalf("expected no results")
-	}
+	require.Error(t, err)
+	require.Nil(t, res.Error)
+	require.Nil(t, res.Tables)
 
 	var httpErr *azcore.ResponseError
-	if !errors.As(err, &httpErr) {
-		t.Fatal("expected an azcore.ResponseError")
-	}
-	if httpErr.ErrorCode != "BadArgumentError" {
-		t.Fatal("expected a BadArgumentError")
-	}
-	if httpErr.StatusCode != 400 {
-		t.Fatal("expected a 400 error")
-	}
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, httpErr.ErrorCode, "BadArgumentError")
+	require.Equal(t, httpErr.StatusCode, 400)
 
 	testSerde(t, &res)
 }
@@ -119,18 +107,10 @@ func TestQueryWorkspace_PartialError(t *testing.T) {
 	query := "let Weight = 92233720368547758; range x from 1 to 3 step 1 | summarize percentilesw(x, Weight * 100, 50)"
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: &query}, nil)
-	if err != nil {
-		t.Fatalf("error with query: %s", err)
-	}
-	if res.Error == nil {
-		t.Fatal("expected an error")
-	}
-	if res.Error.Code != "PartialError" {
-		t.Fatal("expected a partial error")
-	}
-	if !strings.Contains(res.Error.Error(), "PartialError") {
-		t.Fatal("expected error message to contain PartialError")
-	}
+	require.NoError(t, err)
+	require.NotNil(t, res.Error)
+	require.Equal(t, res.Error.Code, "PartialError")
+	require.Contains(t, res.Error.Error(), "PartialError")
 
 	testSerde(t, &res)
 }
@@ -138,29 +118,15 @@ func TestQueryWorkspace_PartialError(t *testing.T) {
 // tests for special options: timeout, statistics, visualization
 func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
-	query := query
-	body := azquery.Body{
-		Query: &query,
-	}
 	prefer := "wait=180,include-statistics=true,include-render=true"
-	options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer}
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, options)
-	if err != nil {
-		t.Fatalf("error with query, %s", err)
-	}
-	if res.Error != nil {
-		t.Fatalf("expected Error to be nil: %s", res.Error)
-	}
-	if res.Tables == nil {
-		t.Fatal("expected Tables results")
-	}
-	if res.Render == nil {
-		t.Fatal("expected Render results")
-	}
-	if res.Statistics == nil {
-		t.Fatal("expected Statistics results")
-	}
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: &query}, &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer})
+	require.NoError(t, err)
+	require.Nil(t, res.Error)
+	require.NotNil(t, res.Tables)
+	require.NotNil(t, res.Render)
+	require.NotNil(t, res.Statistics)
+	testSerde(t, &res)
 }
 
 func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
@@ -173,18 +139,12 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	testSerde(t, &body)
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
-	if err != nil {
-		t.Fatalf("error with query, %s", err)
-	}
-	if res.Error != nil {
-		t.Fatalf("expected Error to be nil: %s", res.Error)
-	}
-	if len(res.Tables[0].Rows) != 100 {
-		t.Fatalf("expected 100 results, received")
-	}
+	require.NoError(t, err)
+	require.Nil(t, res.Error)
+	require.Len(t, res.Tables[0].Rows, 100)
 }
 
-func TestBatch_QuerySuccess(t *testing.T) {
+func TestQueryBatch_QuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
 	query1, query2 := query, query+" | take 2"
 
@@ -195,30 +155,66 @@ func TestBatch_QuerySuccess(t *testing.T) {
 	testSerde(t, &batchRequest)
 
 	res, err := client.QueryBatch(context.Background(), batchRequest, nil)
-	if err != nil {
-		t.Fatalf("error with query, %s", err)
-	}
-	if len(res.Responses) != 2 {
-		t.Fatal("expected two responses")
-	}
+	require.NoError(t, err)
+	require.Len(t, res.Responses, 2)
 	for _, resp := range res.Responses {
-		if resp.Body.Error != nil {
-			t.Fatalf("expected Error to be nil: %s", resp.Body.Error)
-		}
-		if resp.Body.Tables == nil {
-			t.Fatal("expected a response")
-		}
+		require.Nil(t, resp.Body.Error)
+		require.NotNil(t, resp.Body.Tables)
 		if *resp.ID == "1" && len(resp.Body.Tables[0].Rows) != 100 {
 			t.Fatal("expected 100 rows from batch request 1")
 		}
 		if *resp.ID == "2" && len(resp.Body.Tables[0].Rows) != 2 {
-			t.Fatal("expected 100 rows from batch request 1")
+			t.Fatal("expected 2 rows from batch request 2")
 		}
 	}
 	testSerde(t, &res)
 }
 
-func TestBatch_PartialError(t *testing.T) {
+func TestQueryBatch_BasicQueryFailure(t *testing.T) {
+	client := startLogsTest(t)
+	query1, query2 := query, query+" | take 2"
+
+	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
+		{Body: &azquery.Body{Query: to.Ptr(query1)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query2)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
+	}}
+	testSerde(t, &batchRequest)
+
+	res, err := client.QueryBatch(context.Background(), azquery.BatchRequest{}, nil)
+	require.Error(t, err)
+	require.Nil(t, res.Responses)
+
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, httpErr.ErrorCode, "BadArgumentError")
+	require.Equal(t, httpErr.StatusCode, 400)
+}
+
+func TestQueryBatch_AdvancedQuerySuccess(t *testing.T) {
+	client := startLogsTest(t)
+	batchPrefer := "wait=180,include-statistics=true,include-render=true"
+	headers := map[string]*string{"prefer": &batchPrefer}
+
+	batchRequestAdvanced := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
+		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID2), Headers: headers},
+		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID2), Headers: headers},
+	}}
+	testSerde(t, &batchRequestAdvanced)
+
+	res, err := client.QueryBatch(context.Background(), batchRequestAdvanced, nil)
+	require.NoError(t, err)
+	require.Len(t, res.Responses, 2)
+	for _, resp := range res.Responses {
+		require.Nil(t, resp.Body.Error)
+		require.NotNil(t, resp.Body.Tables)
+		require.NotNil(t, resp.Body.Render)
+		require.NotNil(t, resp.Body.Statistics)
+		require.Len(t, resp.Body.Tables[0].Rows, 100)
+	}
+	testSerde(t, &res)
+}
+
+func TestQueryBatch_PartialError(t *testing.T) {
 	client := startLogsTest(t)
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
@@ -227,31 +223,17 @@ func TestBatch_PartialError(t *testing.T) {
 	}}
 
 	res, err := client.QueryBatch(context.Background(), batchRequest, nil)
-	if err != nil {
-		t.Fatalf("error with query, %s", err)
-	}
-	if len(res.Responses) != 2 {
-		t.Fatal("expected two responses")
-	}
+	require.NoError(t, err)
+	require.Len(t, res.Responses, 2)
 	for _, resp := range res.Responses {
 		if *resp.ID == "1" {
-			if resp.Body.Error == nil {
-				t.Fatal("expected batch request 1 to fail")
-			}
-			if resp.Body.Error.Code != "BadArgumentError" {
-				t.Fatal("expected BadArgumentError")
-			}
-			if !strings.Contains(resp.Body.Error.Error(), "BadArgumentError") {
-				t.Fatal("expected error message to contain BadArgumentError")
-			}
+			require.NotNil(t, resp.Body.Error)
+			require.Equal(t, resp.Body.Error.Code, "BadArgumentError")
+			require.Contains(t, resp.Body.Error.Error(), "BadArgumentError")
 		}
 		if *resp.ID == "2" {
-			if resp.Body.Error != nil {
-				t.Fatalf("expected batch request 2 to succeed: %s", resp.Body.Error)
-			}
-			if len(resp.Body.Tables[0].Rows) != 100 {
-				t.Fatal("expected 100 rows")
-			}
+			require.Nil(t, resp.Body.Error)
+			require.Len(t, resp.Body.Tables[0].Rows, 100)
 		}
 	}
 }

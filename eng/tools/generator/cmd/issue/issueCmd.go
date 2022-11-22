@@ -261,11 +261,13 @@ func (c *commandContext) buildConfig(requests []request.Request) (*config.Config
 		switch req.Track {
 		case request.Track1:
 			track1Requests.Add(req.ReadmePath, req.Tag, config.ReleaseRequestInfo{
+				TargetDate:  timePtr(req.TargetDate),
 				RequestLink: req.RequestLink,
 			})
 		case request.Track2:
 			track2Requests.Add(req.ReadmePath, config.Track2Request{
 				ReleaseRequestInfo: config.ReleaseRequestInfo{
+					TargetDate:  timePtr(req.TargetDate),
 					RequestLink: req.RequestLink,
 				},
 				PackageFlag: req.Tag, // TODO -- we need a better place to put this in the request

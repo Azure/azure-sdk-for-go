@@ -9,7 +9,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "116",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azquery/v0.1.0 (go1.19; Windows_NT)"
+        "User-Agent": "azsdk-go-azquery/v0.2.1 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "query": "let Weight = 92233720368547758; range x from 1 to 3 step 1 | summarize percentilesw(x, Weight * 100, 50)"
@@ -21,14 +21,14 @@
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 08 Sep 2022 00:01:34 GMT",
+        "Date": "Tue, 08 Nov 2022 21:06:30 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": [
           "Accept-Encoding",
           "Accept-Encoding"
         ],
-        "Via": "1.1 draft-oms-6b467c4794-wdjbh",
+        "Via": "1.1 draft-oms-7f9bc6678d-rrwnr",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {

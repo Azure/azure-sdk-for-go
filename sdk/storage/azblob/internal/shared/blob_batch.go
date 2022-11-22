@@ -21,7 +21,6 @@ import (
 const BATCH_ID_PREFIX = "batch_"
 
 func CreateBatchID() (string, error) {
-
 	batchid, err := uuid.New()
 	if err != nil {
 		return "", err

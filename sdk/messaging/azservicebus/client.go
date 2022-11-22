@@ -167,9 +167,10 @@ func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOpt
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
 		cleanupOnClose:      cleanupOnClose,
-		ns:                  client.namespace,
 		entity:              entity{Queue: queueName},
 		getRecoveryKindFunc: internal.GetRecoveryKind,
+		idleTimeout:         0,
+		ns:                  client.namespace,
 		retryOptions:        client.retryOptions,
 	}, options)
 
@@ -186,9 +187,10 @@ func (client *Client) NewReceiverForSubscription(topicName string, subscriptionN
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	receiver, err := newReceiver(newReceiverArgs{
 		cleanupOnClose:      cleanupOnClose,
-		ns:                  client.namespace,
 		entity:              entity{Topic: topicName, Subscription: subscriptionName},
 		getRecoveryKindFunc: internal.GetRecoveryKind,
+		idleTimeout:         0,
+		ns:                  client.namespace,
 		retryOptions:        client.retryOptions,
 	}, options)
 

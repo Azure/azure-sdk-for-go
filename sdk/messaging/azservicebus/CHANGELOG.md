@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.2 (Unreleased)
+## 1.1.3 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,20 @@
 
 ### Bugs Fixed
 
+- Disable the idle link tracking on session links (#19571)
+
 ### Other Changes
+
+## 1.1.2 (2022-11-08)
+
+### Features Added
+
+- Added a client-side idle timer which will reset Receiver links, transparently, if the link is idle for 
+  5 minutes.
+
+### Bugs Fixed
+
+- $cbs link is properly closed, even on cancellation (#19492)
 
 ## 1.1.1 (2022-10-11)
 

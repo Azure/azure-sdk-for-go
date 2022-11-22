@@ -221,6 +221,12 @@ func (c *Client) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions)
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
 func (c *Client) SetAccessPolicy(ctx context.Context, containerACL []*SignedIdentifier, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	accessPolicy, mac, lac := o.format()
+	for _, c := range containerACL {
+		err := formatTime(c)
+		if err != nil {
+			return SetAccessPolicyResponse{}, err
+		}
+	}
 	resp, err := c.generated().SetAccessPolicy(ctx, containerACL, accessPolicy, mac, lac)
 	return resp, err
 }
@@ -340,7 +346,7 @@ func (c *Client) DeleteBlobs(ctx context.Context, blobs []*BatchDeleteOptions) (
 	if len == 0 {
 		return DeleteBlobsResponse{}, nil
 	}
-	
+
 	// one batch can only have max 256 sub requests and each batch will have a unique batch id
 	batchid, err := CreateBatchID()
 	if err != nil {
@@ -348,6 +354,6 @@ func (c *Client) DeleteBlobs(ctx context.Context, blobs []*BatchDeleteOptions) (
 	}
 
 	multipartContentType := "multipart/mixed; boundary=" + GetBatchRequestDelimiter(batchid, false, false)
-	resp, err := c.generated().SubmitBatch(ctx, contentLength, multipartContentType, body io.ReadSeekCloser, options *ContainerClientSubmitBatchOptions)
+	resp, err := c.generated().SubmitBatch(ctx, contentLength, multipartContentType, body, options*ContainerClientSubmitBatchOptions)
 	return resp, err
 }

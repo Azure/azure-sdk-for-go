@@ -43,6 +43,10 @@ const (
 	SubQueueTransfer SubQueue = 2
 )
 
+// defaultReceiverIdleTime is the amount of time before we consider a non-session-receiver
+// link idle, and will recycle it.
+const defaultReceiverIdleTime = 5 * time.Minute
+
 // Receiver receives messages using pull based functions (ReceiveMessages).
 type Receiver struct {
 	receiveMode ReceiveMode
@@ -59,11 +63,7 @@ type Receiver struct {
 	receiving bool
 
 	defaultTimeAfterFirstMsg time.Duration
-
-	// idleDuration controls how long we'll wait, on the client side, for the first message. This is an "internal"
-	// timeout in that it doesn't result in the user seeing an early exit, but more prevents us from waiting on a
-	// link that might have been closed, service-side, without our knowledge.
-	idleDuration time.Duration
+	idleTracker              *internal.LocalIdleTracker
 
 	cancelReleaser *atomic.Value
 }
@@ -118,12 +118,17 @@ func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverO
 }
 
 type newReceiverArgs struct {
-	ns                  internal.NamespaceWithNewAMQPLinks
-	entity              entity
 	cleanupOnClose      func()
+	entity              entity
 	getRecoveryKindFunc func(err error) internal.RecoveryKind
-	newLinkFn           func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error)
-	retryOptions        RetryOptions
+	// idleTimeout is the amount of time before a link is considered idle.
+	// If idleTimeout < 0 then the idle timeout is disabled.
+	// If idleTimeout == 0 then the default idle timeout is used (defaultReceiverIdleTime)
+	// Default is to use defaultReceiverIdleTime.
+	idleTimeout  time.Duration
+	newLinkFn    func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error)
+	ns           internal.NamespaceWithNewAMQPLinks
+	retryOptions RetryOptions
 }
 
 var emptyCancelFn = func() string {
@@ -135,11 +140,19 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 		return nil, err
 	}
 
+	var idleTracker *internal.LocalIdleTracker
+
+	if args.idleTimeout > 0 {
+		idleTracker = &internal.LocalIdleTracker{MaxDuration: args.idleTimeout}
+	} else if args.idleTimeout == 0 {
+		idleTracker = &internal.LocalIdleTracker{MaxDuration: defaultReceiverIdleTime}
+	}
+
 	receiver := &Receiver{
 		lastPeekedSequenceNumber: 0,
 		cleanupOnClose:           args.cleanupOnClose,
 		defaultTimeAfterFirstMsg: 20 * time.Millisecond,
-		idleDuration:             5 * time.Minute,
+		idleTracker:              idleTracker,
 		retryOptions:             args.retryOptions,
 		cancelReleaser:           &atomic.Value{},
 	}
@@ -211,9 +224,16 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 	for {
 		messages, err := r.receiveMessagesImpl(ctx, maxMessages, options)
 
-		if !errors.Is(err, internal.IdleError) {
-			return messages, internal.TransformError(err)
+		// when we have a client-side idle error it just means we went too long without
+		// any activity. The user didn't make this happen (nor did the service) so we treat it
+		// as just an internal "state reset" and try the receive again.
+		//
+		// When this does happen there aren't any messages or anything to return.
+		if internal.IsLocalIdleError(err) {
+			continue
 		}
+
+		return messages, internal.TransformError(err)
 	}
 }
 
@@ -418,6 +438,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		log.Writef(EventReceiver, "Failure when receiving messages: %s", result.Error)
 	}
 
+	if internal.IsLocalIdleError(result.Error) {
+		return nil, result.Error
+	}
+
 	// If the user does get some messages we ignore 'error' and return only the messages.
 	//
 	// Doing otherwise would break the idiom that people are used to where people expected
@@ -429,8 +453,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	// at that time
 	if len(result.Messages) == 0 {
 		if internal.IsCancelError(result.Error) ||
-			rk == internal.RecoveryKindFatal ||
-			errors.Is(result.Error, internal.IdleError) {
+			rk == internal.RecoveryKindFatal {
 			return nil, result.Error
 		}
 
@@ -526,11 +549,17 @@ type fetchMessagesResult struct {
 //
 // Note, if you want to only receive prefetched messages send the parentCtx in
 // pre-cancelled. This will cause us to only flush the prefetch buffer.
-func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AMQPReceiver, count int, timeAfterFirstMessage time.Duration) fetchMessagesResult {
-	// This idle timer prevents us from getting into a situation where the remote service has
-	// invalidated a link but we didn't get notified and are waiting on an eternally dead link.
-	firstReceiveCtx, cancelFirstReceive := context.WithTimeout(parentCtx, r.idleDuration)
-	defer cancelFirstReceive()
+func (r *Receiver) fetchMessages(usersCtx context.Context, receiver amqpwrap.AMQPReceiver, count int, timeAfterFirstMessage time.Duration) fetchMessagesResult {
+	firstReceiveCtx := usersCtx
+
+	if r.idleTracker != nil {
+		idleCtx, cancelIdleCtx := r.idleTracker.NewContextWithDeadline(usersCtx)
+		defer cancelIdleCtx()
+
+		firstReceiveCtx = idleCtx
+	}
+
+	start := time.Now()
 
 	// The first receive is a bit special - we activate a short timer after this
 	// so the user doesn't end up in a situation where we're holding onto a bunch
@@ -538,15 +567,11 @@ func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AM
 	// received all 'count' number of messages.
 	firstMsg, err := receiver.Receive(firstReceiveCtx)
 
+	if r.idleTracker != nil {
+		err = r.idleTracker.Check(usersCtx, start, err)
+	}
+
 	if err != nil {
-		if errors.Is(err, context.DeadlineExceeded) && parentCtx.Err() == nil {
-			log.Writef(EventReceiver, "Detaching link due to local idle timeout. Will reattach automatically.")
-
-			return fetchMessagesResult{
-				Error: internal.IdleError,
-			}
-		}
-
 		// drain the prefetch buffer - we're stopping because of a
 		// failure on the link/connection _or_ the user cancelled the
 		// operation.
@@ -566,7 +591,7 @@ func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AM
 
 	// after we get one message we will try to receive as much as we can
 	// during the `timeAfterFirstMessage` duration.
-	ctx, cancel := context.WithTimeout(parentCtx, timeAfterFirstMessage)
+	ctx, cancel := context.WithTimeout(usersCtx, timeAfterFirstMessage)
 	defer cancel()
 
 	var lastErr error
@@ -595,7 +620,7 @@ func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AM
 			//
 			// If we cancel: we want a nil error since there's no failure. In that case parentCtx.Err() is nil
 			// If they cancel: we want to forward on their cancellation error.
-			Error: parentCtx.Err(),
+			Error: usersCtx.Err(),
 		}
 	} else {
 		return fetchMessagesResult{

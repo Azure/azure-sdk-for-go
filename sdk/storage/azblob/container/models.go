@@ -7,9 +7,14 @@
 package container
 
 import (
+	"context"
 	"fmt"
+	"net/http"
 	"reflect"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
@@ -264,7 +269,30 @@ func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPo
 	}, lac, mac
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
+func formatTime(c *SignedIdentifier) error {
+	if c.AccessPolicy == nil {
+		return nil
+	}
+
+	if c.AccessPolicy.Start != nil {
+		st, err := time.Parse(time.RFC3339, c.AccessPolicy.Start.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		c.AccessPolicy.Start = &st
+	}
+	if c.AccessPolicy.Expiry != nil {
+		et, err := time.Parse(time.RFC3339, c.AccessPolicy.Expiry.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		c.AccessPolicy.Expiry = &et
+	}
+
+	return nil
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 
 type BatchDeleteOptions struct {
 	BlobName          *string
@@ -273,35 +301,35 @@ type BatchDeleteOptions struct {
 	Snapshot          *string
 }
 
-func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context) (*policy.Request, error)  {
-				//options *BlobClientDeleteOptions, 
-				//leaseAccessConditions *LeaseAccessConditions, 
-				//modifiedAccessConditions *ModifiedAccessConditions) 
+func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context,
+	leaseAccessConditions *LeaseAccessConditions,
+	modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
 	if o.BlobName == nil {
 		return nil, fmt.Errorf("blob name not provided")
 	}
 
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, o.BlobName)
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, *o.BlobName)
 	if err != nil {
 		return nil, err
 	}
 
 	reqQP := req.Raw().URL.Query()
-	if o !=  nil && o.Snapshot != nil {
+	if o != nil && o.Snapshot != nil {
 		reqQP.Set("snapshot", *o.Snapshot)
 	}
-	if o !=  nil && o.VersionID != nil {
+	if o != nil && o.VersionID != nil {
 		reqQP.Set("versionid", *o.VersionID)
 	}
-	if o !=  nil && o.BlobDeleteOptions != nil && o.BlobDeleteOptions.DeleteType != nil {
-		reqQP.Set("deletetype", string(*options.DeleteType))
+	if o != nil && o.BlobDeleteOptions != nil && o.BlobDeleteOptions.BlobDeleteType != nil {
+		reqQP.Set("deletetype", string(*o.BlobDeleteOptions.BlobDeleteType))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
+
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	if o !=  nil && options.DeleteSnapshots != nil {
-		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*options.DeleteSnapshots)}
+	if o != nil && o.BlobDeleteOptions != nil && o.BlobDeleteOptions.DeleteSnapshots != nil {
+		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*o.BlobDeleteOptions.DeleteSnapshots)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
@@ -318,10 +346,8 @@ func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context) (*polic
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
 	}
+
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
-	if o !=  nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
-	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
@@ -330,7 +356,5 @@ func (o *BatchDeleteOptions) format() (string, error) {
 	if o == nil {
 		return "", nil
 	}
-
-	&basics, o.AccessConditions.LeaseAccessConditions, o.AccessConditions.ModifiedAccessConditions
 
 }

@@ -11,9 +11,11 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
@@ -126,4 +128,43 @@ func TestNewPipelineCustomPolicies(t *testing.T) {
 	require.Equal(t, 1, customPerCallPolicy.count)
 	require.Equal(t, 2, defaultPerRetryPolicy.count)
 	require.Equal(t, 2, customPerRetryPolicy.count)
+}
+
+func TestPipelineDoConcurrent(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse()
+
+	pl := NewPipeline("TestPipelineDoConcurrent", shared.Version, PipelineOptions{}, nil)
+
+	plErr := make(chan error, 1)
+	wg := &sync.WaitGroup{}
+	for i := 0; i < 1000; i++ {
+		wg.Add(1)
+		go func() {
+			req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+			if err != nil {
+				// test bug
+				panic(err)
+			}
+			_, err = pl.Do(req)
+			if err != nil {
+				select {
+				case plErr <- err:
+					// set error
+				default:
+					// pending error
+				}
+			}
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+
+	select {
+	case err := <-plErr:
+		t.Fatal(err)
+	default:
+		// no error
+	}
 }

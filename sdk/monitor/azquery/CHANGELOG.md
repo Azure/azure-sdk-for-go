@@ -1,6 +1,16 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.3.0 (2022-11-08)
 
 ### Features Added
 * Added `ColumnIndexLookup` field to Table struct
@@ -13,8 +23,6 @@
 * Rename `NewListMetricDefinitionsPager` to `NewListDefinitionsPager`
 * Rename `NewListMetricNamespacesPager` to `NewListNamespacesPager`
 * Changed type of `Render` and `Statistics` from interface{} to []byte
-
-### Bugs Fixed
 
 ### Other Changes
 * Updated docs with more detailed examples

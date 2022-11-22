@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"sync"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/debug"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/encoding"
@@ -93,61 +92,15 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 	// send Attach frame
 	debug.Log(1, "TX (attachLink): %s", attach)
 
-	// we use send to have positive confirmation on transmission
-	start := time.Now()
-	send := make(chan encoding.DeliveryState)
-	_ = l.session.txFrame(attach, send)
-
-	/*
-		2022-11-22T03:53:39.8379719Z *** GOT HERE7 ERROR ***: 173.3µs, reason: context canceled
-		2022-11-22T03:53:39.8381755Z *** GOT HERE7 ERROR ***: 2.2979ms, reason: context canceled
-		2022-11-22T03:53:39.8383670Z new receiver: context canceled
-		2022-11-22T03:53:39.8387285Z *** GOT HERE10 ERROR ***: Attach{Name: Zoav4CxjkI7c3lMZlcJOijLQ608hoOfBFcWwjbBoETu5KzJ1PabZ8A, Handle: 1, Role: Sender, SenderSettleMode: <nil>, ReceiverSettleMode: <nil>, Source: source{Address: $cbs, Durable: 0, ExpiryPolicy: session-end, Timeout: 0, Dynamic: false, DynamicNodeProperties: map[], DistributionMode: , Filter: map[], DefaultOutcome: <nil>Outcomes: [], Capabilities: []}, Target: source{Address: $cbs$$cbs-reply-to-60e062ee-ea28-4deb-6e9a-494bb6d92715, Durable: 0, ExpiryPolicy: session-end, Timeout: 0, Dynamic: false, DynamicNodeProperties: map[], Capabilities: []}, Unsettled: map[], IncompleteUnsettled: false, InitialDeliveryCount: 0, MaxMessageSize: 18446744073709551615, OfferedCapabilities: [], DesiredCapabilities: [], Properties: map[]}
-		2022-11-22T03:53:39.8390475Z *** GOT HERE10 ERROR ***: Attach{Name: cOeqmosWAomxIsiG9NHBOdZnXYUATEqzYcOxo_RQh1XQE5vsq2WHvw, Handle: 0, Role: Sender, SenderSettleMode: <nil>, ReceiverSettleMode: <nil>, Source: <nil>, Target: <nil>, Unsettled: map[], IncompleteUnsettled: false, InitialDeliveryCount: 0, MaxMessageSize: 0, OfferedCapabilities: [], DesiredCapabilities: [], Properties: map[]}
-		2022-11-22T03:53:39.8392263Z panic: send on closed channel
-		2022-11-22T03:53:39.8392676Z
-		2022-11-22T03:53:39.8394314Z goroutine 3158 [running]:
-		2022-11-22T03:53:39.8396707Z github.com/Azure/azure-sdk-for-go/sdk/messaging/az***s/internal/go-amqp.(*Session).muxFrameToLink(0xc0002dde78?, 0xc0002ddb34?, {0x1509ca0?, 0xc000c82d90?})
-		2022-11-22T03:53:39.8398258Z 	D:/a/_work/1/s/sdk/messaging/az***s/internal/go-amqp/session.go:607 +0x9f
-		2022-11-22T03:53:39.8400891Z github.com/Azure/azure-sdk-for-go/sdk/messaging/az***s/internal/go-amqp.(*Session).mux(0xc0008c75e0, 0xc0000f57c0)
-		2022-11-22T03:53:39.8402955Z 	D:/a/_work/1/s/sdk/messaging/az***s/internal/go-amqp/session.go:490 +0x48c
-		2022-11-22T03:53:39.8405341Z created by github.com/Azure/azure-sdk-for-go/sdk/messaging/az***s/internal/go-amqp.(*Session).begin
-		2022-11-22T03:53:39.8408398Z 	D:/a/_work/1/s/sdk/messaging/az***s/internal/go-amqp/session.go:171 +0x218
-	*/
+	_ = l.session.txFrame(attach, nil)
 
 	// wait for response
 	var fr frames.FrameBody
 	select {
 	case <-ctx.Done():
-		fmt.Printf("*** GOT HERE7 ERROR ***: %s, reason: %s\n", time.Since(start), ctx.Err())
-		select {
-		case <-send:
-			// attach was written to the network. assume it was received
-			// and that the ctx was too short to wait for the ack. in this
-			// case we must send a detach before deallocation
-			go func() {
-				_ = l.session.txFrame(&frames.PerformDetach{
-					Handle: l.handle,
-					Closed: true,
-				}, nil)
-				select {
-				case <-l.session.done:
-					// session has terminated, no need to deallocate in this case
-					fmt.Println("*** GOT HERE8 ERROR ***")
-				case <-time.After(5 * time.Second):
-					debug.Log(3, "link.attach() clean-up timed out waiting for ack")
-					fmt.Println("*** GOT HERE9 ERROR ***")
-				case fr := <-l.rx:
-					// received ack, safe to delete handle
-					fmt.Printf("*** GOT HERE10 ERROR ***: %s\n", fr)
-					l.session.deallocateHandle(l)
-				}
-			}()
-		default:
-			// attach wasn't written to the network, so delete the handle
-			fmt.Println("*** GOT HERE6 ERROR ***")
-			l.session.deallocateHandle(l)
-		}
+		// attach was written to the network. assume it was received
+		// and that the ctx was too short to wait for the ack.
+		go l.muxDetach(nil, nil)
 		return ctx.Err()
 	case <-l.session.done:
 		// session has terminated, no need to deallocate in this case
@@ -170,25 +123,15 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 	//
 	// http://docs.oasis-open.org/amqp/core/v1.0/csprd01/amqp-core-transport-v1.0-csprd01.html#doc-idp386144
 	if resp.Source == nil && resp.Target == nil {
-		fmt.Println("*** GOT HERE1 ERROR ***")
 		// wait for detach
 		select {
 		case <-ctx.Done():
 			// if we don't send an ack then we're in violation of the protocol
-			go func() {
-				fmt.Println("*** GOT HERE2 ERROR ***")
-				_ = l.session.txFrame(&frames.PerformDetach{
-					Handle: l.handle,
-					Closed: true,
-				}, nil)
-				l.session.deallocateHandle(l)
-			}()
+			go l.muxDetach(nil, nil)
 			return ctx.Err()
 		case <-l.session.done:
-			fmt.Println("*** GOT HERE3 ERROR ***")
 			return l.session.err
 		case fr = <-l.rx:
-			fmt.Println("*** GOT HERE4 ERROR ***")
 			l.session.deallocateHandle(l)
 		}
 
@@ -197,7 +140,6 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 			return fmt.Errorf("unexpected frame while waiting for detach: %#v", fr)
 		}
 
-		fmt.Println("*** GOT HERE5 ERROR ***")
 		// send return detach
 		fr = &frames.PerformDetach{
 			Handle: l.handle,

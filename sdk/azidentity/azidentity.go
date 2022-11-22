@@ -154,6 +154,7 @@ type confidentialClient interface {
 	AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireTokenSilentOption) (confidential.AuthResult, error)
 	AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireTokenByAuthCodeOption) (confidential.AuthResult, error)
 	AcquireTokenByCredential(ctx context.Context, scopes []string) (confidential.AuthResult, error)
+	AcquireTokenOnBehalfOf(ctx context.Context, userAssertion string, scopes []string) (confidential.AuthResult, error)
 }
 
 // enables fakes for test scenarios

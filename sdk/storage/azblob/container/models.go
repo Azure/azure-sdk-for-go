@@ -8,6 +8,7 @@ package container
 
 import (
 	"reflect"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
@@ -260,4 +261,27 @@ func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPo
 	return &generated.ContainerClientSetAccessPolicyOptions{
 		Access: o.Access,
 	}, lac, mac
+}
+
+func formatTime(c *SignedIdentifier) error {
+	if c.AccessPolicy == nil {
+		return nil
+	}
+
+	if c.AccessPolicy.Start != nil {
+		st, err := time.Parse(time.RFC3339, c.AccessPolicy.Start.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		c.AccessPolicy.Start = &st
+	}
+	if c.AccessPolicy.Expiry != nil {
+		et, err := time.Parse(time.RFC3339, c.AccessPolicy.Expiry.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		c.AccessPolicy.Expiry = &et
+	}
+
+	return nil
 }

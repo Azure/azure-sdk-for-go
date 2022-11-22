@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sort"
 	"testing"
 	"time"
 
@@ -495,4 +496,101 @@ func Test_toReceiverOptions(t *testing.T) {
 	}, toReceiverOptions(&SessionReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
 	}))
+}
+
+func TestSessionReceiverSendFiveReceiveFive_Queue(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	for i := 0; i < 5; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body:      []byte(fmt.Sprintf("[%d]: send five, receive five", i)),
+			SessionID: to.Ptr("session-1"),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	receiver, err := serviceBusClient.AcceptNextSessionForQueue(context.Background(), queueName, nil)
+	require.NoError(t, err)
+
+	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
+
+	for i := 0; i < 5; i++ {
+		require.EqualValues(t,
+			fmt.Sprintf("[%d]: send five, receive five", i),
+			string(messages[i].Body))
+
+		require.Equal(t, "session-1", *messages[i].SessionID)
+
+		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
+	}
+}
+
+func TestSessionReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
+	serviceBusClient, cleanup, topicName, subscriptionName := setupLiveTestWithSubscription(t, &liveTestOptionsWithSubscription{
+		SubscriptionProperties: &admin.SubscriptionProperties{
+			RequiresSession: to.Ptr(true),
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(topicName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	for i := 0; i < 5; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body:      []byte(fmt.Sprintf("[%d]: send five, receive five", i)),
+			SessionID: to.Ptr("session-1"),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	receiver, err := serviceBusClient.AcceptNextSessionForSubscription(context.Background(), topicName, subscriptionName, nil)
+	require.NoError(t, err)
+
+	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
+
+	for i := 0; i < 5; i++ {
+		require.EqualValues(t,
+			fmt.Sprintf("[%d]: send five, receive five", i),
+			string(messages[i].Body))
+
+		require.Equal(t, "session-1", *messages[i].SessionID)
+
+		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
+	}
+}
+
+func mustReceiveMessages(t *testing.T, receiver interface {
+	ReceiveMessages(ctx context.Context, count int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error)
+}, count int, waitTime time.Duration) []*ReceivedMessage {
+	var messages []*ReceivedMessage
+
+	ctx, cancel := context.WithTimeout(context.Background(), waitTime)
+	defer cancel()
+
+	for {
+		all, err := receiver.ReceiveMessages(ctx, count, nil)
+		require.NoError(t, err)
+
+		messages = append(messages, all...)
+
+		if len(messages) > count {
+			require.FailNowf(t, "Too many messages received", "Received more messages than expected: %d", len(messages))
+		}
+
+		if len(messages) == count {
+			sort.Sort(receivedMessageSlice(messages))
+			return messages
+		}
+	}
 }

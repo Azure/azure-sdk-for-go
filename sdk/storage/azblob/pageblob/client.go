@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -315,6 +316,24 @@ func (pb *Client) Delete(ctx context.Context, o *blob.DeleteOptions) (blob.Delet
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/undelete-blob.
 func (pb *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.UndeleteResponse, error) {
 	return pb.BlobClient().Undelete(ctx, o)
+}
+
+// SetImmutabilityPolicy operation enables users to set the immutability policy on a blob.
+// https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
+func (pb *Client) SetImmutabilityPolicy(ctx context.Context, expiryTime time.Time, options *blob.SetImmutabilityPolicyOptions) (blob.SetImmutabilityPolicyResponse, error) {
+	return pb.BlobClient().SetImmutabilityPolicy(ctx, expiryTime, options)
+}
+
+// DeleteImmutabilityPolicy operation enables users to delete the immutability policy on a blob.
+// https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
+func (pb *Client) DeleteImmutabilityPolicy(ctx context.Context, options *blob.DeleteImmutabilityPolicyOptions) (blob.DeleteImmutabilityPolicyResponse, error) {
+	return pb.BlobClient().DeleteImmutabilityPolicy(ctx, options)
+}
+
+// SetLegalHold operation enables users to set legal hold on a blob.
+// https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
+func (pb *Client) SetLegalHold(ctx context.Context, legalHold bool, options *blob.SetLegalHoldOptions) (blob.SetLegalHoldResponse, error) {
+	return pb.BlobClient().SetLegalHold(ctx, legalHold, options)
 }
 
 // SetTier operation sets the tier on a blob. The operation is allowed on a page

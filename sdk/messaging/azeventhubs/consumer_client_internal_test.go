@@ -74,7 +74,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 				Body: []byte(fmt.Sprintf("event 2 for partition %s", pid)),
 			}, nil))
 
-			err = producerClient.SendEventBatch(context.Background(), batch, nil)
+			err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
 
 			sendResults[i] = sendResult{PartitionID: pid, OffsetBefore: partProps.LastEnqueuedOffset}
@@ -209,7 +209,7 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 				Body: []byte(fmt.Sprintf("event 2 for partition %s", pid)),
 			}, nil))
 
-			err = producerClient.SendEventBatch(context.Background(), batch, nil)
+			err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
 
 			sendResults[i] = sendResult{PartitionID: pid, OffsetBefore: partProps.LastEnqueuedOffset}

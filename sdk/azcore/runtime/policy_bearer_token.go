@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
@@ -18,10 +18,10 @@ import (
 // BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
+	mainResource *temporal.Resource[exported.AccessToken, acquiringResourceState]
 	// the following fields are read-only
 	authzHandler policy.AuthorizationHandler
-	cred         azcore.TokenCredential
+	cred         exported.TokenCredential
 	scopes       []string
 }
 
@@ -33,10 +33,10 @@ type acquiringResourceState struct {
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
-func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
+func acquire(state acquiringResourceState) (newResource exported.AccessToken, newExpiration time.Time, err error) {
 	tk, err := state.p.cred.GetToken(state.req.Raw().Context(), state.tro)
 	if err != nil {
-		return azcore.AccessToken{}, time.Time{}, err
+		return exported.AccessToken{}, time.Time{}, err
 	}
 	return tk, tk.ExpiresOn, nil
 }
@@ -45,7 +45,7 @@ func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newE
 // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
 // scopes: the list of permission scopes required for the token.
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
-func NewBearerTokenPolicy(cred azcore.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
+func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
 	if opts == nil {
 		opts = &policy.BearerTokenOptions{}
 	}

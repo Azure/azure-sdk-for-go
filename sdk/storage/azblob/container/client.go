@@ -221,6 +221,12 @@ func (c *Client) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions)
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
 func (c *Client) SetAccessPolicy(ctx context.Context, containerACL []*SignedIdentifier, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	accessPolicy, mac, lac := o.format()
+	for _, c := range containerACL {
+		err := formatTime(c)
+		if err != nil {
+			return SetAccessPolicyResponse{}, err
+		}
+	}
 	resp, err := c.generated().SetAccessPolicy(ctx, containerACL, accessPolicy, mac, lac)
 	return resp, err
 }

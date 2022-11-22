@@ -1,0 +1,145 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocappenddeleteimmutabilitypolicy?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Tue, 08 Nov 2022 20:24:27 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Tue, 08 Nov 2022 20:24:27 GMT",
+        "ETag": "\u00220x8DAC1C73C46E62E\u0022",
+        "Last-Modified": "Tue, 08 Nov 2022 20:24:28 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocappenddeleteimmutabilitypolicy/gotestblobappenddeleteimmutabilitypolicy",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "x-ms-blob-type": "AppendBlob",
+        "X-Ms-Date": "Tue, 08 Nov 2022 20:24:27 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Tue, 08 Nov 2022 20:24:27 GMT",
+        "ETag": "\u00220x8DAC1C73C55C6A8\u0022",
+        "Last-Modified": "Tue, 08 Nov 2022 20:24:28 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2020-10-02",
+        "x-ms-version-id": "2022-11-08T20:24:28.1253544Z"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocappenddeleteimmutabilitypolicy/gotestblobappenddeleteimmutabilitypolicy?comp=immutabilityPolicies",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Tue, 08 Nov 2022 20:24:27 GMT",
+        "x-ms-immutability-policy-mode": "Unlocked",
+        "x-ms-immutability-policy-until-date": "Fri, 11 Jun 2049 20:00:00 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Tue, 08 Nov 2022 20:24:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-immutability-policy-mode": "unlocked",
+        "x-ms-immutability-policy-until-date": "Fri, 11 Jun 2049 20:00:00 GMT",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocappenddeleteimmutabilitypolicy/gotestblobappenddeleteimmutabilitypolicy?comp=immutabilityPolicies",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Tue, 08 Nov 2022 20:24:28 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Tue, 08 Nov 2022 20:24:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocappenddeleteimmutabilitypolicy/gotestblobappenddeleteimmutabilitypolicy",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Tue, 08 Nov 2022 20:24:28 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Tue, 08 Nov 2022 20:24:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-delete-type-permanent": "false",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

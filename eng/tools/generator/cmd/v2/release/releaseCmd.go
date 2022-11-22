@@ -205,6 +205,9 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			c.rpName = arm
 			c.namespaceName = info.Name
 			c.flags.SpecRPName = info.SpecName
+			if info.ReleaseDate != nil {
+				c.flags.ReleaseDate = info.ReleaseDate.Format("2006-01-02")
+			}
 			err = c.generate(sdkRepo, specCommitHash)
 			if err != nil {
 				return err

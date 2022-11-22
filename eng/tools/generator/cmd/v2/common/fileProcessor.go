@@ -43,6 +43,7 @@ type PackageInfo struct {
 	Config      string
 	SpecName    string
 	RequestLink string
+	ReleaseDate *time.Time
 }
 
 // reads from readme.go.md, parses the `track2` section to get module and package name

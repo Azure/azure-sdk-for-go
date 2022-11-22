@@ -101,6 +101,7 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 	var fr frames.FrameBody
 	select {
 	case <-ctx.Done():
+		fmt.Println("*** GOT HERE7 ERROR ***")
 		select {
 		case <-send:
 			// attach was written to the network. assume it was received
@@ -114,10 +115,13 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 				select {
 				case <-l.session.done:
 					// session has terminated, no need to deallocate in this case
+					fmt.Println("*** GOT HERE8 ERROR ***")
 				case <-time.After(5 * time.Second):
 					debug.Log(3, "link.attach() clean-up timed out waiting for ack")
+					fmt.Println("*** GOT HERE9 ERROR ***")
 				case <-l.rx:
 					// received ack, safe to delete handle
+					fmt.Println("*** GOT HERE10 ERROR ***")
 					l.session.deallocateHandle(l)
 				}
 			}()

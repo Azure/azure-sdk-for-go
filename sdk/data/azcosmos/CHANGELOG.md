@@ -3,6 +3,7 @@
 ## 0.3.3 (Unreleased)
 
 ### Features Added
+* Added `PatchItem` function to patch documents
 
 ### Breaking Changes
 

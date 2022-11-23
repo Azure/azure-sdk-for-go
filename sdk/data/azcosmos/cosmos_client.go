@@ -296,6 +296,26 @@ func (c *Client) sendBatchRequest(
 	return c.executeAndEnsureSuccessResponse(req)
 }
 
+func (c *Client) sendPatchRequest(
+	path string,
+	ctx context.Context,
+	content interface{},
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPatch, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.attachContent(content, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
 func (c *Client) createRequest(
 	path string,
 	ctx context.Context,

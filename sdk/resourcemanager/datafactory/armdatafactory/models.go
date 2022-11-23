@@ -5545,6 +5545,11 @@ type AzureSynapseArtifactsLinkedServiceTypeProperties struct {
 	// Required to specify MSI, if using system assigned managed identity as authentication method. Type: string (or Expression
 	// with resultType string).
 	Authentication interface{} `json:"authentication,omitempty"`
+
+	// The resource ID of the Synapse workspace. The format should be: /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
+	// Type: string (or
+	// Expression with resultType string).
+	WorkspaceResourceID interface{} `json:"workspaceResourceId,omitempty"`
 }
 
 // AzureTableDataset - The Azure Table storage dataset.
@@ -11347,6 +11352,9 @@ type FactoryGitHubConfiguration struct {
 	// GitHub bring your own app client secret information.
 	ClientSecret *GitHubClientSecret `json:"clientSecret,omitempty"`
 
+	// Disable manual publish operation in ADF studio to favor automated publish.
+	DisablePublish *bool `json:"disablePublish,omitempty"`
+
 	// GitHub Enterprise host name. For example: https://github.mydomain.com
 	HostName *string `json:"hostName,omitempty"`
 
@@ -11363,6 +11371,7 @@ func (f *FactoryGitHubConfiguration) GetFactoryRepoConfiguration() *FactoryRepoC
 		CollaborationBranch: f.CollaborationBranch,
 		RootFolder:          f.RootFolder,
 		LastCommitID:        f.LastCommitID,
+		DisablePublish:      f.DisablePublish,
 	}
 }
 
@@ -11443,6 +11452,9 @@ type FactoryRepoConfiguration struct {
 	// REQUIRED; Type of repo configuration.
 	Type *string `json:"type,omitempty"`
 
+	// Disable manual publish operation in ADF studio to favor automated publish.
+	DisablePublish *bool `json:"disablePublish,omitempty"`
+
 	// Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
 }
@@ -11497,6 +11509,9 @@ type FactoryVSTSConfiguration struct {
 	// REQUIRED; Type of repo configuration.
 	Type *string `json:"type,omitempty"`
 
+	// Disable manual publish operation in ADF studio to favor automated publish.
+	DisablePublish *bool `json:"disablePublish,omitempty"`
+
 	// Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
 
@@ -11513,6 +11528,7 @@ func (f *FactoryVSTSConfiguration) GetFactoryRepoConfiguration() *FactoryRepoCon
 		CollaborationBranch: f.CollaborationBranch,
 		RootFolder:          f.RootFolder,
 		LastCommitID:        f.LastCommitID,
+		DisablePublish:      f.DisablePublish,
 	}
 }
 
@@ -25545,6 +25561,9 @@ type ScriptActivityTypeProperties struct {
 	// Log settings of script activity.
 	LogSettings *ScriptActivityTypePropertiesLogSettings `json:"logSettings,omitempty"`
 
+	// ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	ScriptBlockExecutionTimeout interface{} `json:"scriptBlockExecutionTimeout,omitempty"`
+
 	// Array of script blocks. Type: array.
 	Scripts []*ScriptActivityScriptBlock `json:"scripts,omitempty"`
 }
@@ -27923,12 +27942,20 @@ type SynapseSparkJobActivityTypeProperties struct {
 	// Expression with resultType string).
 	File interface{} `json:"file,omitempty"`
 
-	// Additional files used for reference in the main definition file, which will override the 'files' of the spark job definition
-	// you provide.
+	// (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for reference in the main definition file,
+	// which will override the 'files' of the spark job definition you provide.
 	Files []interface{} `json:"files,omitempty"`
+
+	// Additional files used for reference in the main definition file, which will override the 'jars' and 'files' of the spark
+	// job definition you provide.
+	FilesV2 []interface{} `json:"filesV2,omitempty"`
 
 	// Number of executors to launch for this job, which will override the 'numExecutors' of the spark job definition you provide.
 	NumExecutors *int32 `json:"numExecutors,omitempty"`
+
+	// Additional python code files used for reference in the main definition file, which will override the 'pyFiles' of the spark
+	// job definition you provide.
+	PythonCodeReference []interface{} `json:"pythonCodeReference,omitempty"`
 
 	// The name of the big data pool which will be used to execute the spark batch job, which will override the 'targetBigDataPool'
 	// of the spark job definition you provide.
@@ -27993,8 +28020,8 @@ func (s *SynapseSparkJobDefinitionActivity) GetExecutionActivity() *ExecutionAct
 
 // SynapseSparkJobReference - Synapse spark job reference type.
 type SynapseSparkJobReference struct {
-	// REQUIRED; Reference spark job name.
-	ReferenceName *string `json:"referenceName,omitempty"`
+	// REQUIRED; Reference spark job name. Expression with resultType string.
+	ReferenceName interface{} `json:"referenceName,omitempty"`
 
 	// REQUIRED; Synapse spark job reference type.
 	Type *SparkJobReferenceType `json:"type,omitempty"`

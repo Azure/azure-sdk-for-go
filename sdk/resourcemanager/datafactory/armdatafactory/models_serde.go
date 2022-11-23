@@ -9407,6 +9407,7 @@ func (a AzureSynapseArtifactsLinkedServiceTypeProperties) MarshalJSON() ([]byte,
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "authentication", &a.Authentication)
 	populate(objectMap, "endpoint", &a.Endpoint)
+	populate(objectMap, "workspaceResourceId", &a.WorkspaceResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -9424,6 +9425,9 @@ func (a *AzureSynapseArtifactsLinkedServiceTypeProperties) UnmarshalJSON(data []
 			delete(rawMsg, key)
 		case "endpoint":
 			err = unpopulate(val, "Endpoint", &a.Endpoint)
+			delete(rawMsg, key)
+		case "workspaceResourceId":
+			err = unpopulate(val, "WorkspaceResourceID", &a.WorkspaceResourceID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -19189,6 +19193,7 @@ func (f FactoryGitHubConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "clientId", f.ClientID)
 	populate(objectMap, "clientSecret", f.ClientSecret)
 	populate(objectMap, "collaborationBranch", f.CollaborationBranch)
+	populate(objectMap, "disablePublish", f.DisablePublish)
 	populate(objectMap, "hostName", f.HostName)
 	populate(objectMap, "lastCommitId", f.LastCommitID)
 	populate(objectMap, "repositoryName", f.RepositoryName)
@@ -19217,6 +19222,9 @@ func (f *FactoryGitHubConfiguration) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "collaborationBranch":
 			err = unpopulate(val, "CollaborationBranch", &f.CollaborationBranch)
+			delete(rawMsg, key)
+		case "disablePublish":
+			err = unpopulate(val, "DisablePublish", &f.DisablePublish)
 			delete(rawMsg, key)
 		case "hostName":
 			err = unpopulate(val, "HostName", &f.HostName)
@@ -19371,6 +19379,7 @@ func (f FactoryRepoConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "accountName", f.AccountName)
 	populate(objectMap, "collaborationBranch", f.CollaborationBranch)
+	populate(objectMap, "disablePublish", f.DisablePublish)
 	populate(objectMap, "lastCommitId", f.LastCommitID)
 	populate(objectMap, "repositoryName", f.RepositoryName)
 	populate(objectMap, "rootFolder", f.RootFolder)
@@ -19392,6 +19401,9 @@ func (f *FactoryRepoConfiguration) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "collaborationBranch":
 			err = unpopulate(val, "CollaborationBranch", &f.CollaborationBranch)
+			delete(rawMsg, key)
+		case "disablePublish":
+			err = unpopulate(val, "DisablePublish", &f.DisablePublish)
 			delete(rawMsg, key)
 		case "lastCommitId":
 			err = unpopulate(val, "LastCommitID", &f.LastCommitID)
@@ -19511,6 +19523,7 @@ func (f FactoryVSTSConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "accountName", f.AccountName)
 	populate(objectMap, "collaborationBranch", f.CollaborationBranch)
+	populate(objectMap, "disablePublish", f.DisablePublish)
 	populate(objectMap, "lastCommitId", f.LastCommitID)
 	populate(objectMap, "projectName", f.ProjectName)
 	populate(objectMap, "repositoryName", f.RepositoryName)
@@ -19534,6 +19547,9 @@ func (f *FactoryVSTSConfiguration) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "collaborationBranch":
 			err = unpopulate(val, "CollaborationBranch", &f.CollaborationBranch)
+			delete(rawMsg, key)
+		case "disablePublish":
+			err = unpopulate(val, "DisablePublish", &f.DisablePublish)
 			delete(rawMsg, key)
 		case "lastCommitId":
 			err = unpopulate(val, "LastCommitID", &f.LastCommitID)
@@ -43581,6 +43597,7 @@ func (s *ScriptActivityScriptBlock) UnmarshalJSON(data []byte) error {
 func (s ScriptActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "logSettings", s.LogSettings)
+	populate(objectMap, "scriptBlockExecutionTimeout", &s.ScriptBlockExecutionTimeout)
 	populate(objectMap, "scripts", s.Scripts)
 	return json.Marshal(objectMap)
 }
@@ -43596,6 +43613,9 @@ func (s *ScriptActivityTypeProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "logSettings":
 			err = unpopulate(val, "LogSettings", &s.LogSettings)
+			delete(rawMsg, key)
+		case "scriptBlockExecutionTimeout":
+			err = unpopulate(val, "ScriptBlockExecutionTimeout", &s.ScriptBlockExecutionTimeout)
 			delete(rawMsg, key)
 		case "scripts":
 			err = unpopulate(val, "Scripts", &s.Scripts)
@@ -47623,7 +47643,9 @@ func (s SynapseSparkJobActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "executorSize", &s.ExecutorSize)
 	populate(objectMap, "file", &s.File)
 	populate(objectMap, "files", s.Files)
+	populate(objectMap, "filesV2", s.FilesV2)
 	populate(objectMap, "numExecutors", s.NumExecutors)
+	populate(objectMap, "pythonCodeReference", s.PythonCodeReference)
 	populate(objectMap, "sparkJob", s.SparkJob)
 	populate(objectMap, "targetBigDataPool", s.TargetBigDataPool)
 	return json.Marshal(objectMap)
@@ -47659,8 +47681,14 @@ func (s *SynapseSparkJobActivityTypeProperties) UnmarshalJSON(data []byte) error
 		case "files":
 			err = unpopulate(val, "Files", &s.Files)
 			delete(rawMsg, key)
+		case "filesV2":
+			err = unpopulate(val, "FilesV2", &s.FilesV2)
+			delete(rawMsg, key)
 		case "numExecutors":
 			err = unpopulate(val, "NumExecutors", &s.NumExecutors)
+			delete(rawMsg, key)
+		case "pythonCodeReference":
+			err = unpopulate(val, "PythonCodeReference", &s.PythonCodeReference)
 			delete(rawMsg, key)
 		case "sparkJob":
 			err = unpopulate(val, "SparkJob", &s.SparkJob)
@@ -47749,7 +47777,7 @@ func (s *SynapseSparkJobDefinitionActivity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SynapseSparkJobReference.
 func (s SynapseSparkJobReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "referenceName", s.ReferenceName)
+	populate(objectMap, "referenceName", &s.ReferenceName)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }

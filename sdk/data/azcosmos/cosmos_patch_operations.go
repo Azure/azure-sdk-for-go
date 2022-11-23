@@ -3,6 +3,12 @@
 
 package azcosmos
 
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+)
+
 // PatchOperationType defines supported values for operation types in Patch Document.
 type patchOperationType string
 
@@ -29,17 +35,37 @@ type patchOperation struct {
 // PatchOperations represents the patch request.
 // See https://learn.microsoft.com/azure/cosmos-db/partial-document-update
 type PatchOperations struct {
-	condition  *string          `json:"condition,omitempty"`
-	operations []patchOperation `json:"operations"`
+	condition  *string
+	operations []patchOperation
+}
+
+func (o PatchOperations) MarshalJSON() ([]byte, error) {
+	buffer := bytes.NewBufferString("{")
+	if o.condition != nil {
+		buffer.WriteString(fmt.Sprintf("\"condition\": \"%s\",", *o.condition))
+	}
+	buffer.WriteString("\"operations\": [")
+	for i, operation := range o.operations {
+		if i > 0 {
+			buffer.WriteString(",")
+		}
+		operationBytes, err := json.Marshal(operation)
+		if err != nil {
+			return nil, err
+		}
+		buffer.Write(operationBytes)
+	}
+
+	return buffer.Bytes(), nil
 }
 
 // SetCondition sets condition for the patch request.
-func (p PatchOperations) SetCondition(condition string) {
+func (p *PatchOperations) SetCondition(condition string) {
 	p.condition = &condition
 }
 
 // AppendReplace appends a replace operation to the patch request.
-func (p PatchOperations) AppendReplace(path string, value interface{}) {
+func (p *PatchOperations) AppendReplace(path string, value interface{}) {
 	p.operations = append(p.operations, patchOperation{
 		Op:    patchOperationTypeReplace,
 		Path:  path,
@@ -48,7 +74,7 @@ func (p PatchOperations) AppendReplace(path string, value interface{}) {
 }
 
 // AppendAdd appends an add operation to the patch request.
-func (p PatchOperations) AppendAdd(path string, value interface{}) {
+func (p *PatchOperations) AppendAdd(path string, value interface{}) {
 	p.operations = append(p.operations, patchOperation{
 		Op:    patchOperationTypeAdd,
 		Path:  path,
@@ -57,7 +83,7 @@ func (p PatchOperations) AppendAdd(path string, value interface{}) {
 }
 
 // AppendSet appends a set operation to the patch request.
-func (p PatchOperations) AppendSet(path string, value interface{}) {
+func (p *PatchOperations) AppendSet(path string, value interface{}) {
 	p.operations = append(p.operations, patchOperation{
 		Op:    patchOperationTypeSet,
 		Path:  path,
@@ -66,7 +92,7 @@ func (p PatchOperations) AppendSet(path string, value interface{}) {
 }
 
 // AppendRemove appends a remove operation to the patch request.
-func (p PatchOperations) AppendRemove(path string) {
+func (p *PatchOperations) AppendRemove(path string) {
 	p.operations = append(p.operations, patchOperation{
 		Op:   patchOperationTypeRemove,
 		Path: path,
@@ -74,7 +100,7 @@ func (p PatchOperations) AppendRemove(path string) {
 }
 
 // AppendIncrement appends an increment operation to the patch request.
-func (p PatchOperations) AppendIncrement(path string, value int32) {
+func (p *PatchOperations) AppendIncrement(path string, value int32) {
 	p.operations = append(p.operations, patchOperation{
 		Op:    patchOperationTypeIncrement,
 		Path:  path,

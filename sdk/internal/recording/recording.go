@@ -24,6 +24,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -513,7 +514,27 @@ type recordedTest struct {
 	variables   map[string]interface{}
 }
 
-var testSuite = map[string]recordedTest{}
+// testMap maps test names to metadata
+type testMap struct {
+	m *sync.Map
+}
+
+// Load returns the named test's metadata, if it has been stored
+func (t *testMap) Load(name string) (recordedTest, bool) {
+	var rt recordedTest
+	v, ok := t.m.Load(name)
+	if ok {
+		rt = v.(recordedTest)
+	}
+	return rt, ok
+}
+
+// Store sets metadata for the named test
+func (t *testMap) Store(name string, data recordedTest) {
+	t.m.Store(name, data)
+}
+
+var testSuite = testMap{&sync.Map{}}
 
 var client = http.Client{
 	Transport: &http.Transport{
@@ -675,7 +696,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		return nil
 	}
 
-	if testStruct, ok := testSuite[t.Name()]; ok {
+	if testStruct, ok := testSuite.Load(t.Name()); ok {
 		if testStruct.liveOnly {
 			// test should only be run live, don't want to generate recording
 			return nil
@@ -729,16 +750,16 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		}
 	}
 
-	if val, ok := testSuite[t.Name()]; ok {
+	if val, ok := testSuite.Load(t.Name()); ok {
 		val.recordingId = recId
 		val.variables = m
-		testSuite[t.Name()] = val
+		testSuite.Store(t.Name(), val)
 	} else {
-		testSuite[t.Name()] = recordedTest{
+		testSuite.Store(t.Name(), recordedTest{
 			recordingId: recId,
 			liveOnly:    false,
 			variables:   m,
-		}
+		})
 	}
 	return nil
 }
@@ -752,7 +773,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 		return nil
 	}
 
-	if testStruct, ok := testSuite[t.Name()]; ok {
+	if testStruct, ok := testSuite.Load(t.Name()); ok {
 		if testStruct.liveOnly {
 			// test should only be run live, don't want to generate recording
 			return nil
@@ -776,7 +797,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 
 	var recTest recordedTest
 	var ok bool
-	if recTest, ok = testSuite[t.Name()]; !ok {
+	if recTest, ok = testSuite.Load(t.Name()); !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
 	req.Header.Set(IDHeader, recTest.recordingId)
@@ -803,11 +824,11 @@ func GetEnvVariable(varName string, recordedValue string) string {
 }
 
 func LiveOnly(t *testing.T) {
-	if val, ok := testSuite[t.Name()]; ok {
+	if val, ok := testSuite.Load(t.Name()); ok {
 		val.liveOnly = true
-		testSuite[t.Name()] = val
+		testSuite.Store(t.Name(), val)
 	} else {
-		testSuite[t.Name()] = recordedTest{liveOnly: true}
+		testSuite.Store(t.Name(), recordedTest{liveOnly: true})
 	}
 	if GetRecordMode() == PlaybackMode {
 		t.Skip("Live Test Only")
@@ -823,7 +844,7 @@ func Sleep(duration time.Duration) {
 }
 
 func GetRecordingId(t *testing.T) string {
-	if val, ok := testSuite[t.Name()]; ok {
+	if val, ok := testSuite.Load(t.Name()); ok {
 		return val.recordingId
 	} else {
 		return ""
@@ -890,7 +911,7 @@ func GetHTTPClient(t *testing.T) (*http.Client, error) {
 }
 
 func IsLiveOnly(t *testing.T) bool {
-	if s, ok := testSuite[t.Name()]; ok {
+	if s, ok := testSuite.Load(t.Name()); ok {
 		return s.liveOnly
 	}
 	return false
@@ -898,7 +919,7 @@ func IsLiveOnly(t *testing.T) bool {
 
 // GetVariables returns access to the variables stored by the test proxy for a specific test
 func GetVariables(t *testing.T) map[string]interface{} {
-	if s, ok := testSuite[t.Name()]; ok {
+	if s, ok := testSuite.Load(t.Name()); ok {
 		return s.variables
 	}
 	return nil

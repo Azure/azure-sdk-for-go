@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Prevented data races in `recording` ([#18763](https://github.com/Azure/azure-sdk-for-go/issues/18763))
 
 ## 1.1.1 (2022-11-09)
 

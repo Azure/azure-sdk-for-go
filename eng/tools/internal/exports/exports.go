@@ -55,6 +55,7 @@ type Func struct {
 	// a comma-delimited list of the return types
 	Returns *string `json:"returns,omitempty"`
 
+	// mark long running operation
 	LRO *string `json:"lro,omitempty"`
 }
 

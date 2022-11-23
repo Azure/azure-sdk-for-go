@@ -33,7 +33,7 @@ type ProjectAllowedEnvironmentTypesClient struct {
 }
 
 // NewProjectAllowedEnvironmentTypesClient creates a new instance of ProjectAllowedEnvironmentTypesClient with the specified values.
-// subscriptionID - Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewProjectAllowedEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectAllowedEnvironmentTypesClient, error) {
@@ -58,8 +58,8 @@ func NewProjectAllowedEnvironmentTypesClient(subscriptionID string, credential a
 
 // Get - Gets an allowed environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // environmentTypeName - The name of the environment type.
 // options - ProjectAllowedEnvironmentTypesClientGetOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.Get
@@ -103,7 +103,7 @@ func (client *ProjectAllowedEnvironmentTypesClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,8 +119,8 @@ func (client *ProjectAllowedEnvironmentTypesClient) getHandleResponse(resp *http
 }
 
 // NewListPager - Lists allowed environment types for a project.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // options - ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.List
 // method.
@@ -172,7 +172,7 @@ func (client *ProjectAllowedEnvironmentTypesClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

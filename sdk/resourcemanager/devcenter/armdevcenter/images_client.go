@@ -33,7 +33,7 @@ type ImagesClient struct {
 }
 
 // NewImagesClient creates a new instance of ImagesClient with the specified values.
-// subscriptionID - Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImagesClient, error) {
@@ -58,8 +58,8 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // Get - Gets a gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // galleryName - The name of the gallery.
 // imageName - The name of the image.
@@ -107,7 +107,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -123,8 +123,8 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 }
 
 // NewListByDevCenterPager - Lists images for a devcenter.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // options - ImagesClientListByDevCenterOptions contains the optional parameters for the ImagesClient.ListByDevCenter method.
 func (client *ImagesClient) NewListByDevCenterPager(resourceGroupName string, devCenterName string, options *ImagesClientListByDevCenterOptions) *runtime.Pager[ImagesClientListByDevCenterResponse] {
@@ -175,7 +175,7 @@ func (client *ImagesClient) listByDevCenterCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -194,8 +194,8 @@ func (client *ImagesClient) listByDevCenterHandleResponse(resp *http.Response) (
 }
 
 // NewListByGalleryPager - Lists images for a gallery.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // galleryName - The name of the gallery.
 // options - ImagesClientListByGalleryOptions contains the optional parameters for the ImagesClient.ListByGallery method.
@@ -251,7 +251,7 @@ func (client *ImagesClient) listByGalleryCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

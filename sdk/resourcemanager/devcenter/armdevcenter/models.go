@@ -177,6 +177,9 @@ type CatalogProperties struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The synchronization state of the catalog.
+	SyncState *CatalogSyncState `json:"syncState,omitempty" azure:"ro"`
 }
 
 // CatalogUpdate - The catalog's properties for partial update. Properties not provided in the update request will not be
@@ -504,6 +507,33 @@ type EnvironmentTypesClientListByDevCenterOptions struct {
 // EnvironmentTypesClientUpdateOptions contains the optional parameters for the EnvironmentTypesClient.Update method.
 type EnvironmentTypesClientUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty" azure:"ro"`
+
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
 // GalleriesClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleriesClient.BeginCreateOrUpdate
@@ -1038,38 +1068,62 @@ type OperationListResult struct {
 
 // OperationStatus - The current status of an async operation
 type OperationStatus struct {
-	// Operation Error message
-	Error *OperationStatusError `json:"error,omitempty"`
+	// REQUIRED; Operation status.
+	Status *string `json:"status,omitempty"`
 
-	// READ-ONLY; The end time of the operation
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	// The end time of the operation.
+	EndTime *time.Time `json:"endTime,omitempty"`
 
-	// READ-ONLY; Fully qualified ID for the operation status.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	// If present, details of the operation error.
+	Error *ErrorDetail `json:"error,omitempty"`
 
-	// READ-ONLY; The operation id name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	// Fully qualified ID for the async operation.
+	ID *string `json:"id,omitempty"`
 
-	// READ-ONLY; Percent of the operation that is complete
-	PercentComplete *float32 `json:"percentComplete,omitempty" azure:"ro"`
+	// Name of the async operation.
+	Name *string `json:"name,omitempty"`
+
+	// The operations list.
+	Operations []*OperationStatusResult `json:"operations,omitempty"`
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32 `json:"percentComplete,omitempty"`
+
+	// The start time of the operation.
+	StartTime *time.Time `json:"startTime,omitempty"`
 
 	// READ-ONLY; Custom operation properties, populated only for a successful operation.
 	Properties interface{} `json:"properties,omitempty" azure:"ro"`
 
-	// READ-ONLY; The start time of the operation
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the resource.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	// READ-ONLY; The id of the resource.
+	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
 }
 
-// OperationStatusError - Operation Error message
-type OperationStatusError struct {
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+// OperationStatusResult - The current status of an async operation.
+type OperationStatusResult struct {
+	// REQUIRED; Operation status.
+	Status *string `json:"status,omitempty"`
 
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	// The end time of the operation.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// If present, details of the operation error.
+	Error *ErrorDetail `json:"error,omitempty"`
+
+	// Fully qualified ID for the async operation.
+	ID *string `json:"id,omitempty"`
+
+	// Name of the async operation.
+	Name *string `json:"name,omitempty"`
+
+	// The operations list.
+	Operations []*OperationStatusResult `json:"operations,omitempty"`
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32 `json:"percentComplete,omitempty"`
+
+	// The start time of the operation.
+	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
 // OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.

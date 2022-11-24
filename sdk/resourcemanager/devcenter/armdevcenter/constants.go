@@ -11,7 +11,7 @@ package armdevcenter
 
 const (
 	moduleName    = "armdevcenter"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -45,6 +45,22 @@ func PossibleCatalogSyncStateValues() []CatalogSyncState {
 		CatalogSyncStateFailed,
 		CatalogSyncStateInProgress,
 		CatalogSyncStateSucceeded,
+	}
+}
+
+// CheckNameAvailabilityReason - The reason why the given name is not available.
+type CheckNameAvailabilityReason string
+
+const (
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{
+		CheckNameAvailabilityReasonAlreadyExists,
+		CheckNameAvailabilityReasonInvalid,
 	}
 }
 
@@ -121,6 +137,22 @@ func PossibleHealthCheckStatusValues() []HealthCheckStatus {
 		HealthCheckStatusRunning,
 		HealthCheckStatusUnknown,
 		HealthCheckStatusWarning,
+	}
+}
+
+// HibernateSupport - Indicates whether hibernate is enabled/disabled.
+type HibernateSupport string
+
+const (
+	HibernateSupportDisabled HibernateSupport = "Disabled"
+	HibernateSupportEnabled  HibernateSupport = "Enabled"
+)
+
+// PossibleHibernateSupportValues returns the possible values for the HibernateSupport const type.
+func PossibleHibernateSupportValues() []HibernateSupport {
+	return []HibernateSupport{
+		HibernateSupportDisabled,
+		HibernateSupportEnabled,
 	}
 }
 
@@ -211,6 +243,50 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// ProvisioningState - Provisioning state of the resource.
+type ProvisioningState string
+
+const (
+	ProvisioningStateAccepted                  ProvisioningState = "Accepted"
+	ProvisioningStateCanceled                  ProvisioningState = "Canceled"
+	ProvisioningStateCreated                   ProvisioningState = "Created"
+	ProvisioningStateCreating                  ProvisioningState = "Creating"
+	ProvisioningStateDeleted                   ProvisioningState = "Deleted"
+	ProvisioningStateDeleting                  ProvisioningState = "Deleting"
+	ProvisioningStateFailed                    ProvisioningState = "Failed"
+	ProvisioningStateMovingResources           ProvisioningState = "MovingResources"
+	ProvisioningStateNotSpecified              ProvisioningState = "NotSpecified"
+	ProvisioningStateRolloutInProgress         ProvisioningState = "RolloutInProgress"
+	ProvisioningStateRunning                   ProvisioningState = "Running"
+	ProvisioningStateStorageProvisioningFailed ProvisioningState = "StorageProvisioningFailed"
+	ProvisioningStateSucceeded                 ProvisioningState = "Succeeded"
+	ProvisioningStateTransientFailure          ProvisioningState = "TransientFailure"
+	ProvisioningStateUpdated                   ProvisioningState = "Updated"
+	ProvisioningStateUpdating                  ProvisioningState = "Updating"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateAccepted,
+		ProvisioningStateCanceled,
+		ProvisioningStateCreated,
+		ProvisioningStateCreating,
+		ProvisioningStateDeleted,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateMovingResources,
+		ProvisioningStateNotSpecified,
+		ProvisioningStateRolloutInProgress,
+		ProvisioningStateRunning,
+		ProvisioningStateStorageProvisioningFailed,
+		ProvisioningStateSucceeded,
+		ProvisioningStateTransientFailure,
+		ProvisioningStateUpdated,
+		ProvisioningStateUpdating,
 	}
 }
 

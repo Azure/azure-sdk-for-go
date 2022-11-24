@@ -1,5 +1,69 @@
 # Release History
 
+## 0.4.0 (2022-11-24)
+### Breaking Changes
+
+- Type of `AllowedEnvironmentTypeProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `AttachedNetworkConnectionProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `CatalogProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `DevBoxDefinitionProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `EnvironmentTypeProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `GalleryProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ImageProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ImageVersionProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `NetworkProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `PoolProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ProjectEnvironmentTypeProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ProjectProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `Properties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ScheduleProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Function `*NetworkConnectionsClient.RunHealthChecks` has been removed
+- Struct `NetworkConnectionsClientRunHealthChecksOptions` has been removed
+
+### Features Added
+
+- New const `CheckNameAvailabilityReasonAlreadyExists`
+- New const `CheckNameAvailabilityReasonInvalid`
+- New const `HibernateSupportDisabled`
+- New const `HibernateSupportEnabled`
+- New const `ProvisioningStateAccepted`
+- New const `ProvisioningStateCanceled`
+- New const `ProvisioningStateCreated`
+- New const `ProvisioningStateCreating`
+- New const `ProvisioningStateDeleted`
+- New const `ProvisioningStateDeleting`
+- New const `ProvisioningStateFailed`
+- New const `ProvisioningStateMovingResources`
+- New const `ProvisioningStateNotSpecified`
+- New const `ProvisioningStateRolloutInProgress`
+- New const `ProvisioningStateRunning`
+- New const `ProvisioningStateStorageProvisioningFailed`
+- New const `ProvisioningStateSucceeded`
+- New const `ProvisioningStateTransientFailure`
+- New const `ProvisioningStateUpdated`
+- New const `ProvisioningStateUpdating`
+- New type alias `CheckNameAvailabilityReason`
+- New type alias `HibernateSupport`
+- New type alias `ProvisioningState`
+- New function `NewCheckNameAvailabilityClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CheckNameAvailabilityClient, error)`
+- New function `*CheckNameAvailabilityClient.Execute(context.Context, CheckNameAvailabilityRequest, *CheckNameAvailabilityClientExecuteOptions) (CheckNameAvailabilityClientExecuteResponse, error)`
+- New function `PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason`
+- New function `PossibleHibernateSupportValues() []HibernateSupport`
+- New function `PossibleProvisioningStateValues() []ProvisioningState`
+- New function `*NetworkConnectionsClient.BeginRunHealthChecks(context.Context, string, string, *NetworkConnectionsClientBeginRunHealthChecksOptions) (*runtime.Poller[NetworkConnectionsClientRunHealthChecksResponse], error)`
+- New struct `CheckNameAvailabilityClient`
+- New struct `CheckNameAvailabilityClientExecuteOptions`
+- New struct `CheckNameAvailabilityClientExecuteResponse`
+- New struct `CheckNameAvailabilityRequest`
+- New struct `CheckNameAvailabilityResponse`
+- New struct `ErrorResponse`
+- New struct `NetworkConnectionsClientBeginRunHealthChecksOptions`
+- New field `HibernateSupport` in struct `DevBoxDefinitionProperties`
+- New field `HibernateSupport` in struct `DevBoxDefinitionUpdateProperties`
+- New field `DevCenterURI` in struct `ProjectProperties`
+- New field `DevCenterURI` in struct `Properties`
+
+
 ## 0.3.0 (2022-10-27)
 ### Breaking Changes
 

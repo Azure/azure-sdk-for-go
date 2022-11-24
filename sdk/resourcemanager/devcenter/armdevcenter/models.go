@@ -41,7 +41,7 @@ type AllowedEnvironmentTypeListResult struct {
 // AllowedEnvironmentTypeProperties - Properties of an allowed environment type.
 type AllowedEnvironmentTypeProperties struct {
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // AttachedNetworkConnection - Represents an attached NetworkConnection.
@@ -77,7 +77,7 @@ type AttachedNetworkConnectionProperties struct {
 	NetworkConnectionLocation *string `json:"networkConnectionLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // AttachedNetworkListResult - Results of the Attached Networks list operation.
@@ -176,7 +176,7 @@ type CatalogProperties struct {
 	LastSyncTime *time.Time `json:"lastSyncTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The synchronization state of the catalog.
 	SyncState *CatalogSyncState `json:"syncState,omitempty" azure:"ro"`
@@ -236,6 +236,33 @@ type CatalogsClientListByDevCenterOptions struct {
 	Top *int32
 }
 
+// CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
+// method.
+type CheckNameAvailabilityClientExecuteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CheckNameAvailabilityRequest - The check availability request body.
+type CheckNameAvailabilityRequest struct {
+	// The name of the resource for which availability needs to be checked.
+	Name *string `json:"name,omitempty"`
+
+	// The resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// CheckNameAvailabilityResponse - The check availability result.
+type CheckNameAvailabilityResponse struct {
+	// Detailed reason why the given name is available.
+	Message *string `json:"message,omitempty"`
+
+	// Indicates if the resource name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+
+	// The reason why the given name is not available.
+	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
+}
+
 // DevBoxDefinition - Represents a definition for a Developer Machine.
 type DevBoxDefinition struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -271,6 +298,10 @@ type DevBoxDefinitionListResult struct {
 
 // DevBoxDefinitionProperties - Properties of a Dev Box definition.
 type DevBoxDefinitionProperties struct {
+	// Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable of supporting
+	// hibernation. To find out more see https://aka.ms/devbox/hibernate
+	HibernateSupport *HibernateSupport `json:"hibernateSupport,omitempty"`
+
 	// Image reference information.
 	ImageReference *ImageReference `json:"imageReference,omitempty"`
 
@@ -290,7 +321,7 @@ type DevBoxDefinitionProperties struct {
 	ImageValidationStatus *ImageValidationStatus `json:"imageValidationStatus,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // DevBoxDefinitionUpdate - Partial update of a Dev Box definition resource.
@@ -308,6 +339,10 @@ type DevBoxDefinitionUpdate struct {
 // DevBoxDefinitionUpdateProperties - Properties of a Dev Box definition. These properties can be updated after the resource
 // has been created.
 type DevBoxDefinitionUpdateProperties struct {
+	// Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable of supporting
+	// hibernation. To find out more see https://aka.ms/devbox/hibernate
+	HibernateSupport *HibernateSupport `json:"hibernateSupport,omitempty"`
+
 	// Image reference information.
 	ImageReference *ImageReference `json:"imageReference,omitempty"`
 
@@ -471,7 +506,7 @@ type EnvironmentTypeListResult struct {
 // EnvironmentTypeProperties - Properties of an environment type.
 type EnvironmentTypeProperties struct {
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // EnvironmentTypeUpdate - The environment type for partial update. Properties not provided in the update request will not
@@ -536,6 +571,13 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
 // GalleriesClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleriesClient.BeginCreateOrUpdate
 // method.
 type GalleriesClientBeginCreateOrUpdateOptions struct {
@@ -593,7 +635,7 @@ type GalleryProperties struct {
 	GalleryResourceID *string `json:"galleryResourceId,omitempty"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // GitCatalog - Properties for a Git repository catalog.
@@ -710,7 +752,7 @@ type ImageProperties struct {
 	Offer *string `json:"offer,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The publisher of the image.
 	Publisher *string `json:"publisher,omitempty" azure:"ro"`
@@ -789,7 +831,7 @@ type ImageVersionProperties struct {
 	OSDiskImageSizeInGb *int32 `json:"osDiskImageSizeInGb,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The datetime that the backing image version was published.
 	PublishedDate *time.Time `json:"publishedDate,omitempty" azure:"ro"`
@@ -940,6 +982,13 @@ type NetworkConnectionsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// NetworkConnectionsClientBeginRunHealthChecksOptions contains the optional parameters for the NetworkConnectionsClient.BeginRunHealthChecks
+// method.
+type NetworkConnectionsClientBeginRunHealthChecksOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // NetworkConnectionsClientBeginUpdateOptions contains the optional parameters for the NetworkConnectionsClient.BeginUpdate
 // method.
 type NetworkConnectionsClientBeginUpdateOptions struct {
@@ -979,12 +1028,6 @@ type NetworkConnectionsClientListHealthDetailsOptions struct {
 	Top *int32
 }
 
-// NetworkConnectionsClientRunHealthChecksOptions contains the optional parameters for the NetworkConnectionsClient.RunHealthChecks
-// method.
-type NetworkConnectionsClientRunHealthChecksOptions struct {
-	// placeholder for future optional parameters
-}
-
 // NetworkProperties - Network properties
 type NetworkProperties struct {
 	// REQUIRED; AAD Join type.
@@ -1014,7 +1057,7 @@ type NetworkProperties struct {
 	HealthCheckStatus *HealthCheckStatus `json:"healthCheckStatus,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -1184,7 +1227,7 @@ type PoolProperties struct {
 	NetworkConnectionName *string `json:"networkConnectionName,omitempty"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // PoolUpdate - The pool properties for partial update. Properties not provided in the update request will not be changed.
@@ -1333,7 +1376,7 @@ type ProjectEnvironmentTypeProperties struct {
 	UserRoleAssignments map[string]*UserRoleAssignmentValue `json:"userRoleAssignments,omitempty"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // ProjectEnvironmentTypeUpdate - The project environment type for partial update. Properties not provided in the update request
@@ -1420,8 +1463,11 @@ type ProjectProperties struct {
 	// Resource Id of an associated DevCenter
 	DevCenterID *string `json:"devCenterId,omitempty"`
 
+	// READ-ONLY; The URI of the resource.
+	DevCenterURI *string `json:"devCenterUri,omitempty" azure:"ro"`
+
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // ProjectUpdate - The project properties for partial update. Properties not provided in the update request will not be changed.
@@ -1482,8 +1528,11 @@ type ProjectsClientListBySubscriptionOptions struct {
 
 // Properties of the devcenter.
 type Properties struct {
+	// READ-ONLY; The URI of the resource.
+	DevCenterURI *string `json:"devCenterUri,omitempty" azure:"ro"`
+
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
@@ -1644,7 +1693,7 @@ type ScheduleProperties struct {
 	Type *ScheduledType `json:"type,omitempty"`
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // ScheduleUpdate - The schedule properties for partial update. Properties not provided in the update request will not be

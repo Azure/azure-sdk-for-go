@@ -58,7 +58,7 @@ func NewDevCentersClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Creates or updates a devcenter resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // body - Represents a devcenter.
@@ -80,7 +80,7 @@ func (client *DevCentersClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Creates or updates a devcenter resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 func (client *DevCentersClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, body DevCenter, options *DevCentersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, body, options)
 	if err != nil {
@@ -116,7 +116,7 @@ func (client *DevCentersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -124,7 +124,7 @@ func (client *DevCentersClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Deletes a devcenter
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // options - DevCentersClientBeginDeleteOptions contains the optional parameters for the DevCentersClient.BeginDelete method.
@@ -144,7 +144,7 @@ func (client *DevCentersClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes a devcenter
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 func (client *DevCentersClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, options *DevCentersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, options)
 	if err != nil {
@@ -180,7 +180,7 @@ func (client *DevCentersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *DevCentersClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets a devcenter.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // options - DevCentersClientGetOptions contains the optional parameters for the DevCentersClient.Get method.
@@ -227,7 +227,7 @@ func (client *DevCentersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,7 +243,7 @@ func (client *DevCentersClient) getHandleResponse(resp *http.Response) (DevCente
 }
 
 // NewListByResourceGroupPager - Lists all devcenters in a resource group.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DevCentersClientListByResourceGroupOptions contains the optional parameters for the DevCentersClient.ListByResourceGroup
 // method.
@@ -291,7 +291,7 @@ func (client *DevCentersClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -310,7 +310,7 @@ func (client *DevCentersClient) listByResourceGroupHandleResponse(resp *http.Res
 }
 
 // NewListBySubscriptionPager - Lists all devcenters in a subscription.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // options - DevCentersClientListBySubscriptionOptions contains the optional parameters for the DevCentersClient.ListBySubscription
 // method.
 func (client *DevCentersClient) NewListBySubscriptionPager(options *DevCentersClientListBySubscriptionOptions) *runtime.Pager[DevCentersClientListBySubscriptionResponse] {
@@ -353,7 +353,7 @@ func (client *DevCentersClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -373,7 +373,7 @@ func (client *DevCentersClient) listBySubscriptionHandleResponse(resp *http.Resp
 
 // BeginUpdate - Partially updates a devcenter.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // body - Updatable devcenter properties.
@@ -394,7 +394,7 @@ func (client *DevCentersClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Partially updates a devcenter.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 func (client *DevCentersClient) update(ctx context.Context, resourceGroupName string, devCenterName string, body Update, options *DevCentersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, body, options)
 	if err != nil {
@@ -430,7 +430,7 @@ func (client *DevCentersClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

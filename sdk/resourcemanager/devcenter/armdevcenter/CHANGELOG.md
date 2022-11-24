@@ -18,10 +18,6 @@
 - Type of `Properties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Type of `ScheduleProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
 - Operation `*NetworkConnectionsClient.RunHealthChecks` has been changed to LRO, use `*NetworkConnectionsClient.BeginRunHealthChecks` instead.
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
-- Struct `TrackedResource` has been removed
-- Struct `TrackedResourceUpdate` has been removed
 
 ### Features Added
 

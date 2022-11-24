@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/ApplicationCreate.json
 func ExampleApplicationClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,17 +28,13 @@ func ExampleApplicationClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx,
-		"default-azurebatch-japaneast",
-		"sampleacct",
-		"app1",
-		&armbatch.ApplicationClientCreateOptions{Parameters: &armbatch.Application{
-			Properties: &armbatch.ApplicationProperties{
-				AllowUpdates: to.Ptr(false),
-				DisplayName:  to.Ptr("myAppName"),
-			},
+	res, err := client.Create(ctx, "default-azurebatch-japaneast", "sampleacct", "app1", &armbatch.ApplicationClientCreateOptions{Parameters: &armbatch.Application{
+		Properties: &armbatch.ApplicationProperties{
+			AllowUpdates: to.Ptr(false),
+			DisplayName:  to.Ptr("myAppName"),
 		},
-		})
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,7 +42,7 @@ func ExampleApplicationClient_Create() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/ApplicationDelete.json
 func ExampleApplicationClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,17 +53,13 @@ func ExampleApplicationClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"default-azurebatch-japaneast",
-		"sampleacct",
-		"app1",
-		nil)
+	_, err = client.Delete(ctx, "default-azurebatch-japaneast", "sampleacct", "app1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/ApplicationGet.json
 func ExampleApplicationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,11 +70,7 @@ func ExampleApplicationClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"default-azurebatch-japaneast",
-		"sampleacct",
-		"app1",
-		nil)
+	res, err := client.Get(ctx, "default-azurebatch-japaneast", "sampleacct", "app1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -90,7 +78,7 @@ func ExampleApplicationClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/ApplicationUpdate.json
 func ExampleApplicationClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,18 +89,13 @@ func ExampleApplicationClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"default-azurebatch-japaneast",
-		"sampleacct",
-		"app1",
-		armbatch.Application{
-			Properties: &armbatch.ApplicationProperties{
-				AllowUpdates:   to.Ptr(true),
-				DefaultVersion: to.Ptr("2"),
-				DisplayName:    to.Ptr("myAppName"),
-			},
+	res, err := client.Update(ctx, "default-azurebatch-japaneast", "sampleacct", "app1", armbatch.Application{
+		Properties: &armbatch.ApplicationProperties{
+			AllowUpdates:   to.Ptr(true),
+			DefaultVersion: to.Ptr("2"),
+			DisplayName:    to.Ptr("myAppName"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -120,7 +103,7 @@ func ExampleApplicationClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/ApplicationList.json
 func ExampleApplicationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,9 +114,7 @@ func ExampleApplicationClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("default-azurebatch-japaneast",
-		"sampleacct",
-		&armbatch.ApplicationClientListOptions{Maxresults: nil})
+	pager := client.NewListPager("default-azurebatch-japaneast", "sampleacct", &armbatch.ApplicationClientListOptions{Maxresults: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

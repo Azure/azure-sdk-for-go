@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateLinkResourcesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PrivateLinkResourcesList.json
 func ExamplePrivateLinkResourceClient_NewListByBatchAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,9 +27,7 @@ func ExamplePrivateLinkResourceClient_NewListByBatchAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBatchAccountPager("default-azurebatch-japaneast",
-		"sampleacct",
-		&armbatch.PrivateLinkResourceClientListByBatchAccountOptions{Maxresults: nil})
+	pager := client.NewListByBatchAccountPager("default-azurebatch-japaneast", "sampleacct", &armbatch.PrivateLinkResourceClientListByBatchAccountOptions{Maxresults: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -42,7 +40,7 @@ func ExamplePrivateLinkResourceClient_NewListByBatchAccountPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateLinkResourceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PrivateLinkResourceGet.json
 func ExamplePrivateLinkResourceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,11 +51,7 @@ func ExamplePrivateLinkResourceClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"default-azurebatch-japaneast",
-		"sampleacct",
-		"sampleacct",
-		nil)
+	res, err := client.Get(ctx, "default-azurebatch-japaneast", "sampleacct", "batchAccount", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

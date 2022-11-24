@@ -13,7 +13,6 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -301,16 +300,16 @@ type BatchDeleteOptions struct {
 	Snapshot          *string
 }
 
-func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context,
-	leaseAccessConditions *LeaseAccessConditions,
-	modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
+func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context) (string, error) {
 	if o.BlobName == nil {
-		return nil, fmt.Errorf("blob name not provided")
+		return "", fmt.Errorf("blob name not provided")
 	}
+
+	leaseAccessConditions, modifiedAccessConditions := o.format()
 
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, *o.BlobName)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	reqQP := req.Raw().URL.Query()
@@ -349,12 +348,18 @@ func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context,
 
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, nil
+
+	return req.Raw().URL.String(), nil
 }
 
-func (o *BatchDeleteOptions) format() (string, error) {
+func (o *BatchDeleteOptions) format() (*LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
-		return "", nil
+		return nil, nil
 	}
 
+	if o.BlobDeleteOptions.AccessConditions == nil {
+		return nil, nil
+	}
+
+	return o.BlobDeleteOptions.AccessConditions.LeaseAccessConditions, o.BlobDeleteOptions.AccessConditions.ModifiedAccessConditions
 }

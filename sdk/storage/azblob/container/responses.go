@@ -36,3 +36,6 @@ type GetAccessPolicyResponse = generated.ContainerClientGetAccessPolicyResponse
 
 // SetAccessPolicyResponse contains the response from method Client.SetAccessPolicy.
 type SetAccessPolicyResponse = generated.ContainerClientSetAccessPolicyResponse
+
+// DeleteBlobsResponse contains the response from method Client.DeleteBlobs.
+type DeleteBlobsResponse = generated.ContainerClientSubmitBatchResponse

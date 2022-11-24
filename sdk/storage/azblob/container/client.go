@@ -7,8 +7,10 @@
 package container
 
 import (
+	"bytes"
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"net/http"
 	"time"
 
@@ -342,18 +344,30 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time
 // DeleteBlobs deletes give list of blobs using batch apis.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/blob-batch.
 func (c *Client) DeleteBlobs(ctx context.Context, blobs []*BatchDeleteOptions) (DeleteBlobsResponse, error) {
-	len := len(blobs)
-	if len == 0 {
+	if len(blobs) == 0 {
 		return DeleteBlobsResponse{}, nil
 	}
 
 	// one batch can only have max 256 sub requests and each batch will have a unique batch id
-	batchid, err := CreateBatchID()
+	batchID, err := shared.CreateBatchID()
 	if err != nil {
 		return DeleteBlobsResponse{}, err
 	}
 
-	multipartContentType := "multipart/mixed; boundary=" + GetBatchRequestDelimiter(batchid, false, false)
-	resp, err := c.generated().SubmitBatch(ctx, contentLength, multipartContentType, body, options*ContainerClientSubmitBatchOptions)
+	body := ""
+	for i, b := range blobs {
+		deleteSubReq, err := b.createDeleteSubRequest(ctx)
+		if err == nil {
+			body += shared.CreateSubReqHeader(batchID, i+1)
+			body += deleteSubReq
+		} else {
+			// TODO: handle error
+		}
+	}
+
+	reader := bytes.NewReader([]byte(body))
+	rsc := streaming.NopCloser(reader)
+	multipartContentType := "multipart/mixed; boundary=" + shared.GetBatchRequestDelimiter(batchID, false, false)
+	resp, err := c.generated().SubmitBatch(ctx, int64(len(body)), multipartContentType, rsc, nil)
 	return resp, err
 }

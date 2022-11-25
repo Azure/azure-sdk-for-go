@@ -1,4 +1,4 @@
-package lrofilter
+package lro
 
 type Client struct{}
 

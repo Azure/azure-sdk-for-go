@@ -1,4 +1,4 @@
-package enumfilter
+package enum
 
 type EnumRemove string
 

@@ -11,6 +11,15 @@ package armcontainerservice
 
 import "time"
 
+// AbsoluteMonthlySchedule - For schedules like: 'recur every month on the 15th' or 'recur every 3 months on the 20th'.
+type AbsoluteMonthlySchedule struct {
+	// REQUIRED; The date of the month.
+	DayOfMonth *int32 `json:"dayOfMonth,omitempty"`
+
+	// REQUIRED; Specifies the number of months between each set of occurrences.
+	IntervalMonths *int32 `json:"intervalMonths,omitempty"`
+}
+
 // AccessProfile - Profile for enabling a user to access a managed cluster.
 type AccessProfile struct {
 	// Base64-encoded Kubernetes configuration file.
@@ -140,10 +149,11 @@ type AgentPoolWindowsProfile struct {
 	DisableOutboundNat *bool `json:"disableOutboundNat,omitempty"`
 }
 
-// AgentPoolsClientAbortLatestOperationOptions contains the optional parameters for the AgentPoolsClient.AbortLatestOperation
+// AgentPoolsClientBeginAbortLatestOperationOptions contains the optional parameters for the AgentPoolsClient.BeginAbortLatestOperation
 // method.
-type AgentPoolsClientAbortLatestOperationOptions struct {
-	// placeholder for future optional parameters
+type AgentPoolsClientBeginAbortLatestOperationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AgentPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginCreateOrUpdate
@@ -250,6 +260,21 @@ type CredentialResult struct {
 type CredentialResults struct {
 	// READ-ONLY; Base64-encoded Kubernetes configuration file.
 	Kubeconfigs []*CredentialResult `json:"kubeconfigs,omitempty" azure:"ro"`
+}
+
+// DailySchedule - For schedules like: 'recur every day' or 'recur every 3 days'.
+type DailySchedule struct {
+	// REQUIRED; Specifies the number of days between each set of occurrences.
+	IntervalDays *int32 `json:"intervalDays,omitempty"`
+}
+
+// DateSpan - For example, between '2022-12-23' and '2023-01-05'.
+type DateSpan struct {
+	// REQUIRED; The end date of the date span.
+	End *time.Time `json:"end,omitempty"`
+
+	// REQUIRED; The start date of the date span.
+	Start *time.Time `json:"start,omitempty"`
 }
 
 // EndpointDependency - A domain name that AKS agent nodes are reaching at.
@@ -611,6 +636,9 @@ type MaintenanceConfigurationListResult struct {
 
 // MaintenanceConfigurationProperties - Properties used to configure planned maintenance for a Managed Cluster.
 type MaintenanceConfigurationProperties struct {
+	// Maintenance window for the maintenance configuration.
+	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
+
 	// Time slots on which upgrade is not allowed.
 	NotAllowedTime []*TimeSpan `json:"notAllowedTime,omitempty"`
 
@@ -640,6 +668,33 @@ type MaintenanceConfigurationsClientGetOptions struct {
 // method.
 type MaintenanceConfigurationsClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
+}
+
+// MaintenanceWindow - Maintenance window used to configure scheduled auto-upgrade for a Managed Cluster.
+type MaintenanceWindow struct {
+	// REQUIRED; Length of maintenance window range from 4 to 24 hours.
+	DurationHours *int32 `json:"durationHours,omitempty"`
+
+	// REQUIRED; Recurrence schedule for the maintenance window.
+	Schedule *Schedule `json:"schedule,omitempty"`
+
+	// REQUIRED; The start time of the maintenance window. Accepted values are from '00:00' to '23:59'. 'utcOffset' applies to
+	// this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time '00:00'.
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Date ranges on which upgrade is not allowed. 'utcOffset' applies to this field. For example, with 'utcOffset: +02:00' and
+	// 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will be blocked
+	// from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
+	NotAllowedDates []*DateSpan `json:"notAllowedDates,omitempty"`
+
+	// The date the maintenance window activates. If the current date is before this date, the maintenance window is inactive
+	// and will not be used for upgrades. If not specified, the maintenance window will
+	// be active right away.
+	StartDate *time.Time `json:"startDate,omitempty"`
+
+	// The UTC offset in format +/-HH:mm. For example, '+05:30' for IST and '-07:00' for PST. If not specified, the default is
+	// '+00:00'.
+	UTCOffset *string `json:"utcOffset,omitempty"`
 }
 
 // ManagedCluster - Managed cluster.
@@ -1132,6 +1187,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 
 // ManagedClusterAutoUpgradeProfile - Auto upgrade profile for a managed cluster.
 type ManagedClusterAutoUpgradeProfile struct {
+	// The default is Unmanaged, but may change to either NodeImage or SecurityPatch at GA.
+	NodeOSUpgradeChannel *NodeOSUpgradeChannel `json:"nodeOSUpgradeChannel,omitempty"`
+
 	// For more information see setting the AKS cluster auto-upgrade channel [https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel].
 	UpgradeChannel *UpgradeChannel `json:"upgradeChannel,omitempty"`
 }
@@ -1897,10 +1955,11 @@ type ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler struct {
 	UpdateMode *UpdateMode `json:"updateMode,omitempty"`
 }
 
-// ManagedClustersClientAbortLatestOperationOptions contains the optional parameters for the ManagedClustersClient.AbortLatestOperation
+// ManagedClustersClientBeginAbortLatestOperationOptions contains the optional parameters for the ManagedClustersClient.BeginAbortLatestOperation
 // method.
-type ManagedClustersClientAbortLatestOperationOptions struct {
-	// placeholder for future optional parameters
+type ManagedClustersClientBeginAbortLatestOperationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ManagedClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedClustersClient.BeginCreateOrUpdate
@@ -2374,6 +2433,19 @@ type PrivateLinkServiceConnectionState struct {
 	Status *ConnectionStatus `json:"status,omitempty"`
 }
 
+// RelativeMonthlySchedule - For schedules like: 'recur every month on the first Monday' or 'recur every 3 months on last
+// Friday'.
+type RelativeMonthlySchedule struct {
+	// REQUIRED; Specifies on which day of the week the maintenance occurs.
+	DayOfWeek *WeekDay `json:"dayOfWeek,omitempty"`
+
+	// REQUIRED; Specifies the number of months between each set of occurrences.
+	IntervalMonths *int32 `json:"intervalMonths,omitempty"`
+
+	// REQUIRED; Specifies on which instance of the allowed days specified in daysOfWeek the maintenance occurs.
+	WeekIndex *Type `json:"weekIndex,omitempty"`
+}
+
 // ResolvePrivateLinkServiceIDClientPOSTOptions contains the optional parameters for the ResolvePrivateLinkServiceIDClient.POST
 // method.
 type ResolvePrivateLinkServiceIDClientPOSTOptions struct {
@@ -2418,6 +2490,22 @@ type SSHPublicKey struct {
 	// REQUIRED; Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with
 	// or without headers.
 	KeyData *string `json:"keyData,omitempty"`
+}
+
+// Schedule - One and only one of the schedule types should be specified. Choose either 'daily', 'weekly', 'absoluteMonthly'
+// or 'relativeMonthly' for your maintenance schedule.
+type Schedule struct {
+	// For schedules like: 'recur every month on the 15th' or 'recur every 3 months on the 20th'.
+	AbsoluteMonthly *AbsoluteMonthlySchedule `json:"absoluteMonthly,omitempty"`
+
+	// For schedules like: 'recur every day' or 'recur every 3 days'.
+	Daily *DailySchedule `json:"daily,omitempty"`
+
+	// For schedules like: 'recur every month on the first Monday' or 'recur every 3 months on last Friday'.
+	RelativeMonthly *RelativeMonthlySchedule `json:"relativeMonthly,omitempty"`
+
+	// For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.
+	Weekly *WeeklySchedule `json:"weekly,omitempty"`
 }
 
 // Snapshot - A node pool snapshot resource.
@@ -2764,6 +2852,15 @@ type UserAssignedIdentity struct {
 
 	// The resource ID of the user assigned identity.
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// WeeklySchedule - For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.
+type WeeklySchedule struct {
+	// REQUIRED; Specifies on which day of the week the maintenance occurs.
+	DayOfWeek *WeekDay `json:"dayOfWeek,omitempty"`
+
+	// REQUIRED; Specifies the number of weeks between each set of occurrences.
+	IntervalWeeks *int32 `json:"intervalWeeks,omitempty"`
 }
 
 // WindowsGmsaProfile - Windows gMSA Profile in the managed cluster.

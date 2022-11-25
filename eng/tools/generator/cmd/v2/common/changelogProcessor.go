@@ -335,7 +335,8 @@ func LROFilter(changelog *model.Changelog) {
 				}
 				if _, ok := changelog.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
 					delete(changelog.Modified.AdditiveChanges.Funcs, beginFunc)
-					v.ReplacedBy = &beginFunc
+					tmp := &beginFunc
+					v.ReplacedBy = tmp
 					removedContent.Funcs[bFunc] = v
 				}
 			}

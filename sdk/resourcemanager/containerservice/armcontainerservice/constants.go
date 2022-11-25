@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.3.0-beta.1"
+	moduleVersion = "v2.3.0-beta.2"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -425,18 +425,22 @@ func PossibleLoadBalancerSKUValues() []LoadBalancerSKU {
 type ManagedClusterPodIdentityProvisioningState string
 
 const (
-	ManagedClusterPodIdentityProvisioningStateAssigned ManagedClusterPodIdentityProvisioningState = "Assigned"
-	ManagedClusterPodIdentityProvisioningStateDeleting ManagedClusterPodIdentityProvisioningState = "Deleting"
-	ManagedClusterPodIdentityProvisioningStateFailed   ManagedClusterPodIdentityProvisioningState = "Failed"
-	ManagedClusterPodIdentityProvisioningStateUpdating ManagedClusterPodIdentityProvisioningState = "Updating"
+	ManagedClusterPodIdentityProvisioningStateAssigned  ManagedClusterPodIdentityProvisioningState = "Assigned"
+	ManagedClusterPodIdentityProvisioningStateCanceled  ManagedClusterPodIdentityProvisioningState = "Canceled"
+	ManagedClusterPodIdentityProvisioningStateDeleting  ManagedClusterPodIdentityProvisioningState = "Deleting"
+	ManagedClusterPodIdentityProvisioningStateFailed    ManagedClusterPodIdentityProvisioningState = "Failed"
+	ManagedClusterPodIdentityProvisioningStateSucceeded ManagedClusterPodIdentityProvisioningState = "Succeeded"
+	ManagedClusterPodIdentityProvisioningStateUpdating  ManagedClusterPodIdentityProvisioningState = "Updating"
 )
 
 // PossibleManagedClusterPodIdentityProvisioningStateValues returns the possible values for the ManagedClusterPodIdentityProvisioningState const type.
 func PossibleManagedClusterPodIdentityProvisioningStateValues() []ManagedClusterPodIdentityProvisioningState {
 	return []ManagedClusterPodIdentityProvisioningState{
 		ManagedClusterPodIdentityProvisioningStateAssigned,
+		ManagedClusterPodIdentityProvisioningStateCanceled,
 		ManagedClusterPodIdentityProvisioningStateDeleting,
 		ManagedClusterPodIdentityProvisioningStateFailed,
+		ManagedClusterPodIdentityProvisioningStateSucceeded,
 		ManagedClusterPodIdentityProvisioningStateUpdating,
 	}
 }
@@ -572,6 +576,41 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 	}
 }
 
+// NodeOSUpgradeChannel - The default is Unmanaged, but may change to either NodeImage or SecurityPatch at GA.
+type NodeOSUpgradeChannel string
+
+const (
+	// NodeOSUpgradeChannelNodeImage - AKS will update the nodes with a newly patched VHD containing security fixes and bugfixes
+	// on a weekly cadence. With the VHD update machines will be rolling reimaged to that VHD following maintenance windows and
+	// surge settings. No extra VHD cost is incurred when choosing this option as AKS hosts the images.
+	NodeOSUpgradeChannelNodeImage NodeOSUpgradeChannel = "NodeImage"
+	// NodeOSUpgradeChannelNone - No attempt to update your machines OS will be made either by OS or by rolling VHDs. This means
+	// you are responsible for your security updates
+	NodeOSUpgradeChannelNone NodeOSUpgradeChannel = "None"
+	// NodeOSUpgradeChannelSecurityPatch - AKS will update the nodes VHD with patches from the image maintainer labelled "security
+	// only" on a regular basis. Where possible, patches will also be applied without reimaging to existing nodes. Some patches,
+	// such as kernel patches, cannot be applied to existing nodes without disruption. For such patches, the VHD will be updated,
+	// and machines will be rolling reimaged to that VHD following maintenance windows and surge settings. This option incurs
+	// the extra cost of hosting the VHDs in your node resource group.
+	NodeOSUpgradeChannelSecurityPatch NodeOSUpgradeChannel = "SecurityPatch"
+	// NodeOSUpgradeChannelUnmanaged - OS updates will be applied automatically through the OS built-in patching infrastructure.
+	// Newly scaled in machines will be unpatched initially, and will be patched at some later time by the OS's infrastructure.
+	// Behavior of this option depends on the OS in question. Ubuntu and Mariner apply security patches through unattended upgrade
+	// roughly once a day around 06:00 UTC. Windows does not apply security patches automatically and so for them this option
+	// is equivalent to None till further notice
+	NodeOSUpgradeChannelUnmanaged NodeOSUpgradeChannel = "Unmanaged"
+)
+
+// PossibleNodeOSUpgradeChannelValues returns the possible values for the NodeOSUpgradeChannel const type.
+func PossibleNodeOSUpgradeChannelValues() []NodeOSUpgradeChannel {
+	return []NodeOSUpgradeChannel{
+		NodeOSUpgradeChannelNodeImage,
+		NodeOSUpgradeChannelNone,
+		NodeOSUpgradeChannelSecurityPatch,
+		NodeOSUpgradeChannelUnmanaged,
+	}
+}
+
 // OSDiskType - The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
 // Otherwise, defaults to 'Managed'. May not be changed after creation. For more information
 // see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
@@ -670,6 +709,7 @@ func PossibleOutboundTypeValues() []OutboundType {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
+	PrivateEndpointConnectionProvisioningStateCanceled  PrivateEndpointConnectionProvisioningState = "Canceled"
 	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
 	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
 	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
@@ -679,6 +719,7 @@ const (
 // PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCanceled,
 		PrivateEndpointConnectionProvisioningStateCreating,
 		PrivateEndpointConnectionProvisioningStateDeleting,
 		PrivateEndpointConnectionProvisioningStateFailed,
@@ -832,6 +873,7 @@ func PossibleSnapshotTypeValues() []SnapshotType {
 type TrustedAccessRoleBindingProvisioningState string
 
 const (
+	TrustedAccessRoleBindingProvisioningStateCanceled  TrustedAccessRoleBindingProvisioningState = "Canceled"
 	TrustedAccessRoleBindingProvisioningStateDeleting  TrustedAccessRoleBindingProvisioningState = "Deleting"
 	TrustedAccessRoleBindingProvisioningStateFailed    TrustedAccessRoleBindingProvisioningState = "Failed"
 	TrustedAccessRoleBindingProvisioningStateSucceeded TrustedAccessRoleBindingProvisioningState = "Succeeded"
@@ -841,10 +883,38 @@ const (
 // PossibleTrustedAccessRoleBindingProvisioningStateValues returns the possible values for the TrustedAccessRoleBindingProvisioningState const type.
 func PossibleTrustedAccessRoleBindingProvisioningStateValues() []TrustedAccessRoleBindingProvisioningState {
 	return []TrustedAccessRoleBindingProvisioningState{
+		TrustedAccessRoleBindingProvisioningStateCanceled,
 		TrustedAccessRoleBindingProvisioningStateDeleting,
 		TrustedAccessRoleBindingProvisioningStateFailed,
 		TrustedAccessRoleBindingProvisioningStateSucceeded,
 		TrustedAccessRoleBindingProvisioningStateUpdating,
+	}
+}
+
+// Type - Specifies on which instance of the allowed days specified in daysOfWeek the maintenance occurs.
+type Type string
+
+const (
+	// TypeFirst - First.
+	TypeFirst Type = "First"
+	// TypeFourth - Fourth.
+	TypeFourth Type = "Fourth"
+	// TypeLast - Last.
+	TypeLast Type = "Last"
+	// TypeSecond - Second.
+	TypeSecond Type = "Second"
+	// TypeThird - Third.
+	TypeThird Type = "Third"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeFirst,
+		TypeFourth,
+		TypeLast,
+		TypeSecond,
+		TypeThird,
 	}
 }
 
@@ -881,10 +951,8 @@ func PossibleUpdateModeValues() []UpdateMode {
 type UpgradeChannel string
 
 const (
-	// UpgradeChannelNodeImage - Automatically upgrade the node image to the latest version available. Microsoft provides patches
-	// and new images for image nodes frequently (usually weekly), but your running nodes won't get the new images unless you
-	// do a node image upgrade. Turning on the node-image channel will automatically update your node images whenever a new version
-	// is available.
+	// UpgradeChannelNodeImage - Automatically upgrade the node image to the latest version available. Consider using nodeOSUpgradeChannel
+	// instead as that allows you to configure node OS patching separate from Kubernetes version patching
 	UpgradeChannelNodeImage UpgradeChannel = "node-image"
 	// UpgradeChannelNone - Disables auto-upgrades and keeps the cluster at its current version of Kubernetes.
 	UpgradeChannelNone UpgradeChannel = "none"

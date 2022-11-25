@@ -1,5 +1,48 @@
 # Release History
 
+## 2.3.0-beta.2 (2022-11-25)
+### Breaking Changes
+
+- Function `*AgentPoolsClient.AbortLatestOperation` has been removed
+- Function `*ManagedClustersClient.AbortLatestOperation` has been removed
+- Struct `AgentPoolsClientAbortLatestOperationOptions` has been removed
+- Struct `ManagedClustersClientAbortLatestOperationOptions` has been removed
+
+### Features Added
+
+- New const `ManagedClusterPodIdentityProvisioningStateCanceled`
+- New const `ManagedClusterPodIdentityProvisioningStateSucceeded`
+- New const `NodeOSUpgradeChannelNodeImage`
+- New const `NodeOSUpgradeChannelNone`
+- New const `NodeOSUpgradeChannelSecurityPatch`
+- New const `NodeOSUpgradeChannelUnmanaged`
+- New const `PrivateEndpointConnectionProvisioningStateCanceled`
+- New const `TrustedAccessRoleBindingProvisioningStateCanceled`
+- New const `TypeFirst`
+- New const `TypeFourth`
+- New const `TypeLast`
+- New const `TypeSecond`
+- New const `TypeThird`
+- New type alias `NodeOSUpgradeChannel`
+- New type alias `Type`
+- New function `*AgentPoolsClient.BeginAbortLatestOperation(context.Context, string, string, string, *AgentPoolsClientBeginAbortLatestOperationOptions) (*runtime.Poller[AgentPoolsClientAbortLatestOperationResponse], error)`
+- New function `*ManagedClustersClient.BeginAbortLatestOperation(context.Context, string, string, *ManagedClustersClientBeginAbortLatestOperationOptions) (*runtime.Poller[ManagedClustersClientAbortLatestOperationResponse], error)`
+- New function `PossibleNodeOSUpgradeChannelValues() []NodeOSUpgradeChannel`
+- New function `PossibleTypeValues() []Type`
+- New struct `AbsoluteMonthlySchedule`
+- New struct `AgentPoolsClientBeginAbortLatestOperationOptions`
+- New struct `DailySchedule`
+- New struct `DateSpan`
+- New struct `MaintenanceWindow`
+- New struct `ManagedClustersClientBeginAbortLatestOperationOptions`
+- New struct `RelativeMonthlySchedule`
+- New struct `Schedule`
+- New struct `WeeklySchedule`
+- New field `MaintenanceWindow` in struct `MaintenanceConfigurationProperties`
+- New field `NodeOSUpgradeChannel` in struct `ManagedClusterAutoUpgradeProfile`
+- New field `Location` in struct `ManagedClustersClientGetCommandResultResponse`
+
+
 ## 2.3.0-beta.1 (2022-11-24)
 ### Features Added
 

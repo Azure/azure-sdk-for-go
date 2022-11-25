@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.3.0-beta.1"
+	moduleVersion = "v2.3.0-beta.2"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent

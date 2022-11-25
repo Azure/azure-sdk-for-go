@@ -268,10 +268,23 @@ func getRemovedContent(removed *delta.Content) []string {
 	}
 	// write functions
 	if len(removed.Funcs) > 0 {
+		var lroItem []string
 		for _, k := range sortFuncItem(removed.Funcs) {
+			v := removed.Funcs[k]
+			if v.ReplacedBy != nil {
+				var line string
+				if !strings.Contains(k, "Begin") {
+					line = fmt.Sprintf("Operation `%s` has been changed to LRO, use `%s` instead.", k, *v.ReplacedBy)
+				} else {
+					line = fmt.Sprintf("Operation `%s` has been changed to non-LRO, use `%s` instead.", k, *v.ReplacedBy)
+				}
+				lroItem = append(lroItem, line)
+				continue
+			}
 			line := fmt.Sprintf("Function `%s` has been removed", k)
 			items = append(items, line)
 		}
+		items = append(items, lroItem...)
 	}
 	// write complete struct removal
 	if len(removed.CompleteStructs) > 0 {

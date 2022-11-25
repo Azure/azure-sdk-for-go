@@ -247,7 +247,7 @@ func enumOperation(content *delta.Content) {
 	}
 }
 
-func searchKey[T exports.Const | exports.Func](m map[string]T, key1, prefix string) ([]string, bool) {
+func searchKey[T exports.Const | exports.Func | exports.Struct](m map[string]T, key1, prefix string) ([]string, bool) {
 	keys := make([]string, 0)
 	for k := range m {
 		if regexp.MustCompile(fmt.Sprintf("^%s%s\\w*", prefix, key1)).MatchString(k) {
@@ -322,13 +322,21 @@ func funcOperation(content *delta.Content) {
 // LROFilter LROFilter after OperationFilter
 func LROFilter(changelog *model.Changelog) {
 	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
+		var beginFunc string
 		removedContent := changelog.Modified.BreakingChanges.Removed
-		for bFunc := range removedContent.Funcs {
+		for bFunc, v := range removedContent.Funcs {
 			clientFunc := strings.Split(bFunc, ".")
 			if len(clientFunc) == 2 {
-				beginFunc := fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
+				if strings.Contains(clientFunc[1], "Begin") {
+					clientFunc[1] = strings.ReplaceAll(clientFunc[1], "Being", "")
+					beginFunc = fmt.Sprintf("%s.%s", clientFunc[0], clientFunc[1])
+				} else {
+					beginFunc = fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
+				}
 				if _, ok := changelog.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
 					delete(changelog.Modified.AdditiveChanges.Funcs, beginFunc)
+					v.ReplacedBy = &beginFunc
+					removedContent.Funcs[bFunc] = v
 				}
 			}
 		}

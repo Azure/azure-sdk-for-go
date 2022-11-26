@@ -11,9 +11,8 @@ go: true
 clear-output-folder: false
 export-clients: true
 openapi-type: "data-plane"
-output-folder: ./internal
+output-folder: ../azacr
 use: "@autorest/go@4.0.0-preview.44"
-normalize-operation-name: true
 honor-body-placement: true
 ```
 
@@ -119,6 +118,87 @@ directive:
     }
 ```
 
+### Change list order by param to enum
+```yaml
+directive:
+  - from: containerregistry.json
+    where: $.paths["/acr/v1/{name}/_tags"].get
+    transform: >
+      $.parameters.splice(3, 1);
+      $.parameters.push({
+        "name": "orderby",
+        "x-ms-client-name": "OrderBy",
+        "in": "query",
+        "required": false,
+        "x-ms-parameter-location": "method",
+        "type": "string",
+        "description": "Sort options for ordering tags in a collection.",
+        "enum": [
+          "none",
+          "timedesc",
+          "timeasc"
+        ],
+        "x-ms-enum": {
+          "name": "ArtifactTagOrderBy",
+          "values": [
+            {
+              "value": "none",
+              "name": "None",
+              "description": "Do not provide an orderby value in the request."
+            },
+            {
+              "value": "timedesc",
+              "name": "LastUpdatedOnDescending",
+              "description": "Order tags by LastUpdatedOn field, from most recently updated to least recently updated."
+            },
+            {
+              "value": "timeasc",
+              "name": "LastUpdatedOnAscending",
+              "description": "Order tags by LastUpdatedOn field, from least recently updated to most recently updated."
+            }
+          ]
+        }
+      });
+  - from: containerregistry.json
+    where: $.paths["/acr/v1/{name}/_manifests"]
+    transform: >
+      $.get.parameters.splice(3, 1);
+      $.get.parameters.push({
+        "name": "orderby",
+        "x-ms-client-name": "OrderBy",
+        "in": "query",
+        "required": false,
+        "x-ms-parameter-location": "method",
+        "type": "string",
+        "description": "Sort options for ordering manifests in a collection.",
+        "enum": [
+          "none",
+          "timedesc",
+          "timeasc"
+        ],
+        "x-ms-enum": {
+          "name": "ArtifactManifestOrderBy",
+          "values": [
+            {
+              "value": "none",
+              "name": "None",
+              "description": "Do not provide an orderby value in the request."
+            },
+            {
+              "value": "timedesc",
+              "name": "LastUpdatedOnDescending",
+              "description": "Order manifests by LastUpdatedOn field, from most recently updated to least recently updated."
+            },
+            {
+              "value": "timeasc",
+              "name": "LastUpdatedOnAscending",
+              "description": "Order manifest by LastUpdatedOn field, from least recently updated to most recently updated."
+            }
+          ]
+        }
+      });
+```
+
 ### Rename paged operations from Get* to List*
 
 ```yaml
@@ -145,17 +225,69 @@ directive:
     delete $.responses["201"].schema;
 ```
 
-# Change ContainerRegistry_GetManifest behaviour
+### Change ContainerRegistry_GetManifest behaviour
 
 ```yaml
 directive:
   from: swagger-document
   where: $.paths["/v2/{name}/manifests/{reference}"].get.responses["200"]
   transform: >
+    $.schema = {
+      type: "string",
+      format: "file"
+    };
     $.headers = {
       "Docker-Content-Digest": {
         "type": "string",
         "description": "Digest of the targeted content for the request."
       }
     };
+```
+
+### Remove generated constructors
+
+```yaml
+directive:
+  - from: 
+      - authentication_client.go
+      - containerregistry_client.go
+      - containerregistryblob_client.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func New.+Client.+\{\s(?:.+\s)+\}\s/, "");
+```
+
+### Rename operations
+```yaml
+directive:
+  - rename-operation:
+      from: ContainerRegistry_GetProperties
+      to: ContainerRegistry_GetRepositoryProperties
+  - rename-operation:
+      from: ContainerRegistry_UpdateProperties
+      to: ContainerRegistry_UpdateRepositoryProperties
+  - rename-operation:
+      from: ContainerRegistry_UpdateTagAttributes
+      to: ContainerRegistry_UpdateTagProperties
+  - rename-operation:
+      from: ContainerRegistry_CreateManifest
+      to: ContainerRegistry_UploadManifest
+```
+
+### Rename parameter name
+```yaml
+directive:
+  from: swagger-document
+  where: $.parameters
+  transform: >
+    $.DigestReference["x-ms-client-name"] = "digest";
+    $.TagReference["x-ms-client-name"] = "tag";
+```
+
+### Hide some of generated operation
+```yaml
+directive:
+  - from:
+      - containerregistry_client.go
+    where: $
+    transform: return $.replace(/DeleteManifest\(ctx/, "deleteManifest\(ctx").replace(/GetManifestProperties\(ctx/, "getManifestProperties\(ctx").replace(/UpdateManifestProperties\(ctx/, "updateManifestProperties\(ctx");
 ```

@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package internal
+package azacr
 
 import (
 	"context"
@@ -26,17 +26,6 @@ import (
 type ContainerRegistryBlobClient struct {
 	endpoint string
 	pl       runtime.Pipeline
-}
-
-// NewContainerRegistryBlobClient creates a new instance of ContainerRegistryBlobClient with the specified values.
-//   - endpoint - Registry login URL
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewContainerRegistryBlobClient(endpoint string, pl runtime.Pipeline) *ContainerRegistryBlobClient {
-	client := &ContainerRegistryBlobClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // CancelUpload - Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
@@ -192,32 +181,32 @@ func (client *ContainerRegistryBlobClient) checkChunkExistsHandleResponse(resp *
 	return result, nil
 }
 
-// CompleteUploadWithBinary - Complete the upload, providing all the data in the body, if necessary. A request without a body
-// will just complete the upload with previously uploaded content.
+// CompleteUpload - Complete the upload, providing all the data in the body, if necessary. A request without a body will just
+// complete the upload with previously uploaded content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - digest - Digest of a BLOB
 //   - nextLink - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
-//   - options - ContainerRegistryBlobClientCompleteUploadWithBinaryOptions contains the optional parameters for the ContainerRegistryBlobClient.CompleteUploadWithBinary
+//   - options - ContainerRegistryBlobClientCompleteUploadOptions contains the optional parameters for the ContainerRegistryBlobClient.CompleteUpload
 //     method.
-func (client *ContainerRegistryBlobClient) CompleteUploadWithBinary(ctx context.Context, digest string, nextLink string, options *ContainerRegistryBlobClientCompleteUploadWithBinaryOptions) (ContainerRegistryBlobClientCompleteUploadWithBinaryResponse, error) {
-	req, err := client.completeUploadWithBinaryCreateRequest(ctx, digest, nextLink, options)
+func (client *ContainerRegistryBlobClient) CompleteUpload(ctx context.Context, digest string, nextLink string, options *ContainerRegistryBlobClientCompleteUploadOptions) (ContainerRegistryBlobClientCompleteUploadResponse, error) {
+	req, err := client.completeUploadCreateRequest(ctx, digest, nextLink, options)
 	if err != nil {
-		return ContainerRegistryBlobClientCompleteUploadWithBinaryResponse{}, err
+		return ContainerRegistryBlobClientCompleteUploadResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainerRegistryBlobClientCompleteUploadWithBinaryResponse{}, err
+		return ContainerRegistryBlobClientCompleteUploadResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ContainerRegistryBlobClientCompleteUploadWithBinaryResponse{}, runtime.NewResponseError(resp)
+		return ContainerRegistryBlobClientCompleteUploadResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.completeUploadWithBinaryHandleResponse(resp)
+	return client.completeUploadHandleResponse(resp)
 }
 
-// completeUploadWithBinaryCreateRequest creates the CompleteUploadWithBinary request.
-func (client *ContainerRegistryBlobClient) completeUploadWithBinaryCreateRequest(ctx context.Context, digest string, nextLink string, options *ContainerRegistryBlobClientCompleteUploadWithBinaryOptions) (*policy.Request, error) {
+// completeUploadCreateRequest creates the CompleteUpload request.
+func (client *ContainerRegistryBlobClient) completeUploadCreateRequest(ctx context.Context, digest string, nextLink string, options *ContainerRegistryBlobClientCompleteUploadOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
 	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", nextLink)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
@@ -234,9 +223,9 @@ func (client *ContainerRegistryBlobClient) completeUploadWithBinaryCreateRequest
 	return req, nil
 }
 
-// completeUploadWithBinaryHandleResponse handles the CompleteUploadWithBinary response.
-func (client *ContainerRegistryBlobClient) completeUploadWithBinaryHandleResponse(resp *http.Response) (ContainerRegistryBlobClientCompleteUploadWithBinaryResponse, error) {
-	result := ContainerRegistryBlobClientCompleteUploadWithBinaryResponse{}
+// completeUploadHandleResponse handles the CompleteUpload response.
+func (client *ContainerRegistryBlobClient) completeUploadHandleResponse(resp *http.Response) (ContainerRegistryBlobClientCompleteUploadResponse, error) {
+	result := ContainerRegistryBlobClientCompleteUploadResponse{}
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
@@ -580,31 +569,31 @@ func (client *ContainerRegistryBlobClient) startUploadHandleResponse(resp *http.
 	return result, nil
 }
 
-// UploadChunkWithBinary - Upload a stream of data without completing the upload.
+// UploadChunk - Upload a stream of data without completing the upload.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - nextLink - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - value - Raw data of blob
-//   - options - ContainerRegistryBlobClientUploadChunkWithBinaryOptions contains the optional parameters for the ContainerRegistryBlobClient.UploadChunkWithBinary
+//   - options - ContainerRegistryBlobClientUploadChunkOptions contains the optional parameters for the ContainerRegistryBlobClient.UploadChunk
 //     method.
-func (client *ContainerRegistryBlobClient) UploadChunkWithBinary(ctx context.Context, nextLink string, value io.ReadSeekCloser, options *ContainerRegistryBlobClientUploadChunkWithBinaryOptions) (ContainerRegistryBlobClientUploadChunkWithBinaryResponse, error) {
-	req, err := client.uploadChunkWithBinaryCreateRequest(ctx, nextLink, value, options)
+func (client *ContainerRegistryBlobClient) UploadChunk(ctx context.Context, nextLink string, value io.ReadSeekCloser, options *ContainerRegistryBlobClientUploadChunkOptions) (ContainerRegistryBlobClientUploadChunkResponse, error) {
+	req, err := client.uploadChunkCreateRequest(ctx, nextLink, value, options)
 	if err != nil {
-		return ContainerRegistryBlobClientUploadChunkWithBinaryResponse{}, err
+		return ContainerRegistryBlobClientUploadChunkResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainerRegistryBlobClientUploadChunkWithBinaryResponse{}, err
+		return ContainerRegistryBlobClientUploadChunkResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return ContainerRegistryBlobClientUploadChunkWithBinaryResponse{}, runtime.NewResponseError(resp)
+		return ContainerRegistryBlobClientUploadChunkResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.uploadChunkWithBinaryHandleResponse(resp)
+	return client.uploadChunkHandleResponse(resp)
 }
 
-// uploadChunkWithBinaryCreateRequest creates the UploadChunkWithBinary request.
-func (client *ContainerRegistryBlobClient) uploadChunkWithBinaryCreateRequest(ctx context.Context, nextLink string, value io.ReadSeekCloser, options *ContainerRegistryBlobClientUploadChunkWithBinaryOptions) (*policy.Request, error) {
+// uploadChunkCreateRequest creates the UploadChunk request.
+func (client *ContainerRegistryBlobClient) uploadChunkCreateRequest(ctx context.Context, nextLink string, value io.ReadSeekCloser, options *ContainerRegistryBlobClientUploadChunkOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
 	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", nextLink)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
@@ -615,9 +604,9 @@ func (client *ContainerRegistryBlobClient) uploadChunkWithBinaryCreateRequest(ct
 	return req, req.SetBody(value, "application/octet-stream")
 }
 
-// uploadChunkWithBinaryHandleResponse handles the UploadChunkWithBinary response.
-func (client *ContainerRegistryBlobClient) uploadChunkWithBinaryHandleResponse(resp *http.Response) (ContainerRegistryBlobClientUploadChunkWithBinaryResponse, error) {
-	result := ContainerRegistryBlobClientUploadChunkWithBinaryResponse{}
+// uploadChunkHandleResponse handles the UploadChunk response.
+func (client *ContainerRegistryBlobClient) uploadChunkHandleResponse(resp *http.Response) (ContainerRegistryBlobClientUploadChunkResponse, error) {
+	result := ContainerRegistryBlobClientUploadChunkResponse{}
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}

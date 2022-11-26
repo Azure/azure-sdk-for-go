@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package internal
+package azacr
 
 import (
 	"context"
@@ -24,17 +24,6 @@ import (
 type AuthenticationClient struct {
 	endpoint string
 	pl       runtime.Pipeline
-}
-
-// NewAuthenticationClient creates a new instance of AuthenticationClient with the specified values.
-//   - endpoint - Registry login URL
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewAuthenticationClient(endpoint string, pl runtime.Pipeline) *AuthenticationClient {
-	client := &AuthenticationClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // ExchangeAADAccessTokenForAcrRefreshToken - Exchange AAD tokens for an ACR refresh Token
@@ -90,7 +79,7 @@ func (client *AuthenticationClient) exchangeAADAccessTokenForAcrRefreshTokenCrea
 // exchangeAADAccessTokenForAcrRefreshTokenHandleResponse handles the ExchangeAADAccessTokenForAcrRefreshToken response.
 func (client *AuthenticationClient) exchangeAADAccessTokenForAcrRefreshTokenHandleResponse(resp *http.Response) (AuthenticationClientExchangeAADAccessTokenForAcrRefreshTokenResponse, error) {
 	result := AuthenticationClientExchangeAADAccessTokenForAcrRefreshTokenResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AcrRefreshToken); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.RefreshToken); err != nil {
 		return AuthenticationClientExchangeAADAccessTokenForAcrRefreshTokenResponse{}, err
 	}
 	return result, nil
@@ -146,7 +135,7 @@ func (client *AuthenticationClient) exchangeAcrRefreshTokenForAcrAccessTokenCrea
 // exchangeAcrRefreshTokenForAcrAccessTokenHandleResponse handles the ExchangeAcrRefreshTokenForAcrAccessToken response.
 func (client *AuthenticationClient) exchangeAcrRefreshTokenForAcrAccessTokenHandleResponse(resp *http.Response) (AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenResponse, error) {
 	result := AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AcrAccessToken); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessToken); err != nil {
 		return AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenResponse{}, err
 	}
 	return result, nil

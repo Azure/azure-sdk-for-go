@@ -11,7 +11,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	generated "github.com/Azure/azure-sdk-for-go/sdk/acr/azacr/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/http"
 	"strings"
@@ -37,10 +36,10 @@ type AuthenticationPolicy struct {
 	aadScopes    []string
 	acrScope     string
 	acrService   string
-	authClient   *generated.AuthenticationClient
+	authClient   *AuthenticationClient
 }
 
-func NewAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authClient *generated.AuthenticationClient, opts *AuthenticationPolicyOptions) *AuthenticationPolicy {
+func NewAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authClient *AuthenticationClient, opts *AuthenticationPolicyOptions) *AuthenticationPolicy {
 	return &AuthenticationPolicy{
 		cred:         cred,
 		aadScopes:    scopes,
@@ -90,11 +89,11 @@ func (p *AuthenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 func (p *AuthenticationPolicy) getAccessToken(req *policy.Request) (string, error) {
 	// anonymous access
 	if p.cred == nil {
-		resp, err := p.authClient.ExchangeAcrRefreshTokenForAcrAccessToken(req.Raw().Context(), p.acrService, p.acrScope, "", &generated.AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenOptions{GrantType: to.Ptr(generated.TokenGrantTypePassword)})
+		resp, err := p.authClient.ExchangeAcrRefreshTokenForAcrAccessToken(req.Raw().Context(), p.acrService, p.acrScope, "", &AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenOptions{GrantType: to.Ptr(TokenGrantTypePassword)})
 		if err != nil {
 			return "", err
 		}
-		return *resp.AccessToken, nil
+		return *resp.AccessToken.AccessToken, nil
 	}
 
 	as := acquiringResourceState{
@@ -107,11 +106,11 @@ func (p *AuthenticationPolicy) getAccessToken(req *policy.Request) (string, erro
 		return "", err
 	}
 
-	resp, err := p.authClient.ExchangeAcrRefreshTokenForAcrAccessToken(req.Raw().Context(), p.acrService, p.acrScope, refreshToken.Token, &generated.AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenOptions{GrantType: to.Ptr(generated.TokenGrantTypePassword)})
+	resp, err := p.authClient.ExchangeAcrRefreshTokenForAcrAccessToken(req.Raw().Context(), p.acrService, p.acrScope, refreshToken.Token, &AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenOptions{GrantType: to.Ptr(TokenGrantTypePassword)})
 	if err != nil {
 		return "", err
 	}
-	return *resp.AccessToken, nil
+	return *resp.AccessToken.AccessToken, nil
 }
 
 type challengePolicyError struct {
@@ -187,7 +186,7 @@ func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newE
 		return azcore.AccessToken{}, time.Time{}, err
 	}
 
-	refreshResp, err := state.p.authClient.ExchangeAADAccessTokenForAcrRefreshToken(state.req.Raw().Context(), generated.PostContentSchemaGrantTypeAccessToken, state.p.acrService, &generated.AuthenticationClientExchangeAADAccessTokenForAcrRefreshTokenOptions{
+	refreshResp, err := state.p.authClient.ExchangeAADAccessTokenForAcrRefreshToken(state.req.Raw().Context(), PostContentSchemaGrantTypeAccessToken, state.p.acrService, &AuthenticationClientExchangeAADAccessTokenForAcrRefreshTokenOptions{
 		AccessToken: &aadToken.Token,
 	})
 	if err != nil {
@@ -195,7 +194,7 @@ func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newE
 	}
 
 	refreshToken := azcore.AccessToken{
-		Token: *refreshResp.RefreshToken,
+		Token: *refreshResp.RefreshToken.RefreshToken,
 	}
 	refreshToken.ExpiresOn, err = getJWTExpireTime(aadToken.Token)
 	if err != nil {

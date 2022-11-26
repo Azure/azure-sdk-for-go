@@ -7,53 +7,16 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package internal
+package azacr
 
 import (
 	"io"
 	"time"
 )
 
-type AcrAccessToken struct {
+type AccessToken struct {
 	// The access token for performing authenticated requests
 	AccessToken *string `json:"access_token,omitempty"`
-}
-
-// AcrErrorInfo - Error information
-type AcrErrorInfo struct {
-	// Error code
-	Code *string `json:"code,omitempty"`
-
-	// Error details
-	Detail any `json:"detail,omitempty"`
-
-	// Error message
-	Message *string `json:"message,omitempty"`
-}
-
-// AcrErrors - Acr error response describing why the operation failed
-type AcrErrors struct {
-	// Array of detailed error
-	Errors []*AcrErrorInfo `json:"errors,omitempty"`
-}
-
-// AcrManifests - Manifest attributes
-type AcrManifests struct {
-	Link *string `json:"link,omitempty"`
-
-	// List of manifests
-	Manifests []*ManifestAttributesBase `json:"manifests,omitempty"`
-
-	// Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
-	RegistryLoginServer *string `json:"registry,omitempty"`
-
-	// Image name
-	Repository *string `json:"imageName,omitempty"`
-}
-
-type AcrRefreshToken struct {
-	// The refresh token to be used for generating access tokens
-	RefreshToken *string `json:"refresh_token,omitempty"`
 }
 
 // Annotations - Additional information provided through arbitrary metadata.
@@ -171,9 +134,9 @@ type ContainerRegistryBlobClientCheckChunkExistsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerRegistryBlobClientCompleteUploadWithBinaryOptions contains the optional parameters for the ContainerRegistryBlobClient.CompleteUploadWithBinary
+// ContainerRegistryBlobClientCompleteUploadOptions contains the optional parameters for the ContainerRegistryBlobClient.CompleteUpload
 // method.
-type ContainerRegistryBlobClientCompleteUploadWithBinaryOptions struct {
+type ContainerRegistryBlobClientCompleteUploadOptions struct {
 	// Optional raw data of blob
 	Value io.ReadSeekCloser
 }
@@ -214,21 +177,15 @@ type ContainerRegistryBlobClientStartUploadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerRegistryBlobClientUploadChunkWithBinaryOptions contains the optional parameters for the ContainerRegistryBlobClient.UploadChunkWithBinary
+// ContainerRegistryBlobClientUploadChunkOptions contains the optional parameters for the ContainerRegistryBlobClient.UploadChunk
 // method.
-type ContainerRegistryBlobClientUploadChunkWithBinaryOptions struct {
+type ContainerRegistryBlobClientUploadChunkOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ContainerRegistryClientCheckDockerV2SupportOptions contains the optional parameters for the ContainerRegistryClient.CheckDockerV2Support
 // method.
 type ContainerRegistryClientCheckDockerV2SupportOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerRegistryClientCreateManifestWithBinaryOptions contains the optional parameters for the ContainerRegistryClient.CreateManifestWithBinary
-// method.
-type ContainerRegistryClientCreateManifestWithBinaryOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -262,9 +219,9 @@ type ContainerRegistryClientGetManifestPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerRegistryClientGetPropertiesOptions contains the optional parameters for the ContainerRegistryClient.GetProperties
+// ContainerRegistryClientGetRepositoryPropertiesOptions contains the optional parameters for the ContainerRegistryClient.GetRepositoryProperties
 // method.
-type ContainerRegistryClientGetPropertiesOptions struct {
+type ContainerRegistryClientGetRepositoryPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -281,8 +238,8 @@ type ContainerRegistryClientListManifestsOptions struct {
 	Last *string
 	// query parameter for max number of items
 	N *int32
-	// orderby query parameter
-	Orderby *string
+	// Sort options for ordering manifests in a collection.
+	OrderBy *ArtifactManifestOrderBy
 }
 
 // ContainerRegistryClientListRepositoriesOptions contains the optional parameters for the ContainerRegistryClient.NewListRepositoriesPager
@@ -303,8 +260,8 @@ type ContainerRegistryClientListTagsOptions struct {
 	Last *string
 	// query parameter for max number of items
 	N *int32
-	// orderby query parameter
-	Orderby *string
+	// Sort options for ordering tags in a collection.
+	OrderBy *ArtifactTagOrderBy
 }
 
 // ContainerRegistryClientUpdateManifestPropertiesOptions contains the optional parameters for the ContainerRegistryClient.UpdateManifestProperties
@@ -314,18 +271,24 @@ type ContainerRegistryClientUpdateManifestPropertiesOptions struct {
 	Value *ManifestWriteableProperties
 }
 
-// ContainerRegistryClientUpdatePropertiesOptions contains the optional parameters for the ContainerRegistryClient.UpdateProperties
+// ContainerRegistryClientUpdateRepositoryPropertiesOptions contains the optional parameters for the ContainerRegistryClient.UpdateRepositoryProperties
 // method.
-type ContainerRegistryClientUpdatePropertiesOptions struct {
+type ContainerRegistryClientUpdateRepositoryPropertiesOptions struct {
 	// Repository attribute value
 	Value *RepositoryWriteableProperties
 }
 
-// ContainerRegistryClientUpdateTagAttributesOptions contains the optional parameters for the ContainerRegistryClient.UpdateTagAttributes
+// ContainerRegistryClientUpdateTagPropertiesOptions contains the optional parameters for the ContainerRegistryClient.UpdateTagProperties
 // method.
-type ContainerRegistryClientUpdateTagAttributesOptions struct {
+type ContainerRegistryClientUpdateTagPropertiesOptions struct {
 	// Tag attribute value
 	Value *TagWriteableProperties
+}
+
+// ContainerRegistryClientUploadManifestOptions contains the optional parameters for the ContainerRegistryClient.UploadManifest
+// method.
+type ContainerRegistryClientUploadManifestOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ContainerRepositoryProperties - Properties of this repository.
@@ -377,6 +340,24 @@ type Descriptor struct {
 
 	// Specifies a list of URIs from which this object may be downloaded.
 	Urls []*string `json:"urls,omitempty"`
+}
+
+// ErrorInfo - Error information
+type ErrorInfo struct {
+	// Error code
+	Code *string `json:"code,omitempty"`
+
+	// Error details
+	Detail any `json:"detail,omitempty"`
+
+	// Error message
+	Message *string `json:"message,omitempty"`
+}
+
+// Errors - Acr error response describing why the operation failed
+type Errors struct {
+	// Array of detailed error
+	Errors []*ErrorInfo `json:"errors,omitempty"`
 }
 
 // FsLayer - Image layer information
@@ -556,6 +537,20 @@ type ManifestWriteableProperties struct {
 	CanWrite *bool `json:"writeEnabled,omitempty"`
 }
 
+// Manifests - Manifest attributes
+type Manifests struct {
+	Link *string `json:"link,omitempty"`
+
+	// List of manifests
+	Manifests []*ManifestAttributesBase `json:"manifests,omitempty"`
+
+	// Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
+	RegistryLoginServer *string `json:"registry,omitempty"`
+
+	// Image name
+	Repository *string `json:"imageName,omitempty"`
+}
+
 // OCIIndex - Returns the requested OCI index file
 type OCIIndex struct {
 	// Additional information provided through arbitrary metadata.
@@ -638,6 +633,11 @@ type Platform struct {
 	// The optional variant field specifies a variant of the CPU, for example armv6l to specify a particular CPU variant of the
 	// ARM CPU.
 	Variant *string `json:"variant,omitempty"`
+}
+
+type RefreshToken struct {
+	// The refresh token to be used for generating access tokens
+	RefreshToken *string `json:"refresh_token,omitempty"`
 }
 
 // Repositories - List of repositories

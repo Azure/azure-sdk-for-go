@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package internal
+package azacr
 
 import (
 	"context"
@@ -26,17 +26,6 @@ import (
 type ContainerRegistryClient struct {
 	endpoint string
 	pl       runtime.Pipeline
-}
-
-// NewContainerRegistryClient creates a new instance of ContainerRegistryClient with the specified values.
-//   - endpoint - Registry login URL
-//   - pl - the pipeline used for sending requests and handling responses.
-func NewContainerRegistryClient(endpoint string, pl runtime.Pipeline) *ContainerRegistryClient {
-	client := &ContainerRegistryClient{
-		endpoint: endpoint,
-		pl:       pl,
-	}
-	return client
 }
 
 // CheckDockerV2Support - Tells whether this Docker Registry instance supports Docker Registry HTTP API v2
@@ -71,80 +60,16 @@ func (client *ContainerRegistryClient) checkDockerV2SupportCreateRequest(ctx con
 	return req, nil
 }
 
-// CreateManifestWithBinary - Put the manifest identified by name and reference where reference can be a tag or digest.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
-//   - name - Name of the image (including the namespace)
-//   - reference - A tag or a digest, pointing to a specific image
-//   - contentType - Upload file type
-//   - payload - Manifest body, can take v1 or v2 values depending on accept header
-//   - options - ContainerRegistryClientCreateManifestWithBinaryOptions contains the optional parameters for the ContainerRegistryClient.CreateManifestWithBinary
-//     method.
-func (client *ContainerRegistryClient) CreateManifestWithBinary(ctx context.Context, name string, reference string, contentType ContentType, payload io.ReadSeekCloser, options *ContainerRegistryClientCreateManifestWithBinaryOptions) (ContainerRegistryClientCreateManifestWithBinaryResponse, error) {
-	req, err := client.createManifestWithBinaryCreateRequest(ctx, name, reference, contentType, payload, options)
-	if err != nil {
-		return ContainerRegistryClientCreateManifestWithBinaryResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ContainerRegistryClientCreateManifestWithBinaryResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return ContainerRegistryClientCreateManifestWithBinaryResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.createManifestWithBinaryHandleResponse(resp)
-}
-
-// createManifestWithBinaryCreateRequest creates the CreateManifestWithBinary request.
-func (client *ContainerRegistryClient) createManifestWithBinaryCreateRequest(ctx context.Context, name string, reference string, contentType ContentType, payload io.ReadSeekCloser, options *ContainerRegistryClientCreateManifestWithBinaryOptions) (*policy.Request, error) {
-	urlPath := "/v2/{name}/manifests/{reference}"
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if reference == "" {
-		return nil, errors.New("parameter reference cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(reference))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	req.Raw().Header["Content-Type"] = []string{string(contentType)}
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, req.SetBody(payload, string(contentType))
-}
-
-// createManifestWithBinaryHandleResponse handles the CreateManifestWithBinary response.
-func (client *ContainerRegistryClient) createManifestWithBinaryHandleResponse(resp *http.Response) (ContainerRegistryClientCreateManifestWithBinaryResponse, error) {
-	result := ContainerRegistryClientCreateManifestWithBinaryResponse{}
-	if val := resp.Header.Get("Docker-Content-Digest"); val != "" {
-		result.DockerContentDigest = &val
-	}
-	if val := resp.Header.Get("Location"); val != "" {
-		result.Location = &val
-	}
-	if val := resp.Header.Get("Content-Length"); val != "" {
-		contentLength, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return ContainerRegistryClientCreateManifestWithBinaryResponse{}, err
-		}
-		result.ContentLength = &contentLength
-	}
-	return result, nil
-}
-
 // DeleteManifest - Delete the manifest identified by name and reference. Note that a manifest can only be deleted by digest.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
-//   - reference - Digest of a BLOB
+//   - digest - Digest of a BLOB
 //   - options - ContainerRegistryClientDeleteManifestOptions contains the optional parameters for the ContainerRegistryClient.DeleteManifest
 //     method.
-func (client *ContainerRegistryClient) DeleteManifest(ctx context.Context, name string, reference string, options *ContainerRegistryClientDeleteManifestOptions) (ContainerRegistryClientDeleteManifestResponse, error) {
-	req, err := client.deleteManifestCreateRequest(ctx, name, reference, options)
+func (client *ContainerRegistryClient) deleteManifest(ctx context.Context, name string, digest string, options *ContainerRegistryClientDeleteManifestOptions) (ContainerRegistryClientDeleteManifestResponse, error) {
+	req, err := client.deleteManifestCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return ContainerRegistryClientDeleteManifestResponse{}, err
 	}
@@ -159,16 +84,16 @@ func (client *ContainerRegistryClient) DeleteManifest(ctx context.Context, name 
 }
 
 // deleteManifestCreateRequest creates the DeleteManifest request.
-func (client *ContainerRegistryClient) deleteManifestCreateRequest(ctx context.Context, name string, reference string, options *ContainerRegistryClientDeleteManifestOptions) (*policy.Request, error) {
+func (client *ContainerRegistryClient) deleteManifestCreateRequest(ctx context.Context, name string, digest string, options *ContainerRegistryClientDeleteManifestOptions) (*policy.Request, error) {
 	urlPath := "/v2/{name}/manifests/{reference}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if reference == "" {
-		return nil, errors.New("parameter reference cannot be empty")
+	if digest == "" {
+		return nil, errors.New("parameter digest cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(reference))
+	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(digest))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -222,11 +147,11 @@ func (client *ContainerRegistryClient) deleteRepositoryCreateRequest(ctx context
 //
 // Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
-//   - reference - Tag name
+//   - tag - Tag name
 //   - options - ContainerRegistryClientDeleteTagOptions contains the optional parameters for the ContainerRegistryClient.DeleteTag
 //     method.
-func (client *ContainerRegistryClient) DeleteTag(ctx context.Context, name string, reference string, options *ContainerRegistryClientDeleteTagOptions) (ContainerRegistryClientDeleteTagResponse, error) {
-	req, err := client.deleteTagCreateRequest(ctx, name, reference, options)
+func (client *ContainerRegistryClient) DeleteTag(ctx context.Context, name string, tag string, options *ContainerRegistryClientDeleteTagOptions) (ContainerRegistryClientDeleteTagResponse, error) {
+	req, err := client.deleteTagCreateRequest(ctx, name, tag, options)
 	if err != nil {
 		return ContainerRegistryClientDeleteTagResponse{}, err
 	}
@@ -241,16 +166,16 @@ func (client *ContainerRegistryClient) DeleteTag(ctx context.Context, name strin
 }
 
 // deleteTagCreateRequest creates the DeleteTag request.
-func (client *ContainerRegistryClient) deleteTagCreateRequest(ctx context.Context, name string, reference string, options *ContainerRegistryClientDeleteTagOptions) (*policy.Request, error) {
+func (client *ContainerRegistryClient) deleteTagCreateRequest(ctx context.Context, name string, tag string, options *ContainerRegistryClientDeleteTagOptions) (*policy.Request, error) {
 	urlPath := "/acr/v1/{name}/_tags/{reference}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if reference == "" {
-		return nil, errors.New("parameter reference cannot be empty")
+	if tag == "" {
+		return nil, errors.New("parameter tag cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(reference))
+	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(tag))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -300,6 +225,7 @@ func (client *ContainerRegistryClient) getManifestCreateRequest(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
+	runtime.SkipBodyDownload(req)
 	if options != nil && options.Accept != nil {
 		req.Raw().Header["accept"] = []string{*options.Accept}
 	}
@@ -309,12 +235,9 @@ func (client *ContainerRegistryClient) getManifestCreateRequest(ctx context.Cont
 
 // getManifestHandleResponse handles the GetManifest response.
 func (client *ContainerRegistryClient) getManifestHandleResponse(resp *http.Response) (ContainerRegistryClientGetManifestResponse, error) {
-	result := ContainerRegistryClientGetManifestResponse{}
+	result := ContainerRegistryClientGetManifestResponse{Body: resp.Body}
 	if val := resp.Header.Get("Docker-Content-Digest"); val != "" {
 		result.DockerContentDigest = &val
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManifestWrapper); err != nil {
-		return ContainerRegistryClientGetManifestResponse{}, err
 	}
 	return result, nil
 }
@@ -327,7 +250,7 @@ func (client *ContainerRegistryClient) getManifestHandleResponse(resp *http.Resp
 //   - digest - Digest of a BLOB
 //   - options - ContainerRegistryClientGetManifestPropertiesOptions contains the optional parameters for the ContainerRegistryClient.GetManifestProperties
 //     method.
-func (client *ContainerRegistryClient) GetManifestProperties(ctx context.Context, name string, digest string, options *ContainerRegistryClientGetManifestPropertiesOptions) (ContainerRegistryClientGetManifestPropertiesResponse, error) {
+func (client *ContainerRegistryClient) getManifestProperties(ctx context.Context, name string, digest string, options *ContainerRegistryClientGetManifestPropertiesOptions) (ContainerRegistryClientGetManifestPropertiesResponse, error) {
 	req, err := client.getManifestPropertiesCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return ContainerRegistryClientGetManifestPropertiesResponse{}, err
@@ -373,30 +296,30 @@ func (client *ContainerRegistryClient) getManifestPropertiesHandleResponse(resp 
 	return result, nil
 }
 
-// GetProperties - Get repository attributes
+// GetRepositoryProperties - Get repository attributes
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
-//   - options - ContainerRegistryClientGetPropertiesOptions contains the optional parameters for the ContainerRegistryClient.GetProperties
+//   - options - ContainerRegistryClientGetRepositoryPropertiesOptions contains the optional parameters for the ContainerRegistryClient.GetRepositoryProperties
 //     method.
-func (client *ContainerRegistryClient) GetProperties(ctx context.Context, name string, options *ContainerRegistryClientGetPropertiesOptions) (ContainerRegistryClientGetPropertiesResponse, error) {
-	req, err := client.getPropertiesCreateRequest(ctx, name, options)
+func (client *ContainerRegistryClient) GetRepositoryProperties(ctx context.Context, name string, options *ContainerRegistryClientGetRepositoryPropertiesOptions) (ContainerRegistryClientGetRepositoryPropertiesResponse, error) {
+	req, err := client.getRepositoryPropertiesCreateRequest(ctx, name, options)
 	if err != nil {
-		return ContainerRegistryClientGetPropertiesResponse{}, err
+		return ContainerRegistryClientGetRepositoryPropertiesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainerRegistryClientGetPropertiesResponse{}, err
+		return ContainerRegistryClientGetRepositoryPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContainerRegistryClientGetPropertiesResponse{}, runtime.NewResponseError(resp)
+		return ContainerRegistryClientGetRepositoryPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.getPropertiesHandleResponse(resp)
+	return client.getRepositoryPropertiesHandleResponse(resp)
 }
 
-// getPropertiesCreateRequest creates the GetProperties request.
-func (client *ContainerRegistryClient) getPropertiesCreateRequest(ctx context.Context, name string, options *ContainerRegistryClientGetPropertiesOptions) (*policy.Request, error) {
+// getRepositoryPropertiesCreateRequest creates the GetRepositoryProperties request.
+func (client *ContainerRegistryClient) getRepositoryPropertiesCreateRequest(ctx context.Context, name string, options *ContainerRegistryClientGetRepositoryPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/acr/v1/{name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -413,11 +336,11 @@ func (client *ContainerRegistryClient) getPropertiesCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// getPropertiesHandleResponse handles the GetProperties response.
-func (client *ContainerRegistryClient) getPropertiesHandleResponse(resp *http.Response) (ContainerRegistryClientGetPropertiesResponse, error) {
-	result := ContainerRegistryClientGetPropertiesResponse{}
+// getRepositoryPropertiesHandleResponse handles the GetRepositoryProperties response.
+func (client *ContainerRegistryClient) getRepositoryPropertiesHandleResponse(resp *http.Response) (ContainerRegistryClientGetRepositoryPropertiesResponse, error) {
+	result := ContainerRegistryClientGetRepositoryPropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerRepositoryProperties); err != nil {
-		return ContainerRegistryClientGetPropertiesResponse{}, err
+		return ContainerRegistryClientGetRepositoryPropertiesResponse{}, err
 	}
 	return result, nil
 }
@@ -427,11 +350,11 @@ func (client *ContainerRegistryClient) getPropertiesHandleResponse(resp *http.Re
 //
 // Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
-//   - reference - Tag name
+//   - tag - Tag name
 //   - options - ContainerRegistryClientGetTagPropertiesOptions contains the optional parameters for the ContainerRegistryClient.GetTagProperties
 //     method.
-func (client *ContainerRegistryClient) GetTagProperties(ctx context.Context, name string, reference string, options *ContainerRegistryClientGetTagPropertiesOptions) (ContainerRegistryClientGetTagPropertiesResponse, error) {
-	req, err := client.getTagPropertiesCreateRequest(ctx, name, reference, options)
+func (client *ContainerRegistryClient) GetTagProperties(ctx context.Context, name string, tag string, options *ContainerRegistryClientGetTagPropertiesOptions) (ContainerRegistryClientGetTagPropertiesResponse, error) {
+	req, err := client.getTagPropertiesCreateRequest(ctx, name, tag, options)
 	if err != nil {
 		return ContainerRegistryClientGetTagPropertiesResponse{}, err
 	}
@@ -446,16 +369,16 @@ func (client *ContainerRegistryClient) GetTagProperties(ctx context.Context, nam
 }
 
 // getTagPropertiesCreateRequest creates the GetTagProperties request.
-func (client *ContainerRegistryClient) getTagPropertiesCreateRequest(ctx context.Context, name string, reference string, options *ContainerRegistryClientGetTagPropertiesOptions) (*policy.Request, error) {
+func (client *ContainerRegistryClient) getTagPropertiesCreateRequest(ctx context.Context, name string, tag string, options *ContainerRegistryClientGetTagPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/acr/v1/{name}/_tags/{reference}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if reference == "" {
-		return nil, errors.New("parameter reference cannot be empty")
+	if tag == "" {
+		return nil, errors.New("parameter tag cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(reference))
+	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(tag))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -528,10 +451,10 @@ func (client *ContainerRegistryClient) listManifestsCreateRequest(ctx context.Co
 	if options != nil && options.N != nil {
 		reqQP.Set("n", strconv.FormatInt(int64(*options.N), 10))
 	}
-	if options != nil && options.Orderby != nil {
-		reqQP.Set("orderby", *options.Orderby)
-	}
 	reqQP.Set("api-version", "2021-07-01")
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderby", string(*options.OrderBy))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -543,7 +466,7 @@ func (client *ContainerRegistryClient) listManifestsHandleResponse(resp *http.Re
 	if val := resp.Header.Get("Link"); val != "" {
 		result.Link = &val
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AcrManifests); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Manifests); err != nil {
 		return ContainerRegistryClientListManifestsResponse{}, err
 	}
 	return result, nil
@@ -666,13 +589,13 @@ func (client *ContainerRegistryClient) listTagsCreateRequest(ctx context.Context
 	if options != nil && options.N != nil {
 		reqQP.Set("n", strconv.FormatInt(int64(*options.N), 10))
 	}
-	if options != nil && options.Orderby != nil {
-		reqQP.Set("orderby", *options.Orderby)
-	}
 	if options != nil && options.Digest != nil {
 		reqQP.Set("digest", *options.Digest)
 	}
 	reqQP.Set("api-version", "2021-07-01")
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderby", string(*options.OrderBy))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -698,7 +621,7 @@ func (client *ContainerRegistryClient) listTagsHandleResponse(resp *http.Respons
 //   - digest - Digest of a BLOB
 //   - options - ContainerRegistryClientUpdateManifestPropertiesOptions contains the optional parameters for the ContainerRegistryClient.UpdateManifestProperties
 //     method.
-func (client *ContainerRegistryClient) UpdateManifestProperties(ctx context.Context, name string, digest string, options *ContainerRegistryClientUpdateManifestPropertiesOptions) (ContainerRegistryClientUpdateManifestPropertiesResponse, error) {
+func (client *ContainerRegistryClient) updateManifestProperties(ctx context.Context, name string, digest string, options *ContainerRegistryClientUpdateManifestPropertiesOptions) (ContainerRegistryClientUpdateManifestPropertiesResponse, error) {
 	req, err := client.updateManifestPropertiesCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return ContainerRegistryClientUpdateManifestPropertiesResponse{}, err
@@ -747,30 +670,30 @@ func (client *ContainerRegistryClient) updateManifestPropertiesHandleResponse(re
 	return result, nil
 }
 
-// UpdateProperties - Update the attribute identified by name where reference is the name of the repository.
+// UpdateRepositoryProperties - Update the attribute identified by name where reference is the name of the repository.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
-//   - options - ContainerRegistryClientUpdatePropertiesOptions contains the optional parameters for the ContainerRegistryClient.UpdateProperties
+//   - options - ContainerRegistryClientUpdateRepositoryPropertiesOptions contains the optional parameters for the ContainerRegistryClient.UpdateRepositoryProperties
 //     method.
-func (client *ContainerRegistryClient) UpdateProperties(ctx context.Context, name string, options *ContainerRegistryClientUpdatePropertiesOptions) (ContainerRegistryClientUpdatePropertiesResponse, error) {
-	req, err := client.updatePropertiesCreateRequest(ctx, name, options)
+func (client *ContainerRegistryClient) UpdateRepositoryProperties(ctx context.Context, name string, options *ContainerRegistryClientUpdateRepositoryPropertiesOptions) (ContainerRegistryClientUpdateRepositoryPropertiesResponse, error) {
+	req, err := client.updateRepositoryPropertiesCreateRequest(ctx, name, options)
 	if err != nil {
-		return ContainerRegistryClientUpdatePropertiesResponse{}, err
+		return ContainerRegistryClientUpdateRepositoryPropertiesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainerRegistryClientUpdatePropertiesResponse{}, err
+		return ContainerRegistryClientUpdateRepositoryPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContainerRegistryClientUpdatePropertiesResponse{}, runtime.NewResponseError(resp)
+		return ContainerRegistryClientUpdateRepositoryPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.updatePropertiesHandleResponse(resp)
+	return client.updateRepositoryPropertiesHandleResponse(resp)
 }
 
-// updatePropertiesCreateRequest creates the UpdateProperties request.
-func (client *ContainerRegistryClient) updatePropertiesCreateRequest(ctx context.Context, name string, options *ContainerRegistryClientUpdatePropertiesOptions) (*policy.Request, error) {
+// updateRepositoryPropertiesCreateRequest creates the UpdateRepositoryProperties request.
+func (client *ContainerRegistryClient) updateRepositoryPropertiesCreateRequest(ctx context.Context, name string, options *ContainerRegistryClientUpdateRepositoryPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/acr/v1/{name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -790,49 +713,49 @@ func (client *ContainerRegistryClient) updatePropertiesCreateRequest(ctx context
 	return req, nil
 }
 
-// updatePropertiesHandleResponse handles the UpdateProperties response.
-func (client *ContainerRegistryClient) updatePropertiesHandleResponse(resp *http.Response) (ContainerRegistryClientUpdatePropertiesResponse, error) {
-	result := ContainerRegistryClientUpdatePropertiesResponse{}
+// updateRepositoryPropertiesHandleResponse handles the UpdateRepositoryProperties response.
+func (client *ContainerRegistryClient) updateRepositoryPropertiesHandleResponse(resp *http.Response) (ContainerRegistryClientUpdateRepositoryPropertiesResponse, error) {
+	result := ContainerRegistryClientUpdateRepositoryPropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerRepositoryProperties); err != nil {
-		return ContainerRegistryClientUpdatePropertiesResponse{}, err
+		return ContainerRegistryClientUpdateRepositoryPropertiesResponse{}, err
 	}
 	return result, nil
 }
 
-// UpdateTagAttributes - Update tag attributes
+// UpdateTagProperties - Update tag attributes
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
-//   - reference - Tag name
-//   - options - ContainerRegistryClientUpdateTagAttributesOptions contains the optional parameters for the ContainerRegistryClient.UpdateTagAttributes
+//   - tag - Tag name
+//   - options - ContainerRegistryClientUpdateTagPropertiesOptions contains the optional parameters for the ContainerRegistryClient.UpdateTagProperties
 //     method.
-func (client *ContainerRegistryClient) UpdateTagAttributes(ctx context.Context, name string, reference string, options *ContainerRegistryClientUpdateTagAttributesOptions) (ContainerRegistryClientUpdateTagAttributesResponse, error) {
-	req, err := client.updateTagAttributesCreateRequest(ctx, name, reference, options)
+func (client *ContainerRegistryClient) UpdateTagProperties(ctx context.Context, name string, tag string, options *ContainerRegistryClientUpdateTagPropertiesOptions) (ContainerRegistryClientUpdateTagPropertiesResponse, error) {
+	req, err := client.updateTagPropertiesCreateRequest(ctx, name, tag, options)
 	if err != nil {
-		return ContainerRegistryClientUpdateTagAttributesResponse{}, err
+		return ContainerRegistryClientUpdateTagPropertiesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ContainerRegistryClientUpdateTagAttributesResponse{}, err
+		return ContainerRegistryClientUpdateTagPropertiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ContainerRegistryClientUpdateTagAttributesResponse{}, runtime.NewResponseError(resp)
+		return ContainerRegistryClientUpdateTagPropertiesResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.updateTagAttributesHandleResponse(resp)
+	return client.updateTagPropertiesHandleResponse(resp)
 }
 
-// updateTagAttributesCreateRequest creates the UpdateTagAttributes request.
-func (client *ContainerRegistryClient) updateTagAttributesCreateRequest(ctx context.Context, name string, reference string, options *ContainerRegistryClientUpdateTagAttributesOptions) (*policy.Request, error) {
+// updateTagPropertiesCreateRequest creates the UpdateTagProperties request.
+func (client *ContainerRegistryClient) updateTagPropertiesCreateRequest(ctx context.Context, name string, tag string, options *ContainerRegistryClientUpdateTagPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/acr/v1/{name}/_tags/{reference}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if reference == "" {
-		return nil, errors.New("parameter reference cannot be empty")
+	if tag == "" {
+		return nil, errors.New("parameter tag cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(reference))
+	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(tag))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -847,11 +770,75 @@ func (client *ContainerRegistryClient) updateTagAttributesCreateRequest(ctx cont
 	return req, nil
 }
 
-// updateTagAttributesHandleResponse handles the UpdateTagAttributes response.
-func (client *ContainerRegistryClient) updateTagAttributesHandleResponse(resp *http.Response) (ContainerRegistryClientUpdateTagAttributesResponse, error) {
-	result := ContainerRegistryClientUpdateTagAttributesResponse{}
+// updateTagPropertiesHandleResponse handles the UpdateTagProperties response.
+func (client *ContainerRegistryClient) updateTagPropertiesHandleResponse(resp *http.Response) (ContainerRegistryClientUpdateTagPropertiesResponse, error) {
+	result := ContainerRegistryClientUpdateTagPropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArtifactTagProperties); err != nil {
-		return ContainerRegistryClientUpdateTagAttributesResponse{}, err
+		return ContainerRegistryClientUpdateTagPropertiesResponse{}, err
+	}
+	return result, nil
+}
+
+// UploadManifest - Put the manifest identified by name and reference where reference can be a tag or digest.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-07-01
+//   - name - Name of the image (including the namespace)
+//   - reference - A tag or a digest, pointing to a specific image
+//   - contentType - Upload file type
+//   - payload - Manifest body, can take v1 or v2 values depending on accept header
+//   - options - ContainerRegistryClientUploadManifestOptions contains the optional parameters for the ContainerRegistryClient.UploadManifest
+//     method.
+func (client *ContainerRegistryClient) UploadManifest(ctx context.Context, name string, reference string, contentType ContentType, payload io.ReadSeekCloser, options *ContainerRegistryClientUploadManifestOptions) (ContainerRegistryClientUploadManifestResponse, error) {
+	req, err := client.uploadManifestCreateRequest(ctx, name, reference, contentType, payload, options)
+	if err != nil {
+		return ContainerRegistryClientUploadManifestResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return ContainerRegistryClientUploadManifestResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+		return ContainerRegistryClientUploadManifestResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.uploadManifestHandleResponse(resp)
+}
+
+// uploadManifestCreateRequest creates the UploadManifest request.
+func (client *ContainerRegistryClient) uploadManifestCreateRequest(ctx context.Context, name string, reference string, contentType ContentType, payload io.ReadSeekCloser, options *ContainerRegistryClientUploadManifestOptions) (*policy.Request, error) {
+	urlPath := "/v2/{name}/manifests/{reference}"
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if reference == "" {
+		return nil, errors.New("parameter reference cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{reference}", url.PathEscape(reference))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Content-Type"] = []string{string(contentType)}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, req.SetBody(payload, string(contentType))
+}
+
+// uploadManifestHandleResponse handles the UploadManifest response.
+func (client *ContainerRegistryClient) uploadManifestHandleResponse(resp *http.Response) (ContainerRegistryClientUploadManifestResponse, error) {
+	result := ContainerRegistryClientUploadManifestResponse{}
+	if val := resp.Header.Get("Docker-Content-Digest"); val != "" {
+		result.DockerContentDigest = &val
+	}
+	if val := resp.Header.Get("Location"); val != "" {
+		result.Location = &val
+	}
+	if val := resp.Header.Get("Content-Length"); val != "" {
+		contentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return ContainerRegistryClientUploadManifestResponse{}, err
+		}
+		result.ContentLength = &contentLength
 	}
 	return result, nil
 }

@@ -105,6 +105,11 @@ func (bb *Client) generated() *generated.BlockBlobClient {
 	return blockBlob
 }
 
+func (bb *Client) innerBlobGenerated() *generated.BlobClient {
+	b := bb.BlobClient()
+	return base.InnerClient((*base.Client[generated.BlobClient])(b))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (bb *Client) URL() string {
 	return bb.generated().Endpoint()
@@ -289,8 +294,13 @@ func (bb *Client) SetTier(ctx context.Context, tier blob.AccessTier, o *blob.Set
 
 // SetExpiry operation sets an expiry time on an existing blob. This operation is only allowed on Hierarchical Namespace enabled accounts.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-expiry
-func (bb *Client) SetExpiry(ctx context.Context, expiryType blob.ExpiryType, o *blob.SetExpiryOptions) (blob.SetExpiryResponse, error) {
-	return bb.BlobClient().SetExpiry(ctx, expiryType, o)
+func (bb *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
+	if expiryType == nil {
+		expiryType = ExpiryTypeNever{}
+	}
+	et, opts := expiryType.Format(o)
+	resp, err := bb.innerBlobGenerated().SetExpiry(ctx, et, opts)
+	return resp, err
 }
 
 // GetProperties returns the blob's properties.

@@ -109,3 +109,6 @@ type UploadBufferResponse = uploadFromReaderResponse
 
 // UploadStreamResponse contains the response from method Client.CommitBlockList.
 type UploadStreamResponse = CommitBlockListResponse
+
+// SetExpiryResponse contains the response from method BlobClient.SetExpiry.
+type SetExpiryResponse = generated.BlobClientSetExpiryResponse

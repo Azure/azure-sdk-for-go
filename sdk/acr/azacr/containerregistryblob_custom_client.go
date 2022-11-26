@@ -8,7 +8,9 @@ package azacr
 
 import (
 	"context"
+	"crypto/sha256"
 	"errors"
+	"fmt"
 	"io"
 )
 
@@ -38,4 +40,10 @@ func (client *ContainerRegistryBlobClient) UploadBlob(ctx context.Context, name 
 		return UploadBlobResponse{}, errors.New("digest of blob to upload does not match the digest from the server")
 	}
 	return UploadBlobResponse{Digest: digest}, nil
+}
+
+// CalculateDigest - Calculate the digest of a manifest payload
+//   - payload - Manifest payload bytes
+func CalculateDigest(payload []byte) string {
+	return fmt.Sprintf("%x", sha256.Sum256(payload))
 }

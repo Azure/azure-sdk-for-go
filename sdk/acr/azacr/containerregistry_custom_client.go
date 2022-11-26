@@ -8,9 +8,7 @@ package azacr
 
 import (
 	"context"
-	"crypto/sha256"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -123,10 +121,4 @@ func (client *ContainerRegistryClient) UpdateManifestProperties(ctx context.Cont
 		return ContainerRegistryClientUpdateManifestPropertiesResponse{}, err
 	}
 	return client.updateManifestProperties(ctx, name, digest, options)
-}
-
-// CalculateDigest - Calculate the digest of a manifest payload
-//   - payload - Manifest payload bytes
-func CalculateDigest(payload []byte) string {
-	return fmt.Sprintf("%x", sha256.Sum256(payload))
 }

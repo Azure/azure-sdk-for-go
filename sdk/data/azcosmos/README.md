@@ -143,6 +143,13 @@ if err != nil {
 itemResponse, err = container.ReplaceItem(context, pk, id, marshalledReplace, nil)
 handle(err)
 
+// Patch an item
+patch := PatchOperations{}
+patch.AppendAdd("/newField", "newValue")
+patch.AppendRemove("/oldFieldToRemove")
+
+itemResponse, err := container.PatchItem(context.Background(), pk, id, patch, nil)
+
 // Delete an item
 itemResponse, err = container.DeleteItem(context, pk, id, nil)
 handle(err)

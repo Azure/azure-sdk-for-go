@@ -589,3 +589,63 @@ func TestContainerExecuteBatch(t *testing.T) {
 		t.Errorf("Expected %v, but got %v", string(marshalledOperations), request.body)
 	}
 }
+
+func TestContainerPatchItem(t *testing.T) {
+	jsonString := []byte(`{"id":"doc1","foo":"bar","hello":"world"}`)
+	patchOpt := PatchOperations{}
+	patchOpt.AppendSet("/hello", "world")
+
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	resp, err := container.PatchItem(context.TODO(), NewPartitionKeyString("1"), "doc1", patchOpt, nil)
+	if err != nil {
+		t.Fatalf("Failed to patch item: %v", err)
+	}
+
+	if string(resp.Value) != string(jsonString) {
+		t.Errorf("Expected value to be %s, but got %s", string(jsonString), string(resp.Value))
+	}
+
+	if resp.RawResponse == nil {
+		t.Fatal("RawResponse is nil")
+	}
+
+	if resp.ActivityID == "" {
+		t.Fatal("Activity id was not returned")
+	}
+
+	if resp.RequestCharge == 0 {
+		t.Fatal("Request charge was not returned")
+	}
+
+	if resp.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, resp.RequestCharge)
+	}
+
+	if resp.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", resp.ETag)
+	}
+
+	if verifier.requests[0].method != http.MethodPatch {
+		t.Errorf("Expected method to be %s, but got %s", http.MethodPatch, verifier.requests[0].method)
+	}
+
+	if verifier.requests[0].url.RequestURI() != "/dbs/databaseId/colls/containerId/docs/doc1" {
+		t.Errorf("Expected url to be %s, but got %s", "/dbs/databaseId/colls/containerId/docs/doc1", verifier.requests[0].url.RequestURI())
+	}
+}

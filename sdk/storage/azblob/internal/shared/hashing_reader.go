@@ -8,7 +8,7 @@ package shared
 
 import (
 	"bytes"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"hash/crc64"
 	"io"
 )
@@ -35,14 +35,14 @@ func (h *ReadWrapper) Close() error {
 	return nil
 }
 
-func NewReadWrapper(r io.ReadSeekCloser, validationOption exported.TransferValidationType) (*ReadWrapper, error) {
+func NewReadWrapper(r io.ReadSeekCloser, validationOption blob.TransferValidationType) (*ReadWrapper, error) {
 	buf, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}
 
 	var crc uint64
-	if validationOption&exported.TransferValidationTypeCRC64 == exported.TransferValidationTypeCRC64 {
+	if validationOption&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
 		crc = crc64.Checksum(buf, CRC64Table)
 	}
 

@@ -239,3 +239,10 @@ const (
 func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 	return generated.PossibleLeaseStatusTypeValues()
 }
+
+type TransferValidationType = exported.TransferValidationType
+
+const (
+	TransferValidationTypeNone  TransferValidationType = exported.TransferValidationTypeNone
+	TransferValidationTypeCRC64 TransferValidationType = exported.TransferValidationTypeCRC64
+)

@@ -157,14 +157,14 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 
 	opts, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
 
-	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidationOption != exported.TransferValidationTypeNone {
+	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidationOption != blob.TransferValidationTypeNone {
 		body, err = shared.NewReadWrapper(body, options.TransactionalValidationOption)
 
 		if err != nil {
 			return StageBlockResponse{}, err
 		}
 
-		if options.TransactionalValidationOption&exported.TransferValidationTypeCRC64 == exported.TransferValidationTypeCRC64 {
+		if options.TransactionalValidationOption&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
 			opts.TransactionalContentCRC64 = make([]byte, 8)
 			binary.LittleEndian.PutUint64(opts.TransactionalContentCRC64, (body.(*shared.ReadWrapper)).CRC64Hash())
 		}

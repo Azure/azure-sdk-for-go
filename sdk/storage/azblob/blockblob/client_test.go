@@ -13,7 +13,6 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"hash/crc64"
 	"io"
@@ -448,7 +447,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
-		TransactionalValidationOption: exported.TransferValidationTypeCRC64,
+		TransactionalValidationOption: blob.TransferValidationTypeCRC64,
 	})
 	_require.Nil(err)
 	// _require.Equal(putResp.RawResponse.StatusCode, 201)

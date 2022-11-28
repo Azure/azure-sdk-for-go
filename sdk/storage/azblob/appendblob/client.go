@@ -141,14 +141,14 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 
 	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
 
-	if o.TransactionalContentCRC64 == 0 && o.TransactionalValidationOption != exported.TransferValidationTypeNone {
+	if o.TransactionalContentCRC64 == 0 && o.TransactionalValidationOption != blob.TransferValidationTypeNone {
 		body, err = shared.NewReadWrapper(body, o.TransactionalValidationOption)
 
 		if err != nil {
 			return AppendBlockResponse{}, err
 		}
 
-		if o.TransactionalValidationOption&exported.TransferValidationTypeCRC64 == exported.TransferValidationTypeCRC64 {
+		if o.TransactionalValidationOption&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
 			appendOptions.TransactionalContentCRC64 = make([]byte, 8)
 			binary.LittleEndian.PutUint64(appendOptions.TransactionalContentCRC64, (body.(*shared.ReadWrapper)).CRC64Hash())
 		}

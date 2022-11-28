@@ -149,6 +149,7 @@ patch.AppendAdd("/newField", "newValue")
 patch.AppendRemove("/oldFieldToRemove")
 
 itemResponse, err := container.PatchItem(context.Background(), pk, id, patch, nil)
+handle(err)
 
 // Delete an item
 itemResponse, err = container.DeleteItem(context, pk, id, nil)

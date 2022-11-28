@@ -100,7 +100,7 @@ func (p *PatchOperations) AppendRemove(path string) {
 }
 
 // AppendIncrement appends an increment operation to the patch request.
-func (p *PatchOperations) AppendIncrement(path string, value int32) {
+func (p *PatchOperations) AppendIncrement(path string, value int64) {
 	p.operations = append(p.operations, patchOperation{
 		Op:    patchOperationTypeIncrement,
 		Path:  path,

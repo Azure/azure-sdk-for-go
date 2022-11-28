@@ -191,7 +191,7 @@ func Example_blockblob_SetExpiry() {
 	handleError(err)
 
 	// set expiry on block blob 4 hours relative to now
-	_, err = blockBlobClient.SetExpiry(context.TODO(), blob.ExpiryTypeRelativeToNow(4*time.Hour), nil)
+	_, err = blockBlobClient.SetExpiry(context.TODO(), blockblob.ExpiryTypeRelativeToNow(4*time.Hour), nil)
 	handleError(err)
 
 	// validate set expiry operation

@@ -9,6 +9,7 @@ package appendblob
 import (
 	"context"
 	"encoding/binary"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared/hashing"
 	"io"
 	"os"
 	"time"
@@ -155,16 +156,16 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 
 	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
 
-	if o.TransactionalContentCRC64 == 0 && o.TransactionalValidationOption != blob.TransferValidationTypeNone {
-		body, err = shared.NewReadWrapper(body, o.TransactionalValidationOption)
+	if o.TransactionalContentCRC64 == 0 && o.TransactionalValidation != blob.TransferValidationTypeNone {
+		body, err = hashing.NewReadWrapper(body, o.TransactionalValidation)
 
 		if err != nil {
 			return AppendBlockResponse{}, err
 		}
 
-		if o.TransactionalValidationOption&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
+		if o.TransactionalValidation&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
 			appendOptions.TransactionalContentCRC64 = make([]byte, 8)
-			binary.LittleEndian.PutUint64(appendOptions.TransactionalContentCRC64, (body.(*shared.ReadWrapper)).CRC64Hash())
+			binary.LittleEndian.PutUint64(appendOptions.TransactionalContentCRC64, (body.(*hashing.ReadWrapper)).CRC64Hash())
 		}
 	}
 

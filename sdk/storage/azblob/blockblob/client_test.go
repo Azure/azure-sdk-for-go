@@ -13,7 +13,7 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared/hashing"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -434,12 +434,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
-	contentCrc64 := crc64.Checksum(content, shared.CRC64Table)
+	contentCrc64 := crc64.Checksum(content, hashing.CRC64Table)
 	rsc := streaming.NopCloser(body)
 
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
-		TransactionalValidationOption: blob.TransferValidationTypeCRC64,
+		TransactionalValidation: blob.TransferValidationTypeCRC64,
 	})
 	_require.Nil(err)
 	// _require.Equal(putResp.RawResponse.StatusCode, 201)
@@ -462,7 +462,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	_require.Contains(err.Error(), bloberror.CRC64Mismatch)
 }
 
-//nolint
+// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1340,7 +1340,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}
 }
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnStageBlockFromURL() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnStageBlockFromURL() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2489,7 +2489,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 	}
 }
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithTags() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2597,7 +2597,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //	_require.EqualValues(destData, sourceData)
 // }
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithTags() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2786,7 +2786,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	}
 }
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	_context := getTestContext(testName)
@@ -2859,7 +2859,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 // }
 //
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsUsingAccountSAS() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsUsingAccountSAS() {
 //	accountName, accountKey := accountInfo()
 //	credential, err := NewSharedKeyCredential(accountName, accountKey)
 //	if err != nil {
@@ -3023,7 +3023,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 	_require.EqualValues(*getResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPK() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPK() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3140,7 +3140,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
 // }
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3395,7 +3395,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //	_require.EqualValues(actualBlobData, blobData)
 // }
 
-//func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlobBlobPropertiesWithCPKScope() {
+// func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlobBlobPropertiesWithCPKScope() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

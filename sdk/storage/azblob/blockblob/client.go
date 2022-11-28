@@ -12,6 +12,7 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared/hashing"
 	"io"
 	"os"
 	"sync"
@@ -171,16 +172,16 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 
 	opts, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
 
-	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidationOption != blob.TransferValidationTypeNone {
-		body, err = shared.NewReadWrapper(body, options.TransactionalValidationOption)
+	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidation != blob.TransferValidationTypeNone {
+		body, err = hashing.NewReadWrapper(body, options.TransactionalValidation)
 
 		if err != nil {
 			return StageBlockResponse{}, err
 		}
 
-		if options.TransactionalValidationOption&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
+		if options.TransactionalValidation&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
 			opts.TransactionalContentCRC64 = make([]byte, 8)
-			binary.LittleEndian.PutUint64(opts.TransactionalContentCRC64, (body.(*shared.ReadWrapper)).CRC64Hash())
+			binary.LittleEndian.PutUint64(opts.TransactionalContentCRC64, (body.(*hashing.ReadWrapper)).CRC64Hash())
 		}
 	}
 

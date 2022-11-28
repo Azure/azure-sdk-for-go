@@ -39,6 +39,7 @@ type PatchOperations struct {
 	operations []patchOperation
 }
 
+// MarshalJSON implements the json.Marshaler interface
 func (o PatchOperations) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
 	if o.condition != nil {

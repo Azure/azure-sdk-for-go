@@ -66,13 +66,13 @@ func settingFromGenerated(kv generated.KeyValue) Setting {
 	}
 }
 
-func (cs Setting) toGenerated() *generated.KeyValue {
+func (cs Setting) toGenerated() generated.KeyValue {
 	tags := make(map[string]*string)
 	for k, v := range cs.Tags {
 		tags[k] = &v
 	}
 
-	return &generated.KeyValue{
+	return generated.KeyValue{
 		ContentType:  cs.ContentType,
 		Etag:         (*string)(cs.ETag),
 		Key:          cs.Key,

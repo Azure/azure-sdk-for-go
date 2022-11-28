@@ -1,0 +1,28 @@
+matrix:
+  images:
+    go18:
+      image: Dockerfile
+      imageBuildDir: "../.."
+  scenarios:
+    constantDetach:
+      testTarget: constantDetach
+    constantDetachmentSender:
+      testTarget: constantDetachmentSender
+    finitePeeks:
+      testTarget: finitePeeks
+    finiteSendAndReceive:
+      testTarget: finiteSendAndReceive
+    idleFastReconnect:
+      testTarget: idleFastReconnect
+    infiniteSendAndReceive:
+      testTarget: infiniteSendAndReceive
+    longRunningRenewLock:
+      testTarget: longRunningRenewLock
+    mostlyIdleReceiver:
+      testTarget: mostlyIdleReceiver
+    rapidOpenClose:
+      testTarget: rapidOpenClose
+    receiveCancellation:
+      testTarget: receiveCancellation
+    sendAndReceiveDrain:
+      testTarget: sendAndReceiveDrain

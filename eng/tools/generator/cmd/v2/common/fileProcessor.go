@@ -43,6 +43,7 @@ type PackageInfo struct {
 	Config      string
 	SpecName    string
 	RequestLink string
+	ReleaseDate *time.Time
 }
 
 // reads from readme.go.md, parses the `track2` section to get module and package name
@@ -404,4 +405,15 @@ func UpdateOnboardChangelogVersion(packageRootPath, versionNumber string) error 
 	}
 
 	return nil
+}
+
+func GetAlwaysSetBodyParamRequiredFlag(path string) (string, error) {
+	buildGo, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	if strings.Contains(string(buildGo), "-alwaysSetBodyParamRequired") {
+		return "-alwaysSetBodyParamRequired", nil
+	}
+	return "", nil
 }

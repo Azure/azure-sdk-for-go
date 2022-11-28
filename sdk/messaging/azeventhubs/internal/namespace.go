@@ -43,7 +43,7 @@ type (
 		tlsConfig     *tls.Config
 		userAgent     string
 
-		newWebSocketConn func(ctx context.Context, args exported.WebSocketConnArgs) (net.Conn, error)
+		newWebSocketConn func(ctx context.Context, args exported.WebSocketConnParams) (net.Conn, error)
 
 		// NOTE: exported only so it can be checked in a test
 		RetryOptions exported.RetryOptions
@@ -74,7 +74,7 @@ type NamespaceForAMQPLinks interface {
 	NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error)
 	NewRPCLink(ctx context.Context, managementPath string) (RPCLink, uint64, error)
 	GetEntityAudience(entityPath string) string
-	Recover(ctx context.Context, clientRevision uint64) (bool, error)
+	Recover(ctx context.Context, clientRevision uint64) error
 	Close(ctx context.Context, permanently bool) error
 }
 
@@ -117,7 +117,7 @@ func NamespaceWithUserAgent(userAgent string) NamespaceOption {
 }
 
 // NamespaceWithWebSocket configures the namespace and all entities to use wss:// rather than amqps://
-func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, args exported.WebSocketConnArgs) (net.Conn, error)) NamespaceOption {
+func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, args exported.WebSocketConnParams) (net.Conn, error)) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.newWebSocketConn = newWebSocketConn
 		return nil
@@ -175,7 +175,7 @@ func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, er
 	}
 
 	if ns.newWebSocketConn != nil {
-		nConn, err := ns.newWebSocketConn(ctx, exported.WebSocketConnArgs{
+		nConn, err := ns.newWebSocketConn(ctx, exported.WebSocketConnParams{
 			Host: ns.getWSSHostURI() + "$servicebus/websocket",
 		})
 
@@ -243,25 +243,21 @@ func (ns *Namespace) Check() error {
 var ErrClientClosed = NewErrNonRetriable("client has been closed by user")
 
 // Recover destroys the currently held AMQP connection and recreates it, if needed.
-// If a new is actually created (rather than just cached) then the returned bool
-// will be true. Any links that were created from the original connection will need to
-// be recreated.
-func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, error) {
+func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
 	if err := ns.Check(); err != nil {
-		return false, err
+		return err
 	}
 
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
 
 	if ns.closedPermanently {
-		return false, ErrClientClosed
+		return ErrClientClosed
 	}
 
 	if ns.connID != theirConnID {
-		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d", ns.connID, theirConnID)
-		// we've already recovered since the client last tried.
-		return false, nil
+		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d. Links will still be recovered.", ns.connID, theirConnID)
+		return nil
 	}
 
 	if ns.client != nil {
@@ -275,10 +271,10 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 	log.Writef(exported.EventConn, "Creating a new client (rev:%d)", ns.connID)
 
 	if _, _, err := ns.updateClientWithoutLock(ctx); err != nil {
-		return false, err
+		return err
 	}
 
-	return true, nil
+	return nil
 }
 
 // negotiateClaim performs initial authentication and starts periodic refresh of credentials.
@@ -329,7 +325,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 			// Note we only handle connection recovery here since (currently)
 			// the negotiateClaim code creates it's own link each time.
 			if GetRecoveryKind(err) == RecoveryKindConn {
-				if _, err := ns.Recover(ctx, clientRevision); err != nil {
+				if err := ns.Recover(ctx, clientRevision); err != nil {
 					log.Writef(exported.EventAuth, "(%s) negotiate claim, failed in connection recovery: %s", entityPath, err)
 				}
 			}

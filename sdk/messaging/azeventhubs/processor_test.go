@@ -373,7 +373,7 @@ func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClie
 				ctr++
 			}
 
-			err = producerClient.SendEventBatch(context.Background(), batch, nil)
+			err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
 		}
 	}()
@@ -386,7 +386,7 @@ func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClie
 		receiveCtxCancel()
 
 		if err != nil && !errors.Is(err, context.DeadlineExceeded) {
-			if eventHubError := (*azeventhubs.Error)(nil); errors.As(err, &eventHubError) && eventHubError.Code == exported.CodeOwnershipLost {
+			if eventHubError := (*azeventhubs.Error)(nil); errors.As(err, &eventHubError) && eventHubError.Code == exported.ErrorCodeOwnershipLost {
 				fmt.Printf("Partition %s was stolen\n", partitionClient.PartitionID())
 			}
 

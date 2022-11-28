@@ -96,6 +96,16 @@ type ApplicationGatewayPrivateLinkResourcesClientListResponse struct {
 	ApplicationGatewayPrivateLinkResourceListResult
 }
 
+// ApplicationGatewayWafDynamicManifestsClientGetResponse contains the response from method ApplicationGatewayWafDynamicManifestsClient.Get.
+type ApplicationGatewayWafDynamicManifestsClientGetResponse struct {
+	ApplicationGatewayWafDynamicManifestResultList
+}
+
+// ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse contains the response from method ApplicationGatewayWafDynamicManifestsDefaultClient.Get.
+type ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse struct {
+	ApplicationGatewayWafDynamicManifestResult
+}
+
 // ApplicationGatewaysClientBackendHealthOnDemandResponse contains the response from method ApplicationGatewaysClient.BackendHealthOnDemand.
 type ApplicationGatewaysClientBackendHealthOnDemandResponse struct {
 	ApplicationGatewayBackendHealthOnDemand
@@ -1746,6 +1756,11 @@ type PublicIPAddressesClientCreateOrUpdateResponse struct {
 	PublicIPAddress
 }
 
+// PublicIPAddressesClientDdosProtectionStatusResponse contains the response from method PublicIPAddressesClient.DdosProtectionStatus.
+type PublicIPAddressesClientDdosProtectionStatusResponse struct {
+	PublicIPDdosProtectionStatusResult
+}
+
 // PublicIPAddressesClientDeleteResponse contains the response from method PublicIPAddressesClient.Delete.
 type PublicIPAddressesClientDeleteResponse struct {
 	// placeholder for future response values
@@ -1884,6 +1899,26 @@ type RouteFiltersClientListResponse struct {
 // RouteFiltersClientUpdateTagsResponse contains the response from method RouteFiltersClient.UpdateTags.
 type RouteFiltersClientUpdateTagsResponse struct {
 	RouteFilter
+}
+
+// RouteMapsClientCreateOrUpdateResponse contains the response from method RouteMapsClient.CreateOrUpdate.
+type RouteMapsClientCreateOrUpdateResponse struct {
+	RouteMap
+}
+
+// RouteMapsClientDeleteResponse contains the response from method RouteMapsClient.Delete.
+type RouteMapsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RouteMapsClientGetResponse contains the response from method RouteMapsClient.Get.
+type RouteMapsClientGetResponse struct {
+	RouteMap
+}
+
+// RouteMapsClientListResponse contains the response from method RouteMapsClient.List.
+type RouteMapsClientListResponse struct {
+	ListRouteMapsResult
 }
 
 // RouteTablesClientCreateOrUpdateResponse contains the response from method RouteTablesClient.CreateOrUpdate.
@@ -2416,6 +2451,21 @@ type VPNSitesConfigurationClientDownloadResponse struct {
 	// placeholder for future response values
 }
 
+// VipSwapClientCreateResponse contains the response from method VipSwapClient.Create.
+type VipSwapClientCreateResponse struct {
+	// placeholder for future response values
+}
+
+// VipSwapClientGetResponse contains the response from method VipSwapClient.Get.
+type VipSwapClientGetResponse struct {
+	SwapResource
+}
+
+// VipSwapClientListResponse contains the response from method VipSwapClient.List.
+type VipSwapClientListResponse struct {
+	SwapResourceListResult
+}
+
 // VirtualApplianceSKUsClientGetResponse contains the response from method VirtualApplianceSKUsClient.Get.
 type VirtualApplianceSKUsClientGetResponse struct {
 	VirtualApplianceSKU
@@ -2558,6 +2608,16 @@ type VirtualHubsClientDeleteResponse struct {
 
 // VirtualHubsClientGetEffectiveVirtualHubRoutesResponse contains the response from method VirtualHubsClient.GetEffectiveVirtualHubRoutes.
 type VirtualHubsClientGetEffectiveVirtualHubRoutesResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualHubsClientGetInboundRoutesResponse contains the response from method VirtualHubsClient.GetInboundRoutes.
+type VirtualHubsClientGetInboundRoutesResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualHubsClientGetOutboundRoutesResponse contains the response from method VirtualHubsClient.GetOutboundRoutes.
+type VirtualHubsClientGetOutboundRoutesResponse struct {
 	// placeholder for future response values
 }
 
@@ -2884,6 +2944,11 @@ type VirtualNetworksClientGetResponse struct {
 // VirtualNetworksClientListAllResponse contains the response from method VirtualNetworksClient.ListAll.
 type VirtualNetworksClientListAllResponse struct {
 	VirtualNetworkListResult
+}
+
+// VirtualNetworksClientListDdosProtectionStatusResponse contains the response from method VirtualNetworksClient.ListDdosProtectionStatus.
+type VirtualNetworksClientListDdosProtectionStatusResponse struct {
+	VirtualNetworkDdosProtectionStatusResult
 }
 
 // VirtualNetworksClientListResponse contains the response from method VirtualNetworksClient.List.

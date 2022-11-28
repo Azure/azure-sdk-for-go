@@ -9,6 +9,8 @@ package blockblob
 import (
 	"encoding/binary"
 	"fmt"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
@@ -39,10 +41,13 @@ type UploadOptions struct {
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
-	HTTPHeaders      *blob.HTTPHeaders
-	CpkInfo          *blob.CpkInfo
-	CpkScopeInfo     *blob.CpkScopeInfo
-	AccessConditions *blob.AccessConditions
+	HTTPHeaders                  *blob.HTTPHeaders
+	CpkInfo                      *blob.CpkInfo
+	CpkScopeInfo                 *blob.CpkScopeInfo
+	AccessConditions             *blob.AccessConditions
+	LegalHold                    *bool
+	ImmutabilityPolicyMode       *blob.ImmutabilityPolicySetting
+	ImmutabilityPolicyExpiryTime *time.Time
 }
 
 func (o *UploadOptions) format() (*generated.BlockBlobClientUploadOptions, *generated.BlobHTTPHeaders, *generated.LeaseAccessConditions,
@@ -52,10 +57,13 @@ func (o *UploadOptions) format() (*generated.BlockBlobClientUploadOptions, *gene
 	}
 
 	basics := generated.BlockBlobClientUploadOptions{
-		BlobTagsString:          shared.SerializeBlobTagsToStrPtr(o.Tags),
-		Metadata:                o.Metadata,
-		Tier:                    o.Tier,
-		TransactionalContentMD5: o.TransactionalContentMD5,
+		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
+		Metadata:                 o.Metadata,
+		Tier:                     o.Tier,
+		TransactionalContentMD5:  o.TransactionalContentMD5,
+		LegalHold:                o.LegalHold,
+		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
+		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiryTime,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
@@ -145,17 +153,20 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 
 // CommitBlockListOptions contains the optional parameters for Client.CommitBlockList method.
 type CommitBlockListOptions struct {
-	Tags                      map[string]string
-	Metadata                  map[string]string
-	RequestID                 *string
-	Tier                      *blob.AccessTier
-	Timeout                   *int32
-	TransactionalContentCRC64 []byte
-	TransactionalContentMD5   []byte
-	HTTPHeaders               *blob.HTTPHeaders
-	CpkInfo                   *blob.CpkInfo
-	CpkScopeInfo              *blob.CpkScopeInfo
-	AccessConditions          *blob.AccessConditions
+	Tags                         map[string]string
+	Metadata                     map[string]string
+	RequestID                    *string
+	Tier                         *blob.AccessTier
+	Timeout                      *int32
+	TransactionalContentCRC64    []byte
+	TransactionalContentMD5      []byte
+	HTTPHeaders                  *blob.HTTPHeaders
+	CpkInfo                      *blob.CpkInfo
+	CpkScopeInfo                 *blob.CpkScopeInfo
+	AccessConditions             *blob.AccessConditions
+	LegalHold                    *bool
+	ImmutabilityPolicyMode       *blob.ImmutabilityPolicySetting
+	ImmutabilityPolicyExpiryTime *time.Time
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -268,7 +279,7 @@ type UploadStreamOptions struct {
 	transferMangerNotSet bool
 
 	// BlockSize defines the size of the buffer used during upload. The default and mimimum value is 1 MiB.
-	BlockSize int
+	BlockSize int64
 
 	// Concurrency defines the number of concurrent uploads to be performed to upload the file.
 	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.

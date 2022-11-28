@@ -255,7 +255,6 @@ func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByFactoryPager - Lists managed private endpoints.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.

@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerDelete.json
 func ExampleLoadBalancersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,8 +38,8 @@ func ExampleLoadBalancersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerGet.json
-func ExampleLoadBalancersClient_Get_loadBalancerGet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerGet.json
+func ExampleLoadBalancersClient_Get_getLoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,8 +57,8 @@ func ExampleLoadBalancersClient_Get_loadBalancerGet() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerGetInboundNatRulePortMapping.json
-func ExampleLoadBalancersClient_Get_loadBalancerGetInboundNatRulePortMapping() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerGetInboundNatRulePortMapping.json
+func ExampleLoadBalancersClient_Get_getLoadBalancerWithInboundNatRulePortMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -76,8 +76,8 @@ func ExampleLoadBalancersClient_Get_loadBalancerGetInboundNatRulePortMapping() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerCreate.json
-func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreate.json
+func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -149,6 +149,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreate() {
 						IntervalInSeconds: to.Ptr[int32](15),
 						NumberOfProbes:    to.Ptr[int32](2),
 						Port:              to.Ptr[int32](80),
+						ProbeThreshold:    to.Ptr[int32](1),
 						RequestPath:       to.Ptr("healthcheck.aspx"),
 						Protocol:          to.Ptr(armnetwork.ProbeProtocolHTTP),
 					},
@@ -166,8 +167,8 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerCreateWithZones.json
-func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateWithZones() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateWithZones.json
+func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithFrontendIpInZone1() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -240,6 +241,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateWithZones(
 						IntervalInSeconds: to.Ptr[int32](15),
 						NumberOfProbes:    to.Ptr[int32](2),
 						Port:              to.Ptr[int32](80),
+						ProbeThreshold:    to.Ptr[int32](1),
 						RequestPath:       to.Ptr("healthcheck.aspx"),
 						Protocol:          to.Ptr(armnetwork.ProbeProtocolHTTP),
 					},
@@ -260,8 +262,8 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateWithZones(
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerCreateGatewayLoadBalancerConsumer.json
-func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGatewayLoadBalancerConsumer() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateGatewayLoadBalancerConsumer.json
+func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerConsumerConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -335,6 +337,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGatewayLoa
 						IntervalInSeconds: to.Ptr[int32](15),
 						NumberOfProbes:    to.Ptr[int32](2),
 						Port:              to.Ptr[int32](80),
+						ProbeThreshold:    to.Ptr[int32](1),
 						RequestPath:       to.Ptr("healthcheck.aspx"),
 						Protocol:          to.Ptr(armnetwork.ProbeProtocolHTTP),
 					},
@@ -355,8 +358,8 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGatewayLoa
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
-func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
+func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithOneBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -428,6 +431,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGatewayLoa
 						IntervalInSeconds: to.Ptr[int32](15),
 						NumberOfProbes:    to.Ptr[int32](2),
 						Port:              to.Ptr[int32](80),
+						ProbeThreshold:    to.Ptr[int32](1),
 						RequestPath:       to.Ptr("healthcheck.aspx"),
 						Protocol:          to.Ptr(armnetwork.ProbeProtocolHTTP),
 					},
@@ -448,8 +452,8 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGatewayLoa
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
-func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
+func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithTwoBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -515,6 +519,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGatewayLoa
 						IntervalInSeconds: to.Ptr[int32](15),
 						NumberOfProbes:    to.Ptr[int32](2),
 						Port:              to.Ptr[int32](80),
+						ProbeThreshold:    to.Ptr[int32](1),
 						RequestPath:       to.Ptr("healthcheck.aspx"),
 						Protocol:          to.Ptr(armnetwork.ProbeProtocolHTTP),
 					},
@@ -535,8 +540,8 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGatewayLoa
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerCreateGlobalTier.json
-func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGlobalTier() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateGlobalTier.json
+func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGlobalTierAndOneRegionalLoadBalancerInItsBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -601,6 +606,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGlobalTier
 						IntervalInSeconds: to.Ptr[int32](15),
 						NumberOfProbes:    to.Ptr[int32](2),
 						Port:              to.Ptr[int32](80),
+						ProbeThreshold:    to.Ptr[int32](1),
 						RequestPath:       to.Ptr("healthcheck.aspx"),
 						Protocol:          to.Ptr(armnetwork.ProbeProtocolHTTP),
 					},
@@ -622,8 +628,8 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateGlobalTier
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerCreateStandardSku.json
-func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateStandardSku() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateStandardSku.json
+func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithStandardSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -694,6 +700,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateStandardSk
 						IntervalInSeconds: to.Ptr[int32](15),
 						NumberOfProbes:    to.Ptr[int32](2),
 						Port:              to.Ptr[int32](80),
+						ProbeThreshold:    to.Ptr[int32](1),
 						RequestPath:       to.Ptr("healthcheck.aspx"),
 						Protocol:          to.Ptr(armnetwork.ProbeProtocolHTTP),
 					},
@@ -714,8 +721,8 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateStandardSk
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerCreateWithInboundNatPool.json
-func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateWithInboundNatPool() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateWithInboundNatPool.json
+func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithInboundNatPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -778,8 +785,8 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateWithInboun
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerCreateWithOutboundRules.json
-func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateWithOutboundRules() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateWithOutboundRules.json
+func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithOutboundRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -864,6 +871,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateWithOutbou
 						IntervalInSeconds: to.Ptr[int32](15),
 						NumberOfProbes:    to.Ptr[int32](2),
 						Port:              to.Ptr[int32](80),
+						ProbeThreshold:    to.Ptr[int32](1),
 						RequestPath:       to.Ptr("healthcheck.aspx"),
 						Protocol:          to.Ptr(armnetwork.ProbeProtocolHTTP),
 					},
@@ -884,7 +892,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_loadBalancerCreateWithOutbou
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerUpdateTags.json
 func ExampleLoadBalancersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -908,7 +916,7 @@ func ExampleLoadBalancersClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerListAll.json
 func ExampleLoadBalancersClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -932,7 +940,7 @@ func ExampleLoadBalancersClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerList.json
 func ExampleLoadBalancersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -956,7 +964,7 @@ func ExampleLoadBalancersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancersSwapPublicIpAddresses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancersSwapPublicIpAddresses.json
 func ExampleLoadBalancersClient_BeginSwapPublicIPAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -995,7 +1003,7 @@ func ExampleLoadBalancersClient_BeginSwapPublicIPAddresses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/QueryInboundNatRulePortMapping.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/QueryInboundNatRulePortMapping.json
 func ExampleLoadBalancersClient_BeginListInboundNatRulePortMappings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

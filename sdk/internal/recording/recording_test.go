@@ -378,6 +378,15 @@ func (s *recordingTests) TearDownSuite() {
 	}
 }
 
+func TestGetEnvVariable(t *testing.T) {
+	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
+	temp := recordMode
+	recordMode = RecordingMode
+	t.Setenv("TEST_VARIABLE", "expected")
+	require.Equal(t, "expected", GetEnvVariable("TEST_VARIABLE", "unexpected"))
+	recordMode = temp
+}
+
 func TestRecordingOptions(t *testing.T) {
 	r := RecordingOptions{
 		UseHTTPS: true,
@@ -386,18 +395,6 @@ func TestRecordingOptions(t *testing.T) {
 
 	r.UseHTTPS = false
 	require.Equal(t, r.baseURL(), "http://localhost:5000")
-
-	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
-	temp := recordMode
-	recordMode = RecordingMode
-	require.NotEqual(t, GetEnvVariable("PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
-	recordMode = temp
-
-	r.UseHTTPS = false
-	require.Equal(t, r.baseURL(), "http://localhost:5000")
-
-	r.UseHTTPS = true
-	require.Equal(t, r.baseURL(), "https://localhost:5001")
 }
 
 var packagePath = "sdk/internal/recording/testdata"
@@ -550,6 +547,69 @@ func TestHostAndScheme(t *testing.T) {
 	require.Equal(t, r.host(), "localhost:5000")
 }
 
+func TestGitRootDetection(t *testing.T) {
+	cwd, err := os.Getwd()
+	require.NoError(t, err)
+	gitRoot, err := getGitRoot(cwd)
+	require.NoError(t, err)
+
+	parentDir := filepath.Dir(gitRoot)
+	_, err = getGitRoot(parentDir)
+	require.Error(t, err)
+}
+
+func TestRecordingAssetConfigNotExist(t *testing.T) {
+	absPath, relPath, err := getAssetsConfigLocation(".")
+	require.NoError(t, err)
+	require.Equal(t, "", absPath)
+	require.Equal(t, "", relPath)
+}
+
+func TestRecordingAssetConfigOutOfBounds(t *testing.T) {
+	cwd, err := os.Getwd()
+	require.NoError(t, err)
+	gitRoot, err := getGitRoot(cwd)
+	require.NoError(t, err)
+	parentDir := filepath.Dir(gitRoot)
+
+	absPath, err := findAssetsConfigFile(parentDir, gitRoot)
+	require.NoError(t, err)
+	require.Equal(t, "", absPath)
+}
+
+func TestRecordingAssetConfig(t *testing.T) {
+	cases := []struct{ expectedDirectory, searchDirectory, testFileLocation string }{
+		{"sdk/internal/recording", "sdk/internal/recording", recordingAssetConfigName},
+		{"sdk/internal/recording", "sdk/internal/recording/", recordingAssetConfigName},
+		{"sdk/internal", "sdk/internal/recording", "../" + recordingAssetConfigName},
+		{"sdk/internal", "sdk/internal/recording/", "../" + recordingAssetConfigName},
+	}
+
+	cwd, err := os.Getwd()
+	require.NoError(t, err)
+	gitRoot, err := getGitRoot(cwd)
+	require.NoError(t, err)
+
+	for _, c := range cases {
+		_ = os.Remove(c.testFileLocation)
+		o, err := os.Create(c.testFileLocation)
+		require.NoError(t, err)
+		o.Close()
+
+		absPath, relPath, err := getAssetsConfigLocation(c.searchDirectory)
+		// Clean up first in case of an assertion panic
+		require.NoError(t, os.Remove(c.testFileLocation))
+		require.NoError(t, err)
+
+		expected := c.expectedDirectory + string(os.PathSeparator) + recordingAssetConfigName
+		expected = strings.ReplaceAll(expected, "/", string(os.PathSeparator))
+		require.Equal(t, expected, relPath)
+
+		absPathExpected := filepath.Join(gitRoot, expected)
+		require.Equal(t, absPathExpected, absPath)
+	}
+}
+
 func TestFindProxyCertLocation(t *testing.T) {
 	savedValue, ok := os.LookupEnv("PROXY_CERT")
 	if ok {
@@ -613,4 +673,23 @@ func TestVariables(t *testing.T) {
 		err = os.Remove(jsonFile.Name())
 		require.NoError(t, err)
 	}()
+}
+
+func TestRace(t *testing.T) {
+	temp := recordMode
+	recordMode = LiveMode
+	t.Cleanup(func() { recordMode = temp })
+	for i := 0; i < 4; i++ {
+		t.Run("", func(t *testing.T) {
+			t.Parallel()
+			err := Start(t, "", nil)
+			require.NoError(t, err)
+			GetRecordingId(t)
+			GetVariables(t)
+			IsLiveOnly(t)
+			err = Stop(t, nil)
+			require.NoError(t, err)
+			LiveOnly(t)
+		})
+	}
 }

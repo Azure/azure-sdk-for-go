@@ -88,3 +88,55 @@ func ExampleConsumerClient_GetPartitionProperties() {
 	fmt.Printf("First sequence number for partition ID %s: %d\n", partitionProps.PartitionID, partitionProps.BeginningSequenceNumber)
 	fmt.Printf("Last sequence number for partition ID %s: %d\n", partitionProps.PartitionID, partitionProps.LastEnqueuedSequenceNumber)
 }
+
+func ExampleConsumerClient_NewPartitionClient_configuringPrefetch() {
+	const partitionID = "0"
+
+	// Prefetching configures the Event Hubs client to continually cache events, up to the configured size
+	// in PartitionClientOptions.Prefetch. PartitionClient.ReceiveEvents will read from the cache first,
+	// which can speed up throughput in situations where you might normally be forced to request and wait
+	// for more events.
+
+	// By default, prefetch is enabled.
+	partitionClient, err := consumerClient.NewPartitionClient(partitionID, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer partitionClient.Close(context.TODO())
+
+	// You can configure the prefetch buffer size as well. The default is 300.
+	partitionClientWithCustomPrefetch, err := consumerClient.NewPartitionClient(partitionID, &azeventhubs.PartitionClientOptions{
+		Prefetch: 301,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer partitionClientWithCustomPrefetch.Close(context.TODO())
+
+	// And prefetch can be disabled if you prefer to manually control the flow of events. Excess
+	// events (that arrive after your ReceiveEvents() call has completed) will still be
+	// buffered internally, but they will not be automatically replenished.
+	partitionClientWithPrefetchDisabled, err := consumerClient.NewPartitionClient(partitionID, &azeventhubs.PartitionClientOptions{
+		Prefetch: -1,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer partitionClientWithPrefetchDisabled.Close(context.TODO())
+
+	events, err := partitionClient.ReceiveEvents(context.TODO(), 100, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	for _, evt := range events {
+		fmt.Printf("Body: %s\n", string(evt.Body))
+	}
+}

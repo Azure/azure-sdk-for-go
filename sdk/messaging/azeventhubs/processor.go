@@ -73,8 +73,8 @@ type StartPositions struct {
 // load balancing between multiple Processor instances, even in separate
 // processes or on separate machines.
 //
-// See [example_processor_test.go] for an example of typical usage or Run
-// for a more detailed description of how load balancing works.
+// See [example_processor_test.go] for an example, and the function documentation
+// for [Run] for a more detailed description of how load balancing works.
 //
 // [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
 type Processor struct {
@@ -187,9 +187,16 @@ func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartition
 // Run handles the load balancing loop, blocking until the passed in context is cancelled
 // or it encounters an unrecoverable error. On cancellation, it will return a nil error.
 //
+// This function should run for the lifetime of your application, or for as long as you want
+// to continue to claim partitions.
+//
 // As partitions are claimed new [ProcessorPartitionClient] instances will be returned from
 // [Processor.NextPartitionClient]. This can happen at any time, based on new Processor instances
 // coming online, as well as other Processors exiting.
+//
+// [ProcessorPartitionClient] are used like a [PartitionClient] but provide an [ProcessorPartitionClient.UpdateCheckpoint]
+// function that will store a checkpoint into the CheckpointStore. If the client were to crash, or be restarted
+// it will pick up from that point.
 //
 // See [example_processor_test.go] for an example of typical usage.
 //

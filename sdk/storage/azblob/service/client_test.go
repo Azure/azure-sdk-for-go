@@ -9,7 +9,9 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -74,7 +76,6 @@ func (s *ServiceRecordedTestsSuite) TestGetAccountInfo() {
 	_require.NotZero(sAccInfo)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -95,7 +96,6 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -156,7 +156,6 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -458,7 +457,6 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall
 	_require.NotNil(err)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 	_require := require.New(s.T())
 	var svcClient *service.Client
@@ -611,60 +609,8 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
 }
 
-/*func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
-
-	optsClientID := azidentity.ManagedIdentityCredentialOptions{ID: azidentity.ClientID("cf482fac-3a0b-11ed-a261-0242ac120002")}
-	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
-	_require.Nil(err)
-
-	svcClient, err := azblob.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &azblob.ClientOptions{})
-	_require.Nil(err)
-
-	// Set current and past time, create KeyInfo
-	currentTime := time.Now().UTC().Add(-10 * time.Second)
-	pastTime := currentTime.Add(48 * time.Hour)
-	_require.Nil(err)
-	info := generated.KeyInfo{
-		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
-		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
-	}
-
-	// Get UserDelegationCredential
-	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
-	_require.Nil(err)
-
-	csas, err := sas.AccountSignatureValues{
-		Protocol:      sas.ProtocolHTTPS,
-		ExpiryTime:    pastTime.UTC(),
-		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
-		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.SignWithUserDelegation(udc)
-	_require.Nil(err)
-
-	sasURL := svcClient.URL()
-	if !strings.HasSuffix(sasURL, "/") {
-		sasURL += "/"
-	}
-	sasURL += "?" + csas.Encode()
-
-	containerName := testcommon.GenerateContainerName(testName)
-	sc, err := service.NewClientWithNoCredential(sasURL, nil)
-	_require.Nil(err)
-
-	_, err = sc.CreateContainer(context.Background(), containerName+"002", nil)
-	_require.Nil(err)
-
-	_, err = sc.DeleteContainer(context.Background(), containerName+"002", nil)
-	_require.Nil(err)
-}*/
-
 // make sure that container soft delete is enabled
-// TODO: convert this test to recorded
-func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
+func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
 	_require.NoError(err)
@@ -706,12 +652,23 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
 
 	_require.Equal(contRestored, true)
 
-	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	for i := 0; i < 5; i++ {
+		_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+		if err == nil {
+			// container was deleted
+			break
+		} else if bloberror.HasCode(err, bloberror.Code("ConcurrentContainerOperationInProgress")) {
+			// the container is still being restored, sleep a bit then try again
+			time.Sleep(10 * time.Second)
+		} else {
+			// some other error
+			break
+		}
+	}
+	_require.NoError(err)
 }
 
-// TODO: convert this test to recorded
-func (s *ServiceUnrecordedTestsSuite) TestContainerRestoreFailures() {
+func (s *ServiceRecordedTestsSuite) TestContainerRestoreFailures() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -724,4 +681,63 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestoreFailures() {
 
 	_, err = svcClient.RestoreContainer(context.Background(), "", "", &service.RestoreContainerOptions{})
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+
+	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC(),
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.BlobPermissions{Read: true, Create: true, Write: true, Tag: true}).String(),
+		ContainerName: containerName,
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	sasURL := svcClient.URL()
+	if len(sasURL) > 0 && sasURL[len(sasURL)-1:] != "/" {
+		sasURL += "/"
+	}
+	sasURL += "?" + sasQueryParams.Encode()
+
+	azClient, err := azblob.NewClientWithNoCredential(sasURL, nil)
+	_require.Nil(err)
+
+	const blobData = "test data"
+	blobName := testcommon.GenerateBlobName(testName)
+	_, err = azClient.UploadStream(context.TODO(),
+		containerName,
+		blobName,
+		strings.NewReader(blobData),
+		&azblob.UploadStreamOptions{
+			Metadata: map[string]string{"Foo": "Bar"},
+			Tags:     map[string]string{"Year": "2022"},
+		})
+	_require.Nil(err)
+
+	blobDownloadResponse, err := azClient.DownloadStream(context.TODO(), containerName, blobName, nil)
+	_require.Nil(err)
+
+	reader := blobDownloadResponse.Body
+	downloadData, err := io.ReadAll(reader)
+	_require.Nil(err)
+	_require.Equal(string(downloadData), blobData)
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	err = reader.Close()
+	_require.Nil(err)
 }

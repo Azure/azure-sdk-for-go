@@ -49,10 +49,10 @@ type BatchQueryResults struct {
 	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Visualization data in JSON format.
-	Render interface{} `json:"render,omitempty"`
+	Render []byte `json:"render,omitempty"`
 
 	// Statistics represented in JSON format.
-	Statistics interface{} `json:"statistics,omitempty"`
+	Statistics []byte `json:"statistics,omitempty"`
 
 	// The list of tables, columns and rows.
 	Tables []*Table `json:"tables,omitempty"`
@@ -92,45 +92,6 @@ type Column struct {
 	Type *LogsColumnType `json:"type,omitempty"`
 }
 
-// ErrorDetail - Error details.
-type ErrorDetail struct {
-	// REQUIRED; The error's code.
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
-
-	// Additional properties that can be provided on the error details object
-	AdditionalProperties interface{} `json:"additionalProperties,omitempty"`
-
-	// Indicates resources which were responsible for the error.
-	Resources []*string `json:"resources,omitempty"`
-
-	// Indicates which property in the request is responsible for the error.
-	Target *string `json:"target,omitempty"`
-
-	// Indicates which value in 'target' is responsible for the error.
-	Value *string `json:"value,omitempty"`
-}
-
-// ErrorInfo - The code and message for an error.
-type ErrorInfo struct {
-	// REQUIRED; A machine readable error code.
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
-
-	// Additional properties that can be provided on the error info object
-	AdditionalProperties interface{} `json:"additionalProperties,omitempty"`
-
-	// error details.
-	Details []*ErrorDetail `json:"details,omitempty"`
-
-	// Inner error details if they exist.
-	Innererror *ErrorInfo `json:"innererror,omitempty"`
-}
-
 // LocalizableString - The localizable string class.
 type LocalizableString struct {
 	// REQUIRED; the invariant value.
@@ -140,8 +101,8 @@ type LocalizableString struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
-// LogsClientBatchOptions contains the optional parameters for the LogsClient.Batch method.
-type LogsClientBatchOptions struct {
+// LogsClientQueryBatchOptions contains the optional parameters for the LogsClient.QueryBatch method.
+type LogsClientQueryBatchOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -297,15 +258,14 @@ type MetricValue struct {
 	Total *float64 `json:"total,omitempty"`
 }
 
-// MetricsClientListMetricDefinitionsOptions contains the optional parameters for the MetricsClient.ListMetricDefinitions
-// method.
-type MetricsClientListMetricDefinitionsOptions struct {
+// MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.ListDefinitions method.
+type MetricsClientListDefinitionsOptions struct {
 	// Metric namespace to query metric definitions for.
 	Metricnamespace *string
 }
 
-// MetricsClientListMetricNamespacesOptions contains the optional parameters for the MetricsClient.ListMetricNamespaces method.
-type MetricsClientListMetricNamespacesOptions struct {
+// MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.ListNamespaces method.
+type MetricsClientListNamespacesOptions struct {
 	// The ISO 8601 conform Date start time from which to query for metric namespaces.
 	StartTime *string
 }
@@ -377,22 +337,10 @@ type Results struct {
 	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Visualization data in JSON format.
-	Render interface{} `json:"render,omitempty"`
+	Render []byte `json:"render,omitempty"`
 
 	// Statistics represented in JSON format.
-	Statistics interface{} `json:"statistics,omitempty"`
-}
-
-// Table - Contains the columns and rows for one table in a query response.
-type Table struct {
-	// REQUIRED; The list of columns in this table.
-	Columns []*Column `json:"columns,omitempty"`
-
-	// REQUIRED; The name of the table.
-	Name *string `json:"name,omitempty"`
-
-	// REQUIRED; The resulting rows from this query.
-	Rows [][]interface{} `json:"rows,omitempty"`
+	Statistics []byte `json:"statistics,omitempty"`
 }
 
 // TimeSeriesElement - A time series result type. The discriminator value is always TimeSeries in this case.

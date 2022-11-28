@@ -210,9 +210,10 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 				},
 				DisableChallengeResourceVerification: test.disableVerify,
 			}
-			client := azsecrets.NewClient(vaultURL, &FakeCredential{}, options)
+			client, err := azsecrets.NewClient(vaultURL, &FakeCredential{}, options)
+			require.NoError(t, err)
 			pager := client.NewListSecretsPager(nil)
-			_, err := pager.NextPage(context.Background())
+			_, err = pager.NextPage(context.Background())
 			if test.err {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), "challenge resource")
@@ -359,9 +360,10 @@ func TestListSecretVersions(t *testing.T) {
 }
 
 func TestNameRequired(t *testing.T) {
-	client := azsecrets.NewClient(fakeVaultURL, &FakeCredential{}, nil)
+	client, err := azsecrets.NewClient(fakeVaultURL, &FakeCredential{}, nil)
+	require.NoError(t, err)
 	expected := "parameter name cannot be empty"
-	_, err := client.BackupSecret(context.Background(), "", nil)
+	_, err = client.BackupSecret(context.Background(), "", nil)
 	require.EqualError(t, err, expected)
 	_, err = client.DeleteSecret(context.Background(), "", nil)
 	require.EqualError(t, err, expected)

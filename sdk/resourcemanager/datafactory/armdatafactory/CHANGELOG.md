@@ -1,5 +1,35 @@
 # Release History
 
+## 3.0.0 (2022-10-27)
+### Breaking Changes
+
+- Type of `SynapseSparkJobReference.ReferenceName` has been changed from `*string` to `interface{}`
+
+### Features Added
+
+- New field `WorkspaceResourceID` in struct `AzureSynapseArtifactsLinkedServiceTypeProperties`
+- New field `DisablePublish` in struct `FactoryRepoConfiguration`
+- New field `DisablePublish` in struct `FactoryGitHubConfiguration`
+- New field `DisablePublish` in struct `FactoryVSTSConfiguration`
+- New field `ScriptBlockExecutionTimeout` in struct `ScriptActivityTypeProperties`
+- New field `PythonCodeReference` in struct `SynapseSparkJobActivityTypeProperties`
+- New field `FilesV2` in struct `SynapseSparkJobActivityTypeProperties`
+
+
+## 2.0.0 (2022-10-10)
+### Breaking Changes
+
+- Type of `SQLMISource.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+- Type of `SQLMISink.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+- Type of `AzureSQLSink.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+- Type of `SQLServerSource.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+- Type of `SQLServerSink.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+- Type of `AzureSQLSource.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+- Type of `SQLSink.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+- Type of `SQLSource.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+- Type of `AmazonRdsForSQLServerSource.StoredProcedureParameters` has been changed from `map[string]*StoredProcedureParameter` to `interface{}`
+
+
 ## 1.3.0 (2022-09-07)
 ### Features Added
 

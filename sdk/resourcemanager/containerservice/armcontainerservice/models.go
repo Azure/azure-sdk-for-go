@@ -73,6 +73,18 @@ type AgentPoolListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
+// AgentPoolNetworkProfile - Network settings of an agent pool.
+type AgentPoolNetworkProfile struct {
+	// The port ranges that are allowed to access. The specified ranges are allowed to overlap.
+	AllowedHostPorts []*PortRange `json:"allowedHostPorts,omitempty"`
+
+	// The IDs of the application security groups which agent pool will associate when created.
+	ApplicationSecurityGroups []*string `json:"applicationSecurityGroups,omitempty"`
+
+	// IPTags of instance-level public IPs.
+	NodePublicIPTags []*IPTag `json:"nodePublicIPTags,omitempty"`
+}
+
 // AgentPoolUpgradeProfile - The list of available upgrades for an agent pool.
 type AgentPoolUpgradeProfile struct {
 	// REQUIRED; The properties of the agent pool upgrade profile.
@@ -489,6 +501,15 @@ type GuardrailsProfile struct {
 	SystemExcludedNamespaces []*string `json:"systemExcludedNamespaces,omitempty" azure:"ro"`
 }
 
+// IPTag - Contains the IPTag associated with the object.
+type IPTag struct {
+	// The IP tag type. Example: RoutingPreference.
+	IPTagType *string `json:"ipTagType,omitempty"`
+
+	// The value of the IP tag associated with the public IP. Example: Internet.
+	Tag *string `json:"tag,omitempty"`
+}
+
 // KubeletConfig - See AKS custom node configuration [https://docs.microsoft.com/azure/aks/custom-node-configuration] for
 // more details.
 type KubeletConfig struct {
@@ -776,8 +797,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// Whether to enable auto-scaler
 	EnableAutoScaling *bool `json:"enableAutoScaling,omitempty"`
 
-	// When set to true, AKS deploys a daemonset and host services to sync custom certificate authorities from a user-provided
-	// config map into node trust stores. Defaults to false.
+	// When set to true, AKS adds a label to the node indicating that the feature is enabled and deploys a daemonset along with
+	// host services to sync custom certificate authorities from user-provided list of
+	// base64 encoded certificates into node trust stores. Defaults to false.
 	EnableCustomCATrust *bool `json:"enableCustomCATrust,omitempty"`
 
 	// This is only supported on certain VM sizes and in certain Azure regions. For more information, see: https://docs.microsoft.com/azure/aks/enable-host-encryption
@@ -831,6 +853,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions
 	// and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
 	Mode *AgentPoolMode `json:"mode,omitempty"`
+
+	// Network-related settings of an agent pool.
+	NetworkProfile *AgentPoolNetworkProfile `json:"networkProfile,omitempty"`
 
 	// The node labels to be persisted across all nodes in agent pool.
 	NodeLabels map[string]*string `json:"nodeLabels,omitempty"`
@@ -948,8 +973,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Whether to enable auto-scaler
 	EnableAutoScaling *bool `json:"enableAutoScaling,omitempty"`
 
-	// When set to true, AKS deploys a daemonset and host services to sync custom certificate authorities from a user-provided
-	// config map into node trust stores. Defaults to false.
+	// When set to true, AKS adds a label to the node indicating that the feature is enabled and deploys a daemonset along with
+	// host services to sync custom certificate authorities from user-provided list of
+	// base64 encoded certificates into node trust stores. Defaults to false.
 	EnableCustomCATrust *bool `json:"enableCustomCATrust,omitempty"`
 
 	// This is only supported on certain VM sizes and in certain Azure regions. For more information, see: https://docs.microsoft.com/azure/aks/enable-host-encryption
@@ -1003,6 +1029,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions
 	// and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
 	Mode *AgentPoolMode `json:"mode,omitempty"`
+
+	// Network-related settings of an agent pool.
+	NetworkProfile *AgentPoolNetworkProfile `json:"networkProfile,omitempty"`
 
 	// The node labels to be persisted across all nodes in agent pool.
 	NodeLabels map[string]*string `json:"nodeLabels,omitempty"`
@@ -1594,6 +1623,11 @@ type ManagedClusterSecurityProfile struct {
 	// the security profile.
 	AzureKeyVaultKms *AzureKeyVaultKms `json:"azureKeyVaultKms,omitempty"`
 
+	// A list of up to 10 base64 encoded CAs that will be added to the trust store on nodes with the Custom CA Trust feature enabled.
+	// For more information see Custom CA Trust Certificates
+	// [https://learn.microsoft.com/en-us/azure/aks/custom-certificate-authority]
+	CustomCATrustCertificates [][]byte `json:"customCATrustCertificates,omitempty"`
+
 	// Microsoft Defender settings for the security profile.
 	Defender *ManagedClusterSecurityProfileDefender `json:"defender,omitempty"`
 
@@ -2027,6 +2061,9 @@ type NetworkProfile struct {
 	// service address range.
 	DockerBridgeCidr *string `json:"dockerBridgeCidr,omitempty"`
 
+	// The eBPF dataplane used for building the Kubernetes network.
+	EbpfDataplane *EbpfDataplane `json:"ebpfDataplane,omitempty"`
+
 	// IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For
 	// dual-stack, the expected values are IPv4 and IPv6.
 	IPFamilies []*IPFamily `json:"ipFamilies,omitempty"`
@@ -2212,6 +2249,18 @@ type OutboundEnvironmentEndpointCollection struct {
 
 	// READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// PortRange - The port range.
+type PortRange struct {
+	// The maximum port that is included in the range. It should be ranged from 1 to 65535, and be greater than or equal to portStart.
+	PortEnd *int32 `json:"portEnd,omitempty"`
+
+	// The minimum port that is included in the range. It should be ranged from 1 to 65535, and be less than or equal to portEnd.
+	PortStart *int32 `json:"portStart,omitempty"`
+
+	// The network protocol of the port.
+	Protocol *Protocol `json:"protocol,omitempty"`
 }
 
 // PowerState - Describes the Power State of the cluster

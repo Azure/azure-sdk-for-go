@@ -203,9 +203,9 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response, req *h
 		if !strings.HasSuffix(req.URL.Host, "."+parsed.Host) {
 			return &challengePolicyError{err: fmt.Errorf(challengeMatchError, scope)}
 		}
-		if !strings.HasSuffix(scope, "/.default") {
-			scope += "/.default"
-		}
+	}
+	if !strings.HasSuffix(scope, "/.default") {
+		scope += "/.default"
 	}
 	k.scope = &scope
 	return nil

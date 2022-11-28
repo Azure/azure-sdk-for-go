@@ -12,11 +12,9 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
-	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"golang.org/x/crypto/pkcs12"
 )
@@ -43,29 +41,18 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if len(certs) == 0 {
 		return nil, errors.New("at least one certificate is required")
 	}
-	if !validTenantID(tenantID) {
-		return nil, errors.New(tenantIDValidationErr)
-	}
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
-	}
-	authorityHost, err := setAuthorityHost(options.Cloud)
-	if err != nil {
-		return nil, err
 	}
 	cred, err := confidential.NewCredFromCertChain(certs, key)
 	if err != nil {
 		return nil, err
 	}
-	o := []confidential.Option{
-		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
-		confidential.WithHTTPClient(newPipelineAdapter(&options.ClientOptions)),
-		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
-	}
+	var o []confidential.Option
 	if options.SendCertificateChain {
 		o = append(o, confidential.WithX5C())
 	}
-	c, err := confidential.New(clientID, cred, o...)
+	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, o...)
 	if err != nil {
 		return nil, err
 	}

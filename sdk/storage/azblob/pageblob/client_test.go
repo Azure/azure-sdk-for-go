@@ -11,7 +11,6 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -25,8 +24,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+  "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
+  "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -44,22 +45,18 @@ func Test(t *testing.T) {
 	}
 }
 
-// nolint
 func (s *PageBlobRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *PageBlobRecordedTestsSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
@@ -161,8 +158,8 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 	}
 }
 
-// nolint
-// func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURL() {
+
+//func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURL() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -233,8 +230,8 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 //	_require.EqualValues(destData, sourceData)
 // }
 //
-////nolint
-// func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5() {
+
+//func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -315,7 +312,6 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 //	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 // }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -393,7 +389,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 	}
 }
 
-// nolint
 func waitForIncrementalCopy(_require *require.Assertions, copyBlobClient *pageblob.Client, blobCopyResponse *pageblob.CopyIncrementalResponse) *string {
 	status := *blobCopyResponse.CopyStatus
 	var getPropertiesAndMetadataResult blob.GetPropertiesResponse
@@ -410,7 +405,6 @@ func waitForIncrementalCopy(_require *require.Assertions, copyBlobClient *pagebl
 	return getPropertiesAndMetadataResult.DestinationSnapshot
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1051,7 +1045,6 @@ func (s *PageBlobRecordedTestsSuite) TestBlobCreatePageIfNoneMatchFalse() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobPutPagesInvalidRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2512,7 +2505,6 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 	// _require.(serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
 }
 
-// nolint
 func setupDiffPageRangesTest(t *testing.T, _require *require.Assertions, testName string) (containerClient *container.Client, pbClient *pageblob.Client, snapshot string) {
 	svcClient, err := testcommon.GetServiceClient(t, testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -2566,7 +2558,6 @@ func validateDiffPageRanges(_require *require.Assertions, resp pageblob.PageList
 	_require.EqualValues(rawEnd, int64(pageblob.PageBytes-1))
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangesNonExistentSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2588,7 +2579,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangesNonExistentSnapshot
 
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeInvalidRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2610,7 +2600,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeInvalidRange() {
 	}
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2634,7 +2623,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfModifiedSinceTrue(
 	}
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2662,7 +2650,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse
 
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2687,7 +2674,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTru
 	}
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2713,8 +2699,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFal
 
 }
 
-////nolint
-// func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfMatchTrue() {
+//func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfMatchTrue() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
@@ -2741,7 +2726,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFal
 //	}
 // }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2767,7 +2751,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	}
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2792,7 +2775,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	}
 }
 
-// nolint
 func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3351,6 +3333,104 @@ func (s *PageBlobRecordedTestsSuite) TestBlobSetSequenceNumberIfMatchTrue() {
 	validateSequenceNumberSet(_require, pbClient)
 }
 
+func (s *PageBlobRecordedTestsSuite) TestPageSetImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	blobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = pbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = pbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = pbClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = pbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = pbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestPageDeleteImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = pbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = pbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = pbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestPageSetLegalHold() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
+
+	_, err = pbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = pbClient.SetLegalHold(context.Background(), true, nil)
+	_require.Nil(err)
+
+	// should fail since time has not passed yet
+	_, err = pbClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = pbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = pbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+}
+
 func (s *PageBlobRecordedTestsSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3589,8 +3669,8 @@ func (s *PageBlobRecordedTestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse()
 //	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 // }
 //
-//// nolint
-// func (s *PageBlobUnrecordedTestsSuite) TestBlobStartIncrementalCopyIfMatchTrue() {
+
+//func (s *PageBlobUnrecordedTestsSuite) TestBlobStartIncrementalCopyIfMatchTrue() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_require, testName)
@@ -3608,8 +3688,8 @@ func (s *PageBlobRecordedTestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse()
 //	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 // }
 //
-////nolint
-// func (s *PageBlobUnrecordedTestsSuite) TestBlobStartIncrementalCopyIfMatchFalse() {
+
+//func (s *PageBlobUnrecordedTestsSuite) TestBlobStartIncrementalCopyIfMatchFalse() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_require, testName)
@@ -3628,8 +3708,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse()
 //	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
 // }
 
-////nolint
-// func (s *PageBlobUnrecordedTestsSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue() {
+//func (s *PageBlobUnrecordedTestsSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_require, testName)
@@ -3647,8 +3726,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse()
 //	validateIncrementalCopy(_require, copyPBClient, &resp)
 // }
 
-////nolint
-// func (s *PageBlobUnrecordedTestsSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse() {
+//func (s *PageBlobUnrecordedTestsSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	containerClient, pbClient, copyPBClient, snapshot := setupStartIncrementalCopyTest(_require, testName)
@@ -3971,7 +4049,214 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeWithCPK() {
 	_require.Equal(*resp.ContentLength, int64(pageblob.PageBytes))
 }
 
-// func (s *AZBlobUnrecordedTestsSuite) TestPageBlockFromURLWithCPK() {
+func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDelete() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.Nil(err)
+
+	// Create container and blob, upload blob to container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
+
+	count := int64(1024)
+	reader, _ := testcommon.GenerateData(1024)
+	_, err = pbClient.UploadPages(context.Background(), reader, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Count: count,
+		},
+	})
+	_require.Nil(err)
+
+	parts, err := sas.ParseURL(pbClient.URL()) // Get parts for BlobURL
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	// Set Account SAS and set Permanent Delete to true
+	parts.SAS, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := pbClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
+	_require.Nil(err)
+	snapshotURL, _ := pbClient.WithSnapshot(*resp.Snapshot)
+
+	// Check that there are two items in the container: one snapshot, one blob
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Include: container.ListBlobsInclude{Snapshots: true}})
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Delete snapshot (snapshot will be soft deleted)
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = pbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+
+	// Check that only blob exists (snapshot is soft-deleted)
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+	// Check that soft-deleted snapshot exists by including deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Deleted: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: &perm,
+	}
+	time.Sleep(time.Second * 30)
+
+	// Execute Delete with DeleteTypePermanent
+	pdResp, err := snapshotURL.Delete(context.Background(), &deleteBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(pdResp)
+	_require.NotNil(pdResp)
+
+	// Check that only blob exists even after including snapshots and deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Deleted: true}})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+
+	// Create container and blob, upload blob to container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
+
+	count := int64(1024)
+	reader, _ := testcommon.GenerateData(1024)
+	_, err = pbClient.UploadPages(context.Background(), reader, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Count: count,
+		},
+	})
+	_require.Nil(err)
+
+	parts, err := sas.ParseURL(pbClient.URL()) // Get parts for BlobURL
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	// Set Account SAS
+	parts.SAS, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := pbClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
+	_require.Nil(err)
+	snapshotURL, _ := pbClient.WithSnapshot(*resp.Snapshot)
+
+	// Check that there are two items in the container: one snapshot, one blob
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Include: container.ListBlobsInclude{Snapshots: true}})
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Delete snapshot
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = pbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+
+	// Check that only blob exists
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: &perm,
+	}
+	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set and snapshot is not soft-deleted
+	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)
+	_require.NotNil(err)
+}
+
+//func (s *AZBlobUnrecordedTestsSuite) TestPageBlockFromURLWithCPK() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -4055,8 +4340,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeWithCPK() {
 //	_require.EqualValues(destData, srcData)
 // }
 
-// nolint
-// func (s *AZBlobUnrecordedTestsSuite) TestPageBlockFromURLWithCPKScope() {
+//func (s *AZBlobUnrecordedTestsSuite) TestPageBlockFromURLWithCPKScope() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -4131,8 +4415,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeWithCPK() {
 //	_require.EqualValues(destData, srcData)
 // }
 
-// nolint
-// func (s *AZBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5WithCPK() {
+//func (s *AZBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -4277,3 +4560,127 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeWithCPK() {
 //	_require.Nil(err)
 //	_require.Nil(pageListResp.PageList.Range)
 // }
+
+func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	pbClient := getPageBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = pbClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.Nil(err)
+	r, _ := testcommon.GenerateData(pageblob.PageBytes)
+	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
+	})
+	_require.Nil(err)
+
+	versions := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		resp, err := pbClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.VersionID)
+		versions = append(versions, *resp.VersionID)
+	}
+
+	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6)
+
+	// Deleting the 1st, 2nd and 3rd versions
+	for i := 0; i < 3; i++ {
+		pbClientWithVersionID, err := pbClient.WithVersionID(versions[i])
+		_require.Nil(err)
+		_, err = pbClientWithVersionID.Delete(context.Background(), nil)
+		_require.Nil(err)
+	}
+
+	// adding wait after delete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3)
+
+	_, err = pbClient.Undelete(context.Background(), nil)
+	_require.Nil(err)
+
+	// adding wait after undelete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobSnapshot() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	pbClient := getPageBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = pbClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.Nil(err)
+	r, _ := testcommon.GenerateData(pageblob.PageBytes)
+	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
+	})
+	_require.Nil(err)
+
+	snapshots := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		resp, err := pbClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.Snapshot)
+		snapshots = append(snapshots, *resp.Snapshot)
+	}
+
+	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
+
+	// Deleting the 1st, 2nd and 3rd snapshots
+	for i := 0; i < 3; i++ {
+		pbClientWithSnapshot, err := pbClient.WithSnapshot(snapshots[i])
+		_require.Nil(err)
+		_, err = pbClientWithSnapshot.Delete(context.Background(), nil)
+		_require.Nil(err)
+	}
+
+	// adding wait after delete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3) // 2 snapshots and 1 current version
+
+	_, err = pbClient.Undelete(context.Background(), nil)
+	_require.Nil(err)
+
+	// adding wait after undelete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
+}

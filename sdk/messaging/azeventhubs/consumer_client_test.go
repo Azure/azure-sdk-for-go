@@ -85,7 +85,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		}, nil)
 		require.NoError(t, err)
 
-		err = producerClient.SendEventBatch(context.Background(), eventDataBatch, nil)
+		err = producerClient.SendEventDataBatch(context.Background(), eventDataBatch, nil)
 		require.NoError(t, err)
 
 		subscription, err := consumerClient.NewPartitionClient(firstPartition.PartitionID, &azeventhubs.PartitionClientOptions{
@@ -312,6 +312,121 @@ func TestConsumerClient_LowerEpochsAreRejected(t *testing.T) {
 	require.NotEmpty(t, events)
 }
 
+// TestConsumerClient_NoPrefetch turns off prefetching (prefetch is on by default)
+func TestConsumerClient_NoPrefetch(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, producer)
+
+	partProps, err := producer.GetPartitionProperties(context.Background(), "0", nil)
+	require.NoError(t, err)
+
+	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionID: to.Ptr("0"),
+	})
+	require.NoError(t, err)
+
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 1")}, nil))
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 2")}, nil))
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 3")}, nil))
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 4")}, nil))
+
+	require.NoError(t, producer.SendEventDataBatch(context.Background(), batch, nil))
+
+	partClient, cleanup := newPartitionClientForTest(t, partProps.PartitionID, azeventhubs.PartitionClientOptions{
+		StartPosition: getStartPosition(partProps),
+		Prefetch:      -1,
+	})
+	defer cleanup()
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	events, err := partClient.ReceiveEvents(ctx, 2, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"event 1", "event 2"}, getSortedBodies(events))
+
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	events, err = partClient.ReceiveEvents(ctx, 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"event 3"}, getSortedBodies(events))
+
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	events, err = partClient.ReceiveEvents(ctx, 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"event 4"}, getSortedBodies(events))
+}
+
+func TestConsumerClient_ReceiveEvents(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, producer)
+
+	partProps, err := producer.GetPartitionProperties(context.Background(), "0", nil)
+	require.NoError(t, err)
+
+	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionID: to.Ptr("0"),
+	})
+	require.NoError(t, err)
+
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 1")}, nil))
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 2")}, nil))
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 3")}, nil))
+	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 4")}, nil))
+
+	require.NoError(t, producer.SendEventDataBatch(context.Background(), batch, nil))
+
+	testData := []struct {
+		Name     string
+		Prefetch int32
+	}{
+		{"prefetch off", -1},
+		{"default (prefetch is on)", 0},
+		{"prefetch on, lowest", 1},
+		{"prefetch on, higher than requested batch size", 5},
+	}
+
+	for _, td := range testData {
+		t.Run(td.Name, func(t *testing.T) {
+			partClient, cleanup := newPartitionClientForTest(t, partProps.PartitionID, azeventhubs.PartitionClientOptions{
+				StartPosition: getStartPosition(partProps),
+				Prefetch:      td.Prefetch,
+			})
+			defer cleanup()
+
+			ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+			defer cancel()
+
+			events, err := partClient.ReceiveEvents(ctx, 2, nil)
+			require.NoError(t, err)
+			require.Equal(t, []string{"event 1", "event 2"}, getSortedBodies(events))
+
+			ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+			defer cancel()
+
+			events, err = partClient.ReceiveEvents(ctx, 1, nil)
+			require.NoError(t, err)
+			require.Equal(t, []string{"event 3"}, getSortedBodies(events))
+
+			ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+			defer cancel()
+
+			events, err = partClient.ReceiveEvents(ctx, 1, nil)
+			require.NoError(t, err)
+			require.Equal(t, []string{"event 4"}, getSortedBodies(events))
+		})
+	}
+}
+
 func newPartitionClientForTest(t *testing.T, partitionID string, subscribeOptions azeventhubs.PartitionClientOptions) (*azeventhubs.PartitionClient, func()) {
 	testParams := test.GetConnectionParamsForTest(t)
 
@@ -367,7 +482,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 	// (this adds some peace of mind or the test below that uses the enqueued time for a filter)
 	time.Sleep(time.Second)
 
-	err = producerClient.SendEventBatch(context.Background(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
 	t.Run("offset", func(t *testing.T) {
@@ -511,7 +626,7 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 		Body: []byte("latest test: message 2"),
 	}, nil))
 
-	err = producerClient.SendEventBatch(context.Background(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
 	select {
@@ -574,7 +689,7 @@ func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData
 				require.NoError(t, err)
 			}
 
-			err = producer.SendEventBatch(context.Background(), batch, nil)
+			err = producer.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
 		}(partitionID)
 	}

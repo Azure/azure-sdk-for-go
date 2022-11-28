@@ -15,6 +15,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 )
 
+// Example_consumingEventsUsingProcessor shows how to use the [Processor] type.
+//
+// The Processor type acts as a load balancer, ensuring that partitions are divided up amongst
+// active Processor instances. You provide it with a [ConsumerClient] as well as a [CheckpointStore].
+//
+// You will loop, continually calling [Processor.NextPartitionClient] and using the [ProcessorPartitionClient]'s
+// that are returned. This loop will run for the lifetime of your application, as ownership can change over
+// time as new Processor instances are started, or die.
+//
+// As you process a partition using [ProcessorPartitionClient.ReceiveEvents] you will periodically
+// call [ProcessorPartitionClient.UpdateCheckpoint], which stores your checkpoint information inside of
+// the [CheckpointStore]. In the common case, this means your checkpoint information will be stored
+// in Azure Blob storage.
+//
+// If you prefer to manually allocate partitions or to have more control over the process you can use
+// the [ConsumerClient] type. See [example_consuming_events_test.go] for an example.
+//
+// [example_consuming_events_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_events_test.go
 func Example_consumingEventsUsingProcessor() {
 	// The Processor makes it simpler to do distributed consumption of an Event Hub.
 	// It automatically coordinates with other Processor instances to ensure balanced
@@ -137,7 +155,7 @@ func processEvents(partitionClient *azeventhubs.ProcessorPartitionClient) error 
 		// Timing out (context.DeadlineExceeded) is fine. We didn't receive our 100 events
 		// but we might have received _some_ events.
 		if err != nil && !errors.Is(err, context.DeadlineExceeded) {
-			if eventHubError := (*azeventhubs.Error)(nil); errors.As(err, &eventHubError) && eventHubError.Code == exported.CodeOwnershipLost {
+			if eventHubError := (*azeventhubs.Error)(nil); errors.As(err, &eventHubError) && eventHubError.Code == exported.ErrorCodeOwnershipLost {
 				// This means that the partition was "stolen" - this can happen as partitions are balanced between
 				// consumers. We'll exit here and just let our "defer closePartitionResources" handle closing
 				// resources, including the ProcessorPartitionClient.

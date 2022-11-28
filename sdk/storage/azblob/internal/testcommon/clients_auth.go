@@ -11,6 +11,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"strings"
 	"testing"
 	"time"
@@ -34,6 +35,8 @@ const (
 	TestAccountSecondary  TestAccountType = "SECONDARY_"
 	TestAccountPremium    TestAccountType = "PREMIUM_"
 	TestAccountSoftDelete TestAccountType = "SOFT_DELETE_"
+	TestAccountDatalake   TestAccountType = "DATALAKE_"
+	TestAccountImmutable  TestAccountType = "IMMUTABLE_"
 )
 
 const (
@@ -263,4 +266,17 @@ func EnableSoftDelete(ctx context.Context, _require *require.Assertions, client 
 func DisableSoftDelete(ctx context.Context, _require *require.Assertions, client *service.Client) {
 	_, err := client.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(false)}})
 	_require.Nil(err)
+}
+
+func ListBlobsCount(ctx context.Context, _require *require.Assertions, listPager *runtime.Pager[container.ListBlobsFlatResponse], ctr int) {
+	found := make([]*container.BlobItem, 0)
+	for listPager.More() {
+		resp, err := listPager.NextPage(ctx)
+		_require.Nil(err)
+		if err != nil {
+			break
+		}
+		found = append(found, resp.Segment.BlobItems...)
+	}
+	_require.Len(found, ctr)
 }

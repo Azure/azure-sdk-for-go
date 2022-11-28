@@ -7,6 +7,9 @@
 package blob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -194,6 +197,11 @@ type DeleteOptions struct {
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
 	DeleteSnapshots  *DeleteSnapshotsOptionType
 	AccessConditions *AccessConditions
+	// Setting DeleteType to DeleteTypePermanent will permanently delete soft-delete snapshot and/or version blobs.
+	// WARNING: This is a dangerous operation and should not be used unless you know the implications. Please proceed
+	// with caution.
+	// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob
+	BlobDeleteType *DeleteType
 }
 
 func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -203,6 +211,7 @@ func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated
 
 	basics := generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
+		DeleteType:      o.BlobDeleteType, // None by default
 	}
 
 	if o.AccessConditions == nil {
@@ -240,6 +249,35 @@ func (o *SetTierOptions) format() (*generated.BlobClientSetTierOptions, *generat
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &generated.BlobClientSetTierOptions{RehydratePriority: o.RehydratePriority}, leaseAccessConditions, modifiedAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
+type SetExpiryOptions struct {
+	// placeholder for future options
+}
+
+func (e ExpiryTypeAbsolute) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsAbsolute, &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: to.Ptr(time.Time(e).UTC().Format(http.TimeFormat)),
+	}
+}
+
+func (e ExpiryTypeRelativeToNow) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsRelativeToNow, &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10)),
+	}
+}
+
+func (e ExpiryTypeRelativeToCreation) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsRelativeToCreation, &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10)),
+	}
+}
+
+func (e ExpiryTypeNever) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsNeverExpire, nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -438,6 +476,54 @@ func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generat
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.BlobAccessConditions)
 	return options, modifiedAccessConditions, leaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetImmutabilityPolicyOptions contains the parameter for Client.SetImmutabilityPolicy
+type SetImmutabilityPolicyOptions struct {
+	// Specifies the immutability policy mode to set on the blob. Possible values to set include: "Locked", "Unlocked".
+	// "Mutable" can only be returned by service, don't set to "Mutable". If mode is not set - it will default to Unlocked.
+	Mode                     *ImmutabilityPolicySetting
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *SetImmutabilityPolicyOptions) format() (*generated.BlobClientSetImmutabilityPolicyOptions, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+	ac := &exported.BlobAccessConditions{
+		ModifiedAccessConditions: o.ModifiedAccessConditions,
+	}
+	_, modifiedAccessConditions := exported.FormatBlobAccessConditions(ac)
+
+	options := &generated.BlobClientSetImmutabilityPolicyOptions{
+		ImmutabilityPolicyMode: o.Mode,
+	}
+
+	return options, modifiedAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DeleteImmutabilityPolicyOptions contains the optional parameters for the Client.DeleteImmutabilityPolicy method.
+type DeleteImmutabilityPolicyOptions struct {
+	// placeholder for future options
+}
+
+func (o *DeleteImmutabilityPolicyOptions) format() *generated.BlobClientDeleteImmutabilityPolicyOptions {
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetLegalHoldOptions contains the optional parameters for the Client.SetLegalHold method.
+type SetLegalHoldOptions struct {
+	// placeholder for future options
+}
+
+func (o *SetLegalHoldOptions) format() *generated.BlobClientSetLegalHoldOptions {
+	return nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

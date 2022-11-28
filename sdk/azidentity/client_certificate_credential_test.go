@@ -114,8 +114,8 @@ func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 			defer close()
 			srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-			srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
-			srv.AppendResponse(mock.WithPredicate(validateX5C(t, test.certs)), mock.WithBody([]byte(accessTokenRespSuccess)))
+			srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
+			srv.AppendResponse(mock.WithPredicate(validateX5C(t, test.certs)), mock.WithBody(accessTokenRespSuccess))
 			srv.AppendResponse()
 
 			options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}, SendCertificateChain: true}
@@ -167,7 +167,7 @@ func TestClientCertificateCredential_NoPrivateKey(t *testing.T) {
 	test := allCertTests[0]
 	srv, close := mock.NewTLSServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
 	options := ClientCertificateCredentialOptions{}
 	options.Cloud.ActiveDirectoryAuthorityHost = srv.URL()
 	options.Transport = srv

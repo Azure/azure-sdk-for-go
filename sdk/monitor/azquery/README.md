@@ -22,14 +22,16 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * An [Azure subscription][azure_sub]
 * A supported Go version (the Azure SDK supports the two most recent Go releases)
-* For log queries, a Log Analytics workspace. 
-* For metric queries, a Resource URI.
+* For log queries, an [Azure Log Analytics workspace][log_analytics_workspace_create] ID. 
+* For metric queries, the Resource URI of any Azure resource (Storage Account, Key Vault, CosmosDB, etc).
 
 ### Authentication
 
 This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate. This credential type works in both local development and production environments. We recommend using a [managed identity][managed_identity] in production.
 
 Client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
+
+The clients default to the Azure Public Cloud. See the [cloud][cloud_documentation] documentation for more information about other cloud configurations. 
 
 #### Create a logs client
 
@@ -42,10 +44,13 @@ import (
 func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
-	client := azkeys.NewLogsClient(cred, nil)
+	client, error := azquery.NewLogsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 }
 ```
 
@@ -60,16 +65,19 @@ import (
 func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
-	client := azkeys.NewMetricsClient(cred, nil)
+	client, err := azquery.NewMetricsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 }
 ```
 
 ### Execute the query
 
-For examples of Logs and Metrics queries, see the [Examples](#examples) section.
+For examples of Logs and Metrics queries, see the [Examples](#examples) section of this readme or in the example_test.go file of our GitHub repo for [azquery](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery).
 
 ## Key concepts
 
@@ -77,7 +85,7 @@ For examples of Logs and Metrics queries, see the [Examples](#examples) section.
 
 The Log Analytics service applies throttling when the request rate is too high. Limits, such as the maximum number of rows returned, are also applied on the Kusto queries. For more information, see [Query API](https://docs.microsoft.com/azure/azure-monitor/service-limits#la-query-api).
 
-If you're executing a batch logs query, a throttled request will return a `LogsQueryError` object. That object's `code` value will be `ThrottledError`.
+If you're executing a batch logs query, a throttled request will return a `ErrorInfo` object. That object's `code` value will be `ThrottledError`.
 
 ### Metrics data structure
 
@@ -115,69 +123,66 @@ The timespan can be the following string formats:
 	- [Increase wait time, include statistics, include render (visualization)](#increase-wait-time-include-statistics-include-render-visualization)
 - [Metrics query](#metrics-query)
   - [Metrics result structure](#metrics-result-structure)
+  - [List Metric Definitions](#list-metric-definitions)
+  - [List Metric Namespaces](#list-metric-namespaces)
 
 ### Logs query
+The example below shows a basic logs query using the `QueryWorkspace` method. `QueryWorkspace` takes in a [context][context], a [Log Analytics Workspace][log_analytics_workspace] ID string, a [Body](#logs-query-body-structure) struct, and a [LogsClientQueryWorkspaceOptions](#increase-wait-time-include-statistics-include-render-visualization) struct and returns a [Results](#logs-query-result-structure) struct.
+
 ```go
-client := azquery.NewLogsClient(cred, nil)
-timespan := "2022-08-30/2022-08-31"
+workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+query := "AzureActivity | top 10 by TimeGenerated" // Kusto query
+timespan := "2022-08-30/2022-08-31" // ISO8601 Standard timespan
 
 res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
+full example: [link][example_query_workspace]
 
 #### Logs query body structure
 ```
 Body
 |---Query *string // Kusto Query
 |---Timespan *string // ISO8601 Standard Timespan
-|---Workspaces []*string //Optional- additional workspaces to query
+|---Workspaces []*string // Optional- additional workspaces to query
 ```
 
 #### Logs query result structure
 ```
-LogsResponse
+Results
 |---Tables []*Table
 	|---Columns []*Column
 		|---Name *string
 		|---Type *LogsColumnType
 	|---Name *string
-	|---Rows [][]interface{}
+	|---Rows []Row
+	|---ColumnIndexLookup map[string]int
 |---Error *ErrorInfo
-	|---Code *string
-	|---Message *string
-	|---AdditionalProperties interface{}
-	|---Details []*ErrorDetail
-		|---Code *string
-		|---Message *string
-		|---AdditionalProperties interface{}
-		|---Resources []*string
-		|---Target *string
-		|---Value *string
-	|---Innererror *ErrorInfo
-|---Render interface{}
-|---Statistics interface{}
+	|---Code *string // custom error type
+|---Render []byte
+|---Statistics []byte
 ```
 
 ### Batch query
+`QueryBatch` is an advanced method allowing users to execute multiple logs queries in a single request. It takes in a [BatchRequest](#batch-query-request-structure) and returns a [BatchResponse](#batch-query-result-structure). `QueryBatch` can return results in any order (usually in order of completion/success). Please use the `ID` attribute to identify the correct response. 
 ```go
-client := azquery.NewLogsClient(cred, nil)
-timespan := "2022-08-30/2022-08-31"
-
+timespan := "2022-08-30/2022-08-31" // ISO8601 Standard Timespan
 batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
 	{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
 	{Body: &azquery.Body{Query: to.Ptr(kustoQuery2), Timespan: to.Ptr(timespan)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
 	{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("3"), Workspace: to.Ptr(workspaceID)},
 }}
 
-res, err := client.Batch(context.TODO(), batchRequest, nil)
+res, err := client.QueryBatch(context.TODO(), batchRequest, nil)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
+full example: [link][example_batch]
 
 #### Batch query request structure
 
@@ -200,15 +205,17 @@ BatchRequest
 BatchResponse
 |---Responses []*BatchQueryResponse
 	|---Body *BatchQueryResults
-		|---Error *ErrorInfo
-		|---Render interface{}
-		|---Statistics interface{}
+		|---Error *ErrorInfo // custom error type
+			|---Code *string
+		|---Render []byte
+		|---Statistics []byte
 		|---Tables []*Table
 			|---Columns []*Column
 				|---Name *string
 				|---Type *LogsColumnType
 			|---Name *string
-			|---Rows [][]interface{}
+			|---Rows []Row
+			|---ColumnIndexLookup map[string]int
 	|---Headers map[string]*string
 	|---ID *string
 	|---Status *int32
@@ -229,7 +236,7 @@ additionalWorkspaces := []*string{&workspaceID2, &workspaceID3}
 
 res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan), Workspaces: additionalWorkspaces}, nil)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
@@ -251,12 +258,20 @@ options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer}
 res, err := client.QueryWorkspace(context.TODO(), workspaceID,
 	azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, options)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
 
 ### Metrics query
+
+You can query metrics on an Azure resource using the `MetricsClient.QueryResource` method. For each requested metric, a set of aggregated values is returned inside the `Timeseries` collection.
+
+A resource ID is required to query metrics. To find the resource ID:
+
+1. Navigate to your resource's page in the Azure portal.
+2. From the **Overview** blade, select the **JSON View** link.
+3. In the resulting JSON, copy the value of the `id` property.
 
 ```go
 client := azquery.NewMetricsClient(cred, nil)
@@ -272,14 +287,14 @@ res, err := client.QueryResource(context.Background(), resourceURI,
 		Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 	})
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
 
 #### Metrics result structure
 ```
-MetricsResults
+Response
 |---Timespan *string
 |---Value []*Metric
 	|---ID *string
@@ -306,23 +321,25 @@ MetricsResults
 |---Resourceregion *string
 ```
 
-## Troubleshooting
+#### List Metric Definitions
 
-### Logging
-
-This module uses the logging implementation in `azcore`. To turn on logging for all Azure SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. By default the logger writes to stderr. Use the `azcore/log` package to control log output. For example, logging only HTTP request and response events, and printing them to stdout:
+To list the metric definitions for the resource, use the `NewListDefinitionsPager` method.
 
 ```go
-import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-
-// Print log events to stdout
-azlog.SetListener(func(cls azlog.Event, msg string) {
-	fmt.Println(msg)
-})
-
-// Includes only requests and responses in credential logs
-azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
+pager := client.NewListDefinitionsPager(resourceURI, nil)
 ```
+
+#### List Metric Namespaces
+
+To list the metric namespaces for the resource, use the `NewListNamespacesPager` method.
+
+```go
+pager := client.NewListNamespacesPager(resourceURI, nil)
+```
+
+## Troubleshooting
+
+See our [troubleshooting guide][troubleshooting_guide] for details on how to diagnose various failure scenarios.
 
 ## Next steps
 
@@ -342,12 +359,22 @@ comments.
 
 <!-- LINKS -->
 [managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[azquery]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
+[context]: https://pkg.go.dev/context
+[cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
+[default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
+[example_batch]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.Batch
+[example_query_workspace]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryWorkspace
+[kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
+[log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview
+[log_analytics_workspace_create]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace?tabs=azure-portal
+[time_go]: https://pkg.go.dev/time
 [time_intervals]: https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
-
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/monitor/azquery/TROUBLESHOOTING.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

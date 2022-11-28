@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.1.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Prevented data races in `recording` ([#18763](https://github.com/Azure/azure-sdk-for-go/issues/18763))
+
+## 1.1.1 (2022-11-09)
+
+### Bugs Fixed
+* Fixed a race condition in `temporal.Resource[TResource, TState].Get`.
+
+## 1.1.0 (2022-10-20)
+
+### Features Added
+
+* Support test recording assets external to repository
 
 ## 1.0.1 (2022-08-22)
 

@@ -33,7 +33,7 @@ type ProjectEnvironmentTypesClient struct {
 }
 
 // NewProjectEnvironmentTypesClient creates a new instance of ProjectEnvironmentTypesClient with the specified values.
-// subscriptionID - Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewProjectEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectEnvironmentTypesClient, error) {
@@ -58,8 +58,8 @@ func NewProjectEnvironmentTypesClient(subscriptionID string, credential azcore.T
 
 // CreateOrUpdate - Creates or updates a project environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // environmentTypeName - The name of the environment type.
 // body - Represents a Project Environment Type.
@@ -104,7 +104,7 @@ func (client *ProjectEnvironmentTypesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -121,8 +121,8 @@ func (client *ProjectEnvironmentTypesClient) createOrUpdateHandleResponse(resp *
 
 // Delete - Deletes a project environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // environmentTypeName - The name of the environment type.
 // options - ProjectEnvironmentTypesClientDeleteOptions contains the optional parameters for the ProjectEnvironmentTypesClient.Delete
@@ -166,7 +166,7 @@ func (client *ProjectEnvironmentTypesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -174,8 +174,8 @@ func (client *ProjectEnvironmentTypesClient) deleteCreateRequest(ctx context.Con
 
 // Get - Gets a project environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // environmentTypeName - The name of the environment type.
 // options - ProjectEnvironmentTypesClientGetOptions contains the optional parameters for the ProjectEnvironmentTypesClient.Get
@@ -219,7 +219,7 @@ func (client *ProjectEnvironmentTypesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -235,9 +235,8 @@ func (client *ProjectEnvironmentTypesClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListPager - Lists environment types for a project.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // options - ProjectEnvironmentTypesClientListOptions contains the optional parameters for the ProjectEnvironmentTypesClient.List
 // method.
@@ -289,7 +288,7 @@ func (client *ProjectEnvironmentTypesClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -309,8 +308,8 @@ func (client *ProjectEnvironmentTypesClient) listHandleResponse(resp *http.Respo
 
 // Update - Partially updates a project environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // environmentTypeName - The name of the environment type.
 // body - Updatable project environment type properties.
@@ -355,7 +354,7 @@ func (client *ProjectEnvironmentTypesClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

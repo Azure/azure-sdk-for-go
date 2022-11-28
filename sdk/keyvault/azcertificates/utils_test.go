@@ -89,7 +89,10 @@ func TestMain(m *testing.M) {
 		// will be fast because the tests which created these certs requested their
 		// deletion. Now, at the end of the run, Key Vault will have finished deleting
 		// most of them...
-		client := azcertificates.NewClient(vaultURL, credential, nil)
+		client, err := azcertificates.NewClient(vaultURL, credential, nil)
+		if err != nil {
+			panic(err)
+		}
 		for _, name := range certsToPurge.names {
 			// ...but we need a retry loop for the others. Note this wouldn't benefit
 			// from client-side parallelization because Key Vault's delete operations
@@ -119,7 +122,9 @@ func startTest(t *testing.T) *azcertificates.Client {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	opts := &azcertificates.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
-	return azcertificates.NewClient(vaultURL, credential, opts)
+	client, err := azcertificates.NewClient(vaultURL, credential, opts)
+	require.NoError(t, err)
+	return client
 }
 
 func getName(t *testing.T, prefix string) string {

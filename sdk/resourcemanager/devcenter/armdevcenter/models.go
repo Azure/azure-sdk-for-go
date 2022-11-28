@@ -11,6 +11,39 @@ package armdevcenter
 
 import "time"
 
+// AllowedEnvironmentType - Represents an allowed environment type.
+type AllowedEnvironmentType struct {
+	// Properties of an allowed environment type.
+	Properties *AllowedEnvironmentTypeProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AllowedEnvironmentTypeListResult - Result of the allowed environment type list operation.
+type AllowedEnvironmentTypeListResult struct {
+	// READ-ONLY; URL to get the next set of results if there are any.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current page of results.
+	Value []*AllowedEnvironmentType `json:"value,omitempty" azure:"ro"`
+}
+
+// AllowedEnvironmentTypeProperties - Properties of an allowed environment type.
+type AllowedEnvironmentTypeProperties struct {
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
 // AttachedNetworkConnection - Represents an attached NetworkConnection.
 type AttachedNetworkConnection struct {
 	// Attached NetworkConnection properties.
@@ -144,6 +177,9 @@ type CatalogProperties struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The synchronization state of the catalog.
+	SyncState *CatalogSyncState `json:"syncState,omitempty" azure:"ro"`
 }
 
 // CatalogUpdate - The catalog's properties for partial update. Properties not provided in the update request will not be
@@ -198,27 +234,6 @@ type CatalogsClientGetOptions struct {
 type CatalogsClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
-}
-
-// CloudError - An error response from the DevCenter service.
-type CloudError struct {
-	// REQUIRED; Error body
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the DevCenter service.
-type CloudErrorBody struct {
-	// REQUIRED; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED; A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty"`
 }
 
 // DevBoxDefinition - Represents a definition for a Developer Machine.
@@ -492,6 +507,33 @@ type EnvironmentTypesClientListByDevCenterOptions struct {
 // EnvironmentTypesClientUpdateOptions contains the optional parameters for the EnvironmentTypesClient.Update method.
 type EnvironmentTypesClientUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty" azure:"ro"`
+
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
 // GalleriesClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleriesClient.BeginCreateOrUpdate
@@ -1026,38 +1068,62 @@ type OperationListResult struct {
 
 // OperationStatus - The current status of an async operation
 type OperationStatus struct {
-	// Operation Error message
-	Error *OperationStatusError `json:"error,omitempty"`
+	// REQUIRED; Operation status.
+	Status *string `json:"status,omitempty"`
 
-	// READ-ONLY; The end time of the operation
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	// The end time of the operation.
+	EndTime *time.Time `json:"endTime,omitempty"`
 
-	// READ-ONLY; Fully qualified ID for the operation status.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	// If present, details of the operation error.
+	Error *ErrorDetail `json:"error,omitempty"`
 
-	// READ-ONLY; The operation id name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	// Fully qualified ID for the async operation.
+	ID *string `json:"id,omitempty"`
 
-	// READ-ONLY; Percent of the operation that is complete
-	PercentComplete *float32 `json:"percentComplete,omitempty" azure:"ro"`
+	// Name of the async operation.
+	Name *string `json:"name,omitempty"`
+
+	// The operations list.
+	Operations []*OperationStatusResult `json:"operations,omitempty"`
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32 `json:"percentComplete,omitempty"`
+
+	// The start time of the operation.
+	StartTime *time.Time `json:"startTime,omitempty"`
 
 	// READ-ONLY; Custom operation properties, populated only for a successful operation.
 	Properties interface{} `json:"properties,omitempty" azure:"ro"`
 
-	// READ-ONLY; The start time of the operation
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of the resource.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	// READ-ONLY; The id of the resource.
+	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
 }
 
-// OperationStatusError - Operation Error message
-type OperationStatusError struct {
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+// OperationStatusResult - The current status of an async operation.
+type OperationStatusResult struct {
+	// REQUIRED; Operation status.
+	Status *string `json:"status,omitempty"`
 
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	// The end time of the operation.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// If present, details of the operation error.
+	Error *ErrorDetail `json:"error,omitempty"`
+
+	// Fully qualified ID for the async operation.
+	ID *string `json:"id,omitempty"`
+
+	// Name of the async operation.
+	Name *string `json:"name,omitempty"`
+
+	// The operations list.
+	Operations []*OperationStatusResult `json:"operations,omitempty"`
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32 `json:"percentComplete,omitempty"`
+
+	// The start time of the operation.
+	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
 // OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
@@ -1199,6 +1265,19 @@ type Project struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ProjectAllowedEnvironmentTypesClientGetOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.Get
+// method.
+type ProjectAllowedEnvironmentTypesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.List
+// method.
+type ProjectAllowedEnvironmentTypesClientListOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // ProjectEnvironmentType - Represents an environment type.

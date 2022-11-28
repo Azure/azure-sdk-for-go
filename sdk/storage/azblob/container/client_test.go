@@ -42,22 +42,18 @@ func Test(t *testing.T) {
 	}
 }
 
-// nolint
 func (s *ContainerRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *ContainerRecordedTestsSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
@@ -70,7 +66,6 @@ type ContainerUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-//nolint
 //func (s *ContainerUnrecordedTestsSuite) TestNewContainerClientValidName() {
 //	_require := require.New(s.T())
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -85,7 +80,6 @@ type ContainerUnrecordedTestsSuite struct {
 //	_require.Equal(testURL.URL(), correctURL)
 //}
 
-//nolint
 //func (s *ContainerUnrecordedTestsSuite) TestCreateRootContainerURL() {
 //	_require := require.New(s.T())
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1358,7 +1352,6 @@ func (s *ContainerUnrecordedTestsSuite) TestSetEmptyAccessPolicy() {
 	_require.Nil(err)
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1389,7 +1382,6 @@ func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 	_require.Nil(err)
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1440,7 +1432,6 @@ func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 	_require.Len(resp.SignedIdentifiers, 3)
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2014,4 +2005,154 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSin
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+// make sure that container soft delete is enabled
+func (s *ContainerRecordedTestsSuite) TestContainerUndelete() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := svcClient.NewContainerClient(containerName)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = containerClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+	// it appears that deleting the container involves acquiring a lease.
+	// since leases can only be 15-60s or infinite, we just wait for 60 seconds.
+	time.Sleep(60 * time.Second)
+
+	prefix := testcommon.ContainerPrefix
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true, Deleted: true}}
+	pager := svcClient.NewListContainersPager(&listOptions)
+
+	contRestored := false
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, cont := range resp.ContainerItems {
+			_require.NotNil(cont.Name)
+
+			if *cont.Deleted && *cont.Name == containerName {
+				_, err = containerClient.Restore(context.Background(), *cont.Version, nil)
+				_require.NoError(err)
+				contRestored = true
+				break
+			}
+		}
+		if contRestored {
+			break
+		}
+	}
+
+	_require.Equal(contRestored, true)
+
+	for i := 0; i < 5; i++ {
+		_, err = containerClient.Delete(context.Background(), nil)
+		if err == nil {
+			// container was deleted
+			break
+		} else if bloberror.HasCode(err, bloberror.Code("ConcurrentContainerOperationInProgress")) {
+			// the container is still being restored, sleep a bit then try again
+			time.Sleep(10 * time.Second)
+		} else {
+			// some other error
+			break
+		}
+	}
+	_require.Nil(err)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestSetAccessPoliciesInDifferentTimeFormats() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	id := "timeInEST"
+	permission := "rw"
+	loc, err := time.LoadLocation("EST")
+	_require.Nil(err)
+	start := time.Now().In(loc)
+	expiry := start.Add(10 * time.Hour)
+
+	signedIdentifiers := make([]*container.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id,
+		AccessPolicy: &container.AccessPolicy{
+			Start:      &start,
+			Expiry:     &expiry,
+			Permission: &permission,
+		},
+	})
+
+	id2 := "timeInIST"
+	permission2 := "r"
+	loc2, err := time.LoadLocation("Asia/Kolkata")
+	_require.Nil(err)
+	start2 := time.Now().In(loc2)
+	expiry2 := start2.Add(5 * time.Hour)
+
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id2,
+		AccessPolicy: &container.AccessPolicy{
+			Start:      &start2,
+			Expiry:     &expiry2,
+			Permission: &permission2,
+		},
+	})
+
+	id3 := "nilTime"
+	permission3 := "r"
+
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id3,
+		AccessPolicy: &container.AccessPolicy{
+			Permission: &permission3,
+		},
+	})
+
+	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	_require.Nil(err)
+
+	// make a Get to assert three access policies
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, 3)
+	_require.EqualValues(resp.SignedIdentifiers, signedIdentifiers)
+}
+
+func (s *ContainerRecordedTestsSuite) TestSetAccessPolicyWithNullId() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	signedIdentifiers := make([]*container.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		AccessPolicy: &container.AccessPolicy{
+			Permission: to.Ptr("rw"),
+		},
+	})
+
+	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, 0)
 }

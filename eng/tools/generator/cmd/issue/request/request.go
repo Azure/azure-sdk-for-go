@@ -105,14 +105,14 @@ func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	contents := getRawContent(strings.Split(body, "\n"), []string{
 		linkKeyword, tagKeyword, releaseDateKeyword,
 	})
+
 	// get release date
-	releaseDate, err := time.Parse("2006-01-02", contents[releaseDateKeyword])
+	targetDate := regexp.MustCompile(`\d*-\d*-\d*`).FindString(contents[releaseDateKeyword])
+	releaseDate, err := time.Parse("2006-01-02", targetDate)
 	if err != nil {
-		return nil, &issueError{
-			issue: issue,
-			err:   err,
-		}
+		releaseDate = time.Now()
 	}
+
 	return &ReleaseRequestIssue{
 		IssueLink:   issue.GetHTMLURL(),
 		TargetLink:  parseLink(contents[linkKeyword]),

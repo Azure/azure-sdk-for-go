@@ -155,32 +155,32 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 func TestResourceVerification(t *testing.T) {
 	for _, test := range []struct {
-		challenge, resource string
-		disableVerify, err  bool
+		expectedScope, format, resource string
+		disableVerify, err              bool
 	}{
 		// happy path: resource matches requested vault's host (vault.azure.net)
-		{challenge: authResource, resource: "https://vault.azure.net"},
-		{challenge: authScope, resource: "https://vault.azure.net/.default"},
-		{challenge: authResource, resource: "https://vault.azure.net", disableVerify: true},
-		{challenge: authScope, resource: "https://vault.azure.net/.default", disableVerify: true},
+		{format: authResource, resource: "https://vault.azure.net", expectedScope: scope},
+		{format: authScope, resource: scope, expectedScope: scope},
+		{format: authResource, resource: "https://vault.azure.net", disableVerify: true, expectedScope: scope},
+		{format: authScope, resource: scope, disableVerify: true, expectedScope: scope},
 
 		// error cases: resource/scope doesn't match the requested vault's host (vault.azure.net)
-		{challenge: authResource, resource: "https://vault.azure.cn", err: true},
-		{challenge: authResource, resource: "https://myvault.azure.net", err: true},
-		{challenge: authScope, resource: "https://vault.azure.cn/.default", err: true},
-		{challenge: authScope, resource: "https://myvault.azure.net/.default", err: true},
+		{format: authResource, resource: "https://vault.azure.cn", err: true},
+		{format: authResource, resource: "https://myvault.azure.net", err: true},
+		{format: authScope, resource: "https://vault.azure.cn/.default", err: true},
+		{format: authScope, resource: "https://myvault.azure.net/.default", err: true},
 
 		// the policy shouldn't return errors for the above error cases when verification is disabled
-		{challenge: authResource, resource: "https://vault.azure.cn", disableVerify: true},
-		{challenge: authResource, resource: "https://myvault.azure.net", disableVerify: true},
-		{challenge: authScope, resource: "https://vault.azure.cn/.default", disableVerify: true},
-		{challenge: authScope, resource: "https://myvault.azure.net/.default", disableVerify: true},
+		{format: authResource, resource: "https://vault.azure.cn", disableVerify: true, expectedScope: "https://vault.azure.cn/.default"},
+		{format: authResource, resource: "https://myvault.azure.net", disableVerify: true, expectedScope: "https://myvault.azure.net/.default"},
+		{format: authScope, resource: "https://vault.azure.cn/.default", disableVerify: true, expectedScope: "https://vault.azure.cn/.default"},
+		{format: authScope, resource: "https://myvault.azure.net/.default", disableVerify: true, expectedScope: "https://myvault.azure.net/.default"},
 	} {
 		t.Run(test.resource, func(t *testing.T) {
 			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 			defer close()
 			srv.AppendResponse(
-				mock.WithHeader("WWW-Authenticate", fmt.Sprintf(test.challenge, fakeTenant, test.resource)),
+				mock.WithHeader("WWW-Authenticate", fmt.Sprintf(test.format, fakeTenant, test.resource)),
 				mock.WithStatusCode(401),
 			)
 			srv.AppendResponse()
@@ -204,6 +204,7 @@ func TestResourceVerification(t *testing.T) {
 				}
 			} else {
 				require.NoError(t, err)
+				require.Equal(t, test.expectedScope, *p.scope)
 			}
 		})
 	}

@@ -197,10 +197,10 @@ func (b batchOperationUpsert) MarshalJSON() ([]byte, error) {
 }
 
 type batchOperationPatch struct {
-	operationType    string
-	id               string
-	ifMatch          *azcore.ETag
-	patchOperations  PatchOperations
+	operationType   string
+	id              string
+	ifMatch         *azcore.ETag
+	patchOperations PatchOperations
 }
 
 func (b batchOperationPatch) getOperationType() operationType {

@@ -157,11 +157,11 @@ func TestItemCRUD(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to unmarshal item response: %v", err)
 	}
-	
+
 	if itemResponseBody["value"] != "5" {
 		t.Fatalf("Expected value to be 5, got %v", itemResponseBody["id"])
 	}
-	
+
 	if itemResponseBody["hello"] != "world" {
 		t.Fatalf("Expected hello to be world, got %v", itemResponseBody["hello"])
 	}

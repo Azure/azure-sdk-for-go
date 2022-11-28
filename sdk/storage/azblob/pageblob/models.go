@@ -8,7 +8,6 @@ package pageblob
 
 import (
 	"encoding/binary"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/hashing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -93,7 +92,7 @@ type UploadPagesOptions struct {
 
 	// Let the SDK hash for you (providing the hash type(s) specified voids their relevance in this option).
 	// nil = None default
-	TransactionalValidationOption hashing.TransferValidationType
+	TransactionalValidationOption exported.TransferValidationType
 
 	// Specify the transactional crc64 for the body, to be validated by the service. Should be hashed using hashing.CRC64Table or hashing.CRC64Polynomial
 	TransactionalContentCRC64 uint64
@@ -117,7 +116,7 @@ func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptio
 		Range:                   exported.FormatHTTPRange(o.Range),
 	}
 
-	if o.TransactionalValidationOption == hashing.TransferValidationTypeCRC64 || o.TransactionalContentCRC64 != 0 {
+	if o.TransactionalValidationOption == exported.TransferValidationTypeCRC64 || o.TransactionalContentCRC64 != 0 {
 		options.TransactionalContentCRC64 = make([]byte, 8)
 		// If the validation option is specified & the CRC is 0, it will be 0, and get overwritten anyway with the new hash.
 		// Thus, it's OK to run putUint64 here.

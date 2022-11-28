@@ -9,7 +9,6 @@ package pageblob
 import (
 	"context"
 	"encoding/binary"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/hashing"
 	"io"
 	"net/http"
 	"net/url"
@@ -150,16 +149,16 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, optio
 
 	uploadPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()
 
-	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidationOption != hashing.TransferValidationTypeNone {
-		body, err = hashing.NewReadWrapper(body, options.TransactionalValidationOption)
+	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidationOption != exported.TransferValidationTypeNone {
+		body, err = shared.NewReadWrapper(body, options.TransactionalValidationOption)
 
 		if err != nil {
 			return UploadPagesResponse{}, err
 		}
 
-		if options.TransactionalValidationOption&hashing.TransferValidationTypeCRC64 == hashing.TransferValidationTypeCRC64 {
+		if options.TransactionalValidationOption&exported.TransferValidationTypeCRC64 == exported.TransferValidationTypeCRC64 {
 			uploadPagesOptions.TransactionalContentCRC64 = make([]byte, 8)
-			binary.LittleEndian.PutUint64(uploadPagesOptions.TransactionalContentCRC64, (body.(*hashing.ReadWrapper)).CRC64Hash())
+			binary.LittleEndian.PutUint64(uploadPagesOptions.TransactionalContentCRC64, (body.(*shared.ReadWrapper)).CRC64Hash())
 		}
 	}
 

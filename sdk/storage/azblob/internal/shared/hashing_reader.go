@@ -4,10 +4,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package hashing
+package shared
 
 import (
 	"bytes"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"hash/crc64"
 	"io"
 )
@@ -34,14 +35,14 @@ func (h *ReadWrapper) Close() error {
 	return nil
 }
 
-func NewReadWrapper(r io.ReadSeekCloser, validationOption TransferValidationType) (*ReadWrapper, error) {
+func NewReadWrapper(r io.ReadSeekCloser, validationOption exported.TransferValidationType) (*ReadWrapper, error) {
 	buf, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}
 
 	var crc uint64
-	if validationOption&TransferValidationTypeCRC64 == TransferValidationTypeCRC64 {
+	if validationOption&exported.TransferValidationTypeCRC64 == exported.TransferValidationTypeCRC64 {
 		crc = crc64.Checksum(buf, CRC64Table)
 	}
 

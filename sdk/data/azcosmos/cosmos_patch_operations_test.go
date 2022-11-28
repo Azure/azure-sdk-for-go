@@ -120,7 +120,7 @@ func TestPatchAppendRemove(t *testing.T) {
 
 func TestPatchAppendIncrement(t *testing.T) {
 	patch := PatchOperations{}
-	value := int32(5)
+	value := int64(5)
 	patch.AppendIncrement("/foo", value)
 
 	if len(patch.operations) != 1 {

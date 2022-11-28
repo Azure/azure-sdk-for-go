@@ -42,9 +42,9 @@ type PatchOperations struct {
 func (o PatchOperations) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
 	if o.condition != nil {
-		buffer.WriteString(fmt.Sprintf("\"condition\": \"%s\",", *o.condition))
+		buffer.WriteString(fmt.Sprintf("\"condition\":\"%s\",", *o.condition))
 	}
-	buffer.WriteString("\"operations\": [")
+	buffer.WriteString("\"operations\":[")
 	for i, operation := range o.operations {
 		if i > 0 {
 			buffer.WriteString(",")
@@ -55,7 +55,7 @@ func (o PatchOperations) MarshalJSON() ([]byte, error) {
 		}
 		buffer.Write(operationBytes)
 	}
-
+	buffer.WriteString("]}")
 	return buffer.Bytes(), nil
 }
 

@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"encoding/json"
 	"testing"
 )
 
@@ -40,6 +41,17 @@ func TestPatchAppendAdd(t *testing.T) {
 	if patch.operations[0].Value != "bar" {
 		t.Fatalf("Expected value %v, but got %v", "bar", patch.operations[0].Value)
 	}
+
+	jsonString, err := json.Marshal(patch)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedSerialization := `{"operations":[{"op":"add","path":"/foo","value":"bar"}]}`
+
+	if string(jsonString) != expectedSerialization {
+		t.Fatalf("Expected serialization %v, but got %v", expectedSerialization, string(jsonString))
+	}
 }
 
 func TestPatchAppendReplace(t *testing.T) {
@@ -61,6 +73,17 @@ func TestPatchAppendReplace(t *testing.T) {
 	if patch.operations[0].Value != "bar" {
 		t.Fatalf("Expected value %v, but got %v", "bar", patch.operations[0].Value)
 	}
+
+	jsonString, err := json.Marshal(patch)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedSerialization := `{"operations":[{"op":"replace","path":"/foo","value":"bar"}]}`
+
+	if string(jsonString) != expectedSerialization {
+		t.Fatalf("Expected serialization %v, but got %v", expectedSerialization, string(jsonString))
+	}
 }
 
 func TestPatchAppendRemove(t *testing.T) {
@@ -81,6 +104,17 @@ func TestPatchAppendRemove(t *testing.T) {
 
 	if patch.operations[0].Value != nil {
 		t.Fatalf("Expected value to be nil, but got %v", patch.operations[0].Value)
+	}
+
+	jsonString, err := json.Marshal(patch)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedSerialization := `{"operations":[{"op":"remove","path":"/foo"}]}`
+
+	if string(jsonString) != expectedSerialization {
+		t.Fatalf("Expected serialization %v, but got %v", expectedSerialization, string(jsonString))
 	}
 }
 
@@ -104,6 +138,17 @@ func TestPatchAppendIncrement(t *testing.T) {
 	if patch.operations[0].Value != value {
 		t.Fatalf("Expected value to be %v, but got %v", value, patch.operations[0].Value)
 	}
+
+	jsonString, err := json.Marshal(patch)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedSerialization := `{"operations":[{"op":"incr","path":"/foo","value":5}]}`
+
+	if string(jsonString) != expectedSerialization {
+		t.Fatalf("Expected serialization %v, but got %v", expectedSerialization, string(jsonString))
+	}
 }
 
 func TestPatchAppendSet(t *testing.T) {
@@ -124,5 +169,16 @@ func TestPatchAppendSet(t *testing.T) {
 
 	if patch.operations[0].Value != "bar" {
 		t.Fatalf("Expected value to be bar, but got %v", patch.operations[0].Value)
+	}
+
+	jsonString, err := json.Marshal(patch)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectedSerialization := `{"operations":[{"op":"set","path":"/foo","value":"bar"}]}`
+
+	if string(jsonString) != expectedSerialization {
+		t.Fatalf("Expected serialization %v, but got %v", expectedSerialization, string(jsonString))
 	}
 }

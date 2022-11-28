@@ -481,6 +481,7 @@ func (c *ContainerClient) PatchItem(
 	operationContext := pipelineRequestOptions{
 		resourceType:          resourceTypeDocument,
 		resourceAddress:       createLink(c.link, pathSegmentDocument, itemId),
+		isWriteOperation:      true,
 		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)

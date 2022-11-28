@@ -33,10 +33,10 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	item := map[string]interface{}{
-		"id":    "1",
-		"value": "2",
-		"count": "3",
-		"toremove": 4,
+		"id":          "1",
+		"value":       "2",
+		"count":       3,
+		"description": "4",
 	}
 
 	container, _ := database.NewContainer("aContainer")
@@ -135,22 +135,29 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	patchItem := PatchOperations{}
-	patchItem.SetCondition("from c where c.id = '1'")
 	patchItem.AppendReplace("/value", "5")
 	patchItem.AppendSet("/hello", "world")
 	patchItem.AppendAdd("/foo", "bar")
-	patchItem.AppendRemove("/toremove")
+	patchItem.AppendRemove("/description")
 	patchItem.AppendIncrement("/count", 1)
 
-	itemResponse, err = container.PatchItem(context.TODO(), pk, "1", patchItem, &ItemOptions{EnableContentResponseOnWrite: true})
+	itemResponse, err = container.PatchItem(context.TODO(), pk, "1", patchItem, nil)
 	if err != nil {
 		t.Fatalf("Failed to patch item: %v", err)
 	}
+
+	// No content on write by default
+	if len(itemResponse.Value) != 0 {
+		t.Fatalf("Expected empty response, got %v", itemResponse.Value)
+	}
+
+	itemResponse, _ = container.ReadItem(context.TODO(), pk, "1", nil)
 
 	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
 	if err != nil {
 		t.Fatalf("Failed to unmarshal item response: %v", err)
 	}
+	
 	if itemResponseBody["value"] != "5" {
 		t.Fatalf("Expected value to be 5, got %v", itemResponseBody["id"])
 	}
@@ -163,12 +170,12 @@ func TestItemCRUD(t *testing.T) {
 		t.Fatalf("Expected foo to be bar, got %v", itemResponseBody["foo"])
 	}
 
-	if itemResponseBody["count"] != 4 {
+	if itemResponseBody["count"].(float64) != float64(4) {
 		t.Fatalf("Expected count to be 4, got %v", itemResponseBody["count"])
 	}
 
 	if itemResponseBody["toremove"] != nil {
-		t.Fatalf("Expected toremove to be nil, got %v", itemResponseBody["toremove"])
+		t.Fatalf("Expected toremove to be nil, got %v", itemResponseBody)
 	}
 
 	itemResponse, err = container.DeleteItem(context.TODO(), pk, "1", nil)

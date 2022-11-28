@@ -71,6 +71,20 @@ func (b *TransactionalBatch) ReadItem(itemID string, o *TransactionalBatchItemOp
 			id:            itemID})
 }
 
+// PatchItem adds a patch operation to the batch
+func (b *TransactionalBatch) PatchItem(itemID string, p PatchOperations, o *TransactionalBatchItemOptions) {
+	if o == nil {
+		o = &TransactionalBatchItemOptions{}
+	}
+	b.operations = append(b.operations,
+		batchOperationPatch{
+			operationType:   "Patch",
+			id:              itemID,
+			patchOperations: p,
+			ifMatch:         o.IfMatchETag,
+		})
+}
+
 type batchOperation interface {
 	getOperationType() operationType
 }
@@ -178,6 +192,42 @@ func (b batchOperationUpsert) MarshalJSON() ([]byte, error) {
 
 	buffer.WriteString(",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
+}
+
+type batchOperationPatch struct {
+	operationType    string
+	id               string
+	ifMatch          *azcore.ETag
+	patchOperations  PatchOperations
+}
+
+func (b batchOperationPatch) getOperationType() operationType {
+	return operationTypePatch
+}
+
+// MarshalJSON implements the json.Marshaler interface
+func (b batchOperationPatch) MarshalJSON() ([]byte, error) {
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
+
+	if b.ifMatch != nil {
+		buffer.WriteString(",\"ifMatch\":")
+		etag, err := json.Marshal(b.ifMatch)
+		if err != nil {
+			return nil, err
+		}
+		buffer.Write(etag)
+	}
+
+	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
+	buffer.WriteString(",\"resourceBody\":")
+	p, err := json.Marshal(b.patchOperations)
+	if err != nil {
+		return nil, err
+	}
+	buffer.Write(p)
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil
 }

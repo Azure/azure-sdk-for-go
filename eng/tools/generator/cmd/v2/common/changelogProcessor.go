@@ -322,9 +322,9 @@ func funcOperation(content *delta.Content) {
 // LROFilter LROFilter after OperationFilter
 func LROFilter(changelog *model.Changelog) {
 	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
-		var beginFunc string
 		removedContent := changelog.Modified.BreakingChanges.Removed
 		for bFunc, v := range removedContent.Funcs {
+			var beginFunc string
 			clientFunc := strings.Split(bFunc, ".")
 			if len(clientFunc) == 2 {
 				if strings.Contains(clientFunc[1], "Begin") {
@@ -335,8 +335,7 @@ func LROFilter(changelog *model.Changelog) {
 				}
 				if _, ok := changelog.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
 					delete(changelog.Modified.AdditiveChanges.Funcs, beginFunc)
-					tmp := &beginFunc
-					v.ReplacedBy = tmp
+					v.ReplacedBy = &beginFunc
 					removedContent.Funcs[bFunc] = v
 				}
 			}

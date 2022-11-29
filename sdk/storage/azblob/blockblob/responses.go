@@ -97,7 +97,7 @@ func toUploadReaderAtResponseFromCommitBlockListResponse(resp CommitBlockListRes
 		RequestID:           resp.RequestID,
 		Version:             resp.Version,
 		VersionID:           resp.VersionID,
-		ContentCRC64:        resp.XMSContentCRC64,
+		ContentCRC64:        resp.ContentCRC64,
 	}
 }
 

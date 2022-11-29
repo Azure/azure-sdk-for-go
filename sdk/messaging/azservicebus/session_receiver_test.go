@@ -58,6 +58,12 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	sessionState, err = receiver.GetSessionState(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, "hello", string(sessionState))
+
+	// sanity check that we can clear out session state as well.
+	require.NoError(t, receiver.SetSessionState(ctx, nil, nil))
+	sessionState, err = receiver.GetSessionState(ctx, nil)
+	require.NoError(t, err)
+	require.Nil(t, sessionState)
 }
 
 func TestSessionReceiver_blankSessionIDs(t *testing.T) {

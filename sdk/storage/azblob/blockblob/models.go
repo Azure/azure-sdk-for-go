@@ -84,7 +84,7 @@ type StageBlockOptions struct {
 	// nil = None default
 	TransactionalValidation blob.TransferValidationType
 
-	// Specify the transactional crc64 for the body, to be validated by the service. Should be hashed using hashing.CRC64Table or hashing.CRC64Polynomial
+	// Specify the transactional crc64 for the body, to be validated by the service. Should be hashed using exported.CRC64Table or exported.CRC64Polynomial
 	TransactionalContentCRC64 uint64
 
 	// Specify the transactional md5 for the body, to be validated by the service.

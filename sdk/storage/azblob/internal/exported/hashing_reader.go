@@ -12,6 +12,10 @@ import (
 	"io"
 )
 
+const CRC64Polynomial uint64 = 0x9A6C9329AC4BC9B5
+
+var CRC64Table = crc64.MakeTable(CRC64Polynomial)
+
 // ReadWrapper is an io.ReadSeekCloser wrapper to prevent reading twice for SDK-generated hashes.
 type ReadWrapper struct {
 	internal *bytes.Reader

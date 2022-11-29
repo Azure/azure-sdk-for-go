@@ -165,14 +165,6 @@ func (o *SealOptions) format() (*generated.LeaseAccessConditions,
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ExpiryOptions defines values for ExpiryOptions
-type ExpiryOptions = generated.ExpiryOptions
-
-// PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
-func PossibleExpiryOptionsValues() []ExpiryOptions {
-	return generated.PossibleExpiryOptionsValues()
-}
-
 // ExpiryType defines values for ExpiryType
 type ExpiryType = exported.ExpiryType
 

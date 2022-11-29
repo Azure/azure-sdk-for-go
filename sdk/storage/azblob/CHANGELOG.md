@@ -24,8 +24,8 @@
 
 ### Other Changes
 
-* Avoid allocations when storing/fetching a slice via sync.Pool.
 * Added some missing public surface area in the `container` and `service` packages.
+* The `UploadStream()` methods now use memory mapped files for buffers in order to reduce heap allocations/fragmentation.
 
 ## 0.5.1 (2022-10-11)
 

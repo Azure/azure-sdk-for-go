@@ -7,7 +7,6 @@
 package blockblob
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -254,11 +253,6 @@ func (o *uploadFromReaderOptions) getCommitBlockListOptions() *CommitBlockListOp
 
 // UploadStreamOptions provides set of configurations for UploadStream operation
 type UploadStreamOptions struct {
-	// transferManager provides a transferManager that controls buffer allocation/reuse and
-	// concurrency. This overrides BlockSize and MaxConcurrency if set.
-	transferManager      shared.TransferManager
-	transferMangerNotSet bool
-
 	// BlockSize defines the size of the buffer used during upload. The default and mimimum value is 1 MiB.
 	BlockSize int64
 
@@ -275,11 +269,7 @@ type UploadStreamOptions struct {
 	CpkScopeInfo     *blob.CpkScopeInfo
 }
 
-func (u *UploadStreamOptions) format() error {
-	if u == nil || u.transferManager != nil {
-		return nil
-	}
-
+func (u *UploadStreamOptions) setDefaults() {
 	if u.Concurrency == 0 {
 		u.Concurrency = 1
 	}
@@ -287,17 +277,13 @@ func (u *UploadStreamOptions) format() error {
 	if u.BlockSize < _1MiB {
 		u.BlockSize = _1MiB
 	}
-
-	var err error
-	u.transferManager, err = shared.NewStaticBuffer(u.BlockSize, u.Concurrency)
-	if err != nil {
-		return fmt.Errorf("bug: default transfer manager could not be created: %s", err)
-	}
-	u.transferMangerNotSet = true
-	return nil
 }
 
 func (u *UploadStreamOptions) getStageBlockOptions() *StageBlockOptions {
+	if u == nil {
+		return nil
+	}
+
 	leaseAccessConditions, _ := exported.FormatBlobAccessConditions(u.AccessConditions)
 	return &StageBlockOptions{
 		CpkInfo:               u.CpkInfo,
@@ -307,7 +293,11 @@ func (u *UploadStreamOptions) getStageBlockOptions() *StageBlockOptions {
 }
 
 func (u *UploadStreamOptions) getCommitBlockListOptions() *CommitBlockListOptions {
-	options := &CommitBlockListOptions{
+	if u == nil {
+		return nil
+	}
+
+	return &CommitBlockListOptions{
 		Tags:             u.Tags,
 		Metadata:         u.Metadata,
 		Tier:             u.AccessTier,
@@ -316,8 +306,22 @@ func (u *UploadStreamOptions) getCommitBlockListOptions() *CommitBlockListOption
 		CpkScopeInfo:     u.CpkScopeInfo,
 		AccessConditions: u.AccessConditions,
 	}
+}
 
-	return options
+func (u *UploadStreamOptions) getUploadOptions() *UploadOptions {
+	if u == nil {
+		return nil
+	}
+
+	return &UploadOptions{
+		Tags:             u.Tags,
+		Metadata:         u.Metadata,
+		Tier:             u.AccessTier,
+		HTTPHeaders:      u.HTTPHeaders,
+		CpkInfo:          u.CpkInfo,
+		CpkScopeInfo:     u.CpkScopeInfo,
+		AccessConditions: u.AccessConditions,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0-beta.2 (2022-11-25)
+## 2.3.0-beta.2 (2022-12-23)
 ### Breaking Changes
 
 - Operation `*AgentPoolsClient.AbortLatestOperation` has been changed to LRO, use `*ManagedClustersClient.BeginAbortLatestOperation` instead.

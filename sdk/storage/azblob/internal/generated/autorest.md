@@ -301,3 +301,13 @@ directive:
     return $.
       replace(/IncrementalCopyOfEralierVersionSnapshotNotAllowed/g, "IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
 ```
+
+### Fix up x-ms-content-crc64 header response name
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.x-ms-paths.*.*.responses.*.headers.x-ms-content-crc64
+  transform: >
+    $["x-ms-client-name"] = "ContentCRC64"
+```

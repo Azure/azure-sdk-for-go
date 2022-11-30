@@ -36,6 +36,7 @@ func Run(remainingArgs []string) {
 		"constantDetachmentSender": ConstantDetachmentSender,
 		"finitePeeks":              FinitePeeks,
 		"finiteSendAndReceive":     FiniteSendAndReceiveTest,
+		"finiteSessions":           FiniteSessions,
 		"idleFastReconnect":        IdleFastReconnect,
 		"infiniteSendAndReceive":   InfiniteSendAndReceiveRun,
 		"longRunningRenewLock":     LongRunningRenewLockTest,

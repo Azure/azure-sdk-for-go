@@ -74,18 +74,34 @@ func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.
 	return adminClient
 }
 
-func MustCreateSubscriptions(sc *StressContext, topicName string, subscriptionNames []string) func() {
+type MustCreateSubscriptionsOptions struct {
+	Topic        *admin.CreateTopicOptions
+	Subscription *admin.CreateSubscriptionOptions
+}
+
+func MustCreateSubscriptions(sc *StressContext, topicName string, subscriptionNames []string, options *MustCreateSubscriptionsOptions) func() {
 	log.Printf("[BEGIN] Creating topic %s", topicName)
 	defer log.Printf("[END] Creating topic %s", topicName)
 
 	ac, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("Failed to create a topic manager", err)
 
-	_, err = ac.CreateTopic(context.Background(), topicName, nil)
+	var topicOpts *admin.CreateTopicOptions
+
+	if options.Topic != nil {
+		topicOpts = options.Topic
+	}
+
+	_, err = ac.CreateTopic(context.Background(), topicName, topicOpts)
 	sc.PanicOnError("Failed to create topic", err)
 
 	for _, name := range subscriptionNames {
-		_, err := ac.CreateSubscription(context.Background(), topicName, name, nil)
+		var subOpts admin.CreateSubscriptionOptions
+
+		if options != nil && options.Subscription != nil {
+			subOpts = *options.Subscription
+		}
+		_, err := ac.CreateSubscription(context.Background(), topicName, name, &subOpts)
 		sc.PanicOnError("Failed to create subscription manager", err)
 	}
 

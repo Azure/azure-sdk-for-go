@@ -29,7 +29,7 @@ func InfiniteSendAndReceiveRun(remainingArgs []string) {
 
 	stats := sc.NewStat("infinite")
 
-	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"batch"})
+	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"batch"}, nil)
 	defer cleanup()
 
 	time.AfterFunc(5*24*time.Hour, func() {

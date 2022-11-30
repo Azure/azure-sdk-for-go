@@ -15,3 +15,15 @@ func PossibleEnumRemoveValues() []EnumRemove {
 		EnumRemoveC,
 	}
 }
+
+type EnumExist string
+
+const (
+	EnumExistA EnumExist = "A"
+)
+
+func PossibleEnumExistValues() []EnumExist {
+	return []EnumExist{
+		EnumExistA,
+	}
+}

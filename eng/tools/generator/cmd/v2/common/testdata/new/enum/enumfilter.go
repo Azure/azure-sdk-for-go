@@ -13,3 +13,17 @@ func PossibleEnumAddValues() []EnumAdd {
 		EnumAddB,
 	}
 }
+
+type EnumExist string
+
+const (
+	EnumExistA EnumExist = "A"
+	EnumExistB EnumExist = "B"
+)
+
+func PossibleEnumExistValues() []EnumExist {
+	return []EnumExist{
+		EnumExistA,
+		EnumExistB,
+	}
+}

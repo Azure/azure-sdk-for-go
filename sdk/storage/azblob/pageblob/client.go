@@ -160,7 +160,7 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, optio
 
 	uploadPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()
 
-	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidation != blob.TransferValidationTypeNone {
+	if options != nil && options.TransactionalContentCRC64 == 0 && options.TransactionalValidation != blob.TransferValidationTypeNone {
 		body, err = exported.NewReadWrapper(body, options.TransactionalValidation)
 
 		if err != nil {

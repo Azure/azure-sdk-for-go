@@ -155,7 +155,7 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 
 	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
 
-	if o.TransactionalContentCRC64 == 0 && o.TransactionalValidation != blob.TransferValidationTypeNone {
+	if o != nil && o.TransactionalContentCRC64 == 0 && o.TransactionalValidation != blob.TransferValidationTypeNone {
 		body, err = exported.NewReadWrapper(body, o.TransactionalValidation)
 
 		if err != nil {

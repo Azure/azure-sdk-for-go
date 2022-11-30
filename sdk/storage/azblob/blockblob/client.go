@@ -171,7 +171,7 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 
 	opts, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
 
-	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidation != blob.TransferValidationTypeNone {
+	if options != nil && options.TransactionalContentCRC64 == 0 && options.TransactionalValidation != blob.TransferValidationTypeNone {
 		body, err = exported.NewReadWrapper(body, options.TransactionalValidation)
 
 		if err != nil {

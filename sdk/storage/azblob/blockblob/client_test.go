@@ -3680,7 +3680,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryToNeverExpire() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeNever{}, nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeNever{}, nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3703,7 +3703,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToNow() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToNow(8*time.Second), nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeRelativeToNow(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3731,7 +3731,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToCreation()
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3760,7 +3760,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 	_require.Nil(resp.ExpiresOn)
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3791,7 +3791,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
 	time.Sleep(time.Second * 10)
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)

@@ -2244,7 +2244,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryToNeverExpire() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeNever{}, nil)
+	_, err = abClient.SetExpiry(context.Background(), appendblob.ExpiryTypeNever{}, nil)
 	_require.Nil(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
@@ -2272,7 +2272,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToNow() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToNow(8*time.Second), nil)
+	_, err = abClient.SetExpiry(context.Background(), appendblob.ExpiryTypeRelativeToNow(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
@@ -2305,7 +2305,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToCreation
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
+	_, err = abClient.SetExpiry(context.Background(), appendblob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
@@ -2339,7 +2339,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
 	_require.Nil(resp.ExpiresOn)
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
-	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
+	_, err = abClient.SetExpiry(context.Background(), appendblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	_require.Nil(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)

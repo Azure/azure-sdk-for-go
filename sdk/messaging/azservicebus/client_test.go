@@ -9,6 +9,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -58,6 +59,21 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	require.NoError(t, err)
 
 	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")}, nil)
+
+	if err != nil {
+		if strings.Contains(err.Error(), "'Send' claim(s) are required to perform this operation") {
+			const sleepDuration = time.Minute
+			// it's possible we're just dealing with a propagation delay for our
+			// configured identity and the newly created resource. We'll sleep
+			// a bit to give it some time and try again.
+			t.Logf("Enacting CI workaround to deal with RBAC propagation delays. Sleeping for %s...", sleepDuration)
+			time.Sleep(sleepDuration)
+			t.Logf("Done sleeping for %s", sleepDuration)
+
+			err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")}, nil)
+		}
+	}
+
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(queue, nil)

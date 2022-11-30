@@ -65,16 +65,16 @@ func NewMachineExtensionsClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
-// name - The name of the machine where the extension should be created or updated.
+// virtualMachineName - The name of the machine where the extension should be created or updated.
 // extensionName - The name of the machine extension.
 // extensionParameters - Parameters supplied to the Create Machine Extension operation.
 // options - MachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginCreateOrUpdate
 // method.
-func (client *MachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachineExtensionsClientCreateOrUpdateResponse], error) {
+func (client *MachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachineExtensionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, extensionName, extensionParameters, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualMachineName, extensionName, extensionParameters, options)
 		if err != nil {
 			return nil, err
 		}
@@ -88,9 +88,9 @@ func (client *MachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, 
 
 // CreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
-func (client *MachineExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, extensionName, extensionParameters, options)
+// Generated from API version 2022-07-15-preview
+func (client *MachineExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualMachineName, extensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -105,8 +105,8 @@ func (client *MachineExtensionsClient) createOrUpdate(ctx context.Context, resou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{name}/extensions/{extensionName}"
+func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, extensionParameters MachineExtension, options *MachineExtensionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{virtualMachineName}/extensions/{extensionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -115,10 +115,10 @@ func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
+	if virtualMachineName == "" {
+		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
 	if extensionName == "" {
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
@@ -128,7 +128,7 @@ func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, extensionParameters)
@@ -136,15 +136,15 @@ func (client *MachineExtensionsClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginDelete - The operation to delete the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
-// name - The name of the machine where the extension should be deleted.
+// virtualMachineName - The name of the machine where the extension should be deleted.
 // extensionName - The name of the machine extension.
 // options - MachineExtensionsClientBeginDeleteOptions contains the optional parameters for the MachineExtensionsClient.BeginDelete
 // method.
-func (client *MachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*runtime.Poller[MachineExtensionsClientDeleteResponse], error) {
+func (client *MachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*runtime.Poller[MachineExtensionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, name, extensionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualMachineName, extensionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,9 +156,9 @@ func (client *MachineExtensionsClient) BeginDelete(ctx context.Context, resource
 
 // Delete - The operation to delete the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
-func (client *MachineExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, extensionName, options)
+// Generated from API version 2022-07-15-preview
+func (client *MachineExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualMachineName, extensionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -173,8 +173,8 @@ func (client *MachineExtensionsClient) deleteOperation(ctx context.Context, reso
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{name}/extensions/{extensionName}"
+func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, options *MachineExtensionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{virtualMachineName}/extensions/{extensionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -183,10 +183,10 @@ func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
+	if virtualMachineName == "" {
+		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
 	if extensionName == "" {
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
@@ -196,7 +196,7 @@ func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -204,13 +204,13 @@ func (client *MachineExtensionsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - The operation to get the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
-// name - The name of the machine containing the extension.
+// virtualMachineName - The name of the machine containing the extension.
 // extensionName - The name of the machine extension.
 // options - MachineExtensionsClientGetOptions contains the optional parameters for the MachineExtensionsClient.Get method.
-func (client *MachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, name string, extensionName string, options *MachineExtensionsClientGetOptions) (MachineExtensionsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, name, extensionName, options)
+func (client *MachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, options *MachineExtensionsClientGetOptions) (MachineExtensionsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualMachineName, extensionName, options)
 	if err != nil {
 		return MachineExtensionsClientGetResponse{}, err
 	}
@@ -225,8 +225,8 @@ func (client *MachineExtensionsClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // getCreateRequest creates the Get request.
-func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, extensionName string, options *MachineExtensionsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{name}/extensions/{extensionName}"
+func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, options *MachineExtensionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{virtualMachineName}/extensions/{extensionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -235,10 +235,10 @@ func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
+	if virtualMachineName == "" {
+		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
 	if extensionName == "" {
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
@@ -248,7 +248,7 @@ func (client *MachineExtensionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,12 +264,11 @@ func (client *MachineExtensionsClient) getHandleResponse(resp *http.Response) (M
 }
 
 // NewListPager - The operation to get all extensions of a non-Azure machine
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
-// name - The name of the machine containing the extension.
+// virtualMachineName - The name of the machine containing the extension.
 // options - MachineExtensionsClientListOptions contains the optional parameters for the MachineExtensionsClient.List method.
-func (client *MachineExtensionsClient) NewListPager(resourceGroupName string, name string, options *MachineExtensionsClientListOptions) *runtime.Pager[MachineExtensionsClientListResponse] {
+func (client *MachineExtensionsClient) NewListPager(resourceGroupName string, virtualMachineName string, options *MachineExtensionsClientListOptions) *runtime.Pager[MachineExtensionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MachineExtensionsClientListResponse]{
 		More: func(page MachineExtensionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -278,7 +277,7 @@ func (client *MachineExtensionsClient) NewListPager(resourceGroupName string, na
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, name, options)
+				req, err = client.listCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -298,8 +297,8 @@ func (client *MachineExtensionsClient) NewListPager(resourceGroupName string, na
 }
 
 // listCreateRequest creates the List request.
-func (client *MachineExtensionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, options *MachineExtensionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{name}/extensions"
+func (client *MachineExtensionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, options *MachineExtensionsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{virtualMachineName}/extensions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -308,16 +307,16 @@ func (client *MachineExtensionsClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
+	if virtualMachineName == "" {
+		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -337,16 +336,16 @@ func (client *MachineExtensionsClient) listHandleResponse(resp *http.Response) (
 
 // BeginUpdate - The operation to update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
-// name - The name of the machine where the extension should be created or updated.
+// virtualMachineName - The name of the machine where the extension should be created or updated.
 // extensionName - The name of the machine extension.
 // extensionParameters - Parameters supplied to the Create Machine Extension operation.
 // options - MachineExtensionsClientBeginUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginUpdate
 // method.
-func (client *MachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*runtime.Poller[MachineExtensionsClientUpdateResponse], error) {
+func (client *MachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*runtime.Poller[MachineExtensionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, name, extensionName, extensionParameters, options)
+		resp, err := client.update(ctx, resourceGroupName, virtualMachineName, extensionName, extensionParameters, options)
 		if err != nil {
 			return nil, err
 		}
@@ -358,9 +357,9 @@ func (client *MachineExtensionsClient) BeginUpdate(ctx context.Context, resource
 
 // Update - The operation to update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
-func (client *MachineExtensionsClient) update(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*http.Response, error) {
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, extensionName, extensionParameters, options)
+// Generated from API version 2022-07-15-preview
+func (client *MachineExtensionsClient) update(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*http.Response, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualMachineName, extensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -375,8 +374,8 @@ func (client *MachineExtensionsClient) update(ctx context.Context, resourceGroup
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{name}/extensions/{extensionName}"
+func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, extensionName string, extensionParameters MachineExtensionUpdate, options *MachineExtensionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{virtualMachineName}/extensions/{extensionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -385,10 +384,10 @@ func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
+	if virtualMachineName == "" {
+		return nil, errors.New("parameter virtualMachineName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineName}", url.PathEscape(virtualMachineName))
 	if extensionName == "" {
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
@@ -398,7 +397,7 @@ func (client *MachineExtensionsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, extensionParameters)

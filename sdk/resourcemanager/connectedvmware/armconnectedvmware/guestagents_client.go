@@ -65,7 +65,7 @@ func NewGuestAgentsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreate - Create Or Update GuestAgent.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // virtualMachineName - Name of the vm.
 // name - Name of the guestAgents.
@@ -87,7 +87,7 @@ func (client *GuestAgentsClient) BeginCreate(ctx context.Context, resourceGroupN
 
 // Create - Create Or Update GuestAgent.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 func (client *GuestAgentsClient) create(ctx context.Context, resourceGroupName string, virtualMachineName string, name string, body GuestAgent, options *GuestAgentsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, virtualMachineName, name, body, options)
 	if err != nil {
@@ -127,7 +127,7 @@ func (client *GuestAgentsClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -135,7 +135,7 @@ func (client *GuestAgentsClient) createCreateRequest(ctx context.Context, resour
 
 // BeginDelete - Implements GuestAgent DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // virtualMachineName - Name of the vm.
 // name - Name of the GuestAgent.
@@ -154,7 +154,7 @@ func (client *GuestAgentsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Implements GuestAgent DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 func (client *GuestAgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualMachineName string, name string, options *GuestAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualMachineName, name, options)
 	if err != nil {
@@ -194,7 +194,7 @@ func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +202,7 @@ func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Implements GuestAgent GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // virtualMachineName - Name of the vm.
 // name - Name of the GuestAgent.
@@ -246,7 +246,7 @@ func (client *GuestAgentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,42 +261,41 @@ func (client *GuestAgentsClient) getHandleResponse(resp *http.Response) (GuestAg
 	return result, nil
 }
 
-// NewListByVMPager - Returns the list of GuestAgent of the given vm.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// NewListPager - Returns the list of GuestAgent of the given vm.
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // virtualMachineName - Name of the vm.
-// options - GuestAgentsClientListByVMOptions contains the optional parameters for the GuestAgentsClient.ListByVM method.
-func (client *GuestAgentsClient) NewListByVMPager(resourceGroupName string, virtualMachineName string, options *GuestAgentsClientListByVMOptions) *runtime.Pager[GuestAgentsClientListByVMResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GuestAgentsClientListByVMResponse]{
-		More: func(page GuestAgentsClientListByVMResponse) bool {
+// options - GuestAgentsClientListOptions contains the optional parameters for the GuestAgentsClient.List method.
+func (client *GuestAgentsClient) NewListPager(resourceGroupName string, virtualMachineName string, options *GuestAgentsClientListOptions) *runtime.Pager[GuestAgentsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GuestAgentsClientListResponse]{
+		More: func(page GuestAgentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *GuestAgentsClientListByVMResponse) (GuestAgentsClientListByVMResponse, error) {
+		Fetcher: func(ctx context.Context, page *GuestAgentsClientListResponse) (GuestAgentsClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listByVMCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
+				req, err = client.listCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return GuestAgentsClientListByVMResponse{}, err
+				return GuestAgentsClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return GuestAgentsClientListByVMResponse{}, err
+				return GuestAgentsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GuestAgentsClientListByVMResponse{}, runtime.NewResponseError(resp)
+				return GuestAgentsClientListResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.listByVMHandleResponse(resp)
+			return client.listHandleResponse(resp)
 		},
 	})
 }
 
-// listByVMCreateRequest creates the ListByVM request.
-func (client *GuestAgentsClient) listByVMCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, options *GuestAgentsClientListByVMOptions) (*policy.Request, error) {
+// listCreateRequest creates the List request.
+func (client *GuestAgentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, options *GuestAgentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachines/{virtualMachineName}/guestAgents"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -315,17 +314,17 @@ func (client *GuestAgentsClient) listByVMCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listByVMHandleResponse handles the ListByVM response.
-func (client *GuestAgentsClient) listByVMHandleResponse(resp *http.Response) (GuestAgentsClientListByVMResponse, error) {
-	result := GuestAgentsClientListByVMResponse{}
+// listHandleResponse handles the List response.
+func (client *GuestAgentsClient) listHandleResponse(resp *http.Response) (GuestAgentsClientListResponse, error) {
+	result := GuestAgentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GuestAgentList); err != nil {
-		return GuestAgentsClientListByVMResponse{}, err
+		return GuestAgentsClientListResponse{}, err
 	}
 	return result, nil
 }

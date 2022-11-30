@@ -49,6 +49,13 @@ type AvailablePatchCountByClassification struct {
 	Updates *int32 `json:"updates,omitempty" azure:"ro"`
 }
 
+// AzureArcVMwareManagementServiceAPIClientBeginUpgradeExtensionsOptions contains the optional parameters for the AzureArcVMwareManagementServiceAPIClient.BeginUpgradeExtensions
+// method.
+type AzureArcVMwareManagementServiceAPIClientBeginUpgradeExtensionsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // Cluster - Define the cluster.
 type Cluster struct {
 	// REQUIRED; Gets or sets the location.
@@ -110,7 +117,7 @@ func (c *ClusterInventoryItem) GetInventoryItemProperties() *InventoryItemProper
 	}
 }
 
-// ClusterProperties - Defines the resource properties.
+// ClusterProperties - Describes the properties of a Cluster.
 type ClusterProperties struct {
 	// Gets or sets the inventory Item ID for the cluster.
 	InventoryItemID *string `json:"inventoryItemId,omitempty"`
@@ -186,21 +193,6 @@ type ClustersList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// Condition defines an extension to status.
-type Condition struct {
-	// READ-ONLY; A human readable message indicating details about the status.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The reason for the condition's status.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
-
-	// READ-ONLY; Severity with which to treat failures of this type of condition.
-	Severity *string `json:"severity,omitempty" azure:"ro"`
-
-	// READ-ONLY; Status of the condition.
-	Status *string `json:"status,omitempty" azure:"ro"`
-}
-
 // Datastore - Define the datastore.
 type Datastore struct {
 	// REQUIRED; Gets or sets the location.
@@ -268,7 +260,7 @@ func (d *DatastoreInventoryItem) GetInventoryItemProperties() *InventoryItemProp
 	}
 }
 
-// DatastoreProperties - Defines the resource properties.
+// DatastoreProperties - Describes the properties of a Datastore.
 type DatastoreProperties struct {
 	// Gets or sets the inventory Item ID for the datastore.
 	InventoryItemID *string `json:"inventoryItemId,omitempty"`
@@ -279,8 +271,14 @@ type DatastoreProperties struct {
 	// Gets or sets the ARM Id of the vCenter resource in which this datastore resides.
 	VCenterID *string `json:"vCenterId,omitempty"`
 
+	// READ-ONLY; Gets or sets Maximum capacity of this datastore in GBs.
+	CapacityGB *int64 `json:"capacityGB,omitempty" azure:"ro"`
+
 	// READ-ONLY; Gets the name of the corresponding resource in Kubernetes.
 	CustomResourceName *string `json:"customResourceName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets or sets Available space of this datastore in GBs.
+	FreeSpaceGB *int64 `json:"freeSpaceGB,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets or sets the vCenter Managed Object name for the datastore.
 	MoName *string `json:"moName,omitempty" azure:"ro"`
@@ -339,37 +337,31 @@ type DatastoresList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ErrorDefinition - Error definition.
-type ErrorDefinition struct {
-	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty" azure:"ro"`
+
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
-	// READ-ONLY; Internal error details.
-	Details []*ErrorDefinition `json:"details,omitempty" azure:"ro"`
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
 
-	// READ-ONLY; Description of the error.
+	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
-}
 
-// ErrorDetail - Error details.
-type ErrorDetail struct {
-	// REQUIRED; The error's code.
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
-
-	// Additional error details.
-	Details []*ErrorDetail `json:"details,omitempty"`
-
-	// Indicates which property in the request is responsible for the error.
-	Target *string `json:"target,omitempty"`
-}
-
-// ErrorResponse - Error response.
-type ErrorResponse struct {
-	// The error details.
-	Error *ErrorDefinition `json:"error,omitempty"`
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
 // ExtendedLocation - The extended location.
@@ -379,6 +371,12 @@ type ExtendedLocation struct {
 
 	// The extended location type.
 	Type *string `json:"type,omitempty"`
+}
+
+// ExtensionTargetProperties - Describes the Machine Extension Target Version Properties
+type ExtensionTargetProperties struct {
+	// Properties for the specified Extension to Upgrade.
+	TargetVersion *string `json:"targetVersion,omitempty"`
 }
 
 // GuestAgent - Defines the GuestAgent.
@@ -408,8 +406,11 @@ type GuestAgentList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// GuestAgentProfile - Defines the resource properties.
+// GuestAgentProfile - Specifies the guest agent settings for the virtual machine.
 type GuestAgentProfile struct {
+	// Gets or sets the Public Key provided by the client for enabling guest management.
+	ClientPublicKey *string `json:"clientPublicKey,omitempty"`
+
 	// READ-ONLY; The hybrid machine agent full version.
 	AgentVersion *string `json:"agentVersion,omitempty" azure:"ro"`
 
@@ -419,6 +420,9 @@ type GuestAgentProfile struct {
 	// READ-ONLY; The time of the last status change.
 	LastStatusChange *time.Time `json:"lastStatusChange,omitempty" azure:"ro"`
 
+	// READ-ONLY; Specifies whether any MS SQL instance is discovered on the machine.
+	MssqlDiscovered *string `json:"mssqlDiscovered,omitempty" azure:"ro"`
+
 	// READ-ONLY; The status of the hybrid machine agent.
 	Status *StatusTypes `json:"status,omitempty" azure:"ro"`
 
@@ -426,7 +430,13 @@ type GuestAgentProfile struct {
 	VMUUID *string `json:"vmUuid,omitempty" azure:"ro"`
 }
 
-// GuestAgentProperties - Defines the resource properties.
+// GuestAgentProfileUpdate - Specifies the guest agent settings for the virtual machine.
+type GuestAgentProfileUpdate struct {
+	// Gets or sets the Public Key provided by the client for enabling guest management.
+	ClientPublicKey *string `json:"clientPublicKey,omitempty"`
+}
+
+// GuestAgentProperties - Describes the properties of a Virtual Machine Guest Agent.
 type GuestAgentProperties struct {
 	// Username / Password Credentials to provision guest agent.
 	Credentials *GuestCredential `json:"credentials,omitempty"`
@@ -470,8 +480,8 @@ type GuestAgentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestAgentsClientListByVMOptions contains the optional parameters for the GuestAgentsClient.ListByVM method.
-type GuestAgentsClientListByVMOptions struct {
+// GuestAgentsClientListOptions contains the optional parameters for the GuestAgentsClient.List method.
+type GuestAgentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -490,7 +500,7 @@ type HTTPProxyConfiguration struct {
 	HTTPSProxy *string `json:"httpsProxy,omitempty"`
 }
 
-// HardwareProfile - Defines the resource properties.
+// HardwareProfile - Specifies the hardware settings for the virtual machine.
 type HardwareProfile struct {
 	// Gets or sets memory size in MBs for the vm.
 	MemorySizeMB *int32 `json:"memorySizeMB,omitempty"`
@@ -575,7 +585,7 @@ func (h *HostInventoryItem) GetInventoryItemProperties() *InventoryItemPropertie
 	}
 }
 
-// HostProperties - Defines the resource properties.
+// HostProperties - Describes the properties of a Host.
 type HostProperties struct {
 	// Gets or sets the inventory Item ID for the host.
 	InventoryItemID *string `json:"inventoryItemId,omitempty"`
@@ -589,8 +599,14 @@ type HostProperties struct {
 	// READ-ONLY; Gets the name of the corresponding resource in Kubernetes.
 	CustomResourceName *string `json:"customResourceName,omitempty" azure:"ro"`
 
+	// READ-ONLY; Gets or sets the datastore ARM ids.
+	DatastoreIDs []*string `json:"datastoreIds,omitempty" azure:"ro"`
+
 	// READ-ONLY; Gets or sets the vCenter Managed Object name for the host.
 	MoName *string `json:"moName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets or sets the network ARM ids.
+	NetworkIDs []*string `json:"networkIds,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets or sets the provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -680,9 +696,8 @@ type HybridIdentityMetadataClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridIdentityMetadataClientListByVMOptions contains the optional parameters for the HybridIdentityMetadataClient.ListByVM
-// method.
-type HybridIdentityMetadataClientListByVMOptions struct {
+// HybridIdentityMetadataClientListOptions contains the optional parameters for the HybridIdentityMetadataClient.List method.
+type HybridIdentityMetadataClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -695,7 +710,7 @@ type HybridIdentityMetadataList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// HybridIdentityMetadataProperties - Defines the resource properties.
+// HybridIdentityMetadataProperties - Describes the properties of Hybrid Identity Metadata for a Virtual Machine.
 type HybridIdentityMetadataProperties struct {
 	// Gets or sets the Public Key.
 	PublicKey *string `json:"publicKey,omitempty"`
@@ -745,10 +760,13 @@ type InventoryItem struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// InventoryItemDetails - Defines the resource properties.
+// InventoryItemDetails - Describes the properties of an Inventory Item reference.
 type InventoryItemDetails struct {
 	// Gets or sets the inventory Item ID for the resource.
 	InventoryItemID *string `json:"inventoryItemId,omitempty"`
+
+	// The inventory type.
+	InventoryType *InventoryType `json:"inventoryType,omitempty"`
 
 	// Gets or sets the vCenter Managed Object name for the resource.
 	MoName *string `json:"moName,omitempty"`
@@ -764,7 +782,7 @@ type InventoryItemPropertiesClassification interface {
 	GetInventoryItemProperties() *InventoryItemProperties
 }
 
-// InventoryItemProperties - Defines the resource properties.
+// InventoryItemProperties - Describes the properties of an Inventory Item.
 type InventoryItemProperties struct {
 	// REQUIRED; They inventory type.
 	InventoryType *InventoryType `json:"inventoryType,omitempty"`
@@ -848,21 +866,6 @@ type MachineExtension struct {
 
 	// READ-ONLY; Gets or sets the type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MachineExtensionInstanceView - Describes the Machine Extension Instance View.
-type MachineExtensionInstanceView struct {
-	// Instance view status.
-	Status *MachineExtensionInstanceViewStatus `json:"status,omitempty"`
-
-	// READ-ONLY; The machine extension name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Specifies the type of the extension; an example is "CustomScriptExtension".
-	Type *string `json:"type,omitempty" azure:"ro"`
-
-	// READ-ONLY; Specifies the version of the script handler.
-	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty" azure:"ro"`
 }
 
 // MachineExtensionInstanceViewStatus - Instance view status.
@@ -971,6 +974,12 @@ type MachineExtensionUpdateProperties struct {
 	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
 }
 
+// MachineExtensionUpgrade - Describes the Machine Extension Upgrade Properties
+type MachineExtensionUpgrade struct {
+	// Describes the Extension Target Properties.
+	ExtensionTargets map[string]*ExtensionTargetProperties `json:"extensionTargets,omitempty"`
+}
+
 // MachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginCreateOrUpdate
 // method.
 type MachineExtensionsClientBeginCreateOrUpdateOptions struct {
@@ -1067,13 +1076,13 @@ type NetworkInterfaceUpdate struct {
 	PowerOnBoot *PowerOnBootOption `json:"powerOnBoot,omitempty"`
 }
 
-// NetworkProfile - Defines the resource properties.
+// NetworkProfile - Specifies the network interfaces of the virtual machine.
 type NetworkProfile struct {
 	// Gets or sets the list of network interfaces associated with the virtual machine.
 	NetworkInterfaces []*NetworkInterface `json:"networkInterfaces,omitempty"`
 }
 
-// NetworkProfileUpdate - Defines the update resource properties.
+// NetworkProfileUpdate - Specifies the network interfaces of the virtual machine.
 type NetworkProfileUpdate struct {
 	// Gets or sets the list of network interfaces associated with the virtual machine.
 	NetworkInterfaces []*NetworkInterfaceUpdate `json:"networkInterfaces,omitempty"`
@@ -1160,7 +1169,7 @@ type OperationsList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// OsProfile - Defines the resource properties.
+// OsProfile - Specifies the operating system settings for the virtual machine.
 type OsProfile struct {
 	// Gets or sets administrator password.
 	AdminPassword *string `json:"adminPassword,omitempty"`
@@ -1205,7 +1214,7 @@ type OsProfileLinuxConfiguration struct {
 	PatchSettings *PatchSettings `json:"patchSettings,omitempty"`
 }
 
-// OsProfileUpdate - Defines the os update properties.
+// OsProfileUpdate - Specifies the operating system settings for the virtual machine.
 type OsProfileUpdate struct {
 	// Specifies the linux configuration for update management.
 	LinuxConfiguration *OsProfileUpdateLinuxConfiguration `json:"linuxConfiguration,omitempty"`
@@ -1241,7 +1250,7 @@ type PatchSettings struct {
 	PatchMode *string `json:"patchMode,omitempty"`
 }
 
-// PlacementProfile - Defines the resource properties.
+// PlacementProfile - Specifies the compute and storage placement settings for the virtual machine.
 type PlacementProfile struct {
 	// Gets or sets the ARM Id of the cluster resource on which this virtual machine will deploy.
 	ClusterID *string `json:"clusterId,omitempty"`
@@ -1254,31 +1263,6 @@ type PlacementProfile struct {
 
 	// Gets or sets the ARM Id of the resourcePool resource on which this virtual machine will deploy.
 	ResourcePoolID *string `json:"resourcePoolId,omitempty"`
-}
-
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ResourcePatch - Object containing updates for patch operations.
@@ -1351,7 +1335,7 @@ func (r *ResourcePoolInventoryItem) GetInventoryItemProperties() *InventoryItemP
 	}
 }
 
-// ResourcePoolProperties - Defines the resource properties.
+// ResourcePoolProperties - Describes the properties of a Resource Pool.
 type ResourcePoolProperties struct {
 	// Gets or sets the inventory Item ID for the resource pool.
 	InventoryItemID *string `json:"inventoryItemId,omitempty"`
@@ -1376,6 +1360,9 @@ type ResourcePoolProperties struct {
 	// READ-ONLY; Gets the name of the corresponding resource in Kubernetes.
 	CustomResourceName *string `json:"customResourceName,omitempty" azure:"ro"`
 
+	// READ-ONLY; Gets or sets the datastore ARM ids.
+	DatastoreIDs []*string `json:"datastoreIds,omitempty" azure:"ro"`
+
 	// READ-ONLY; Gets or sets MemLimitMB specifies a memory usage limit in megabytes. Utilization will not exceed the specified
 	// limit even if there are available resources.
 	MemLimitMB *int64 `json:"memLimitMB,omitempty" azure:"ro"`
@@ -1389,6 +1376,9 @@ type ResourcePoolProperties struct {
 
 	// READ-ONLY; Gets or sets the vCenter Managed Object name for the resource pool.
 	MoName *string `json:"moName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets or sets the network ARM ids.
+	NetworkIDs []*string `json:"networkIds,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets or sets the provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -1478,7 +1468,7 @@ type StopVirtualMachineOptions struct {
 	SkipShutdown *bool `json:"skipShutdown,omitempty"`
 }
 
-// StorageProfile - Defines the resource properties.
+// StorageProfile - Specifies the storage settings for the virtual machine disks.
 type StorageProfile struct {
 	// Gets or sets the list of virtual disks associated with the virtual machine.
 	Disks []*VirtualDisk `json:"disks,omitempty"`
@@ -1487,7 +1477,7 @@ type StorageProfile struct {
 	ScsiControllers []*VirtualSCSIController `json:"scsiControllers,omitempty" azure:"ro"`
 }
 
-// StorageProfileUpdate - Defines the resource update properties.
+// StorageProfileUpdate - Specifies the storage settings for the virtual machine disks.
 type StorageProfileUpdate struct {
 	// Gets or sets the list of virtual disks associated with the virtual machine.
 	Disks []*VirtualDiskUpdate `json:"disks,omitempty"`
@@ -1552,7 +1542,7 @@ type VCenter struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// VCenterProperties - Defines the resource properties.
+// VCenterProperties - Describes the properties of a VCenter.
 type VCenterProperties struct {
 	// REQUIRED; Gets or sets the FQDN/IPAddress of the vCenter.
 	Fqdn *string `json:"fqdn,omitempty"`
@@ -1839,6 +1829,9 @@ type VirtualMachineInventoryItem struct {
 	// REQUIRED; They inventory type.
 	InventoryType *InventoryType `json:"inventoryType,omitempty"`
 
+	// Cluster inventory resource details.
+	Cluster *InventoryItemDetails `json:"cluster,omitempty"`
+
 	// Gets or sets the folder path of the vm.
 	FolderPath *string `json:"folderPath,omitempty"`
 
@@ -1899,7 +1892,7 @@ func (v *VirtualMachineInventoryItem) GetInventoryItemProperties() *InventoryIte
 	}
 }
 
-// VirtualMachineProperties - Defines the resource properties.
+// VirtualMachineProperties - Describes the properties of a Virtual Machine.
 type VirtualMachineProperties struct {
 	// Firmware type
 	FirmwareType *FirmwareType `json:"firmwareType,omitempty"`
@@ -2037,6 +2030,12 @@ type VirtualMachineTemplateInventoryItem struct {
 
 	// READ-ONLY; Gets or sets the provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets or sets the current version of VMware Tools.
+	ToolsVersion *string `json:"toolsVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets or sets the current version status of VMware Tools installed in the guest operating system.
+	ToolsVersionStatus *string `json:"toolsVersionStatus,omitempty" azure:"ro"`
 }
 
 // GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type VirtualMachineTemplateInventoryItem.
@@ -2050,7 +2049,7 @@ func (v *VirtualMachineTemplateInventoryItem) GetInventoryItemProperties() *Inve
 	}
 }
 
-// VirtualMachineTemplateProperties - Defines the resource properties.
+// VirtualMachineTemplateProperties - Describes the properties of a Virtual Machine Template.
 type VirtualMachineTemplateProperties struct {
 	// Gets or sets the inventory Item ID for the virtual machine template.
 	InventoryItemID *string `json:"inventoryItemId,omitempty"`
@@ -2169,18 +2168,21 @@ type VirtualMachineUpdate struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// VirtualMachineUpdateProperties - Defines the resource properties.
+// VirtualMachineUpdateProperties - Describes the properties of a Virtual Machine.
 type VirtualMachineUpdateProperties struct {
-	// Defines the resource properties.
+	// Specifies the guest agent settings for the virtual machine.
+	GuestAgentProfile *GuestAgentProfileUpdate `json:"guestAgentProfile,omitempty"`
+
+	// Specifies the hardware settings for the virtual machine.
 	HardwareProfile *HardwareProfile `json:"hardwareProfile,omitempty"`
 
-	// Defines the update resource properties.
+	// Specifies the network interfaces of the virtual machine.
 	NetworkProfile *NetworkProfileUpdate `json:"networkProfile,omitempty"`
 
 	// OS properties.
 	OSProfile *OsProfileUpdate `json:"osProfile,omitempty"`
 
-	// Defines the resource update properties.
+	// Specifies the storage settings for the virtual machine disks.
 	StorageProfile *StorageProfileUpdate `json:"storageProfile,omitempty"`
 }
 
@@ -2191,8 +2193,9 @@ type VirtualMachinesClientBeginAssessPatchesOptions struct {
 	ResumeToken string
 }
 
-// VirtualMachinesClientBeginCreateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreate method.
-type VirtualMachinesClientBeginCreateOptions struct {
+// VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
+// method.
+type VirtualMachinesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2245,9 +2248,8 @@ type VirtualMachinesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.ListByResourceGroup
-// method.
-type VirtualMachinesClientListByResourceGroupOptions struct {
+// VirtualMachinesClientListAllOptions contains the optional parameters for the VirtualMachinesClient.ListAll method.
+type VirtualMachinesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2326,7 +2328,7 @@ func (v *VirtualNetworkInventoryItem) GetInventoryItemProperties() *InventoryIte
 	}
 }
 
-// VirtualNetworkProperties - Defines the resource properties.
+// VirtualNetworkProperties - Describes the properties of a Virtual Network.
 type VirtualNetworkProperties struct {
 	// Gets or sets the inventory Item ID for the virtual network.
 	InventoryItemID *string `json:"inventoryItemId,omitempty"`

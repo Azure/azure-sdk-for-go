@@ -66,7 +66,7 @@ func NewVirtualMachineTemplatesClient(subscriptionID string, credential azcore.T
 
 // BeginCreate - Create Or Update virtual machine template.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // virtualMachineTemplateName - Name of the virtual machine template resource.
 // body - Request payload.
@@ -88,7 +88,7 @@ func (client *VirtualMachineTemplatesClient) BeginCreate(ctx context.Context, re
 
 // Create - Create Or Update virtual machine template.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 func (client *VirtualMachineTemplatesClient) create(ctx context.Context, resourceGroupName string, virtualMachineTemplateName string, body VirtualMachineTemplate, options *VirtualMachineTemplatesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, virtualMachineTemplateName, body, options)
 	if err != nil {
@@ -124,7 +124,7 @@ func (client *VirtualMachineTemplatesClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -132,7 +132,7 @@ func (client *VirtualMachineTemplatesClient) createCreateRequest(ctx context.Con
 
 // BeginDelete - Implements virtual machine template DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // virtualMachineTemplateName - Name of the virtual machine template resource.
 // options - VirtualMachineTemplatesClientBeginDeleteOptions contains the optional parameters for the VirtualMachineTemplatesClient.BeginDelete
@@ -151,7 +151,7 @@ func (client *VirtualMachineTemplatesClient) BeginDelete(ctx context.Context, re
 
 // Delete - Implements virtual machine template DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 func (client *VirtualMachineTemplatesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualMachineTemplateName string, options *VirtualMachineTemplatesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualMachineTemplateName, options)
 	if err != nil {
@@ -187,7 +187,7 @@ func (client *VirtualMachineTemplatesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -198,7 +198,7 @@ func (client *VirtualMachineTemplatesClient) deleteCreateRequest(ctx context.Con
 
 // Get - Implements virtual machine template GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // virtualMachineTemplateName - Name of the virtual machine template resource.
 // options - VirtualMachineTemplatesClientGetOptions contains the optional parameters for the VirtualMachineTemplatesClient.Get
@@ -238,7 +238,7 @@ func (client *VirtualMachineTemplatesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -254,8 +254,7 @@ func (client *VirtualMachineTemplatesClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListPager - List of virtualMachineTemplates in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // options - VirtualMachineTemplatesClientListOptions contains the optional parameters for the VirtualMachineTemplatesClient.List
 // method.
 func (client *VirtualMachineTemplatesClient) NewListPager(options *VirtualMachineTemplatesClientListOptions) *runtime.Pager[VirtualMachineTemplatesClientListResponse] {
@@ -298,7 +297,7 @@ func (client *VirtualMachineTemplatesClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -314,8 +313,7 @@ func (client *VirtualMachineTemplatesClient) listHandleResponse(resp *http.Respo
 }
 
 // NewListByResourceGroupPager - List of virtualMachineTemplates in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // options - VirtualMachineTemplatesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachineTemplatesClient.ListByResourceGroup
 // method.
@@ -363,7 +361,7 @@ func (client *VirtualMachineTemplatesClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -380,7 +378,7 @@ func (client *VirtualMachineTemplatesClient) listByResourceGroupHandleResponse(r
 
 // Update - API to update certain properties of the virtual machine template resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // virtualMachineTemplateName - Name of the virtual machine template resource.
 // body - Resource properties to update.
@@ -421,7 +419,7 @@ func (client *VirtualMachineTemplatesClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

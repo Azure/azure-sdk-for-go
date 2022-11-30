@@ -17,6 +17,11 @@
 
 package armconnectedvmware
 
+// AzureArcVMwareManagementServiceAPIClientUpgradeExtensionsResponse contains the response from method AzureArcVMwareManagementServiceAPIClient.UpgradeExtensions.
+type AzureArcVMwareManagementServiceAPIClientUpgradeExtensionsResponse struct {
+	// placeholder for future response values
+}
+
 // ClustersClientCreateResponse contains the response from method ClustersClient.Create.
 type ClustersClientCreateResponse struct {
 	Cluster
@@ -92,8 +97,8 @@ type GuestAgentsClientGetResponse struct {
 	GuestAgent
 }
 
-// GuestAgentsClientListByVMResponse contains the response from method GuestAgentsClient.ListByVM.
-type GuestAgentsClientListByVMResponse struct {
+// GuestAgentsClientListResponse contains the response from method GuestAgentsClient.List.
+type GuestAgentsClientListResponse struct {
 	GuestAgentList
 }
 
@@ -142,8 +147,8 @@ type HybridIdentityMetadataClientGetResponse struct {
 	HybridIdentityMetadata
 }
 
-// HybridIdentityMetadataClientListByVMResponse contains the response from method HybridIdentityMetadataClient.ListByVM.
-type HybridIdentityMetadataClientListByVMResponse struct {
+// HybridIdentityMetadataClientListResponse contains the response from method HybridIdentityMetadataClient.List.
+type HybridIdentityMetadataClientListResponse struct {
 	HybridIdentityMetadataList
 }
 
@@ -292,8 +297,8 @@ type VirtualMachinesClientAssessPatchesResponse struct {
 	VirtualMachineAssessPatchesResult
 }
 
-// VirtualMachinesClientCreateResponse contains the response from method VirtualMachinesClient.Create.
-type VirtualMachinesClientCreateResponse struct {
+// VirtualMachinesClientCreateOrUpdateResponse contains the response from method VirtualMachinesClient.CreateOrUpdate.
+type VirtualMachinesClientCreateOrUpdateResponse struct {
 	VirtualMachine
 }
 
@@ -312,8 +317,8 @@ type VirtualMachinesClientInstallPatchesResponse struct {
 	VirtualMachineInstallPatchesResult
 }
 
-// VirtualMachinesClientListByResourceGroupResponse contains the response from method VirtualMachinesClient.ListByResourceGroup.
-type VirtualMachinesClientListByResourceGroupResponse struct {
+// VirtualMachinesClientListAllResponse contains the response from method VirtualMachinesClient.ListAll.
+type VirtualMachinesClientListAllResponse struct {
 	VirtualMachinesList
 }
 

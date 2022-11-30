@@ -66,7 +66,7 @@ func NewHostsClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // BeginCreate - Create Or Update host.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // hostName - Name of the host.
 // body - Request payload.
@@ -87,7 +87,7 @@ func (client *HostsClient) BeginCreate(ctx context.Context, resourceGroupName st
 
 // Create - Create Or Update host.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 func (client *HostsClient) create(ctx context.Context, resourceGroupName string, hostName string, body Host, options *HostsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, hostName, body, options)
 	if err != nil {
@@ -123,7 +123,7 @@ func (client *HostsClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -131,7 +131,7 @@ func (client *HostsClient) createCreateRequest(ctx context.Context, resourceGrou
 
 // BeginDelete - Implements host DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // hostName - Name of the host.
 // options - HostsClientBeginDeleteOptions contains the optional parameters for the HostsClient.BeginDelete method.
@@ -149,7 +149,7 @@ func (client *HostsClient) BeginDelete(ctx context.Context, resourceGroupName st
 
 // Delete - Implements host DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 func (client *HostsClient) deleteOperation(ctx context.Context, resourceGroupName string, hostName string, options *HostsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostName, options)
 	if err != nil {
@@ -185,7 +185,7 @@ func (client *HostsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -196,7 +196,7 @@ func (client *HostsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 
 // Get - Implements host GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // hostName - Name of the host.
 // options - HostsClientGetOptions contains the optional parameters for the HostsClient.Get method.
@@ -235,7 +235,7 @@ func (client *HostsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -251,8 +251,7 @@ func (client *HostsClient) getHandleResponse(resp *http.Response) (HostsClientGe
 }
 
 // NewListPager - List of hosts in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // options - HostsClientListOptions contains the optional parameters for the HostsClient.List method.
 func (client *HostsClient) NewListPager(options *HostsClientListOptions) *runtime.Pager[HostsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[HostsClientListResponse]{
@@ -294,7 +293,7 @@ func (client *HostsClient) listCreateRequest(ctx context.Context, options *Hosts
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,8 +309,7 @@ func (client *HostsClient) listHandleResponse(resp *http.Response) (HostsClientL
 }
 
 // NewListByResourceGroupPager - List of hosts in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // options - HostsClientListByResourceGroupOptions contains the optional parameters for the HostsClient.ListByResourceGroup
 // method.
@@ -359,7 +357,7 @@ func (client *HostsClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -376,7 +374,7 @@ func (client *HostsClient) listByResourceGroupHandleResponse(resp *http.Response
 
 // Update - API to update certain properties of the host resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-10-preview
+// Generated from API version 2022-07-15-preview
 // resourceGroupName - The Resource Group Name.
 // hostName - Name of the host.
 // body - Resource properties to update.
@@ -416,7 +414,7 @@ func (client *HostsClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-10-preview")
+	reqQP.Set("api-version", "2022-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

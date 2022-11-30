@@ -16,6 +16,9 @@ matrix:
     constantDetachmentSender:
       testTarget: constantDetachmentSender
       memory: "1.5Gi"
+    emptySessions:
+      testTarget: emptySessions
+      memory: "1.0Gi"
     finitePeeks:
       testTarget: finitePeeks
       memory: "1.5Gi"

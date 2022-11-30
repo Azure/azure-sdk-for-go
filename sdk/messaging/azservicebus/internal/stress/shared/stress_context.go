@@ -191,6 +191,12 @@ func (tracker *StressContext) Equal(val1 any, val2 any) {
 	}
 }
 
+func (tracker *StressContext) Nil(val1 any) {
+	if val1 == nil {
+		panic("value was not nil")
+	}
+}
+
 func (sc *StressContext) LogIfFailed(message string, err error, stats *Stats) {
 	if err != nil {
 		log.Printf("Error: %s: %#v, %T", message, err, err)

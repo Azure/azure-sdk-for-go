@@ -19,9 +19,8 @@ import (
 )
 
 type finiteSessionsArgs struct {
-	numSessions          int
-	rounds               int
-	enableVerboseLogging bool
+	numSessions int
+	rounds      int
 }
 
 func FiniteSessions(remainingArgs []string) {
@@ -36,7 +35,6 @@ func FiniteSessions(remainingArgs []string) {
 
 	fs.IntVar(&params.numSessions, "sessions", 2000, "Number of sessions to test")
 	fs.IntVar(&params.rounds, "rounds", 100, "Number of rounds to run with these parameters. -1 means math.MaxInt64")
-	fs.BoolVar(&params.enableVerboseLogging, "verbose", false, "enable verbose azure sdk logging")
 
 	sc := shared.MustCreateStressContext("FiniteSessions")
 	defer sc.End()

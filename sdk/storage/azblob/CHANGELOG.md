@@ -25,7 +25,8 @@
 ### Other Changes
 
 * Added some missing public surface area in the `container` and `service` packages.
-* The `UploadStream()` methods now use memory mapped files for buffers in order to reduce heap allocations/fragmentation.
+* The `UploadStream()` methods now use anonymous memory mapped files for buffers in order to reduce heap allocations/fragmentation.
+  * The anonymous memory mapped files are typically backed by the page/swap file, multiple files are not actually created.
 
 ## 0.5.1 (2022-10-11)
 

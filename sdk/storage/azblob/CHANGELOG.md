@@ -15,6 +15,7 @@
 * Corrected the name for `saoid` and `suoid` SAS parameters in `BlobSignatureValues` struct as per [this](https://learn.microsoft.com/rest/api/storageservices/create-user-delegation-sas#construct-a-user-delegation-sas)
 * Updated type of `BlockSize` from int to int64 in `UploadStreamOptions`
 * CRC64 transactional hashes are now supplied with a `uint64` rather than a `[]byte` to conform with Golang's `hash/crc64` package
+* Field `XMSContentCRC64` has been renamed to `ContentCRC64`
 
 ### Bugs Fixed
 

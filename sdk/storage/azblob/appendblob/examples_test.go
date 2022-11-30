@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"log"
 	"net/http"
 	"os"
@@ -89,7 +88,7 @@ func Example_appendblob_SetExpiry() {
 
 	// set expiry on append blob to an absolute time
 	expiryTimeAbsolute := time.Now().Add(8 * time.Hour)
-	_, err = appendBlobClient.SetExpiry(context.TODO(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
+	_, err = appendBlobClient.SetExpiry(context.TODO(), appendblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	handleError(err)
 
 	// validate set expiry operation

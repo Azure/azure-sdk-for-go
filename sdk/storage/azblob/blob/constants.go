@@ -9,7 +9,6 @@ package blob
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
-	"time"
 )
 
 const (
@@ -167,33 +166,6 @@ const (
 // PossibleDeleteTypeValues returns the possible values for the DeleteType const type.
 func PossibleDeleteTypeValues() []DeleteType {
 	return generated.PossibleDeleteTypeValues()
-}
-
-// ExpiryOptions defines values for ExpiryOptions
-type ExpiryOptions = generated.ExpiryOptions
-
-// ExpiryType defines values for ExpiryType
-type ExpiryType interface {
-	format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions)
-}
-
-// ExpiryTypeAbsolute defines the absolute time for the blob expiry
-type ExpiryTypeAbsolute time.Time
-
-// ExpiryTypeRelativeToNow defines the duration relative to now for the blob expiry
-type ExpiryTypeRelativeToNow time.Duration
-
-// ExpiryTypeRelativeToCreation defines the duration relative to creation for the blob expiry
-type ExpiryTypeRelativeToCreation time.Duration
-
-// ExpiryTypeNever defines that the blob will be set to never expire
-type ExpiryTypeNever struct {
-	// empty struct since NeverExpire expiry type does not require expiry time
-}
-
-// PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
-func PossibleExpiryOptionsValues() []ExpiryOptions {
-	return generated.PossibleExpiryOptionsValues()
 }
 
 // QueryFormatType - The quick query format type.

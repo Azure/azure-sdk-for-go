@@ -3420,7 +3420,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetExpiry() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToNow(8*time.Second), nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeRelativeToNow(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)

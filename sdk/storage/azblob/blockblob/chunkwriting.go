@@ -30,7 +30,7 @@ type blockWriter interface {
 
 // bufferManager provides an abstraction for the management of buffers.
 // this is mostly for testing purposes, but does allow for different implementations without changing the algorithm.
-type bufferManager[T any] interface {
+type bufferManager[T ~[]byte] interface {
 	// Acquire returns the channel that contains the pool of buffers.
 	Acquire() <-chan T
 

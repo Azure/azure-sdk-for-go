@@ -225,10 +225,16 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 	return generated.PossibleLeaseStatusTypeValues()
 }
 
-// TransferValidationType defines values for the auto-hashing of chunks.
+// TransferValidationType abstracts the various mechanisms used to verify a transfer.
 type TransferValidationType = exported.TransferValidationType
 
-const (
-	TransferValidationTypeNone  TransferValidationType = exported.TransferValidationTypeNone
-	TransferValidationTypeCRC64 TransferValidationType = exported.TransferValidationTypeCRC64
-)
+// TransferValidationTypeCRC64 is a TransferValidationType used to provide a precomputed CRC64.
+type TransferValidationTypeCRC64 = exported.TransferValidationTypeCRC64
+
+// TransferValidationTypeComputeCRC64 is a TransferValidationType that indicates a CRC64 should be computed during transfer.
+func TransferValidationTypeComputeCRC64() TransferValidationType {
+	return exported.TransferValidationTypeComputeCRC64()
+}
+
+// TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
+type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5

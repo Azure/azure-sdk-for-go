@@ -30,7 +30,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
@@ -434,12 +434,12 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
-	contentCrc64 := crc64.Checksum(content, exported.CRC64Table)
+	contentCrc64 := crc64.Checksum(content, shared.CRC64Table)
 	rsc := streaming.NopCloser(body)
 
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
-		TransactionalValidation: blob.TransferValidationTypeCRC64,
+		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
 	})
 	_require.Nil(err)
 	// _require.Equal(putResp.RawResponse.StatusCode, 201)
@@ -456,7 +456,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	_, _ = rsc.Seek(0, io.SeekStart)
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &blockblob.StageBlockOptions{
-		TransactionalContentCRC64: badContentCrc64,
+		TransactionalValidation: blob.TransferValidationTypeCRC64(badContentCrc64),
 	})
 	_require.NotNil(err)
 	_require.Contains(err.Error(), bloberror.CRC64Mismatch)
@@ -486,7 +486,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
-		TransactionalContentMD5: contentMD5,
+		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5),
 	})
 	_require.Nil(err)
 	// _require.Equal(putResp.RawResponse.StatusCode, 201)
@@ -504,7 +504,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 	_, _ = rsc.Seek(0, io.SeekStart)
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &blockblob.StageBlockOptions{
-		TransactionalContentMD5: badContentMD5,
+		TransactionalValidation: blob.TransferValidationTypeMD5(badContentMD5),
 	})
 	_require.NotNil(err)
 	_require.Contains(err.Error(), bloberror.MD5Mismatch)

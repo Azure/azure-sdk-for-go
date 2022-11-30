@@ -7,7 +7,6 @@
 package blockblob
 
 import (
-	"encoding/binary"
 	"fmt"
 	"time"
 
@@ -83,12 +82,6 @@ type StageBlockOptions struct {
 	// Let the SDK hash for you (providing the hash type(s) specified voids their relevance in this option).
 	// nil = None default
 	TransactionalValidation blob.TransferValidationType
-
-	// Specify the transactional crc64 for the body, to be validated by the service. Should be hashed using exported.CRC64Table or exported.CRC64Polynomial
-	TransactionalContentCRC64 uint64
-
-	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 []byte
 }
 
 // StageBlockOptions contains the optional parameters for the Client.StageBlock method.
@@ -97,18 +90,7 @@ func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOption
 		return nil, nil, nil, nil
 	}
 
-	options := &generated.BlockBlobClientStageBlockOptions{
-		TransactionalContentMD5: o.TransactionalContentMD5,
-	}
-
-	if o.TransactionalValidation == blob.TransferValidationTypeCRC64 || o.TransactionalContentCRC64 != 0 {
-		options.TransactionalContentCRC64 = make([]byte, 8)
-		// If the validation option is specified & the CRC is 0, it will be 0, and get overwritten anyway with the new hash.
-		// Thus, it's OK to run putUint64 here.
-		binary.LittleEndian.PutUint64(options.TransactionalContentCRC64, o.TransactionalContentCRC64)
-	}
-
-	return options, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
+	return &generated.BlockBlobClientStageBlockOptions{}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -240,9 +222,7 @@ func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
 		CpkScopeInfo:          o.CpkScopeInfo,
 		LeaseAccessConditions: leaseAccessConditions,
 
-		TransactionalValidation:   o.TransactionalValidation,
-		TransactionalContentCRC64: o.TransactionalContentCRC64,
-		TransactionalContentMD5:   o.TransactionalContentMD5,
+		TransactionalValidation: o.TransactionalValidation,
 	}
 }
 

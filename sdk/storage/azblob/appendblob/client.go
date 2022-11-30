@@ -8,7 +8,6 @@ package appendblob
 
 import (
 	"context"
-	"encoding/binary"
 	"io"
 	"os"
 	"time"
@@ -160,16 +159,10 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 
 	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
 
-	if o != nil && o.TransactionalContentCRC64 == 0 && o.TransactionalValidation != blob.TransferValidationTypeNone {
-		body, err = exported.NewReadWrapper(body, o.TransactionalValidation)
-
+	if o != nil && o.TransactionalValidation != nil {
+		body, err = o.TransactionalValidation.Apply(body, appendOptions)
 		if err != nil {
-			return AppendBlockResponse{}, err
-		}
-
-		if o.TransactionalValidation&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
-			appendOptions.TransactionalContentCRC64 = make([]byte, 8)
-			binary.LittleEndian.PutUint64(appendOptions.TransactionalContentCRC64, (body.(*exported.ReadWrapper)).CRC64Hash())
+			return AppendBlockResponse{}, nil
 		}
 	}
 

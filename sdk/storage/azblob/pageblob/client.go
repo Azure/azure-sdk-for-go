@@ -8,7 +8,6 @@ package pageblob
 
 import (
 	"context"
-	"encoding/binary"
 	"io"
 	"net/http"
 	"net/url"
@@ -160,16 +159,10 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, optio
 
 	uploadPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()
 
-	if options != nil && options.TransactionalContentCRC64 == 0 && options.TransactionalValidation != blob.TransferValidationTypeNone {
-		body, err = exported.NewReadWrapper(body, options.TransactionalValidation)
-
+	if options != nil && options.TransactionalValidation != nil {
+		body, err = options.TransactionalValidation.Apply(body, uploadPagesOptions)
 		if err != nil {
-			return UploadPagesResponse{}, err
-		}
-
-		if options.TransactionalValidation&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
-			uploadPagesOptions.TransactionalContentCRC64 = make([]byte, 8)
-			binary.LittleEndian.PutUint64(uploadPagesOptions.TransactionalContentCRC64, (body.(*exported.ReadWrapper)).CRC64Hash())
+			return UploadPagesResponse{}, nil
 		}
 	}
 

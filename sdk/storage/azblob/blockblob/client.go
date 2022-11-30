@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/base64"
-	"encoding/binary"
 	"errors"
 	"io"
 	"os"
@@ -176,16 +175,10 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 
 	opts, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
 
-	if options != nil && options.TransactionalContentCRC64 == 0 && options.TransactionalValidation != blob.TransferValidationTypeNone {
-		body, err = exported.NewReadWrapper(body, options.TransactionalValidation)
-
+	if options != nil && options.TransactionalValidation != nil {
+		body, err = options.TransactionalValidation.Apply(body, opts)
 		if err != nil {
-			return StageBlockResponse{}, err
-		}
-
-		if options.TransactionalValidation&blob.TransferValidationTypeCRC64 == blob.TransferValidationTypeCRC64 {
-			opts.TransactionalContentCRC64 = make([]byte, 8)
-			binary.LittleEndian.PutUint64(opts.TransactionalContentCRC64, (body.(*exported.ReadWrapper)).CRC64Hash())
+			return StageBlockResponse{}, nil
 		}
 	}
 

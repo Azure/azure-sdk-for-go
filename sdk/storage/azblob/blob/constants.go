@@ -225,6 +225,7 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 	return generated.PossibleLeaseStatusTypeValues()
 }
 
+// TransferValidationType defines values for the auto-hashing of chunks.
 type TransferValidationType = exported.TransferValidationType
 
 const (

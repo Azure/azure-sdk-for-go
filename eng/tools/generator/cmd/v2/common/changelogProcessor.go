@@ -221,7 +221,16 @@ func FilterChangelog(changelog *model.Changelog, opts ...func(changelog *model.C
 
 func EnumFilter(changelog *model.Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
-		enumOperation(changelog.Modified.AdditiveChanges)
+		if changelog.Modified.AdditiveChanges != nil && changelog.Modified.AdditiveChanges.TypeAliases != nil {
+			for typeAliases := range changelog.Modified.AdditiveChanges.TypeAliases {
+				funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Funcs, typeAliases, "Possible")
+				if funcExist && len(funcKeys) == 1 {
+					for _, f := range funcKeys {
+						delete(changelog.Modified.AdditiveChanges.Funcs, f)
+					}
+				}
+			}
+		}
 	}
 
 	if changelog.Modified.HasBreakingChanges() {

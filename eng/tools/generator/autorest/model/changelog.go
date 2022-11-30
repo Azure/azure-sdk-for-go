@@ -124,19 +124,48 @@ func getNewContents(c *delta.Content) []string {
 	}
 
 	var items []string
-
-	if len(c.Consts) > 0 {
+	if len(c.Consts) > 0 || len(c.TypeAliases) > 0 {
+		newTypeAlias := make(map[string][]string)
+		existedTypeAlias := make(map[string][]string)
 		for _, k := range sortChangeItem(c.Consts) {
-			line := fmt.Sprintf("New const `%s`", k)
+			cs := c.Consts[k]
+			if _, ok := c.TypeAliases[cs.Type]; ok {
+				if alias, ok := newTypeAlias[cs.Type]; ok {
+					alias = append(alias, k)
+					newTypeAlias[cs.Type] = alias
+				} else {
+					alias = []string{k}
+					newTypeAlias[cs.Type] = alias
+				}
+			} else {
+				if alias, ok := existedTypeAlias[cs.Type]; ok {
+					alias = append(alias, k)
+					existedTypeAlias[cs.Type] = alias
+				} else {
+					existedTypeAlias[cs.Type] = []string{k}
+				}
+			}
+		}
+
+		for _, k := range sortChangeItem(existedTypeAlias) {
+			aliasValue := ""
+			for _, cs := range existedTypeAlias[k] {
+				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
+			}
+			line := fmt.Sprintf("New value %s added to type alias `%s`", strings.TrimRight(strings.TrimSpace(aliasValue), ","), k)
+			items = append(items, line)
+		}
+
+		for _, k := range sortChangeItem(newTypeAlias) {
+			aliasValue := ""
+			for _, cs := range newTypeAlias[k] {
+				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
+			}
+			line := fmt.Sprintf("New type alias `%s` with values %s", k, strings.TrimRight(strings.TrimSpace(aliasValue), ","))
 			items = append(items, line)
 		}
 	}
-	if len(c.TypeAliases) > 0 {
-		for _, k := range sortChangeItem(c.TypeAliases) {
-			line := fmt.Sprintf("New type alias `%s`", k)
-			items = append(items, line)
-		}
-	}
+
 	if len(c.Funcs) > 0 {
 		for _, k := range sortFuncItem(c.Funcs) {
 			v := c.Funcs[k]
@@ -313,7 +342,7 @@ func getRemovedContent(removed *delta.Content) []string {
 }
 
 type sortItem interface {
-	delta.Signature | delta.StructDef | exports.Const | exports.TypeAlias | exports.Struct | string
+	delta.Signature | delta.StructDef | exports.Const | exports.TypeAlias | exports.Struct | string | []string
 }
 
 func sortChangeItem[T sortItem](change map[string]T) []string {

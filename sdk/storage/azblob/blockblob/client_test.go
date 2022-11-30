@@ -13,7 +13,6 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -31,6 +30,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
@@ -443,8 +443,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	})
 	_require.Nil(err)
 	// _require.Equal(putResp.RawResponse.StatusCode, 201)
-	_require.NotNil(putResp.XMSContentCRC64)
-	_require.EqualValues(binary.LittleEndian.Uint64(putResp.XMSContentCRC64), contentCrc64)
+	_require.NotNil(putResp.ContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(putResp.ContentCRC64), contentCrc64)
 	_require.NotNil(putResp.RequestID)
 	_require.NotNil(putResp.Version)
 	_require.NotNil(putResp.Date)

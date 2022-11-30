@@ -7,16 +7,18 @@
 package exported
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
 // ExpiryType defines values for ExpiryType
 type ExpiryType interface {
 	Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions)
+	notPubliclyImplementable()
 }
 
 // ExpiryTypeAbsolute defines the absolute time for the blob expiry
@@ -44,11 +46,15 @@ func (e ExpiryTypeAbsolute) Format(o *SetExpiryOptions) (generated.ExpiryOptions
 	}
 }
 
+func (e ExpiryTypeAbsolute) notPubliclyImplementable() {}
+
 func (e ExpiryTypeRelativeToNow) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
 	return generated.ExpiryOptionsRelativeToNow, &generated.BlobClientSetExpiryOptions{
 		ExpiresOn: to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10)),
 	}
 }
+
+func (e ExpiryTypeRelativeToNow) notPubliclyImplementable() {}
 
 func (e ExpiryTypeRelativeToCreation) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
 	return generated.ExpiryOptionsRelativeToCreation, &generated.BlobClientSetExpiryOptions{
@@ -56,6 +62,10 @@ func (e ExpiryTypeRelativeToCreation) Format(o *SetExpiryOptions) (generated.Exp
 	}
 }
 
+func (e ExpiryTypeRelativeToCreation) notPubliclyImplementable() {}
+
 func (e ExpiryTypeNever) Format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
 	return generated.ExpiryOptionsNeverExpire, nil
 }
+
+func (e ExpiryTypeNever) notPubliclyImplementable() {}

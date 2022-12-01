@@ -292,7 +292,7 @@ func (s *Sender) attach(ctx context.Context) error {
 }
 
 func (s *Sender) mux() {
-	defer s.l.muxDetach(nil, nil)
+	defer s.l.muxDetach(context.Background(), nil, nil)
 
 Loop:
 	for {

@@ -132,6 +132,8 @@ func (s *Session) begin(ctx context.Context) error {
 			case <-s.conn.done:
 				// conn has terminated, no need to delete the session
 			case <-time.After(5 * time.Second):
+				// don't delete the session in this case. this is to avoid recylcing
+				// a channel number for a session that might not have terminated
 				debug.Log(3, "session.begin clean-up timed out waiting for PerformEnd ack")
 			case <-s.rx:
 				// received ack that session was closed, safe to delete session

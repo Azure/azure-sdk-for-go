@@ -73,8 +73,8 @@ func (o *CreateOptions) format() (*generated.AppendBlobClientCreateOptions, *gen
 
 // AppendBlockOptions contains the optional parameters for the Client.AppendBlock method.
 type AppendBlockOptions struct {
-	// Let the SDK hash for you (providing the hash type(s) specified voids their relevance in this option).
-	// nil = None default
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
 	TransactionalValidation blob.TransferValidationType
 
 	AppendPositionAccessConditions *AppendPositionAccessConditions

@@ -79,8 +79,8 @@ type StageBlockOptions struct {
 
 	LeaseAccessConditions *blob.LeaseAccessConditions
 
-	// Let the SDK hash for you (providing the hash type(s) specified voids their relevance in this option).
-	// nil = None default
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
 	TransactionalValidation blob.TransferValidationType
 }
 

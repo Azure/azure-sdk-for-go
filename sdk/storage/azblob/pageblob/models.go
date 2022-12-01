@@ -89,8 +89,8 @@ type UploadPagesOptions struct {
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range blob.HTTPRange
 
-	// Let the SDK hash for you (providing the hash type(s) specified voids their relevance in this option).
-	// nil = None default
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
 	TransactionalValidation blob.TransferValidationType
 
 	CpkInfo                        *blob.CpkInfo

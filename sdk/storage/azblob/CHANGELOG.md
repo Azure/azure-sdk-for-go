@@ -16,6 +16,7 @@
 * Updated type of `BlockSize` from int to int64 in `UploadStreamOptions`
 * CRC64 transactional hashes are now supplied with a `uint64` rather than a `[]byte` to conform with Golang's `hash/crc64` package
 * Field `XMSContentCRC64` has been renamed to `ContentCRC64`
+* Fields `TransactionalContentCRC64` and `TransactionalContentMD5` have been replaced by `TransactionalValidation`.
 
 ### Bugs Fixed
 

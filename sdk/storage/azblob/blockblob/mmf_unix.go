@@ -11,6 +11,8 @@ import (
 	"fmt"
 	"os"
 	"syscall"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // mmb is a memory mapped buffer
@@ -31,6 +33,6 @@ func (m *mmb) delete() {
 	err := syscall.Munmap(*m)
 	*m = nil
 	if err != nil {
-		panic(fmt.Sprintf("fatal error unmapping mmb: %v", err))
+		log.Writef("azblob", "UnmapViewOfFile error: %v", err)
 	}
 }

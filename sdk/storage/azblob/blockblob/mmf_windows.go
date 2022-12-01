@@ -7,11 +7,12 @@
 package blockblob
 
 import (
-	"fmt"
 	"os"
 	"reflect"
 	"syscall"
 	"unsafe"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // mmb is a memory mapped buffer
@@ -19,7 +20,7 @@ type mmb []byte
 
 // newMMB creates a new memory mapped buffer with the specified size
 func newMMB(size int64) (mmb, error) {
-	const InvalidHandleValue = ^uintptr(0)
+	const InvalidHandleValue = ^uintptr(0) // -1
 
 	prot, access := uint32(syscall.PAGE_READWRITE), uint32(syscall.FILE_MAP_WRITE)
 	hMMF, err := syscall.CreateFileMapping(syscall.Handle(InvalidHandleValue), nil, prot, uint32(size>>32), uint32(size&0xffffffff), nil)
@@ -47,6 +48,6 @@ func (m *mmb) delete() {
 	*m = mmb{}
 	err := syscall.UnmapViewOfFile(addr)
 	if err != nil {
-		panic(fmt.Sprintf("fatal error unmapping mmb: %v", err))
+		log.Writef("azblob", "UnmapViewOfFile error: %v", err)
 	}
 }

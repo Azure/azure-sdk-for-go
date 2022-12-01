@@ -249,6 +249,7 @@ type SourceContentValidationType interface {
 // SourceContentValidationTypeCRC64 is a SourceContentValidationType used to provided a precomputed CRC64.
 type SourceContentValidationTypeCRC64 []byte
 
+// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeCRC64.
 func (s SourceContentValidationTypeCRC64) Apply(src generated.SourceContentSetter) {
 	src.SetSourceContentCRC64(s)
 }
@@ -260,6 +261,7 @@ var _ SourceContentValidationType = (SourceContentValidationTypeCRC64)(nil)
 // SourceContentValidationTypeMD5 is a SourceContentValidationType used to provided a precomputed MD5.
 type SourceContentValidationTypeMD5 []byte
 
+// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeMD5.
 func (s SourceContentValidationTypeMD5) Apply(src generated.SourceContentSetter) {
 	src.SetSourceContentMD5(s)
 }

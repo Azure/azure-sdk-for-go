@@ -11,7 +11,7 @@ package armsqlvirtualmachine
 
 const (
 	moduleName    = "armsqlvirtualmachine"
-	moduleVersion = "v0.7.0"
+	moduleVersion = "v0.8.0"
 )
 
 // AssessmentDayOfWeek - Day of the week to run assessment.
@@ -280,12 +280,14 @@ type LeastPrivilegeMode string
 
 const (
 	LeastPrivilegeModeEnabled LeastPrivilegeMode = "Enabled"
+	LeastPrivilegeModeNotSet  LeastPrivilegeMode = "NotSet"
 )
 
 // PossibleLeastPrivilegeModeValues returns the possible values for the LeastPrivilegeMode const type.
 func PossibleLeastPrivilegeModeValues() []LeastPrivilegeMode {
 	return []LeastPrivilegeMode{
 		LeastPrivilegeModeEnabled,
+		LeastPrivilegeModeNotSet,
 	}
 }
 

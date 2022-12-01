@@ -70,7 +70,9 @@ func (client *SQLVirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SQLVirtualMachinesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SQLVirtualMachinesClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[SQLVirtualMachinesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
@@ -134,7 +136,9 @@ func (client *SQLVirtualMachinesClient) BeginDelete(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SQLVirtualMachinesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SQLVirtualMachinesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[SQLVirtualMachinesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
@@ -577,7 +581,9 @@ func (client *SQLVirtualMachinesClient) BeginUpdate(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SQLVirtualMachinesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SQLVirtualMachinesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[SQLVirtualMachinesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}

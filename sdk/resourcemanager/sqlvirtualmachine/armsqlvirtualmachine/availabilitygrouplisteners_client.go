@@ -71,7 +71,9 @@ func (client *AvailabilityGroupListenersClient) BeginCreateOrUpdate(ctx context.
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AvailabilityGroupListenersClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AvailabilityGroupListenersClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[AvailabilityGroupListenersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
@@ -140,7 +142,9 @@ func (client *AvailabilityGroupListenersClient) BeginDelete(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AvailabilityGroupListenersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AvailabilityGroupListenersClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[AvailabilityGroupListenersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}

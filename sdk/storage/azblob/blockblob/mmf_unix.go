@@ -8,7 +8,6 @@
 package blockblob
 
 import (
-	"fmt"
 	"os"
 	"syscall"
 

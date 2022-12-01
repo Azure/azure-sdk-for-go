@@ -540,7 +540,7 @@ func (r *Receiver) attach(ctx context.Context) error {
 }
 
 func (r *Receiver) mux() {
-	defer r.l.muxDetach(func() {
+	defer r.l.muxDetach(context.Background(), func() {
 		// unblock any in flight message dispositions
 		r.inFlight.clear(r.l.err)
 

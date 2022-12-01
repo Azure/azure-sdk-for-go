@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/debug"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/encoding"
@@ -100,7 +101,11 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 	case <-ctx.Done():
 		// attach was written to the network. assume it was received
 		// and that the ctx was too short to wait for the ack.
-		go l.muxDetach(nil, nil)
+		go func() {
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			defer cancel()
+			l.muxDetach(ctx, nil, nil)
+		}()
 		return ctx.Err()
 	case <-l.session.done:
 		// session has terminated, no need to deallocate in this case
@@ -127,7 +132,11 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 		select {
 		case <-ctx.Done():
 			// if we don't send an ack then we're in violation of the protocol
-			go l.muxDetach(nil, nil)
+			go func() {
+				ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+				defer cancel()
+				l.muxDetach(ctx, nil, nil)
+			}()
 			return ctx.Err()
 		case <-l.session.done:
 			return l.session.err
@@ -162,7 +171,7 @@ func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAtta
 	afterAttach(resp)
 
 	if err := l.setSettleModes(resp); err != nil {
-		l.muxDetach(nil, nil)
+		l.muxDetach(ctx, nil, nil)
 		return err
 	}
 
@@ -239,12 +248,18 @@ func (l *link) closeLink(ctx context.Context) error {
 	return l.err
 }
 
-func (l *link) muxDetach(deferred func(), onRXTransfer func(frames.PerformTransfer)) {
+func (l *link) muxDetach(ctx context.Context, deferred func(), onRXTransfer func(frames.PerformTransfer)) {
 	defer func() {
 		// final cleanup and signaling
 
-		// deallocate handle
-		l.session.deallocateHandle(l)
+		// if the context timed out or was cancelled we don't really know
+		// if the link has been properly terminated.  in this case, it might
+		// not be safe to reuse the handle as it might still be associated
+		// with an existing link.
+		if ctx.Err() == nil {
+			// deallocate handle
+			l.session.deallocateHandle(l)
+		}
 
 		if deferred != nil {
 			deferred()
@@ -278,6 +293,8 @@ func (l *link) muxDetach(deferred func(), onRXTransfer func(frames.PerformTransf
 Loop:
 	for {
 		select {
+		case <-ctx.Done():
+			return
 		case l.session.tx <- fr:
 			// after sending the detach frame, break the read loop
 			break Loop
@@ -308,6 +325,9 @@ Loop:
 
 	for {
 		select {
+		case <-ctx.Done():
+			return
+
 		// read from link until detach with Close == true is received
 		case fr := <-l.rx:
 			switch fr := fr.(type) {

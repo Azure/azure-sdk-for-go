@@ -209,7 +209,9 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if err != nil {
 		return nil, err
 	}
-	FilterChangelog(changelog)
+
+	log.Printf("filter changelog...")
+	FilterChangelog(changelog, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter)
 
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")

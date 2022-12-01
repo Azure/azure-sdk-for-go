@@ -54,7 +54,7 @@ func copyFromReader[T ~[]byte](ctx context.Context, src io.Reader, dst blockWrit
 	wg := sync.WaitGroup{}       // Used to know when all outgoing blocks have finished processing
 	errCh := make(chan error, 1) // contains the first error encountered during processing
 
-	buffers := getBufferManager(options.MaxConcurrency, options.BlockSize)
+	buffers := getBufferManager(options.Concurrency, options.BlockSize)
 	defer buffers.Free()
 
 	// this controls the lifetime of the uploading goroutines.

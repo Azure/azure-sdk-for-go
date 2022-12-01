@@ -3435,11 +3435,11 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	// Perform UploadStream
 	_, err = bbClient.UploadStream(context.Background(), blobContentReader,
 		&blockblob.UploadStreamOptions{
-			BlockSize:      int64(bufferSize),
-			MaxConcurrency: maxBuffers,
-			Metadata:       testcommon.BasicMetadata,
-			Tags:           testcommon.BasicBlobTagsMap,
-			HTTPHeaders:    &testcommon.BasicHeaders,
+			BlockSize:   int64(bufferSize),
+			Concurrency: maxBuffers,
+			Metadata:    testcommon.BasicMetadata,
+			Tags:        testcommon.BasicBlobTagsMap,
+			HTTPHeaders: &testcommon.BasicHeaders,
 		})
 
 	// Assert that upload was successful
@@ -3802,8 +3802,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockStreamUploadWithDifferentB
 	rsc := streaming.NopCloser(body)
 
 	_, err = bbClient.UploadStream(context.Background(), rsc, &blockblob.UploadStreamOptions{
-		BlockSize:      firstBlockSize,
-		MaxConcurrency: 2,
+		BlockSize:   firstBlockSize,
+		Concurrency: 2,
 	})
 	_require.Nil(err)
 

@@ -33,6 +33,6 @@ func (m *mmb) delete() {
 	err := syscall.Munmap(*m)
 	*m = nil
 	if err != nil {
-		log.Writef("azblob", "UnmapViewOfFile error: %v", err)
+		log.Writef("azblob", "Munmap error: %v", err)
 	}
 }

@@ -12,7 +12,7 @@ clear-output-folder: false
 export-clients: true
 openapi-type: "data-plane"
 output-folder: ../azacr
-use: "@autorest/go@4.0.0-preview.44"
+use: "D:/Workspace/tadelesh/autorest.go"
 honor-body-placement: true
 ```
 

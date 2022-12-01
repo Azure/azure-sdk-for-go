@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/acr/azacr
+module github.com/Azure/azure-sdk-for-go/sdk/containerregistry/azacr
 
 go 1.18
 

@@ -119,10 +119,9 @@ func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptio
 type UploadPagesFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
-	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMD5 []byte
-	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64 []byte
+
+	// SourceContentValidation contains the validation mechanism used on the range of bytes read from the source.
+	SourceContentValidation blob.SourceContentValidationType
 
 	CpkInfo *blob.CpkInfo
 
@@ -142,9 +141,11 @@ func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPag
 	}
 
 	options := &generated.PageBlobClientUploadPagesFromURLOptions{
-		SourceContentMD5:        o.SourceContentMD5,
-		SourceContentcrc64:      o.SourceContentCRC64,
 		CopySourceAuthorization: o.CopySourceAuthorization,
+	}
+
+	if o.SourceContentValidation != nil {
+		o.SourceContentValidation.Apply(options)
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)

@@ -103,10 +103,9 @@ type StageBlockFromURLOptions struct {
 	LeaseAccessConditions *blob.LeaseAccessConditions
 
 	SourceModifiedAccessConditions *blob.SourceModifiedAccessConditions
-	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMD5 []byte
-	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64 []byte
+
+	// SourceContentValidation contains the validation mechanism used on the range of bytes read from the source.
+	SourceContentValidation blob.SourceContentValidationType
 
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range blob.HTTPRange
@@ -123,9 +122,11 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 
 	options := &generated.BlockBlobClientStageBlockFromURLOptions{
 		CopySourceAuthorization: o.CopySourceAuthorization,
-		SourceContentMD5:        o.SourceContentMD5,
-		SourceContentcrc64:      o.SourceContentCRC64,
 		SourceRange:             exported.FormatHTTPRange(o.Range),
+	}
+
+	if o.SourceContentValidation != nil {
+		o.SourceContentValidation.Apply(options)
 	}
 
 	return options, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions

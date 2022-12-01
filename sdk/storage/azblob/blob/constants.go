@@ -238,3 +238,32 @@ func TransferValidationTypeComputeCRC64() TransferValidationType {
 
 // TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
 type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
+
+// SourceContentValidationType abstracts the various mechanisms used to validate source content.
+// This interface is not publicly implementable.
+type SourceContentValidationType interface {
+	Apply(generated.SourceContentSetter)
+	notPubliclyImplementable()
+}
+
+// SourceContentValidationTypeCRC64 is a SourceContentValidationType used to provided a precomputed CRC64.
+type SourceContentValidationTypeCRC64 []byte
+
+func (s SourceContentValidationTypeCRC64) Apply(src generated.SourceContentSetter) {
+	src.SetSourceContentCRC64(s)
+}
+
+func (SourceContentValidationTypeCRC64) notPubliclyImplementable() {}
+
+var _ SourceContentValidationType = (SourceContentValidationTypeCRC64)(nil)
+
+// SourceContentValidationTypeMD5 is a SourceContentValidationType used to provided a precomputed MD5.
+type SourceContentValidationTypeMD5 []byte
+
+func (s SourceContentValidationTypeMD5) Apply(src generated.SourceContentSetter) {
+	src.SetSourceContentMD5(s)
+}
+
+func (SourceContentValidationTypeMD5) notPubliclyImplementable() {}
+
+var _ SourceContentValidationType = (SourceContentValidationTypeMD5)(nil)

@@ -58,7 +58,7 @@ func NewAzureFirewallsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Creates or updates the specified Azure Firewall.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // azureFirewallName - The name of the Azure Firewall.
 // parameters - Parameters supplied to the create or update Azure Firewall operation.
@@ -80,7 +80,7 @@ func (client *AzureFirewallsClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // CreateOrUpdate - Creates or updates the specified Azure Firewall.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 func (client *AzureFirewallsClient) createOrUpdate(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall, options *AzureFirewallsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, azureFirewallName, parameters, options)
 	if err != nil {
@@ -116,7 +116,7 @@ func (client *AzureFirewallsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,7 +124,7 @@ func (client *AzureFirewallsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Deletes the specified Azure Firewall.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // azureFirewallName - The name of the Azure Firewall.
 // options - AzureFirewallsClientBeginDeleteOptions contains the optional parameters for the AzureFirewallsClient.BeginDelete
@@ -145,7 +145,7 @@ func (client *AzureFirewallsClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Deletes the specified Azure Firewall.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 func (client *AzureFirewallsClient) deleteOperation(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, azureFirewallName, options)
 	if err != nil {
@@ -181,7 +181,7 @@ func (client *AzureFirewallsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,7 +189,7 @@ func (client *AzureFirewallsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets the specified Azure Firewall.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // azureFirewallName - The name of the Azure Firewall.
 // options - AzureFirewallsClientGetOptions contains the optional parameters for the AzureFirewallsClient.Get method.
@@ -228,7 +228,7 @@ func (client *AzureFirewallsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -244,7 +244,7 @@ func (client *AzureFirewallsClient) getHandleResponse(resp *http.Response) (Azur
 }
 
 // NewListPager - Lists all Azure Firewalls in a resource group.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // options - AzureFirewallsClientListOptions contains the optional parameters for the AzureFirewallsClient.List method.
 func (client *AzureFirewallsClient) NewListPager(resourceGroupName string, options *AzureFirewallsClientListOptions) *runtime.Pager[AzureFirewallsClientListResponse] {
@@ -291,7 +291,7 @@ func (client *AzureFirewallsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -307,7 +307,7 @@ func (client *AzureFirewallsClient) listHandleResponse(resp *http.Response) (Azu
 }
 
 // NewListAllPager - Gets all the Azure Firewalls in a subscription.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // options - AzureFirewallsClientListAllOptions contains the optional parameters for the AzureFirewallsClient.ListAll method.
 func (client *AzureFirewallsClient) NewListAllPager(options *AzureFirewallsClientListAllOptions) *runtime.Pager[AzureFirewallsClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AzureFirewallsClientListAllResponse]{
@@ -349,7 +349,7 @@ func (client *AzureFirewallsClient) listAllCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -366,7 +366,7 @@ func (client *AzureFirewallsClient) listAllHandleResponse(resp *http.Response) (
 
 // BeginListLearnedPrefixes - Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // azureFirewallName - The name of the azure firewall.
 // options - AzureFirewallsClientBeginListLearnedPrefixesOptions contains the optional parameters for the AzureFirewallsClient.BeginListLearnedPrefixes
@@ -387,7 +387,7 @@ func (client *AzureFirewallsClient) BeginListLearnedPrefixes(ctx context.Context
 
 // ListLearnedPrefixes - Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 func (client *AzureFirewallsClient) listLearnedPrefixes(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsClientBeginListLearnedPrefixesOptions) (*http.Response, error) {
 	req, err := client.listLearnedPrefixesCreateRequest(ctx, resourceGroupName, azureFirewallName, options)
 	if err != nil {
@@ -423,7 +423,7 @@ func (client *AzureFirewallsClient) listLearnedPrefixesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -431,7 +431,7 @@ func (client *AzureFirewallsClient) listLearnedPrefixesCreateRequest(ctx context
 
 // BeginUpdateTags - Updates tags of an Azure Firewall resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // azureFirewallName - The name of the Azure Firewall.
 // parameters - Parameters supplied to update azure firewall tags.
@@ -453,7 +453,7 @@ func (client *AzureFirewallsClient) BeginUpdateTags(ctx context.Context, resourc
 
 // UpdateTags - Updates tags of an Azure Firewall resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 func (client *AzureFirewallsClient) updateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject, options *AzureFirewallsClientBeginUpdateTagsOptions) (*http.Response, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, azureFirewallName, parameters, options)
 	if err != nil {
@@ -489,7 +489,7 @@ func (client *AzureFirewallsClient) updateTagsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

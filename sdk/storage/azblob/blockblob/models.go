@@ -256,9 +256,9 @@ type UploadStreamOptions struct {
 	// BlockSize defines the size of the buffer used during upload. The default and mimimum value is 1 MiB.
 	BlockSize int64
 
-	// Concurrency defines the number of concurrent uploads to be performed to upload the file.
+	// MaxConcurrency defines the max number of concurrent uploads to be performed to upload the file.
 	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.
-	Concurrency int
+	MaxConcurrency int
 
 	HTTPHeaders      *blob.HTTPHeaders
 	Metadata         map[string]string
@@ -270,8 +270,8 @@ type UploadStreamOptions struct {
 }
 
 func (u *UploadStreamOptions) setDefaults() {
-	if u.Concurrency == 0 {
-		u.Concurrency = 1
+	if u.MaxConcurrency == 0 {
+		u.MaxConcurrency = 1
 	}
 
 	if u.BlockSize < _1MiB {

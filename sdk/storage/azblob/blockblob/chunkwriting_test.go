@@ -214,7 +214,7 @@ func TestCopyFromReader(t *testing.T) {
 			desc:     "Send file(10 KiB) with default UploadStreamOptions set to azcopy settings",
 			ctx:      context.Background(),
 			fileSize: 10 * 1024,
-			o:        UploadStreamOptions{Concurrency: 5, BlockSize: 8 * 1024 * 1024},
+			o:        UploadStreamOptions{MaxConcurrency: 5, BlockSize: 8 * 1024 * 1024},
 		},
 		{
 			desc:     "Send file(1 MiB) with default UploadStreamOptions",
@@ -225,7 +225,7 @@ func TestCopyFromReader(t *testing.T) {
 			desc:     "Send file(1 MiB) with default UploadStreamOptions set to azcopy settings",
 			ctx:      context.Background(),
 			fileSize: _1MiB,
-			o:        UploadStreamOptions{Concurrency: 5, BlockSize: 8 * 1024 * 1024},
+			o:        UploadStreamOptions{MaxConcurrency: 5, BlockSize: 8 * 1024 * 1024},
 		},
 		{
 			desc:     "Send file(1.5 MiB) with default UploadStreamOptions",
@@ -236,13 +236,13 @@ func TestCopyFromReader(t *testing.T) {
 			desc:     "Send file(1.5 MiB) with 2 writers",
 			ctx:      context.Background(),
 			fileSize: _1MiB + 500*1024 + 1,
-			o:        UploadStreamOptions{Concurrency: 2},
+			o:        UploadStreamOptions{MaxConcurrency: 2},
 		},
 		{
 			desc:      "Send file(12 MiB) with 3 writers and 1 MiB buffer and a write error",
 			ctx:       context.Background(),
 			fileSize:  12 * _1MiB,
-			o:         UploadStreamOptions{Concurrency: 2, BlockSize: _1MiB},
+			o:         UploadStreamOptions{MaxConcurrency: 2, BlockSize: _1MiB},
 			uploadErr: true,
 			err:       true,
 		},
@@ -250,13 +250,13 @@ func TestCopyFromReader(t *testing.T) {
 			desc:     "Send file(12 MiB) with 3 writers and 1.5 MiB buffer",
 			ctx:      context.Background(),
 			fileSize: 12 * _1MiB,
-			o:        UploadStreamOptions{Concurrency: 2, BlockSize: _1MiB + .5*_1MiB},
+			o:        UploadStreamOptions{MaxConcurrency: 2, BlockSize: _1MiB + .5*_1MiB},
 		},
 		{
 			desc:     "Send file(12 MiB) with default UploadStreamOptions set to azcopy settings",
 			ctx:      context.Background(),
 			fileSize: 12 * _1MiB,
-			o:        UploadStreamOptions{Concurrency: 5, BlockSize: 8 * 1024 * 1024},
+			o:        UploadStreamOptions{MaxConcurrency: 5, BlockSize: 8 * 1024 * 1024},
 		},
 	}
 

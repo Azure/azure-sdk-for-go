@@ -97,7 +97,7 @@ func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertio
 
 	// Perform UploadStream
 	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
-		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), Concurrency: maxBuffers})
+		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), MaxConcurrency: maxBuffers})
 
 	// Assert that upload was successful
 	_require.NoError(err)

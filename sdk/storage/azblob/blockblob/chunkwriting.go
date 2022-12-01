@@ -40,6 +40,7 @@ type bufferManager[T ~[]byte] interface {
 	// Grow grows the number of buffers, up to the predefined max.
 	// It returns the total number of buffers or an error.
 	// No error is returned if the number of buffers has reached max.
+	// This is called only from the reading goroutine.
 	Grow() (int, error)
 
 	// Free cleans up all buffers.
@@ -53,13 +54,8 @@ func copyFromReader[T ~[]byte](ctx context.Context, src io.Reader, dst blockWrit
 	wg := sync.WaitGroup{}       // Used to know when all outgoing blocks have finished processing
 	errCh := make(chan error, 1) // contains the first error encountered during processing
 
-	buffers := getBufferManager(options.Concurrency, options.BlockSize)
+	buffers := getBufferManager(options.MaxConcurrency, options.BlockSize)
 	defer buffers.Free()
-
-	// create initial buffer
-	if _, err := buffers.Grow(); err != nil {
-		return CommitBlockListResponse{}, err
-	}
 
 	// this controls the lifetime of the uploading goroutines.
 	// if an error is encountered, cancel() is called which will terminate all uploads.

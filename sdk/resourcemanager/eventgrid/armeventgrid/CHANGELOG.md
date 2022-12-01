@@ -1,5 +1,21 @@
 # Release History
 
+## 0.6.0 (2022-11-30)
+### Breaking Changes
+
+- Type of `TopicTypeProperties.SupportedScopesForSource` has been changed from `[]*TopicTypePropertiesSupportedScopesForSourceItem` to `[]*TopicTypeSourceScope`
+- Type alias `TopicTypePropertiesSupportedScopesForSourceItem` has been removed
+
+### Features Added
+- New type alias `TopicTypeSourceScope` with values `TopicTypeSourceScopeAzureSubscription`, `TopicTypeSourceScopeManagementGroup`, `TopicTypeSourceScopeResource`, `TopicTypeSourceScopeResourceGroup`
+- New field `Filter` in struct `DomainEventSubscriptionsClientListOptions`
+- New field `Top` in struct `DomainEventSubscriptionsClientListOptions`
+- New field `Filter` in struct `DomainTopicEventSubscriptionsClientListOptions`
+- New field `Top` in struct `DomainTopicEventSubscriptionsClientListOptions`
+- New field `Filter` in struct `TopicEventSubscriptionsClientListOptions`
+- New field `Top` in struct `TopicEventSubscriptionsClientListOptions`
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

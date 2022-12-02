@@ -18,11 +18,42 @@ security-scopes: "https://vault.azure.net/.default"
 use: "@autorest/go@4.0.0-preview.44"
 version: "^3.0.0"
 
-#directive:
-  #- rename-operation:
-      #from: RoleDefinitions_Delete
-      #to: AccessControl_DeleteRoleDefinitions
-  #- rename-operation:
-      #from: RoleAssignments_Delete
-      #to: AccessControl_DeleteRoleAssignments
+directive:
+
+  # make vault URL a parameter of the client constructor
+  - from: swagger-document
+    where: $["x-ms-parameterized-host"]
+    transform: $.parameters[0]["x-ms-parameter-location"] = "client"
+
+  # rename role definition and role assignment operations so they will generate as one access control client
+  - rename-operation:
+      from: RoleDefinitions_Delete
+      to: AccessControl_DeleteRoleDefinition
+  - rename-operation:
+      from: RoleAssignments_Delete
+      to: AccessControl_DeleteRoleAssignment
+  - rename-operation:
+      from: RoleDefinitions_CreateOrUpdate
+      to: AccessControl_CreateRoleDefinition
+  - rename-operation:
+      from: RoleAssignments_Create
+      to: AccessControl_CreateRoleAssignment
+  - rename-operation:
+      from: RoleDefinitions_Get
+      to: AccessControl_GetRoleDefinition
+  - rename-operation:
+      from: RoleAssignments_Get
+      to: AccessControl_GetRoleAssignment
+  - rename-operation:
+      from: RoleDefinitions_List
+      to: AccessControl_ListRoleDefinitions
+  - rename-operation:
+      from: RoleAssignments_ListForScope
+      to: AccessControl_ListRoleAssignments
+
+  # delete generated client constructor
+  - from: accesscontrol_client.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func NewAccessControlClient.+\{\s(?:.+\s)+\}\s/, "");
+
 ```

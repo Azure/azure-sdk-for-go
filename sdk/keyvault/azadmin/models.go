@@ -9,6 +9,58 @@
 
 package azadmin
 
+// AccessControlClientCreateRoleAssignmentOptions contains the optional parameters for the AccessControlClient.CreateRoleAssignment
+// method.
+type AccessControlClientCreateRoleAssignmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessControlClientCreateRoleDefinitionOptions contains the optional parameters for the AccessControlClient.CreateRoleDefinition
+// method.
+type AccessControlClientCreateRoleDefinitionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessControlClientDeleteRoleAssignmentOptions contains the optional parameters for the AccessControlClient.DeleteRoleAssignment
+// method.
+type AccessControlClientDeleteRoleAssignmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessControlClientDeleteRoleDefinitionOptions contains the optional parameters for the AccessControlClient.DeleteRoleDefinition
+// method.
+type AccessControlClientDeleteRoleDefinitionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessControlClientGetRoleAssignmentOptions contains the optional parameters for the AccessControlClient.GetRoleAssignment
+// method.
+type AccessControlClientGetRoleAssignmentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessControlClientGetRoleDefinitionOptions contains the optional parameters for the AccessControlClient.GetRoleDefinition
+// method.
+type AccessControlClientGetRoleDefinitionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessControlClientListRoleAssignmentsOptions contains the optional parameters for the AccessControlClient.ListRoleAssignments
+// method.
+type AccessControlClientListRoleAssignmentsOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+	// eq {id} to return all role assignments at, above or below the
+	// scope for the specified principal.
+	Filter *string
+}
+
+// AccessControlClientListRoleDefinitionsOptions contains the optional parameters for the AccessControlClient.ListRoleDefinitions
+// method.
+type AccessControlClientListRoleDefinitionsOptions struct {
+	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
+	Filter *string
+}
+
 // Error - The key vault server error.
 type Error struct {
 	// READ-ONLY; The error code.
@@ -100,29 +152,6 @@ type RoleAssignmentPropertiesWithScope struct {
 	Scope *RoleScope `json:"scope,omitempty"`
 }
 
-// RoleAssignmentsClientCreateOptions contains the optional parameters for the RoleAssignmentsClient.Create method.
-type RoleAssignmentsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
-type RoleAssignmentsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
-type RoleAssignmentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope method.
-type RoleAssignmentsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
-	Filter *string
-}
-
 // RoleDefinition - Role definition.
 type RoleDefinition struct {
 	// Role definition properties.
@@ -175,26 +204,4 @@ type RoleDefinitionProperties struct {
 
 	// The role type.
 	RoleType *RoleType `json:"type,omitempty"`
-}
-
-// RoleDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the RoleDefinitionsClient.CreateOrUpdate
-// method.
-type RoleDefinitionsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
-type RoleDefinitionsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
-type RoleDefinitionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.
-type RoleDefinitionsClientListOptions struct {
-	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
-	Filter *string
 }

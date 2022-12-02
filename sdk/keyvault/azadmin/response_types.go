@@ -9,42 +9,42 @@
 
 package azadmin
 
-// RoleAssignmentsClientCreateResponse contains the response from method RoleAssignmentsClient.Create.
-type RoleAssignmentsClientCreateResponse struct {
+// AccessControlClientCreateRoleAssignmentResponse contains the response from method AccessControlClient.CreateRoleAssignment.
+type AccessControlClientCreateRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// RoleAssignmentsClientDeleteResponse contains the response from method RoleAssignmentsClient.Delete.
-type RoleAssignmentsClientDeleteResponse struct {
+// AccessControlClientCreateRoleDefinitionResponse contains the response from method AccessControlClient.CreateRoleDefinition.
+type AccessControlClientCreateRoleDefinitionResponse struct {
+	RoleDefinition
+}
+
+// AccessControlClientDeleteRoleAssignmentResponse contains the response from method AccessControlClient.DeleteRoleAssignment.
+type AccessControlClientDeleteRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// RoleAssignmentsClientGetResponse contains the response from method RoleAssignmentsClient.Get.
-type RoleAssignmentsClientGetResponse struct {
+// AccessControlClientDeleteRoleDefinitionResponse contains the response from method AccessControlClient.DeleteRoleDefinition.
+type AccessControlClientDeleteRoleDefinitionResponse struct {
+	RoleDefinition
+}
+
+// AccessControlClientGetRoleAssignmentResponse contains the response from method AccessControlClient.GetRoleAssignment.
+type AccessControlClientGetRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// RoleAssignmentsClientListForScopeResponse contains the response from method RoleAssignmentsClient.ListForScope.
-type RoleAssignmentsClientListForScopeResponse struct {
+// AccessControlClientGetRoleDefinitionResponse contains the response from method AccessControlClient.GetRoleDefinition.
+type AccessControlClientGetRoleDefinitionResponse struct {
+	RoleDefinition
+}
+
+// AccessControlClientListRoleAssignmentsResponse contains the response from method AccessControlClient.ListRoleAssignments.
+type AccessControlClientListRoleAssignmentsResponse struct {
 	RoleAssignmentListResult
 }
 
-// RoleDefinitionsClientCreateOrUpdateResponse contains the response from method RoleDefinitionsClient.CreateOrUpdate.
-type RoleDefinitionsClientCreateOrUpdateResponse struct {
-	RoleDefinition
-}
-
-// RoleDefinitionsClientDeleteResponse contains the response from method RoleDefinitionsClient.Delete.
-type RoleDefinitionsClientDeleteResponse struct {
-	RoleDefinition
-}
-
-// RoleDefinitionsClientGetResponse contains the response from method RoleDefinitionsClient.Get.
-type RoleDefinitionsClientGetResponse struct {
-	RoleDefinition
-}
-
-// RoleDefinitionsClientListResponse contains the response from method RoleDefinitionsClient.List.
-type RoleDefinitionsClientListResponse struct {
+// AccessControlClientListRoleDefinitionsResponse contains the response from method AccessControlClient.ListRoleDefinitions.
+type AccessControlClientListRoleDefinitionsResponse struct {
 	RoleDefinitionListResult
 }

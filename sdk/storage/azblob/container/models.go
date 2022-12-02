@@ -32,7 +32,7 @@ type CpkScopeInfo = generated.ContainerCpkScopeInfo
 type BlobProperties = generated.BlobPropertiesInternal
 
 // BlobItem - An Azure Storage blob
-type BlobItem = generated.BlobItemInternal
+type BlobItem = generated.BlobItem
 
 // BlobPrefix is a blob's prefix when hierarchically listing blobs.
 type BlobPrefix = generated.BlobPrefix

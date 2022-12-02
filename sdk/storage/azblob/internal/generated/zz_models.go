@@ -503,7 +503,7 @@ type BlobClientUndeleteOptions struct {
 
 type BlobFlatListSegment struct {
 	// REQUIRED
-	BlobItems []*BlobItemInternal `xml:"Blob"`
+	BlobItems []*BlobItem `xml:"Blob"`
 }
 
 // BlobHTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
@@ -527,12 +527,12 @@ type BlobHTTPHeaders struct {
 
 type BlobHierarchyListSegment struct {
 	// REQUIRED
-	BlobItems    []*BlobItemInternal `xml:"Blob"`
-	BlobPrefixes []*BlobPrefix       `xml:"BlobPrefix"`
+	BlobItems    []*BlobItem   `xml:"Blob"`
+	BlobPrefixes []*BlobPrefix `xml:"BlobPrefix"`
 }
 
-// BlobItemInternal - An Azure Storage blob
-type BlobItemInternal struct {
+// BlobItem - An Azure Storage blob
+type BlobItem struct {
 	// REQUIRED
 	Deleted *bool `xml:"Deleted"`
 

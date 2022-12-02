@@ -336,8 +336,7 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
 		Concurrency:   o.Concurrency,
-		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
-
+		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
 				Offset: chunkStart + o.Range.Offset,
 				Count:  count,

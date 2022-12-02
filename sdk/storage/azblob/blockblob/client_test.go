@@ -3846,7 +3846,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel()
 	_require.Equal(*(committed[1].Size), largeBlockSize)
 }
 
-type fakeBlockBlob struct{}
+type fakeBlockBlob struct {
+	totalStaged int64
+}
 
 func (f *fakeBlockBlob) Do(req *http.Request) (*http.Response, error) {
 	// verify that the number of bytes read matches what was specified
@@ -3857,6 +3859,11 @@ func (f *fakeBlockBlob) Do(req *http.Request) (*http.Response, error) {
 	} else if int64(read) < req.ContentLength {
 		return nil, fmt.Errorf("expected %d bytes, read %d", req.ContentLength, read)
 	}
+	qp := req.URL.Query()
+	if comp := qp.Get("comp"); comp == "block" {
+		// staging a block, record its size
+		f.totalStaged += int64(read)
+	}
 	return &http.Response{
 		Request:    req,
 		Status:     "Created",
@@ -3866,16 +3873,17 @@ func (f *fakeBlockBlob) Do(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
-func TestUploadBufferBlockSize(t *testing.T) {
+func TestUploadBufferUnevenBlockSize(t *testing.T) {
+	fbb := &fakeBlockBlob{}
 	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
 		ClientOptions: policy.ClientOptions{
-			Transport: &fakeBlockBlob{},
+			Transport: fbb,
 		},
 	})
 	require.NoError(t, err)
 	require.NotNil(t, client)
 
-	// create fake source that's not an even multiple of 50000 (max number of blocks)
+	// create fake source that's not evenly divisible by 50000 (max number of blocks)
 	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
 
 	buffer := make([]byte, 263*1024*1024)
@@ -3887,4 +3895,30 @@ func TestUploadBufferBlockSize(t *testing.T) {
 		Concurrency: 1,
 	})
 	require.NoError(t, err)
+	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
+}
+
+func TestUploadBufferEvenBlockSize(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// create fake source that's evenly divisible by 50000 (max number of blocks)
+	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+
+	buffer := make([]byte, 270000000)
+	for i := 0; i < len(buffer); i++ {
+		buffer[i] = 1
+	}
+
+	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
+		Concurrency: 1,
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
 }

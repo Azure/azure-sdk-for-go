@@ -34,6 +34,12 @@ type BlobProperties = generated.BlobPropertiesInternal
 // BlobItem - An Azure Storage blob
 type BlobItem = generated.BlobItemInternal
 
+// BlobPrefix is a blob's prefix when hierarchically listing blobs.
+type BlobPrefix = generated.BlobPrefix
+
+// BlobTag - a key/value pair on a blob
+type BlobTag = generated.BlobTag
+
 // AccessConditions identifies container-specific access conditions which you optionally set.
 type AccessConditions = exported.ContainerAccessConditions
 

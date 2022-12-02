@@ -420,7 +420,7 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 			if chunkSize < o.BlockSize {
 				// this is the last block.  its actual size might be less
 				// than the calculated size due to rounding up of the payload
-				// size to fit in an even number of blocks.
+				// size to fit in a whole number of blocks.
 				chunkSize = (actualSize - offset)
 			}
 			var body io.ReadSeeker = io.NewSectionReader(reader, offset, chunkSize)

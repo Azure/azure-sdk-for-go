@@ -62,4 +62,3 @@ spec:
       {{- end -}}
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
-

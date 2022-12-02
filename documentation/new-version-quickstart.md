@@ -1,4 +1,3 @@
-
 # Getting Started - New Azure Go SDK
 
 We are excited to announce that a new set of management libraries are now production-ready. Those packages share a number of new features such as Azure Identity support, HTTP pipeline, error-handling.,etc, and they also follow the new Azure SDK guidelines which create easy-to-use APIs that are idiomatic, compatible, and dependable.

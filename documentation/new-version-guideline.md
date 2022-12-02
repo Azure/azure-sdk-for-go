@@ -1,4 +1,3 @@
-
 # Azure Go Management SDK Guideline
 
 Azure Go management SDK follows the [new Azure SDK guidelines](https://azure.github.io/azure-sdk/general_introduction.html), try to create easy-to-use APIs that are idiomatic, compatible, and dependable.

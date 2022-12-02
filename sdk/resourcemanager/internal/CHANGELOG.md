@@ -48,4 +48,3 @@
 
 ### Features Added
 * Add test util for resource manager
-

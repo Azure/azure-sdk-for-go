@@ -540,7 +540,7 @@ type BlobItem struct {
 	Name *string `xml:"Name"`
 
 	// REQUIRED; Properties of a blob
-	Properties *BlobPropertiesInternal `xml:"Properties"`
+	Properties *BlobProperties `xml:"Properties"`
 
 	// REQUIRED
 	Snapshot *string `xml:"Snapshot"`
@@ -563,8 +563,8 @@ type BlobPrefix struct {
 	Name *string `xml:"Name"`
 }
 
-// BlobPropertiesInternal - Properties of a blob
-type BlobPropertiesInternal struct {
+// BlobProperties - Properties of a blob
+type BlobProperties struct {
 	// REQUIRED
 	ETag *azcore.ETag `xml:"Etag"`
 

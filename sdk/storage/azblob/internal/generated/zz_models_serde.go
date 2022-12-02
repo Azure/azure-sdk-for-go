@@ -119,9 +119,9 @@ func (b *BlobItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	return nil
 }
 
-// MarshalXML implements the xml.Marshaller interface for type BlobPropertiesInternal.
-func (b BlobPropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias BlobPropertiesInternal
+// MarshalXML implements the xml.Marshaller interface for type BlobProperties.
+func (b BlobProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias BlobProperties
 	aux := &struct {
 		*alias
 		AccessTierChangeTime        *timeRFC1123 `xml:"AccessTierChangeTime"`
@@ -151,9 +151,9 @@ func (b BlobPropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartElemen
 	return e.EncodeElement(aux, start)
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type BlobPropertiesInternal.
-func (b *BlobPropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	type alias BlobPropertiesInternal
+// UnmarshalXML implements the xml.Unmarshaller interface for type BlobProperties.
+func (b *BlobProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias BlobProperties
 	aux := &struct {
 		*alias
 		AccessTierChangeTime        *timeRFC1123 `xml:"AccessTierChangeTime"`

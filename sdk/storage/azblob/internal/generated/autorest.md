@@ -317,4 +317,7 @@ directive:
 - rename-model:
     from: BlobItemInternal
     to: BlobItem
+- rename-model:
+    from: BlobPropertiesInternal
+    to: BlobProperties
 ```

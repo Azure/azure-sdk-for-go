@@ -29,7 +29,7 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 type CpkScopeInfo = generated.ContainerCpkScopeInfo
 
 // BlobProperties - Properties of a blob
-type BlobProperties = generated.BlobPropertiesInternal
+type BlobProperties = generated.BlobProperties
 
 // BlobItem - An Azure Storage blob
 type BlobItem = generated.BlobItem

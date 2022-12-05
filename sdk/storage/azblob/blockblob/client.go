@@ -362,7 +362,8 @@ func (bb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.Co
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
 
 // uploadFromReader uploads a buffer in blocks to a block blob.
-func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, readerSize int64, o *uploadFromReaderOptions) (uploadFromReaderResponse, error) {
+func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) (uploadFromReaderResponse, error) {
+	readerSize := actualSize
 	if o.BlockSize == 0 {
 		// If bufferSize > (MaxStageBlockBytes * MaxBlocks), then error
 		if readerSize > MaxStageBlockBytes*MaxBlocks {
@@ -412,11 +413,17 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, read
 		TransferSize:  readerSize,
 		ChunkSize:     o.BlockSize,
 		Concurrency:   o.Concurrency,
-		Operation: func(offset int64, count int64, ctx context.Context) error {
+		Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 			// This function is called once per block.
 			// It is passed this block's offset within the buffer and its count of bytes
 			// Prepare to read the proper block/section of the buffer
-			var body io.ReadSeeker = io.NewSectionReader(reader, offset, count)
+			if chunkSize < o.BlockSize {
+				// this is the last block.  its actual size might be less
+				// than the calculated size due to rounding up of the payload
+				// size to fit in a whole number of blocks.
+				chunkSize = (actualSize - offset)
+			}
+			var body io.ReadSeeker = io.NewSectionReader(reader, offset, chunkSize)
 			blockNum := offset / o.BlockSize
 			if o.Progress != nil {
 				blockProgress := int64(0)

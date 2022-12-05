@@ -485,20 +485,11 @@ func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadFileOp
 // UploadStream copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
 func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStreamOptions) (UploadStreamResponse, error) {
-	if err := o.format(); err != nil {
-		return CommitBlockListResponse{}, err
-	}
-
 	if o == nil {
 		o = &UploadStreamOptions{}
 	}
 
-	// If we used the default manager, we need to close it.
-	if o.transferMangerNotSet {
-		defer o.transferManager.Close()
-	}
-
-	result, err := copyFromReader(ctx, body, bb, *o)
+	result, err := copyFromReader(ctx, body, bb, *o, newMMBPool)
 	if err != nil {
 		return CommitBlockListResponse{}, err
 	}

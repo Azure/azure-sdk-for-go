@@ -8,10 +8,9 @@
 package blockblob
 
 import (
+	"fmt"
 	"os"
 	"syscall"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // mmb is a memory mapped buffer
@@ -32,6 +31,8 @@ func (m *mmb) delete() {
 	err := syscall.Munmap(*m)
 	*m = nil
 	if err != nil {
-		log.Writef("azblob", "Munmap error: %v", err)
+		// if we get here, there is likely memory corruption.
+		// please open an issue https://github.com/Azure/azure-sdk-for-go/issues
+		panic(fmt.Sprintf("Munmap error: %v", err))
 	}
 }

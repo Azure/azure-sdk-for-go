@@ -7,12 +7,11 @@
 package blockblob
 
 import (
+	"fmt"
 	"os"
 	"reflect"
 	"syscall"
 	"unsafe"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // mmb is a memory mapped buffer
@@ -48,6 +47,8 @@ func (m *mmb) delete() {
 	*m = mmb{}
 	err := syscall.UnmapViewOfFile(addr)
 	if err != nil {
-		log.Writef("azblob", "UnmapViewOfFile error: %v", err)
+		// if we get here, there is likely memory corruption.
+		// please open an issue https://github.com/Azure/azure-sdk-for-go/issues
+		panic(fmt.Sprintf("UnmapViewOfFile error: %v", err))
 	}
 }

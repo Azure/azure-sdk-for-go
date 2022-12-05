@@ -12,6 +12,7 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"hash/crc64"
 	"io"
@@ -23,6 +24,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -3892,4 +3894,81 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel()
 	committed := resp.BlockList.CommittedBlocks
 	_require.Equal(*(committed[0].Size), largeBlockSize)
 	_require.Equal(*(committed[1].Size), largeBlockSize)
+}
+
+type fakeBlockBlob struct {
+	totalStaged int64
+}
+
+func (f *fakeBlockBlob) Do(req *http.Request) (*http.Response, error) {
+	// verify that the number of bytes read matches what was specified
+	data := make([]byte, req.ContentLength)
+	read, err := req.Body.Read(data)
+	if err != nil && !errors.Is(err, io.EOF) {
+		return nil, err
+	} else if int64(read) < req.ContentLength {
+		return nil, fmt.Errorf("expected %d bytes, read %d", req.ContentLength, read)
+	}
+	qp := req.URL.Query()
+	if comp := qp.Get("comp"); comp == "block" {
+		// staging a block, record its size
+		f.totalStaged += int64(read)
+	}
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestUploadBufferUnevenBlockSize(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// create fake source that's not evenly divisible by 50000 (max number of blocks)
+	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+
+	buffer := make([]byte, 263*1024*1024)
+	for i := 0; i < len(buffer); i++ {
+		buffer[i] = 1
+	}
+
+	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
+		Concurrency: 1,
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
+}
+
+func TestUploadBufferEvenBlockSize(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// create fake source that's evenly divisible by 50000 (max number of blocks)
+	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+
+	buffer := make([]byte, 270000000)
+	for i := 0; i < len(buffer); i++ {
+		buffer[i] = 1
+	}
+
+	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
+		Concurrency: 1,
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
 }

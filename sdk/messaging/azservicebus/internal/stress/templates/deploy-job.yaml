@@ -22,7 +22,7 @@ spec:
       # just uses 'limits' for both.
       resources:
         limits:
-          memory: "1.5Gi"
+          memory: {{.Stress.memory}}
           cpu: "1"
       args: 
       - "tests"

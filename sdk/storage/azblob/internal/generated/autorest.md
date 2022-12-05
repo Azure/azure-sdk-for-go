@@ -311,3 +311,13 @@ directive:
   transform: >
     $["x-ms-client-name"] = "ContentCRC64"
 ```
+
+``` yaml
+directive:
+- rename-model:
+    from: BlobItemInternal
+    to: BlobItem
+- rename-model:
+    from: BlobPropertiesInternal
+    to: BlobProperties
+```

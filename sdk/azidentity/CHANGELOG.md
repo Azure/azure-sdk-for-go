@@ -1,8 +1,10 @@
 # Release History
 
-## 1.2.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
+* Added `WorkloadIdentityCredential` to support Workload Identiy Federation on Kubernetes
+  ([#15615](https://github.com/Azure/azure-sdk-for-go/issues/15615))
 
 ### Breaking Changes
 

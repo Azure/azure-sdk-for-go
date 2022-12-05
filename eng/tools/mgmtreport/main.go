@@ -8,6 +8,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"io"
 	"log"
 	"net/http"
@@ -40,7 +41,7 @@ var (
 func init() {
 	flag.StringVar(&sdkPath, "sdkpath", "", "azure-sdk-for-go path(required)")
 	flag.StringVar(&storageAccountName, "storageaccount", "", "Azure Storage Account Name(required)")
-	flag.StringVar(&storageContainerName, "storagecontainer", "mgmtreport", "Azure Storage Container Name")
+	flag.StringVar(&storageContainerName, "storagecontainer", "$web", "Azure Storage Container Name")
 	flag.StringVar(&containerBlobName, "storagecontainerblob", "mgmtReport.html", "Azure Storage Container Blob File Name")
 	flag.StringVar(&organizationUrl, "organization", "https://dev.azure.com/azure-sdk", "Azure Devops Organization Url")
 	flag.StringVar(&projectName, "project", "internal", "Azure Devops Project Name")
@@ -67,7 +68,7 @@ func main() {
 		log.Fatal("AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN could not be found")
 	}
 
-	log.Println("start running...")
+	log.Printf("start running in %s...\n", sdkPath)
 	startTime := time.Now()
 	mgmtReport, err := execute(sdkPath, personalAccessToken)
 	if err != nil {
@@ -83,7 +84,7 @@ func main() {
 
 	if htmlData != nil {
 		log.Println("Upload mgmt report to storage account...")
-		err = uploadMgmtReport(htmlData, storageAccountName, storageAccountKey)
+		err = uploadMgmtReport(htmlData, storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -352,7 +353,10 @@ func writeMgmtFile(mgmtReport map[string]mgmtInfo, path string) ([]string, error
 		}
 
 		f := fmt.Sprintf("|%s | %s | %s | %s | %s | %s |\n", module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), defaultPlaceholder(m.liveTestCoverage), mockTest, codeCoverage)
-		mgmtFile.Write([]byte(f))
+		_, err = mgmtFile.Write([]byte(f))
+		if err != nil {
+			return nil, err
+		}
 
 		tdBackground := ""
 		if i%2 == 0 {
@@ -364,7 +368,7 @@ func writeMgmtFile(mgmtReport map[string]mgmtInfo, path string) ([]string, error
 	return htmlData, nil
 }
 
-func uploadMgmtReport(htmlData []string, accountName, accountKey string) error {
+func uploadMgmtReport(htmlData []string, accountName, accountKey, containerName, blobName string) error {
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
 		return err
@@ -376,13 +380,16 @@ func uploadMgmtReport(htmlData []string, accountName, accountKey string) error {
 		return err
 	}
 
-	containerName := "mgmtreport"
-	blobName := "mgmtReport.html"
+	contentType := "text/html"
 	_, err = client.UploadStream(context.TODO(),
 		containerName,
 		blobName,
 		strings.NewReader(htmlHeader+strings.Join(htmlData, "\n")+htmlTail),
-		nil)
+		&azblob.UploadStreamOptions{
+			HTTPHeaders: &blob.HTTPHeaders{
+				BlobContentType: &contentType,
+			},
+		})
 	if err != nil {
 		return err
 	}

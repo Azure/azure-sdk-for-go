@@ -14,6 +14,7 @@
 * Corrected the name for `saoid` and `suoid` SAS parameters in `BlobSignatureValues` struct as per [this](https://learn.microsoft.com/rest/api/storageservices/create-user-delegation-sas#construct-a-user-delegation-sas)
 * Updated type of `BlockSize` from int to int64 in `UploadStreamOptions`
 * Field `XMSContentCRC64` has been renamed to `ContentCRC64`
+* The `Lease*` constant types and values in the `blob` and `container` packages have been moved to the `lease` package and their names fixed up to avoid stuttering.
 
 ### Bugs Fixed
 
@@ -24,6 +25,7 @@
 ### Other Changes
 
 * Avoid allocations when storing/fetching a slice via sync.Pool.
+* Added some missing public surface area in the `container` and `service` packages.
 
 ## 0.5.1 (2022-10-11)
 

@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
@@ -131,8 +132,8 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
 				_require.NotNil(ctnr.Properties.ETag)
-				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
-				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
+				_require.Equal(*ctnr.Properties.LeaseStatus, lease.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, lease.StateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
@@ -192,8 +193,8 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
 				_require.NotNil(ctnr.Properties.ETag)
-				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
-				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
+				_require.Equal(*ctnr.Properties.LeaseStatus, lease.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, lease.StateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)

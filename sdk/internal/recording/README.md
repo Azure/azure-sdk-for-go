@@ -127,4 +127,3 @@ func TestSomething(t *testing.T) {
 }
 ```
 In this snippet, if the test is running in live mode and we have the real account name, we want to add a URI sanitizer for the account name to ensure the value does not appear in any recordings.
-

@@ -100,4 +100,3 @@ consumerClient.GetPartitionProperties(context.TODO(), "partition-id", nil)
 producerClient.GetEventHubProperties(context.TODO(), nil)
 producerClient.GetPartitionProperties(context.TODO(), "partition-id", nil)
 ```
-

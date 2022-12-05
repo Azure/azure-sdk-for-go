@@ -30,4 +30,3 @@ spec:
       - {{ .Stress.testTarget }}
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
-

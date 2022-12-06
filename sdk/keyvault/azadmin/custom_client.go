@@ -10,18 +10,13 @@
 package azadmin
 
 import (
-	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
-// ClientOptions contains optional settings for Client.
+// AccessControlClientOptions contains optional settings for AccessControlClient.
 type AccessControlClientOptions struct {
 	azcore.ClientOptions
 
@@ -31,7 +26,6 @@ type AccessControlClientOptions struct {
 	DisableChallengeResourceVerification bool
 }
 
-// NewClient creates a client that accesses a Key Vault's certificates. You should validate that
 // vaultURL references a valid Key Vault. See https://aka.ms/azsdk/blog/vault-uri for details.
 func NewAccessControlClient(vaultURL string, credential azcore.TokenCredential, options *AccessControlClientOptions) (*AccessControlClient, error) {
 	if options == nil {

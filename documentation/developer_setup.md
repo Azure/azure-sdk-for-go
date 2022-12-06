@@ -1,88 +1,74 @@
 # Developer Set Up
 
 * [Installing Go](#installing-go)
-* [Create a Client](#create-a-client)
-	* [Documenting Code](#documenting-code)
-	* [Constructors](#constructors)
-	* [Defining Methods](#defining-methods)
+* [Directory Structure](#directory-structure)
+* [Module Skeletop](#create-module-skeleton)
+* [Create SDK](#create-your-sdk)
 * [Write Tests](#write-tests)
 
 ## Installing Go
 
-The Azure-sdk-for-go team supports Go versions latest and latest-1, to see the exact versions we support you can check the pipeline defintions [here][pipeline_definitions]. The CI pipelines test the latest and latest-1 versions on both Windows and Linux virtual machines. If you do not already have Go installed, refer to this [workspace setup][workspace_setup] article for a more in depth tutorial on setting up your Go environment (there is also an MSI if you are developing on Windows at the [go download page][go_download]). After installing Go and configuring your workspace, fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<GO HOME>/src/github.com/Azure/azure-sdk-for-go`.
+The Azure SDK for Go supports the latest two versions of Go. When setting up a new development environment, we recommend installing the latest version of Go per the [Go download page][go_download].
 
+### Configuring VSCode
 
-## Create a Client
+If you're using VSCode, install the Go extension for VSCode. This usually happens automatically when opening a .go file for the first time.
+See the [docs][vscode_go] for more information on using and configuring the extension.
 
-After you have the generated code from Autorest, the next step is to wrap this generated code in a "convenience layer" that the customers will use directly to interact with the service. Go is not an object-oriented language like C#, Java, or Python. There is no type hierarchy in Go. Clients and models will be defined as `struct`s and methods will be defined on these structs to interact with the service.
+## Directory Structure
 
-In other languages, types can be specifically marked "public" or "private", in Go exported types and methods are defined by starting with a capital letter. The methods on structs also follow this rule, if it is for use outside of the model it must start with a capital letter.
+Fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<prefix-path>/Azure/azure-sdk-for-go`.
 
+After cloning the repository, create the appropriate directory structure for the module. It should look something like this.
 
-### Documenting Code
+`/sdk/<group>/<prefix><service>`
 
-Code is documented directly in line and can be created directly using the `doc` tool which is part of the Go toolchain. To document a type, variable, constant, function, or package write a regular comment directly preceding its declaration (with no intervening blank line). For an example, here is the documentation for the `fmt.Fprintf` function:
-```golang
-// Fprint formats using the default formats for its operands and writes to w.
-// Spaces are added between operands when neither is a string.
-// It returns the number of bytes written and any write error encountered.
-func Fprint(w io.Writer, a ...interface{}) (n int, err error) {
-```
+- `<group>` is the name of the technology, e.g. `messaging`.
+- `<prefix>` is `az` for data-plane or `arm` for management plane.
+- `<service>` is the name of the service within the specified `<group>`, e.g. `servicebus`.
 
-Each package needs to include a `doc.go` file and not be a part of a service version. For more details about this file there is a detailed write-up in the [repo wiki][doc_go_template]. In the `doc.go` file you should include a short service overview, basic examples, and (if they exist) a link to samples in the [`azure-sdk-for-go-samples` repository][go_azsdk_samples]
+All directory structures **MUST** be approved by the Go SDK team (contact azsdkgo).
 
+For more information, please consult the Azure Go SDK design guidelines on [directory structure][directory_structure].
 
-### Constructors
+If your SDK won't be generated from OpenAPI (aka swagger) files, skip to the [next section](#create-module-skeleton).
 
-All clients should be able to be initialized directly from the user and should begin with `New`. For example to define a constructor for a new client for the Tables service we start with defining the struct `ServiceClient`:
-```golang
-// A ServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
-type ServiceClient struct {
-	client  *tableClient
-	service *serviceClient
-	cred    SharedKeyCredential
-}
+Once the directory structure has been created, you must decide if your SDK will directly export generated types (commonly referred to as a code generated client).
+The alternative is to make the generated content internal and export hand-written types, possibly along with generated types via type aliasing.
 
-```
-Note that there are no exported fields on the `ServiceClient` struct, and as a rule of thumb, generated clients and credentials should be private.
+### Code Generated Clients
 
-Constructors for clients are separate methods that are not associated with the struct. The constructor for the ServiceClient is as follow:
-```golang
-// NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
-func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (ServiceClient, error) {
-	conOptions := getConnectionOptions(serviceURL, options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
-	con := generated.NewConnection(serviceURL, conOptions)
-	return ServiceClient{
-		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
-		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
-		con:     con,
-	}, nil
-}
-```
-In `Go`, the method parameters are enclosed with parenthesis immediately following the method name with the parameter name preceding the parameter type. The return arguments follow the parameters. If a method has more than one return parameter the types of the parameter must be enclosed in parenthesis. Note the `*` before a type indicates a pointer to that type. All methods that create a new client or interact with the service should return an `error` type as the last argument.
+An SDK that uses code generated clients directly exposes the Autorest-generated code to consumers of the module and is the preferred approach.
+The [azkeys][azkeys_directory] module is an example of a code generated client (CGC).
 
-This client takes three parameters, the first is the service URL for the specific account. The second is an [`interface`][go_interfaces] which is a specific struct that has definitions for a certain set of methods. In the case of `azcore.TokenCredential` the `GetToken(context.Context, options policy.TokenRequestOptions)` method must be defined to be a valid interface. The final argument to methods that create clients or interact with the service should be a pointer to an `Options` parameter. This options struct should have `azcore.ClientOptions` embedded and any service specific options. Making this final parameter a pointer allows the customer to pass in `nil` if there are no specific options they want to change.
+Note that for data-plane CGCs, client constructors must be hand-written as there's no consisten form of authentication across data-plane services.
 
+### Internally Generated Clients
 
-### Defining Methods
+Internally generated clients are used when the Autorest-generated code isn't fit for direct, public consumption.
+In this design, the generated code is placed under an `/internal` directory, prohibiting it from being directly imported by module consumers,
+and all publicly exposed content is either hand-written or a type alias of internal types (see `Alias declarations` in the [Go language specification][type_declarations] for more info on creating type aliases).
 
-Defining a method follows the format:
-```golang
-// Create creates the table with the tableName specified when NewClient was called.
-func (t *Client) Create(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
-	if options == nil {
-		options = &CreateTableOptions{}
-	}
-	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
-	return createTableResponseFromGen(&resp), err
-}
+The [aztables][aztables_directory] modules is an example that uses internally generated clients.
 
-```
-The `(s *Client)` portion is the "receiver". Methods can be defined for either pointer (with a `*`) or receiver (without a `*`) types. Pointer receivers will not copy types on method calls and allows the method to mutate the receiving struct. Client methods should use a pointer receiver.
+## Create Module Skeleton
 
-All methods that perform I/O of any kind, sleep, or perform a significant amount of CPU-bound work must have the first parameter be of type [`context.Context`][golang_context] which allows the customer to carry a deadline, cancellation signal, and other values across API boundaries. The remaining parameters should be parameters specific to that method. The return types for methods should be first a "Response" object and second an `error` object.
+There are several files required to be in the root directory of your module.
 
+- CHANGELOG.md for tracking released changes
+- LICENSE.txt is the MIT license file
+- NOTICE.txt for legal attributions
+- README.md for getting started
+- ci.yml for PR and release pipelines
+- go.mod defines the Go module
+
+These files can be copied from the [aztemplate][aztemplate] directory to jump-start the process. Be sure to update the contents as required, replacing all
+occurrences of `template/aztemplate` with the correct values.
+
+## Create Your SDK
+
+Once the skeleton for your SDK has been created, you can start writing your SDK.
+Please refer to the Azure [Go SDK API design guidelines][api_design] for detailed information on how to structure clients, their APIs, and more.
 
 ## Write Tests
 
@@ -97,7 +83,6 @@ Testing is built into the Go toolchain as well with the `testing` library. The t
 To get started first install [`docker`][get_docker]. Then to start the proxy, from the root of the repository, run the command `./eng/common/testproxy/docker-start-proxy.ps1 start`. This command will take care of pulling the pinned docker image and running it in the background.
 
 It is not required to run the test-proxy from within the docker container, but this is how the proxy is run in the Azure DevOps pipelines. If you would like to run the test-proxy in a different manner the [documentation][test_proxy_docs] has more information.
-
 
 ### Test Mode Options
 
@@ -158,7 +143,6 @@ func TestExample(t *testing.T) {
 ```
 The first two methods (`Start` and `Stop`) tell the proxy when an individual test is starting and stopping to communicate when to start recording HTTP interactions and when to persist it to disk. `Start` takes three parameters, the `t *testing.T` parameter of the test, the path to where the recordings live for a package (this should be the path to the package), and an optional options struct. `Stop` just takes the `t *testing.T` and an options struct as parameters.
 
-
 ### Writing Tests
 
 A simple test for `aztables` is shown below:
@@ -211,7 +195,6 @@ The rest of the snippet shows a test that creates a single table and requirement
 Check out the docs for more information about the methods available in the [`require`][require_package] libraries.
 
 If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go test` with this code and the proper environment variables this test would pass and you would be left with a new directory and file. Test recordings are saved to a `recording` directory in the same directory that your test code lives. Running the above test would also create a file `recording/TestCreateTable.json` with the HTTP interactions persisted on disk. Now you can set `AZURE_RECORD_MODE` to "playback" and run `go test` again, the test will have the same output but without reaching the service.
-
 
 ### Scrubbing Secrets
 
@@ -310,7 +293,6 @@ func TestClientWithAAD(t *testing.T) {
 
 The `FakeCredential` show here implements the `azcore.TokenCredential` interface and can be used anywhere the `azcore.TokenCredential` is used.
 
-
 ## Create Pipelines
 
 When you create the first PR for your library you will want to create this PR against a `track2-<package>` library. Submitting PRs to the `main` branch should only be done once your package is close to being released. Treating `track2-<package>` as your main development branch will allow nightly CI and live pipeline runs to pick up issues as soon as they are introduced. After creating this PR add a comment with the following:
@@ -321,12 +303,16 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 
 
 <!-- LINKS -->
-[doc_go_template]: https://github.com/Azure/azure-sdk-for-go/wiki/doc.go-template
 [get_docker]: https://docs.docker.com/get-docker/
-[go_azsdk_samples]: https://github.com/azure-samples/azure-sdk-for-go-samples
 [go_download]: https://golang.org/dl/
-[go_interfaces]: https://gobyexample.com/interfaces
-[pipeline_definitions]: https://github.com/Azure/azure-sdk-for-go/blob/main/eng/pipelines/templates/jobs/archetype-sdk-client.yml
 [require_package]: https://pkg.go.dev/github.com/stretchr/testify/require
 [test_proxy_docs]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10
+[directory_structure]: https://azure.github.io/azure-sdk/golang_introduction.html
+[module_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
+[type_declarations]: https://go.dev/ref/spec#Type_declarations
+[azkeys_directory]: https://github.com/Azure/azure-sdk-for-go/tree/sdk/keyvault/azkeys/v0.9.0/sdk/keyvault/azkeys
+[aztables_directory]: https://github.com/Azure/azure-sdk-for-go/tree/sdk/data/aztables/v1.0.1/sdk/data/aztables
+[aztemplate]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/template/aztemplate
+[api_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
+[vscode_go]: https://code.visualstudio.com/docs/languages/go

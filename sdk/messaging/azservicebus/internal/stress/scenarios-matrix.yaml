@@ -34,6 +34,12 @@ matrix:
     infiniteSendAndReceive:
       testTarget: infiniteSendAndReceive
       memory: "1.5Gi"
+    infiniteSendAndReceiveWithChaos:
+      testTarget: infiniteSendAndReceive
+      # this value is injected as a label value in templates/deploy-job.yaml
+      # this'll activate our standard chaos policy, which is at the bottom of that file.
+      chaos: "true"
+      memory: "1.5Gi"
     longRunningRenewLock:
       testTarget: longRunningRenewLock
       memory: "1.5Gi"

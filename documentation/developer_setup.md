@@ -14,10 +14,13 @@ The Azure SDK for Go supports the latest two versions of Go. When setting up a n
 
 If you're using VSCode, install the Go extension for VSCode. This usually happens automatically when opening a .go file for the first time.
 See the [docs][vscode_go] for more information on using and configuring the extension.
+After the extension is installed, you should be prompted to install the VSCode Go tools which are required for the extension to properly work.
+To manually install or update the tools, open the VSCode command palette, select `Go: Install/Update Tools`, and select all boxes.
 
 ## Directory Structure
 
 Fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<prefix-path>/Azure/azure-sdk-for-go`.
+We use the `OneFlow` branching/workflow strategy with some minor variations.  See [repo branching][repo_branching] for further info.
 
 After cloning the repository, create the appropriate directory structure for the module. It should look something like this.
 
@@ -41,7 +44,7 @@ The alternative is to make the generated content internal and export hand-writte
 An SDK that uses code generated clients directly exposes the Autorest-generated code to consumers of the module and is the preferred approach.
 The [azkeys][azkeys_directory] module is an example of a code generated client (CGC).
 
-Note that for data-plane CGCs, client constructors must be hand-written as there's no consisten form of authentication across data-plane services.
+Note that for data-plane CGCs, client constructors must be hand-written as there's no consistent form of authentication across data-plane services.
 
 ### Internally Generated Clients
 
@@ -64,6 +67,24 @@ There are several files required to be in the root directory of your module.
 
 These files can be copied from the [aztemplate][aztemplate] directory to jump-start the process. Be sure to update the contents as required, replacing all
 occurrences of `template/aztemplate` with the correct values.
+
+### Module Version Constant
+
+The release pipeline **requires** the presence of a constant named `moduleVersion` that contains the semantic version of the module.
+The constant **must** be in a file named version.go or constants.go.  It does _not_ need to be in the root of the repo.
+
+```go
+const moduleVersion = "v1.2.3"
+```
+
+Or as part of a `const` block.
+
+```go
+const (
+	moduleVersion = "v1.2.3"
+	// other constants
+)
+```
 
 ## Create Your SDK
 
@@ -316,3 +337,4 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [aztemplate]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/template/aztemplate
 [api_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
 [vscode_go]: https://code.visualstudio.com/docs/languages/go
+[repo_branching]: https://github.com/Azure/azure-sdk/blob/main/docs/policies/repobranching.md

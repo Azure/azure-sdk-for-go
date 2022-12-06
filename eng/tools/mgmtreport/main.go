@@ -175,37 +175,51 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 					p, ok = pipelinesMap[fmt.Sprintf("go - %s - %s", arm.Name(), dir.Name())]
 				}
 				if ok {
-					// mock test
-					mockTestPass := 0
-					mockTestTotal := 0
 					listRuns, err := pipelineClient.ListRuns(ctx, pipelines.ListRunsArgs{Project: &projectName, PipelineId: p.Id})
 					if err != nil && len(*listRuns) > 0 {
 						return nil, err
 					}
 
-					buildId := (*listRuns)[0].Id
-					top := 3
-					queryRuns, err := testClient.QueryTestRuns(ctx, test.QueryTestRunsArgs{
-						Project: &projectName,
-						MinLastUpdatedDate: &azuredevops.Time{
-							Time: time.Now().AddDate(0, 0, -3),
-						},
-						MaxLastUpdatedDate: &azuredevops.Time{
-							Time: time.Now(),
-						},
-						BuildIds: &[]int{
-							*buildId,
-						},
-						State: &test.TestRunStateValues.Completed,
-						Top:   &top,
+					mInfo := mgmtInfo{
+						version: version,
+						tag:     tag,
+					}
+					var buildId *int
+					for i := 0; i < 5 && i < len(*listRuns); i++ {
+						buildId = (*listRuns)[i].Id
+
+						// code coverage
+						codeCoverage, err := getBuildCodeCoverage(azureDevopsClient, projectName, *buildId)
+						if err != nil {
+							return nil, err
+						}
+
+						for _, coverage := range *codeCoverage.CoverageData {
+							if len(*coverage.CoverageStats) > 0 {
+								mInfo.CoveredLines = *(*coverage.CoverageStats)[0].Covered
+								mInfo.CoverableLines = *(*coverage.CoverageStats)[0].Total
+								break
+							}
+						}
+
+						if mInfo.CoverableLines == 0 {
+							continue
+						}
+						break
+					}
+
+					// mock test
+					buildUri := fmt.Sprintf("vstfs:///Build/Build/%d", *buildId)
+					testRuns, err := testClient.GetTestRuns(ctx, test.GetTestRunsArgs{
+						Project:  &projectName,
+						BuildUri: &buildUri,
 					})
 					if err != nil {
 						return nil, err
 					}
-
-					if queryRuns != nil && len(queryRuns.Value) > 0 {
-						mockTestPass = *queryRuns.Value[0].PassedTests
-						mockTestTotal = *queryRuns.Value[0].TotalTests
+					if len(*testRuns) > 0 {
+						mInfo.mockTestPass = *(*testRuns)[0].PassedTests
+						mInfo.mockTestTotal = *(*testRuns)[0].TotalTests
 					}
 
 					// live test
@@ -217,7 +231,6 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 						return nil, err
 					}
 
-					liveTestCoverage := ""
 					for i := 120; i < len(*buildLogs); i++ {
 						logLines, err := buildClient.GetBuildLogLines(ctx, build.GetBuildLogLinesArgs{
 							Project: &projectName,
@@ -235,33 +248,13 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 									splits := strings.Split(line, " ")
 									for _, j := range splits {
 										if strings.Contains(j, "%") {
-											liveTestCoverage = j
+											mInfo.liveTestCoverage = j
 											break loop
 										}
 									}
 								}
 							}
 							break
-						}
-					}
-
-					mInfo := mgmtInfo{
-						version:          version,
-						tag:              tag,
-						mockTestPass:     mockTestPass,
-						mockTestTotal:    mockTestTotal,
-						liveTestCoverage: liveTestCoverage,
-					}
-
-					// code coverage
-					codeCoverage, err := getBuildCodeCoverage(azureDevopsClient, projectName, *buildId)
-					if err == nil && codeCoverage.CoverageData != nil {
-						for _, coverage := range *codeCoverage.CoverageData {
-							if len(*coverage.CoverageStats) > 0 {
-								mInfo.CoveredLines = *(*coverage.CoverageStats)[0].Covered
-								mInfo.CoverableLines = *(*coverage.CoverageStats)[0].Total
-								break
-							}
 						}
 					}
 

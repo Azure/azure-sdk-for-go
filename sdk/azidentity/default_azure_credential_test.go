@@ -9,10 +9,16 @@ package azidentity
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
@@ -88,4 +94,46 @@ func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
 			t.Fatal("default chain should include ManagedIdentityCredential")
 		})
 	}
+}
+
+func TestDefaultAzureCredential_Workload(t *testing.T) {
+	expectedAssertion := "service account token"
+	file := filepath.Join(t.TempDir(), "service-account-token-file")
+	if err := os.WriteFile(file, []byte(expectedAssertion), os.ModePerm); err != nil {
+		t.Fatalf(`failed to write temporary file "%s": %v`, file, err)
+	}
+	pred := func(req *http.Request) bool {
+		if err := req.ParseForm(); err != nil {
+			t.Fatal(err)
+		}
+		if actual := req.PostForm["client_assertion"]; actual[0] != expectedAssertion {
+			t.Fatalf(`unexpected assertion "%s"`, actual[0])
+		}
+		if actual := req.PostForm["client_id"]; actual[0] != fakeClientID {
+			t.Fatalf(`unexpected assertion "%s"`, actual[0])
+		}
+		if actual := strings.Split(req.URL.Path, "/")[1]; actual != fakeTenantID {
+			t.Fatalf(`unexpected tenant "%s"`, actual)
+		}
+		return true
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
+	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
+	srv.AppendResponse(mock.WithPredicate(pred), mock.WithBody(accessTokenRespSuccess))
+	srv.AppendResponse()
+	for k, v := range map[string]string{
+		azureAuthorityHost:      cloud.AzurePublic.ActiveDirectoryAuthorityHost,
+		azureClientID:           fakeClientID,
+		azureFederatedTokenFile: file,
+		azureTenantID:           fakeTenantID,
+	} {
+		t.Setenv(k, v)
+	}
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: srv}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	testGetTokenSuccess(t, cred)
 }

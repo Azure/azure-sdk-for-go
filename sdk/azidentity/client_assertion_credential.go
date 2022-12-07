@@ -9,7 +9,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -52,8 +51,7 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 	if err != nil {
 		return nil, err
 	}
-	cac := ClientAssertionCredential{client: c}
-	cac.name = fmt.Sprintf("%T", cac)
+	cac := ClientAssertionCredential{client: c, name: credNameAssertion}
 	return &cac, nil
 }
 
@@ -70,7 +68,7 @@ func (c *ClientAssertionCredential) GetToken(ctx context.Context, opts policy.To
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameAssertion, err)
+		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(c.name, err)
 	}
 	logGetTokenSuccessImpl(c.name, opts)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err

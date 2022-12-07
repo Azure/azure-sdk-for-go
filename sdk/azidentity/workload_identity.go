@@ -8,7 +8,6 @@ package azidentity
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"sync"
 	"time"
@@ -16,6 +15,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
+
+const credNameWorkloadIdentity = "WorkloadIdentityCredential"
 
 // WorkloadIdentityCredential supports Azure Workload Identity on Kubernetes.
 // See [AKS documentation] for more information.
@@ -44,7 +45,7 @@ func NewWorkloadIdentityCredential(tenantID, clientID, file string, options *Wor
 	if err != nil {
 		return nil, err
 	}
-	cred.name = fmt.Sprintf("%T", w)
+	cred.name = credNameWorkloadIdentity
 	w.cred = cred
 	return &w, nil
 }

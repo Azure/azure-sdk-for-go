@@ -79,8 +79,7 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 		qd = &atom.QueueDescription{}
 	}
 
-	deleteAfter := 5 * time.Minute
-	qd.AutoDeleteOnIdle = to.Ptr(fmt.Sprintf("PT%dM", deleteAfter))
+	qd.AutoDeleteOnIdle = to.Ptr("PT5M")
 
 	env := atom.WrapWithQueueEnvelope(qd, em.TokenProvider())
 

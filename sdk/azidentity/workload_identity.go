@@ -20,7 +20,7 @@ import (
 // WorkloadIdentityCredential supports Azure Workload Identity on Kubernetes.
 // See [AKS documentation] for more information.
 //
-// [AKS Workload Identity documentation]: https://learn.microsoft.com/azure/aks/workload-identity-overview
+// [AKS documentation]: https://learn.microsoft.com/azure/aks/workload-identity-overview
 type WorkloadIdentityCredential struct {
 	assertion, file string
 	cred            *ClientAssertionCredential
@@ -34,7 +34,7 @@ type WorkloadIdentityCredentialOptions struct {
 }
 
 // NewWorkloadIdentityCredential constructs a WorkloadIdentityCredential. tenantID and clientID specify the identity the credential authenticates.
-// file is a path to a file containing an assertion that authenticates the identity.
+// file is a path to a file containing a Kubernetes service account token that authenticates the identity.
 func NewWorkloadIdentityCredential(tenantID, clientID, file string, options *WorkloadIdentityCredentialOptions) (*WorkloadIdentityCredential, error) {
 	if options == nil {
 		options = &WorkloadIdentityCredentialOptions{}
@@ -54,7 +54,8 @@ func (w *WorkloadIdentityCredential) GetToken(ctx context.Context, opts policy.T
 	return w.cred.GetToken(ctx, opts)
 }
 
-// getAssertion returns the specified file's content, which must be an appropriately formatted assertion (the platform is responsible for formatting)
+// getAssertion returns the specified file's content, which is expected to be a Kubernetes service account token.
+// Kubernetes is responsible for updating the file as service account tokens expire.
 func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, error) {
 	w.mtx.RLock()
 	if w.expires.Before(time.Now()) {
@@ -69,6 +70,9 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 				return "", err
 			}
 			w.assertion = string(content)
+			// Kubernetes rotates service account tokens when they reach 80% of their total TTL. The shortest TTL
+			// is 1 hour. That implies the token we just read is valid for at least 12 minutes (20% of 1 hour), but we
+			// add some margin for safety.
 			w.expires = now.Add(10 * time.Minute)
 		}
 	} else {

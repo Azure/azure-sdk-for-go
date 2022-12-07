@@ -69,7 +69,7 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 				return "", err
 			}
 			w.assertion = string(content)
-			w.expires = now.Add(5 * time.Minute)
+			w.expires = now.Add(10 * time.Minute)
 		}
 	} else {
 		defer w.mtx.RUnlock()

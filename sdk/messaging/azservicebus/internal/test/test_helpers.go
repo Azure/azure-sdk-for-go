@@ -95,13 +95,13 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 	}
 }
 
-var LoggingChannelValue atomic.Pointer[chan string]
+var LoggingChannelValue atomic.Value
 
 func addSwappableLogger() {
 	azlog.SetListener(func(e azlog.Event, s string) {
-		ch := LoggingChannelValue.Load()
+		ch, ok := LoggingChannelValue.Load().(*chan string)
 
-		if ch == nil {
+		if !ok || ch == nil {
 			return
 		}
 

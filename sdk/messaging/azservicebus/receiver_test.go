@@ -380,9 +380,8 @@ func TestReceiverPeek(t *testing.T) {
 
 func TestReceiverDetachWithPeekLock(t *testing.T) {
 	// NOTE: uncomment this to see some of the background reconnects
-	// azlog.SetListener(func(e azlog.Event, s string) {
-	// 	log.Printf("%s %s", e, s)
-	// })
+	// stopFn := test.EnableStdoutLogging()
+	// defer stopFn()
 
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()

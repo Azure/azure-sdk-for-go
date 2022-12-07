@@ -91,6 +91,36 @@ const (
 Once the skeleton for your SDK has been created, you can start writing your SDK.
 Please refer to the Azure [Go SDK API design guidelines][api_design] for detailed information on how to structure clients, their APIs, and more.
 
+### Using Autorest
+
+If your SDK doesn't require any Autorest-generated content, please skip this section.
+
+When using Autorest to generate code, it's best to create a configuration file that contains all of the parameters.
+This ensures that the build is repeatable and any changes are documented.
+The convention is to place the parameters in a file named `autorest.md`.
+Below is a template to get you started (you **must** include the yaml delimiters).
+
+```yaml
+clear-output-folder: false
+export-clients: true
+go: true
+input-file: <URI to OpenAPI spec file>
+license-header: MICROSOFT_MIT_NO_VERSION
+module: <full module name> (e.g. github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys)
+openapi-type: "data-plane"
+output-folder: <output directory>
+use: "@autorest/go@4.0.0-preview.44"
+```
+
+For the `use` section, the value should always be the latest version of the `@autorest/go` package.
+The latest version can be found at the NPM [page][autorest_go] for `@autorest/go`.
+
+For services that authenticate with Azure Active Directory, you **must** include the `security-scopes` parameter with the appropriate values (example below).
+
+```yaml
+security-scopes: "https://vault.azure.net/.default"
+```
+
 ## Write Tests
 
 Testing is built into the Go toolchain as well with the `testing` library. The testing infrastructure located in the `sdk/internal/recording` directory takes care of generating recordings, establishing the mode a test is being run in (options are "record" or "playback") and reading environment variables. The HTTP traffic is intercepted by a custom [test-proxy][test_proxy_docs] in both the "recording" and "playback" case to either persist or read HTTP interactions from a file. There is one small step that needs to be added to you client creation to route traffic to this test proxy. All three of these modes are specified in the `AZURE_RECORD_MODE` environment variable:
@@ -107,7 +137,7 @@ It is not required to run the test-proxy from within the docker container, but t
 
 ### Test Mode Options
 
-There are three options for test modes: "recording", "playback", and "live, each with their own purpose.
+There are three options for test modes: `recording`, `playback`, and `live`, each with their own purpose.
 
 Recording mode is for testing against a live service and 'recording' the HTTP interactions in a JSON file for use later. This is helpful for developers because not every request will have to run through the service and makes your tests run much quicker. This also allows us to run our tests in public pipelines without fear of leaking secrets to our developer subscriptions.
 
@@ -338,3 +368,4 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [api_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
 [vscode_go]: https://code.visualstudio.com/docs/languages/go
 [repo_branching]: https://github.com/Azure/azure-sdk/blob/main/docs/policies/repobranching.md
+[autorest_go]: https://www.npmjs.com/package/@autorest/go

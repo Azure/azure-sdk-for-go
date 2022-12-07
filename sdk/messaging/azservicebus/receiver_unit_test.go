@@ -339,11 +339,20 @@ func TestReceiver_releaserFunc(t *testing.T) {
 
 	successfulReleases := 0
 
+	messagesCh := make(chan *amqp.Message, 1)
+
+	messagesCh <- &amqp.Message{
+		Data: [][]byte{[]byte("hello")},
+	}
+
 	amqpReceiver := internal.FakeAMQPReceiver{
 		ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
-			return &amqp.Message{
-				Data: [][]byte{[]byte("hello")},
-			}, nil
+			select {
+			case m := <-messagesCh:
+				return m, nil
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			}
 		},
 		ReleaseMessageFn: func(ctx context.Context, msg *amqp.Message) error {
 			require.Equal(t, "hello", string(msg.Data[0]))
@@ -358,10 +367,10 @@ func TestReceiver_releaserFunc(t *testing.T) {
 	releaserFn := receiver.newReleaserFunc(&amqpReceiver)
 	releaserFn()
 
-	// some non-determinism since we launched the cancel asynchronously
-	// but we'll get at least one.
-	require.LessOrEqual(t, 1, amqpReceiver.ReceiveCalled)
-	require.LessOrEqual(t, 1, amqpReceiver.ReleaseMessageCalled)
+	require.Equal(t, 1+1, amqpReceiver.ReceiveCalled, "called twice - once to receive a message, the second time blocks")
+	require.Equal(t, 1, amqpReceiver.ReleaseMessageCalled)
+
+	_ = amqpReceiver.Close(context.Background())
 
 	require.Contains(t,
 		logsFn(),
@@ -399,6 +408,8 @@ func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 
 	// we got called a few times, but none of them succeeded.
 	require.Equal(t, 2+1, amqpReceiver.ReceiveCalled)
+
+	_ = amqpReceiver.Close(context.Background())
 
 	require.Contains(t,
 		logsFn(),

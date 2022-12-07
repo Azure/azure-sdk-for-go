@@ -149,12 +149,13 @@ Live mode is used by the internal pipelines to test directly against a service (
 
 All clients contain an options struct as the last parameter of the constructor function. In this options struct you need to have a way to provide a custom HTTP transport object. In your tests, you will replace the default HTTP transport object with a custom one in the `internal/recording` library that takes care of routing requests. Here is an example:
 
-```golang
+```go
 package aztables
 
 import (
 	...
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
@@ -170,18 +171,13 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 		},
 	}
 
-	// Validate the URL ends with a "/"
-	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
-		serviceURL += "/"
-	}
-	serviceURL += tableName
-
-	return NewClientWithSharedKey(serviceURL, &cred, options)
+	return NewClientWithSharedKey(runtime.JoinPaths(serviceURL, tableName), &cred, options)
 }
 ```
 
 Including this in a file for test helper methods will ensure that before each test the developer simply has to add
-```golang
+
+```go
 func TestExample(t *testing.T) {
 	err := recording.Start(t, "path/to/package", nil)
 	defer recording.Stop(t, nil)
@@ -192,13 +188,16 @@ func TestExample(t *testing.T) {
 	<test code>
 }
 ```
-The first two methods (`Start` and `Stop`) tell the proxy when an individual test is starting and stopping to communicate when to start recording HTTP interactions and when to persist it to disk. `Start` takes three parameters, the `t *testing.T` parameter of the test, the path to where the recordings live for a package (this should be the path to the package), and an optional options struct. `Stop` just takes the `t *testing.T` and an options struct as parameters.
+
+The first two methods (`Start` and `Stop`) tell the proxy when an individual test is starting and stopping to communicate when to start recording HTTP interactions and when to persist it to disk. `Start` takes three parameters, the `t *testing.T` parameter of the test, the path to where the recordings live for a package, and an optional options struct. `Stop` just takes the `t *testing.T` and an options struct as parameters.
+
+NOTE: the path to the recordings **must** be in or under a directory named `testdata`; this will prevent the recordings from being included in the module disk-footprint.
 
 ### Writing Tests
 
 A simple test for `aztables` is shown below:
-```golang
 
+```go
 import (
 	"fmt"
 	"os"
@@ -265,7 +264,7 @@ The recording files eventually live in the main repository (`github.com/Azure/az
 
 To add a scrubber that replaces the URL of your account use the `TestMain()` function to set sanitizers before you begin running tests.
 
-```golang
+```go
 func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
@@ -294,10 +293,9 @@ func TestMain(m *testing.M) {
 
 ```
 
-
 Note that removing the names of accounts and other values in your recording can have side effects when running your tests in playback. To take care of this, there are additional methods in the `internal/recording` module for reading environment variables and defaulting to the processed recording value. For example, an `aztables` test for the client constructor and "requiring" the account name to be the same as provided could look like this:
 
-```golang
+```go
 func TestClient(t *testing.T) {
 	accountName := recording.GetEnvVariable(t, "TABLES_PRIMARY_ACCOUNT_NAME", "fakeAccountName")
 	// If running in playback, the value is "fakeAccountName". If running in "record" the value is the environment variable
@@ -315,7 +313,7 @@ func TestClient(t *testing.T) {
 
 The credentials in `azidentity` are not automatically configured to run in playback mode. To make sure your tests run in playback mode even with `azidentity` credentials the best practice is to use a simple `FakeCredential` type that inserts a fake Authorization header to mock a credential. An example for swapping the `DefaultAzureCredential` using a helper function is shown below in the context of `aztables`
 
-```golang
+```go
 type FakeCredential struct {}
 
 func NewFakeCredential() *FakeCredential {
@@ -347,9 +345,11 @@ The `FakeCredential` show here implements the `azcore.TokenCredential` interface
 ## Create Pipelines
 
 When you create the first PR for your library you will want to create this PR against a `track2-<package>` library. Submitting PRs to the `main` branch should only be done once your package is close to being released. Treating `track2-<package>` as your main development branch will allow nightly CI and live pipeline runs to pick up issues as soon as they are introduced. After creating this PR add a comment with the following:
+
 ```
 /azp run prepare-pipelines
 ```
+
 This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` is tested against latest and latest-1 on Windows and Linux. All of your future PRs (regardless of whether they are made to `track2-<package>` or another branch) will be tested against these versions. For more information about the individual checks run by CI and troubleshooting common issues check out the `eng_sys.md` file.
 
 

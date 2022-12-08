@@ -3500,7 +3500,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	_require.NoError(err)
 	_require.EqualValues(getPropertiesResp.Metadata, testcommon.BasicMetadata)
 	_require.Equal(*getPropertiesResp.TagCount, int64(len(testcommon.BasicBlobTagsMap)))
-	_require.Equal(blob.ParseHTTPHeaders(getPropertiesResp), testcommon.BasicHeaders)
+	respHeaders := testcommon.BasicHeaders
+	calcMD5 := md5.Sum(blobData)
+	respHeaders.BlobContentMD5 = calcMD5[:]
+	_require.Equal(respHeaders, blob.ParseHTTPHeaders(getPropertiesResp))
 
 	getTagsResp, err := bbClient.GetTags(context.Background(), nil)
 	_require.NoError(err)

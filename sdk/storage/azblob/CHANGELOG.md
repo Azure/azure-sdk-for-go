@@ -1,6 +1,6 @@
 # Release History
 
-## 0.5.2 (Unreleased)
+## 0.6.0 (2022-12-07)
 
 ### Features Added
 
@@ -26,6 +26,7 @@
 * Corrected signing of User Delegation SAS. Fixes [#19372](https://github.com/Azure/azure-sdk-for-go/issues/19372) and [#19454](https://github.com/Azure/azure-sdk-for-go/issues/19454)
 * Added formatting of start and expiry time in [SetAccessPolicy](https://learn.microsoft.com/rest/api/storageservices/set-container-acl#request-body). Fixes [#18712](https://github.com/Azure/azure-sdk-for-go/issues/18712)
 * Uploading block blobs larger than 256MB can fail in some cases with error `net/http: HTTP/1.x transport connection broken`.
+* Blob name parameters are URL-encoded before constructing the complete blob URL.
 
 ### Other Changes
 

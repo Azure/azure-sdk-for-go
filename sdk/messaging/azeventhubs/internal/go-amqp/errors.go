@@ -4,6 +4,8 @@
 package amqp
 
 import (
+	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/encoding"
 )
 
@@ -84,7 +86,7 @@ func (e *ConnError) Error() string {
 	} else if e.RemoteErr != nil {
 		return e.RemoteErr.Error()
 	}
-	return e.inner.Error()
+	return fmt.Sprintf("inner error %T: %v", e.inner, e.inner)
 }
 
 // SessionError is returned by methods on Session and propagated to Senders/Receivers

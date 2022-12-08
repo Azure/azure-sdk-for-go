@@ -381,8 +381,8 @@ func (c *Conn) close() {
 	// for up to c.idleTimeout
 	<-c.rxDone
 
-	if errors.Is(c.rxErr, net.ErrClosed) || errors.Is(c.rxErr, context.DeadlineExceeded) {
-		// these are expected errors when the connection is closed, swallow it
+	if errors.Is(c.rxErr, net.ErrClosed) {
+		// this is the expected error when the connection is closed, swallow it
 		c.rxErr = nil
 	}
 
@@ -453,10 +453,6 @@ func (c *Conn) connReader() {
 			debug.Log(1, "connReader terminal error: %v", err)
 			c.rxErr = err
 			return
-		}
-
-		if c.idleTimeout > 0 {
-			_ = c.net.SetReadDeadline(time.Now().Add(c.idleTimeout))
 		}
 
 		var fr frames.Frame
@@ -552,6 +548,10 @@ func (c *Conn) readFrame() (frames.Frame, error) {
 		// need to read more if buf doesn't contain the complete frame
 		// or there's not enough in buf to parse the header
 		if frameInProgress || c.rxBuf.Len() < frames.HeaderSize {
+			// we MUST reset the idle timeout before each read from net.Conn
+			if c.idleTimeout > 0 {
+				_ = c.net.SetReadDeadline(time.Now().Add(c.idleTimeout))
+			}
 			err := c.rxBuf.ReadFromOnce(c.net)
 			if err != nil {
 				debug.Log(1, "readFrame error: %v", err)
@@ -598,6 +598,7 @@ func (c *Conn) readFrame() (frames.Frame, error) {
 
 		// check if body is empty (keepalive)
 		if bodySize == 0 {
+			debug.Log(3, "received keep-alive frame")
 			continue
 		}
 

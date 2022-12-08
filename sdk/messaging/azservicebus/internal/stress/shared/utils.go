@@ -88,7 +88,7 @@ func MustCreateSubscriptions(sc *StressContext, topicName string, subscriptionNa
 
 	var topicOpts *admin.CreateTopicOptions
 
-	if options.Topic != nil {
+	if options != nil && options.Topic != nil {
 		topicOpts = options.Topic
 	}
 

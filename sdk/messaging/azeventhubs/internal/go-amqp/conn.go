@@ -152,14 +152,12 @@ type Conn struct {
 	peerMaxFrameSize uint32        // maximum frame size peer will accept
 
 	// conn state
-	doneErrMu sync.Mutex    // mux holds doneErr from start until shutdown completes; operations are sequential before mux is started
-	doneErr   error         // error to be returned to client
-	done      chan struct{} // indicates the connection is done
+	done    chan struct{} // indicates the connection has terminated
+	doneErr error         // contains the error state returned from Close(); DO NOT TOUCH outside of conn.go until Done has been closed!
 
-	// mux
-	connErr      chan error    // connReader/Writer notifications of an error
-	closeMux     chan struct{} // indicates that the mux should stop
-	closeMuxOnce sync.Once
+	// connReader and connWriter management
+	rxtxExit  chan struct{} // signals connReader and connWriter to exit
+	closeOnce sync.Once     // ensures that close() is only called once
 
 	// session tracking
 	channels            *bitmap.Bitmap
@@ -167,15 +165,16 @@ type Conn struct {
 	sessionsByChannelMu sync.RWMutex
 
 	// connReader
-	rxProto       chan protoHeader  // protoHeaders received by connReader
-	rxFrame       chan frames.Frame // AMQP frames received by connReader
-	rxDone        chan struct{}
-	connReaderRun chan func() // functions to be run by conn reader (set deadline on conn to run)
+	rxBuf         buffer.Buffer // incoming bytes buffer
+	rxDone        chan struct{} // closed when connReader exits
+	rxErr         error         // contains last error reading from c.net; DO NOT TOUCH outside of connReader until rxDone has been closed!
+	connReaderRun chan func()   // functions to be run by conn reader (set deadline on conn to run)
 
 	// connWriter
 	txFrame chan frames.Frame // AMQP frames to be sent by connWriter
 	txBuf   buffer.Buffer     // buffer for marshaling frames before transmitting
-	txDone  chan struct{}
+	txDone  chan struct{}     // closed when connWriter exits
+	txErr   error             // contains last error writing to c.net; DO NOT TOUCH outside of connWriter until txDone has been closed!
 }
 
 // used to abstract the underlying dialer for testing purposes
@@ -259,10 +258,7 @@ func newConn(netConn net.Conn, opts *ConnOptions) (*Conn, error) {
 		idleTimeout:       defaultIdleTimeout,
 		containerID:       shared.RandString(40),
 		done:              make(chan struct{}),
-		connErr:           make(chan error, 2), // buffered to ensure connReader/Writer won't leak
-		closeMux:          make(chan struct{}),
-		rxProto:           make(chan protoHeader),
-		rxFrame:           make(chan frames.Frame),
+		rxtxExit:          make(chan struct{}),
 		rxDone:            make(chan struct{}),
 		connReaderRun:     make(chan func(), 1), // buffered to allow queueing function before interrupt
 		txFrame:           make(chan frames.Frame),
@@ -314,7 +310,6 @@ func newConn(netConn net.Conn, opts *ConnOptions) (*Conn, error) {
 	if opts.dialer != nil {
 		c.dialer = opts.dialer
 	}
-
 	return c, nil
 }
 
@@ -330,12 +325,9 @@ func (c *Conn) initTLSConfig() {
 	}
 }
 
-// Start establishes the connection and begins multiplexing network IO.
+// start establishes the connection and begins multiplexing network IO.
 // It is an error to call Start() on a connection that's been closed.
 func (c *Conn) start() error {
-	// start reader
-	go c.connReader()
-
 	// run connection establishment state machine
 	for state := c.negotiateProto; state != nil; {
 		var err error
@@ -343,6 +335,7 @@ func (c *Conn) start() error {
 		// check if err occurred
 		if err != nil {
 			close(c.txDone) // close here since connWriter hasn't been started yet
+			close(c.rxDone)
 			_ = c.Close()
 			return err
 		}
@@ -352,72 +345,60 @@ func (c *Conn) start() error {
 	// this is because our peer can tell us the max channels they support.
 	c.channels = bitmap.New(uint32(c.channelMax))
 
-	// start multiplexor and writer
-	go c.mux()
 	go c.connWriter()
+	go c.connReader()
 
 	return nil
 }
 
 // Close closes the connection.
 func (c *Conn) Close() error {
-	c.closeMuxOnce.Do(func() { close(c.closeMux) })
-	err := c.err()
+	c.closeOnce.Do(func() { c.close() })
+
 	var connErr *ConnError
-	if errors.As(err, &connErr) && connErr.RemoteErr == nil && connErr.inner == nil {
+	if errors.As(c.doneErr, &connErr) && connErr.RemoteErr == nil && connErr.inner == nil {
 		// an empty ConnectionError means the connection was closed by the caller
-		// or as requested by the peer and no error was provided in the close frame.
 		return nil
 	}
-	return err
+
+	// there was an error during shut-down or connReader/connWriter
+	// experienced a terminal error
+	return c.doneErr
 }
 
-// close should only be called by conn.mux.
+// close is called once, either from Close() or when connReader/connWriter exits
 func (c *Conn) close() {
-	close(c.done) // notify goroutines and blocked functions to exit
+	defer close(c.done)
+
+	close(c.rxtxExit)
 
 	// wait for writing to stop, allows it to send the final close frame
 	<-c.txDone
 
-	// reading from connErr in mux can race with closeMux, causing
-	// a pending conn read/write error to be lost.  now that the
-	// mux has exited, drain any pending error.
-	select {
-	case err := <-c.connErr:
-		c.doneErr = err
-	default:
-		// no pending read/write error
-	}
-
-	err := c.net.Close()
-	switch {
-	// conn.err already set
-	// TODO: err info is lost, log it?
-	case c.doneErr != nil:
-
-	// conn.err not set and c.net.Close() returned a non-nil error
-	case err != nil:
-		c.doneErr = err
-
-	// no errors
-	default:
-	}
+	closeErr := c.net.Close()
 
 	// check rxDone after closing net, otherwise may block
 	// for up to c.idleTimeout
 	<-c.rxDone
-}
 
-// Err returns the connection's error state after it's been closed.
-// Calling this on an open connection will block until the connection is closed.
-func (c *Conn) err() error {
-	c.doneErrMu.Lock()
-	defer c.doneErrMu.Unlock()
-	var amqpErr *Error
-	if errors.As(c.doneErr, &amqpErr) {
-		return &ConnError{RemoteErr: amqpErr}
+	if errors.Is(c.rxErr, net.ErrClosed) {
+		// this is the expected error when the connection is closed, swallow it
+		c.rxErr = nil
 	}
-	return &ConnError{inner: c.doneErr}
+
+	if c.txErr == nil && c.rxErr == nil && closeErr == nil {
+		// if there are no errors, it means user initiated close() and we shut down cleanly
+		c.doneErr = &ConnError{}
+	} else if amqpErr, ok := c.rxErr.(*Error); ok {
+		// we experienced a peer-initiated close that contained an Error.  return it
+		c.doneErr = &ConnError{inner: amqpErr}
+	} else if c.txErr != nil {
+		c.doneErr = &ConnError{inner: c.txErr}
+	} else if c.rxErr != nil {
+		c.doneErr = &ConnError{inner: c.rxErr}
+	} else {
+		c.doneErr = &ConnError{inner: closeErr}
+	}
 }
 
 func (c *Conn) NewSession(ctx context.Context, opts *SessionOptions) (*Session, error) {
@@ -457,218 +438,160 @@ func (c *Conn) deleteSession(s *Session) {
 	c.channels.Remove(uint32(s.channel))
 }
 
-// mux is started in it's own goroutine after initial connection establishment.
-// It handles muxing of sessions, keepalives, and connection errors.
-func (c *Conn) mux() {
-	var (
-		// map channels to sessions
-		sessionsByRemoteChannel = make(map[uint16]*Session)
-	)
+// connReader reads from the net.Conn, decodes frames, and either handles
+// them here as appropriate or sends them to the session.rx channel.
+func (c *Conn) connReader() {
+	defer func() {
+		close(c.rxDone)
+		c.closeOnce.Do(func() { c.close() })
+	}()
 
-	// hold the errMu lock until error or done
-	c.doneErrMu.Lock()
-	defer c.doneErrMu.Unlock()
-	defer c.close() // defer order is important. c.errMu unlock indicates that connection is finally complete
-
+	var sessionsByRemoteChannel = make(map[uint16]*Session)
+	var err error
 	for {
-		// check if last loop returned an error
-		if c.doneErr != nil {
+		if err != nil {
+			debug.Log(1, "connReader terminal error: %v", err)
+			c.rxErr = err
 			return
 		}
 
-		select {
-		// error from connReader
-		case c.doneErr = <-c.connErr:
+		if c.idleTimeout > 0 {
+			_ = c.net.SetReadDeadline(time.Now().Add(c.idleTimeout))
+		}
 
-		// new frame from connReader
-		case fr := <-c.rxFrame:
-			var (
-				session *Session
-				ok      bool
-			)
+		var fr frames.Frame
+		fr, err = c.readFrame()
+		if err != nil {
+			continue
+		}
 
-			switch body := fr.Body.(type) {
-			// Server initiated close.
-			case *frames.PerformClose:
-				if body.Error != nil {
-					c.doneErr = body.Error
-				}
+		var (
+			session *Session
+			ok      bool
+		)
+
+		switch body := fr.Body.(type) {
+		// Server initiated close.
+		case *frames.PerformClose:
+			// connWriter will send the close performative ack on its way out.
+			// it's a SHOULD though, not a MUST.
+			debug.Log(3, "RX (connReader): %s", body)
+			if body.Error == nil {
 				return
-
-			// RemoteChannel should be used when frame is Begin
-			case *frames.PerformBegin:
-				if body.RemoteChannel == nil {
-					// since we only support remotely-initiated sessions, this is an error
-					// TODO: it would be ideal to not have this kill the connection
-					c.doneErr = fmt.Errorf("%T: nil RemoteChannel", fr.Body)
-					break
-				}
-				c.sessionsByChannelMu.RLock()
-				session, ok = c.sessionsByChannel[*body.RemoteChannel]
-				c.sessionsByChannelMu.RUnlock()
-				if !ok {
-					c.doneErr = fmt.Errorf("unexpected remote channel number %d", *body.RemoteChannel)
-					break
-				}
-
-				session.remoteChannel = fr.Channel
-				sessionsByRemoteChannel[fr.Channel] = session
-
-			case *frames.PerformEnd:
-				session, ok = sessionsByRemoteChannel[fr.Channel]
-				if !ok {
-					c.doneErr = fmt.Errorf("%T: didn't find channel %d in sessionsByRemoteChannel (PerformEnd)", fr.Body, fr.Channel)
-					break
-				}
-				// we MUST remove the remote channel from our map as soon as we receive
-				// the ack (i.e. before passing it on to the session mux) on the session
-				// ending since the numbers are recycled.
-				delete(sessionsByRemoteChannel, fr.Channel)
-
-			default:
-				// pass on performative to the correct session
-				session, ok = sessionsByRemoteChannel[fr.Channel]
-				if !ok {
-					c.doneErr = fmt.Errorf("%T: didn't find channel %d in sessionsByRemoteChannel", fr.Body, fr.Channel)
-				}
 			}
+			err = body.Error
+			continue
 
+		// RemoteChannel should be used when frame is Begin
+		case *frames.PerformBegin:
+			if body.RemoteChannel == nil {
+				// since we only support remotely-initiated sessions, this is an error
+				// TODO: it would be ideal to not have this kill the connection
+				err = fmt.Errorf("%T: nil RemoteChannel", fr.Body)
+				continue
+			}
+			c.sessionsByChannelMu.RLock()
+			session, ok = c.sessionsByChannel[*body.RemoteChannel]
+			c.sessionsByChannelMu.RUnlock()
 			if !ok {
+				err = fmt.Errorf("unexpected remote channel number %d", *body.RemoteChannel)
 				continue
 			}
 
-			select {
-			case session.rx <- fr:
-			case <-c.closeMux:
-				return
-			}
+			session.remoteChannel = fr.Channel
+			sessionsByRemoteChannel[fr.Channel] = session
 
-		// connection is complete
-		case <-c.closeMux:
+		case *frames.PerformEnd:
+			session, ok = sessionsByRemoteChannel[fr.Channel]
+			if !ok {
+				err = fmt.Errorf("%T: didn't find channel %d in sessionsByRemoteChannel (PerformEnd)", fr.Body, fr.Channel)
+				continue
+			}
+			// we MUST remove the remote channel from our map as soon as we receive
+			// the ack (i.e. before passing it on to the session mux) on the session
+			// ending since the numbers are recycled.
+			delete(sessionsByRemoteChannel, fr.Channel)
+
+		default:
+			// pass on performative to the correct session
+			session, ok = sessionsByRemoteChannel[fr.Channel]
+			if !ok {
+				err = fmt.Errorf("%T: didn't find channel %d in sessionsByRemoteChannel", fr.Body, fr.Channel)
+				continue
+			}
+		}
+
+		select {
+		case session.rx <- fr:
+		case <-c.rxtxExit:
 			return
 		}
 	}
 }
 
-// connReader reads from the net.Conn, decodes frames, and passes them
-// up via the conn.rxFrame and conn.rxProto channels.
-func (c *Conn) connReader() {
-	defer close(c.rxDone)
+// readFrame reads a complete frame from c.net.
+// it assumes that any read deadline has already been applied.
+// used externally by SASL only.
+func (c *Conn) readFrame() (frames.Frame, error) {
+	switch {
+	// Cheaply reuse free buffer space when fully read.
+	case c.rxBuf.Len() == 0:
+		c.rxBuf.Reset()
 
-	buf := &buffer.Buffer{}
+	// Prevent excessive/unbounded growth by shifting data to beginning of buffer.
+	case int64(c.rxBuf.Size()) > int64(c.maxFrameSize):
+		c.rxBuf.Reclaim()
+	}
 
 	var (
-		negotiating     = true        // true during conn establishment, check for protoHeaders
 		currentHeader   frames.Header // keep track of the current header, for frames split across multiple TCP packets
 		frameInProgress bool          // true if in the middle of receiving data for currentHeader
 	)
 
 	for {
-		switch {
-		// Cheaply reuse free buffer space when fully read.
-		case buf.Len() == 0:
-			buf.Reset()
-
-		// Prevent excessive/unbounded growth by shifting data to beginning of buffer.
-		case int64(buf.Size()) > int64(c.maxFrameSize):
-			buf.Reclaim()
-		}
-
 		// need to read more if buf doesn't contain the complete frame
 		// or there's not enough in buf to parse the header
-		if frameInProgress || buf.Len() < frames.HeaderSize {
-			if c.idleTimeout > 0 {
-				_ = c.net.SetReadDeadline(time.Now().Add(c.idleTimeout))
-			}
-			err := buf.ReadFromOnce(c.net)
+		if frameInProgress || c.rxBuf.Len() < frames.HeaderSize {
+			err := c.rxBuf.ReadFromOnce(c.net)
 			if err != nil {
-				debug.Log(1, "connReader error: %v", err)
+				debug.Log(1, "readFrame error: %v", err)
 				select {
-				// check if error was due to close in progress
-				case <-c.done:
-					return
-
 				// if there is a pending connReaderRun function, execute it
 				case f := <-c.connReaderRun:
 					f()
 					continue
 
-				// send error to mux and return
+				// return error to caller
 				default:
-					c.connErr <- err
-					return
+					return frames.Frame{}, err
 				}
 			}
 		}
 
 		// read more if buf doesn't contain enough to parse the header
-		if buf.Len() < frames.HeaderSize {
-			continue
-		}
-
-		// during negotiation, check for proto frames
-		if negotiating && bytes.Equal(buf.Bytes()[:4], []byte{'A', 'M', 'Q', 'P'}) {
-			const protoHeaderSize = 8
-			buf, ok := buf.Next(protoHeaderSize)
-			if !ok {
-				c.connErr <- errors.New("invalid protoHeader")
-				return
-			}
-			_ = buf[7]
-
-			if !bytes.Equal(buf[:4], []byte{'A', 'M', 'Q', 'P'}) {
-				c.connErr <- fmt.Errorf("unexpected protocol %q", buf[:4])
-				return
-			}
-
-			p := protoHeader{
-				ProtoID:  protoID(buf[4]),
-				Major:    buf[5],
-				Minor:    buf[6],
-				Revision: buf[7],
-			}
-
-			if p.Major != 1 || p.Minor != 0 || p.Revision != 0 {
-				c.connErr <- fmt.Errorf("unexpected protocol version %d.%d.%d", p.Major, p.Minor, p.Revision)
-				return
-			}
-
-			// negotiation is complete once an AMQP proto frame is received
-			if p.ProtoID == protoAMQP {
-				negotiating = false
-			}
-
-			// send proto header
-			select {
-			case <-c.done:
-				return
-			case c.rxProto <- p:
-			}
-
+		if c.rxBuf.Len() < frames.HeaderSize {
 			continue
 		}
 
 		// parse the header if a frame isn't in progress
 		if !frameInProgress {
 			var err error
-			currentHeader, err = frames.ParseHeader(buf)
+			currentHeader, err = frames.ParseHeader(&c.rxBuf)
 			if err != nil {
-				c.connErr <- err
-				return
+				return frames.Frame{}, err
 			}
 			frameInProgress = true
 		}
 
 		// check size is reasonable
 		if currentHeader.Size > math.MaxInt32 { // make max size configurable
-			c.connErr <- errors.New("payload too large")
-			return
+			return frames.Frame{}, errors.New("payload too large")
 		}
 
 		bodySize := int64(currentHeader.Size - frames.HeaderSize)
 
-		// the full frame has been received
-		if int64(buf.Len()) < bodySize {
+		// the full frame hasn't been received, keep reading
+		if int64(c.rxBuf.Len()) < bodySize {
 			continue
 		}
 		frameInProgress = false
@@ -679,29 +602,25 @@ func (c *Conn) connReader() {
 		}
 
 		// parse the frame
-		b, ok := buf.Next(bodySize)
+		b, ok := c.rxBuf.Next(bodySize)
 		if !ok {
-			c.connErr <- fmt.Errorf("buffer EOF; requested bytes: %d, actual size: %d", bodySize, buf.Len())
-			return
+			return frames.Frame{}, fmt.Errorf("buffer EOF; requested bytes: %d, actual size: %d", bodySize, c.rxBuf.Len())
 		}
 
 		parsedBody, err := frames.ParseBody(buffer.New(b))
 		if err != nil {
-			c.connErr <- err
-			return
+			return frames.Frame{}, err
 		}
 
-		// send to mux
-		select {
-		case <-c.done:
-			return
-		case c.rxFrame <- frames.Frame{Channel: currentHeader.Channel, Body: parsedBody}:
-		}
+		return frames.Frame{Channel: currentHeader.Channel, Body: parsedBody}, nil
 	}
 }
 
 func (c *Conn) connWriter() {
-	defer close(c.txDone)
+	defer func() {
+		close(c.txDone)
+		c.closeOnce.Do(func() { c.close() })
+	}()
 
 	// disable write timeout
 	if c.connectTimeout != 0 {
@@ -727,8 +646,8 @@ func (c *Conn) connWriter() {
 	var err error
 	for {
 		if err != nil {
-			debug.Log(1, "connWriter error: %v", err)
-			c.connErr <- err
+			debug.Log(1, "connWriter terminal error: %v", err)
+			c.txErr = err
 			return
 		}
 
@@ -753,11 +672,14 @@ func (c *Conn) connWriter() {
 			// possibly drained, then reset.)
 
 		// connection complete
-		case <-c.done:
-			// send close
+		case <-c.rxtxExit:
+			// send close performative.  note that the spec says we
+			// SHOULD wait for the ack but we don't HAVE to, in order
+			// to be resilient to bad actors etc.  so we just send
+			// the close performative and exit.
 			cls := &frames.PerformClose{}
 			debug.Log(1, "TX (connWriter): %s", cls)
-			_ = c.writeFrame(frames.Frame{
+			c.txErr = c.writeFrame(frames.Frame{
 				Type: frames.TypeAMQP,
 				Body: cls,
 			})
@@ -813,7 +735,7 @@ func (c *Conn) sendFrame(fr frames.Frame) error {
 	case c.txFrame <- fr:
 		return nil
 	case <-c.done:
-		return c.err()
+		return c.doneErr
 	}
 }
 
@@ -879,21 +801,59 @@ func (c *Conn) exchangeProtoHeader(pID protoID) (stateFunc, error) {
 
 // readProtoHeader reads a protocol header packet from c.rxProto.
 func (c *Conn) readProtoHeader() (protoHeader, error) {
-	var deadline <-chan time.Time
-	if c.connectTimeout != 0 {
-		deadline = time.After(c.connectTimeout)
+	const protoHeaderSize = 8
+
+	// only read from the network once our buffer has been exhausted.
+	// TODO: this preserves existing behavior as some tests rely on this
+	// implementation detail (it lets you replay a stream of bytes). we
+	// might want to consider removing this and fixing the tests as the
+	// protocol doesn't actually work this way.
+	if c.rxBuf.Len() == 0 {
+		for {
+			if c.connectTimeout != 0 {
+				_ = c.net.SetReadDeadline(time.Now().Add(c.connectTimeout))
+			}
+
+			err := c.rxBuf.ReadFromOnce(c.net)
+			if err != nil {
+				return protoHeader{}, err
+			}
+
+			// read more if buf doesn't contain enough to parse the header
+			if c.rxBuf.Len() >= protoHeaderSize {
+				break
+			}
+		}
+
+		// reset outside the loop
+		if c.connectTimeout != 0 {
+			_ = c.net.SetReadDeadline(time.Time{})
+		}
 	}
-	var p protoHeader
-	select {
-	case p = <-c.rxProto:
-		return p, nil
-	case err := <-c.connErr:
-		return p, err
-	case fr := <-c.rxFrame:
-		return p, fmt.Errorf("readProtoHeader: unexpected frame %#v", fr)
-	case <-deadline:
-		return p, errors.New("amqp: timeout waiting for response")
+
+	buf, ok := c.rxBuf.Next(protoHeaderSize)
+	if !ok {
+		return protoHeader{}, errors.New("invalid protoHeader")
 	}
+	// bounds check hint to compiler; see golang.org/issue/14808
+	_ = buf[7]
+
+	if !bytes.Equal(buf[:4], []byte{'A', 'M', 'Q', 'P'}) {
+		return protoHeader{}, fmt.Errorf("unexpected protocol %q", buf[:4])
+	}
+
+	p := protoHeader{
+		ProtoID:  protoID(buf[4]),
+		Major:    buf[5],
+		Minor:    buf[6],
+		Revision: buf[7],
+	}
+
+	if p.Major != 1 || p.Minor != 0 || p.Revision != 0 {
+		return protoHeader{}, fmt.Errorf("unexpected protocol version %d.%d.%d", p.Major, p.Minor, p.Revision)
+	}
+
+	return p, nil
 }
 
 // startTLS wraps the conn with TLS and returns to Client.negotiateProto
@@ -954,7 +914,7 @@ func (c *Conn) openAMQP() (stateFunc, error) {
 	}
 
 	// get the response
-	fr, err := c.readFrame()
+	fr, err := c.readSingleFrame()
 	if err != nil {
 		return nil, err
 	}
@@ -984,7 +944,7 @@ func (c *Conn) openAMQP() (stateFunc, error) {
 // mechanism specified by the server
 func (c *Conn) negotiateSASL() (stateFunc, error) {
 	// read mechanisms frame
-	fr, err := c.readFrame()
+	fr, err := c.readSingleFrame()
 	if err != nil {
 		return nil, err
 	}
@@ -1013,7 +973,7 @@ func (c *Conn) negotiateSASL() (stateFunc, error) {
 // used externally by SASL only.
 func (c *Conn) saslOutcome() (stateFunc, error) {
 	// read outcome frame
-	fr, err := c.readFrame()
+	fr, err := c.readSingleFrame()
 	if err != nil {
 		return nil, err
 	}
@@ -1033,27 +993,21 @@ func (c *Conn) saslOutcome() (stateFunc, error) {
 	return c.negotiateProto, nil
 }
 
-// readFrame is used during connection establishment to read a single frame.
+// readSingleFrame is used during connection establishment to read a single frame.
 //
-// After setup, conn.mux handles incoming frames.
-// used externally by SASL only.
-func (c *Conn) readFrame() (frames.Frame, error) {
-	var deadline <-chan time.Time
+// After setup, conn.connReader handles incoming frames.
+func (c *Conn) readSingleFrame() (frames.Frame, error) {
 	if c.connectTimeout != 0 {
-		deadline = time.After(c.connectTimeout)
+		_ = c.net.SetDeadline(time.Now().Add(c.connectTimeout))
+		defer func() { _ = c.net.SetDeadline(time.Time{}) }()
 	}
 
-	var fr frames.Frame
-	select {
-	case fr = <-c.rxFrame:
-		return fr, nil
-	case err := <-c.connErr:
-		return fr, err
-	case p := <-c.rxProto:
-		return fr, fmt.Errorf("unexpected protocol header %#v", p)
-	case <-deadline:
-		return fr, errors.New("amqp: timeout waiting for response")
+	fr, err := c.readFrame()
+	if err != nil {
+		return frames.Frame{}, err
 	}
+
+	return fr, nil
 }
 
 type protoHeader struct {

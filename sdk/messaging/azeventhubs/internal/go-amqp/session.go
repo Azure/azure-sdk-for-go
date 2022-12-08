@@ -45,9 +45,9 @@ type SessionOptions struct {
 // A session multiplexes Receivers.
 type Session struct {
 	channel       uint16                       // session's local channel
-	remoteChannel uint16                       // session's remote channel, owned by conn.mux
+	remoteChannel uint16                       // session's remote channel, owned by conn.connReader
 	conn          *Conn                        // underlying conn
-	rx            chan frames.Frame            // frames destined for this session are sent on this chan by conn.mux
+	rx            chan frames.Frame            // frames destined for this session are sent on this chan by conn.connReader
 	tx            chan frames.FrameBody        // non-transfer frames to be sent; session must track disposition
 	txTransfer    chan *frames.PerformTransfer // transfer frames to be sent; session must track disposition
 
@@ -142,7 +142,7 @@ func (s *Session) begin(ctx context.Context) error {
 		}()
 		return ctx.Err()
 	case <-s.conn.done:
-		return s.conn.err()
+		return s.conn.doneErr
 	case fr = <-s.rx:
 		// received ack that session was created
 	}
@@ -151,7 +151,7 @@ func (s *Session) begin(ctx context.Context) error {
 	begin, ok := fr.Body.(*frames.PerformBegin)
 	if !ok {
 		// this codepath is hard to hit (impossible?).  if the response isn't a PerformBegin and we've not
-		// yet seen the remote channel number, the default clause in conn.mux will protect us from that.
+		// yet seen the remote channel number, the default clause in conn.connReader will protect us from that.
 		// if we have seen the remote channel number then it's likely the session.mux for that channel will
 		// either swallow the frame or blow up in some other way, both causing this call to hang.
 		// deallocate session on error.  we can't call
@@ -282,7 +282,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 		select {
 		// conn has completed, exit
 		case <-s.conn.done:
-			s.err = s.conn.err()
+			s.err = s.conn.doneErr
 			return
 
 		// session is being closed by user
@@ -301,7 +301,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 						break EndLoop
 					}
 				case <-s.conn.done:
-					s.err = s.conn.err()
+					s.err = s.conn.doneErr
 					return
 				}
 			}

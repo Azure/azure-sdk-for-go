@@ -1,10 +1,10 @@
 # Release History
 
-## 0.6.0 (2022-12-07)
+## 0.6.0 (2022-12-08)
 
 ### Features Added
 
-* Added BlobDeleteType to DeleteOptions to allow access to 'Permanent' DeleteType.
+* Added BlobDeleteType to DeleteOptions to allow access to ['Permanent'](https://learn.microsoft.com/rest/api/storageservices/delete-blob#permanent-delete) DeleteType.
 * Added [Set Blob Expiry API](https://learn.microsoft.com/rest/api/storageservices/set-blob-expiry).
 * Added method `ServiceClient()` to the `azblob.Client` type, allowing access to the underlying service client.
 * Added support for object level immutability policy with versioning (Version Level WORM).

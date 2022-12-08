@@ -83,7 +83,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		}
 	}
 	if !haveWorkloadConfig {
-		err := errors.New("missing environment variables for workload identity. Check pod configuration")
+		err := errors.New("missing environment variables for workload identity. Check webhook and pod configuration")
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameWorkloadIdentity, err: err})
 	}
 

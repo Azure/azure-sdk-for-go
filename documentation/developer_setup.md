@@ -346,6 +346,11 @@ func TestClientWithAAD(t *testing.T) {
 
 The `FakeCredential` show here implements the `azcore.TokenCredential` interface and can be used anywhere the `azcore.TokenCredential` is used.
 
+### Live Test Resource Management
+
+If you have live tests that require Azure resources, you'll need to create a test resources config file for deployment during CI.
+Please see the [test resource][test_resources] documentation for more info.
+
 ## Create Pipelines
 
 When you create the first PR for your library you will want to create this PR against a `track2-<package>` library. Submitting PRs to the `main` branch should only be done once your package is close to being released. Treating `track2-<package>` as your main development branch will allow nightly CI and live pipeline runs to pick up issues as soon as they are introduced. After creating this PR add a comment with the following:
@@ -375,3 +380,4 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [autorest_go]: https://www.npmjs.com/package/@autorest/go
 [autorest_intro]: https://github.com/Azure/autorest/blob/main/docs/readme.md
 [autorest_directives]: https://github.com/Azure/autorest/blob/main/docs/generate/directives.md
+[test_resources]: https://github.com/Azure/azure-sdk-tools/tree/main/eng/common/TestResources

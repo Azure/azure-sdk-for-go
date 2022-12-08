@@ -159,6 +159,13 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 
 	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
 
+	if o != nil && o.TransactionalValidation != nil {
+		body, err = o.TransactionalValidation.Apply(body, appendOptions)
+		if err != nil {
+			return AppendBlockResponse{}, nil
+		}
+	}
+
 	resp, err := ab.generated().AppendBlock(ctx, count, body, appendOptions, leaseAccessConditions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions)
 
 	return resp, err

@@ -126,7 +126,7 @@ package azblob_test
 //	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, nil, DefaultAccessTier, nil)
 //	_require.Nil(err)
 //	_assert(resp.Response().StatusCode, chk.Equals, 202)
-//	_assert(resp.XMsContentCRC64(), chk.Not(chk.Equals), "")
+//	_assert(resp.ContentCRC64(), chk.Not(chk.Equals), "")
 //	_assert(resp.Response().Header.Get("x-ms-version"), chk.Equals, ServiceVersion)
 //	_assert(resp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //}

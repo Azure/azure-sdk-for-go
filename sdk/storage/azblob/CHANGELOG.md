@@ -8,13 +8,18 @@
 * Added [Set Blob Expiry API](https://learn.microsoft.com/rest/api/storageservices/set-blob-expiry).
 * Added method `ServiceClient()` to the `azblob.Client` type, allowing access to the underlying service client.
 * Added support for object level immutability policy with versioning (Version Level WORM).
+* Added the custom CRC64 polynomial used by storage for transactional hashes, and implemented automatic hashing for transactions.
 
 ### Breaking Changes
 
 * Corrected the name for `saoid` and `suoid` SAS parameters in `BlobSignatureValues` struct as per [this](https://learn.microsoft.com/rest/api/storageservices/create-user-delegation-sas#construct-a-user-delegation-sas)
 * Updated type of `BlockSize` from int to int64 in `UploadStreamOptions`
+* CRC64 transactional hashes are now supplied with a `uint64` rather than a `[]byte` to conform with Golang's `hash/crc64` package
 * Field `XMSContentCRC64` has been renamed to `ContentCRC64`
 * The `Lease*` constant types and values in the `blob` and `container` packages have been moved to the `lease` package and their names fixed up to avoid stuttering.
+* Fields `TransactionalContentCRC64` and `TransactionalContentMD5` have been replaced by `TransactionalValidation`.
+* Fields `SourceContentCRC64` and `SourceContentMD5` have been replaced by `SourceContentValidation`.
+* Field `TransactionalContentMD5` has been removed from type `AppendBlockFromURLOptions`.
 
 ### Bugs Fixed
 

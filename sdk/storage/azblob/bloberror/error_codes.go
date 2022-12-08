@@ -111,6 +111,7 @@ const (
 	LeaseNotPresentWithContainerOperation             Code = "LeaseNotPresentWithContainerOperation"
 	LeaseNotPresentWithLeaseOperation                 Code = "LeaseNotPresentWithLeaseOperation"
 	MD5Mismatch                                       Code = "Md5Mismatch"
+	CRC64Mismatch                                     Code = "Crc64Mismatch"
 	MaxBlobSizeConditionNotMet                        Code = "MaxBlobSizeConditionNotMet"
 	MetadataTooLarge                                  Code = "MetadataTooLarge"
 	MissingContentLengthHeader                        Code = "MissingContentLengthHeader"

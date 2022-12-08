@@ -78,11 +78,9 @@ type StageBlockOptions struct {
 
 	LeaseAccessConditions *blob.LeaseAccessConditions
 
-	// Specify the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCRC64 []byte
-
-	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 []byte
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation blob.TransferValidationType
 }
 
 // StageBlockOptions contains the optional parameters for the Client.StageBlock method.
@@ -91,10 +89,7 @@ func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOption
 		return nil, nil, nil, nil
 	}
 
-	return &generated.BlockBlobClientStageBlockOptions{
-		TransactionalContentCRC64: o.TransactionalContentCRC64,
-		TransactionalContentMD5:   o.TransactionalContentMD5,
-	}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
+	return &generated.BlockBlobClientStageBlockOptions{}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -107,10 +102,9 @@ type StageBlockFromURLOptions struct {
 	LeaseAccessConditions *blob.LeaseAccessConditions
 
 	SourceModifiedAccessConditions *blob.SourceModifiedAccessConditions
-	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMD5 []byte
-	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64 []byte
+
+	// SourceContentValidation contains the validation mechanism used on the range of bytes read from the source.
+	SourceContentValidation blob.SourceContentValidationType
 
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range blob.HTTPRange
@@ -127,9 +121,11 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 
 	options := &generated.BlockBlobClientStageBlockFromURLOptions{
 		CopySourceAuthorization: o.CopySourceAuthorization,
-		SourceContentMD5:        o.SourceContentMD5,
-		SourceContentcrc64:      o.SourceContentCRC64,
 		SourceRange:             exported.FormatHTTPRange(o.Range),
+	}
+
+	if o.SourceContentValidation != nil {
+		o.SourceContentValidation.Apply(options)
 	}
 
 	return options, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions
@@ -205,10 +201,12 @@ type uploadFromReaderOptions struct {
 	// Concurrency indicates the maximum number of blocks to upload in parallel (0=default)
 	Concurrency uint16
 
+	TransactionalValidation blob.TransferValidationType
+
 	// Optional header, Specifies the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCRC64 *[]byte
+	TransactionalContentCRC64 uint64
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 *[]byte
+	TransactionalContentMD5 []byte
 }
 
 // UploadBufferOptions provides set of configurations for UploadBuffer operation
@@ -223,6 +221,8 @@ func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
 		CpkInfo:               o.CpkInfo,
 		CpkScopeInfo:          o.CpkScopeInfo,
 		LeaseAccessConditions: leaseAccessConditions,
+
+		TransactionalValidation: o.TransactionalValidation,
 	}
 }
 
@@ -260,6 +260,8 @@ type UploadStreamOptions struct {
 	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.
 	Concurrency int
 
+	TransactionalValidation blob.TransferValidationType
+
 	HTTPHeaders      *blob.HTTPHeaders
 	Metadata         map[string]string
 	AccessConditions *blob.AccessConditions
@@ -286,9 +288,10 @@ func (u *UploadStreamOptions) getStageBlockOptions() *StageBlockOptions {
 
 	leaseAccessConditions, _ := exported.FormatBlobAccessConditions(u.AccessConditions)
 	return &StageBlockOptions{
-		CpkInfo:               u.CpkInfo,
-		CpkScopeInfo:          u.CpkScopeInfo,
-		LeaseAccessConditions: leaseAccessConditions,
+		TransactionalValidation: u.TransactionalValidation,
+		CpkInfo:                 u.CpkInfo,
+		CpkScopeInfo:            u.CpkScopeInfo,
+		LeaseAccessConditions:   leaseAccessConditions,
 	}
 }
 

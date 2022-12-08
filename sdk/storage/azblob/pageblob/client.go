@@ -159,6 +159,13 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, optio
 
 	uploadPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()
 
+	if options != nil && options.TransactionalValidation != nil {
+		body, err = options.TransactionalValidation.Apply(body, uploadPagesOptions)
+		if err != nil {
+			return UploadPagesResponse{}, nil
+		}
+	}
+
 	resp, err := pb.generated().UploadPages(ctx, count, body, uploadPagesOptions, leaseAccessConditions,
 		cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions)
 

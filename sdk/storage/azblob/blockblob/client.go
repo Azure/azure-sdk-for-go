@@ -175,6 +175,13 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 
 	opts, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
 
+	if options != nil && options.TransactionalValidation != nil {
+		body, err = options.TransactionalValidation.Apply(body, opts)
+		if err != nil {
+			return StageBlockResponse{}, nil
+		}
+	}
+
 	resp, err := bb.generated().StageBlock(ctx, base64BlockID, count, body, opts, leaseAccessConditions, cpkInfo, cpkScopeInfo)
 	return resp, err
 }

@@ -182,3 +182,48 @@ const (
 func PossibleQueryFormatTypeValues() []QueryFormatType {
 	return generated.PossibleQueryFormatTypeValues()
 }
+
+// TransferValidationType abstracts the various mechanisms used to verify a transfer.
+type TransferValidationType = exported.TransferValidationType
+
+// TransferValidationTypeCRC64 is a TransferValidationType used to provide a precomputed CRC64.
+type TransferValidationTypeCRC64 = exported.TransferValidationTypeCRC64
+
+// TransferValidationTypeComputeCRC64 is a TransferValidationType that indicates a CRC64 should be computed during transfer.
+func TransferValidationTypeComputeCRC64() TransferValidationType {
+	return exported.TransferValidationTypeComputeCRC64()
+}
+
+// TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
+type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
+
+// SourceContentValidationType abstracts the various mechanisms used to validate source content.
+// This interface is not publicly implementable.
+type SourceContentValidationType interface {
+	Apply(generated.SourceContentSetter)
+	notPubliclyImplementable()
+}
+
+// SourceContentValidationTypeCRC64 is a SourceContentValidationType used to provided a precomputed CRC64.
+type SourceContentValidationTypeCRC64 []byte
+
+// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeCRC64.
+func (s SourceContentValidationTypeCRC64) Apply(src generated.SourceContentSetter) {
+	src.SetSourceContentCRC64(s)
+}
+
+func (SourceContentValidationTypeCRC64) notPubliclyImplementable() {}
+
+var _ SourceContentValidationType = (SourceContentValidationTypeCRC64)(nil)
+
+// SourceContentValidationTypeMD5 is a SourceContentValidationType used to provided a precomputed MD5.
+type SourceContentValidationTypeMD5 []byte
+
+// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeMD5.
+func (s SourceContentValidationTypeMD5) Apply(src generated.SourceContentSetter) {
+	src.SetSourceContentMD5(s)
+}
+
+func (SourceContentValidationTypeMD5) notPubliclyImplementable() {}
+
+var _ SourceContentValidationType = (SourceContentValidationTypeMD5)(nil)

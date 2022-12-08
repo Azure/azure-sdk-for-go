@@ -18,16 +18,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCreateRoleAssignment(t *testing.T) {
+func TestGetSetting(t *testing.T) {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
 
-	client, err := azadmin.NewAccessControlClient("", cred, nil)
+	client, err := azadmin.NewSettingsClient("", cred, nil)
 	require.NoError(t, err)
-	_ = client
 
-	res3, err := client.CreateRoleAssignment(context.Background(), "/", "testname", azadmin.RoleAssignmentCreateParameters{}, nil)
+	res, err := client.GetSettings(context.Background(), nil)
 	require.NoError(t, err)
-	_ = res3
-
+	_ = res
 }

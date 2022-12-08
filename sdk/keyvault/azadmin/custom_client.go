@@ -40,3 +40,54 @@ func NewAccessControlClient(vaultURL string, credential azcore.TokenCredential, 
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &AccessControlClient{endpoint: vaultURL, pl: pl}, nil
 }
+
+// AccessControlClientOptions contains optional settings for AccessControlClient.
+type BackupClientOptions struct {
+	azcore.ClientOptions
+
+	// DisableChallengeResourceVerification controls whether the policy requires the
+	// authentication challenge resource to match the Key Vault or Managed HSM domain.
+	// See https://aka.ms/azsdk/blog/vault-uri for more information.
+	DisableChallengeResourceVerification bool
+}
+
+// vaultURL references a valid Key Vault. See https://aka.ms/azsdk/blog/vault-uri for details.
+func NewBackupClient(vaultURL string, credential azcore.TokenCredential, options *BackupClientOptions) (*BackupClient, error) {
+	if options == nil {
+		options = &BackupClientOptions{}
+	}
+	authPolicy := internal.NewKeyVaultChallengePolicy(
+		credential,
+		&internal.KeyVaultChallengePolicyOptions{
+			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
+		},
+	)
+	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	return &BackupClient{endpoint: vaultURL, pl: pl}, nil
+}
+
+// AccessControlClientOptions contains optional settings for AccessControlClient.
+type SettingsClientOptions struct {
+	azcore.ClientOptions
+
+	// DisableChallengeResourceVerification controls whether the policy requires the
+	// authentication challenge resource to match the Key Vault or Managed HSM domain.
+	// See https://aka.ms/azsdk/blog/vault-uri for more information.
+	DisableChallengeResourceVerification bool
+}
+
+// vaultURL references a valid Key Vault. See https://aka.ms/azsdk/blog/vault-uri for details.
+func NewSettingsClient(vaultURL string, credential azcore.TokenCredential, options *SettingsClientOptions) (*SettingsClient, error) {
+	if options == nil {
+		options = &SettingsClientOptions{}
+	}
+	authPolicy := internal.NewKeyVaultChallengePolicy(
+		credential,
+		&internal.KeyVaultChallengePolicyOptions{
+			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
+		},
+	)
+	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	return &SettingsClient{endpoint: vaultURL, pl: pl}, nil
+}
+

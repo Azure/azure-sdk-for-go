@@ -9,6 +9,8 @@
 
 package azadmin
 
+import "time"
+
 // AccessControlClientCreateRoleAssignmentOptions contains the optional parameters for the AccessControlClient.CreateRoleAssignment
 // method.
 type AccessControlClientCreateRoleAssignmentOptions struct {
@@ -61,6 +63,40 @@ type AccessControlClientListRoleDefinitionsOptions struct {
 	Filter *string
 }
 
+// BackupClientBeginFullBackupOptions contains the optional parameters for the BackupClient.BeginFullBackup method.
+type BackupClientBeginFullBackupOptions struct {
+	// Azure blob shared access signature token pointing to a valid Azure blob container where full backup needs to be stored.
+	// This token needs to be valid for at least next 24 hours from the time of making
+	// this call
+	AzureStorageBlobContainerURI *SASTokenParameter
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupClientBeginFullRestoreOperationOptions contains the optional parameters for the BackupClient.BeginFullRestoreOperation
+// method.
+type BackupClientBeginFullRestoreOperationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupClientBeginSelectiveKeyRestoreOperationOptions contains the optional parameters for the BackupClient.BeginSelectiveKeyRestoreOperation
+// method.
+type BackupClientBeginSelectiveKeyRestoreOperationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupClientFullBackupStatusOptions contains the optional parameters for the BackupClient.FullBackupStatus method.
+type BackupClientFullBackupStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupClientRestoreStatusOptions contains the optional parameters for the BackupClient.RestoreStatus method.
+type BackupClientRestoreStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Error - The key vault server error.
 type Error struct {
 	// READ-ONLY; The error code.
@@ -71,6 +107,30 @@ type Error struct {
 
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
+}
+
+// FullBackupOperation - Full backup operation
+type FullBackupOperation struct {
+	// The Azure blob storage container Uri which contains the full backup
+	AzureStorageBlobContainerURI *string `json:"azureStorageBlobContainerUri,omitempty"`
+
+	// The end time of the backup operation in UTC
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Error encountered, if any, during the full backup operation.
+	Error *Error `json:"error,omitempty"`
+
+	// Identifier for the full backup operation.
+	JobID *string `json:"jobId,omitempty"`
+
+	// The start time of the backup operation in UTC
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Status of the backup operation.
+	Status *string `json:"status,omitempty"`
+
+	// The status details of backup operation.
+	StatusDetails *string `json:"statusDetails,omitempty"`
 }
 
 // KeyVaultError - The key vault error exception.
@@ -92,6 +152,35 @@ type Permission struct {
 
 	// Data action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a principal.
 	NotDataActions []*DataAction `json:"notDataActions,omitempty"`
+}
+
+// RestoreOperation - Restore operation
+type RestoreOperation struct {
+	// The end time of the restore operation
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Error encountered, if any, during the restore operation.
+	Error *Error `json:"error,omitempty"`
+
+	// Identifier for the restore operation.
+	JobID *string `json:"jobId,omitempty"`
+
+	// The start time of the restore operation
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Status of the restore operation.
+	Status *string `json:"status,omitempty"`
+
+	// The status details of restore operation.
+	StatusDetails *string `json:"statusDetails,omitempty"`
+}
+
+type RestoreOperationParameters struct {
+	// REQUIRED; The Folder name of the blob where the previous successful full backup was stored
+	FolderToRestore *string `json:"folderToRestore,omitempty"`
+
+	// REQUIRED
+	SasTokenParameters *SASTokenParameter `json:"sasTokenParameters,omitempty"`
 }
 
 // RoleAssignment - Role Assignments
@@ -204,4 +293,79 @@ type RoleDefinitionProperties struct {
 
 	// The role type.
 	RoleType *RoleType `json:"type,omitempty"`
+}
+
+type SASTokenParameter struct {
+	// REQUIRED; Azure Blob storage container Uri
+	StorageResourceURI *string `json:"storageResourceUri,omitempty"`
+
+	// REQUIRED; The SAS token pointing to an Azure Blob storage container
+	Token *string `json:"token,omitempty"`
+}
+
+// SelectiveKeyRestoreOperation - Selective Key Restore operation
+type SelectiveKeyRestoreOperation struct {
+	// The end time of the restore operation
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Error encountered, if any, during the selective key restore operation.
+	Error *Error `json:"error,omitempty"`
+
+	// Identifier for the selective key restore operation.
+	JobID *string `json:"jobId,omitempty"`
+
+	// The start time of the restore operation
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Status of the restore operation.
+	Status *string `json:"status,omitempty"`
+
+	// The status details of restore operation.
+	StatusDetails *string `json:"statusDetails,omitempty"`
+}
+
+type SelectiveKeyRestoreOperationParameters struct {
+	// REQUIRED; The Folder name of the blob where the previous successful full backup was stored
+	Folder *string `json:"folder,omitempty"`
+
+	// REQUIRED
+	SasTokenParameters *SASTokenParameter `json:"sasTokenParameters,omitempty"`
+}
+
+type Setting struct {
+	// REQUIRED; The account setting to be updated
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; The value of the pool setting.
+	Value *string `json:"value,omitempty"`
+
+	// The type specifier of the value.
+	Type *SettingTypeEnum `json:"type,omitempty"`
+}
+
+// SettingsClientGetSettingOptions contains the optional parameters for the SettingsClient.GetSetting method.
+type SettingsClientGetSettingOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SettingsClientGetSettingsOptions contains the optional parameters for the SettingsClient.GetSettings method.
+type SettingsClientGetSettingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SettingsClientUpdateSettingOptions contains the optional parameters for the SettingsClient.UpdateSetting method.
+type SettingsClientUpdateSettingOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SettingsListResult - The settings list result.
+type SettingsListResult struct {
+	// READ-ONLY; A response message containing a list of account settings with their associated value.
+	Value []*Setting `json:"value,omitempty" azure:"ro"`
+}
+
+// UpdateSettingRequest - The update settings request object.
+type UpdateSettingRequest struct {
+	// REQUIRED; The value of the pool setting.
+	Value *string `json:"value,omitempty"`
 }

@@ -48,3 +48,43 @@ type AccessControlClientListRoleAssignmentsResponse struct {
 type AccessControlClientListRoleDefinitionsResponse struct {
 	RoleDefinitionListResult
 }
+
+// BackupClientFullBackupResponse contains the response from method BackupClient.FullBackup.
+type BackupClientFullBackupResponse struct {
+	FullBackupOperation
+}
+
+// BackupClientFullBackupStatusResponse contains the response from method BackupClient.FullBackupStatus.
+type BackupClientFullBackupStatusResponse struct {
+	FullBackupOperation
+}
+
+// BackupClientFullRestoreOperationResponse contains the response from method BackupClient.FullRestoreOperation.
+type BackupClientFullRestoreOperationResponse struct {
+	RestoreOperation
+}
+
+// BackupClientRestoreStatusResponse contains the response from method BackupClient.RestoreStatus.
+type BackupClientRestoreStatusResponse struct {
+	RestoreOperation
+}
+
+// BackupClientSelectiveKeyRestoreOperationResponse contains the response from method BackupClient.SelectiveKeyRestoreOperation.
+type BackupClientSelectiveKeyRestoreOperationResponse struct {
+	SelectiveKeyRestoreOperation
+}
+
+// SettingsClientGetSettingResponse contains the response from method SettingsClient.GetSetting.
+type SettingsClientGetSettingResponse struct {
+	Setting
+}
+
+// SettingsClientGetSettingsResponse contains the response from method SettingsClient.GetSettings.
+type SettingsClientGetSettingsResponse struct {
+	SettingsListResult
+}
+
+// SettingsClientUpdateSettingResponse contains the response from method SettingsClient.UpdateSetting.
+type SettingsClientUpdateSettingResponse struct {
+	Setting
+}

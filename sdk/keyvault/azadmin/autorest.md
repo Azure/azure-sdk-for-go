@@ -6,13 +6,13 @@ export-clients: true
 go: true
 input-file: 
     - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/rbac.json
-    #- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/backuprestore.json
-    #- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/backuprestore.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/keyvault/azadmin
 openapi-type: "data-plane"
 output-folder: ../azadmin
-override-client-name: Client
+override-client-name: BackupClient
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
 use: "@autorest/go@4.0.0-preview.44"
@@ -51,9 +51,27 @@ directive:
       from: RoleAssignments_ListForScope
       to: AccessControl_ListRoleAssignments
 
+    # rename setting operations to generate as their own client
+  - rename-operation:
+      from: GetSetting
+      to: Settings_GetSetting #change to Get?
+  - rename-operation:
+      from: GetSettings
+      to: Settings_GetSettings # change to List?
+  - rename-operation:
+      from: UpdateSetting
+      to: Settings_UpdateSetting
+
   # delete generated client constructor
   - from: accesscontrol_client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewAccessControlClient.+\{\s(?:.+\s)+\}\s/, "");
+  - from: backup_client.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func NewBackupClient.+\{\s(?:.+\s)+\}\s/, "");
+  - from: settings_client.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func NewSettingsClient.+\{\s(?:.+\s)+\}\s/, "");
+
 
 ```

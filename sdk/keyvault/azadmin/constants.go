@@ -172,3 +172,17 @@ func PossibleRoleTypeValues() []RoleType {
 		RoleTypeCustomRole,
 	}
 }
+
+// SettingTypeEnum - The type specifier of the value.
+type SettingTypeEnum string
+
+const (
+	SettingTypeEnumBoolean SettingTypeEnum = "boolean"
+)
+
+// PossibleSettingTypeEnumValues returns the possible values for the SettingTypeEnum const type.
+func PossibleSettingTypeEnumValues() []SettingTypeEnum {
+	return []SettingTypeEnum{
+		SettingTypeEnumBoolean,
+	}
+}

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Export user agent formatting code that used to be in azcore's policy_telemetry.go so it can be shared with non-HTTP clients (ie: azservicebus/azeventhubs).
+
 ### Breaking Changes
 
 ### Bugs Fixed

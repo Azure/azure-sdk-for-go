@@ -2,7 +2,7 @@
 
 * [Installing Go](#installing-go)
 * [Directory Structure](#directory-structure)
-* [Module Skeletop](#create-module-skeleton)
+* [Module Skeleton](#create-module-skeleton)
 * [Create SDK](#create-your-sdk)
 * [Write Tests](#write-tests)
 
@@ -95,7 +95,7 @@ Please refer to the Azure [Go SDK API design guidelines][api_design] for detaile
 
 If your SDK doesn't require any Autorest-generated content, please skip this section.
 
-When using Autorest to generate code, it's best to create a configuration file that contains all of the parameters.
+When using [Autorest][autorest_intro] to generate code, it's best to create a configuration file that contains all of the parameters.
 This ensures that the build is repeatable and any changes are documented.
 The convention is to place the parameters in a file named `autorest.md`.
 Below is a template to get you started (you **must** include the yaml delimiters).
@@ -120,6 +120,10 @@ For services that authenticate with Azure Active Directory, you **must** include
 ```yaml
 security-scopes: "https://vault.azure.net/.default"
 ```
+
+Generated code **must not** be edited, as any edits would be lost on future regeneration of content.
+That said, if there is a need to customize the generated code, you can add one or more [Autorest directives][autorest_directives] to your autorest.md file.
+This way, the changes are documented and preserved across regenerations.
 
 ## Write Tests
 
@@ -369,3 +373,5 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [vscode_go]: https://code.visualstudio.com/docs/languages/go
 [repo_branching]: https://github.com/Azure/azure-sdk/blob/main/docs/policies/repobranching.md
 [autorest_go]: https://www.npmjs.com/package/@autorest/go
+[autorest_intro]: https://github.com/Azure/autorest/blob/main/docs/readme.md
+[autorest_directives]: https://github.com/Azure/autorest/blob/main/docs/generate/directives.md

@@ -1004,7 +1004,9 @@ func (s SavingsPlanModelProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populateTimeRFC3339(objectMap, "purchaseDateTime", s.PurchaseDateTime)
 	populate(objectMap, "renew", s.Renew)
+	populate(objectMap, "renewDestination", s.RenewDestination)
 	populate(objectMap, "renewProperties", s.RenewProperties)
+	populate(objectMap, "renewSource", s.RenewSource)
 	populate(objectMap, "term", s.Term)
 	populate(objectMap, "userFriendlyAppliedScopeType", s.UserFriendlyAppliedScopeType)
 	populate(objectMap, "utilization", s.Utilization)
@@ -1071,8 +1073,14 @@ func (s *SavingsPlanModelProperties) UnmarshalJSON(data []byte) error {
 		case "renew":
 			err = unpopulate(val, "Renew", &s.Renew)
 			delete(rawMsg, key)
+		case "renewDestination":
+			err = unpopulate(val, "RenewDestination", &s.RenewDestination)
+			delete(rawMsg, key)
 		case "renewProperties":
 			err = unpopulate(val, "RenewProperties", &s.RenewProperties)
+			delete(rawMsg, key)
+		case "renewSource":
+			err = unpopulate(val, "RenewSource", &s.RenewSource)
 			delete(rawMsg, key)
 		case "term":
 			err = unpopulate(val, "Term", &s.Term)
@@ -1082,33 +1090,6 @@ func (s *SavingsPlanModelProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "utilization":
 			err = unpopulate(val, "Utilization", &s.Utilization)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SavingsPlanModelPropertiesRenewProperties.
-func (s SavingsPlanModelPropertiesRenewProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "purchaseProperties", s.PurchaseProperties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SavingsPlanModelPropertiesRenewProperties.
-func (s *SavingsPlanModelPropertiesRenewProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "purchaseProperties":
-			err = unpopulate(val, "PurchaseProperties", &s.PurchaseProperties)
 			delete(rawMsg, key)
 		}
 		if err != nil {

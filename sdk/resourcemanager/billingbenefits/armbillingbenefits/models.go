@@ -474,8 +474,14 @@ type SavingsPlanModelProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Setting this to true will automatically purchase a new benefit on the expiration date time.
-	Renew           *bool                                      `json:"renew,omitempty"`
-	RenewProperties *SavingsPlanModelPropertiesRenewProperties `json:"renewProperties,omitempty"`
+	Renew *bool `json:"renew,omitempty"`
+
+	// SavingsPlan Id of the SavingsPlan which is purchased because of renew.
+	RenewDestination *string          `json:"renewDestination,omitempty"`
+	RenewProperties  *RenewProperties `json:"renewProperties,omitempty"`
+
+	// SavingsPlan Id of the SavingsPlan from which this SavingsPlan is renewed.
+	RenewSource *string `json:"renewSource,omitempty"`
 
 	// Represent benefit term in ISO 8601 format.
 	Term *Term `json:"term,omitempty"`
@@ -514,10 +520,6 @@ type SavingsPlanModelProperties struct {
 
 	// READ-ONLY; Savings plan utilization
 	Utilization *Utilization `json:"utilization,omitempty" azure:"ro"`
-}
-
-type SavingsPlanModelPropertiesRenewProperties struct {
-	PurchaseProperties *PurchaseRequest `json:"purchaseProperties,omitempty"`
 }
 
 // SavingsPlanOrderAliasClientBeginCreateOptions contains the optional parameters for the SavingsPlanOrderAliasClient.BeginCreate

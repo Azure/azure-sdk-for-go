@@ -1,14 +1,10 @@
 # Release History
 
-## 0.6.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.6.1 (2022-12-09)
 
 ### Bugs Fixed
 
-### Other Changes
+* Fix compilation error on Darwin.
 
 ## 0.6.0 (2022-12-08)
 

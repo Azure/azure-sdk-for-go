@@ -391,7 +391,7 @@ func (c *Conn) close() {
 		c.doneErr = &ConnError{}
 	} else if amqpErr, ok := c.rxErr.(*Error); ok {
 		// we experienced a peer-initiated close that contained an Error.  return it
-		c.doneErr = &ConnError{inner: amqpErr}
+		c.doneErr = &ConnError{RemoteErr: amqpErr}
 	} else if c.txErr != nil {
 		c.doneErr = &ConnError{inner: c.txErr}
 	} else if c.rxErr != nil {
@@ -453,10 +453,6 @@ func (c *Conn) connReader() {
 			debug.Log(1, "connReader terminal error: %v", err)
 			c.rxErr = err
 			return
-		}
-
-		if c.idleTimeout > 0 {
-			_ = c.net.SetReadDeadline(time.Now().Add(c.idleTimeout))
 		}
 
 		var fr frames.Frame
@@ -552,6 +548,10 @@ func (c *Conn) readFrame() (frames.Frame, error) {
 		// need to read more if buf doesn't contain the complete frame
 		// or there's not enough in buf to parse the header
 		if frameInProgress || c.rxBuf.Len() < frames.HeaderSize {
+			// we MUST reset the idle timeout before each read from net.Conn
+			if c.idleTimeout > 0 {
+				_ = c.net.SetReadDeadline(time.Now().Add(c.idleTimeout))
+			}
 			err := c.rxBuf.ReadFromOnce(c.net)
 			if err != nil {
 				debug.Log(1, "readFrame error: %v", err)
@@ -598,6 +598,7 @@ func (c *Conn) readFrame() (frames.Frame, error) {
 
 		// check if body is empty (keepalive)
 		if bodySize == 0 {
+			debug.Log(3, "received keep-alive frame")
 			continue
 		}
 

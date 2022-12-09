@@ -21,8 +21,8 @@ import (
 )
 
 func TestWorkloadIdentityCredential(t *testing.T) {
-	tokenFilePath := filepath.Join(t.TempDir(), "test-workload-token-file")
-	if err := os.WriteFile(tokenFilePath, []byte(tokenValue), os.ModePerm); err != nil {
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(tokenValue), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
 	validateReq := func(req *http.Request) bool {
@@ -53,7 +53,7 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 	opts := WorkloadIdentityCredentialOptions{
 		ClientOptions: policy.ClientOptions{Transport: srv},
 	}
-	cred, err := NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, tokenFilePath, &opts)
+	cred, err := NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, tempFile, &opts)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -62,7 +62,7 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 
 func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 	tokenReqs := 0
-	tokenFilePath := filepath.Join(t.TempDir(), "test-workload-token-file")
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
 	validateReq := func(req *http.Request) bool {
 		if err := req.ParseForm(); err != nil {
 			t.Error(err)
@@ -86,7 +86,7 @@ func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 	opts := WorkloadIdentityCredentialOptions{
 		ClientOptions: policy.ClientOptions{Transport: srv},
 	}
-	cred, err := NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, tokenFilePath, &opts)
+	cred, err := NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, tempFile, &opts)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,7 +94,7 @@ func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 		// tokenReqs counts requests, and its latest value is the expected client assertion and the requested scope.
 		// Each iteration of this loop therefore sends a token request with a unique assertion.
 		s := fmt.Sprint(tokenReqs)
-		if err = os.WriteFile(tokenFilePath, []byte(fmt.Sprint(s)), os.ModePerm); err != nil {
+		if err = os.WriteFile(tempFile, []byte(fmt.Sprint(s)), os.ModePerm); err != nil {
 			t.Fatalf("failed to write token file: %v", err)
 		}
 		if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{s}}); err != nil {

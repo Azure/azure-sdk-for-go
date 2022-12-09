@@ -98,9 +98,9 @@ func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
 
 func TestDefaultAzureCredential_Workload(t *testing.T) {
 	expectedAssertion := "service account token"
-	file := filepath.Join(t.TempDir(), "service-account-token-file")
-	if err := os.WriteFile(file, []byte(expectedAssertion), os.ModePerm); err != nil {
-		t.Fatalf(`failed to write temporary file "%s": %v`, file, err)
+	tempFile := filepath.Join(t.TempDir(), "service-account-token-file")
+	if err := os.WriteFile(tempFile, []byte(expectedAssertion), os.ModePerm); err != nil {
+		t.Fatalf(`failed to write temporary file "%s": %v`, tempFile, err)
 	}
 	pred := func(req *http.Request) bool {
 		if err := req.ParseForm(); err != nil {
@@ -126,7 +126,7 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 	for k, v := range map[string]string{
 		azureAuthorityHost:      cloud.AzurePublic.ActiveDirectoryAuthorityHost,
 		azureClientID:           fakeClientID,
-		azureFederatedTokenFile: file,
+		azureFederatedTokenFile: tempFile,
 		azureTenantID:           fakeTenantID,
 	} {
 		t.Setenv(k, v)

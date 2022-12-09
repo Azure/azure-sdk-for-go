@@ -72,8 +72,8 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 			}
 			w.assertion = string(content)
 			// Kubernetes rotates service account tokens when they reach 80% of their total TTL. The shortest TTL
-			// is 1 hour. That implies the token we just read is valid for at least 12 minutes (20% of 1 hour), but we
-			// add some margin for safety.
+			// is 1 hour. That implies the token we just read is valid for at least 12 minutes (20% of 1 hour),
+			// but we add some margin for safety.
 			w.expires = now.Add(10 * time.Minute)
 		}
 	} else {

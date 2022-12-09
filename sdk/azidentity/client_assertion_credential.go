@@ -51,8 +51,7 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 	if err != nil {
 		return nil, err
 	}
-	cac := ClientAssertionCredential{client: c, name: credNameAssertion}
-	return &cac, nil
+	return &ClientAssertionCredential{client: c, name: credNameAssertion}, nil
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.

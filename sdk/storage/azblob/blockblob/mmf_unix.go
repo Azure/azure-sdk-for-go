@@ -1,6 +1,6 @@
-//go:build go1.18 && (linux || darwin || freebsd || openbsd || netbsd)
+//go:build go1.18 && (linux || darwin || freebsd || openbsd || netbsd || solaris)
 // +build go1.18
-// +build linux darwin freebsd openbsd netbsd
+// +build linux darwin freebsd openbsd netbsd solaris
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -18,7 +18,7 @@ type mmb []byte
 
 // newMMB creates a new memory mapped buffer with the specified size
 func newMMB(size int64) (mmb, error) {
-	prot, flags := syscall.PROT_READ|syscall.PROT_WRITE, syscall.MAP_ANONYMOUS|syscall.MAP_PRIVATE
+	prot, flags := syscall.PROT_READ|syscall.PROT_WRITE, syscall.MAP_ANON|syscall.MAP_PRIVATE
 	addr, err := syscall.Mmap(-1, 0, int(size), prot, flags)
 	if err != nil {
 		return nil, os.NewSyscallError("Mmap", err)

@@ -18,7 +18,7 @@ import (
 
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
 
-// WorkloadIdentityCredential supports Azure Workload Identity on Kubernetes.
+// WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
 // See [AKS documentation] for more information.
 //
 // [AKS documentation]: https://learn.microsoft.com/azure/aks/workload-identity-overview

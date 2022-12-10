@@ -30,6 +30,7 @@ const (
 	azureClientCertificatePath     = "AZURE_CLIENT_CERTIFICATE_PATH"
 	azureClientID                  = "AZURE_CLIENT_ID"
 	azureClientSecret              = "AZURE_CLIENT_SECRET"
+	azureFederatedTokenFile        = "AZURE_FEDERATED_TOKEN_FILE"
 	azurePassword                  = "AZURE_PASSWORD"
 	azureRegionalAuthorityName     = "AZURE_REGIONAL_AUTHORITY_NAME"
 	azureTenantID                  = "AZURE_TENANT_ID"

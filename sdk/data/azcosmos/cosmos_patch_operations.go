@@ -29,7 +29,7 @@ const (
 type patchOperation struct {
 	Op    patchOperationType `json:"op"`
 	Path  string             `json:"path"`
-	Value interface{}        `json:"value,omitempty"`
+	Value any                `json:"value,omitempty"`
 }
 
 // PatchOperations represents the patch request.
@@ -66,7 +66,7 @@ func (p *PatchOperations) SetCondition(condition string) {
 }
 
 // AppendReplace appends a replace operation to the patch request.
-func (p *PatchOperations) AppendReplace(path string, value interface{}) {
+func (p *PatchOperations) AppendReplace(path string, value any) {
 	p.operations = append(p.operations, patchOperation{
 		Op:    patchOperationTypeReplace,
 		Path:  path,
@@ -75,7 +75,7 @@ func (p *PatchOperations) AppendReplace(path string, value interface{}) {
 }
 
 // AppendAdd appends an add operation to the patch request.
-func (p *PatchOperations) AppendAdd(path string, value interface{}) {
+func (p *PatchOperations) AppendAdd(path string, value any) {
 	p.operations = append(p.operations, patchOperation{
 		Op:    patchOperationTypeAdd,
 		Path:  path,
@@ -84,7 +84,7 @@ func (p *PatchOperations) AppendAdd(path string, value interface{}) {
 }
 
 // AppendSet appends a set operation to the patch request.
-func (p *PatchOperations) AppendSet(path string, value interface{}) {
+func (p *PatchOperations) AppendSet(path string, value any) {
 	p.operations = append(p.operations, patchOperation{
 		Op:    patchOperationTypeSet,
 		Path:  path,

@@ -9,7 +9,7 @@ flowchart LR;
 
     subgraph CREDENTIAL TYPES;
         direction LR;
-        Deployed(Deployed service):::deployed ==> Developer(Developer):::developer;
+        Deployed(Deployed service):::deployed --- Developer(Developer):::developer;
 
         %% Hide links between boxes in the legend by setting width to 0. The integers after "linkStyle" represent link indices.
         linkStyle 3 stroke-width:0px;

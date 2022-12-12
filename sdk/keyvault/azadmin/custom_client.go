@@ -90,4 +90,3 @@ func NewSettingsClient(vaultURL string, credential azcore.TokenCredential, optio
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &SettingsClient{endpoint: vaultURL, pl: pl}, nil
 }
-

@@ -6,6 +6,8 @@
 * Added `BearerTokenOptions.AuthorizationHandler` to enable extending `runtime.BearerTokenPolicy`
   with custom authorization logic
 * Added `Client` types and matching constructors to the `azcore` and `arm` packages.  These represent a basic client for HTTP and ARM respectively.
+* Added support for ARM cross-tenant authentication. Set the `AuxiliaryTenants` field of `arm.ClientOptions` to enable.
+* Added `TenantID` field to `policy.TokenRequestOptions`.
 
 ### Breaking Changes
 

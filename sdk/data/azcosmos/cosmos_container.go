@@ -492,7 +492,7 @@ func (c *ContainerClient) PatchItem(
 	azResponse, err := c.database.client.sendPatchRequest(
 		path,
 		ctx,
-		&ops,
+		ops,
 		operationContext,
 		o,
 		nil)

@@ -223,7 +223,7 @@ func (b batchOperationPatch) MarshalJSON() ([]byte, error) {
 
 	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
 	buffer.WriteString(",\"resourceBody\":")
-	p, err := json.Marshal(&b.patchOperations)
+	p, err := json.Marshal(b.patchOperations)
 	if err != nil {
 		return nil, err
 	}

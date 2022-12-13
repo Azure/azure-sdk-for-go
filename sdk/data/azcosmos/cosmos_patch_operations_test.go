@@ -42,7 +42,7 @@ func TestPatchAppendAdd(t *testing.T) {
 		t.Fatalf("Expected value %v, but got %v", "bar", patch.operations[0].Value)
 	}
 
-	jsonString, err := json.Marshal(&patch)
+	jsonString, err := json.Marshal(patch)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,7 +74,7 @@ func TestPatchAppendReplace(t *testing.T) {
 		t.Fatalf("Expected value %v, but got %v", "bar", patch.operations[0].Value)
 	}
 
-	jsonString, err := json.Marshal(&patch)
+	jsonString, err := json.Marshal(patch)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -106,7 +106,7 @@ func TestPatchAppendRemove(t *testing.T) {
 		t.Fatalf("Expected value to be nil, but got %v", patch.operations[0].Value)
 	}
 
-	jsonString, err := json.Marshal(&patch)
+	jsonString, err := json.Marshal(patch)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -139,7 +139,7 @@ func TestPatchAppendIncrement(t *testing.T) {
 		t.Fatalf("Expected value to be %v, but got %v", value, patch.operations[0].Value)
 	}
 
-	jsonString, err := json.Marshal(&patch)
+	jsonString, err := json.Marshal(patch)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -171,7 +171,7 @@ func TestPatchAppendSet(t *testing.T) {
 		t.Fatalf("Expected value to be bar, but got %v", patch.operations[0].Value)
 	}
 
-	jsonString, err := json.Marshal(&patch)
+	jsonString, err := json.Marshal(patch)
 	if err != nil {
 		t.Fatal(err)
 	}

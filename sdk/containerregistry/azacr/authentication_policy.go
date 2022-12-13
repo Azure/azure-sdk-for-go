@@ -7,18 +7,21 @@
 package azacr
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
@@ -49,11 +52,14 @@ func NewAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authC
 }
 
 func (p *AuthenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
-
-	// send the original request
-	resp, reqErr := req.Next()
-	if reqErr != nil {
-		return nil, reqErr
+	// send a copy of the original request without body content
+	challengeReq, err := p.getChallengeRequest(*req)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := challengeReq.Next()
+	if err != nil {
+		return nil, err
 	}
 
 	// do challenge process
@@ -73,14 +79,8 @@ func (p *AuthenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 			fmt.Sprintf("%s%s", bearerHeader, accessToken),
 		)
 
-		// send a copy of the request
-		cloneReq := req.Clone(req.Raw().Context())
-		resp, cloneReqErr := cloneReq.Next()
-		if cloneReqErr != nil {
-			return nil, cloneReqErr
-		}
-
-		return resp, nil
+		// send the original request with auth
+		return req.Next()
 	}
 
 	return resp, nil
@@ -96,17 +96,20 @@ func (p *AuthenticationPolicy) getAccessToken(req *policy.Request) (string, erro
 		return *resp.AccessToken.AccessToken, nil
 	}
 
+	// access with token
 	as := acquiringResourceState{
-		p:   p,
-		req: req,
+		policy: p,
+		req:    req,
 	}
 
+	// get refresh token from cache/request
 	refreshToken, err := p.mainResource.Get(as)
 	if err != nil {
 		return "", err
 	}
 
-	resp, err := p.authClient.ExchangeAcrRefreshTokenForAcrAccessToken(req.Raw().Context(), p.acrService, p.acrScope, refreshToken.Token, &AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenOptions{GrantType: to.Ptr(TokenGrantTypePassword)})
+	// get access token from request
+	resp, err := p.authClient.ExchangeAcrRefreshTokenForAcrAccessToken(req.Raw().Context(), p.acrService, p.acrScope, refreshToken.Token, &AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenOptions{GrantType: to.Ptr(TokenGrantTypeRefreshToken)})
 	if err != nil {
 		return "", err
 	}
@@ -138,55 +141,79 @@ func (p *AuthenticationPolicy) findServiceAndScope(resp *http.Response) error {
 	}
 
 	authHeader = strings.ReplaceAll(authHeader, "Bearer ", "")
-	parts := strings.Split(authHeader, ",")
-	vals := map[string]string{}
+	parts := strings.Split(authHeader, "\",")
+	valuesMap := map[string]string{}
 	for _, part := range parts {
 		subParts := strings.Split(part, "=")
 		if len(subParts) == 2 {
-			stripped := strings.ReplaceAll(subParts[1], "\"", "")
-			stripped = strings.TrimSuffix(stripped, ",")
-			vals[subParts[0]] = stripped
+			valuesMap[subParts[0]] = strings.ReplaceAll(subParts[1], "\"", "")
 		}
 	}
 
-	if v, ok := vals["acrScope"]; ok {
-		p.acrScope = v
-	} else if v, ok := vals["resource"]; ok {
+	if v, ok := valuesMap["scope"]; ok {
 		p.acrScope = v
 	}
+	//if p.acrScope == "" {
+	//	return &challengePolicyError{err: errors.New("could not find a valid scope in the WWW-Authenticate header")}
+	//}
 	if p.acrScope == "" {
-		return &challengePolicyError{err: errors.New("could not find a valid acrScope in the WWW-Authenticate header")}
+		p.acrScope = "registry:catalog:*"
 	}
 
-	if v, ok := vals["acrService"]; ok {
+	if v, ok := valuesMap["service"]; ok {
 		p.acrService = v
 	}
 	if p.acrService == "" {
-		return &challengePolicyError{err: errors.New("could not find a valid acrService in the WWW-Authenticate header")}
+		return &challengePolicyError{err: errors.New("could not find a valid service in the WWW-Authenticate header")}
 	}
 
 	return nil
 }
 
+func (p AuthenticationPolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
+	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
+	if err != nil {
+		return nil, &challengePolicyError{err: err}
+	}
+
+	req.Raw().Header = orig.Raw().Header
+	req.Raw().Header.Set("Content-Length", "0")
+	req.Raw().ContentLength = 0
+
+	copied := orig.Clone(orig.Raw().Context())
+	copied.Raw().Body = req.Body()
+	copied.Raw().ContentLength = 0
+	copied.Raw().Header.Set("Content-Length", "0")
+	err = copied.SetBody(streaming.NopCloser(bytes.NewReader([]byte{})), "application/json")
+	if err != nil {
+		return nil, &challengePolicyError{err: err}
+	}
+	copied.Raw().Header.Del("Content-Type")
+
+	return copied, err
+}
+
 type acquiringResourceState struct {
-	req *policy.Request
-	p   *AuthenticationPolicy
+	req    *policy.Request
+	policy *AuthenticationPolicy
 }
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
 func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
-	aadToken, err := state.p.cred.GetToken(
+	// get AAD token from credential
+	aadToken, err := state.policy.cred.GetToken(
 		state.req.Raw().Context(),
 		policy.TokenRequestOptions{
-			Scopes: state.p.aadScopes,
+			Scopes: state.policy.aadScopes,
 		},
 	)
 	if err != nil {
 		return azcore.AccessToken{}, time.Time{}, err
 	}
 
-	refreshResp, err := state.p.authClient.ExchangeAADAccessTokenForAcrRefreshToken(state.req.Raw().Context(), PostContentSchemaGrantTypeAccessToken, state.p.acrService, &AuthenticationClientExchangeAADAccessTokenForAcrRefreshTokenOptions{
+	// exchange refresh token with AAD token
+	refreshResp, err := state.policy.authClient.ExchangeAADAccessTokenForAcrRefreshToken(state.req.Raw().Context(), PostContentSchemaGrantTypeAccessToken, state.policy.acrService, &AuthenticationClientExchangeAADAccessTokenForAcrRefreshTokenOptions{
 		AccessToken: &aadToken.Token,
 	})
 	if err != nil {
@@ -196,11 +223,14 @@ func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newE
 	refreshToken := azcore.AccessToken{
 		Token: *refreshResp.RefreshToken.RefreshToken,
 	}
-	refreshToken.ExpiresOn, err = getJWTExpireTime(aadToken.Token)
+
+	// get refresh token expire time
+	refreshToken.ExpiresOn, err = getJWTExpireTime(*refreshResp.RefreshToken.RefreshToken)
 	if err != nil {
 		return azcore.AccessToken{}, time.Time{}, err
 	}
 
+	// return refresh token
 	return refreshToken, refreshToken.ExpiresOn, nil
 }
 
@@ -220,16 +250,16 @@ func getJWTExpireTime(token string) (time.Time, error) {
 		}
 
 		var jsonValue *jwtOnlyWithExp
-		err = json.Unmarshal(parsedValue, jsonValue)
+		err = json.Unmarshal(parsedValue, &jsonValue)
 		if err != nil {
 			return time.Time{}, err
 		}
-		return jsonValue.Exp, nil
+		return time.Unix(jsonValue.Exp, 0), nil
 	}
 
 	return time.Time{}, &challengePolicyError{err: errors.New("could not parse refresh token expire time")}
 }
 
 type jwtOnlyWithExp struct {
-	Exp time.Time `json:"exp"`
+	Exp int64 `json:"exp"`
 }

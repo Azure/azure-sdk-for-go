@@ -11,8 +11,54 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
+	"strings"
 )
+
+// ContainerRegistryBlobClientOptions contains the optional parameters for the NewContainerRegistryBlobClient method.
+type ContainerRegistryBlobClientOptions struct {
+	azcore.ClientOptions
+	// Audience is the audience the client will request for its access tokens.
+	// The default will connect to Azure public cloud with value "https://management.core.windows.net/".
+	Audience string
+}
+
+// NewContainerRegistryBlobClient creates a new instance of ContainerRegistryBlobClient with the specified values.
+//   - endpoint - registry login URL
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - client options, pass nil to accept the default values.
+func NewContainerRegistryBlobClient(endpoint string, credential azcore.TokenCredential, options *ContainerRegistryBlobClientOptions) (*ContainerRegistryBlobClient, error) {
+	if options == nil {
+		options = &ContainerRegistryBlobClientOptions{}
+	}
+
+	if !(strings.HasPrefix(endpoint, "http://") || strings.HasPrefix(endpoint, "https://")) {
+		endpoint = "https://" + endpoint
+	}
+
+	authClient := NewAuthenticationClient(endpoint, &AuthenticationClientOptions{
+		options.ClientOptions,
+	})
+	scope := "https://management.core.windows.net/.default"
+	if options.Audience != "" {
+		scope = options.Audience + "/.default"
+	}
+	authPolicy := NewAuthenticationPolicy(
+		credential,
+		[]string{scope},
+		authClient,
+		nil,
+	)
+
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	return &ContainerRegistryBlobClient{
+		endpoint,
+		pl,
+	}, nil
+}
 
 // UploadBlob - Upload a blob to this repository.
 //   - name - Name of the image (including the namespace)

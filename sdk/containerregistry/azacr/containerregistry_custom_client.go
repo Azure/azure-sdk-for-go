@@ -8,26 +8,18 @@ package azacr
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/url"
 	"strings"
 )
-
-func getDefaultScope(endpoint string) (string, error) {
-	parsedURL, err := url.Parse(endpoint)
-	if err != nil {
-		return "", errors.New("error parsing endpoint url")
-	}
-
-	return parsedURL.Scheme + "://" + parsedURL.Host + "/.default", nil
-}
 
 // ContainerRegistryClientOptions contains the optional parameters for the NewContainerRegistryClient method.
 type ContainerRegistryClientOptions struct {
 	azcore.ClientOptions
+	// Audience is the audience the client will request for its access tokens.
+	// The default will connect to Azure public cloud with value "https://management.core.windows.net/".
+	Audience string
 }
 
 // NewContainerRegistryClient creates a new instance of ContainerRegistryClient with the specified values.
@@ -46,13 +38,13 @@ func NewContainerRegistryClient(endpoint string, credential azcore.TokenCredenti
 	authClient := NewAuthenticationClient(endpoint, &AuthenticationClientOptions{
 		options.ClientOptions,
 	})
-	tokenScope, err := getDefaultScope(endpoint)
-	if err != nil {
-		return nil, err
+	scope := "https://management.core.windows.net/.default"
+	if options.Audience != "" {
+		scope = options.Audience + "/.default"
 	}
 	authPolicy := NewAuthenticationPolicy(
 		credential,
-		[]string{tokenScope},
+		[]string{scope},
 		authClient,
 		nil,
 	)

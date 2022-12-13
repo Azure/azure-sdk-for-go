@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyDelete.json
 func ExampleSimPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,11 +28,7 @@ func ExampleSimPoliciesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"testMobileNetwork",
-		"testPolicy",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "testMobileNetwork", "testPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -42,7 +38,7 @@ func ExampleSimPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyGet.json
 func ExampleSimPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,11 +49,7 @@ func ExampleSimPoliciesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"testMobileNetwork",
-		"testPolicy",
-		nil)
+	res, err := client.Get(ctx, "rg1", "testMobileNetwork", "testPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -65,7 +57,7 @@ func ExampleSimPoliciesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimPolicyCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyCreate.json
 func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,53 +68,49 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"testMobileNetwork",
-		"testPolicy",
-		armmobilenetwork.SimPolicy{
-			Location: to.Ptr("eastus"),
-			Properties: &armmobilenetwork.SimPolicyPropertiesFormat{
-				DefaultSlice: &armmobilenetwork.SliceResourceID{
-					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
-				},
-				RegistrationTimer: to.Ptr[int32](3240),
-				SliceConfigurations: []*armmobilenetwork.SliceConfiguration{
-					{
-						DataNetworkConfigurations: []*armmobilenetwork.DataNetworkConfiguration{
-							{
-								FiveQi:                              to.Ptr[int32](9),
-								AdditionalAllowedSessionTypes:       []*armmobilenetwork.PduSessionType{},
-								AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
-								AllowedServices: []*armmobilenetwork.ServiceResourceID{
-									{
-										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
-									}},
-								DataNetwork: &armmobilenetwork.DataNetworkResourceID{
-									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
-								},
-								DefaultSessionType:      to.Ptr(armmobilenetwork.PduSessionTypeIPv4),
-								PreemptionCapability:    to.Ptr(armmobilenetwork.PreemptionCapabilityNotPreempt),
-								PreemptionVulnerability: to.Ptr(armmobilenetwork.PreemptionVulnerabilityPreemptable),
-								SessionAmbr: &armmobilenetwork.Ambr{
-									Downlink: to.Ptr("1 Gbps"),
-									Uplink:   to.Ptr("500 Mbps"),
-								},
-							}},
-						DefaultDataNetwork: &armmobilenetwork.DataNetworkResourceID{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
-						},
-						Slice: &armmobilenetwork.SliceResourceID{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
-						},
-					}},
-				UeAmbr: &armmobilenetwork.Ambr{
-					Downlink: to.Ptr("1 Gbps"),
-					Uplink:   to.Ptr("500 Mbps"),
-				},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testMobileNetwork", "testPolicy", armmobilenetwork.SimPolicy{
+		Location: to.Ptr("eastus"),
+		Properties: &armmobilenetwork.SimPolicyPropertiesFormat{
+			DefaultSlice: &armmobilenetwork.SliceResourceID{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+			},
+			RegistrationTimer: to.Ptr[int32](3240),
+			SliceConfigurations: []*armmobilenetwork.SliceConfiguration{
+				{
+					DataNetworkConfigurations: []*armmobilenetwork.DataNetworkConfiguration{
+						{
+							FiveQi:                              to.Ptr[int32](9),
+							AdditionalAllowedSessionTypes:       []*armmobilenetwork.PduSessionType{},
+							AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
+							AllowedServices: []*armmobilenetwork.ServiceResourceID{
+								{
+									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
+								}},
+							DataNetwork: &armmobilenetwork.DataNetworkResourceID{
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+							},
+							DefaultSessionType:             to.Ptr(armmobilenetwork.PduSessionTypeIPv4),
+							MaximumNumberOfBufferedPackets: to.Ptr[int32](200),
+							PreemptionCapability:           to.Ptr(armmobilenetwork.PreemptionCapabilityNotPreempt),
+							PreemptionVulnerability:        to.Ptr(armmobilenetwork.PreemptionVulnerabilityPreemptable),
+							SessionAmbr: &armmobilenetwork.Ambr{
+								Downlink: to.Ptr("1 Gbps"),
+								Uplink:   to.Ptr("500 Mbps"),
+							},
+						}},
+					DefaultDataNetwork: &armmobilenetwork.DataNetworkResourceID{
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
+					},
+					Slice: &armmobilenetwork.SliceResourceID{
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+					},
+				}},
+			UeAmbr: &armmobilenetwork.Ambr{
+				Downlink: to.Ptr("1 Gbps"),
+				Uplink:   to.Ptr("500 Mbps"),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -134,7 +122,7 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimPolicyUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyUpdateTags.json
 func ExampleSimPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,17 +133,12 @@ func ExampleSimPoliciesClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx,
-		"rg1",
-		"testMobileNetwork",
-		"testPolicy",
-		armmobilenetwork.TagsObject{
-			Tags: map[string]*string{
-				"tag1": to.Ptr("value1"),
-				"tag2": to.Ptr("value2"),
-			},
+	res, err := client.UpdateTags(ctx, "rg1", "testMobileNetwork", "testPolicy", armmobilenetwork.TagsObject{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -163,7 +146,7 @@ func ExampleSimPoliciesClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimPolicyListByMobileNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyListByMobileNetwork.json
 func ExampleSimPoliciesClient_NewListByMobileNetworkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,9 +157,7 @@ func ExampleSimPoliciesClient_NewListByMobileNetworkPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByMobileNetworkPager("testResourceGroupName",
-		"testMobileNetwork",
-		nil)
+	pager := client.NewListByMobileNetworkPager("testResourceGroupName", "testMobileNetwork", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

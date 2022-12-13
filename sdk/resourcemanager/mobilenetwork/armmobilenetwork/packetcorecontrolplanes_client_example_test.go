@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreControlPlaneDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneDelete.json
 func ExamplePacketCoreControlPlanesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,10 +28,7 @@ func ExamplePacketCoreControlPlanesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"TestPacketCoreCP",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "TestPacketCoreCP", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -41,7 +38,7 @@ func ExamplePacketCoreControlPlanesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreControlPlaneGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneGet.json
 func ExamplePacketCoreControlPlanesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,10 +49,7 @@ func ExamplePacketCoreControlPlanesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"TestPacketCoreCP",
-		nil)
+	res, err := client.Get(ctx, "rg1", "TestPacketCoreCP", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -63,7 +57,7 @@ func ExamplePacketCoreControlPlanesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreControlPlaneCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneCreate.json
 func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,41 +68,40 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"TestPacketCoreCP",
-		armmobilenetwork.PacketCoreControlPlane{
-			Location: to.Ptr("eastus"),
-			Properties: &armmobilenetwork.PacketCoreControlPlanePropertiesFormat{
-				ControlPlaneAccessInterface: &armmobilenetwork.InterfaceProperties{
-					Name: to.Ptr("N2"),
-				},
-				CoreNetworkTechnology: to.Ptr(armmobilenetwork.CoreNetworkTypeFiveGC),
-				LocalDiagnosticsAccess: &armmobilenetwork.LocalDiagnosticsAccessConfiguration{
-					HTTPSServerCertificate: &armmobilenetwork.KeyVaultCertificate{
-						CertificateURL: to.Ptr("https://contosovault.vault.azure.net/certificates/ingress"),
-					},
-				},
-				MobileNetwork: &armmobilenetwork.ResourceID{
-					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
-				},
-				Platform: &armmobilenetwork.PlatformConfiguration{
-					Type: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
-					AzureStackEdgeDevice: &armmobilenetwork.AzureStackEdgeDeviceResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
-					},
-					ConnectedCluster: &armmobilenetwork.ConnectedClusterResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
-					},
-					CustomLocation: &armmobilenetwork.CustomLocationResourceID{
-						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
-					},
-				},
-				SKU:     to.Ptr(armmobilenetwork.BillingSKU("testSku")),
-				Version: to.Ptr("0.2.0"),
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "TestPacketCoreCP", armmobilenetwork.PacketCoreControlPlane{
+		Location: to.Ptr("eastus"),
+		Properties: &armmobilenetwork.PacketCoreControlPlanePropertiesFormat{
+			ControlPlaneAccessInterface: &armmobilenetwork.InterfaceProperties{
+				Name: to.Ptr("N2"),
 			},
+			CoreNetworkTechnology: to.Ptr(armmobilenetwork.CoreNetworkTypeFiveGC),
+			LocalDiagnosticsAccess: &armmobilenetwork.LocalDiagnosticsAccessConfiguration{
+				AuthenticationType: to.Ptr(armmobilenetwork.AuthenticationTypeAAD),
+				HTTPSServerCertificate: &armmobilenetwork.HTTPSServerCertificate{
+					CertificateURL: to.Ptr("https://contosovault.vault.azure.net/certificates/ingress"),
+				},
+			},
+			Platform: &armmobilenetwork.PlatformConfiguration{
+				Type: to.Ptr(armmobilenetwork.PlatformTypeAKSHCI),
+				AzureStackEdgeDevice: &armmobilenetwork.AzureStackEdgeDeviceResourceID{
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"),
+				},
+				ConnectedCluster: &armmobilenetwork.ConnectedClusterResourceID{
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"),
+				},
+				CustomLocation: &armmobilenetwork.CustomLocationResourceID{
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation"),
+				},
+			},
+			Sites: []*armmobilenetwork.SiteResourceID{
+				{
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite"),
+				}},
+			SKU:     to.Ptr(armmobilenetwork.BillingSKUG0),
+			UeMtu:   to.Ptr[int32](1600),
+			Version: to.Ptr("0.2.0"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -120,7 +113,7 @@ func ExamplePacketCoreControlPlanesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreControlPlaneUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneUpdateTags.json
 func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,16 +124,12 @@ func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx,
-		"rg1",
-		"TestPacketCoreCP",
-		armmobilenetwork.TagsObject{
-			Tags: map[string]*string{
-				"tag1": to.Ptr("value1"),
-				"tag2": to.Ptr("value2"),
-			},
+	res, err := client.UpdateTags(ctx, "rg1", "TestPacketCoreCP", armmobilenetwork.TagsObject{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -148,7 +137,7 @@ func ExamplePacketCoreControlPlanesClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreControlPlaneListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneListBySubscription.json
 func ExamplePacketCoreControlPlanesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +161,7 @@ func ExamplePacketCoreControlPlanesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreControlPlaneListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneListByResourceGroup.json
 func ExamplePacketCoreControlPlanesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,8 +172,7 @@ func ExamplePacketCoreControlPlanesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1",
-		nil)
+	pager := client.NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

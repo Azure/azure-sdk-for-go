@@ -24,9 +24,9 @@ func Example_producingEventsUsingProducerClient() {
 
 	// Can also use a connection string:
 	//
-	// producerClient, err = azeventhubs.NewProducerClientFromConnectionString(connectionString, eventHubName, nil)
+	// producerClient, err := azeventhubs.NewProducerClientFromConnectionString(connectionString, eventHubName, nil)
 	//
-	producerClient, err = azeventhubs.NewProducerClient(eventHubNamespace, eventHubName, defaultAzureCred, nil)
+	producerClient, err := azeventhubs.NewProducerClient(eventHubNamespace, eventHubName, defaultAzureCred, nil)
 
 	if err != nil {
 		panic(err)

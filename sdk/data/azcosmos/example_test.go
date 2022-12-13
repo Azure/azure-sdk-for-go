@@ -746,6 +746,57 @@ func ExampleContainerClient_NewTransactionalBatch() {
 	}
 }
 
+func ExampleContainerClient_PatchItem() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	id := "anId"
+
+	patch := azcosmos.PatchOperations{}
+
+	patch.AppendAdd("/newField", "newValue")
+	patch.AppendRemove("/oldFieldToRemove")
+
+	itemResponse, err := container.PatchItem(context.Background(), pk, id, patch, nil)
+	if err != nil {
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
+	}
+
+	var itemResponseBody map[string]string
+	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Item patched. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
+}
+
 func retryOptimisticConcurrency(retryAttempts int, wait time.Duration, retry func() (bool, error)) (result error) {
 	for i := 0; ; i++ {
 		retryResult, err := retry()

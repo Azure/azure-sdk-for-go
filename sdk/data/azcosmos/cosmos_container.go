@@ -458,6 +458,51 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 	})
 }
 
+// PatchItem patches an item in a Cosmos container.
+// ctx - The context for the request.
+// partitionKey - The partition key for the item.
+// itemId - The id of the item to patch.
+// ops - Operations to perform on the patch
+// o - Options for the operation.
+func (c *ContainerClient) PatchItem(
+	ctx context.Context,
+	partitionKey PartitionKey,
+	itemId string,
+	ops PatchOperations,
+	o *ItemOptions) (ItemResponse, error) {
+	h := headerOptionsOverride{
+		partitionKey: &partitionKey,
+	}
+
+	if o == nil {
+		o = &ItemOptions{}
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       createLink(c.link, pathSegmentDocument, itemId),
+		isWriteOperation:      true,
+		headerOptionsOverride: &h}
+
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
+	if err != nil {
+		return ItemResponse{}, err
+	}
+
+	azResponse, err := c.database.client.sendPatchRequest(
+		path,
+		ctx,
+		ops,
+		operationContext,
+		o,
+		nil)
+	if err != nil {
+		return ItemResponse{}, err
+	}
+
+	return newItemResponse(azResponse)
+}
+
 // NewTransactionalBatch creates a batch of operations to be committed as a single unit.
 // See https://docs.microsoft.com/azure/cosmos-db/sql/transactional-batch
 func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) TransactionalBatch {

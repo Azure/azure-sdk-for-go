@@ -5,10 +5,11 @@ package amqp
 import (
 	"context"
 	"errors"
+	"fmt"
 	"sync"
 )
 
-type manualCreditor struct {
+type creditor struct {
 	mu sync.Mutex
 
 	// future values for the next flow frame.
@@ -20,11 +21,13 @@ type manualCreditor struct {
 	drained chan struct{}
 }
 
-var errLinkDraining = errors.New("link is currently draining, no credits can be added")
-var errAlreadyDraining = errors.New("drain already in process")
+var (
+	errLinkDraining    = errors.New("link is currently draining, no credits can be added")
+	errAlreadyDraining = errors.New("drain already in process")
+)
 
 // EndDrain ends the current drain, unblocking any active Drain calls.
-func (mc *manualCreditor) EndDrain() {
+func (mc *creditor) EndDrain() {
 	mc.mu.Lock()
 	defer mc.mu.Unlock()
 
@@ -41,7 +44,7 @@ func (mc *manualCreditor) EndDrain() {
 //	(drain: true, credits: 0) if a flow is needed (drain)
 //	(drain: false, credits > 0) if a flow is needed (issue credit)
 //	(drain: false, credits == 0) if no flow needed.
-func (mc *manualCreditor) FlowBits(currentCredits uint32) (bool, uint32) {
+func (mc *creditor) FlowBits(currentCredits uint32) (bool, uint32) {
 	mc.mu.Lock()
 	defer mc.mu.Unlock()
 
@@ -68,7 +71,7 @@ func (mc *manualCreditor) FlowBits(currentCredits uint32) (bool, uint32) {
 }
 
 // Drain initiates a drain and blocks until EndDrain is called.
-func (mc *manualCreditor) Drain(ctx context.Context, r *Receiver) error {
+func (mc *creditor) Drain(ctx context.Context, r *Receiver) error {
 	mc.mu.Lock()
 
 	if mc.drained != nil {
@@ -96,12 +99,14 @@ func (mc *manualCreditor) Drain(ctx context.Context, r *Receiver) error {
 
 // IssueCredit queues up additional credits to be requested at the next
 // call of FlowBits()
-func (mc *manualCreditor) IssueCredit(credits uint32) error {
+func (mc *creditor) IssueCredit(credits uint32, r *Receiver) error {
 	mc.mu.Lock()
 	defer mc.mu.Unlock()
 
 	if mc.drained != nil {
 		return errLinkDraining
+	} else if unsettled := uint32(r.countUnsettled()); credits+unsettled+r.l.availableCredit > r.maxCredit {
+		return fmt.Errorf("link credit exceeded: requested %d, available %d, max %d, %d unsettled messages", credits, r.l.availableCredit, r.maxCredit, unsettled)
 	}
 
 	mc.creditsToAdd += credits

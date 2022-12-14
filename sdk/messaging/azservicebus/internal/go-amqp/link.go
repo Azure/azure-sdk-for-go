@@ -60,8 +60,13 @@ type link struct {
 	// value from the sender and any subsequent messages received on the link. Note that,
 	// despite its name, the delivery-count is not a count but a sequence number
 	// initialized at an arbitrary point by the sender."
-	deliveryCount      uint32
-	linkCredit         uint32 // maximum number of messages allowed between flow updates
+	deliveryCount uint32
+
+	// the currently available credit on the link.
+	// for senders, this is the peer's receiving credit.
+	// for receivers, this is our receiving credit.
+	availableCredit uint32
+
 	senderSettleMode   *SenderSettleMode
 	receiverSettleMode *ReceiverSettleMode
 	maxMessageSize     uint64

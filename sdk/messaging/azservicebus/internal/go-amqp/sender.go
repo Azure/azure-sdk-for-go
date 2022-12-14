@@ -297,8 +297,8 @@ func (s *Sender) mux() {
 Loop:
 	for {
 		var outgoingTransfers chan frames.PerformTransfer
-		if s.l.linkCredit > 0 {
-			debug.Log(1, "sender: credit: %d, deliveryCount: %d", s.l.linkCredit, s.l.deliveryCount)
+		if s.l.availableCredit > 0 {
+			debug.Log(1, "sender: credit: %d, deliveryCount: %d", s.l.availableCredit, s.l.deliveryCount)
 			outgoingTransfers = s.transfers
 		}
 
@@ -321,9 +321,9 @@ Loop:
 					// decrement link-credit after entire message transferred
 					if !tr.More {
 						s.l.deliveryCount++
-						s.l.linkCredit--
+						s.l.availableCredit--
 						// we are the sender and we keep track of the peer's link credit
-						debug.Log(3, "TX (sender): key:%s, decremented linkCredit: %d", s.l.key.name, s.l.linkCredit)
+						debug.Log(3, "TX (sender): key:%s, decremented linkCredit: %d", s.l.key.name, s.l.availableCredit)
 					}
 					continue Loop
 				case fr := <-s.l.rx:
@@ -363,7 +363,7 @@ func (s *Sender) muxHandleFrame(fr frames.FrameBody) error {
 			// what ActiveMQ does.
 			linkCredit += *fr.DeliveryCount
 		}
-		s.l.linkCredit = linkCredit
+		s.l.availableCredit = linkCredit
 
 		if !fr.Echo {
 			return nil

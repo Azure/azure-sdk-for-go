@@ -145,6 +145,8 @@ type ReceiverOptions struct {
 	// ManualCredits enables manual credit management for this link.
 	// Credits can be added with IssueCredit(), and links can also be
 	// drained with DrainCredit().
+	// This should only be enabled when complete control of the link's
+	// flow control is required.
 	ManualCredits bool
 
 	// MaxMessageSize sets the maximum message size that can

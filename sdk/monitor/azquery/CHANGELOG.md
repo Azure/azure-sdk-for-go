@@ -1,10 +1,11 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.4.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Remove `ColumnIndexLookup` field from Table struct
 
 ### Bugs Fixed
 

@@ -65,15 +65,12 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	var queryResults []queryTest
 	for _, table := range res.Tables {
 		queryResults = make([]queryTest, len(table.Rows))
-		indexLong := table.ColumnIndexLookup["Long"]
-		indexString := table.ColumnIndexLookup["String"]
-		indexBool := table.ColumnIndexLookup["Bool"]
 
 		for index, row := range table.Rows {
 			queryResults[index] = queryTest{
-				Long:   int64(row[indexLong].(float64)),
-				String: row[indexString].(string),
-				Bool:   row[indexBool].(bool),
+				Long:   int64(row[6].(float64)),
+				String: row[8].(string),
+				Bool:   row[3].(bool),
 			}
 		}
 	}

@@ -104,14 +104,6 @@ directive:
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:ErrorInfo|ErrorDetail)\).*\{\s(?:.+\s)+\}\s/g, "");
 
-  # delete generated table struct, using custom one instead
-  - from: models.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+type (Table).+\{(?:\s.+\s)+\}\s/g, "");
-  - from: models_serde.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(\*Table)\).*\{\s(?:.+\s)+\}\s/g, "");
-
   # delete generated constructor and client
   - from: logs_client.go
     where: $
@@ -139,10 +131,15 @@ directive:
     where: $
     transform: return $.replace(/const host = "(.*?)"/, "");
 
+  # change Table.Rows from type [][]interface{} to type []Row
+  - from: models.go
+    where: $
+    transform: return $.replace(/\[\]\[\]interface{}/, "[]Row");
+
   # change render and statistics type to []byte
   - from: models.go
     where: $
-    transform: return $.replace(/interface{}/g, "[]byte");
+    transform: return $.replace(/ interface{}/g, "[]byte");
   - from: models_serde.go
     where: $
     transform: return 

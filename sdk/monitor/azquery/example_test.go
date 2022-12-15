@@ -84,6 +84,7 @@ func ExampleLogsClient_QueryWorkspace() {
 	fmt.Println(tenantIDs)
 }
 
+// TODO- ADD ADVANCED OPTIONS, ADDITIONAL WORKSPACES
 func ExampleLogsClient_QueryWorkspace_second() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +107,7 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	}
 
 	// Example of converting table data into a slice of structs
-	var QueryResults []queryResult
+	/*var QueryResults []queryResult
 	for _, table := range res.Tables {
 		QueryResults = make([]queryResult, len(table.Rows))
 		indexBool := table.ColumnIndexLookup["Bool"]
@@ -124,7 +125,7 @@ func ExampleLogsClient_QueryWorkspace_second() {
 		}
 	}
 
-	fmt.Println(QueryResults)
+	fmt.Println(QueryResults)*/
 }
 
 func ExampleLogsClient_QueryBatch() {

@@ -17,12 +17,6 @@ type AccessControlClientCreateRoleAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccessControlClientCreateRoleDefinitionOptions contains the optional parameters for the AccessControlClient.CreateRoleDefinition
-// method.
-type AccessControlClientCreateRoleDefinitionOptions struct {
-	// placeholder for future optional parameters
-}
-
 // AccessControlClientDeleteRoleAssignmentOptions contains the optional parameters for the AccessControlClient.DeleteRoleAssignment
 // method.
 type AccessControlClientDeleteRoleAssignmentOptions struct {
@@ -61,6 +55,12 @@ type AccessControlClientListRoleAssignmentsOptions struct {
 type AccessControlClientListRoleDefinitionsOptions struct {
 	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
 	Filter *string
+}
+
+// AccessControlClientSetRoleDefinitionOptions contains the optional parameters for the AccessControlClient.SetRoleDefinition
+// method.
+type AccessControlClientSetRoleDefinitionOptions struct {
+	// placeholder for future optional parameters
 }
 
 // BackupClientBeginFullBackupOptions contains the optional parameters for the BackupClient.BeginFullBackup method.

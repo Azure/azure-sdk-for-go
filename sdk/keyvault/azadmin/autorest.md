@@ -34,7 +34,7 @@ directive:
       to: AccessControl_DeleteRoleAssignment
   - rename-operation:
       from: RoleDefinitions_CreateOrUpdate
-      to: AccessControl_CreateRoleDefinition
+      to: AccessControl_SetRoleDefinition
   - rename-operation:
       from: RoleAssignments_Create
       to: AccessControl_CreateRoleAssignment

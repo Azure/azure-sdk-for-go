@@ -77,57 +77,6 @@ func (client *AccessControlClient) createRoleAssignmentHandleResponse(resp *http
 	return result, nil
 }
 
-// CreateRoleDefinition - Creates or updates a custom role definition.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 7.4-preview.1
-// scope - The scope of the role definition to create or update. Managed HSM only supports '/'.
-// roleDefinitionName - The name of the role definition to create or update. It can be any valid GUID.
-// parameters - Parameters for the role definition.
-// options - AccessControlClientCreateRoleDefinitionOptions contains the optional parameters for the AccessControlClient.CreateRoleDefinition
-// method.
-func (client *AccessControlClient) CreateRoleDefinition(ctx context.Context, scope string, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *AccessControlClientCreateRoleDefinitionOptions) (AccessControlClientCreateRoleDefinitionResponse, error) {
-	req, err := client.createRoleDefinitionCreateRequest(ctx, scope, roleDefinitionName, parameters, options)
-	if err != nil {
-		return AccessControlClientCreateRoleDefinitionResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AccessControlClientCreateRoleDefinitionResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return AccessControlClientCreateRoleDefinitionResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.createRoleDefinitionHandleResponse(resp)
-}
-
-// createRoleDefinitionCreateRequest creates the CreateRoleDefinition request.
-func (client *AccessControlClient) createRoleDefinitionCreateRequest(ctx context.Context, scope string, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *AccessControlClientCreateRoleDefinitionOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if roleDefinitionName == "" {
-		return nil, errors.New("parameter roleDefinitionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionName}", url.PathEscape(roleDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4-preview.1")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// createRoleDefinitionHandleResponse handles the CreateRoleDefinition response.
-func (client *AccessControlClient) createRoleDefinitionHandleResponse(resp *http.Response) (AccessControlClientCreateRoleDefinitionResponse, error) {
-	result := AccessControlClientCreateRoleDefinitionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
-		return AccessControlClientCreateRoleDefinitionResponse{}, err
-	}
-	return result, nil
-}
-
 // DeleteRoleAssignment - Deletes a role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.4-preview.1
@@ -444,6 +393,57 @@ func (client *AccessControlClient) listRoleDefinitionsHandleResponse(resp *http.
 	result := AccessControlClientListRoleDefinitionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinitionListResult); err != nil {
 		return AccessControlClientListRoleDefinitionsResponse{}, err
+	}
+	return result, nil
+}
+
+// SetRoleDefinition - Creates or updates a custom role definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.4-preview.1
+// scope - The scope of the role definition to create or update. Managed HSM only supports '/'.
+// roleDefinitionName - The name of the role definition to create or update. It can be any valid GUID.
+// parameters - Parameters for the role definition.
+// options - AccessControlClientSetRoleDefinitionOptions contains the optional parameters for the AccessControlClient.SetRoleDefinition
+// method.
+func (client *AccessControlClient) SetRoleDefinition(ctx context.Context, scope string, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *AccessControlClientSetRoleDefinitionOptions) (AccessControlClientSetRoleDefinitionResponse, error) {
+	req, err := client.setRoleDefinitionCreateRequest(ctx, scope, roleDefinitionName, parameters, options)
+	if err != nil {
+		return AccessControlClientSetRoleDefinitionResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return AccessControlClientSetRoleDefinitionResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+		return AccessControlClientSetRoleDefinitionResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.setRoleDefinitionHandleResponse(resp)
+}
+
+// setRoleDefinitionCreateRequest creates the SetRoleDefinition request.
+func (client *AccessControlClient) setRoleDefinitionCreateRequest(ctx context.Context, scope string, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *AccessControlClientSetRoleDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}"
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if roleDefinitionName == "" {
+		return nil, errors.New("parameter roleDefinitionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionName}", url.PathEscape(roleDefinitionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "7.4-preview.1")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
+// setRoleDefinitionHandleResponse handles the SetRoleDefinition response.
+func (client *AccessControlClient) setRoleDefinitionHandleResponse(resp *http.Response) (AccessControlClientSetRoleDefinitionResponse, error) {
+	result := AccessControlClientSetRoleDefinitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
+		return AccessControlClientSetRoleDefinitionResponse{}, err
 	}
 	return result, nil
 }

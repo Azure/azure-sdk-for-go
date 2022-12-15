@@ -14,11 +14,6 @@ type AccessControlClientCreateRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// AccessControlClientCreateRoleDefinitionResponse contains the response from method AccessControlClient.CreateRoleDefinition.
-type AccessControlClientCreateRoleDefinitionResponse struct {
-	RoleDefinition
-}
-
 // AccessControlClientDeleteRoleAssignmentResponse contains the response from method AccessControlClient.DeleteRoleAssignment.
 type AccessControlClientDeleteRoleAssignmentResponse struct {
 	RoleAssignment
@@ -47,6 +42,11 @@ type AccessControlClientListRoleAssignmentsResponse struct {
 // AccessControlClientListRoleDefinitionsResponse contains the response from method AccessControlClient.ListRoleDefinitions.
 type AccessControlClientListRoleDefinitionsResponse struct {
 	RoleDefinitionListResult
+}
+
+// AccessControlClientSetRoleDefinitionResponse contains the response from method AccessControlClient.SetRoleDefinition.
+type AccessControlClientSetRoleDefinitionResponse struct {
+	RoleDefinition
 }
 
 // BackupClientFullBackupResponse contains the response from method BackupClient.FullBackup.

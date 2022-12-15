@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
+
 ### Other Changes
 
 ## 0.3.0 (2022-11-10)

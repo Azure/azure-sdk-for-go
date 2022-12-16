@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v67.2.0`
+
+### Deprecated Packages
+- `github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor`
+- `github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2020-01-13-preview/workloadmonitor`
+
 ## `v67.1.0`
 
 ### Deprecated Packages

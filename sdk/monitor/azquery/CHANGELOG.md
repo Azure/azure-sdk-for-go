@@ -6,6 +6,7 @@
 
 ### Breaking Changes
 * Remove `ColumnIndexLookup` field from Table struct
+* Renamed `Body.Workspaces` to `Body.AdditionalWorkspaces`
 
 ### Bugs Fixed
 

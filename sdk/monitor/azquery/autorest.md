@@ -68,6 +68,11 @@ directive:
       from: MetricNamespaces_List
       to: Metrics_ListNamespaces
 
+  # rename Body.Workspaces to Body.AdditionalWorkspaces
+  - from: swagger-document
+    where: $.definitions.queryBody.properties.workspaces
+    transform: $["x-ms-client-name"] = "AdditionalWorkspaces"
+
   # add default values for batch request path and method attributes
   - from: swagger-document
     where: $.definitions.batchQueryRequest.properties.path

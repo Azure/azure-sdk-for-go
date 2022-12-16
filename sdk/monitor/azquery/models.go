@@ -75,12 +75,12 @@ type Body struct {
 	// REQUIRED; The query to execute.
 	Query *string `json:"query,omitempty"`
 
+	// A list of workspaces that are included in the query.
+	AdditionalWorkspaces []*string `json:"workspaces,omitempty"`
+
 	// Optional. The timespan over which to query data. This is an ISO8601 time period value. This timespan is applied in addition
 	// to any that are specified in the query expression.
 	Timespan *string `json:"timespan,omitempty"`
-
-	// A list of workspaces that are included in the query.
-	Workspaces []*string `json:"workspaces,omitempty"`
 }
 
 // Column - A column in a table.

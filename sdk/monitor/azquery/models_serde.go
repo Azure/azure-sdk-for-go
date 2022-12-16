@@ -205,9 +205,9 @@ func (b *BatchResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Body.
 func (b Body) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "workspaces", b.AdditionalWorkspaces)
 	populate(objectMap, "query", b.Query)
 	populate(objectMap, "timespan", b.Timespan)
-	populate(objectMap, "workspaces", b.Workspaces)
 	return json.Marshal(objectMap)
 }
 
@@ -220,14 +220,14 @@ func (b *Body) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "workspaces":
+			err = unpopulate(val, "AdditionalWorkspaces", &b.AdditionalWorkspaces)
+			delete(rawMsg, key)
 		case "query":
 			err = unpopulate(val, "Query", &b.Query)
 			delete(rawMsg, key)
 		case "timespan":
 			err = unpopulate(val, "Timespan", &b.Timespan)
-			delete(rawMsg, key)
-		case "workspaces":
-			err = unpopulate(val, "Workspaces", &b.Workspaces)
 			delete(rawMsg, key)
 		}
 		if err != nil {

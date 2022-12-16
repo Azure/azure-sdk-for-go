@@ -130,8 +130,8 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	client := startLogsTest(t)
 	workspaces := []*string{&workspaceID2}
 	body := azquery.Body{
-		Query:      &query,
-		Workspaces: workspaces,
+		Query:                &query,
+		AdditionalWorkspaces: workspaces,
 	}
 	testSerde(t, &body)
 

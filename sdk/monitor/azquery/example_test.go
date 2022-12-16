@@ -74,17 +74,14 @@ func ExampleLogsClient_QueryWorkspace() {
 		//TODO: handle partial error
 	}
 
-	// example use case of processing table results
-	// creates of slice of all tenantIDs resulting from the 'AzureActivity' query
-	tenantIDs := make([]string, len(res.Tables[0].Rows))
-	for index, row := range res.Tables[0].Rows {
-		tenantIDs[index] = row[0].(string)
+	// Print Rows
+	for _, table := range res.Tables {
+		for _, row := range table.Rows {
+			fmt.Println(row)
+		}
 	}
-
-	fmt.Println(tenantIDs)
 }
 
-// TODO- ADD ADVANCED OPTIONS, ADDITIONAL WORKSPACES
 func ExampleLogsClient_QueryWorkspace_second() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,11 +91,19 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	if err != nil {
 		//TODO: handle error
 	}
-	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65"                                                                                                                                                                                                                 // example Azure Log Analytics Workspace ID
-	query := "let dt = datatable (Bool:bool, Long:long, Double: double, String: string, Decimal: decimal)\n" + "[false, 1, 12345.6789, 'string value', decimal(0.10101)];" + "range x from 1 to 10 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long" // Example Kusto query
-	timespan := "2022-08-30/2022-08-31"                                                                                                                                                                                                                                    // ISO8601 Standard timespan
+	workspaceID1 := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+	workspaceID2 := "h4bc4471-2e8c-4b1c-8f47-12b9a4d5ac71"
+	query := "search * | take 5"               // Example Kusto query
+	timespan := "PT2H"                         // Last 2 hours. ISO8601 Standard timespan. See docs: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-timespan
+	preferOptions := "include-statistics=true" // Advanced option to include stats. See docs: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
+	body := azquery.Body{
+		Query:                &query,
+		Timespan:             &timespan,
+		AdditionalWorkspaces: []*string{&workspaceID2},
+	}
+	options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &preferOptions}
 
-	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
+	res, err := client.QueryWorkspace(context.TODO(), workspaceID1, body, options)
 	if err != nil {
 		//TODO: handle error
 	}
@@ -107,25 +112,20 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	}
 
 	// Example of converting table data into a slice of structs
-	/*var QueryResults []queryResult
+	var QueryResults []queryResult
 	for _, table := range res.Tables {
 		QueryResults = make([]queryResult, len(table.Rows))
-		indexBool := table.ColumnIndexLookup["Bool"]
-		indexLong := table.ColumnIndexLookup["Long"]
-		indexDouble := table.ColumnIndexLookup["Double"]
-		indexString := table.ColumnIndexLookup["String"]
-
 		for index, row := range table.Rows {
 			QueryResults[index] = queryResult{
-				Bool:   row[indexBool].(bool),
-				Long:   int64(row[indexLong].(float64)),
-				Double: float64(row[indexDouble].(float64)),
-				String: row[indexString].(string),
+				Bool:   row[0].(bool),
+				Long:   int64(row[1].(float64)),
+				Double: float64(row[2].(float64)),
+				String: row[3].(string),
 			}
 		}
 	}
 
-	fmt.Println(QueryResults)*/
+	fmt.Println(QueryResults)
 }
 
 func ExampleLogsClient_QueryBatch() {

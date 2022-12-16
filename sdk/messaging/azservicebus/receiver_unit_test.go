@@ -335,6 +335,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 func TestReceiver_releaserFunc(t *testing.T) {
 	receiver, err := newReceiver(defaultNewReceiverArgsForTest(), nil)
+	receiver.amqpLinks = &internal.FakeAMQPLinks{}
 	require.NoError(t, err)
 
 	successfulReleases := 0
@@ -344,6 +345,8 @@ func TestReceiver_releaserFunc(t *testing.T) {
 	messagesCh <- &amqp.Message{
 		Data: [][]byte{[]byte("hello")},
 	}
+
+	receiverClosed := make(chan struct{})
 
 	amqpReceiver := internal.FakeAMQPReceiver{
 		ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
@@ -357,7 +360,14 @@ func TestReceiver_releaserFunc(t *testing.T) {
 		ReleaseMessageFn: func(ctx context.Context, msg *amqp.Message) error {
 			require.Equal(t, "hello", string(msg.Data[0]))
 			successfulReleases++
-			go receiver.cancelReleaser.Load().(func() string)()
+
+			go func() {
+				err := receiver.Close(context.Background())
+				require.NoError(t, err)
+
+				close(receiverClosed)
+			}()
+
 			return nil
 		},
 	}
@@ -371,6 +381,10 @@ func TestReceiver_releaserFunc(t *testing.T) {
 	require.Equal(t, 1, amqpReceiver.ReleaseMessageCalled)
 
 	_ = amqpReceiver.Close(context.Background())
+
+	t.Logf("Waiting for receiver to shut down")
+	<-receiverClosed
+	t.Logf("Receiver has closed")
 
 	require.Contains(t,
 		logsFn(),

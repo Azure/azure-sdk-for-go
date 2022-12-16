@@ -217,7 +217,7 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 	// cred should return credentialUnavailableError when IMDS responds 400 to a token request
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-		if _, ok := err.(*credentialUnavailableError); !ok {
+		if _, ok := err.(*CredentialUnavailableError); !ok {
 			t.Fatalf("expected credentialUnavailableError, received %T", err)
 		}
 	}
@@ -462,7 +462,7 @@ func TestManagedIdentityCredential_IMDSTimeoutExceeded(t *testing.T) {
 	}
 	cred.mic.imdsTimeout = time.Nanosecond
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if _, ok := err.(*credentialUnavailableError); !ok {
+	if _, ok := err.(*CredentialUnavailableError); !ok {
 		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
 	if !reflect.ValueOf(tk).IsZero() {

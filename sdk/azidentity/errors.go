@@ -101,25 +101,25 @@ func (*AuthenticationFailedError) NonRetriable() {
 
 var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
 
-// credentialUnavailableError indicates a credential can't attempt
+// CredentialUnavailableError indicates a credential can't attempt
 // authentication because it lacks required data or state.
-type credentialUnavailableError struct {
+type CredentialUnavailableError struct {
 	// Message describes the cause of the error
 	Message string
 }
 
 func newCredentialUnavailableError(credType, message string) error {
 	msg := fmt.Sprintf("%s: %s", credType, message)
-	return &credentialUnavailableError{msg}
+	return &CredentialUnavailableError{msg}
 }
 
-func (e *credentialUnavailableError) Error() string {
+func (e *CredentialUnavailableError) Error() string {
 	return e.Message
 }
 
 // NonRetriable indicates that this error should not be retried.
-func (e *credentialUnavailableError) NonRetriable() {
+func (e *CredentialUnavailableError) NonRetriable() {
 	// marker method
 }
 
-var _ errorinfo.NonRetriable = (*credentialUnavailableError)(nil)
+var _ errorinfo.NonRetriable = (*CredentialUnavailableError)(nil)

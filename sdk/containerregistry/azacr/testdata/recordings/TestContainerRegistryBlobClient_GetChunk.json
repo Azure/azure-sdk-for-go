@@ -1,0 +1,140 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/ubuntu/blobs/sha256:feac5306138255e28a9862d3f3d29025d0a4d0648855afe1acd6131af07138ac",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/octet-stream",
+        "Range": "bytes=0-1000",
+        "User-Agent": "azsdk-go-azacr/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": [
+          "Docker-Content-Digest",
+          "WWW-Authenticate",
+          "Link",
+          "X-Ms-Correlation-Request-Id"
+        ],
+        "Connection": "keep-alive",
+        "Content-Length": "200",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 17 Dec 2022 08:45:31 GMT",
+        "Docker-Distribution-Api-Version": "registry/2.0",
+        "Server": "openresty",
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains",
+          "max-age=31536000; includeSubDomains"
+        ],
+        "WWW-Authenticate": "Bearer realm=\u0022https://azacrlivetest.azurecr.io/oauth2/token\u0022,service=\u0022azacrlivetest.azurecr.io\u0022,scope=\u0022repository:ubuntu:pull\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "errors": [
+          {
+            "code": "UNAUTHORIZED",
+            "message": "authentication required, visit https://aka.ms/acr/authorization for more information.",
+            "detail": [
+              {
+                "Type": "repository",
+                "Name": "ubuntu",
+                "Action": "pull"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/oauth2/exchange?api-version=2021-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "79",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "azsdk-go-azacr/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": "access_token=Sanitized\u0026grant_type=access_token\u0026service=azacrlivetest.azurecr.io",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 17 Dec 2022 08:45:33 GMT",
+        "Server": "openresty",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "refresh_token": ".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0=."
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/oauth2/token?api-version=2021-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "689",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "azsdk-go-azacr/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": "grant_type=refresh_token\u0026refresh_token=.eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0%3D.\u0026scope=repository%3Aubuntu%3Apull\u0026service=azacrlivetest.azurecr.io",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 17 Dec 2022 08:45:33 GMT",
+        "Server": "openresty",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "access_token": "Sanitized"
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/ubuntu/blobs/sha256:feac5306138255e28a9862d3f3d29025d0a4d0648855afe1acd6131af07138ac",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/octet-stream",
+        "Authorization": "Sanitized",
+        "Range": "bytes=0-1000",
+        "User-Agent": "azsdk-go-azacr/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 206,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "1001",
+        "Content-Range": "bytes 0-1000/26709039",
+        "Content-Type": "application/octet-stream",
+        "Date": "Sat, 17 Dec 2022 08:45:35 GMT",
+        "ETag": "\u00220x8DAE006A70F4B82\u0022",
+        "Last-Modified": "Sat, 17 Dec 2022 08:14:00 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-committed-block-count": "7",
+        "x-ms-blob-type": "AppendBlob",
+        "x-ms-copy-completion-time": "Sat, 17 Dec 2022 08:14:00 GMT",
+        "x-ms-copy-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-copy-progress": "26709039/26709039",
+        "x-ms-copy-source": "https://eusmanaged133.blob.core.windows.net/4fa83e50614a4b55a16d371f25f2f3b9-omgtqdfkiz//docker/registry/v2/blobs/sha256/fe/feac5306138255e28a9862d3f3d29025d0a4d0648855afe1acd6131af07138ac/data?sv=2018-03-28\u0026sr=b\u0026se=2022-12-24T08%3A13%3A57Z\u0026sp=r\u0026api-version=2018-03-28",
+        "x-ms-copy-status": "success",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2016-05-31"
+      },
+      "ResponseBody": "H4sIAAAAAAAA/\u002BT9d1QT0fc9DO\u002BZTJKhGjoIaOhFaVIVSygqoiBWBAvFCoqigIiKBkRABAW7oggiFmzYCxYUVCwo9oIIiogNO3blXX5y/XwjX\u002Bf3z7t\u002Bz1rPemYt1z5n3z3nnnvunZnEkJvwiKl2\u002BL982Ns72bs6O8NedrTF/9gOTvauLs5OTk6ODrB3sLd3tIfY\u002Bf92Yr\u002BPuJjYsBmwt///N07bwf2/5Pg9/\u002BFhMZP\u002Bb/bxez655t/JwdXFxckeDo5Ori6ODg7Orq6/9a5d7CH\u002Bf6SI/x\u002Bf//m9B/ShKeq/Pg898dsTa/H\u002B40sIn/9J9F\u002BNBG5QgAQG0IcAACOna4tfqL\u002BR/W8/svPcaJnfFg3wN1JyyP8/jId1Ev2FgPi/5/3ONbuHjM/uYf8X3jwsU88aQv11Hk3Os58gO89\u002Bgv1fKCL5/sE/42PIv6GEb4ve\u002BBsZggGNseN\u002B2/mpqv/x2\u002BIBT/yFf84b1Bg7TvB/qEvb4091BpP\u002BuOoS3QV/4Z/q2E2JCHdxspsyzmZKxNS4WTaz3FxsXJxsY6bZdvlPTiKi7es/7D96Hqnln5w1Cfe7Xf1zj9lLjKdMsHcavD7ruuqvMzYPh/JZ4CHp8PfIFeztaeXf55oY\u002BfL5YGaPU0/O9ghoVw9vb3iK1cHQEDFSCgqUVArJW2jBg6fum5lkJOo3ianwA6sFA4RREBhjhlTRhWaTWQ1Q/gOe6kokki0ejCcURVL7jH6bF0mnJ1luosEXTOKzChJIYYn0HGUfsX4nNQY\u002B5oPPSEXwhpG6t1gJBklgyiA29faVSqVsQKhAcYWY4Ym0BRIPvijFSRSayUrUPTyBcWIMkLBAur2YGpcdkO3lzXjqSSX52tlsb7GZmCdyRBfPkhGZjFRKS4Z6XvwzT2wFXS7yNl0lglgxm\u002B6wkpawYokHH9QKMyhmsJq/a6xM5xuJ7EPtxQqANKeEncT8XoYsK\u002BFJIC4LTxdRnlCbpOTjWeCDNQv0vUWnQx1AeSbTKtkjplMoYSTpupoiJBtcEKiLF2BJkCLlqTvOB/WWlH22rsjY09NBXcIDkqEcncoCXZT76TEBPGxLWgZ6j0jErHeTsJSKOGazvVjrmnHxck/NiOs8U1ZVpNaRkmoytCkF7z4F0LU3vkyLWCZbrA3KykmEFczp\u002BnpTRQmoNHhv3kmNYEXb74k86JRoiEFJBFJPty5ibdbTR1O6WCSWUlJd8WXzjLsqPVDmQ40bIKGSU/LtkyxFYtreWzLZk/JWS/3oE5pkmjApWXBdYimV9tRc6IzTgzWlXzK3Z9NiapvguwFNSYw2w8xKHMD4pEiz8ynFcDpA7ZEHwj0="
+    }
+  ],
+  "Variables": {}
+}

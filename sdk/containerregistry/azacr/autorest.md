@@ -33,6 +33,18 @@ directive:
       delete $.delete["responses"]["202"].schema
 ```
 
+### Remove response for "ContainerRegistryBlob_DeleteBlob" operation
+
+so that the generated code doesn't return a response for the deleted blob operation.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $["paths"]["/v2/{name}/blobs/{digest}"]
+    transform: >
+      delete $.delete["responses"]["202"].schema
+```
+
 ### Remove "Authentication_GetAcrAccessTokenFromLogin" operation
 
 as the service team discourage using username/password to authenticate.
@@ -290,4 +302,13 @@ directive:
       - containerregistry_client.go
     where: $
     transform: return $.replace(/DeleteManifest\(ctx/, "deleteManifest\(ctx").replace(/GetManifestProperties\(ctx/, "getManifestProperties\(ctx").replace(/UpdateManifestProperties\(ctx/, "updateManifestProperties\(ctx");
+```
+
+### Add 202 response to ContainerRegistryBlob_MountBlob
+```yaml
+directive:
+  from: swagger-document
+  where: $.paths["/v2/{name}/blobs/uploads/"]
+  transform: >
+    $.post["responses"]["202"] = $.post["responses"]["201"];
 ```

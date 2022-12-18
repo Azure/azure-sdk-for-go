@@ -60,11 +60,13 @@ func NewContainerRegistryBlobClient(endpoint string, credential azcore.TokenCred
 	}, nil
 }
 
-// UploadBlob - Upload a blob to this repository.
+// UploadBlob - Upload a blob to the registry.
 //   - name - Name of the image (including the namespace)
 //   - blob - blob file io
 //   - options - UploadBlobOptions contains the optional parameters for the ContainerRegistryBlobClient.UploadBlob method.
 func (client *ContainerRegistryBlobClient) UploadBlob(ctx context.Context, name string, blob io.ReadSeekCloser, options *UploadBlobOptions) (UploadBlobResponse, error) {
+	// TODO: add chunk size options and upload blob chunk by chunk
+	// TODO: add upload retry logic
 	startResp, err := client.StartUpload(ctx, name, nil)
 	if err != nil {
 		return UploadBlobResponse{}, err
@@ -73,7 +75,7 @@ func (client *ContainerRegistryBlobClient) UploadBlob(ctx context.Context, name 
 	if err != nil {
 		return UploadBlobResponse{}, err
 	}
-	digest := CalculateDigest(payload)
+	digest := calculateDigest(payload)
 	uploadResp, err := client.UploadChunk(ctx, *startResp.Location, blob, nil)
 	if err != nil {
 		return UploadBlobResponse{}, err
@@ -88,8 +90,8 @@ func (client *ContainerRegistryBlobClient) UploadBlob(ctx context.Context, name 
 	return UploadBlobResponse{Digest: digest}, nil
 }
 
-// CalculateDigest - Calculate the digest of a manifest payload
-//   - payload - Manifest payload bytes
-func CalculateDigest(payload []byte) string {
-	return fmt.Sprintf("%x", sha256.Sum256(payload))
+// calculateDigest - Calculate the digest of a payload
+//   - payload - Payload bytes
+func calculateDigest(payload []byte) string {
+	return fmt.Sprintf("sha256:%x", sha256.Sum256(payload))
 }

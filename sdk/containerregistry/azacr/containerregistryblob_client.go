@@ -276,14 +276,12 @@ func (client *ContainerRegistryBlobClient) deleteBlobCreateRequest(ctx context.C
 	if err != nil {
 		return nil, err
 	}
-	runtime.SkipBodyDownload(req)
-	req.Raw().Header["Accept"] = []string{"application/octet-stream"}
 	return req, nil
 }
 
 // deleteBlobHandleResponse handles the DeleteBlob response.
 func (client *ContainerRegistryBlobClient) deleteBlobHandleResponse(resp *http.Response) (ContainerRegistryBlobClientDeleteBlobResponse, error) {
-	result := ContainerRegistryBlobClientDeleteBlobResponse{Body: resp.Body}
+	result := ContainerRegistryBlobClientDeleteBlobResponse{}
 	if val := resp.Header.Get("Docker-Content-Digest"); val != "" {
 		result.DockerContentDigest = &val
 	}
@@ -477,7 +475,7 @@ func (client *ContainerRegistryBlobClient) MountBlob(ctx context.Context, name s
 	if err != nil {
 		return ContainerRegistryBlobClientMountBlobResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusCreated, http.StatusAccepted) {
 		return ContainerRegistryBlobClientMountBlobResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.mountBlobHandleResponse(resp)

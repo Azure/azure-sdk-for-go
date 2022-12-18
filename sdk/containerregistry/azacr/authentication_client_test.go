@@ -29,7 +29,7 @@ func TestAuthenticationClient_ExchangeAADAccessTokenForAcrRefreshToken(t *testin
 		AccessToken: &accessToken.Token,
 	})
 	require.NoError(t, err)
-	require.NotEmpty(t, resp.RefreshToken.RefreshToken)
+	require.NotEmpty(t, *resp.RefreshToken.RefreshToken)
 }
 
 func TestAuthenticationClient_ExchangeAcrRefreshTokenForAcrAccessToken(t *testing.T) {
@@ -47,8 +47,8 @@ func TestAuthenticationClient_ExchangeAcrRefreshTokenForAcrAccessToken(t *testin
 		AccessToken: &accessToken.Token,
 	})
 	require.NoError(t, err)
-	require.NotEmpty(t, refreshResp.RefreshToken.RefreshToken)
+	require.NotEmpty(t, *refreshResp.RefreshToken.RefreshToken)
 	accessResp, err := client.ExchangeAcrRefreshTokenForAcrAccessToken(ctx, "azacrlivetest.azurecr.io", "registry:catalog:*", *refreshResp.RefreshToken.RefreshToken, &AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenOptions{GrantType: to.Ptr(TokenGrantTypeRefreshToken)})
 	require.NoError(t, err)
-	require.NotEmpty(t, accessResp.AccessToken.AccessToken)
+	require.NotEmpty(t, *accessResp.AccessToken.AccessToken)
 }

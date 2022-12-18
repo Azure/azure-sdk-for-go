@@ -1,3 +1,9 @@
+//go:build go1.18
+// +build go1.18
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package azacr
 
 import (
@@ -188,6 +194,6 @@ func TestContainerRegistryClient_UploadManifest(t *testing.T) {
 	require.NoError(t, err)
 	uploadRes, err := client.UploadManifest(ctx, "hello-world", "test", "application/vnd.docker.distribution.manifest.v2+json", streaming.NopCloser(bytes.NewReader(manifest)), nil)
 	require.NoError(t, err)
-	require.NotEmpty(t, uploadRes.DockerContentDigest)
+	require.NotEmpty(t, *uploadRes.DockerContentDigest)
 	fmt.Printf("uploaded manifest digest: %s\n", *uploadRes.DockerContentDigest)
 }

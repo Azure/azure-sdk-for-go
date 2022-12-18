@@ -58,9 +58,6 @@ type ContainerRegistryBlobClientCompleteUploadResponse struct {
 
 // ContainerRegistryBlobClientDeleteBlobResponse contains the response from method ContainerRegistryBlobClient.DeleteBlob.
 type ContainerRegistryBlobClientDeleteBlobResponse struct {
-	// Body contains the streaming response.
-	Body io.ReadCloser
-
 	// DockerContentDigest contains the information returned from the Docker-Content-Digest header response.
 	DockerContentDigest *string
 }

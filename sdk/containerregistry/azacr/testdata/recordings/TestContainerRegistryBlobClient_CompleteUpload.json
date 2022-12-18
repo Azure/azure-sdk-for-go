@@ -20,7 +20,7 @@
         "Connection": "keep-alive",
         "Content-Length": "205",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:06:41 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:35 GMT",
         "Docker-Distribution-Api-Version": "registry/2.0",
         "Server": "openresty",
         "Strict-Transport-Security": [
@@ -62,7 +62,7 @@
       "ResponseHeaders": {
         "Connection": "keep-alive",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:06:43 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:37 GMT",
         "Server": "openresty",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -87,7 +87,7 @@
       "ResponseHeaders": {
         "Connection": "keep-alive",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:06:43 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:37 GMT",
         "Server": "openresty",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -112,7 +112,7 @@
         "Accept-Ranges": "bytes",
         "Content-Length": "2479",
         "Content-Type": "application/octet-stream",
-        "Date": "Wed, 14 Dec 2022 09:06:44 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:39 GMT",
         "ETag": "\u00220x8DADA7DA47E1FC2\u0022",
         "Last-Modified": "Sat, 10 Dec 2022 07:10:39 GMT",
         "Server": [
@@ -155,7 +155,7 @@
         "Connection": "keep-alive",
         "Content-Length": "274",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:06:45 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:40 GMT",
         "Docker-Distribution-Api-Version": "registry/2.0",
         "Server": "openresty",
         "Strict-Transport-Security": [
@@ -202,7 +202,7 @@
       "ResponseHeaders": {
         "Connection": "keep-alive",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:06:46 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:40 GMT",
         "Server": "openresty",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -233,10 +233,10 @@
         ],
         "Connection": "keep-alive",
         "Content-Length": "0",
-        "Date": "Wed, 14 Dec 2022 09:06:47 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:41 GMT",
         "Docker-Distribution-Api-Version": "registry/2.0",
         "Docker-Upload-Uuid": "00000000-0000-0000-0000-000000000000",
-        "Location": "/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=-qAL_2MFnm_N5m1I2P13B69w2HZlFvkGBgkZkeQj2ox7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImU5NTA1MTRiLTUxMzgtNDJkMS05NzI1LTk5ZDc2OWIzMzI3NCIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xNFQwOTowNjo0Ny4xODcxNTU1MDVaIn0%3D",
+        "Location": "/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=D7neZrrbhyS91VLUd0yOKhp_ICNdgef439sbajs-nyF7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImM4NTFlYTM1LWExOTctNGY0OS05YmExLTY1YTQ0ZDc2M2E2YyIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xOFQwOToxODo0MS40ODY3OTY3NTlaIn0%3D",
         "Range": "0-0",
         "Server": "openresty",
         "Strict-Transport-Security": [
@@ -251,7 +251,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=-qAL_2MFnm_N5m1I2P13B69w2HZlFvkGBgkZkeQj2ox7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImU5NTA1MTRiLTUxMzgtNDJkMS05NzI1LTk5ZDc2OWIzMzI3NCIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xNFQwOTowNjo0Ny4xODcxNTU1MDVaIn0%3D",
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=D7neZrrbhyS91VLUd0yOKhp_ICNdgef439sbajs-nyF7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImM4NTFlYTM1LWExOTctNGY0OS05YmExLTY1YTQ0ZDc2M2E2YyIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xOFQwOToxODo0MS40ODY3OTY3NTlaIn0%3D",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -271,7 +271,7 @@
         "Connection": "keep-alive",
         "Content-Length": "274",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:06:47 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:41 GMT",
         "Docker-Distribution-Api-Version": "registry/2.0",
         "Server": "openresty",
         "Strict-Transport-Security": [
@@ -318,7 +318,7 @@
       "ResponseHeaders": {
         "Connection": "keep-alive",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:06:48 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:42 GMT",
         "Server": "openresty",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -329,7 +329,7 @@
       }
     },
     {
-      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=-qAL_2MFnm_N5m1I2P13B69w2HZlFvkGBgkZkeQj2ox7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImU5NTA1MTRiLTUxMzgtNDJkMS05NzI1LTk5ZDc2OWIzMzI3NCIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xNFQwOTowNjo0Ny4xODcxNTU1MDVaIn0%3D",
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=D7neZrrbhyS91VLUd0yOKhp_ICNdgef439sbajs-nyF7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImM4NTFlYTM1LWExOTctNGY0OS05YmExLTY1YTQ0ZDc2M2E2YyIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xOFQwOToxODo0MS40ODY3OTY3NTlaIn0%3D",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -350,10 +350,10 @@
         ],
         "Connection": "keep-alive",
         "Content-Length": "0",
-        "Date": "Wed, 14 Dec 2022 09:06:48 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:42 GMT",
         "Docker-Distribution-Api-Version": "registry/2.0",
         "Docker-Upload-Uuid": "00000000-0000-0000-0000-000000000000",
-        "Location": "/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=Df7ZOHZQccKhVmA2Jtfo2Gyj3CowOF4fzmv1V25c43p7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImU5NTA1MTRiLTUxMzgtNDJkMS05NzI1LTk5ZDc2OWIzMzI3NCIsIk9mZnNldCI6MjQ3OSwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xNFQwOTowNjo0N1oifQ%3D%3D",
+        "Location": "/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=R0cTeyeRRob0B2taoj9bsnyJaVXdlbNRZHkJgOorM0p7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImM4NTFlYTM1LWExOTctNGY0OS05YmExLTY1YTQ0ZDc2M2E2YyIsIk9mZnNldCI6MjQ3OSwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xOFQwOToxODo0MVoifQ%3D%3D",
         "Range": "0-2478",
         "Server": "openresty",
         "Strict-Transport-Security": [
@@ -368,7 +368,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=Df7ZOHZQccKhVmA2Jtfo2Gyj3CowOF4fzmv1V25c43p7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImU5NTA1MTRiLTUxMzgtNDJkMS05NzI1LTk5ZDc2OWIzMzI3NCIsIk9mZnNldCI6MjQ3OSwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xNFQwOTowNjo0N1oifQ%3D%3D\u0026digest=sha256%3A2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=R0cTeyeRRob0B2taoj9bsnyJaVXdlbNRZHkJgOorM0p7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImM4NTFlYTM1LWExOTctNGY0OS05YmExLTY1YTQ0ZDc2M2E2YyIsIk9mZnNldCI6MjQ3OSwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xOFQwOToxODo0MVoifQ%3D%3D\u0026digest=sha256%3A2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -388,7 +388,7 @@
         "Connection": "keep-alive",
         "Content-Length": "274",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:06:48 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:43 GMT",
         "Docker-Distribution-Api-Version": "registry/2.0",
         "Server": "openresty",
         "Strict-Transport-Security": [
@@ -435,7 +435,7 @@
       "ResponseHeaders": {
         "Connection": "keep-alive",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:06:49 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:43 GMT",
         "Server": "openresty",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -446,7 +446,7 @@
       }
     },
     {
-      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=Df7ZOHZQccKhVmA2Jtfo2Gyj3CowOF4fzmv1V25c43p7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImU5NTA1MTRiLTUxMzgtNDJkMS05NzI1LTk5ZDc2OWIzMzI3NCIsIk9mZnNldCI6MjQ3OSwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xNFQwOTowNjo0N1oifQ%3D%3D\u0026digest=sha256%3A2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=R0cTeyeRRob0B2taoj9bsnyJaVXdlbNRZHkJgOorM0p7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6ImM4NTFlYTM1LWExOTctNGY0OS05YmExLTY1YTQ0ZDc2M2E2YyIsIk9mZnNldCI6MjQ3OSwiU3RhcnRlZEF0IjoiMjAyMi0xMi0xOFQwOToxODo0MVoifQ%3D%3D\u0026digest=sha256%3A2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -466,7 +466,7 @@
         ],
         "Connection": "keep-alive",
         "Content-Length": "0",
-        "Date": "Wed, 14 Dec 2022 09:06:50 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:44 GMT",
         "Docker-Content-Digest": "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",
         "Docker-Distribution-Api-Version": "registry/2.0",
         "Location": "/v2/hello-world-test/blobs/sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",

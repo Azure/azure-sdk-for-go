@@ -4,7 +4,6 @@
       "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
-        "Accept": "application/octet-stream",
         "Accept-Encoding": "gzip",
         "User-Agent": "azsdk-go-azacr/v0.1.0 (go1.19; Windows_NT)"
       },
@@ -20,7 +19,7 @@
         "Connection": "keep-alive",
         "Content-Length": "212",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:10:15 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:53 GMT",
         "Docker-Distribution-Api-Version": "registry/2.0",
         "Server": "openresty",
         "Strict-Transport-Security": [
@@ -62,7 +61,7 @@
       "ResponseHeaders": {
         "Connection": "keep-alive",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:10:17 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:54 GMT",
         "Server": "openresty",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -87,7 +86,7 @@
       "ResponseHeaders": {
         "Connection": "keep-alive",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Dec 2022 09:10:17 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:55 GMT",
         "Server": "openresty",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -101,7 +100,6 @@
       "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
-        "Accept": "application/octet-stream",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azacr/v0.1.0 (go1.19; Windows_NT)"
@@ -117,7 +115,7 @@
         ],
         "Connection": "keep-alive",
         "Content-Length": "0",
-        "Date": "Wed, 14 Dec 2022 09:10:18 GMT",
+        "Date": "Sun, 18 Dec 2022 09:18:56 GMT",
         "Docker-Distribution-Api-Version": "registry/2.0",
         "Server": "openresty",
         "Strict-Transport-Security": [

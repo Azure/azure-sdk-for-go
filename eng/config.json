@@ -1,6 +1,10 @@
 {
     "Packages": [
         {
+            "Name": "azacr",
+            "CoverageGoal": 0.30
+        },
+        {
             "Name": "azappconfig",
             "CoverageGoal": 0.19
         },

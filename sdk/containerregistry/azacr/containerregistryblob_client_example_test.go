@@ -10,7 +10,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/containerregistry/azacr"
-	"io"
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -30,8 +29,8 @@ func ExampleContainerRegistryBlobClient_GetBlob() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	blob, err := io.ReadAll(res.Body)
-	fmt.Printf("blob size: %d", len(blob))
+	// deal with the blob io
+	_ = res.Body
 }
 
 func ExampleContainerRegistryBlobClient_CheckBlobExists() {
@@ -145,8 +144,8 @@ func ExampleContainerRegistryBlobClient_GetChunk() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	chunk, err := io.ReadAll(res.Body)
-	fmt.Printf("chunk size: %d", len(chunk))
+	// deal with the chunk io
+	_ = res.Body
 }
 
 func ExampleContainerRegistryBlobClient_CheckChunkExists() {

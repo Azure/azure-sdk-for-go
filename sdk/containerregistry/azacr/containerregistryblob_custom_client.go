@@ -71,11 +71,10 @@ func (client *ContainerRegistryBlobClient) UploadBlob(ctx context.Context, name 
 	if err != nil {
 		return UploadBlobResponse{}, err
 	}
-	payload, err := io.ReadAll(blob)
+	digest, err := calculateDigest(blob)
 	if err != nil {
 		return UploadBlobResponse{}, err
 	}
-	digest := calculateDigest(payload)
 	uploadResp, err := client.UploadChunk(ctx, *startResp.Location, blob, nil)
 	if err != nil {
 		return UploadBlobResponse{}, err
@@ -91,7 +90,11 @@ func (client *ContainerRegistryBlobClient) UploadBlob(ctx context.Context, name 
 }
 
 // calculateDigest - Calculate the digest of a payload
-//   - payload - Payload bytes
-func calculateDigest(payload []byte) string {
-	return fmt.Sprintf("sha256:%x", sha256.Sum256(payload))
+//   - payload - Payload io
+func calculateDigest(payload io.ReadSeekCloser) (string, error) {
+	h := sha256.New()
+	if _, err := io.Copy(h, payload); err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("sha256:%x", h.Sum(nil)), nil
 }

@@ -70,7 +70,7 @@ func TestAuthenticationPolicy_findServiceAndScope(t *testing.T) {
 		{"error", "error", &http.Response{}, true},
 	} {
 		t.Run(fmt.Sprintf("%s-%s", test.acrService, test.acrScope), func(t *testing.T) {
-			p := &AuthenticationPolicy{}
+			p := &authenticationPolicy{}
 			err := p.findServiceAndScope(test.resp)
 			if test.err {
 				require.Error(t, err)
@@ -87,7 +87,7 @@ func TestAuthenticationPolicy_getAccessToken_live(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
 	authClient := NewAuthenticationClient("https://azacrlivetest.azurecr.io", &AuthenticationClientOptions{options})
-	p := &AuthenticationPolicy{
+	p := &authenticationPolicy{
 		temporal.NewResource(acquire),
 		cred,
 		[]string{"https://management.core.windows.net/.default"},
@@ -106,7 +106,7 @@ func TestAuthenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
 	startRecording(t)
 	_, options := getCredAndClientOptions(t)
 	authClient := NewAuthenticationClient("https://azacrlivetest.azurecr.io", &AuthenticationClientOptions{options})
-	p := &AuthenticationPolicy{
+	p := &authenticationPolicy{
 		temporal.NewResource(acquire),
 		nil,
 		nil,

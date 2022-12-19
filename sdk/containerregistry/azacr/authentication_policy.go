@@ -33,7 +33,7 @@ const (
 type AuthenticationPolicyOptions struct {
 }
 
-type AuthenticationPolicy struct {
+type authenticationPolicy struct {
 	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
 	cred         azcore.TokenCredential
 	aadScopes    []string
@@ -42,8 +42,8 @@ type AuthenticationPolicy struct {
 	authClient   *AuthenticationClient
 }
 
-func NewAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authClient *AuthenticationClient, opts *AuthenticationPolicyOptions) *AuthenticationPolicy {
-	return &AuthenticationPolicy{
+func NewAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authClient *AuthenticationClient, opts *AuthenticationPolicyOptions) *authenticationPolicy {
+	return &authenticationPolicy{
 		cred:         cred,
 		aadScopes:    scopes,
 		authClient:   authClient,
@@ -51,7 +51,7 @@ func NewAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authC
 	}
 }
 
-func (p *AuthenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	// send a copy of the original request without body content
 	challengeReq, err := p.getChallengeRequest(*req)
 	if err != nil {
@@ -86,7 +86,7 @@ func (p *AuthenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return resp, nil
 }
 
-func (p *AuthenticationPolicy) getAccessToken(req *policy.Request) (string, error) {
+func (p *authenticationPolicy) getAccessToken(req *policy.Request) (string, error) {
 	// anonymous access
 	if p.cred == nil {
 		resp, err := p.authClient.ExchangeAcrRefreshTokenForAcrAccessToken(req.Raw().Context(), p.acrService, p.acrScope, "", &AuthenticationClientExchangeAcrRefreshTokenForAcrAccessTokenOptions{GrantType: to.Ptr(TokenGrantTypePassword)})
@@ -134,7 +134,7 @@ func (c *challengePolicyError) Unwrap() error {
 
 var _ errorinfo.NonRetriable = (*challengePolicyError)(nil)
 
-func (p *AuthenticationPolicy) findServiceAndScope(resp *http.Response) error {
+func (p *authenticationPolicy) findServiceAndScope(resp *http.Response) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" {
 		return &challengePolicyError{err: errors.New("response has no WWW-Authenticate header for challenge authentication")}
@@ -170,7 +170,7 @@ func (p *AuthenticationPolicy) findServiceAndScope(resp *http.Response) error {
 	return nil
 }
 
-func (p AuthenticationPolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
+func (p authenticationPolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
 	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
 	if err != nil {
 		return nil, &challengePolicyError{err: err}
@@ -195,7 +195,7 @@ func (p AuthenticationPolicy) getChallengeRequest(orig policy.Request) (*policy.
 
 type acquiringResourceState struct {
 	req    *policy.Request
-	policy *AuthenticationPolicy
+	policy *authenticationPolicy
 }
 
 // acquire acquires or updates the resource; only one

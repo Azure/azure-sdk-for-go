@@ -85,8 +85,6 @@ Get started with our [examples](https://pkg.go.dev/github.com/Azure/azure-sdk-fo
 
 ### Listing repositories
 
-Iterate through the collection of repositories in the registry.
-
 ```go
 import (
 	"context"
@@ -185,8 +183,6 @@ func main() {
 ### Delete images
 
 ```go
-package azacr_test
-
 import (
 	"context"
 	"fmt"
@@ -241,6 +237,116 @@ func main() {
 			}
 		}
 	}
+}
+```
+
+### Upload and download blob
+
+```go
+import (
+	"bytes"
+	"context"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/containerregistry/azacr"
+	"io"
+	"log"
+)
+
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	client, err := azacr.NewContainerRegistryBlobClient("<your Container Registry's endpoint URL>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	ctx := context.Background()
+	uploadRes, err := client.UploadBlob(ctx, "library/hello-world", streaming.NopCloser(bytes.NewReader([]byte("hello world"))), nil)
+	if err != nil {
+		log.Fatalf("failed to upload blob: %v", err)
+	}
+	downloadRes, err := client.GetBlob(ctx, "library/hello-world", uploadRes.Digest, nil)
+	if err != nil {
+		log.Fatalf("failed to download blob: %v", err)
+	}
+	blob, err := io.ReadAll(downloadRes.Body)
+	if err != nil {
+		log.Fatalf("failed to read blob: %v", err)
+	}
+	fmt.Printf("blob content: %s", blob)
+}
+```
+
+### Upload manifest
+
+```go
+import (
+	"bytes"
+	"context"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/containerregistry/azacr"
+	"log"
+)
+
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	client, err := azacr.NewContainerRegistryClient("<your Container Registry's endpoint URL>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	blobClient, err := azacr.NewContainerRegistryBlobClient("<your Container Registry's endpoint URL>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create blob client: %v", err)
+	}
+	ctx := context.Background()
+	layer := "hello world"
+	layerUploadRes, err := blobClient.UploadBlob(ctx, "library/hello-world", streaming.NopCloser(bytes.NewReader([]byte(layer))), nil)
+	if err != nil {
+		log.Fatalf("failed to upload layer blob: %v", err)
+	}
+	config := fmt.Sprintf(`{
+  architecture: "amd64",
+  os: "windows",
+  rootfs: {
+	type: "layers",
+	diff_ids: [%s],
+  },
+}`, layerUploadRes.Digest)
+	configUploadRes, err := blobClient.UploadBlob(ctx, "library/hello-world", streaming.NopCloser(bytes.NewReader([]byte(config))), nil)
+	if err != nil {
+		log.Fatalf("failed to upload config blob: %v", err)
+	}
+	manifest := fmt.Sprintf(`{
+  schemaVersion: 2,
+  config: {
+	mediaType: "application/vnd.oci.image.config.v1+json",
+	digest: %s,
+	size: %d,
+  },
+  layers: [
+	{
+	  mediaType: "application/vnd.oci.image.layer.v1.tar",
+	  digest: %s,
+	  size: %d,
+	  annotations: {
+		title: "artifact.txt",
+	  },
+	  },
+  ],
+}`, configUploadRes.Digest, len(config), layerUploadRes.Digest, len(layer))
+	uploadManifestRes, err := client.UploadManifest(ctx, "library/hello-world", "1.0.0", "application/vnd.oci.image.config.v1+json", streaming.NopCloser(bytes.NewReader([]byte(manifest))), nil)
+	if err != nil {
+		log.Fatalf("failed to upload manifest: %v", err)
+	}
+	fmt.Printf("digest of uploaded manifest: %s", *uploadManifestRes.DockerContentDigest)
 }
 ```
 

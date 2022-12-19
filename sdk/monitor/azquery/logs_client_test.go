@@ -57,7 +57,7 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
 	require.NoError(t, err)
 	require.Nil(t, res.Error)
-	require.Nil(t, res.Render)
+	require.Nil(t, res.Visualization)
 	require.Nil(t, res.Statistics)
 	require.Len(t, res.Tables, 1)
 	require.Len(t, res.Tables[0].Rows, 100)
@@ -121,7 +121,7 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	require.NoError(t, err)
 	require.Nil(t, res.Error)
 	require.NotNil(t, res.Tables)
-	require.NotNil(t, res.Render)
+	require.NotNil(t, res.Visualization)
 	require.NotNil(t, res.Statistics)
 	testSerde(t, &res)
 }
@@ -204,7 +204,7 @@ func TestQueryBatch_AdvancedQuerySuccess(t *testing.T) {
 	for _, resp := range res.Responses {
 		require.Nil(t, resp.Body.Error)
 		require.NotNil(t, resp.Body.Tables)
-		require.NotNil(t, resp.Body.Render)
+		require.NotNil(t, resp.Body.Visualization)
 		require.NotNil(t, resp.Body.Statistics)
 		require.Len(t, resp.Body.Tables[0].Rows, 100)
 	}

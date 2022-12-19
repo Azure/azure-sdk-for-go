@@ -113,9 +113,9 @@ func (b *BatchQueryResponse) UnmarshalJSON(data []byte) error {
 func (b BatchQueryResults) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "error", b.Error)
-	populate(objectMap, "render", &b.Render)
 	populate(objectMap, "statistics", &b.Statistics)
 	populate(objectMap, "tables", b.Tables)
+	populate(objectMap, "render", &b.Visualization)
 	return json.Marshal(objectMap)
 }
 
@@ -131,14 +131,14 @@ func (b *BatchQueryResults) UnmarshalJSON(data []byte) error {
 		case "error":
 			err = unpopulate(val, "Error", &b.Error)
 			delete(rawMsg, key)
-		case "render":
-			b.Render = val
-			delete(rawMsg, key)
 		case "statistics":
 			b.Statistics = val
 			delete(rawMsg, key)
 		case "tables":
 			err = unpopulate(val, "Tables", &b.Tables)
+			delete(rawMsg, key)
+		case "render":
+			b.Visualization = val
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -713,9 +713,9 @@ func (r *Response) UnmarshalJSON(data []byte) error {
 func (r Results) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "error", r.Error)
-	populate(objectMap, "render", &r.Render)
 	populate(objectMap, "statistics", &r.Statistics)
 	populate(objectMap, "tables", r.Tables)
+	populate(objectMap, "render", &r.Visualization)
 	return json.Marshal(objectMap)
 }
 
@@ -731,14 +731,14 @@ func (r *Results) UnmarshalJSON(data []byte) error {
 		case "error":
 			err = unpopulate(val, "Error", &r.Error)
 			delete(rawMsg, key)
-		case "render":
-			r.Render = val
-			delete(rawMsg, key)
 		case "statistics":
 			r.Statistics = val
 			delete(rawMsg, key)
 		case "tables":
 			err = unpopulate(val, "Tables", &r.Tables)
+			delete(rawMsg, key)
+		case "render":
+			r.Visualization = val
 			delete(rawMsg, key)
 		}
 		if err != nil {

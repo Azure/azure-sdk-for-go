@@ -7,6 +7,7 @@
 ### Breaking Changes
 * Remove `ColumnIndexLookup` field from Table struct
 * Renamed `Body.Workspaces` to `Body.AdditionalWorkspaces`
+* Renamed `Results.Render` and `BatchResponse.Render` to `Results.Visualization` and `BatchResponse.Visualization`
 
 ### Bugs Fixed
 

@@ -72,6 +72,14 @@ directive:
   - from: swagger-document
     where: $.definitions.queryBody.properties.workspaces
     transform: $["x-ms-client-name"] = "AdditionalWorkspaces"
+  
+  # rename Render to Visualization
+  - from: swagger-document
+    where: $.definitions.queryResults.properties.render
+    transform: $["x-ms-client-name"] = "Visualization"
+  - from: swagger-document
+    where: $.definitions.batchQueryResults.properties.render
+    transform: $["x-ms-client-name"] = "Visualization"
 
   # add default values for batch request path and method attributes
   - from: swagger-document
@@ -151,11 +159,11 @@ directive:
       $.replace(/err(.*)r\.Statistics\)/, "r.Statistics = val") 
   - from: models_serde.go
     where: $
-    transform: return $.replace(/err(.*)r\.Render\)/, "r.Render = val");
+    transform: return $.replace(/err(.*)r\.Visualization\)/, "r.Visualization = val");
   - from: models_serde.go
     where: $
     transform: return 
       $.replace(/err(.*)b\.Statistics\)/, "b.Statistics = val") 
   - from: models_serde.go
     where: $
-    transform: return $.replace(/err(.*)b\.Render\)/, "b.Render = val");
+    transform: return $.replace(/err(.*)b\.Visualization\)/, "b.Visualization = val");

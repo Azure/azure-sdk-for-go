@@ -48,14 +48,14 @@ type BatchQueryResults struct {
 	// The code and message for an error.
 	Error *ErrorInfo `json:"error,omitempty"`
 
-	// Visualization data in JSON format.
-	Render []byte `json:"render,omitempty"`
-
 	// Statistics represented in JSON format.
 	Statistics []byte `json:"statistics,omitempty"`
 
 	// The list of tables, columns and rows.
 	Tables []*Table `json:"tables,omitempty"`
+
+	// Visualization data in JSON format.
+	Visualization []byte `json:"render,omitempty"`
 }
 
 // BatchRequest - An array of requests.
@@ -336,11 +336,11 @@ type Results struct {
 	// The code and message for an error.
 	Error *ErrorInfo `json:"error,omitempty"`
 
-	// Visualization data in JSON format.
-	Render []byte `json:"render,omitempty"`
-
 	// Statistics represented in JSON format.
 	Statistics []byte `json:"statistics,omitempty"`
+
+	// Visualization data in JSON format.
+	Visualization []byte `json:"render,omitempty"`
 }
 
 // Table - Contains the columns and rows for one table in a query response.

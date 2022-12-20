@@ -6,7 +6,7 @@
 
 package azquery_test
 
-import (
+/*import (
 	"context"
 	"fmt"
 
@@ -63,10 +63,15 @@ func ExampleLogsClient_QueryWorkspace() {
 		//TODO: handle error
 	}
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
-	query := "AzureActivity | top 10 by TimeGenerated"     // Example Kusto query
-	timespan := "2022-08-30/2022-08-31"                    // ISO8601 Standard timespan
 
-	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
+	res, err := client.QueryWorkspace(
+		context.TODO(),
+		workspaceID,
+		azquery.Body{
+			Query:    to.Ptr("AzureActivity | top 10 by TimeGenerated"),
+			Timespan: azquery.NewTimespanStartEndTime("2022-08-30", "2022-08-31"),
+		},
+		nil)
 	if err != nil {
 		//TODO: handle error
 	}
@@ -96,14 +101,16 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	query := "search * | take 5"               // Example Kusto query
 	timespan := "PT2H"                         // Last 2 hours. ISO8601 Standard timespan. See docs: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-timespan
 	preferOptions := "include-statistics=true" // Advanced option to include stats. See docs: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
-	body := azquery.Body{
-		Query:                &query,
-		Timespan:             &timespan,
-		AdditionalWorkspaces: []*string{&workspaceID2},
-	}
-	options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &preferOptions}
 
-	res, err := client.QueryWorkspace(context.TODO(), workspaceID1, body, options)
+	res, err := client.QueryWorkspace(
+		context.TODO(),
+		workspaceID1,
+		azquery.Body{
+			Query:                &query,
+			Timespan:             &timespan,
+			AdditionalWorkspaces: []*string{&workspaceID2},
+		},
+		&azquery.LogsClientQueryWorkspaceOptions{Prefer: &preferOptions})
 	if err != nil {
 		//TODO: handle error
 	}
@@ -181,4 +188,4 @@ func ExampleMetricsClient_QueryResource() {
 		//TODO: handle error
 	}
 	_ = res
-}
+}*/

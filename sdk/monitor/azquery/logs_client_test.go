@@ -10,8 +10,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
@@ -25,7 +23,22 @@ type queryTest struct {
 	String string
 }
 
-func TestLogsClient(t *testing.T) {
+func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
+	client := startLogsTest(t)
+
+	res, err := client.QueryWorkspace(context.Background(),
+		workspaceID,
+		azquery.Body{
+			Query:    to.Ptr("search * | take 5"),
+			Timespan: azquery.NewISO8601TimeIntervalFromDuration(azquery.SevenDays),
+		},
+		nil)
+	require.Error(t, err)
+	_ = res
+
+}
+
+/*func TestLogsClient(t *testing.T) {
 	client, err := azquery.NewLogsClient(credential, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
@@ -247,4 +260,4 @@ func TestLogConstants(t *testing.T) {
 	logsColumnType := []azquery.LogsColumnType{azquery.LogsColumnTypeBool, azquery.LogsColumnTypeDatetime, azquery.LogsColumnTypeDecimal, azquery.LogsColumnTypeDynamic, azquery.LogsColumnTypeGUID, azquery.LogsColumnTypeInt, azquery.LogsColumnTypeLong, azquery.LogsColumnTypeReal, azquery.LogsColumnTypeString, azquery.LogsColumnTypeTimespan}
 	logsColumnTypeRes := azquery.PossibleLogsColumnTypeValues()
 	require.Equal(t, logsColumnType, logsColumnTypeRes)
-}
+}*/

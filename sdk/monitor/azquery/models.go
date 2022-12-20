@@ -80,7 +80,7 @@ type Body struct {
 
 	// Optional. The timespan over which to query data. This is an ISO8601 time period value. This timespan is applied in addition
 	// to any that are specified in the query expression.
-	Timespan *string `json:"timespan,omitempty"`
+	Timespan *ISO8601TimeInterval `json:"timespan,omitempty"`
 }
 
 // Column - A column in a table.

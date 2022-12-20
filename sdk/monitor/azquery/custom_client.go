@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -108,3 +109,73 @@ func (e *ErrorInfo) Error() string {
 
 // Row of data in a table, types of data used by service specified in LogsColumnType
 type Row []any
+
+type ISO8601Duration string
+
+// Common ISO8601 durations
+// SORT IN AMOUNT OF TIME ORDER
+const (
+	SevenDays        ISO8601Duration = "P7D"
+	ThreeDays        ISO8601Duration = "P3D"
+	TwoDays          Duration        = "P2D"
+	OneDay           Duration        = "P1D"
+	OneHour          Duration        = "PT1H"
+	FourHours        Duration        = "PT4H"
+	TwentyFourHours  Duration        = "PT24H"
+	FourtyEightHours Duration        = "PT48H"
+	ThirtyMinutes    Duration        = "PT30M"
+	FiveMinutes      Duration        = "PT5M"
+)
+
+// ADD CONSTRUCTOR??
+
+// TIME>TIME instead of string
+type ISO8601TimeInterval struct {
+	start    time.Time
+	end      time.Time
+	duration ISO8601Duration
+
+	//
+}
+
+// not general purpose enough for round trip (if this was general purpose), how can the customer know what they can look at
+// DURATION happened before- keyvault cert experation, go check
+// once you create, can't look at what's in it, (add string??)
+// long naming- methods on the type instead?? SetStartEnd
+// TODO- show to team
+
+// show both, round trip vs not round trip
+
+func NewISO8601TimeIntervalFromStartEnd(start time.Time, end time.Time) *ISO8601TimeInterval {
+	return &ISO8601TimeInterval{start: start, end: end}
+}
+
+// Timespan in the format start_time/duration
+func NewISO8601TimeIntervalFromStartDuration(start time.Time, duration ISO8601Duration) *ISO8601TimeInterval {
+	return &ISO8601TimeInterval{start: start, duration: duration}
+}
+
+func NewISO8601TimeIntervalFromDurationEnd(duration ISO8601Duration, end time.Time) *ISO8601TimeInterval {
+	return &ISO8601TimeInterval{duration: duration, end: end}
+}
+
+// timespan in the format duration
+func NewISO8601TimeIntervalFromDuration(duration ISO8601Duration) *ISO8601TimeInterval {
+	return &ISO8601TimeInterval{duration: duration}
+}
+
+// ADD SOME ERROR CHECKING
+func (t Timespan) MarshalJSON() ([]byte, error) {
+	var timespan string
+	if t.StartTime != "" && t.EndTime != "" {
+		timespan = t.StartTime + "/" + t.EndTime
+	} else if t.StartTime != "" && t.Duration != "" {
+		timespan = t.StartTime + "/" + string(t.Duration)
+	} else if t.Duration != "" && t.EndTime != "" {
+		timespan = string(t.Duration) + "/" + t.EndTime
+	}
+	if t.Duration != "" {
+		timespan = string(t.Duration)
+	}
+	return json.Marshal(timespan)
+}

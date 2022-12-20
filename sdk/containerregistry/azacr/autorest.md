@@ -14,6 +14,7 @@ openapi-type: "data-plane"
 output-folder: ../azacr
 use: "@autorest/go@4.0.0-preview.44"
 honor-body-placement: true
+remove-unreferenced-types: true
 ```
 
 ## Customizations

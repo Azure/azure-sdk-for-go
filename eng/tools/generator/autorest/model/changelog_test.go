@@ -4,6 +4,7 @@
 package model
 
 import (
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
@@ -36,12 +37,48 @@ func TestSortFuncItem(t *testing.T) {
 	}
 
 	sortResult := sortFuncItem(s)
-	expcted := []string{
+	expected := []string{
 		"NewPrivateEndpointConnectionsClient",
 		"*PrivateEndpointConnectionsClient.BeginCreate",
 		"*PrivateEndpointConnectionsClient.BeginDelete",
 		"*PrivateEndpointConnectionsClient.Get",
 		"*PrivateEndpointConnectionsClient.NewListPager",
 	}
-	assert.Equal(t, expcted, sortResult)
+	assert.Equal(t, expected, sortResult)
+}
+
+func TestRemovedConstAndTypeAlias(t *testing.T) {
+	removedConst := delta.Content{
+		Content: exports.Content{
+			Consts: map[string]exports.Const{
+				"ConstA": {
+					Type: "Const",
+				},
+				"ConstB": {
+					Type: "Const",
+				},
+				"ConstC": {
+					Type: "Const",
+				},
+				"RemovedTypeAliasA": {
+					Type: "RemovedTypeAlias",
+				},
+				"RemovedTypeAliasB": {
+					Type: "RemovedTypeAlias",
+				},
+			},
+			TypeAliases: map[string]exports.TypeAlias{
+				"RemovedTypeAlias": {
+					UnderlayingType: "string",
+				},
+			},
+		},
+	}
+
+	actual := getRemovedContent(&removedConst)
+	expected := []string{
+		"Const `ConstA`, `ConstB`, `ConstC` from type alias `Const` has been removed",
+		"Type alias `RemovedTypeAlias` has been removed",
+	}
+	assert.Equal(t, expected, actual)
 }

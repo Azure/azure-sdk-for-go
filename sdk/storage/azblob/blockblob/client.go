@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
@@ -390,6 +391,7 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 			}
 			// StageBlock will be called with blockSize blocks and a Concurrency of (BufferSize / BlockSize).
 		}
+		log.Writef(exported.EventUpload, "=====> computed block-size %v", o.BlockSize)
 	}
 
 	if readerSize <= MaxUploadBlobBytes {
@@ -410,6 +412,7 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 		// prevent any math bugs from attempting to upload too many blocks which will always fail
 		return uploadFromReaderResponse{}, errors.New("block limit exceeded")
 	}
+	log.Writef(exported.EventUpload, "=====> computed block-count %v", numBlocks)
 
 	blockIDList := make([]string, numBlocks) // Base-64 encoded block IDs
 	progress := int64(0)

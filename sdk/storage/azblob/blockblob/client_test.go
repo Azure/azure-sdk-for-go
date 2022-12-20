@@ -24,10 +24,12 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -3974,4 +3976,37 @@ func TestUploadBufferEvenBlockSize(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
+}
+
+func TestUploadLogEvent(t *testing.T) {
+	listnercalled := false
+	log.SetEvents(azblob.EventUpload)
+	log.SetListener(func(cls log.Event, msg string) {
+		t.Logf("%s: %s\n", cls, msg)
+		listnercalled = true
+	})
+
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// create fake source that's evenly divisible by 50000 (max number of blocks)
+	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+
+	buffer := make([]byte, 270000000)
+	for i := 0; i < len(buffer); i++ {
+		buffer[i] = 1
+	}
+
+	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
+		Concurrency: 1,
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
+	require.Equal(t, listnercalled, true)
 }

@@ -31,10 +31,6 @@ func NewContainerRegistryClient(endpoint string, credential azcore.TokenCredenti
 		options = &ContainerRegistryClientOptions{}
 	}
 
-	if !(strings.HasPrefix(endpoint, "http://") || strings.HasPrefix(endpoint, "https://")) {
-		endpoint = "https://" + endpoint
-	}
-
 	authClient := NewAuthenticationClient(endpoint, &AuthenticationClientOptions{
 		options.ClientOptions,
 	})

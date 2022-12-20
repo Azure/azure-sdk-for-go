@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
-	"strings"
 )
 
 // ContainerRegistryBlobClientOptions contains the optional parameters for the NewContainerRegistryBlobClient method.
@@ -33,10 +32,6 @@ type ContainerRegistryBlobClientOptions struct {
 func NewContainerRegistryBlobClient(endpoint string, credential azcore.TokenCredential, options *ContainerRegistryBlobClientOptions) (*ContainerRegistryBlobClient, error) {
 	if options == nil {
 		options = &ContainerRegistryBlobClientOptions{}
-	}
-
-	if !(strings.HasPrefix(endpoint, "http://") || strings.HasPrefix(endpoint, "https://")) {
-		endpoint = "https://" + endpoint
 	}
 
 	authClient := NewAuthenticationClient(endpoint, &AuthenticationClientOptions{

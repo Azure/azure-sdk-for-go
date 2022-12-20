@@ -9,7 +9,6 @@ package azacr
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"strings"
 )
 
 // AuthenticationClientOptions contains the optional parameters for the NewAuthenticationClient method.
@@ -23,10 +22,6 @@ type AuthenticationClientOptions struct {
 func NewAuthenticationClient(endpoint string, options *AuthenticationClientOptions) *AuthenticationClient {
 	if options == nil {
 		options = &AuthenticationClientOptions{}
-	}
-
-	if !(strings.HasPrefix(endpoint, "http://") || strings.HasPrefix(endpoint, "https://")) {
-		endpoint = "https://" + endpoint
 	}
 
 	pipeline := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &options.ClientOptions)

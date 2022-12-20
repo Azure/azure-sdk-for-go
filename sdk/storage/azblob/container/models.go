@@ -7,16 +7,16 @@
 package container
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -300,56 +300,56 @@ type BatchDeleteOptions struct {
 	Snapshot          *string
 }
 
-func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context) (string, error) {
-	if o.BlobName == nil {
-		return "", fmt.Errorf("blob name not provided")
+func (o *BatchDeleteOptions) createDeleteSubRequest(urlPath string) string {
+	queryParams := o.getQueryParams()
+	if len(queryParams) != 0 {
+		urlPath += "?" + queryParams
 	}
+
+	var delRequest strings.Builder
+	delRequest.WriteString(fmt.Sprintf("%v %v %v%v", http.MethodDelete, urlPath, shared.HttpVersion, shared.HttpNewline))
 
 	leaseAccessConditions, modifiedAccessConditions := o.format()
-
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, *o.BlobName)
-	if err != nil {
-		return "", err
-	}
-
-	reqQP := req.Raw().URL.Query()
-	if o != nil && o.Snapshot != nil {
-		reqQP.Set("snapshot", *o.Snapshot)
-	}
-	if o != nil && o.VersionID != nil {
-		reqQP.Set("versionid", *o.VersionID)
-	}
-	if o != nil && o.BlobDeleteOptions != nil && o.BlobDeleteOptions.BlobDeleteType != nil {
-		reqQP.Set("deletetype", string(*o.BlobDeleteOptions.BlobDeleteType))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+		delRequest.WriteString(fmt.Sprintf("x-ms-lease-id: %v%v", *leaseAccessConditions.LeaseID, shared.HttpNewline))
 	}
 	if o != nil && o.BlobDeleteOptions != nil && o.BlobDeleteOptions.DeleteSnapshots != nil {
-		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*o.BlobDeleteOptions.DeleteSnapshots)}
+		delRequest.WriteString(fmt.Sprintf("x-ms-delete-snapshots: %v%v", string(*o.BlobDeleteOptions.DeleteSnapshots), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
+		delRequest.WriteString(fmt.Sprintf("If-Modified-Since: %v%v", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
+		delRequest.WriteString(fmt.Sprintf("If-Unmodified-Since: %v%v", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
+		delRequest.WriteString(fmt.Sprintf("If-Match: %v%v", string(*modifiedAccessConditions.IfMatch), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
+		delRequest.WriteString(fmt.Sprintf("If-None-Match: %v%v", string(*modifiedAccessConditions.IfNoneMatch), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
-		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
+		delRequest.WriteString(fmt.Sprintf("x-ms-if-tags: %v%v", *modifiedAccessConditions.IfTags, shared.HttpNewline))
 	}
 
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	delRequest.WriteString(fmt.Sprintf("Accept: application/xml%v", shared.HttpNewline))
+	delRequest.WriteString(shared.HttpNewline)
+	return delRequest.String()
+}
 
-	return req.Raw().URL.String(), nil
+func (o *BatchDeleteOptions) getQueryParams() string {
+	var queryParams []string
+	if o != nil && o.Snapshot != nil {
+		queryParams = append(queryParams, fmt.Sprintf("snapshot=%v", *o.Snapshot))
+	}
+	if o != nil && o.VersionID != nil {
+		queryParams = append(queryParams, fmt.Sprintf("versionid=%v", *o.VersionID))
+	}
+	if o != nil && o.BlobDeleteOptions != nil && o.BlobDeleteOptions.BlobDeleteType != nil {
+		queryParams = append(queryParams, fmt.Sprintf("deletetype=%v", string(*o.BlobDeleteOptions.BlobDeleteType)))
+	}
+
+	return strings.Join(queryParams, "&")
 }
 
 func (o *BatchDeleteOptions) format() (*LeaseAccessConditions, *ModifiedAccessConditions) {

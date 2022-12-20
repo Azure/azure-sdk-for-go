@@ -12,7 +12,11 @@ import (
 	"strings"
 )
 
-const BatchIdPrefix = "batch_"
+const (
+	BatchIdPrefix = "batch_"
+	HttpVersion   = "HTTP/1.1"
+	HttpNewline   = "\r\n"
+)
 
 func CreateBatchID() (string, error) {
 	batchID, err := uuid.New()
@@ -40,14 +44,14 @@ func GetBatchRequestDelimiter(batchID string, prefixDash bool, postfixDash bool)
 }
 
 func CreateSubReqHeader(batchID string, contentID int) string {
-	var subReqHeader []string
-	subReqHeader = append(subReqHeader, GetBatchRequestDelimiter(batchID, true, false))
-	subReqHeader = append(subReqHeader, "Content-Type: application/http")
-	subReqHeader = append(subReqHeader, "Content-Transfer-Encoding: binary")
-	subReqHeader = append(subReqHeader, "Content-ID: "+strconv.Itoa(contentID))
-	subReqHeader = append(subReqHeader, "")
+	var subReqHeader strings.Builder
+	subReqHeader.WriteString(GetBatchRequestDelimiter(batchID, true, false) + HttpNewline)
+	subReqHeader.WriteString("Content-Type: application/http" + HttpNewline)
+	subReqHeader.WriteString("Content-Transfer-Encoding: binary" + HttpNewline)
+	subReqHeader.WriteString("Content-ID: " + strconv.Itoa(contentID) + HttpNewline)
+	subReqHeader.WriteString(HttpNewline)
 
-	return strings.Join(subReqHeader, "\n")
+	return subReqHeader.String()
 }
 
 //func SerializeBatchBodyForDelete(ctx context.Context, blobs []BatchDeleteOptions, batchid string) (string, error) {

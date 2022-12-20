@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"net/http"
 	"time"
@@ -354,20 +355,23 @@ func (c *Client) DeleteBlobs(ctx context.Context, blobs []*BatchDeleteOptions) (
 		return DeleteBlobsResponse{}, err
 	}
 
-	body := ""
+	urlParts, err := blob.ParseURL(c.URL())
+	if err != nil {
+		return DeleteBlobsResponse{}, err
+	}
+	containerName := urlParts.ContainerName
+
+	reqBody := ""
 	for i, b := range blobs {
-		deleteSubReq, err := b.createDeleteSubRequest(ctx)
-		if err == nil {
-			body += shared.CreateSubReqHeader(batchID, i+1)
-			body += deleteSubReq
-		} else {
-			// TODO: handle error
-		}
+		deleteSubReq := b.createDeleteSubRequest(fmt.Sprintf("/%v/%v", containerName, b.BlobName))
+		reqBody += shared.CreateSubReqHeader(batchID, i+1)
+		reqBody += deleteSubReq
 	}
 
-	reader := bytes.NewReader([]byte(body))
+	reqBody += shared.GetBatchRequestDelimiter(batchID, true, true) + shared.HttpNewline
+	reader := bytes.NewReader([]byte(reqBody))
 	rsc := streaming.NopCloser(reader)
-	multipartContentType := "multipart/mixed; boundary=" + shared.GetBatchRequestDelimiter(batchID, false, false)
-	resp, err := c.generated().SubmitBatch(ctx, int64(len(body)), multipartContentType, rsc, nil)
+	multipartContentType := "multipart/mixed; boundary=" + batchID
+	resp, err := c.generated().SubmitBatch(ctx, int64(len(reqBody)), multipartContentType, rsc, nil)
 	return resp, err
 }

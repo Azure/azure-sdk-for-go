@@ -298,11 +298,11 @@ func getRemovedContent(removed *delta.Content) []string {
 		}
 
 		for _, k := range sortChangeItem(removedConst) {
-			aliasValue := ""
+			consts := ""
 			for _, cs := range removedConst[k] {
-				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
+				consts = fmt.Sprintf("%s`%s`, ", consts, cs)
 			}
-			line := fmt.Sprintf("Const %s from type alias `%s` has been removed", strings.TrimRight(strings.TrimSpace(aliasValue), ","), k)
+			line := fmt.Sprintf("Const %s from type alias `%s` has been removed", strings.TrimRight(strings.TrimSpace(consts), ","), k)
 			items = append(items, line)
 		}
 	}

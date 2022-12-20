@@ -4,14 +4,8 @@
 ### Breaking Changes
 
 - Type of `LocalDiagnosticsAccessConfiguration.HTTPSServerCertificate` has been changed from `*KeyVaultCertificate` to `*HTTPSServerCertificate`
-- Const `BillingSKUEdgeSite2GBPS` has been removed
-- Const `BillingSKUEdgeSite3GBPS` has been removed
-- Const `BillingSKUEdgeSite4GBPS` has been removed
-- Const `BillingSKUEvaluationPackage` has been removed
-- Const `BillingSKUFlagshipStarterPackage` has been removed
-- Const `BillingSKULargePackage` has been removed
-- Const `BillingSKUMediumPackage` has been removed
-- Const `PlatformTypeBaseVM` has been removed
+- Const `BillingSKUEdgeSite2GBPS`, `BillingSKUEdgeSite3GBPS`, `BillingSKUEdgeSite4GBPS`, `BillingSKUEvaluationPackage`, `BillingSKUFlagshipStarterPackage`, `BillingSKULargePackage`, `BillingSKUMediumPackage` from type alias `BillingSKU` has been removed
+- Const `PlatformTypeBaseVM` from type alias `PlatformType` has been removed
 - Function `*MobileNetworksClient.BeginListSimIDs` has been removed
 - Function `*PacketCoreControlPlaneVersionsClient.NewListByResourceGroupPager` has been removed
 - Function `*SimsClient.NewListBySimGroupPager` has been removed

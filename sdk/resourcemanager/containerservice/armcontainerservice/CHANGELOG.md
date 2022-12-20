@@ -1,5 +1,30 @@
 # Release History
 
+## 2.3.0-beta.2 (2022-12-23)
+### Breaking Changes
+
+- Operation `*AgentPoolsClient.AbortLatestOperation` has been changed to LRO, use `*AgentPoolsClient.BeginAbortLatestOperation` instead.
+- Operation `*ManagedClustersClient.AbortLatestOperation` has been changed to LRO, use `*ManagedClustersClient.BeginAbortLatestOperation` instead.
+
+### Features Added
+
+- New value `ManagedClusterPodIdentityProvisioningStateCanceled`, `ManagedClusterPodIdentityProvisioningStateSucceeded` added to type alias `ManagedClusterPodIdentityProvisioningState`
+- New value `PrivateEndpointConnectionProvisioningStateCanceled` added to type alias `PrivateEndpointConnectionProvisioningState`
+- New value `TrustedAccessRoleBindingProvisioningStateCanceled` added to type alias `TrustedAccessRoleBindingProvisioningState`
+- New type alias `NodeOSUpgradeChannel` with values `NodeOSUpgradeChannelNodeImage`, `NodeOSUpgradeChannelNone`, `NodeOSUpgradeChannelSecurityPatch`, `NodeOSUpgradeChannelUnmanaged`
+- New type alias `Type` with values `TypeFirst`, `TypeFourth`, `TypeLast`, `TypeSecond`, `TypeThird`
+- New struct `AbsoluteMonthlySchedule`
+- New struct `DailySchedule`
+- New struct `DateSpan`
+- New struct `MaintenanceWindow`
+- New struct `RelativeMonthlySchedule`
+- New struct `Schedule`
+- New struct `WeeklySchedule`
+- New field `MaintenanceWindow` in struct `MaintenanceConfigurationProperties`
+- New field `NodeOSUpgradeChannel` in struct `ManagedClusterAutoUpgradeProfile`
+- New field `Location` in struct `ManagedClustersClientGetCommandResultResponse`
+
+
 ## 2.3.0-beta.1 (2022-11-24)
 ### Features Added
 

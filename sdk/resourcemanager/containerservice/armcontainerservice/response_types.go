@@ -177,6 +177,8 @@ type ManagedClustersClientGetAccessProfileResponse struct {
 // ManagedClustersClientGetCommandResultResponse contains the response from method ManagedClustersClient.GetCommandResult.
 type ManagedClustersClientGetCommandResultResponse struct {
 	RunCommandResult
+	// Location contains the information returned from the Location header response.
+	Location *string
 }
 
 // ManagedClustersClientGetOSOptionsResponse contains the response from method ManagedClustersClient.GetOSOptions.

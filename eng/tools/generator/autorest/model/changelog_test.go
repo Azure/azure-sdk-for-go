@@ -4,9 +4,9 @@
 package model
 
 import (
-	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/stretchr/testify/assert"
 )

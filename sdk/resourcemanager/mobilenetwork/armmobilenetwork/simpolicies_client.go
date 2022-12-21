@@ -55,9 +55,9 @@ func NewSimPoliciesClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates or updates a SIM policy.
+// BeginCreateOrUpdate - Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // simPolicyName - The name of the SIM policy.
@@ -78,9 +78,9 @@ func (client *SimPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates or updates a SIM policy.
+// CreateOrUpdate - Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 func (client *SimPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, simPolicyName string, parameters SimPolicy, options *SimPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, mobileNetworkName, simPolicyName, parameters, options)
 	if err != nil {
@@ -120,7 +120,7 @@ func (client *SimPoliciesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -128,7 +128,7 @@ func (client *SimPoliciesClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Deletes the specified SIM policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // simPolicyName - The name of the SIM policy.
@@ -149,7 +149,7 @@ func (client *SimPoliciesClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Deletes the specified SIM policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 func (client *SimPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, mobileNetworkName string, simPolicyName string, options *SimPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, mobileNetworkName, simPolicyName, options)
 	if err != nil {
@@ -189,7 +189,7 @@ func (client *SimPoliciesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +197,7 @@ func (client *SimPoliciesClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Gets information about the specified SIM policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // simPolicyName - The name of the SIM policy.
@@ -241,7 +241,7 @@ func (client *SimPoliciesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,8 +257,7 @@ func (client *SimPoliciesClient) getHandleResponse(resp *http.Response) (SimPoli
 }
 
 // NewListByMobileNetworkPager - Gets all the SIM policies in a mobile network.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // options - SimPoliciesClientListByMobileNetworkOptions contains the optional parameters for the SimPoliciesClient.ListByMobileNetwork
@@ -311,7 +310,7 @@ func (client *SimPoliciesClient) listByMobileNetworkCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,7 +327,7 @@ func (client *SimPoliciesClient) listByMobileNetworkHandleResponse(resp *http.Re
 
 // UpdateTags - Updates SIM policy tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // simPolicyName - The name of the SIM policy.
@@ -373,7 +372,7 @@ func (client *SimPoliciesClient) updateTagsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

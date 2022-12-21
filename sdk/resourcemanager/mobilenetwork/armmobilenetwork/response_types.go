@@ -84,11 +84,6 @@ type MobileNetworksClientListBySubscriptionResponse struct {
 	ListResult
 }
 
-// MobileNetworksClientListSimIDsResponse contains the response from method MobileNetworksClient.ListSimIDs.
-type MobileNetworksClientListSimIDsResponse struct {
-	SimIDListResult
-}
-
 // MobileNetworksClientUpdateTagsResponse contains the response from method MobileNetworksClient.UpdateTags.
 type MobileNetworksClientUpdateTagsResponse struct {
 	MobileNetwork
@@ -99,13 +94,28 @@ type OperationsClientListResponse struct {
 	OperationList
 }
 
+// PacketCoreControlPlaneClientCollectDiagnosticsPackageResponse contains the response from method PacketCoreControlPlaneClient.CollectDiagnosticsPackage.
+type PacketCoreControlPlaneClientCollectDiagnosticsPackageResponse struct {
+	AsyncOperationStatus
+}
+
+// PacketCoreControlPlaneClientReinstallResponse contains the response from method PacketCoreControlPlaneClient.Reinstall.
+type PacketCoreControlPlaneClientReinstallResponse struct {
+	AsyncOperationStatus
+}
+
+// PacketCoreControlPlaneClientRollbackResponse contains the response from method PacketCoreControlPlaneClient.Rollback.
+type PacketCoreControlPlaneClientRollbackResponse struct {
+	AsyncOperationStatus
+}
+
 // PacketCoreControlPlaneVersionsClientGetResponse contains the response from method PacketCoreControlPlaneVersionsClient.Get.
 type PacketCoreControlPlaneVersionsClientGetResponse struct {
 	PacketCoreControlPlaneVersion
 }
 
-// PacketCoreControlPlaneVersionsClientListByResourceGroupResponse contains the response from method PacketCoreControlPlaneVersionsClient.ListByResourceGroup.
-type PacketCoreControlPlaneVersionsClientListByResourceGroupResponse struct {
+// PacketCoreControlPlaneVersionsClientListResponse contains the response from method PacketCoreControlPlaneVersionsClient.List.
+type PacketCoreControlPlaneVersionsClientListResponse struct {
 	PacketCoreControlPlaneVersionListResult
 }
 
@@ -189,6 +199,21 @@ type ServicesClientUpdateTagsResponse struct {
 	Service
 }
 
+// SimClientBulkDeleteResponse contains the response from method SimClient.BulkDelete.
+type SimClientBulkDeleteResponse struct {
+	AsyncOperationStatus
+}
+
+// SimClientBulkUploadEncryptedResponse contains the response from method SimClient.BulkUploadEncrypted.
+type SimClientBulkUploadEncryptedResponse struct {
+	AsyncOperationStatus
+}
+
+// SimClientBulkUploadResponse contains the response from method SimClient.BulkUpload.
+type SimClientBulkUploadResponse struct {
+	AsyncOperationStatus
+}
+
 // SimGroupsClientCreateOrUpdateResponse contains the response from method SimGroupsClient.CreateOrUpdate.
 type SimGroupsClientCreateOrUpdateResponse struct {
 	SimGroup
@@ -259,8 +284,8 @@ type SimsClientGetResponse struct {
 	Sim
 }
 
-// SimsClientListBySimGroupResponse contains the response from method SimsClient.ListBySimGroup.
-type SimsClientListBySimGroupResponse struct {
+// SimsClientListByGroupResponse contains the response from method SimsClient.ListByGroup.
+type SimsClientListByGroupResponse struct {
 	SimListResult
 }
 

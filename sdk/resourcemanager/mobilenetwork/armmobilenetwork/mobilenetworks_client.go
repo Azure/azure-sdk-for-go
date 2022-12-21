@@ -57,7 +57,7 @@ func NewMobileNetworksClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Creates or updates a mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // parameters - Parameters supplied to the create or update mobile network operation.
@@ -79,7 +79,7 @@ func (client *MobileNetworksClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // CreateOrUpdate - Creates or updates a mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 func (client *MobileNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, parameters MobileNetwork, options *MobileNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, mobileNetworkName, parameters, options)
 	if err != nil {
@@ -115,7 +115,7 @@ func (client *MobileNetworksClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -123,7 +123,7 @@ func (client *MobileNetworksClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Deletes the specified mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // options - MobileNetworksClientBeginDeleteOptions contains the optional parameters for the MobileNetworksClient.BeginDelete
@@ -144,7 +144,7 @@ func (client *MobileNetworksClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Deletes the specified mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 func (client *MobileNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
 	if err != nil {
@@ -180,7 +180,7 @@ func (client *MobileNetworksClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *MobileNetworksClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets information about the specified mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // options - MobileNetworksClientGetOptions contains the optional parameters for the MobileNetworksClient.Get method.
@@ -227,7 +227,7 @@ func (client *MobileNetworksClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,8 +243,7 @@ func (client *MobileNetworksClient) getHandleResponse(resp *http.Response) (Mobi
 }
 
 // NewListByResourceGroupPager - Lists all the mobile networks in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MobileNetworksClientListByResourceGroupOptions contains the optional parameters for the MobileNetworksClient.ListByResourceGroup
 // method.
@@ -292,7 +291,7 @@ func (client *MobileNetworksClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -308,8 +307,7 @@ func (client *MobileNetworksClient) listByResourceGroupHandleResponse(resp *http
 }
 
 // NewListBySubscriptionPager - Lists all the mobile networks in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // options - MobileNetworksClientListBySubscriptionOptions contains the optional parameters for the MobileNetworksClient.ListBySubscription
 // method.
 func (client *MobileNetworksClient) NewListBySubscriptionPager(options *MobileNetworksClientListBySubscriptionOptions) *runtime.Pager[MobileNetworksClientListBySubscriptionResponse] {
@@ -352,7 +350,7 @@ func (client *MobileNetworksClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -367,74 +365,9 @@ func (client *MobileNetworksClient) listBySubscriptionHandleResponse(resp *http.
 	return result, nil
 }
 
-// BeginListSimIDs - Lists the IDs of all provisioned SIMs in a mobile network
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// options - MobileNetworksClientBeginListSimIDsOptions contains the optional parameters for the MobileNetworksClient.BeginListSimIDs
-// method.
-func (client *MobileNetworksClient) BeginListSimIDs(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginListSimIDsOptions) (*runtime.Poller[MobileNetworksClientListSimIDsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.listSimIDs(ctx, resourceGroupName, mobileNetworkName, options)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MobileNetworksClientListSimIDsResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-		})
-	} else {
-		return runtime.NewPollerFromResumeToken[MobileNetworksClientListSimIDsResponse](options.ResumeToken, client.pl, nil)
-	}
-}
-
-// ListSimIDs - Lists the IDs of all provisioned SIMs in a mobile network
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
-func (client *MobileNetworksClient) listSimIDs(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginListSimIDsOptions) (*http.Response, error) {
-	req, err := client.listSimIDsCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(resp)
-	}
-	return resp, nil
-}
-
-// listSimIDsCreateRequest creates the ListSimIDs request.
-func (client *MobileNetworksClient) listSimIDsCreateRequest(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginListSimIDsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/listSimIds"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if mobileNetworkName == "" {
-		return nil, errors.New("parameter mobileNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{mobileNetworkName}", url.PathEscape(mobileNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
 // UpdateTags - Updates mobile network tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // parameters - Parameters supplied to update mobile network tags.
@@ -475,7 +408,7 @@ func (client *MobileNetworksClient) updateTagsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

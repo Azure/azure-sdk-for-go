@@ -363,7 +363,11 @@ func (c *Client) DeleteBlobs(ctx context.Context, blobs []*BatchDeleteOptions) (
 
 	reqBody := ""
 	for i, b := range blobs {
-		deleteSubReq := b.createDeleteSubRequest(fmt.Sprintf("/%v/%v", containerName, b.BlobName))
+		deleteSubReq, err := b.createDeleteSubRequest(ctx, fmt.Sprintf("/%v/%v", containerName, *b.BlobName), c)
+		if err != nil {
+			// TODO: handle error
+			continue
+		}
 		reqBody += shared.CreateSubReqHeader(batchID, i+1)
 		reqBody += deleteSubReq
 	}

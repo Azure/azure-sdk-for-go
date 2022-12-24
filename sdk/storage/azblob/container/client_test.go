@@ -9,6 +9,7 @@ package container_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"sort"
 	"strconv"
 	"strings"
@@ -2155,4 +2156,65 @@ func (s *ContainerRecordedTestsSuite) TestSetAccessPolicyWithNullId() {
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 	_require.Len(resp.SignedIdentifiers, 0)
+}
+
+func (s *ContainerRecordedTestsSuite) TestBatchDelete() {
+	_require := require.New(s.T())
+	//testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	//containerName := testcommon.GenerateContainerName(testName)
+	//containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	//defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	containerName := "new-cnt"
+	containerClient := svcClient.NewContainerClient(containerName)
+
+	var bbOptions []*container.BatchDeleteOptions
+	for i := 0; i < 5; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		bbOptions = append(bbOptions, &container.BatchDeleteOptions{
+			BlobName: &bbName,
+		})
+	}
+
+	resp, err := containerClient.DeleteBlobs(context.Background(), bbOptions)
+	fmt.Println(resp)
+	_require.Nil(err)
+}
+
+func (s *ContainerRecordedTestsSuite) TestBatchDeleteUsingServiceSAS() {
+	_require := require.New(s.T())
+	//testName := s.T().Name()
+	cred, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	containerName := "new-cnt"
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC(),
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.ContainerPermissions{Read: true, Write: true, List: true, Delete: true}).String(),
+		ContainerName: containerName,
+	}.SignWithSharedKey(cred)
+	_require.Nil(err)
+
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s?%s", cred.AccountName(), containerName, sasQueryParams.Encode())
+	containerClient, err := container.NewClientWithNoCredential(sasURL, nil)
+	_require.Nil(err)
+
+	var bbOptions []*container.BatchDeleteOptions
+	for i := 0; i < 5; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		bbOptions = append(bbOptions, &container.BatchDeleteOptions{
+			BlobName: &bbName,
+		})
+	}
+
+	resp, err := containerClient.DeleteBlobs(context.Background(), bbOptions)
+	fmt.Println(resp)
+	_require.Nil(err)
 }

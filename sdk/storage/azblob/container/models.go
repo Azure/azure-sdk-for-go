@@ -7,7 +7,9 @@
 package container
 
 import (
+	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"reflect"
 	"strings"
@@ -300,45 +302,70 @@ type BatchDeleteOptions struct {
 	Snapshot          *string
 }
 
-func (o *BatchDeleteOptions) createDeleteSubRequest(urlPath string) string {
-	queryParams := o.getQueryParams()
+func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context, urlPath string, c *Client) (string, error) {
+	queryParams := o.getQueryParams(c)
 	if len(queryParams) != 0 {
 		urlPath += "?" + queryParams
 	}
 
+	accountName := strings.Split(strings.Split(c.URL(), ".blob.core.")[0], "https://")[1]
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, fmt.Sprintf("https://%s.blob.core.windows.net%s", accountName, urlPath))
+	if err != nil {
+		return "", err
+	}
+
 	var delRequest strings.Builder
 	delRequest.WriteString(fmt.Sprintf("%v %v %v%v", http.MethodDelete, urlPath, shared.HttpVersion, shared.HttpNewline))
+	delRequest.WriteString(fmt.Sprintf("%v: %v%v", shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat), shared.HttpNewline))
 
 	leaseAccessConditions, modifiedAccessConditions := o.format()
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 		delRequest.WriteString(fmt.Sprintf("x-ms-lease-id: %v%v", *leaseAccessConditions.LeaseID, shared.HttpNewline))
 	}
 	if o != nil && o.BlobDeleteOptions != nil && o.BlobDeleteOptions.DeleteSnapshots != nil {
+		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*o.BlobDeleteOptions.DeleteSnapshots)}
 		delRequest.WriteString(fmt.Sprintf("x-ms-delete-snapshots: %v%v", string(*o.BlobDeleteOptions.DeleteSnapshots), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 		delRequest.WriteString(fmt.Sprintf("If-Modified-Since: %v%v", modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 		delRequest.WriteString(fmt.Sprintf("If-Unmodified-Since: %v%v", modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 		delRequest.WriteString(fmt.Sprintf("If-Match: %v%v", string(*modifiedAccessConditions.IfMatch), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 		delRequest.WriteString(fmt.Sprintf("If-None-Match: %v%v", string(*modifiedAccessConditions.IfNoneMatch), shared.HttpNewline))
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
+		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
 		delRequest.WriteString(fmt.Sprintf("x-ms-if-tags: %v%v", *modifiedAccessConditions.IfTags, shared.HttpNewline))
 	}
 
-	delRequest.WriteString(fmt.Sprintf("Accept: application/xml%v", shared.HttpNewline))
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if c.sharedKey() != nil {
+		delRequest.WriteString(exported.GetSharedKeyAuthHeader(req, c.sharedKey()) + shared.HttpNewline)
+	}
+
+	//delRequest.WriteString(fmt.Sprintf("Accept: application/xml%v", shared.HttpNewline))
 	delRequest.WriteString(shared.HttpNewline)
-	return delRequest.String()
+	return delRequest.String(), nil
 }
 
-func (o *BatchDeleteOptions) getQueryParams() string {
+func (o *BatchDeleteOptions) getQueryParams(c *Client) string {
 	var queryParams []string
+	url := strings.Split(c.URL(), "?")
+	if len(url) >= 2 && len(url[1]) > 0 {
+		queryParams = append(queryParams, url[1])
+	}
+
 	if o != nil && o.Snapshot != nil {
 		queryParams = append(queryParams, fmt.Sprintf("snapshot=%v", *o.Snapshot))
 	}
@@ -353,11 +380,7 @@ func (o *BatchDeleteOptions) getQueryParams() string {
 }
 
 func (o *BatchDeleteOptions) format() (*LeaseAccessConditions, *ModifiedAccessConditions) {
-	if o == nil {
-		return nil, nil
-	}
-
-	if o.BlobDeleteOptions.AccessConditions == nil {
+	if o == nil || o.BlobDeleteOptions == nil || o.BlobDeleteOptions.AccessConditions == nil {
 		return nil, nil
 	}
 

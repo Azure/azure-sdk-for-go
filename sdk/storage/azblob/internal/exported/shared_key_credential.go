@@ -216,3 +216,21 @@ func (s *SharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	}
 	return response, err
 }
+
+func GetSharedKeyAuthHeader(req *policy.Request, c *SharedKeyCredential) string {
+	if c == nil {
+		return ""
+	}
+	if d := getHeader(shared.HeaderXmsDate, req.Raw().Header); d == "" {
+		req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	}
+	stringToSign, err := c.buildStringToSign(req.Raw())
+	if err != nil {
+		return ""
+	}
+	signature, err := c.computeHMACSHA256(stringToSign)
+	if err != nil {
+		return ""
+	}
+	return strings.Join([]string{shared.HeaderAuthorization, ": SharedKey ", c.AccountName(), ":", signature}, "")
+}

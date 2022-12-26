@@ -2158,7 +2158,7 @@ func (s *ContainerRecordedTestsSuite) TestSetAccessPolicyWithNullId() {
 	_require.Len(resp.SignedIdentifiers, 0)
 }
 
-func (s *ContainerRecordedTestsSuite) TestBatchDelete() {
+func (s *ContainerRecordedTestsSuite) TestBatchDeleteUsingSharedKey() {
 	_require := require.New(s.T())
 	//testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

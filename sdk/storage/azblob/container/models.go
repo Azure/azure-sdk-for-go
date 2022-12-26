@@ -316,7 +316,10 @@ func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context, urlPath
 
 	var delRequest strings.Builder
 	delRequest.WriteString(fmt.Sprintf("%v %v %v%v", http.MethodDelete, urlPath, shared.HttpVersion, shared.HttpNewline))
-	delRequest.WriteString(fmt.Sprintf("%v: %v%v", shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat), shared.HttpNewline))
+
+	dt := time.Now().UTC().Format(http.TimeFormat)
+	req.Raw().Header.Set(shared.HeaderXmsDate, dt)
+	delRequest.WriteString(fmt.Sprintf("%v: %v%v", shared.HeaderXmsDate, dt, shared.HttpNewline))
 
 	leaseAccessConditions, modifiedAccessConditions := o.format()
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
@@ -348,13 +351,10 @@ func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context, urlPath
 		delRequest.WriteString(fmt.Sprintf("x-ms-if-tags: %v%v", *modifiedAccessConditions.IfTags, shared.HttpNewline))
 	}
 
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if c.sharedKey() != nil {
 		delRequest.WriteString(exported.GetSharedKeyAuthHeader(req, c.sharedKey()) + shared.HttpNewline)
 	}
 
-	//delRequest.WriteString(fmt.Sprintf("Accept: application/xml%v", shared.HttpNewline))
 	delRequest.WriteString(shared.HttpNewline)
 	return delRequest.String(), nil
 }

@@ -221,9 +221,6 @@ func GetSharedKeyAuthHeader(req *policy.Request, c *SharedKeyCredential) string 
 	if c == nil {
 		return ""
 	}
-	if d := getHeader(shared.HeaderXmsDate, req.Raw().Header); d == "" {
-		req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	}
 	stringToSign, err := c.buildStringToSign(req.Raw())
 	if err != nil {
 		return ""

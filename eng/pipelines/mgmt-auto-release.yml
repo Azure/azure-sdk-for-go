@@ -27,6 +27,10 @@ stages:
 
           - task: ShellScript@2
             inputs:
+              scriptPath: 'eng/scripts/monthly-release.sh'
+
+          - task: ShellScript@2
+            inputs:
               scriptPath: 'eng/scripts/mgmt-auto-release.sh'
               cwd: '$(System.DefaultWorkingDirectory)'
               args: '$(azuresdk-github-pat)'

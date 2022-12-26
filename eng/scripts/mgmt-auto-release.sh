@@ -9,7 +9,7 @@ secondSaturday=$((firstDay+(12 - week) % 7 + 8))
 if [ $today -gt $secondSaturday ]
 then
  echo "The PR generation time of the current month is: [$firstDay-$secondSaturday]"
- exit 1
+ exit 0
 fi
 
 export PATH=$PATH:$HOME/go/bin

@@ -163,36 +163,8 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // Generated from API version 2018-03-28
 // options - ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.ListQueuesSegment
 // method.
-func (client *ServiceClient) NewListQueuesSegmentPager(options *ServiceClientListQueuesSegmentOptions) (*runtime.Pager[ServiceClientListQueuesSegmentResponse]) {
-	return runtime.NewPager(runtime.PagingHandler[ServiceClientListQueuesSegmentResponse]{
-		More: func(page ServiceClientListQueuesSegmentResponse) bool {
-			return page.NextMarker != nil && len(*page.NextMarker) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ServiceClientListQueuesSegmentResponse) (ServiceClientListQueuesSegmentResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listQueuesSegmentCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
-			}
-			if err != nil {
-				return ServiceClientListQueuesSegmentResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return ServiceClientListQueuesSegmentResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceClientListQueuesSegmentResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listQueuesSegmentHandleResponse(resp)
-		},
-	})
-}
-
-// listQueuesSegmentCreateRequest creates the ListQueuesSegment request.
-func (client *ServiceClient) listQueuesSegmentCreateRequest(ctx context.Context, options *ServiceClientListQueuesSegmentOptions) (*policy.Request, error) {
+// ListQueuesSegmentCreateRequest creates the ListBlobFlatSegment ListQueuesSegment.
+func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context, options *ServiceClientListQueuesSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -224,7 +196,7 @@ func (client *ServiceClient) listQueuesSegmentCreateRequest(ctx context.Context,
 }
 
 // listQueuesSegmentHandleResponse handles the ListQueuesSegment response.
-func (client *ServiceClient) listQueuesSegmentHandleResponse(resp *http.Response) (ServiceClientListQueuesSegmentResponse, error) {
+func (client *ServiceClient) ListQueuesSegmentHandleResponse(resp *http.Response) (ServiceClientListQueuesSegmentResponse, error) {
 	result := ServiceClientListQueuesSegmentResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val

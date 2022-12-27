@@ -55,3 +55,16 @@ directive:
         "modelAsString": false
     };
 ```
+
+### Remove pager method (since we implement it ourselves on the client layer) and export various generated methods in service client to utilize them in higher layers
+
+``` yaml
+directive:
+  - from: zz_service_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/func \(client \*ServiceClient\) NewListQueuesSegmentPager\(.+\/\/ listQueuesSegmentCreateRequest creates the ListQueuesSegment request/s, `// ListQueuesSegmentCreateRequest creates the ListBlobFlatSegment ListQueuesSegment`).
+        replace(/\(client \*ServiceClient\) listQueuesSegmentCreateRequest\(/, `(client *ServiceClient) ListQueuesSegmentCreateRequest(`).
+        replace(/\(client \*ServiceClient\) listQueuesSegmentHandleResponse\(/, `(client *ServiceClient) ListQueuesSegmentHandleResponse(`);
+```

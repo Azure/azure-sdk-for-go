@@ -11,8 +11,12 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/base64"
+	"encoding/binary"
+	"errors"
 	"fmt"
+	"hash/crc64"
 	"io"
+	"math/rand"
 	"net/http"
 	"strconv"
 	"strings"
@@ -20,6 +24,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -27,6 +32,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
@@ -411,6 +417,54 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		_require.Equal(*gResp.ContentLanguage, contentLanguageVal)
 //		_require.Equal(*gResp.ContentType, contentTypeVal)
 //	}
+
+// nolint
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	// test put block with valid CRC64 value
+	contentSize := 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	contentCrc64 := crc64.Checksum(content, shared.CRC64Table)
+	rsc := streaming.NopCloser(body)
+
+	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
+	})
+	_require.Nil(err)
+	// _require.Equal(putResp.RawResponse.StatusCode, 201)
+	_require.NotNil(putResp.ContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(putResp.ContentCRC64), contentCrc64)
+	_require.NotNil(putResp.RequestID)
+	_require.NotNil(putResp.Version)
+	_require.NotNil(putResp.Date)
+	_require.Equal((*putResp.Date).IsZero(), false)
+
+	// test put block with bad CRC64 value
+	badContentCrc64 := rand.Uint64()
+
+	_, _ = rsc.Seek(0, io.SeekStart)
+	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
+	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &blockblob.StageBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeCRC64(badContentCrc64),
+	})
+	_require.NotNil(err)
+	_require.Contains(err.Error(), bloberror.CRC64Mismatch)
+}
+
+// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -434,10 +488,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
-		TransactionalContentMD5: contentMD5,
+		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5),
 	})
 	_require.Nil(err)
-	//_require.Equal(putResp.RawResponse.StatusCode, 201)
+	// _require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.EqualValues(putResp.ContentMD5, contentMD5)
 	_require.NotNil(putResp.RequestID)
 	_require.NotNil(putResp.Version)
@@ -452,7 +506,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 	_, _ = rsc.Seek(0, io.SeekStart)
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &blockblob.StageBlockOptions{
-		TransactionalContentMD5: badContentMD5,
+		TransactionalValidation: blob.TransferValidationTypeMD5(badContentMD5),
 	})
 	_require.NotNil(err)
 	_require.Contains(err.Error(), bloberror.MD5Mismatch)
@@ -670,7 +724,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 
 	createResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.Nil(err)
-	//_require.Equal(createResp.RawResponse.StatusCode, 201)
+	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, -10)
@@ -703,7 +757,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 
 	createResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.Nil(err)
-	//_require.Equal(createResp.RawResponse.StatusCode, 201)
+	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, 10)
@@ -741,7 +795,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 
 	createResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.Nil(err)
-	//_require.Equal(createResp.RawResponse.StatusCode, 201)
+	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, 10)
@@ -778,7 +832,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 
 	createResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.Nil(err)
-	//_require.Equal(createResp.RawResponse.StatusCode, 201)
+	// _require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(createResp.Date, -10)
@@ -1246,7 +1300,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	tier := blob.AccessTierCool
 	_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(contentReader), &blockblob.UploadOptions{Tier: &tier})
 	_require.Nil(err)
-	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
@@ -1288,7 +1342,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}
 }
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnStageBlockFromURL() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnStageBlockFromURL() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1392,7 +1446,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 //	destBlobPropResp, err := destBlob.GetProperties(context.Background(), nil)
 //	_require.Nil(err)
 //	_require.Equal(*destBlobPropResp.AccessTier, string(tier))
-//}
+// }
 
 func (s *BlockBlobRecordedTestsSuite) TestSetStandardBlobTierWithRehydratePriority() {
 	_require := require.New(s.T())
@@ -1709,7 +1763,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPK() {
 	_, err = snapshotURL.GetProperties(context.Background(), nil)
 	_require.NotNil(err)
 
-	//_assert(err.(StorageError).Response().StatusCode, chk.Equals, 404)
+	// _assert(err.(StorageError).Response().StatusCode, chk.Equals, 404)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPKScope() {
@@ -1826,7 +1880,7 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 		_require.Nil(err)
 		_, err = bbClientWithVersionID.Delete(context.Background(), nil)
 		_require.Nil(err)
-		//_require.Equal(deleteResp.RawResponse.StatusCode, 202)
+		// _require.Equal(deleteResp.RawResponse.StatusCode, 202)
 	}
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
@@ -2022,7 +2076,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 
 	csResp, err := bbClient.CreateSnapshot(context.Background(), nil)
 	_require.Nil(err)
-	//_require.Equal(csResp.RawResponse.StatusCode, 201)
+	// _require.Equal(csResp.RawResponse.StatusCode, 201)
 	_require.NotNil(csResp.VersionID)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
@@ -2043,7 +2097,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
 	_, err = bbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
 	_require.Nil(err)
-	//_require.Equal(deleteResp.RawResponse.StatusCode, 202)
+	// _require.Equal(deleteResp.RawResponse.StatusCode, 202)
 
 	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true, Versions: true},
@@ -2081,7 +2135,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestORSSource() {
 	_require.Nil(getResp.ObjectReplicationRules)
 }
 
-//func (s *azblobTestSuite) TestSnapshotSAS() {
+// func (s *azblobTestSuite) TestSnapshotSAS() {
 //	//Generate URLs ----------------------------------------------------------------------------------------------------
 //	bsu := getServiceClient(nil)
 //	containerClient, containerName := getContainerClient(bsu)
@@ -2189,7 +2243,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestORSSource() {
 //	if err == nil {
 //		c.Fatal(resp) //This SHOULD fail. Otherwise we have a normal SAS token...
 //	}
-//}
+// }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTags() {
 	_require := require.New(s.T())
@@ -2339,8 +2393,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithVID() {
 func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	//_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	// _context := getTestContext(testName)
+	// ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
@@ -2376,8 +2430,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharacters
 func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	//_context := getTestContext(testName)
-	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	// _context := getTestContext(testName)
+	// ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
@@ -2437,8 +2491,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 	}
 }
 
-//
-//func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithTags() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2544,9 +2597,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //	destData, err := io.ReadAll(downloadResp.BodyReader(nil))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
-//}
+// }
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithTags() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2632,7 +2685,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //	resp, err = destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions3)
 //	_require.Nil(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 202)
-//}
+// }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestGetPropertiesReturnsTagsCount() {
 	_require := require.New(s.T())
@@ -2735,8 +2788,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	}
 }
 
-//
-//func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	_context := getTestContext(testName)
@@ -2806,9 +2858,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 //	for _, blob := range lResp.Blobs {
 //		_assert(blob.TagValue, chk.Equals, "firsttag")
 //	}
-//}
+// }
 //
-//func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsUsingAccountSAS() {
+
+// func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsUsingAccountSAS() {
 //	accountName, accountKey := accountInfo()
 //	credential, err := NewSharedKeyCredential(accountName, accountKey)
 //	if err != nil {
@@ -2862,7 +2915,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 //	where := "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND@container='" + containerName + "'"
 //	_, err = serviceURL.FindBlobsByTags(context.Background(), nil, nil, &where, Marker{}, nil)
 //	_require.Nil(err)
-//}
+// }
 
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPK() {
 	_require := require.New(s.T())
@@ -2972,8 +3025,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 	_require.EqualValues(*getResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
-//
-//func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPK() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPK() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3088,9 +3140,9 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	_require.Nil(err)
 //	_require.EqualValues(destData, content)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
-//}
+// }
 
-//func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope() {
+// func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3200,7 +3252,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	_require.Nil(err)
 //	_require.EqualValues(destData, content)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
-//}
+// }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 	_require := require.New(s.T())
@@ -3281,7 +3333,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 	_require.EqualValues(*downloadResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
-//func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlobBlobPropertiesWithCPKKey() {
+// func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlobBlobPropertiesWithCPKKey() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3343,9 +3395,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //	_require.NoError(err)
 //	_require.Equal(len(actualBlobData), blobSize)
 //	_require.EqualValues(actualBlobData, blobData)
-//}
+// }
 
-//func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlobBlobPropertiesWithCPKScope() {
+// func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlobBlobPropertiesWithCPKScope() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3407,7 +3459,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //	_require.NoError(err)
 //	_require.Equal(len(actualBlobData), blobSize)
 //	_require.EqualValues(actualBlobData, blobData)
-//}
+// }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	_require := require.New(s.T())
@@ -3448,7 +3500,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	_require.NoError(err)
 	_require.EqualValues(getPropertiesResp.Metadata, testcommon.BasicMetadata)
 	_require.Equal(*getPropertiesResp.TagCount, int64(len(testcommon.BasicBlobTagsMap)))
-	_require.Equal(blob.ParseHTTPHeaders(getPropertiesResp), testcommon.BasicHeaders)
+	respHeaders := testcommon.BasicHeaders
+	calcMD5 := md5.Sum(blobData)
+	respHeaders.BlobContentMD5 = calcMD5[:]
+	_require.Equal(respHeaders, blob.ParseHTTPHeaders(getPropertiesResp))
 
 	getTagsResp, err := bbClient.GetTags(context.Background(), nil)
 	_require.NoError(err)
@@ -3630,7 +3685,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryToNeverExpire() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeNever{}, nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeNever{}, nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3653,7 +3708,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToNow() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToNow(8*time.Second), nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeRelativeToNow(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3681,7 +3736,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToCreation()
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3710,7 +3765,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 	_require.Nil(resp.ExpiresOn)
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3741,7 +3796,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
 
 	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
 	time.Sleep(time.Second * 10)
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3842,4 +3897,81 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel()
 	committed := resp.BlockList.CommittedBlocks
 	_require.Equal(*(committed[0].Size), largeBlockSize)
 	_require.Equal(*(committed[1].Size), largeBlockSize)
+}
+
+type fakeBlockBlob struct {
+	totalStaged int64
+}
+
+func (f *fakeBlockBlob) Do(req *http.Request) (*http.Response, error) {
+	// verify that the number of bytes read matches what was specified
+	data := make([]byte, req.ContentLength)
+	read, err := req.Body.Read(data)
+	if err != nil && !errors.Is(err, io.EOF) {
+		return nil, err
+	} else if int64(read) < req.ContentLength {
+		return nil, fmt.Errorf("expected %d bytes, read %d", req.ContentLength, read)
+	}
+	qp := req.URL.Query()
+	if comp := qp.Get("comp"); comp == "block" {
+		// staging a block, record its size
+		f.totalStaged += int64(read)
+	}
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestUploadBufferUnevenBlockSize(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// create fake source that's not evenly divisible by 50000 (max number of blocks)
+	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+
+	buffer := make([]byte, 263*1024*1024)
+	for i := 0; i < len(buffer); i++ {
+		buffer[i] = 1
+	}
+
+	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
+		Concurrency: 1,
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
+}
+
+func TestUploadBufferEvenBlockSize(t *testing.T) {
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// create fake source that's evenly divisible by 50000 (max number of blocks)
+	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+
+	buffer := make([]byte, 270000000)
+	for i := 0; i < len(buffer); i++ {
+		buffer[i] = 1
+	}
+
+	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
+		Concurrency: 1,
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
 }

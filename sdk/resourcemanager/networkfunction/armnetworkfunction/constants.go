@@ -11,8 +11,25 @@ package armnetworkfunction
 
 const (
 	moduleName    = "armnetworkfunction"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0"
 )
+
+type APIVersionParameter string
+
+const (
+	APIVersionParameterTwoThousandTwentyTwo0501 APIVersionParameter = "2022-05-01"
+	APIVersionParameterTwoThousandTwentyTwo0801 APIVersionParameter = "2022-08-01"
+	APIVersionParameterTwoThousandTwentyTwo1101 APIVersionParameter = "2022-11-01"
+)
+
+// PossibleAPIVersionParameterValues returns the possible values for the APIVersionParameter const type.
+func PossibleAPIVersionParameterValues() []APIVersionParameter {
+	return []APIVersionParameter{
+		APIVersionParameterTwoThousandTwentyTwo0501,
+		APIVersionParameterTwoThousandTwentyTwo0801,
+		APIVersionParameterTwoThousandTwentyTwo1101,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string

@@ -11,7 +11,7 @@ package armsecurity
 
 const (
 	moduleName    = "armsecurity"
-	moduleVersion = "v0.8.0"
+	moduleVersion = "v0.9.0"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -104,24 +104,6 @@ func PossibleAdditionalWorkspaceTypeValues() []AdditionalWorkspaceType {
 	}
 }
 
-// AlertNotifications - Whether to send security alerts notifications to the security contact
-type AlertNotifications string
-
-const (
-	// AlertNotificationsOff - Don't get notifications on new alerts
-	AlertNotificationsOff AlertNotifications = "Off"
-	// AlertNotificationsOn - Get notifications on new alerts
-	AlertNotificationsOn AlertNotifications = "On"
-)
-
-// PossibleAlertNotificationsValues returns the possible values for the AlertNotifications const type.
-func PossibleAlertNotificationsValues() []AlertNotifications {
-	return []AlertNotifications{
-		AlertNotificationsOff,
-		AlertNotificationsOn,
-	}
-}
-
 // AlertSeverity - The risk level of the threat that was detected. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
 type AlertSeverity string
 
@@ -170,24 +152,6 @@ func PossibleAlertStatusValues() []AlertStatus {
 	}
 }
 
-// AlertsToAdmins - Whether to send security alerts notifications to subscription admins
-type AlertsToAdmins string
-
-const (
-	// AlertsToAdminsOff - Don't send notification on new alerts to the subscription's admins
-	AlertsToAdminsOff AlertsToAdmins = "Off"
-	// AlertsToAdminsOn - Send notification on new alerts to the subscription's admins
-	AlertsToAdminsOn AlertsToAdmins = "On"
-)
-
-// PossibleAlertsToAdminsValues returns the possible values for the AlertsToAdmins const type.
-func PossibleAlertsToAdminsValues() []AlertsToAdmins {
-	return []AlertsToAdmins{
-		AlertsToAdminsOff,
-		AlertsToAdminsOn,
-	}
-}
-
 // ApplicationConditionOperator - The application Condition's Operator, for example Contains for id or In for list of possible
 // IDs, see examples
 type ApplicationConditionOperator string
@@ -196,6 +160,8 @@ const (
 	// ApplicationConditionOperatorContains - Checks that the string value of the data defined in Property contains the given
 	// value
 	ApplicationConditionOperatorContains ApplicationConditionOperator = "Contains"
+	// ApplicationConditionOperatorEquals - Checks that the string value of the data defined in Property equals the given value
+	ApplicationConditionOperatorEquals ApplicationConditionOperator = "Equals"
 	// ApplicationConditionOperatorIn - Checks that the string value of the data defined in Property equals any of the given values
 	// (exact fit)
 	ApplicationConditionOperatorIn ApplicationConditionOperator = "In"
@@ -205,6 +171,7 @@ const (
 func PossibleApplicationConditionOperatorValues() []ApplicationConditionOperator {
 	return []ApplicationConditionOperator{
 		ApplicationConditionOperatorContains,
+		ApplicationConditionOperatorEquals,
 		ApplicationConditionOperatorIn,
 	}
 }
@@ -949,21 +916,46 @@ func PossibleKindValues() []Kind {
 	}
 }
 
+// MinimalSeverity - Defines the minimal alert severity which will be sent as email notifications
+type MinimalSeverity string
+
+const (
+	// MinimalSeverityHigh - Get notifications on new alerts with High severity
+	MinimalSeverityHigh MinimalSeverity = "High"
+	// MinimalSeverityLow - Don't get notifications on new alerts with low, medium or high severity
+	MinimalSeverityLow MinimalSeverity = "Low"
+	// MinimalSeverityMedium - Get notifications on new alerts with medium or high severity
+	MinimalSeverityMedium MinimalSeverity = "Medium"
+)
+
+// PossibleMinimalSeverityValues returns the possible values for the MinimalSeverity const type.
+func PossibleMinimalSeverityValues() []MinimalSeverity {
+	return []MinimalSeverity{
+		MinimalSeverityHigh,
+		MinimalSeverityLow,
+		MinimalSeverityMedium,
+	}
+}
+
 // OfferingType - The type of the security offering.
 type OfferingType string
 
 const (
-	OfferingTypeCspmMonitorAws           OfferingType = "CspmMonitorAws"
-	OfferingTypeCspmMonitorAzureDevOps   OfferingType = "CspmMonitorAzureDevOps"
-	OfferingTypeCspmMonitorGcp           OfferingType = "CspmMonitorGcp"
-	OfferingTypeCspmMonitorGithub        OfferingType = "CspmMonitorGithub"
-	OfferingTypeDefenderForContainersAws OfferingType = "DefenderForContainersAws"
-	OfferingTypeDefenderForContainersGcp OfferingType = "DefenderForContainersGcp"
-	OfferingTypeDefenderForDatabasesAws  OfferingType = "DefenderForDatabasesAws"
-	OfferingTypeDefenderForDatabasesGcp  OfferingType = "DefenderForDatabasesGcp"
-	OfferingTypeDefenderForServersAws    OfferingType = "DefenderForServersAws"
-	OfferingTypeDefenderForServersGcp    OfferingType = "DefenderForServersGcp"
-	OfferingTypeInformationProtectionAws OfferingType = "InformationProtectionAws"
+	OfferingTypeCspmMonitorAws               OfferingType = "CspmMonitorAws"
+	OfferingTypeCspmMonitorAzureDevOps       OfferingType = "CspmMonitorAzureDevOps"
+	OfferingTypeCspmMonitorGcp               OfferingType = "CspmMonitorGcp"
+	OfferingTypeCspmMonitorGithub            OfferingType = "CspmMonitorGithub"
+	OfferingTypeDefenderCspmAws              OfferingType = "DefenderCspmAws"
+	OfferingTypeDefenderCspmGcp              OfferingType = "DefenderCspmGcp"
+	OfferingTypeDefenderForContainersAws     OfferingType = "DefenderForContainersAws"
+	OfferingTypeDefenderForContainersGcp     OfferingType = "DefenderForContainersGcp"
+	OfferingTypeDefenderForDatabasesAws      OfferingType = "DefenderForDatabasesAws"
+	OfferingTypeDefenderForDatabasesGcp      OfferingType = "DefenderForDatabasesGcp"
+	OfferingTypeDefenderForDevOpsAzureDevOps OfferingType = "DefenderForDevOpsAzureDevOps"
+	OfferingTypeDefenderForDevOpsGithub      OfferingType = "DefenderForDevOpsGithub"
+	OfferingTypeDefenderForServersAws        OfferingType = "DefenderForServersAws"
+	OfferingTypeDefenderForServersGcp        OfferingType = "DefenderForServersGcp"
+	OfferingTypeInformationProtectionAws     OfferingType = "InformationProtectionAws"
 )
 
 // PossibleOfferingTypeValues returns the possible values for the OfferingType const type.
@@ -973,10 +965,14 @@ func PossibleOfferingTypeValues() []OfferingType {
 		OfferingTypeCspmMonitorAzureDevOps,
 		OfferingTypeCspmMonitorGcp,
 		OfferingTypeCspmMonitorGithub,
+		OfferingTypeDefenderCspmAws,
+		OfferingTypeDefenderCspmGcp,
 		OfferingTypeDefenderForContainersAws,
 		OfferingTypeDefenderForContainersGcp,
 		OfferingTypeDefenderForDatabasesAws,
 		OfferingTypeDefenderForDatabasesGcp,
+		OfferingTypeDefenderForDevOpsAzureDevOps,
+		OfferingTypeDefenderForDevOpsGithub,
 		OfferingTypeDefenderForServersAws,
 		OfferingTypeDefenderForServersGcp,
 		OfferingTypeInformationProtectionAws,
@@ -1345,6 +1341,30 @@ func PossibleResourceStatusValues() []ResourceStatus {
 		ResourceStatusNotApplicable,
 		ResourceStatusNotHealthy,
 		ResourceStatusOffByPolicy,
+	}
+}
+
+// Roles - A possible role to configure sending security notification alerts to
+type Roles string
+
+const (
+	// RolesAccountAdmin - If enabled, send notification on new alerts to the account admins
+	RolesAccountAdmin Roles = "AccountAdmin"
+	// RolesContributor - If enabled, send notification on new alerts to the subscription contributors
+	RolesContributor Roles = "Contributor"
+	// RolesOwner - If enabled, send notification on new alerts to the subscription owners
+	RolesOwner Roles = "Owner"
+	// RolesServiceAdmin - If enabled, send notification on new alerts to the service admins
+	RolesServiceAdmin Roles = "ServiceAdmin"
+)
+
+// PossibleRolesValues returns the possible values for the Roles const type.
+func PossibleRolesValues() []Roles {
+	return []Roles{
+		RolesAccountAdmin,
+		RolesContributor,
+		RolesOwner,
+		RolesServiceAdmin,
 	}
 }
 

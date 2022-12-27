@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.1 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0-beta.1 (2022-12-13)
+
+### Features Added
+* `WorkloadIdentityCredential` and `DefaultAzureCredential` support
+  Workload Identity Federation on Kubernetes. `DefaultAzureCredential`
+  support requires environment variable configuration as set by the
+  Workload Identity webhook.
+  ([#15615](https://github.com/Azure/azure-sdk-for-go/issues/15615))
 
 ## 1.2.0 (2022-11-08)
 

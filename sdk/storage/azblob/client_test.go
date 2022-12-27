@@ -512,7 +512,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 			TransferSize: test.transferSize,
 			ChunkSize:    test.chunkSize,
 			Concurrency:  test.concurrency,
-			Operation: func(offset int64, chunkSize int64, ctx context.Context) error {
+			Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 				atomic.AddInt64(&totalSizeCount, chunkSize)
 				atomic.AddInt64(&runCount, 1)
 				return nil
@@ -554,7 +554,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestDoBatchTransferWithError() {
 		TransferSize: 5,
 		ChunkSize:    1,
 		Concurrency:  5,
-		Operation: func(offset int64, chunkSize int64, ctx context.Context) error {
+		Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 			// simulate doing some work (HTTP call in real scenarios)
 			// later chunks later longer to finish
 			time.Sleep(time.Second * time.Duration(offset))

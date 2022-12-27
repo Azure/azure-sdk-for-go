@@ -105,6 +105,11 @@ func (bb *Client) generated() *generated.BlockBlobClient {
 	return blockBlob
 }
 
+func (bb *Client) innerBlobGenerated() *generated.BlobClient {
+	b := bb.BlobClient()
+	return base.InnerClient((*base.Client[generated.BlobClient])(b))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (bb *Client) URL() string {
 	return bb.generated().Endpoint()
@@ -169,6 +174,13 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 	}
 
 	opts, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
+
+	if options != nil && options.TransactionalValidation != nil {
+		body, err = options.TransactionalValidation.Apply(body, opts)
+		if err != nil {
+			return StageBlockResponse{}, nil
+		}
+	}
 
 	resp, err := bb.generated().StageBlock(ctx, base64BlockID, count, body, opts, leaseAccessConditions, cpkInfo, cpkScopeInfo)
 	return resp, err
@@ -289,8 +301,13 @@ func (bb *Client) SetTier(ctx context.Context, tier blob.AccessTier, o *blob.Set
 
 // SetExpiry operation sets an expiry time on an existing blob. This operation is only allowed on Hierarchical Namespace enabled accounts.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-expiry
-func (bb *Client) SetExpiry(ctx context.Context, expiryType blob.ExpiryType, o *blob.SetExpiryOptions) (blob.SetExpiryResponse, error) {
-	return bb.BlobClient().SetExpiry(ctx, expiryType, o)
+func (bb *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
+	if expiryType == nil {
+		expiryType = ExpiryTypeNever{}
+	}
+	et, opts := expiryType.Format(o)
+	resp, err := bb.innerBlobGenerated().SetExpiry(ctx, et, opts)
+	return resp, err
 }
 
 // GetProperties returns the blob's properties.
@@ -352,7 +369,8 @@ func (bb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.Co
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
 
 // uploadFromReader uploads a buffer in blocks to a block blob.
-func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, readerSize int64, o *uploadFromReaderOptions) (uploadFromReaderResponse, error) {
+func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) (uploadFromReaderResponse, error) {
+	readerSize := actualSize
 	if o.BlockSize == 0 {
 		// If bufferSize > (MaxStageBlockBytes * MaxBlocks), then error
 		if readerSize > MaxStageBlockBytes*MaxBlocks {
@@ -402,11 +420,17 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, read
 		TransferSize:  readerSize,
 		ChunkSize:     o.BlockSize,
 		Concurrency:   o.Concurrency,
-		Operation: func(offset int64, count int64, ctx context.Context) error {
+		Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
 			// This function is called once per block.
 			// It is passed this block's offset within the buffer and its count of bytes
 			// Prepare to read the proper block/section of the buffer
-			var body io.ReadSeeker = io.NewSectionReader(reader, offset, count)
+			if chunkSize < o.BlockSize {
+				// this is the last block.  its actual size might be less
+				// than the calculated size due to rounding up of the payload
+				// size to fit in a whole number of blocks.
+				chunkSize = (actualSize - offset)
+			}
+			var body io.ReadSeeker = io.NewSectionReader(reader, offset, chunkSize)
 			blockNum := offset / o.BlockSize
 			if o.Progress != nil {
 				blockProgress := int64(0)
@@ -468,20 +492,11 @@ func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadFileOp
 // UploadStream copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
 func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStreamOptions) (UploadStreamResponse, error) {
-	if err := o.format(); err != nil {
-		return CommitBlockListResponse{}, err
-	}
-
 	if o == nil {
 		o = &UploadStreamOptions{}
 	}
 
-	// If we used the default manager, we need to close it.
-	if o.transferMangerNotSet {
-		defer o.transferManager.Close()
-	}
-
-	result, err := copyFromReader(ctx, body, bb, *o)
+	result, err := copyFromReader(ctx, body, bb, *o, newMMBPool)
 	if err != nil {
 		return CommitBlockListResponse{}, err
 	}

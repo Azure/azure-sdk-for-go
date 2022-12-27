@@ -158,17 +158,6 @@ func (b *Client) SetTier(ctx context.Context, tier AccessTier, o *SetTierOptions
 	return resp, err
 }
 
-// SetExpiry operation sets an expiry time on an existing blob. This operation is only allowed on Hierarchical Namespace enabled accounts.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-expiry
-func (b *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
-	if expiryType == nil {
-		expiryType = ExpiryTypeNever{}
-	}
-	et, opts := expiryType.format(o)
-	resp, err := b.generated().SetExpiry(ctx, et, opts)
-	return resp, err
-}
-
 // GetProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (b *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
@@ -347,8 +336,7 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
 		Concurrency:   o.Concurrency,
-		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
-
+		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
 				Offset: chunkStart + o.Range.Offset,
 				Count:  count,

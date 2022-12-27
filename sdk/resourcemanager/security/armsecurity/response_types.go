@@ -414,11 +414,6 @@ type ContactsClientListResponse struct {
 	ContactList
 }
 
-// ContactsClientUpdateResponse contains the response from method ContactsClient.Update.
-type ContactsClientUpdateResponse struct {
-	Contact
-}
-
 // CustomAssessmentAutomationsClientCreateResponse contains the response from method CustomAssessmentAutomationsClient.Create.
 type CustomAssessmentAutomationsClientCreateResponse struct {
 	CustomAssessmentAutomation

@@ -11,7 +11,6 @@ import (
 	"testing"
 	"time"
 
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
@@ -59,6 +58,12 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	sessionState, err = receiver.GetSessionState(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, "hello", string(sessionState))
+
+	// sanity check that we can clear out session state as well.
+	require.NoError(t, receiver.SetSessionState(ctx, nil, nil))
+	sessionState, err = receiver.GetSessionState(ctx, nil)
+	require.NoError(t, err)
+	require.Nil(t, sessionState)
 }
 
 func TestSessionReceiver_blankSessionIDs(t *testing.T) {
@@ -322,11 +327,8 @@ func TestSessionReceiver_Detach(t *testing.T) {
 		}})
 	defer cleanup()
 
-	azlog.SetListener(func(e azlog.Event, s string) {
-		fmt.Printf("%s %s\n", e, s)
-	})
-
-	defer azlog.SetListener(nil)
+	stopFn := test.EnableStdoutLogging()
+	defer stopFn()
 
 	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)

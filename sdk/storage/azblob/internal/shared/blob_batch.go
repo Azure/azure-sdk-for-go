@@ -7,9 +7,10 @@
 package shared
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 const (

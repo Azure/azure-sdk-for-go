@@ -24,11 +24,11 @@ func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start *timeRFC3339 `xml:"Start"`
+		Start  *timeRFC3339 `xml:"Start"`
 	}{
-		alias: (*alias)(&a),
+		alias:  (*alias)(&a),
 		Expiry: (*timeRFC3339)(a.Expiry),
-		Start: (*timeRFC3339)(a.Start),
+		Start:  (*timeRFC3339)(a.Start),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -39,7 +39,7 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start *timeRFC3339 `xml:"Start"`
+		Start  *timeRFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
@@ -56,13 +56,13 @@ func (d DequeuedMessageItem) MarshalXML(e *xml.Encoder, start xml.StartElement) 
 	type alias DequeuedMessageItem
 	aux := &struct {
 		*alias
-		ExpirationTime *timeRFC1123 `xml:"ExpirationTime"`
-		InsertionTime *timeRFC1123 `xml:"InsertionTime"`
+		ExpirationTime  *timeRFC1123 `xml:"ExpirationTime"`
+		InsertionTime   *timeRFC1123 `xml:"InsertionTime"`
 		TimeNextVisible *timeRFC1123 `xml:"TimeNextVisible"`
 	}{
-		alias: (*alias)(&d),
-		ExpirationTime: (*timeRFC1123)(d.ExpirationTime),
-		InsertionTime: (*timeRFC1123)(d.InsertionTime),
+		alias:           (*alias)(&d),
+		ExpirationTime:  (*timeRFC1123)(d.ExpirationTime),
+		InsertionTime:   (*timeRFC1123)(d.InsertionTime),
 		TimeNextVisible: (*timeRFC1123)(d.TimeNextVisible),
 	}
 	return e.EncodeElement(aux, start)
@@ -73,8 +73,8 @@ func (d *DequeuedMessageItem) UnmarshalXML(d *xml.Decoder, start xml.StartElemen
 	type alias DequeuedMessageItem
 	aux := &struct {
 		*alias
-		ExpirationTime *timeRFC1123 `xml:"ExpirationTime"`
-		InsertionTime *timeRFC1123 `xml:"InsertionTime"`
+		ExpirationTime  *timeRFC1123 `xml:"ExpirationTime"`
+		InsertionTime   *timeRFC1123 `xml:"InsertionTime"`
 		TimeNextVisible *timeRFC1123 `xml:"TimeNextVisible"`
 	}{
 		alias: (*alias)(d),
@@ -93,13 +93,13 @@ func (e EnqueuedMessage) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 	type alias EnqueuedMessage
 	aux := &struct {
 		*alias
-		ExpirationTime *timeRFC1123 `xml:"ExpirationTime"`
-		InsertionTime *timeRFC1123 `xml:"InsertionTime"`
+		ExpirationTime  *timeRFC1123 `xml:"ExpirationTime"`
+		InsertionTime   *timeRFC1123 `xml:"InsertionTime"`
 		TimeNextVisible *timeRFC1123 `xml:"TimeNextVisible"`
 	}{
-		alias: (*alias)(&e),
-		ExpirationTime: (*timeRFC1123)(e.ExpirationTime),
-		InsertionTime: (*timeRFC1123)(e.InsertionTime),
+		alias:           (*alias)(&e),
+		ExpirationTime:  (*timeRFC1123)(e.ExpirationTime),
+		InsertionTime:   (*timeRFC1123)(e.InsertionTime),
 		TimeNextVisible: (*timeRFC1123)(e.TimeNextVisible),
 	}
 	return e.EncodeElement(aux, start)
@@ -110,8 +110,8 @@ func (e *EnqueuedMessage) UnmarshalXML(d *xml.Decoder, start xml.StartElement) e
 	type alias EnqueuedMessage
 	aux := &struct {
 		*alias
-		ExpirationTime *timeRFC1123 `xml:"ExpirationTime"`
-		InsertionTime *timeRFC1123 `xml:"InsertionTime"`
+		ExpirationTime  *timeRFC1123 `xml:"ExpirationTime"`
+		InsertionTime   *timeRFC1123 `xml:"InsertionTime"`
 		TimeNextVisible *timeRFC1123 `xml:"TimeNextVisible"`
 	}{
 		alias: (*alias)(e),
@@ -132,7 +132,7 @@ func (g GeoReplication) MarshalXML(e *xml.Encoder, start xml.StartElement) error
 		*alias
 		LastSyncTime *timeRFC1123 `xml:"LastSyncTime"`
 	}{
-		alias: (*alias)(&g),
+		alias:        (*alias)(&g),
 		LastSyncTime: (*timeRFC1123)(g.LastSyncTime),
 	}
 	return e.EncodeElement(aux, start)
@@ -175,11 +175,11 @@ func (p PeekedMessageItem) MarshalXML(e *xml.Encoder, start xml.StartElement) er
 	aux := &struct {
 		*alias
 		ExpirationTime *timeRFC1123 `xml:"ExpirationTime"`
-		InsertionTime *timeRFC1123 `xml:"InsertionTime"`
+		InsertionTime  *timeRFC1123 `xml:"InsertionTime"`
 	}{
-		alias: (*alias)(&p),
+		alias:          (*alias)(&p),
 		ExpirationTime: (*timeRFC1123)(p.ExpirationTime),
-		InsertionTime: (*timeRFC1123)(p.InsertionTime),
+		InsertionTime:  (*timeRFC1123)(p.InsertionTime),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -190,7 +190,7 @@ func (p *PeekedMessageItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement)
 	aux := &struct {
 		*alias
 		ExpirationTime *timeRFC1123 `xml:"ExpirationTime"`
-		InsertionTime *timeRFC1123 `xml:"InsertionTime"`
+		InsertionTime  *timeRFC1123 `xml:"InsertionTime"`
 	}{
 		alias: (*alias)(p),
 	}
@@ -235,8 +235,8 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "Message":
-				err = unpopulate(val, "Message", &s.Message)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Message", &s.Message)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -279,4 +279,3 @@ func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	}
 	return nil
 }
-

@@ -11,13 +11,10 @@ package generated
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
-	"net/url"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -42,13 +39,11 @@ func NewMessageIDClient(endpoint string, pl runtime.Pipeline) *MessageIDClient {
 // Delete - The Delete operation deletes the specified message.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
-// messageid - The container name.
 // popReceipt - Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update
 // Message operation.
 // options - MessageIDClientDeleteOptions contains the optional parameters for the MessageIDClient.Delete method.
-func (client *MessageIDClient) Delete(ctx context.Context, queueName string, messageid string, popReceipt string, options *MessageIDClientDeleteOptions) (MessageIDClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, queueName, messageid, popReceipt, options)
+func (client *MessageIDClient) Delete(ctx context.Context, popReceipt string, options *MessageIDClientDeleteOptions) (MessageIDClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, popReceipt, options)
 	if err != nil {
 		return MessageIDClientDeleteResponse{}, err
 	}
@@ -63,17 +58,8 @@ func (client *MessageIDClient) Delete(ctx context.Context, queueName string, mes
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MessageIDClient) deleteCreateRequest(ctx context.Context, queueName string, messageid string, popReceipt string, options *MessageIDClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}/messages/{messageid}"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	if messageid == "" {
-		return nil, errors.New("parameter messageid cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{messageid}", url.PathEscape(messageid))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *MessageIDClient) deleteCreateRequest(ctx context.Context, popReceipt string, options *MessageIDClientDeleteOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -116,8 +102,6 @@ func (client *MessageIDClient) deleteHandleResponse(resp *http.Response) (Messag
 // and the encoded message can be up to 64KB in size.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
-// messageid - The container name.
 // popReceipt - Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update
 // Message operation.
 // visibilitytimeout - Optional. Specifies the new visibility timeout value, in seconds, relative to server time. The default
@@ -126,8 +110,8 @@ func (client *MessageIDClient) deleteHandleResponse(resp *http.Response) (Messag
 // of a message can be set to a value later than the expiry time.
 // queueMessage - A Message object which can be stored in a Queue
 // options - MessageIDClientUpdateOptions contains the optional parameters for the MessageIDClient.Update method.
-func (client *MessageIDClient) Update(ctx context.Context, queueName string, messageid string, popReceipt string, visibilitytimeout int32, queueMessage QueueMessage, options *MessageIDClientUpdateOptions) (MessageIDClientUpdateResponse, error) {
-	req, err := client.updateCreateRequest(ctx, queueName, messageid, popReceipt, visibilitytimeout, queueMessage, options)
+func (client *MessageIDClient) Update(ctx context.Context, popReceipt string, visibilitytimeout int32, queueMessage QueueMessage, options *MessageIDClientUpdateOptions) (MessageIDClientUpdateResponse, error) {
+	req, err := client.updateCreateRequest(ctx, popReceipt, visibilitytimeout, queueMessage, options)
 	if err != nil {
 		return MessageIDClientUpdateResponse{}, err
 	}
@@ -142,17 +126,8 @@ func (client *MessageIDClient) Update(ctx context.Context, queueName string, mes
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MessageIDClient) updateCreateRequest(ctx context.Context, queueName string, messageid string, popReceipt string, visibilitytimeout int32, queueMessage QueueMessage, options *MessageIDClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}/messages/{messageid}"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	if messageid == "" {
-		return nil, errors.New("parameter messageid cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{messageid}", url.PathEscape(messageid))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *MessageIDClient) updateCreateRequest(ctx context.Context, popReceipt string, visibilitytimeout int32, queueMessage QueueMessage, options *MessageIDClientUpdateOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}

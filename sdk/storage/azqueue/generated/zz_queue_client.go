@@ -12,11 +12,9 @@ package generated
 import (
 	"context"
 	"encoding/xml"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -43,10 +41,9 @@ func NewQueueClient(endpoint string, pl runtime.Pipeline) *QueueClient {
 // Create - creates a new queue under the given account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // options - QueueClientCreateOptions contains the optional parameters for the QueueClient.Create method.
-func (client *QueueClient) Create(ctx context.Context, queueName string, options *QueueClientCreateOptions) (QueueClientCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, queueName, options)
+func (client *QueueClient) Create(ctx context.Context, options *QueueClientCreateOptions) (QueueClientCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, options)
 	if err != nil {
 		return QueueClientCreateResponse{}, err
 	}
@@ -61,13 +58,8 @@ func (client *QueueClient) Create(ctx context.Context, queueName string, options
 }
 
 // createCreateRequest creates the Create request.
-func (client *QueueClient) createCreateRequest(ctx context.Context, queueName string, options *QueueClientCreateOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *QueueClient) createCreateRequest(ctx context.Context, options *QueueClientCreateOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -111,10 +103,9 @@ func (client *QueueClient) createHandleResponse(resp *http.Response) (QueueClien
 // Delete - operation permanently deletes the specified queue
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // options - QueueClientDeleteOptions contains the optional parameters for the QueueClient.Delete method.
-func (client *QueueClient) Delete(ctx context.Context, queueName string, options *QueueClientDeleteOptions) (QueueClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, queueName, options)
+func (client *QueueClient) Delete(ctx context.Context, options *QueueClientDeleteOptions) (QueueClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, options)
 	if err != nil {
 		return QueueClientDeleteResponse{}, err
 	}
@@ -129,13 +120,8 @@ func (client *QueueClient) Delete(ctx context.Context, queueName string, options
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *QueueClient) deleteCreateRequest(ctx context.Context, queueName string, options *QueueClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *QueueClient) deleteCreateRequest(ctx context.Context, options *QueueClientDeleteOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -175,10 +161,9 @@ func (client *QueueClient) deleteHandleResponse(resp *http.Response) (QueueClien
 // Access Signatures.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // options - QueueClientGetAccessPolicyOptions contains the optional parameters for the QueueClient.GetAccessPolicy method.
-func (client *QueueClient) GetAccessPolicy(ctx context.Context, queueName string, options *QueueClientGetAccessPolicyOptions) (QueueClientGetAccessPolicyResponse, error) {
-	req, err := client.getAccessPolicyCreateRequest(ctx, queueName, options)
+func (client *QueueClient) GetAccessPolicy(ctx context.Context, options *QueueClientGetAccessPolicyOptions) (QueueClientGetAccessPolicyResponse, error) {
+	req, err := client.getAccessPolicyCreateRequest(ctx, options)
 	if err != nil {
 		return QueueClientGetAccessPolicyResponse{}, err
 	}
@@ -193,13 +178,8 @@ func (client *QueueClient) GetAccessPolicy(ctx context.Context, queueName string
 }
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
-func (client *QueueClient) getAccessPolicyCreateRequest(ctx context.Context, queueName string, options *QueueClientGetAccessPolicyOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *QueueClient) getAccessPolicyCreateRequest(ctx context.Context, options *QueueClientGetAccessPolicyOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -243,10 +223,9 @@ func (client *QueueClient) getAccessPolicyHandleResponse(resp *http.Response) (Q
 // the queue as name-values pairs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // options - QueueClientGetPropertiesOptions contains the optional parameters for the QueueClient.GetProperties method.
-func (client *QueueClient) GetProperties(ctx context.Context, queueName string, options *QueueClientGetPropertiesOptions) (QueueClientGetPropertiesResponse, error) {
-	req, err := client.getPropertiesCreateRequest(ctx, queueName, options)
+func (client *QueueClient) GetProperties(ctx context.Context, options *QueueClientGetPropertiesOptions) (QueueClientGetPropertiesResponse, error) {
+	req, err := client.getPropertiesCreateRequest(ctx, options)
 	if err != nil {
 		return QueueClientGetPropertiesResponse{}, err
 	}
@@ -261,13 +240,8 @@ func (client *QueueClient) GetProperties(ctx context.Context, queueName string, 
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *QueueClient) getPropertiesCreateRequest(ctx context.Context, queueName string, options *QueueClientGetPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *QueueClient) getPropertiesCreateRequest(ctx context.Context, options *QueueClientGetPropertiesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -323,11 +297,10 @@ func (client *QueueClient) getPropertiesHandleResponse(resp *http.Response) (Que
 // SetAccessPolicy - sets stored access policies for the queue that may be used with Shared Access Signatures
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // queueACL - the acls for the queue
 // options - QueueClientSetAccessPolicyOptions contains the optional parameters for the QueueClient.SetAccessPolicy method.
-func (client *QueueClient) SetAccessPolicy(ctx context.Context, queueName string, queueACL []*SignedIdentifier, options *QueueClientSetAccessPolicyOptions) (QueueClientSetAccessPolicyResponse, error) {
-	req, err := client.setAccessPolicyCreateRequest(ctx, queueName, queueACL, options)
+func (client *QueueClient) SetAccessPolicy(ctx context.Context, queueACL []*SignedIdentifier, options *QueueClientSetAccessPolicyOptions) (QueueClientSetAccessPolicyResponse, error) {
+	req, err := client.setAccessPolicyCreateRequest(ctx, queueACL, options)
 	if err != nil {
 		return QueueClientSetAccessPolicyResponse{}, err
 	}
@@ -342,13 +315,8 @@ func (client *QueueClient) SetAccessPolicy(ctx context.Context, queueName string
 }
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
-func (client *QueueClient) setAccessPolicyCreateRequest(ctx context.Context, queueName string, queueACL []*SignedIdentifier, options *QueueClientSetAccessPolicyOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *QueueClient) setAccessPolicyCreateRequest(ctx context.Context, queueACL []*SignedIdentifier, options *QueueClientSetAccessPolicyOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -392,10 +360,9 @@ func (client *QueueClient) setAccessPolicyHandleResponse(resp *http.Response) (Q
 // SetMetadata - sets user-defined metadata on the specified queue. Metadata is associated with the queue as name-value pairs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // options - QueueClientSetMetadataOptions contains the optional parameters for the QueueClient.SetMetadata method.
-func (client *QueueClient) SetMetadata(ctx context.Context, queueName string, options *QueueClientSetMetadataOptions) (QueueClientSetMetadataResponse, error) {
-	req, err := client.setMetadataCreateRequest(ctx, queueName, options)
+func (client *QueueClient) SetMetadata(ctx context.Context, options *QueueClientSetMetadataOptions) (QueueClientSetMetadataResponse, error) {
+	req, err := client.setMetadataCreateRequest(ctx, options)
 	if err != nil {
 		return QueueClientSetMetadataResponse{}, err
 	}
@@ -410,13 +377,8 @@ func (client *QueueClient) SetMetadata(ctx context.Context, queueName string, op
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
-func (client *QueueClient) setMetadataCreateRequest(ctx context.Context, queueName string, options *QueueClientSetMetadataOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *QueueClient) setMetadataCreateRequest(ctx context.Context, options *QueueClientSetMetadataOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}

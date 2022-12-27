@@ -11,13 +11,10 @@ package generated
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
-	"net/url"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -42,10 +39,9 @@ func NewMessagesClient(endpoint string, pl runtime.Pipeline) *MessagesClient {
 // Clear - The Clear operation deletes all messages from the specified queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // options - MessagesClientClearOptions contains the optional parameters for the MessagesClient.Clear method.
-func (client *MessagesClient) Clear(ctx context.Context, queueName string, options *MessagesClientClearOptions) (MessagesClientClearResponse, error) {
-	req, err := client.clearCreateRequest(ctx, queueName, options)
+func (client *MessagesClient) Clear(ctx context.Context, options *MessagesClientClearOptions) (MessagesClientClearResponse, error) {
+	req, err := client.clearCreateRequest(ctx, options)
 	if err != nil {
 		return MessagesClientClearResponse{}, err
 	}
@@ -60,13 +56,8 @@ func (client *MessagesClient) Clear(ctx context.Context, queueName string, optio
 }
 
 // clearCreateRequest creates the Clear request.
-func (client *MessagesClient) clearCreateRequest(ctx context.Context, queueName string, options *MessagesClientClearOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}/messages"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *MessagesClient) clearCreateRequest(ctx context.Context, options *MessagesClientClearOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -105,10 +96,9 @@ func (client *MessagesClient) clearHandleResponse(resp *http.Response) (Messages
 // Dequeue - The Dequeue operation retrieves one or more messages from the front of the queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // options - MessagesClientDequeueOptions contains the optional parameters for the MessagesClient.Dequeue method.
-func (client *MessagesClient) Dequeue(ctx context.Context, queueName string, options *MessagesClientDequeueOptions) (MessagesClientDequeueResponse, error) {
-	req, err := client.dequeueCreateRequest(ctx, queueName, options)
+func (client *MessagesClient) Dequeue(ctx context.Context, options *MessagesClientDequeueOptions) (MessagesClientDequeueResponse, error) {
+	req, err := client.dequeueCreateRequest(ctx, options)
 	if err != nil {
 		return MessagesClientDequeueResponse{}, err
 	}
@@ -123,13 +113,8 @@ func (client *MessagesClient) Dequeue(ctx context.Context, queueName string, opt
 }
 
 // dequeueCreateRequest creates the Dequeue request.
-func (client *MessagesClient) dequeueCreateRequest(ctx context.Context, queueName string, options *MessagesClientDequeueOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}/messages"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *MessagesClient) dequeueCreateRequest(ctx context.Context, options *MessagesClientDequeueOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -180,11 +165,10 @@ func (client *MessagesClient) dequeueHandleResponse(resp *http.Response) (Messag
 // for versions 2011-08-18 and newer, or 8 KB in size for previous versions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // queueMessage - A Message object which can be stored in a Queue
 // options - MessagesClientEnqueueOptions contains the optional parameters for the MessagesClient.Enqueue method.
-func (client *MessagesClient) Enqueue(ctx context.Context, queueName string, queueMessage QueueMessage, options *MessagesClientEnqueueOptions) (MessagesClientEnqueueResponse, error) {
-	req, err := client.enqueueCreateRequest(ctx, queueName, queueMessage, options)
+func (client *MessagesClient) Enqueue(ctx context.Context, queueMessage QueueMessage, options *MessagesClientEnqueueOptions) (MessagesClientEnqueueResponse, error) {
+	req, err := client.enqueueCreateRequest(ctx, queueMessage, options)
 	if err != nil {
 		return MessagesClientEnqueueResponse{}, err
 	}
@@ -199,13 +183,8 @@ func (client *MessagesClient) Enqueue(ctx context.Context, queueName string, que
 }
 
 // enqueueCreateRequest creates the Enqueue request.
-func (client *MessagesClient) enqueueCreateRequest(ctx context.Context, queueName string, queueMessage QueueMessage, options *MessagesClientEnqueueOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}/messages"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *MessagesClient) enqueueCreateRequest(ctx context.Context, queueMessage QueueMessage, options *MessagesClientEnqueueOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -254,10 +233,9 @@ func (client *MessagesClient) enqueueHandleResponse(resp *http.Response) (Messag
 // of the message.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-03-28
-// queueName - The queue name.
 // options - MessagesClientPeekOptions contains the optional parameters for the MessagesClient.Peek method.
-func (client *MessagesClient) Peek(ctx context.Context, queueName string, options *MessagesClientPeekOptions) (MessagesClientPeekResponse, error) {
-	req, err := client.peekCreateRequest(ctx, queueName, options)
+func (client *MessagesClient) Peek(ctx context.Context, options *MessagesClientPeekOptions) (MessagesClientPeekResponse, error) {
+	req, err := client.peekCreateRequest(ctx, options)
 	if err != nil {
 		return MessagesClientPeekResponse{}, err
 	}
@@ -272,13 +250,8 @@ func (client *MessagesClient) Peek(ctx context.Context, queueName string, option
 }
 
 // peekCreateRequest creates the Peek request.
-func (client *MessagesClient) peekCreateRequest(ctx context.Context, queueName string, options *MessagesClientPeekOptions) (*policy.Request, error) {
-	urlPath := "/{queueName}/messages"
-	if queueName == "" {
-		return nil, errors.New("parameter queueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queueName}", url.PathEscape(queueName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *MessagesClient) peekCreateRequest(ctx context.Context, options *MessagesClientPeekOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}

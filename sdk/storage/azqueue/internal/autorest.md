@@ -21,3 +21,32 @@ modelerfour:
 export-clients: true
 use: "@autorest/go@4.0.0-preview.43"
 ```
+
+
+### Remove QueueName from parameter list since it is not needed
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    for (const property in $)
+    {
+        if (property.includes('/{queueName}/messages/{messageid}'))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) { return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/QueueName") && false == param['$ref'].endsWith("#/parameters/MessageId"))});
+        }
+        else if (property.includes('/{queueName}'))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) { return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/QueueName"))});
+        }
+    }
+```
+
+### QueueMessage is required for enqueue, but not for update
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.QueueMessage
+  transform: >
+    $.required = false;
+```

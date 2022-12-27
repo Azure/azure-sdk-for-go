@@ -42,11 +42,16 @@ directive:
     }
 ```
 
-### QueueMessage is required for enqueue, but not for update
+### Fix GeoReplication
+
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.parameters.QueueMessage
+  where: $.definitions
   transform: >
-    $.required = false;
+    delete $.GeoReplication.properties.Status["x-ms-enum"];
+    $.GeoReplication.properties.Status["x-ms-enum"] = {
+        "name": "QueueGeoReplicationStatus",
+        "modelAsString": false
+    };
 ```

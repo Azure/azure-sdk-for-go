@@ -9,21 +9,21 @@
 
 package generated
 
-// GeoReplicationStatusType - The status of the secondary location
-type GeoReplicationStatusType string
+// QueueGeoReplicationStatus - The status of the secondary location
+type QueueGeoReplicationStatus string
 
 const (
-	GeoReplicationStatusTypeBootstrap GeoReplicationStatusType = "bootstrap"
-	GeoReplicationStatusTypeLive GeoReplicationStatusType = "live"
-	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
+	QueueGeoReplicationStatusLive QueueGeoReplicationStatus = "live"
+	QueueGeoReplicationStatusBootstrap QueueGeoReplicationStatus = "bootstrap"
+	QueueGeoReplicationStatusUnavailable QueueGeoReplicationStatus = "unavailable"
 )
 
-// PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
-func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
-	return []GeoReplicationStatusType{	
-		GeoReplicationStatusTypeBootstrap,
-		GeoReplicationStatusTypeLive,
-		GeoReplicationStatusTypeUnavailable,
+// PossibleQueueGeoReplicationStatusValues returns the possible values for the QueueGeoReplicationStatus const type.
+func PossibleQueueGeoReplicationStatusValues() []QueueGeoReplicationStatus {
+	return []QueueGeoReplicationStatus{	
+		QueueGeoReplicationStatusLive,
+		QueueGeoReplicationStatusBootstrap,
+		QueueGeoReplicationStatusUnavailable,
 	}
 }
 

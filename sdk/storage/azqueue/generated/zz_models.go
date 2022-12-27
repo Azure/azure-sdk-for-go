@@ -99,7 +99,7 @@ type GeoReplication struct {
 	LastSyncTime *time.Time `xml:"LastSyncTime"`
 
 	// REQUIRED; The status of the secondary location
-	Status *GeoReplicationStatusType `xml:"Status"`
+	Status *QueueGeoReplicationStatus `xml:"Status"`
 }
 
 // ListQueuesSegmentResponse - The object returned when calling List Queues on a Queue Service.

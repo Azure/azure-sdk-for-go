@@ -113,6 +113,7 @@ func newCredentialUnavailableError(credType, message string) error {
 	return &CredentialUnavailableError{msg}
 }
 
+// Error implements the error interface. Note that the message contents are not contractual and can change over time.
 func (e *CredentialUnavailableError) Error() string {
 	return e.Message
 }

@@ -321,3 +321,14 @@ directive:
     from: BlobPropertiesInternal
     to: BlobProperties
 ```
+
+### Fix up Content-Type header in batch request
+
+``` yaml
+directive:
+- from: zz_container_client.go
+  where: $
+  transform: >-
+    return $.
+      replace (/req.SetBody\(body\,\s+\"application\/xml\"\)/g, `req.SetBody(body, multipartContentType)`);
+```

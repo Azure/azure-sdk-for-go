@@ -30,17 +30,33 @@ import (
 
 var (
 	sdkPath string
-	// azure
+	// storage account
 	storageAccountName   string
 	storageContainerName string
 	containerBlobName    string
-	// azure devops
+	// azure devops info
 	organizationUrl string
 	projectName     string
 )
 
+var mgmtReportMDHeader = `|module | latest version | tag | live test coverage | mock test result | mock test coverage |
+|---|---|---|---|---|---|
+`
+
+var htmlTR = `
+			<tr%s>
+				<td align="left">%s</td>
+				<td align="center">%s</td>
+				<td align="center">%s</td>
+				<td align="center">%s</td>
+				<td align="center">%s</td>
+				<td align="center">%s</td>
+			</tr>`
+
+var tdBackgroundStyle = ` class="pure-table-odd"`
+
 func init() {
-	flag.StringVar(&sdkPath, "sdkpath", "", "azure-sdk-for-go path(required)")
+	flag.StringVar(&sdkPath, "sdkpath", "", "SDK Repo Path(required)")
 	flag.StringVar(&storageAccountName, "storageaccount", "", "Azure Storage Account Name(required)")
 	flag.StringVar(&storageContainerName, "storagecontainer", "$web", "Azure Storage Container Name")
 	flag.StringVar(&containerBlobName, "storagecontainerblob", "mgmtReport.html", "Azure Storage Container Blob File Name")
@@ -53,12 +69,12 @@ func main() {
 
 	if sdkPath == "" {
 		flag.PrintDefaults()
-		log.Fatal("Please enter the azure-sdk-for-go path")
+		log.Fatal("Please provide the SDK repo path")
 	}
 
 	if storageAccountName == "" {
 		flag.PrintDefaults()
-		log.Fatal("Please enter the Azure Storage Account Name")
+		log.Fatal("Please provide the Azure Storage account name")
 	}
 
 	storageAccountKey, ok := os.LookupEnv("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY")
@@ -73,35 +89,23 @@ func main() {
 
 	log.Printf("start running in %s...\n", sdkPath)
 	startTime := time.Now()
-	mgmtReport, err := execute(sdkPath, personalAccessToken)
+	err := execute(sdkPath, personalAccessToken, storageAccountKey)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Statistical mgmt report time:", time.Since(startTime))
-
-	log.Println("Write the mgmt report to the mgmtreport.md file...")
-	err = writeMgmtFile(mgmtReport, path.Join(sdkPath, "mgmtReport.md"))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Upload mgmt report to storage account...")
-	err = uploadMgmtReport(mgmtReport, storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Println("mgmt report statistic time:", time.Since(startTime))
 }
 
-func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
+func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 	conn := azuredevops.NewPatConnection(organizationUrl, personalAccessToken)
 	testClient, err := test.NewClient(context.Background(), conn)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	buildClient, err := build.NewClient(context.Background(), conn)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	azureDevopsClient := azuredevops.NewClient(conn, organizationUrl)
@@ -111,7 +115,7 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 		Project: &projectName,
 	})
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// filter pipelineList
@@ -124,10 +128,10 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 
 	// read all module
 	sdkPath = strings.ReplaceAll(sdkPath, "\\", "/")
-	modulePath := filepath.Join(sdkPath, "/sdk/resourcemanager")
+	modulePath := filepath.Join(sdkPath, "sdk", "resourcemanager")
 	dirs, err := os.ReadDir(modulePath)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	mgmtReport := make(map[string]mgmtInfo)
@@ -135,15 +139,15 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 		if dir.IsDir() && dir.Name() != "internal" {
 			armDirs, err := os.ReadDir(filepath.Join(modulePath, dir.Name()))
 			if err != nil {
-				return nil, err
+				return err
 			}
 
 			for _, arm := range armDirs {
-				log.Printf("%s-%s\n", dir.Name(), arm.Name())
+				log.Printf("%s/%s\n", dir.Name(), arm.Name())
 				// read autorest.md
 				tag, version, err := readAutorestMD(filepath.Join(modulePath, dir.Name(), arm.Name(), "autorest.md"))
 				if err != nil {
-					return nil, err
+					return err
 				}
 
 				p, ok := pipelinesMap[fmt.Sprintf("go - %s - %s", arm.Name(), dir.Name())]
@@ -157,21 +161,21 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 					}
 
 					// code coverage
-					buildId, err := codeCoverage(pipelineClient, azureDevopsClient, &mInfo, *p.Id)
+					buildId, err := getCodeCoverage(pipelineClient, azureDevopsClient, &mInfo, *p.Id)
 					if err != nil {
-						return nil, err
+						return err
 					}
 
 					// mock test
-					err = mockTest(testClient, &mInfo, buildId)
+					err = getMockTestResult(testClient, &mInfo, buildId)
 					if err != nil {
-						return nil, err
+						return err
 					}
 
 					// live test
-					err = liveTest(buildClient, &mInfo, buildId)
+					err = getLiveTestResult(buildClient, &mInfo, buildId)
 					if err != nil {
-						return nil, err
+						return err
 					}
 
 					moduleName := fmt.Sprintf("%s/%s", dir.Name(), arm.Name())
@@ -181,7 +185,23 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 		}
 	}
 
-	return mgmtReport, nil
+	log.Println("write the mgmt report to the mgmtreport.md file...")
+	err = generateMDReport(mgmtReport, path.Join(sdkPath, "mgmtReport.md"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("upload mgmt report to cloud...")
+	w, err := generateHTMLReport(mgmtReport)
+	if err != nil {
+		return err
+	}
+	err = uploadHTMLReport(w, storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func readAutorestMD(path string) (string, string, error) {
@@ -249,93 +269,6 @@ type mgmtInfo struct {
 	liveTestCoverage string
 }
 
-func codeCoverage(pipelineClient pipelines.Client, azureDevopsClient *azuredevops.Client, info *mgmtInfo, pid int) (*int, error) {
-	listRuns, err := pipelineClient.ListRuns(context.Background(), pipelines.ListRunsArgs{Project: &projectName, PipelineId: &pid})
-	if err != nil && len(*listRuns) > 0 {
-		return nil, err
-	}
-
-	var buildId *int
-	for i := 0; i < 5 && i < len(*listRuns); i++ {
-		buildId = (*listRuns)[i].Id
-
-		// code coverage
-		buildCodeCoverage, err := getBuildCodeCoverage(azureDevopsClient, projectName, *buildId)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, coverage := range *buildCodeCoverage.CoverageData {
-			if len(*coverage.CoverageStats) > 0 {
-				info.CoveredLines = *(*coverage.CoverageStats)[0].Covered
-				info.CoverableLines = *(*coverage.CoverageStats)[0].Total
-				break
-			}
-		}
-
-		if info.CoverableLines == 0 {
-			continue
-		}
-		break
-	}
-	return buildId, nil
-}
-
-func mockTest(testClient test.Client, info *mgmtInfo, buildId *int) error {
-	buildUri := fmt.Sprintf("vstfs:///Build/Build/%d", *buildId)
-	testRuns, err := testClient.GetTestRuns(context.Background(), test.GetTestRunsArgs{
-		Project:  &projectName,
-		BuildUri: &buildUri,
-	})
-	if err != nil {
-		return err
-	}
-	if len(*testRuns) > 0 {
-		info.mockTestPass = *(*testRuns)[0].PassedTests
-		info.mockTestTotal = *(*testRuns)[0].TotalTests
-	}
-	return nil
-}
-
-func liveTest(buildClient build.Client, info *mgmtInfo, buildId *int) error {
-	buildLogs, err := buildClient.GetBuildLogs(context.Background(), build.GetBuildLogsArgs{
-		Project: &projectName,
-		BuildId: buildId,
-	})
-	if err != nil {
-		return err
-	}
-
-	for i := 120; i < len(*buildLogs); i++ {
-		logLines, err := buildClient.GetBuildLogLines(context.Background(), build.GetBuildLogLinesArgs{
-			Project: &projectName,
-			BuildId: buildId,
-			LogId:   (*buildLogs)[i].Id,
-		})
-		if err != nil {
-			return err
-		}
-
-		if logInfo := strings.Join(*logLines, "\n"); strings.Contains(logInfo, "Starting: Run Tests") && strings.Contains(logInfo, "Finishing: Run Tests") {
-		loop:
-			for _, line := range *logLines {
-				if strings.Contains(line, "coverage:") {
-					splits := strings.Split(line, " ")
-					for _, j := range splits {
-						if strings.Contains(j, "%") {
-							info.liveTestCoverage = j
-							break loop
-						}
-					}
-				}
-			}
-			break
-		}
-	}
-
-	return nil
-}
-
 func defaultPlaceholder(v string) string {
 	if v == "" || v == "0.0%" {
 		return "/"
@@ -343,11 +276,7 @@ func defaultPlaceholder(v string) string {
 	return v
 }
 
-var mgmtReportMDHeader = `|module | latest version | tag | live test coverage | mock test result | mock test coverage |
-|---|---|---|---|---|---|
-`
-
-func writeMgmtFile(mgmtReport map[string]mgmtInfo, path string) error {
+func generateMDReport(mgmtReport map[string]mgmtInfo, path string) error {
 	mgmtFile, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
 		return err
@@ -387,18 +316,7 @@ func writeMgmtFile(mgmtReport map[string]mgmtInfo, path string) error {
 	return nil
 }
 
-func uploadMgmtReport(mgmtReport map[string]mgmtInfo, accountName, accountKey, containerName, blobName string) error {
-	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		return err
-	}
-
-	// The service URL for blob endpoints is usually in the form: http(s)://<account>.blob.core.windows.net/
-	client, err := azblob.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	if err != nil {
-		return err
-	}
-
+func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
 	sortMgmt := make([]string, 0, len(mgmtReport))
 	for k := range mgmtReport {
 		sortMgmt = append(sortMgmt, k)
@@ -446,7 +364,7 @@ func uploadMgmtReport(mgmtReport map[string]mgmtInfo, accountName, accountKey, c
 		if lt != "/" {
 			f, err := strconv.ParseFloat(strings.TrimRight(lt, "%"), 64)
 			if err != nil {
-				return err
+				return nil, err
 			}
 			average[2].sum += f
 			average[2].count++
@@ -471,14 +389,40 @@ func uploadMgmtReport(mgmtReport map[string]mgmtInfo, accountName, accountKey, c
 	w := bytes.Buffer{}
 	err = t.Execute(&w, htmlData)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
+	}
+
+	reportHTML, err := os.OpenFile(path.Join(sdkPath, "mgmtReport.html"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+	if err != nil {
+		return nil, err
+	}
+	defer reportHTML.Close()
+
+	_, err = reportHTML.Write(w.Bytes())
+	if err != nil {
+		return nil, err
+	}
+
+	return &w, err
+}
+
+func uploadHTMLReport(r io.Reader, accountName, accountKey, containerName, blobName string) error {
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	if err != nil {
+		return err
+	}
+
+	// The service URL for blob endpoints is usually in the form: http(s)://<account>.blob.core.windows.net/
+	client, err := azblob.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	if err != nil {
+		return err
 	}
 
 	contentType := "text/html"
 	_, err = client.UploadStream(context.TODO(),
 		containerName,
 		blobName,
-		&w,
+		r,
 		&azblob.UploadStreamOptions{
 			HTTPHeaders: &blob.HTTPHeaders{
 				BlobContentType: &contentType,
@@ -490,15 +434,3 @@ func uploadMgmtReport(mgmtReport map[string]mgmtInfo, accountName, accountKey, c
 
 	return nil
 }
-
-var htmlTR = `
-			<tr%s>
-				<td align="left">%s</td>
-				<td align="center">%s</td>
-				<td align="center">%s</td>
-				<td align="center">%s</td>
-				<td align="center">%s</td>
-				<td align="center">%s</td>
-			</tr>`
-
-var tdBackgroundStyle = ` class="pure-table-odd"`

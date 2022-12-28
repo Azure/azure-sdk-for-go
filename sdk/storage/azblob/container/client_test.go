@@ -2279,3 +2279,73 @@ func (s *ContainerUnrecordedTestsSuite) TestBatchDeleteUsingServiceSAS() {
 	}
 	_require.Equal(ctr, 0)
 }
+
+func (s *ContainerUnrecordedTestsSuite) TestBatchDeleteForSnapshotsAndVersionID() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	var bbOptions []*container.BatchDeleteOptions
+	for i := 0; i < 5; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		bbClient := containerClient.NewBlockBlobClient(bbName)
+		resp1, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+		_require.Nil(err)
+		_require.NotNil(resp1.VersionID)
+		bbOptions = append(bbOptions, &container.BatchDeleteOptions{
+			BlobName:  &bbName,
+			VersionID: resp1.VersionID,
+		})
+
+		resp2, err := bbClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		bbOptions = append(bbOptions, &container.BatchDeleteOptions{
+			BlobName: &bbName,
+			Snapshot: resp2.Snapshot,
+		})
+		bbOptions = append(bbOptions, &container.BatchDeleteOptions{
+			BlobName:  &bbName,
+			VersionID: resp2.VersionID,
+		})
+
+		resp3, err := bbClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		bbOptions = append(bbOptions, &container.BatchDeleteOptions{
+			BlobName: &bbName,
+			Snapshot: resp3.Snapshot,
+		})
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Versions: true},
+	})
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 25) // 10 snapshots + 10 versions + 5 blobs
+
+	resp, err := containerClient.DeleteBlobs(context.Background(), bbOptions)
+	_require.Nil(err)
+	p := make([]byte, 10000)
+	numOfBytes, _ := resp.Body.Read(p)
+	_require.NotZero(numOfBytes)
+
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Versions: true},
+	})
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 5) // 5 blobs
+}

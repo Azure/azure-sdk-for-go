@@ -146,9 +146,9 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 					return nil, err
 				}
 
-				p, ok := pipelinesMap[fmt.Sprintf("go - %s", arm.Name())]
+				p, ok := pipelinesMap[fmt.Sprintf("go - %s - %s", arm.Name(), dir.Name())]
 				if !ok {
-					p, ok = pipelinesMap[fmt.Sprintf("go - %s - %s", arm.Name(), dir.Name())]
+					p, ok = pipelinesMap[fmt.Sprintf("go - %s", arm.Name())]
 				}
 				if ok {
 					mInfo := mgmtInfo{

@@ -100,8 +100,12 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 			return nil, fmt.Errorf(`%s: unexpected scope "%s". Only alphanumeric characters and ".", ";", "-", and "/" are allowed`, credNameAzureCLI, resource)
 		}
 
-		ctx, cancel := context.WithTimeout(ctx, timeoutCLIRequest)
-		defer cancel()
+		// set a default timeout for this authentication iff the application hasn't done so already
+		var cancel context.CancelFunc
+		if _, hasDeadline := ctx.Deadline(); !hasDeadline {
+			ctx, cancel = context.WithTimeout(ctx, timeoutCLIRequest)
+			defer cancel()
+		}
 
 		commandLine := "az account get-access-token -o json --resource " + resource
 		if tenantID != "" {

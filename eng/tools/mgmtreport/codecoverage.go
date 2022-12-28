@@ -4,6 +4,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6"
@@ -12,7 +13,7 @@ import (
 
 func getBuildCodeCoverage(client *azuredevops.Client, projectName string, buildId int) (*test.CodeCoverageSummary, error) {
 	request, err := client.CreateRequestMessage(
-		ctx,
+		context.Background(),
 		"GET",
 		fmt.Sprintf("https://dev.azure.com/azure-sdk/%s/_apis/test/codecoverage?buildId=%d&api-version=7.0", projectName, buildId),
 		"7.0",

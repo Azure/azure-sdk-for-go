@@ -15,7 +15,9 @@ import (
 	"path"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
+	"text/template"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -27,7 +29,6 @@ import (
 )
 
 var (
-	ctx     = context.Background()
 	sdkPath string
 	// azure
 	storageAccountName   string
@@ -54,10 +55,12 @@ func main() {
 		flag.PrintDefaults()
 		log.Fatal("Please enter the azure-sdk-for-go path")
 	}
+
 	if storageAccountName == "" {
 		flag.PrintDefaults()
 		log.Fatal("Please enter the Azure Storage Account Name")
 	}
+
 	storageAccountKey, ok := os.LookupEnv("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY")
 	if !ok {
 		log.Fatal("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY could not be found")
@@ -77,36 +80,34 @@ func main() {
 	log.Println("Statistical mgmt report time:", time.Since(startTime))
 
 	log.Println("Write the mgmt report to the mgmtreport.md file...")
-	htmlData, err := writeMgmtFile(mgmtReport, path.Join(sdkPath, "mgmtReport.md"))
+	err = writeMgmtFile(mgmtReport, path.Join(sdkPath, "mgmtReport.md"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if htmlData != nil {
-		log.Println("Upload mgmt report to storage account...")
-		err = uploadMgmtReport(htmlData, storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
-		if err != nil {
-			log.Fatal(err)
-		}
+	log.Println("Upload mgmt report to storage account...")
+	err = uploadMgmtReport(mgmtReport, storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
 func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 	conn := azuredevops.NewPatConnection(organizationUrl, personalAccessToken)
-	testClient, err := test.NewClient(ctx, conn)
+	testClient, err := test.NewClient(context.Background(), conn)
 	if err != nil {
 		return nil, err
 	}
 
-	buildClient, err := build.NewClient(ctx, conn)
+	buildClient, err := build.NewClient(context.Background(), conn)
 	if err != nil {
 		return nil, err
 	}
 
 	azureDevopsClient := azuredevops.NewClient(conn, organizationUrl)
 
-	pipelineClient := pipelines.NewClient(ctx, conn)
-	pipelinesList, err := pipelineClient.ListPipelines(ctx, pipelines.ListPipelinesArgs{
+	pipelineClient := pipelines.NewClient(context.Background(), conn)
+	pipelinesList, err := pipelineClient.ListPipelines(context.Background(), pipelines.ListPipelinesArgs{
 		Project: &projectName,
 	})
 	if err != nil {
@@ -138,36 +139,11 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 			}
 
 			for _, arm := range armDirs {
-				moduleName := fmt.Sprintf("%s/%s", dir.Name(), arm.Name())
+				log.Printf("%s-%s\n", dir.Name(), arm.Name())
 				// read autorest.md
-				tag, readmeLink, version, multiModule, err := readAutorestMD(filepath.Join(modulePath, dir.Name(), arm.Name(), "autorest.md"))
+				tag, version, err := readAutorestMD(filepath.Join(modulePath, dir.Name(), arm.Name(), "autorest.md"))
 				if err != nil {
 					return nil, err
-				}
-				if tag == "" && readmeLink != "" {
-					readmeLink = strings.ReplaceAll(readmeLink, "https://github.com", "https://raw.githubusercontent.com")
-					readmeLink = strings.ReplaceAll(readmeLink, "/blob", "")
-					resp, err := http.Get(readmeLink)
-					if err != nil {
-						return nil, err
-					}
-
-					readmeBody, err := io.ReadAll(resp.Body)
-					if err != nil {
-						return nil, err
-					}
-
-					if multiModule != "" {
-						indexMultiModule := bytes.Index(readmeBody, []byte(fmt.Sprintf("``` yaml $(%s)", multiModule)))
-						readmeBody = readmeBody[indexMultiModule:]
-					}
-
-					for _, line := range strings.Split(string(readmeBody), "\n") {
-						if strings.HasPrefix(line, "tag: ") {
-							tag = line[len("tag: "):]
-							break
-						}
-					}
 				}
 
 				p, ok := pipelinesMap[fmt.Sprintf("go - %s", arm.Name())]
@@ -175,89 +151,30 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 					p, ok = pipelinesMap[fmt.Sprintf("go - %s - %s", arm.Name(), dir.Name())]
 				}
 				if ok {
-					listRuns, err := pipelineClient.ListRuns(ctx, pipelines.ListRunsArgs{Project: &projectName, PipelineId: p.Id})
-					if err != nil && len(*listRuns) > 0 {
-						return nil, err
-					}
-
 					mInfo := mgmtInfo{
 						version: version,
 						tag:     tag,
 					}
-					var buildId *int
-					for i := 0; i < 5 && i < len(*listRuns); i++ {
-						buildId = (*listRuns)[i].Id
 
-						// code coverage
-						codeCoverage, err := getBuildCodeCoverage(azureDevopsClient, projectName, *buildId)
-						if err != nil {
-							return nil, err
-						}
-
-						for _, coverage := range *codeCoverage.CoverageData {
-							if len(*coverage.CoverageStats) > 0 {
-								mInfo.CoveredLines = *(*coverage.CoverageStats)[0].Covered
-								mInfo.CoverableLines = *(*coverage.CoverageStats)[0].Total
-								break
-							}
-						}
-
-						if mInfo.CoverableLines == 0 {
-							continue
-						}
-						break
+					// code coverage
+					buildId, err := codeCoverage(pipelineClient, azureDevopsClient, &mInfo, *p.Id)
+					if err != nil {
+						return nil, err
 					}
 
 					// mock test
-					buildUri := fmt.Sprintf("vstfs:///Build/Build/%d", *buildId)
-					testRuns, err := testClient.GetTestRuns(ctx, test.GetTestRunsArgs{
-						Project:  &projectName,
-						BuildUri: &buildUri,
-					})
+					err = mockTest(testClient, &mInfo, buildId)
 					if err != nil {
 						return nil, err
-					}
-					if len(*testRuns) > 0 {
-						mInfo.mockTestPass = *(*testRuns)[0].PassedTests
-						mInfo.mockTestTotal = *(*testRuns)[0].TotalTests
 					}
 
 					// live test
-					buildLogs, err := buildClient.GetBuildLogs(ctx, build.GetBuildLogsArgs{
-						Project: &projectName,
-						BuildId: buildId,
-					})
+					err = liveTest(buildClient, &mInfo, buildId)
 					if err != nil {
 						return nil, err
 					}
 
-					for i := 120; i < len(*buildLogs); i++ {
-						logLines, err := buildClient.GetBuildLogLines(ctx, build.GetBuildLogLinesArgs{
-							Project: &projectName,
-							BuildId: buildId,
-							LogId:   (*buildLogs)[i].Id,
-						})
-						if err != nil {
-							return nil, err
-						}
-
-						if logInfo := strings.Join(*logLines, "\n"); strings.Contains(logInfo, "Starting: Run Tests") && strings.Contains(logInfo, "Finishing: Run Tests") {
-						loop:
-							for _, line := range *logLines {
-								if strings.Contains(line, "coverage:") {
-									splits := strings.Split(line, " ")
-									for _, j := range splits {
-										if strings.Contains(j, "%") {
-											mInfo.liveTestCoverage = j
-											break loop
-										}
-									}
-								}
-							}
-							break
-						}
-					}
-
+					moduleName := fmt.Sprintf("%s/%s", dir.Name(), arm.Name())
 					mgmtReport[moduleName] = mInfo
 				}
 			}
@@ -267,7 +184,7 @@ func execute(sdkPath, personalAccessToken string) (map[string]mgmtInfo, error) {
 	return mgmtReport, nil
 }
 
-func readAutorestMD(path string) (string, string, string, string, error) {
+func readAutorestMD(path string) (string, string, error) {
 	var (
 		tag           string
 		readmeLink    string
@@ -277,7 +194,7 @@ func readAutorestMD(path string) (string, string, string, string, error) {
 
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return "", "", "", "", err
+		return "", "", err
 	}
 
 	lines := strings.Split(string(b), "\n")
@@ -293,7 +210,33 @@ func readAutorestMD(path string) (string, string, string, string, error) {
 		}
 	}
 
-	return tag, readmeLink, moduleVersion, multiModule, nil
+	if tag == "" && readmeLink != "" {
+		readmeLink = strings.ReplaceAll(readmeLink, "https://github.com", "https://raw.githubusercontent.com")
+		readmeLink = strings.ReplaceAll(readmeLink, "/blob", "")
+		resp, err := http.Get(readmeLink)
+		if err != nil {
+			return "", "", err
+		}
+
+		readmeBody, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return "", "", err
+		}
+
+		if multiModule != "" {
+			indexMultiModule := bytes.Index(readmeBody, []byte(fmt.Sprintf("``` yaml $(%s)", multiModule)))
+			readmeBody = readmeBody[indexMultiModule:]
+		}
+
+		for _, line := range strings.Split(string(readmeBody), "\n") {
+			if strings.HasPrefix(line, "tag: ") {
+				tag = line[len("tag: "):]
+				break
+			}
+		}
+	}
+
+	return tag, moduleVersion, nil
 }
 
 type mgmtInfo struct {
@@ -306,6 +249,93 @@ type mgmtInfo struct {
 	liveTestCoverage string
 }
 
+func codeCoverage(pipelineClient pipelines.Client, azureDevopsClient *azuredevops.Client, info *mgmtInfo, pid int) (*int, error) {
+	listRuns, err := pipelineClient.ListRuns(context.Background(), pipelines.ListRunsArgs{Project: &projectName, PipelineId: &pid})
+	if err != nil && len(*listRuns) > 0 {
+		return nil, err
+	}
+
+	var buildId *int
+	for i := 0; i < 5 && i < len(*listRuns); i++ {
+		buildId = (*listRuns)[i].Id
+
+		// code coverage
+		buildCodeCoverage, err := getBuildCodeCoverage(azureDevopsClient, projectName, *buildId)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, coverage := range *buildCodeCoverage.CoverageData {
+			if len(*coverage.CoverageStats) > 0 {
+				info.CoveredLines = *(*coverage.CoverageStats)[0].Covered
+				info.CoverableLines = *(*coverage.CoverageStats)[0].Total
+				break
+			}
+		}
+
+		if info.CoverableLines == 0 {
+			continue
+		}
+		break
+	}
+	return buildId, nil
+}
+
+func mockTest(testClient test.Client, info *mgmtInfo, buildId *int) error {
+	buildUri := fmt.Sprintf("vstfs:///Build/Build/%d", *buildId)
+	testRuns, err := testClient.GetTestRuns(context.Background(), test.GetTestRunsArgs{
+		Project:  &projectName,
+		BuildUri: &buildUri,
+	})
+	if err != nil {
+		return err
+	}
+	if len(*testRuns) > 0 {
+		info.mockTestPass = *(*testRuns)[0].PassedTests
+		info.mockTestTotal = *(*testRuns)[0].TotalTests
+	}
+	return nil
+}
+
+func liveTest(buildClient build.Client, info *mgmtInfo, buildId *int) error {
+	buildLogs, err := buildClient.GetBuildLogs(context.Background(), build.GetBuildLogsArgs{
+		Project: &projectName,
+		BuildId: buildId,
+	})
+	if err != nil {
+		return err
+	}
+
+	for i := 120; i < len(*buildLogs); i++ {
+		logLines, err := buildClient.GetBuildLogLines(context.Background(), build.GetBuildLogLinesArgs{
+			Project: &projectName,
+			BuildId: buildId,
+			LogId:   (*buildLogs)[i].Id,
+		})
+		if err != nil {
+			return err
+		}
+
+		if logInfo := strings.Join(*logLines, "\n"); strings.Contains(logInfo, "Starting: Run Tests") && strings.Contains(logInfo, "Finishing: Run Tests") {
+		loop:
+			for _, line := range *logLines {
+				if strings.Contains(line, "coverage:") {
+					splits := strings.Split(line, " ")
+					for _, j := range splits {
+						if strings.Contains(j, "%") {
+							info.liveTestCoverage = j
+							break loop
+						}
+					}
+				}
+			}
+			break
+		}
+	}
+
+	return nil
+}
+
 func defaultPlaceholder(v string) string {
 	if v == "" || v == "0.0%" {
 		return "/"
@@ -313,16 +343,20 @@ func defaultPlaceholder(v string) string {
 	return v
 }
 
-func writeMgmtFile(mgmtReport map[string]mgmtInfo, path string) ([]string, error) {
+var mgmtReportMDHeader = `|module | latest version | tag | live test coverage | mock test result | mock test coverage |
+|---|---|---|---|---|---|
+`
+
+func writeMgmtFile(mgmtReport map[string]mgmtInfo, path string) error {
 	mgmtFile, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer mgmtFile.Close()
 
 	_, err = mgmtFile.Write([]byte(mgmtReportMDHeader))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	sortMgmt := make([]string, 0, len(mgmtReport))
@@ -331,37 +365,29 @@ func writeMgmtFile(mgmtReport map[string]mgmtInfo, path string) ([]string, error
 	}
 	sort.Strings(sortMgmt)
 
-	htmlData := make([]string, 0, len(mgmtReport))
-
-	for i, module := range sortMgmt {
+	for _, module := range sortMgmt {
 		m := mgmtReport[module]
-		mockTest := "/"
+		mt := "/"
 		if m.mockTestTotal != 0 {
-			mockTest = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.mockTestPass)/float64(m.mockTestTotal)*100, m.mockTestPass, m.mockTestTotal)
+			mt = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.mockTestPass)/float64(m.mockTestTotal)*100, m.mockTestPass, m.mockTestTotal)
 		}
 
-		codeCoverage := "/"
+		cc := "/"
 		if m.CoverableLines != 0 {
-			codeCoverage = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.CoveredLines)/float64(m.CoverableLines)*100, m.CoveredLines, m.CoverableLines)
+			cc = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.CoveredLines)/float64(m.CoverableLines)*100, m.CoveredLines, m.CoverableLines)
 		}
 
-		f := fmt.Sprintf("|%s | %s | %s | %s | %s | %s |\n", module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), defaultPlaceholder(m.liveTestCoverage), mockTest, codeCoverage)
+		f := fmt.Sprintf("|%s | %s | %s | %s | %s | %s |\n", module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), defaultPlaceholder(m.liveTestCoverage), mt, cc)
 		_, err = mgmtFile.Write([]byte(f))
 		if err != nil {
-			return nil, err
+			return err
 		}
-
-		tdBackground := ""
-		if i%2 == 0 {
-			tdBackground = tdBackgroundStyle
-		}
-		htmlData = append(htmlData, fmt.Sprintf(htmlTR, tdBackground, module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), defaultPlaceholder(m.liveTestCoverage), mockTest, codeCoverage))
 	}
 
-	return htmlData, nil
+	return nil
 }
 
-func uploadMgmtReport(htmlData []string, accountName, accountKey, containerName, blobName string) error {
+func uploadMgmtReport(mgmtReport map[string]mgmtInfo, accountName, accountKey, containerName, blobName string) error {
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
 		return err
@@ -373,11 +399,86 @@ func uploadMgmtReport(htmlData []string, accountName, accountKey, containerName,
 		return err
 	}
 
+	sortMgmt := make([]string, 0, len(mgmtReport))
+	for k := range mgmtReport {
+		sortMgmt = append(sortMgmt, k)
+	}
+	sort.Strings(sortMgmt)
+
+	htmlData := make([]string, 0, len(mgmtReport))
+	average := []struct {
+		count int
+		sum   float64
+	}{
+		{
+			count: 0,
+			sum:   0,
+		},
+		{
+			count: 0,
+			sum:   0,
+		},
+		{
+			count: 0,
+			sum:   0,
+		},
+	}
+
+	for i, module := range sortMgmt {
+		m := mgmtReport[module]
+		mt := "/"
+		if m.mockTestTotal != 0 {
+			coverage := float64(m.mockTestPass) / float64(m.mockTestTotal)
+			average[0].sum += coverage
+			average[0].count++
+			mt = fmt.Sprintf("%.2f%%(%d/%d)", coverage*100, m.mockTestPass, m.mockTestTotal)
+		}
+
+		cc := "/"
+		if m.CoverableLines != 0 {
+			coverage := float64(m.CoveredLines) / float64(m.CoverableLines)
+			average[1].sum += coverage
+			average[1].count++
+			cc = fmt.Sprintf("%.2f%%(%d/%d)", coverage*100, m.CoveredLines, m.CoverableLines)
+		}
+
+		lt := defaultPlaceholder(m.liveTestCoverage)
+		if lt != "/" {
+			f, err := strconv.ParseFloat(strings.TrimRight(lt, "%"), 64)
+			if err != nil {
+				return err
+			}
+			average[2].sum += f
+			average[2].count++
+		}
+
+		tdBackground := ""
+		if i%2 == 0 {
+			tdBackground = tdBackgroundStyle
+		}
+		htmlData = append(htmlData, fmt.Sprintf(htmlTR, tdBackground, module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), defaultPlaceholder(m.liveTestCoverage), mt, cc))
+	}
+
+	// average
+	htmlData = append(htmlData, fmt.Sprintf(htmlTR, "", "Average", "", "", fmt.Sprintf("%.2f%%", average[2].sum/float64(average[2].count)), fmt.Sprintf("%.2f%%", (average[0].sum/float64(average[0].count))*100), fmt.Sprintf("%.2f%%", (average[1].sum/float64(average[1].count))*100)))
+
+	// parse template file
+	t, err := template.ParseFiles("./mgmtreport.tpl")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	w := bytes.Buffer{}
+	err = t.Execute(&w, htmlData)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	contentType := "text/html"
 	_, err = client.UploadStream(context.TODO(),
 		containerName,
 		blobName,
-		strings.NewReader(htmlHeader+strings.Join(htmlData, "\n")+htmlTail),
+		&w,
 		&azblob.UploadStreamOptions{
 			HTTPHeaders: &blob.HTTPHeaders{
 				BlobContentType: &contentType,
@@ -389,3 +490,15 @@ func uploadMgmtReport(htmlData []string, accountName, accountKey, containerName,
 
 	return nil
 }
+
+var htmlTR = `
+			<tr%s>
+				<td align="left">%s</td>
+				<td align="center">%s</td>
+				<td align="center">%s</td>
+				<td align="center">%s</td>
+				<td align="center">%s</td>
+				<td align="center">%s</td>
+			</tr>`
+
+var tdBackgroundStyle = ` class="pure-table-odd"`

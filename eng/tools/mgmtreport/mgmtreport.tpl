@@ -1,9 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for license information.
-
-package main
-
-var htmlHeader = `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <title>Azure GO SDK MGMT REPORT</title>
@@ -80,27 +75,11 @@ td,th {
 				<th align="center">mock test coverage</th>
             </tr>
         </thead>
-    
-        <tbody>`
-
-var htmlTR = `
-			<tr%s>
-				<td align="left">%s</td>
-				<td align="center">%s</td>
-				<td align="center">%s</td>
-				<td align="center">%s</td>
-				<td align="center">%s</td>
-				<td align="center">%s</td>
-			</tr>`
-
-var htmlTail = `
+        <tbody>
+            {{range .}}
+                {{ . }}
+            {{end}}
         </tbody>
 	</table>
 </body>
-</html>`
-
-var tdBackgroundStyle = ` class="pure-table-odd"`
-
-var mgmtReportMDHeader = `|module | latest version | tag | live test coverage | mock test result | mock test coverage |
-|---|---|---|---|---|---|
-`
+</html>

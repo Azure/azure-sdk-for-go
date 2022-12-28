@@ -9,6 +9,9 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Exported `CredentialUnavailableError`. Custom credentials should return
+  this type from their `GetToken()` methods when they can't acquire a token
+  and `ChainedTokenCredential` should try its next credential, if any.
 
 ## 1.3.0-beta.1 (2022-12-13)
 

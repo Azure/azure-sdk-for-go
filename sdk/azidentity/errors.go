@@ -101,8 +101,8 @@ func (*AuthenticationFailedError) NonRetriable() {
 
 var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
 
-// CredentialUnavailableError indicates a credential can't attempt
-// authentication because it lacks required data or state.
+// CredentialUnavailableError indicates a credential can't attempt authentication because it lacks required
+// data or state. When [ChainedTokenCredential] receives this error it will try its next credential, if any.
 type CredentialUnavailableError struct {
 	// Message describes the cause of the error
 	Message string

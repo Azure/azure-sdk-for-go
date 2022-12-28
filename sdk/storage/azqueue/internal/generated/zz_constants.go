@@ -13,14 +13,14 @@ package generated
 type QueueGeoReplicationStatus string
 
 const (
-	QueueGeoReplicationStatusLive        QueueGeoReplicationStatus = "live"
-	QueueGeoReplicationStatusBootstrap   QueueGeoReplicationStatus = "bootstrap"
+	QueueGeoReplicationStatusLive QueueGeoReplicationStatus = "live"
+	QueueGeoReplicationStatusBootstrap QueueGeoReplicationStatus = "bootstrap"
 	QueueGeoReplicationStatusUnavailable QueueGeoReplicationStatus = "unavailable"
 )
 
 // PossibleQueueGeoReplicationStatusValues returns the possible values for the QueueGeoReplicationStatus const type.
 func PossibleQueueGeoReplicationStatusValues() []QueueGeoReplicationStatus {
-	return []QueueGeoReplicationStatus{
+	return []QueueGeoReplicationStatus{	
 		QueueGeoReplicationStatusLive,
 		QueueGeoReplicationStatusBootstrap,
 		QueueGeoReplicationStatusUnavailable,
@@ -31,68 +31,68 @@ func PossibleQueueGeoReplicationStatusValues() []QueueGeoReplicationStatus {
 type StorageErrorCode string
 
 const (
-	StorageErrorCodeAccountAlreadyExists                 StorageErrorCode = "AccountAlreadyExists"
-	StorageErrorCodeAccountBeingCreated                  StorageErrorCode = "AccountBeingCreated"
-	StorageErrorCodeAccountIsDisabled                    StorageErrorCode = "AccountIsDisabled"
-	StorageErrorCodeAuthenticationFailed                 StorageErrorCode = "AuthenticationFailed"
-	StorageErrorCodeAuthorizationFailure                 StorageErrorCode = "AuthorizationFailure"
-	StorageErrorCodeAuthorizationPermissionMismatch      StorageErrorCode = "AuthorizationPermissionMismatch"
-	StorageErrorCodeAuthorizationProtocolMismatch        StorageErrorCode = "AuthorizationProtocolMismatch"
-	StorageErrorCodeAuthorizationResourceTypeMismatch    StorageErrorCode = "AuthorizationResourceTypeMismatch"
-	StorageErrorCodeAuthorizationServiceMismatch         StorageErrorCode = "AuthorizationServiceMismatch"
-	StorageErrorCodeAuthorizationSourceIPMismatch        StorageErrorCode = "AuthorizationSourceIPMismatch"
-	StorageErrorCodeConditionHeadersNotSupported         StorageErrorCode = "ConditionHeadersNotSupported"
-	StorageErrorCodeConditionNotMet                      StorageErrorCode = "ConditionNotMet"
-	StorageErrorCodeEmptyMetadataKey                     StorageErrorCode = "EmptyMetadataKey"
-	StorageErrorCodeFeatureVersionMismatch               StorageErrorCode = "FeatureVersionMismatch"
-	StorageErrorCodeInsufficientAccountPermissions       StorageErrorCode = "InsufficientAccountPermissions"
-	StorageErrorCodeInternalError                        StorageErrorCode = "InternalError"
-	StorageErrorCodeInvalidAuthenticationInfo            StorageErrorCode = "InvalidAuthenticationInfo"
-	StorageErrorCodeInvalidHTTPVerb                      StorageErrorCode = "InvalidHttpVerb"
-	StorageErrorCodeInvalidHeaderValue                   StorageErrorCode = "InvalidHeaderValue"
-	StorageErrorCodeInvalidInput                         StorageErrorCode = "InvalidInput"
-	StorageErrorCodeInvalidMD5                           StorageErrorCode = "InvalidMd5"
-	StorageErrorCodeInvalidMarker                        StorageErrorCode = "InvalidMarker"
-	StorageErrorCodeInvalidMetadata                      StorageErrorCode = "InvalidMetadata"
-	StorageErrorCodeInvalidQueryParameterValue           StorageErrorCode = "InvalidQueryParameterValue"
-	StorageErrorCodeInvalidRange                         StorageErrorCode = "InvalidRange"
-	StorageErrorCodeInvalidResourceName                  StorageErrorCode = "InvalidResourceName"
-	StorageErrorCodeInvalidURI                           StorageErrorCode = "InvalidUri"
-	StorageErrorCodeInvalidXMLDocument                   StorageErrorCode = "InvalidXmlDocument"
-	StorageErrorCodeInvalidXMLNodeValue                  StorageErrorCode = "InvalidXmlNodeValue"
-	StorageErrorCodeMD5Mismatch                          StorageErrorCode = "Md5Mismatch"
-	StorageErrorCodeMessageNotFound                      StorageErrorCode = "MessageNotFound"
-	StorageErrorCodeMessageTooLarge                      StorageErrorCode = "MessageTooLarge"
-	StorageErrorCodeMetadataTooLarge                     StorageErrorCode = "MetadataTooLarge"
-	StorageErrorCodeMissingContentLengthHeader           StorageErrorCode = "MissingContentLengthHeader"
-	StorageErrorCodeMissingRequiredHeader                StorageErrorCode = "MissingRequiredHeader"
-	StorageErrorCodeMissingRequiredQueryParameter        StorageErrorCode = "MissingRequiredQueryParameter"
-	StorageErrorCodeMissingRequiredXMLNode               StorageErrorCode = "MissingRequiredXmlNode"
+	StorageErrorCodeAccountAlreadyExists StorageErrorCode = "AccountAlreadyExists"
+	StorageErrorCodeAccountBeingCreated StorageErrorCode = "AccountBeingCreated"
+	StorageErrorCodeAccountIsDisabled StorageErrorCode = "AccountIsDisabled"
+	StorageErrorCodeAuthenticationFailed StorageErrorCode = "AuthenticationFailed"
+	StorageErrorCodeAuthorizationFailure StorageErrorCode = "AuthorizationFailure"
+	StorageErrorCodeAuthorizationPermissionMismatch StorageErrorCode = "AuthorizationPermissionMismatch"
+	StorageErrorCodeAuthorizationProtocolMismatch StorageErrorCode = "AuthorizationProtocolMismatch"
+	StorageErrorCodeAuthorizationResourceTypeMismatch StorageErrorCode = "AuthorizationResourceTypeMismatch"
+	StorageErrorCodeAuthorizationServiceMismatch StorageErrorCode = "AuthorizationServiceMismatch"
+	StorageErrorCodeAuthorizationSourceIPMismatch StorageErrorCode = "AuthorizationSourceIPMismatch"
+	StorageErrorCodeConditionHeadersNotSupported StorageErrorCode = "ConditionHeadersNotSupported"
+	StorageErrorCodeConditionNotMet StorageErrorCode = "ConditionNotMet"
+	StorageErrorCodeEmptyMetadataKey StorageErrorCode = "EmptyMetadataKey"
+	StorageErrorCodeFeatureVersionMismatch StorageErrorCode = "FeatureVersionMismatch"
+	StorageErrorCodeInsufficientAccountPermissions StorageErrorCode = "InsufficientAccountPermissions"
+	StorageErrorCodeInternalError StorageErrorCode = "InternalError"
+	StorageErrorCodeInvalidAuthenticationInfo StorageErrorCode = "InvalidAuthenticationInfo"
+	StorageErrorCodeInvalidHTTPVerb StorageErrorCode = "InvalidHttpVerb"
+	StorageErrorCodeInvalidHeaderValue StorageErrorCode = "InvalidHeaderValue"
+	StorageErrorCodeInvalidInput StorageErrorCode = "InvalidInput"
+	StorageErrorCodeInvalidMD5 StorageErrorCode = "InvalidMd5"
+	StorageErrorCodeInvalidMarker StorageErrorCode = "InvalidMarker"
+	StorageErrorCodeInvalidMetadata StorageErrorCode = "InvalidMetadata"
+	StorageErrorCodeInvalidQueryParameterValue StorageErrorCode = "InvalidQueryParameterValue"
+	StorageErrorCodeInvalidRange StorageErrorCode = "InvalidRange"
+	StorageErrorCodeInvalidResourceName StorageErrorCode = "InvalidResourceName"
+	StorageErrorCodeInvalidURI StorageErrorCode = "InvalidUri"
+	StorageErrorCodeInvalidXMLDocument StorageErrorCode = "InvalidXmlDocument"
+	StorageErrorCodeInvalidXMLNodeValue StorageErrorCode = "InvalidXmlNodeValue"
+	StorageErrorCodeMD5Mismatch StorageErrorCode = "Md5Mismatch"
+	StorageErrorCodeMessageNotFound StorageErrorCode = "MessageNotFound"
+	StorageErrorCodeMessageTooLarge StorageErrorCode = "MessageTooLarge"
+	StorageErrorCodeMetadataTooLarge StorageErrorCode = "MetadataTooLarge"
+	StorageErrorCodeMissingContentLengthHeader StorageErrorCode = "MissingContentLengthHeader"
+	StorageErrorCodeMissingRequiredHeader StorageErrorCode = "MissingRequiredHeader"
+	StorageErrorCodeMissingRequiredQueryParameter StorageErrorCode = "MissingRequiredQueryParameter"
+	StorageErrorCodeMissingRequiredXMLNode StorageErrorCode = "MissingRequiredXmlNode"
 	StorageErrorCodeMultipleConditionHeadersNotSupported StorageErrorCode = "MultipleConditionHeadersNotSupported"
-	StorageErrorCodeOperationTimedOut                    StorageErrorCode = "OperationTimedOut"
-	StorageErrorCodeOutOfRangeInput                      StorageErrorCode = "OutOfRangeInput"
-	StorageErrorCodeOutOfRangeQueryParameterValue        StorageErrorCode = "OutOfRangeQueryParameterValue"
-	StorageErrorCodePopReceiptMismatch                   StorageErrorCode = "PopReceiptMismatch"
-	StorageErrorCodeQueueAlreadyExists                   StorageErrorCode = "QueueAlreadyExists"
-	StorageErrorCodeQueueBeingDeleted                    StorageErrorCode = "QueueBeingDeleted"
-	StorageErrorCodeQueueDisabled                        StorageErrorCode = "QueueDisabled"
-	StorageErrorCodeQueueNotEmpty                        StorageErrorCode = "QueueNotEmpty"
-	StorageErrorCodeQueueNotFound                        StorageErrorCode = "QueueNotFound"
-	StorageErrorCodeRequestBodyTooLarge                  StorageErrorCode = "RequestBodyTooLarge"
-	StorageErrorCodeRequestURLFailedToParse              StorageErrorCode = "RequestUrlFailedToParse"
-	StorageErrorCodeResourceAlreadyExists                StorageErrorCode = "ResourceAlreadyExists"
-	StorageErrorCodeResourceNotFound                     StorageErrorCode = "ResourceNotFound"
-	StorageErrorCodeResourceTypeMismatch                 StorageErrorCode = "ResourceTypeMismatch"
-	StorageErrorCodeServerBusy                           StorageErrorCode = "ServerBusy"
-	StorageErrorCodeUnsupportedHTTPVerb                  StorageErrorCode = "UnsupportedHttpVerb"
-	StorageErrorCodeUnsupportedHeader                    StorageErrorCode = "UnsupportedHeader"
-	StorageErrorCodeUnsupportedQueryParameter            StorageErrorCode = "UnsupportedQueryParameter"
-	StorageErrorCodeUnsupportedXMLNode                   StorageErrorCode = "UnsupportedXmlNode"
+	StorageErrorCodeOperationTimedOut StorageErrorCode = "OperationTimedOut"
+	StorageErrorCodeOutOfRangeInput StorageErrorCode = "OutOfRangeInput"
+	StorageErrorCodeOutOfRangeQueryParameterValue StorageErrorCode = "OutOfRangeQueryParameterValue"
+	StorageErrorCodePopReceiptMismatch StorageErrorCode = "PopReceiptMismatch"
+	StorageErrorCodeQueueAlreadyExists StorageErrorCode = "QueueAlreadyExists"
+	StorageErrorCodeQueueBeingDeleted StorageErrorCode = "QueueBeingDeleted"
+	StorageErrorCodeQueueDisabled StorageErrorCode = "QueueDisabled"
+	StorageErrorCodeQueueNotEmpty StorageErrorCode = "QueueNotEmpty"
+	StorageErrorCodeQueueNotFound StorageErrorCode = "QueueNotFound"
+	StorageErrorCodeRequestBodyTooLarge StorageErrorCode = "RequestBodyTooLarge"
+	StorageErrorCodeRequestURLFailedToParse StorageErrorCode = "RequestUrlFailedToParse"
+	StorageErrorCodeResourceAlreadyExists StorageErrorCode = "ResourceAlreadyExists"
+	StorageErrorCodeResourceNotFound StorageErrorCode = "ResourceNotFound"
+	StorageErrorCodeResourceTypeMismatch StorageErrorCode = "ResourceTypeMismatch"
+	StorageErrorCodeServerBusy StorageErrorCode = "ServerBusy"
+	StorageErrorCodeUnsupportedHTTPVerb StorageErrorCode = "UnsupportedHttpVerb"
+	StorageErrorCodeUnsupportedHeader StorageErrorCode = "UnsupportedHeader"
+	StorageErrorCodeUnsupportedQueryParameter StorageErrorCode = "UnsupportedQueryParameter"
+	StorageErrorCodeUnsupportedXMLNode StorageErrorCode = "UnsupportedXmlNode"
 )
 
 // PossibleStorageErrorCodeValues returns the possible values for the StorageErrorCode const type.
 func PossibleStorageErrorCodeValues() []StorageErrorCode {
-	return []StorageErrorCode{
+	return []StorageErrorCode{	
 		StorageErrorCodeAccountAlreadyExists,
 		StorageErrorCodeAccountBeingCreated,
 		StorageErrorCodeAccountIsDisabled,
@@ -152,3 +152,4 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 		StorageErrorCodeUnsupportedXMLNode,
 	}
 }
+

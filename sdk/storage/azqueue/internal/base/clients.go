@@ -29,23 +29,16 @@ func NewClient[T any](inner *T) *Client[T] {
 	return &Client[T]{inner: inner}
 }
 
-func NewServiceClient(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
+func NewServiceClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
 	return &Client[generated.ServiceClient]{
-		inner:     generated.NewServiceClient(containerURL, pipeline),
+		inner:     generated.NewServiceClient(queueURL, pipeline),
 		sharedKey: sharedKey,
 	}
 }
 
-func NewQueueClient(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.QueueClient] {
+func NewQueueClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.QueueClient] {
 	return &Client[generated.QueueClient]{
-		inner:     generated.NewQueueClient(containerURL, pipeline),
-		sharedKey: sharedKey,
-	}
-}
-
-func NewMessagesClient(blobURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.MessagesClient] {
-	return &Client[generated.MessagesClient]{
-		inner:     generated.NewMessagesClient(blobURL, pipeline),
+		inner:     generated.NewQueueClient(queueURL, pipeline),
 		sharedKey: sharedKey,
 	}
 }

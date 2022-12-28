@@ -90,7 +90,7 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 			return ParsedConnectionString{}, errors.New("connection string missing AccountKey and SharedAccessSignature")
 		}
 		return ParsedConnectionString{
-			ServiceURL: fmt.Sprintf("%v://%v.blob.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature),
+			ServiceURL: fmt.Sprintf("%v://%v.queue.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature),
 		}, nil
 	}
 
@@ -104,16 +104,16 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 		suffix = defaultSuffix
 	}
 
-	if blobEndpoint, ok := connStrMap["BlobEndpoint"]; ok {
+	if queueEndpoint, ok := connStrMap["QueueEndpoint"]; ok {
 		return ParsedConnectionString{
-			ServiceURL:  blobEndpoint,
+			ServiceURL:  queueEndpoint,
 			AccountName: accountName,
 			AccountKey:  accountKey,
 		}, nil
 	}
 
 	return ParsedConnectionString{
-		ServiceURL:  fmt.Sprintf("%v://%v.blob.%v", protocol, accountName, suffix),
+		ServiceURL:  fmt.Sprintf("%v://%v.queue.%v", protocol, accountName, suffix),
 		AccountName: accountName,
 		AccountKey:  accountKey,
 	}, nil
@@ -127,7 +127,7 @@ func GetClientOptions[T any](o *T) *T {
 }
 
 // IsIPEndpointStyle checkes if URL's host is IP, in this case the storage account endpoint will be composed as:
-// http(s)://IP(:port)/storageaccount/container/...
+// http(s)://IP(:port)/storageaccount/queue/...
 // As url's Host property, host could be both host or host:port
 func IsIPEndpointStyle(host string) bool {
 	if host == "" {

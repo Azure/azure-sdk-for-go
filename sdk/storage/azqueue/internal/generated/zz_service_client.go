@@ -163,7 +163,7 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // Generated from API version 2018-03-28
 // options - ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.ListQueuesSegment
 // method.
-// ListQueuesSegmentCreateRequest creates the ListBlobFlatSegment ListQueuesSegment.
+// ListQueuesSegmentCreateRequest creates the ListQueuesFlatSegment ListQueuesSegment.
 func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context, options *ServiceClientListQueuesSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {

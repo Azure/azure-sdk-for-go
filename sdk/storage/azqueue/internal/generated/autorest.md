@@ -1,4 +1,4 @@
-# Code Generation - Azure Blob SDK for Golang
+# Code Generation - Azure Queue SDK for Golang
 
 ### Settings
 
@@ -64,7 +64,7 @@ directive:
     where: $
     transform: >-
       return $.
-        replace(/func \(client \*ServiceClient\) NewListQueuesSegmentPager\(.+\/\/ listQueuesSegmentCreateRequest creates the ListQueuesSegment request/s, `// ListQueuesSegmentCreateRequest creates the ListBlobFlatSegment ListQueuesSegment`).
+        replace(/func \(client \*ServiceClient\) NewListQueuesSegmentPager\(.+\/\/ listQueuesSegmentCreateRequest creates the ListQueuesSegment request/s, `// ListQueuesSegmentCreateRequest creates the ListQueuesFlatSegment ListQueuesSegment`).
         replace(/\(client \*ServiceClient\) listQueuesSegmentCreateRequest\(/, `(client *ServiceClient) ListQueuesSegmentCreateRequest(`).
         replace(/\(client \*ServiceClient\) listQueuesSegmentHandleResponse\(/, `(client *ServiceClient) ListQueuesSegmentHandleResponse(`);
 ```

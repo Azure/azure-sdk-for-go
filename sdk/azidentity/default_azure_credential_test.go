@@ -12,8 +12,10 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -70,6 +72,30 @@ func TestDefaultAzureCredential_ConstructorErrorHandler(t *testing.T) {
 	}
 	if logMessages[0] != expectedLogs {
 		t.Fatalf("Did not receive the expected logs.\n\nReceived:\n%s\n\nExpected:\n%s", logMessages[0], expectedLogs)
+	}
+}
+
+func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
+	cred, err := NewDefaultAzureCredential(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond)
+	defer cancel()
+	_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+	// these credentials' constructors returned errors because their configuration is absent;
+	// those errors should be represented in the error returned by DefaultAzureCredential.GetToken()
+	for _, name := range []string{"EnvironmentCredential", credNameWorkloadIdentity} {
+		matched, err := regexp.MatchString(name+`: .+\n`, err.Error())
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched {
+			t.Errorf("expected an error message from %s", name)
+		}
 	}
 }
 

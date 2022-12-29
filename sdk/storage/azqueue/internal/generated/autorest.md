@@ -69,7 +69,7 @@ directive:
         replace(/\(client \*ServiceClient\) listQueuesSegmentHandleResponse\(/, `(client *ServiceClient) ListQueuesSegmentHandleResponse(`);
 ```
 
-### Fix function marshal and unmarshal signatures to be non-conflicting
+### Fix encoder and decoder parameter names to be non-conflicting
 
 ``` yaml
 directive:

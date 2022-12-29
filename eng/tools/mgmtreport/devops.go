@@ -66,12 +66,11 @@ func getCodeCoverage(pipelineClient pipelines.Client, azureDevopsClient *azurede
 			return nil, err
 		}
 
-		if coverableLines == 0 {
-			continue
+		if coverableLines != 0 {
+			info.CoveredLines = coveredLines
+			info.CoverableLines = coverableLines
+			break
 		}
-		info.CoveredLines = coveredLines
-		info.CoverableLines = coverableLines
-		break
 	}
 
 	return buildId, nil
@@ -86,9 +85,12 @@ func getMockTestResult(testClient test.Client, info *mgmtInfo, buildId *int) err
 	if err != nil {
 		return err
 	}
-	if len(*testRuns) > 0 {
-		info.mockTestPass = *(*testRuns)[0].PassedTests
-		info.mockTestTotal = *(*testRuns)[0].TotalTests
+	for _, tr := range *testRuns {
+		if strings.Contains(*tr.Name, "Test result on resourcemanager") {
+			info.mockTestPass = *tr.PassedTests
+			info.mockTestTotal = *tr.TotalTests
+			return nil
+		}
 	}
 	return nil
 }

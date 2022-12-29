@@ -1,12 +1,15 @@
 package service
 
 import (
+	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
+	"net/http"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -72,4 +75,82 @@ func (s *Client) sharedKey() *SharedKeyCredential {
 // URL returns the URL endpoint used by the Client object.
 func (s *Client) URL() string {
 	return s.generated().Endpoint()
+}
+
+//func (s *Client) CreateQueue(ctx context.Context, containerName string, options *CreateContainerOptions) (CreateContainerResponse, error) {
+//	containerClient := s.NewContainerClient(containerName)
+//	containerCreateResp, err := containerClient.Create(ctx, options)
+//	return containerCreateResp, err
+//}
+//
+
+//func (s *Client) DeleteQueue(ctx context.Context, containerName string, options *DeleteContainerOptions) (DeleteContainerResponse, error) {
+//	containerClient := s.NewContainerClient(containerName)
+//	containerDeleteResp, err := containerClient.Delete(ctx, options)
+//	return containerDeleteResp, err
+//}
+
+// GetProperties - gets the properties of a storage account's Queue service, including properties for Storage Analytics
+// and CORS (Cross-Origin Resource Sharing) rules.
+func (s *Client) GetProperties(ctx context.Context, o *GetPropertiesOptions) (GetPropertiesResponse, error) {
+	getPropertiesOptions := o.format()
+	resp, err := s.generated().GetProperties(ctx, getPropertiesOptions)
+	return resp, err
+}
+
+// SetProperties Sets the properties of a storage account's Queue service, including Azure Storage Analytics.
+// If an element (e.g. analytics_logging) is left as None, the existing settings on the service for that functionality are preserved.
+func (s *Client) SetProperties(ctx context.Context, o *SetPropertiesOptions) (SetPropertiesResponse, error) {
+	properties, setPropertiesOptions := o.format()
+	resp, err := s.generated().SetProperties(ctx, properties, setPropertiesOptions)
+	return resp, err
+}
+
+// GetStatistics Retrieves statistics related to replication for the Queue service.
+func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (GetStatisticsResponse, error) {
+	getStatisticsOptions := o.format()
+	resp, err := s.generated().GetStatistics(ctx, getStatisticsOptions)
+
+	return resp, err
+}
+
+// NewListQueuesPager operation returns a pager of the queues under the specified account.
+// Use an empty Marker to start enumeration from the beginning. Queue names are returned in lexicographic order.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-queues1.
+func (s *Client) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[ListQueuesResponse] {
+	listOptions := generated.ServiceClientListQueuesSegmentOptions{}
+	if o != nil {
+		if o.Include.Metadata {
+			listOptions.Include = append(listOptions.Include, "metadata")
+		}
+		listOptions.Marker = o.Marker
+		listOptions.Maxresults = o.MaxResults
+		listOptions.Prefix = o.Prefix
+	}
+	return runtime.NewPager(runtime.PagingHandler[ListQueuesResponse]{
+		More: func(page ListQueuesResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListQueuesResponse) (ListQueuesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = s.generated().ListQueuesSegmentCreateRequest(ctx, &listOptions)
+			} else {
+				listOptions.Marker = page.Marker
+				req, err = s.generated().ListQueuesSegmentCreateRequest(ctx, &listOptions)
+			}
+			if err != nil {
+				return ListQueuesResponse{}, err
+			}
+			resp, err := s.generated().Pipeline().Do(req)
+			if err != nil {
+				return ListQueuesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListQueuesResponse{}, runtime.NewResponseError(resp)
+			}
+			return s.generated().ListQueuesSegmentHandleResponse(resp)
+		},
+	})
 }

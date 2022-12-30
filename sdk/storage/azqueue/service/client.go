@@ -77,18 +77,8 @@ func (s *Client) URL() string {
 	return s.generated().Endpoint()
 }
 
-//func (s *Client) CreateQueue(ctx context.Context, containerName string, options *CreateContainerOptions) (CreateContainerResponse, error) {
-//	containerClient := s.NewContainerClient(containerName)
-//	containerCreateResp, err := containerClient.Create(ctx, options)
-//	return containerCreateResp, err
-//}
-//
-
-//func (s *Client) DeleteQueue(ctx context.Context, containerName string, options *DeleteContainerOptions) (DeleteContainerResponse, error) {
-//	containerClient := s.NewContainerClient(containerName)
-//	containerDeleteResp, err := containerClient.Delete(ctx, options)
-//	return containerDeleteResp, err
-//}
+// TODO: CreateQueue
+// TODO: DeleteQueue
 
 // GetProperties - gets the properties of a storage account's Queue service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.

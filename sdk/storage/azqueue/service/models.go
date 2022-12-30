@@ -32,11 +32,8 @@ type Metrics = generated.Metrics
 // Logging - Azure Analytics Logging settings.
 type Logging = generated.Logging
 
-//// CreateContainerOptions contains the optional parameters for the container.Client.Create method.
-//type CreateQueueOptions = container.CreateOptions
-//
-//// DeleteContainerOptions contains the optional parameters for the container.Client.Delete method.
-//type DeleteQueueOptions = container.DeleteOptions
+// TODO: CreateQueueOptions = queue.CreateOptions
+// TODO: DeleteQueueOptions = queue.DeleteOptions
 
 // StorageServiceProperties - Storage Service Properties.
 type StorageServiceProperties = generated.StorageServiceProperties

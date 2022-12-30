@@ -10,10 +10,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
 )
 
-// CreateQueueResponse contains the response from method container.Client.Create.
+// CreateQueueResponse contains the response from method queue.Client.Create.
 type CreateQueueResponse = generated.QueueClientCreateResponse
 
-// DeleteQueueResponse contains the response from method container.Client.Delete
+// DeleteQueueResponse contains the response from method queue.Client.Delete
 type DeleteQueueResponse = generated.QueueClientDeleteResponse
 
 // ListQueuesResponse contains the response from method Client.ListQueuesSegment.

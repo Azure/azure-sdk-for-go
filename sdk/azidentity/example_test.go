@@ -12,6 +12,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
+func ExampleNewOnBehalfOfCredentialFromCertificate() {
+	data, err := os.ReadFile(certPath)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	// NewOnBehalfOfCredentialFromCertificate requires at least one *x509.Certificate, and a crypto.PrivateKey.
+	// ParseCertificates returns these given certificate data in PEM or PKCS12 format. It handles common
+	// scenarios but has limitations, for example it doesn't load PEM encrypted private keys.
+	certs, key, err := azidentity.ParseCertificates(data, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	cred, err = azidentity.NewClientCertificateCredential(tenantID, clientID, certs, key, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	// Output:
+}
+
 func ExampleNewClientCertificateCredential() {
 	data, err := os.ReadFile(certPath)
 	handleError(err)

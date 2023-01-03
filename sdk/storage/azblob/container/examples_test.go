@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"io"
 	"log"
 	"net/http"
@@ -392,4 +393,139 @@ func Example_container_ClientSetMetadata() {
 	handleError(err)
 
 	// NOTE: SetMetadata & SetProperties methods update the container's ETag & LastModified properties
+}
+
+func Example_container_ClientBatchDeleteUsingSharedKey() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
+	}
+	const containerName = "testcontainer"
+	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
+
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+	containerClient, err := container.NewClientWithSharedKeyCredential(containerURL, cred, nil)
+	handleError(err)
+
+	var bbOptions []*container.BatchDeleteOptions
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blob := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			bbOptions = append(bbOptions, &container.BatchDeleteOptions{
+				BlobName: blob.Name,
+			})
+		}
+	}
+
+	resp, err := containerClient.DeleteBlobs(context.Background(), bbOptions)
+	handleError(err)
+	p := make([]byte, 10000)
+	_, err = resp.Body.Read(p)
+	handleError(err)
+	fmt.Printf("%s\n", string(p))
+
+	// validation
+	var undeletedBlobs []string
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blob := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			undeletedBlobs = append(undeletedBlobs, *blob.Name)
+		}
+	}
+	if len(undeletedBlobs) > 0 {
+		log.Fatal("Undeleted blobs:\n" + strings.Join(undeletedBlobs, "\n"))
+	}
+}
+
+func Example_container_ClientBatchDeleteUsingUserDelegationSAS() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	tenantID, ok := os.LookupEnv("AZURE_TENANT_ID")
+	if !ok {
+		panic("AZURE_TENANT_ID could not be found")
+	}
+	clientID, ok := os.LookupEnv("AZURE_CLIENT_ID")
+	if !ok {
+		panic("AZURE_CLIENT_ID could not be found")
+	}
+	clientSecret, ok := os.LookupEnv("AZURE_CLIENT_SECRET")
+	if !ok {
+		panic("AZURE_CLIENT_SECRET could not be found")
+	}
+	const containerName = "testcontainer"
+
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	handleError(err)
+
+	svcClient, err := service.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &service.ClientOptions{})
+	handleError(err)
+
+	// Set current and past time and create key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(48 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	handleError(err)
+
+	// Create Blob Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   to.Ptr(sas.ContainerPermissions{Read: true, Write: true, List: true, Delete: true}).String(),
+		ContainerName: containerName,
+	}.SignWithUserDelegation(udc)
+	handleError(err)
+
+	sasURL := fmt.Sprintf("https://souravteststorage.blob.core.windows.net/%s?%s", containerName, sasQueryParams.Encode())
+	containerClient, err := container.NewClientWithNoCredential(sasURL, nil)
+	handleError(err)
+
+	var bbOptions []*container.BatchDeleteOptions
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blob := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			bbOptions = append(bbOptions, &container.BatchDeleteOptions{
+				BlobName: blob.Name,
+			})
+		}
+	}
+
+	resp, err := containerClient.DeleteBlobs(context.Background(), bbOptions)
+	handleError(err)
+	p := make([]byte, 10000)
+	_, err = resp.Body.Read(p)
+	handleError(err)
+	fmt.Printf("%s\n", string(p)) // batch response
+
+	// validation
+	var undeletedBlobs []string
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blob := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			undeletedBlobs = append(undeletedBlobs, *blob.Name)
+		}
+	}
+	if len(undeletedBlobs) > 0 {
+		log.Fatal("Undeleted blobs:\n" + strings.Join(undeletedBlobs, "\n"))
+	}
 }

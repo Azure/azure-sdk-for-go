@@ -2335,7 +2335,8 @@ func (s *ContainerUnrecordedTestsSuite) TestBatchDeleteForSnapshotsAndVersionID(
 	resp, err := containerClient.DeleteBlobs(context.Background(), bbOptions)
 	_require.Nil(err)
 	p := make([]byte, 10000)
-	numOfBytes, _ := resp.Body.Read(p)
+	numOfBytes, err := resp.Body.Read(p)
+	_require.Nil(err)
 	_require.NotZero(numOfBytes)
 
 	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{

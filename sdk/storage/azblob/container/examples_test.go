@@ -530,7 +530,7 @@ func Example_container_ClientBatchDeleteUsingUserDelegationSAS() {
 	}
 }
 
-func Example_container_ClientBatchDeleteForSnapshotsAndVersionID() {
+func Example_container_ClientBatchDeleteUsingServiceSASForSnapshotsAndVersionID() {
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
@@ -539,16 +539,26 @@ func Example_container_ClientBatchDeleteForSnapshotsAndVersionID() {
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
 	}
-	const containerName = "testcontainer"
-	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
+	const containerName = "testcontainer"
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
-	containerClient, err := container.NewClientWithSharedKeyCredential(containerURL, cred, nil)
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC(),
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.ContainerPermissions{Read: true, Write: true, List: true, Delete: true, DeletePreviousVersion: true}).String(),
+		ContainerName: containerName,
+	}.SignWithSharedKey(cred)
+	handleError(err)
+
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s?%s", accountName, containerName, sasQueryParams.Encode())
+	containerClientSAS, err := container.NewClientWithNoCredential(sasURL, nil)
 	handleError(err)
 
 	var bbOptions []*container.BatchDeleteOptions
-	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+	pager := containerClientSAS.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true, Versions: true},
 	})
 	for pager.More() {
@@ -569,16 +579,16 @@ func Example_container_ClientBatchDeleteForSnapshotsAndVersionID() {
 		}
 	}
 
-	resp, err := containerClient.DeleteBlobs(context.Background(), bbOptions)
+	resp, err := containerClientSAS.DeleteBlobs(context.Background(), bbOptions)
 	handleError(err)
 	p := make([]byte, 10000)
 	_, err = resp.Body.Read(p)
 	handleError(err)
-	fmt.Printf("%s\n", string(p))
+	fmt.Printf("%s\n", string(p)) // batch response
 
 	// validation
 	var undeletedSnapsAndVersions []string
-	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+	pager = containerClientSAS.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true, Versions: true},
 	})
 	for pager.More() {

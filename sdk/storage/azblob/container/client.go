@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -357,11 +356,13 @@ func (c *Client) DeleteBlobs(ctx context.Context, blobs []*BatchDeleteOptions) (
 	if err != nil {
 		return DeleteBlobsResponse{}, err
 	}
-	containerName := urlParts.ContainerName
 
 	reqBody := ""
 	for i, b := range blobs {
-		deleteSubReq, err := b.createDeleteSubRequest(ctx, fmt.Sprintf("/%v/%v", containerName, *b.BlobName), c)
+		if b.BlobName == nil {
+			continue
+		}
+		deleteSubReq, err := b.createDeleteSubRequest(ctx, &urlParts, b.BlobName, c)
 		if err != nil {
 			// TODO: handle error
 			continue

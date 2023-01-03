@@ -308,14 +308,14 @@ type BatchDeleteOptions struct {
 	Snapshot          *string
 }
 
-func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context, urlPath string, c *Client) (string, error) {
+func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context, urlParts *blob.URLParts, blobName *string, c *Client) (string, error) {
+	urlPath := fmt.Sprintf("/%v/%v", urlParts.ContainerName, *blobName)
 	queryParams := o.getQueryParams(c)
 	if len(queryParams) != 0 {
 		urlPath += "?" + queryParams
 	}
 
-	accountName := strings.Split(strings.Split(c.URL(), ".blob.core.")[0], "https://")[1]
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, fmt.Sprintf("https://%s.blob.core.windows.net%s", accountName, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, fmt.Sprintf("%s://%s%s", urlParts.Scheme, urlParts.Host, urlPath))
 	if err != nil {
 		return "", err
 	}

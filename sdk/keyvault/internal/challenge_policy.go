@@ -86,7 +86,9 @@ func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http
 	// reattach the request's body, if it was removed by authorize()
 	var rb reqBody
 	if req.OperationValue(&rb) {
-		req.SetBody(rb.body, rb.contentType)
+		if err := req.SetBody(rb.body, rb.contentType); err != nil {
+			return err
+		}
 	}
 	// authenticate with the parameters supplied by Key Vault, authorize the request, send it again
 	return authNZ(k.tro)

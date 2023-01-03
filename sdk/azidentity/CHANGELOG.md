@@ -11,6 +11,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+* `AzureCLICredential` imposes its default timeout only when the `Context`
+  passed to `GetToken()` has no deadline
 
 ## 1.3.0-beta.1 (2022-12-13)
 

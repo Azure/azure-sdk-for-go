@@ -2788,78 +2788,60 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	}
 }
 
-// func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerClient1 := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName) + "1", svcClient)
-//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient1)
-//
-//	containerClient2 := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName) + "2", svcClient)
-//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient2)
-//
-//	containerClient3 := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName) + "3", svcClient)
-//	defer testcommon.DeleteContainer(context.Background(), _require, containerClient3)
-//
-//	blobTagsMap1 := map[string]string{
-//		"tag2": "tagsecond",
-//		"tag3": "tagthird",
-//	}
-//	blobTagsMap2 := map[string]string{
-//		"tag1": "firsttag",
-//		"tag2": "secondtag",
-//		"tag3": "thirdtag",
-//	}
-//
-//	blobURL11 := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName) + "11", containerClient1)
-//	_, err = blobURL11.Upload(context.Background(), bytes.NewReader([]byte("random data")), &blockblob.UploadOptions{
-//		Metadata: testcommon.BasicMetadata,
-//		Tags: blobTagsMap1,
-//	})
-//	_require.Nil(err)
-//
-//	blobURL12 := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName) + "12", containerClient1)
-//	_, err = blobURL12.Upload(context.Background(), bytes.NewReader([]byte("another random data")), &blockblob.UploadOptions{
-//		Metadata: testcommon.BasicMetadata,
-//		Tags: blobTagsMap2,
-//	})
-//	_require.Nil(err)
-//
-//	blobURL21 := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName) + "21", containerClient2)
-//	_, err = blobURL21.Upload(context.Background(), bytes.NewReader([]byte("random data")), HTTPHeaders{}, testcommon.BasicMetadata, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_require.Nil(err)
-//
-//	blobURL22 := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName) + "22", containerClient2)
-//	_, err = blobURL22.Upload(context.Background(), bytes.NewReader([]byte("another random data")), HTTPHeaders{}, testcommon.BasicMetadata, LeaseAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
-//	_require.Nil(err)
-//
-//	blobURL31 := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName) + "31", containerClient3)
-//	_, err = blobURL31.Upload(context.Background(), bytes.NewReader([]byte("random data")), HTTPHeaders{}, testcommon.BasicMetadata, LeaseAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_require.Nil(err)
-//
-//	where := "\"tag4\"='fourthtag'"
-//	lResp, err := svcClient.FindBlobByTags(context.Background(), nil, nil, &where, Marker{}, nil)
-//	_require.Nil(err)
-//	_assert(lResp.Blobs, chk.HasLen, 0)
-//
-//	//where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND\"@container\"='"+ containerName1 + "'"
-//	//TODO: Figure out how to do a composite query based on container.
-//	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
-//
-//	lResp, err = svcClient.FindBlobsByTags(context.Background(), nil, nil, &where, Marker{}, nil)
-//	_require.Nil(err)
-//
-//	for _, blob := range lResp.Blobs {
-//		_assert(blob.TagValue, chk.Equals, "firsttag")
-//	}
-// }
-//
+func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"1", svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobTagsMap1 := map[string]string{
+		"tag2": "tagsecond",
+		"tag3": "tagthird",
+	}
+	blobTagsMap2 := map[string]string{
+		"tag1":    "firsttag",
+		"tag2":    "secondtag",
+		"tag3":    "thirdtag",
+		"tag key": "tag value", // tags with spaces
+	}
+
+	blobName1 := testcommon.GenerateBlobName(testName) + "1"
+	blobClient1 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName1, containerClient)
+	_, err = blobClient1.SetTags(context.Background(), blobTagsMap1, nil)
+	_require.Nil(err)
+
+	blobName2 := testcommon.GenerateBlobName(testName) + "2"
+	blobClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName2, containerClient)
+	_, err = blobClient2.SetTags(context.Background(), blobTagsMap2, nil)
+	_require.Nil(err)
+
+	// Test invalid tag
+	where := "\"tag4\"='fourthtag'"
+	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	_require.Nil(err)
+	_require.Equal(len(lResp.Blobs), 0)
+
+	// Test multiple valid tags
+	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
+	// where := "foo=\"value 1\""
+	lResp, err = svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	_require.Nil(err)
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "tag1")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "firsttag")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1].Key, "tag2")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1].Value, "secondtag")
+
+	// Test tags with spaces
+	where = "\"tag key\"='tag value'"
+	lResp, err = svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	_require.Nil(err)
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "tag key")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "tag value")
+
+}
 
 // func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsUsingAccountSAS() {
 //	accountName, accountKey := accountInfo()

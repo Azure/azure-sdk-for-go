@@ -11,6 +11,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -3957,6 +3958,13 @@ func (s *PageBlobUnrecordedTestsSuite) TestCreatePageBlobWithTags() {
 	for _, blobTag := range blobTagsSet {
 		_require.Equal(modifiedBlobTags[*blobTag.Key], *blobTag.Value)
 	}
+
+	// Test FilterBlobs API
+	where := "\"azure\"='blob'"
+	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	_require.Nil(err)
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
 }
 
 func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
@@ -3990,6 +3998,15 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
 	for _, blobTag := range blobTagsSet {
 		_require.Equal(testcommon.SpecialCharBlobTagsMap[*blobTag.Key], *blobTag.Value)
 	}
+
+	// Tags with spaces
+	where := "\"GO \"='.Net'"
+	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{
+		Where: &where,
+	})
+	_require.Nil(err)
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "GO ")
+	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, ".Net")
 }
 
 func (s *PageBlobRecordedTestsSuite) TestCreatePageBlobReturnsVID() {

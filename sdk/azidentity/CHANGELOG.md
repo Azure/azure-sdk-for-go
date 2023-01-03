@@ -3,6 +3,8 @@
 ## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
+* Added `OnBehalfOfCredential` to support the on-behalf-of flow
+  ([#16642](https://github.com/Azure/azure-sdk-for-go/issues/16642))
 
 ### Breaking Changes
 

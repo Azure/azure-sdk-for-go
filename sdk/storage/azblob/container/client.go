@@ -339,7 +339,7 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time
 	return endpoint, nil
 }
 
-// DeleteBlobs deletes give list of blobs using batch apis.
+// DeleteBlobs deletes multiple blobs in a single request to the service. The maximum number of blobs that can be deleted in a single request is 256.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/blob-batch.
 func (c *Client) DeleteBlobs(ctx context.Context, blobs []*BatchDeleteOptions) (DeleteBlobsResponse, error) {
 	if len(blobs) == 0 {

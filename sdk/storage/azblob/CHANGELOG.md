@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added [Batch Delete API](https://learn.microsoft.com/rest/api/storageservices/blob-batch).
+
 ### Breaking Changes
 
 ### Bugs Fixed

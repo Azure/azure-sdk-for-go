@@ -3980,7 +3980,7 @@ func TestUploadBufferEvenBlockSize(t *testing.T) {
 
 func TestUploadLogEvent(t *testing.T) {
 	listnercalled := false
-	log.SetEvents(azblob.EventUpload)
+	log.SetEvents(azblob.EventUpload, log.EventRequest, log.EventResponse)
 	log.SetListener(func(cls log.Event, msg string) {
 		t.Logf("%s: %s\n", cls, msg)
 		listnercalled = true
@@ -3990,6 +3990,7 @@ func TestUploadLogEvent(t *testing.T) {
 	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Transport: fbb,
+			Telemetry: policy.TelemetryOptions{ApplicationID: "testApp/1.0.0-preview.2"},
 		},
 	})
 	require.NoError(t, err)
@@ -4005,6 +4006,9 @@ func TestUploadLogEvent(t *testing.T) {
 
 	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
 		Concurrency: 1,
+		Progress: func(bytesTransferred int64) {
+			t.Logf("%v percent job done", (bytesTransferred*100)/270000000)
+		},
 	})
 	require.NoError(t, err)
 	require.Equal(t, int64(len(buffer)), fbb.totalStaged)

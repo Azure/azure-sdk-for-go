@@ -301,6 +301,7 @@ func formatTime(c *SignedIdentifier) error {
 
 // --------------------------------------------------------------------------------------------------------------------
 
+// BatchDeleteOptions contains the parameters for the Client.DeleteBlobs method.
 type BatchDeleteOptions struct {
 	BlobName          *string
 	BlobDeleteOptions *blob.DeleteOptions

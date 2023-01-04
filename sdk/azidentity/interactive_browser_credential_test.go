@@ -63,25 +63,33 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 	}
 }
 
-func TestInteractiveBrowserCredential_GetTokenLive(t *testing.T) {
+func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	if !runManualBrowserTests {
 		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
 	}
-	cred, err := NewInteractiveBrowserCredential(nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	testGetTokenSuccess(t, cred)
-}
-
-func TestInteractiveBrowserCredential_RedirectURLLive(t *testing.T) {
-	if !runManualBrowserTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
-	}
-	// the default application's registration allows redirecting to any localhost port
-	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{RedirectURL: "localhost:8180"})
-	if err != nil {
-		t.Fatal(err)
-	}
-	testGetTokenSuccess(t, cred)
+	t.Run("defaults", func(t *testing.T) {
+		cred, err := NewInteractiveBrowserCredential(nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		testGetTokenSuccess(t, cred)
+	})
+	t.Run("LoginHint", func(t *testing.T) {
+		upn := "fakeuser@test"
+		t.Logf(`consider this test passing when "%s" appears in the login prompt`, upn)
+		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{LoginHint: upn})
+		if err != nil {
+			t.Fatal(err)
+		}
+		testGetTokenSuccess(t, cred)
+	})
+	t.Run("RedirectURL", func(t *testing.T) {
+		url := "http://localhost:8180"
+		t.Logf("consider this test passing when AAD redirects to %s", url)
+		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{RedirectURL: url})
+		if err != nil {
+			t.Fatal(err)
+		}
+		testGetTokenSuccess(t, cred)
+	})
 }

@@ -3,6 +3,10 @@
 ## 1.3.0-beta.3 (Unreleased)
 
 ### Features Added
+* Added `OnBehalfOfCredential` to support the on-behalf-of flow
+  ([#16642](https://github.com/Azure/azure-sdk-for-go/issues/16642))
+* `InteractiveBrowserCredentialOptions.LoginHint` enables pre-populating the login
+  prompt with a username ([#15599](https://github.com/Azure/azure-sdk-for-go/pull/15599))
 
 ### Breaking Changes
 

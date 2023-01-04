@@ -103,12 +103,18 @@ func Example_blob_Client_SetMetadata() {
 	}
 
 	for k, v := range get.Metadata {
-		fmt.Print(k + "=" + v + "\n")
+		fmt.Print(k + "=" + *v + "\n")
 	}
 
 	// Update the blob's metadata and write it back to the blob
-	get.Metadata["editor"] = "Grant"
-	_, err = blobClient.SetMetadata(context.TODO(), get.Metadata, nil)
+	get.Metadata["editor"] = to.Ptr("Grant")
+
+	metadata := make(map[string]string)
+	for k, v := range get.Metadata {
+		metadata[k] = *v
+	}
+
+	_, err = blobClient.SetMetadata(context.TODO(), metadata, nil)
 	handleError(err)
 }
 

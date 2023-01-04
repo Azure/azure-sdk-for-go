@@ -321,3 +321,24 @@ directive:
     from: BlobPropertiesInternal
     to: BlobProperties
 ```
+
+### Fix up metadata responses in HTTP headers
+
+``` yaml
+directive:
+- from: zz_response_types.go
+  where: $
+  transform: >-
+    return $.
+      replace(/Metadata\s+map\[string\]string/g, "Metadata map[string]*string");
+      
+- from:
+  - zz_blob_client.go
+  - zz_container_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/"github\.com\/Azure\/azure\-sdk\-for\-go\/sdk\/azcore\/runtime"/, `"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"`).
+      replace(/result\.Metadata\s+=\s+map\[string\]string\{\}/g, `result.Metadata = map[string]*string{}`).
+      replace(/resp\.Header\.Get\(hh\)/g, `to.Ptr(resp.Header.Get(hh))`);
+```

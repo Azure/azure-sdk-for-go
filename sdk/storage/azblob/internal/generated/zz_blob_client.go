@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/http"
 	"strconv"
 	"strings"
@@ -945,9 +946,9 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
-				result.Metadata = map[string]string{}
+				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta-"):]] = resp.Header.Get(hh)
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-or-policy-id"); val != "" {
@@ -956,9 +957,9 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-or-") && strings.EqualFold(hh[:len("x-ms-or-")], "x-ms-or-") {
 			if result.Metadata == nil {
-				result.Metadata = map[string]string{}
+				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-or-"):]] = resp.Header.Get(hh)
+			result.Metadata[hh[len("x-ms-or-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -1302,9 +1303,9 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
-				result.Metadata = map[string]string{}
+				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta-"):]] = resp.Header.Get(hh)
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-or-policy-id"); val != "" {
@@ -1313,9 +1314,9 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-or-") && strings.EqualFold(hh[:len("x-ms-or-")], "x-ms-or-") {
 			if result.Metadata == nil {
-				result.Metadata = map[string]string{}
+				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-or-"):]] = resp.Header.Get(hh)
+			result.Metadata[hh[len("x-ms-or-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-blob-type"); val != "" {
@@ -1689,9 +1690,9 @@ func (client *BlobClient) queryHandleResponse(resp *http.Response) (BlobClientQu
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
-				result.Metadata = map[string]string{}
+				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta-"):]] = resp.Header.Get(hh)
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {

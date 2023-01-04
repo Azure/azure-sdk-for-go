@@ -456,7 +456,7 @@ type BlobClientDownloadResponse struct {
 	LegalHold *bool
 
 	// Metadata contains the information returned from the x-ms-meta header response.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// ObjectReplicationPolicyID contains the information returned from the x-ms-or-policy-id header response.
 	ObjectReplicationPolicyID *string
@@ -624,7 +624,7 @@ type BlobClientGetPropertiesResponse struct {
 	LegalHold *bool
 
 	// Metadata contains the information returned from the x-ms-meta header response.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// ObjectReplicationPolicyID contains the information returned from the x-ms-or-policy-id header response.
 	ObjectReplicationPolicyID *string
@@ -760,7 +760,7 @@ type BlobClientQueryResponse struct {
 	LeaseStatus *LeaseStatusType
 
 	// Metadata contains the information returned from the x-ms-meta header response.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -1401,7 +1401,7 @@ type ContainerClientGetPropertiesResponse struct {
 	LeaseStatus *LeaseStatusType
 
 	// Metadata contains the information returned from the x-ms-meta header response.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string

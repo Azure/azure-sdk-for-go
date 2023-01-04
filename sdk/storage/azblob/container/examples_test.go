@@ -383,12 +383,18 @@ func Example_container_ClientSetMetadata() {
 	}
 
 	for k, v := range containerGetPropertiesResponse.Metadata {
-		fmt.Printf("%s=%s\n", k, v)
+		fmt.Printf("%s=%s\n", k, *v)
 	}
 
 	// Update the metadata and write it back to the container
-	containerGetPropertiesResponse.Metadata["author"] = "Mohit"
-	_, err = containerClient.SetMetadata(context.TODO(), &container.SetMetadataOptions{Metadata: containerGetPropertiesResponse.Metadata})
+	containerGetPropertiesResponse.Metadata["author"] = to.Ptr("Mohit")
+
+	metadata := make(map[string]string)
+	for k, v := range containerGetPropertiesResponse.Metadata {
+		metadata[k] = *v
+	}
+
+	_, err = containerClient.SetMetadata(context.TODO(), &container.SetMetadataOptions{Metadata: metadata})
 	handleError(err)
 
 	// NOTE: SetMetadata & SetProperties methods update the container's ETag & LastModified properties

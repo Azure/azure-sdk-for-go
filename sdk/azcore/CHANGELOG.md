@@ -13,6 +13,7 @@
 
 ### Other Changes
 * Updated `internal` module to latest version.
+* `policy/Request.SetBody()` allows replacing a request's body with an empty one
 
 ## 1.2.0 (2022-11-04)
 

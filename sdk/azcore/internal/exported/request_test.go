@@ -13,6 +13,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/stretchr/testify/require"
 )
 
@@ -123,6 +124,23 @@ func TestRequestEmptyBody(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, req.SetBody(NopCloser(strings.NewReader("")), "application/text"))
 	require.Nil(t, req.Body())
+	require.Equal(t, []string{"0"}, req.Raw().Header[shared.HeaderContentLength])
+	require.Equal(t, []string{"application/text"}, req.Raw().Header[shared.HeaderContentType])
+
+	// SetBody should treat a nil ReadSeekCloser the same as one having no content
+	req, err = NewRequest(context.Background(), http.MethodPost, testURL)
+	require.NoError(t, err)
+	require.NoError(t, req.SetBody(nil, ""))
+	require.Nil(t, req.Body())
+
+	// SetBody should allow replacing a previously set body with an empty one
+	req, err = NewRequest(context.Background(), http.MethodPost, testURL)
+	require.NoError(t, err)
+	require.NoError(t, req.SetBody(NopCloser(strings.NewReader("content")), "application/text"))
+	require.NoError(t, req.SetBody(nil, "application/json"))
+	require.Nil(t, req.Body())
+	require.Equal(t, []string{"0"}, req.Raw().Header[shared.HeaderContentLength])
+	require.Equal(t, []string{"application/json"}, req.Raw().Header[shared.HeaderContentType])
 }
 
 func TestRequestClone(t *testing.T) {

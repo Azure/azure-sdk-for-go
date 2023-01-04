@@ -102,24 +102,28 @@ func (req *Request) OperationValue(value interface{}) bool {
 
 // SetBody sets the specified ReadSeekCloser as the HTTP request body.
 func (req *Request) SetBody(body io.ReadSeekCloser, contentType string) error {
-	// Set the body and content length.
-	size, err := body.Seek(0, io.SeekEnd) // Seek to the end to get the stream's size
-	if err != nil {
-		return err
+	var err error
+	var size int64
+	if body != nil {
+		size, err = body.Seek(0, io.SeekEnd) // Seek to the end to get the stream's size
+		if err != nil {
+			return err
+		}
 	}
 	if size == 0 {
-		body.Close()
-		return nil
+		// treat an empty stream the same as a nil one: assign req a nil body
+		body = nil
+	} else {
+		_, err = body.Seek(0, io.SeekStart)
+		if err != nil {
+			return err
+		}
+		req.Raw().GetBody = func() (io.ReadCloser, error) {
+			_, err := body.Seek(0, io.SeekStart) // Seek back to the beginning of the stream
+			return body, err
+		}
 	}
-	_, err = body.Seek(0, io.SeekStart)
-	if err != nil {
-		return err
-	}
-	req.Raw().GetBody = func() (io.ReadCloser, error) {
-		_, err := body.Seek(0, io.SeekStart) // Seek back to the beginning of the stream
-		return body, err
-	}
-	// keep a copy of the original body.  this is to handle cases
+	// keep a copy of the body argument.  this is to handle cases
 	// where req.Body is replaced, e.g. httputil.DumpRequest and friends.
 	req.body = body
 	req.req.Body = body

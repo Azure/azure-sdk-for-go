@@ -9,6 +9,7 @@ package azquery_test
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
@@ -25,18 +26,38 @@ type queryTest struct {
 
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
+	timespan, err := azquery.NewISO8601TimeIntervalFromStartEnd(time.Date(2022, 11, 17, 0, 0, 0, 0, time.UTC), time.Date(2022, 11, 18, 0, 0, 0, 0, time.UTC))
+	require.NoError(t, err)
 
 	res, err := client.QueryWorkspace(context.Background(),
-		workspaceID,
+		workspaceID2,
 		azquery.Body{
-			Query:    to.Ptr("search * | take 5"),
-			Timespan: azquery.NewISO8601TimeIntervalFromDuration(azquery.SevenDays),
+			Query:    to.Ptr(query),
+			Timespan: timespan,
 		},
 		nil)
 	require.Error(t, err)
 	_ = res
 
 }
+
+/*func TestTimeInterval(t *testing.T) {
+	start := time.Date(2022, 11, 17, 0, 0, 0, 0, time.UTC)
+	end := time.Date(2022, 11, 18, 0, 0, 0, 0, time.UTC)
+	duration := azquery.OneHour
+
+	startEnd := azquery.NewISO8601TimeIntervalFromStartEnd(start, end)
+	require.Equal(t, startEnd.String(), "2022-11-17T00:00:00Z/2022-11-18T00:00:00Z")
+
+	startDuration := azquery.NewISO8601TimeIntervalFromStartDuration(start, duration)
+	require.Equal(t, startDuration.String(), "2022-11-17T00:00:00Z/PT1H")
+
+	durationEnd := azquery.NewISO8601TimeIntervalFromDurationEnd(duration, end)
+	require.Equal(t, durationEnd.String(), "PT1H/2022-11-18T00:00:00Z")
+
+	durationTimespan := azquery.NewISO8601TimeIntervalFromDuration(duration)
+	require.Equal(t, durationTimespan.String(), "PT1H")
+}*/
 
 /*func TestLogsClient(t *testing.T) {
 	client, err := azquery.NewLogsClient(credential, nil)

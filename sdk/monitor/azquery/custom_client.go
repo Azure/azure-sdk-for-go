@@ -113,69 +113,86 @@ type Row []any
 type ISO8601Duration string
 
 // Common ISO8601 durations
-// SORT IN AMOUNT OF TIME ORDER
+// NEED TO RENAME
 const (
 	SevenDays        ISO8601Duration = "P7D"
 	ThreeDays        ISO8601Duration = "P3D"
-	TwoDays          Duration        = "P2D"
-	OneDay           Duration        = "P1D"
-	OneHour          Duration        = "PT1H"
-	FourHours        Duration        = "PT4H"
-	TwentyFourHours  Duration        = "PT24H"
-	FourtyEightHours Duration        = "PT48H"
-	ThirtyMinutes    Duration        = "PT30M"
-	FiveMinutes      Duration        = "PT5M"
+	TwoDays          ISO8601Duration = "P2D"
+	OneDay           ISO8601Duration = "P1D"
+	OneHour          ISO8601Duration = "PT1H"
+	FourHours        ISO8601Duration = "PT4H"
+	TwentyFourHours  ISO8601Duration = "PT24H"
+	FourtyEightHours ISO8601Duration = "PT48H"
+	ThirtyMinutes    ISO8601Duration = "PT30M"
+	FiveMinutes      ISO8601Duration = "PT5M"
 )
 
-// ADD CONSTRUCTOR??
-
-// TIME>TIME instead of string
+// Don't use this type directly, use NewISO8601TimeIntervalFromStartEnd() instead.
 type ISO8601TimeInterval struct {
 	start    time.Time
 	end      time.Time
 	duration ISO8601Duration
-
-	//
 }
 
-// not general purpose enough for round trip (if this was general purpose), how can the customer know what they can look at
-// DURATION happened before- keyvault cert experation, go check
-// once you create, can't look at what's in it, (add string??)
-// long naming- methods on the type instead?? SetStartEnd
-// TODO- show to team
+func (i ISO8601TimeInterval) String() string {
+	var timespan string
+	if !i.start.IsZero() && !i.end.IsZero() {
+		timespan = i.start.Format(time.RFC3339) + "/" + i.end.Format(time.RFC3339)
+	} else if !i.start.IsZero() && i.duration != "" {
+		timespan = i.start.Format(time.RFC3339) + "/" + string(i.duration)
+	} else if i.duration != "" && !i.end.IsZero() {
+		timespan = string(i.duration) + "/" + i.end.Format(time.RFC3339)
+	} else if i.duration != "" {
+		timespan = string(i.duration)
+	}
 
-// show both, round trip vs not round trip
+	return timespan
+}
 
-func NewISO8601TimeIntervalFromStartEnd(start time.Time, end time.Time) *ISO8601TimeInterval {
-	return &ISO8601TimeInterval{start: start, end: end}
+func NewISO8601TimeIntervalFromStartEnd(start time.Time, end time.Time) (*ISO8601TimeInterval, error) {
+	if start.IsZero() {
+		return nil, errors.New("start time is zero")
+	}
+	if end.IsZero() {
+		return nil, errors.New("end time is zero")
+	}
+	if end.Before(start) {
+		return nil, errors.New("end time occurs before start time")
+	}
+
+	return &ISO8601TimeInterval{start: start, end: end}, nil
 }
 
 // Timespan in the format start_time/duration
-func NewISO8601TimeIntervalFromStartDuration(start time.Time, duration ISO8601Duration) *ISO8601TimeInterval {
-	return &ISO8601TimeInterval{start: start, duration: duration}
-}
-
-func NewISO8601TimeIntervalFromDurationEnd(duration ISO8601Duration, end time.Time) *ISO8601TimeInterval {
-	return &ISO8601TimeInterval{duration: duration, end: end}
-}
-
-// timespan in the format duration
-func NewISO8601TimeIntervalFromDuration(duration ISO8601Duration) *ISO8601TimeInterval {
-	return &ISO8601TimeInterval{duration: duration}
-}
-
-// ADD SOME ERROR CHECKING
-func (t Timespan) MarshalJSON() ([]byte, error) {
-	var timespan string
-	if t.StartTime != "" && t.EndTime != "" {
-		timespan = t.StartTime + "/" + t.EndTime
-	} else if t.StartTime != "" && t.Duration != "" {
-		timespan = t.StartTime + "/" + string(t.Duration)
-	} else if t.Duration != "" && t.EndTime != "" {
-		timespan = string(t.Duration) + "/" + t.EndTime
+func NewISO8601TimeIntervalFromStartDuration(start time.Time, duration ISO8601Duration) (*ISO8601TimeInterval, error) {
+	if start.IsZero() {
+		return nil, errors.New("start time is zero")
 	}
-	if t.Duration != "" {
-		timespan = string(t.Duration)
+	if duration == "" {
+		return nil, errors.New("duration string is empty")
 	}
-	return json.Marshal(timespan)
+	return &ISO8601TimeInterval{start: start, duration: duration}, nil
+}
+
+func NewISO8601TimeIntervalFromDurationEnd(duration ISO8601Duration, end time.Time) (*ISO8601TimeInterval, error) {
+	if duration == "" {
+		return nil, errors.New("duration string is empty")
+	}
+	if end.IsZero() {
+		return nil, errors.New("end time is zero")
+	}
+	return &ISO8601TimeInterval{duration: duration, end: end}, nil
+}
+
+// NewISO8601TimeIntervalFromDuration creates a ISO8601TimeInterval used to specify the timespan for a logs query
+// Uses
+func NewISO8601TimeIntervalFromDuration(duration ISO8601Duration) (*ISO8601TimeInterval, error) {
+	if duration == "" {
+		return nil, errors.New("duration string is empty")
+	}
+	return &ISO8601TimeInterval{duration: duration}, nil
+}
+
+func (i ISO8601TimeInterval) MarshalJSON() ([]byte, error) {
+	return json.Marshal(i.String())
 }

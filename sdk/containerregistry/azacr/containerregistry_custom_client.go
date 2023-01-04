@@ -110,3 +110,7 @@ func (client *ContainerRegistryClient) UpdateManifestProperties(ctx context.Cont
 	}
 	return client.updateManifestProperties(ctx, name, digest, options)
 }
+
+func extractNextLink(value string) string {
+	return value[1:strings.Index(value, ">")]
+}

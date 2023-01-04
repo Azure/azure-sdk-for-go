@@ -313,3 +313,12 @@ directive:
   transform: >
     $.post["responses"]["202"] = $.post["responses"]["201"];
 ```
+
+### Extract and add endpoint for nextLink
+```yaml
+directive:
+  - from:
+      - containerregistry_client.go
+    where: $
+    transform: return $.replaceAll(/result\.Link = &val/g, "val = runtime.JoinPaths(client.endpoint, extractNextLink(val))\n\t\tresult.Link = &val");
+```

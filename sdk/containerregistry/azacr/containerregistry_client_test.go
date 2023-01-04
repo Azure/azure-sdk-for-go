@@ -97,14 +97,52 @@ func TestContainerRegistryClient_NewListManifestsPager(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewContainerRegistryClient("https://azacrlivetest.azurecr.io", cred, &ContainerRegistryClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	pager := client.NewListManifestsPager("hello-world", nil)
+	pager := client.NewListManifestsPager("hello-world", &ContainerRegistryClientListManifestsOptions{
+		N: to.Ptr[int32](1),
+	})
+	pages := 0
+	items := 0
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		require.NoError(t, err)
+		require.NotEmpty(t, page.Manifests.Manifests)
+		pages++
+		for i, v := range page.Manifests.Manifests {
+			fmt.Printf("page %d manifest %d: %s\n", pages, i+1, *v.Digest)
+			items++
+		}
+	}
+	require.Equal(t, pages, 2)
+	require.Equal(t, items, 2)
+
+	pager = client.NewListManifestsPager("hello-world", &ContainerRegistryClientListManifestsOptions{
+		OrderBy: to.Ptr(ArtifactManifestOrderByLastUpdatedOnDescending),
+	})
+	var descendingItems []*ManifestAttributesBase
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
 		require.NotEmpty(t, page.Manifests.Manifests)
 		for i, v := range page.Manifests.Manifests {
-			fmt.Printf("manifest %d: %s\n", i+1, *v.Digest)
+			fmt.Printf("manifest order by last updated on descending %d: %s\n", i+1, *v.Digest)
+			descendingItems = append(descendingItems, v)
 		}
+	}
+	pager = client.NewListManifestsPager("hello-world", &ContainerRegistryClientListManifestsOptions{
+		OrderBy: to.Ptr(ArtifactManifestOrderByLastUpdatedOnAscending),
+	})
+	var ascendingItems []*ManifestAttributesBase
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		require.NoError(t, err)
+		require.NotEmpty(t, page.Manifests.Manifests)
+		for i, v := range page.Manifests.Manifests {
+			fmt.Printf("manifest order by last updated on descending %d: %s\n", i+1, *v.Digest)
+			ascendingItems = append(ascendingItems, v)
+		}
+	}
+	for i := range descendingItems {
+		require.Equal(t, descendingItems[i].Digest, ascendingItems[len(ascendingItems)-1-i].Digest)
 	}
 }
 
@@ -114,15 +152,23 @@ func TestContainerRegistryClient_NewListRepositoriesPager(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewContainerRegistryClient("https://azacrlivetest.azurecr.io", cred, &ContainerRegistryClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	pager := client.NewListRepositoriesPager(nil)
+	pager := client.NewListRepositoriesPager(&ContainerRegistryClientListRepositoriesOptions{
+		N: to.Ptr[int32](1),
+	})
+	pages := 0
+	items := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
 		require.NotEmpty(t, page.Repositories.Repositories)
+		pages++
 		for i, v := range page.Repositories.Repositories {
-			fmt.Printf("repository %d: %s\n", i+1, *v)
+			fmt.Printf("page %d repository %d: %s\n", pages, i+1, *v)
+			items++
 		}
 	}
+	require.Equal(t, pages, 3)
+	require.Equal(t, items, 3)
 }
 
 func TestContainerRegistryClient_NewListTagsPager(t *testing.T) {
@@ -131,14 +177,53 @@ func TestContainerRegistryClient_NewListTagsPager(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewContainerRegistryClient("https://azacrlivetest.azurecr.io", cred, &ContainerRegistryClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	pager := client.NewListTagsPager("hello-world", nil)
+	pager := client.NewListTagsPager("hello-world", &ContainerRegistryClientListTagsOptions{
+		N: to.Ptr[int32](1),
+	})
+	pages := 0
+	items := 0
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		require.NoError(t, err)
+		require.NotEmpty(t, page.TagAttributeBases)
+		pages++
+		require.Equal(t, len(page.TagAttributeBases), 1)
+		for i, v := range page.TagAttributeBases {
+			fmt.Printf("page %d tag %d: %s\n", pages, i+1, *v.Name)
+			items++
+		}
+	}
+	require.Equal(t, pages, 3)
+	require.Equal(t, items, 3)
+
+	pager = client.NewListTagsPager("hello-world", &ContainerRegistryClientListTagsOptions{
+		OrderBy: to.Ptr(ArtifactTagOrderByLastUpdatedOnDescending),
+	})
+	var descendingItems []*TagAttributesBase
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
 		require.NotEmpty(t, page.TagAttributeBases)
 		for i, v := range page.TagAttributeBases {
-			fmt.Printf("tag %d: %s\n", i+1, *v.Name)
+			fmt.Printf("tag order by last updated on descending %d: %s\n", i+1, *v.Name)
+			descendingItems = append(descendingItems, v)
 		}
+	}
+	pager = client.NewListTagsPager("hello-world", &ContainerRegistryClientListTagsOptions{
+		OrderBy: to.Ptr(ArtifactTagOrderByLastUpdatedOnAscending),
+	})
+	var ascendingItems []*TagAttributesBase
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		require.NoError(t, err)
+		require.NotEmpty(t, page.TagAttributeBases)
+		for i, v := range page.TagAttributeBases {
+			fmt.Printf("tag order by last updated on descending %d: %s\n", i+1, *v.Name)
+			ascendingItems = append(ascendingItems, v)
+		}
+	}
+	for i := range descendingItems {
+		require.Equal(t, descendingItems[i].Name, ascendingItems[len(ascendingItems)-1-i].Name)
 	}
 }
 

@@ -464,6 +464,7 @@ func (client *ContainerRegistryClient) listManifestsCreateRequest(ctx context.Co
 func (client *ContainerRegistryClient) listManifestsHandleResponse(resp *http.Response) (ContainerRegistryClientListManifestsResponse, error) {
 	result := ContainerRegistryClientListManifestsResponse{}
 	if val := resp.Header.Get("Link"); val != "" {
+		val = runtime.JoinPaths(client.endpoint, extractNextLink(val))
 		result.Link = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Manifests); err != nil {
@@ -529,6 +530,7 @@ func (client *ContainerRegistryClient) listRepositoriesCreateRequest(ctx context
 func (client *ContainerRegistryClient) listRepositoriesHandleResponse(resp *http.Response) (ContainerRegistryClientListRepositoriesResponse, error) {
 	result := ContainerRegistryClientListRepositoriesResponse{}
 	if val := resp.Header.Get("Link"); val != "" {
+		val = runtime.JoinPaths(client.endpoint, extractNextLink(val))
 		result.Link = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Repositories); err != nil {
@@ -605,6 +607,7 @@ func (client *ContainerRegistryClient) listTagsCreateRequest(ctx context.Context
 func (client *ContainerRegistryClient) listTagsHandleResponse(resp *http.Response) (ContainerRegistryClientListTagsResponse, error) {
 	result := ContainerRegistryClientListTagsResponse{}
 	if val := resp.Header.Get("Link"); val != "" {
+		val = runtime.JoinPaths(client.endpoint, extractNextLink(val))
 		result.Link = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagList); err != nil {

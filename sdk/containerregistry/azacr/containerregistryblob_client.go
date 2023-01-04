@@ -33,11 +33,11 @@ type ContainerRegistryBlobClient struct {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
-//   - nextLink - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
+//   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - options - ContainerRegistryBlobClientCancelUploadOptions contains the optional parameters for the ContainerRegistryBlobClient.CancelUpload
 //     method.
-func (client *ContainerRegistryBlobClient) CancelUpload(ctx context.Context, nextLink string, options *ContainerRegistryBlobClientCancelUploadOptions) (ContainerRegistryBlobClientCancelUploadResponse, error) {
-	req, err := client.cancelUploadCreateRequest(ctx, nextLink, options)
+func (client *ContainerRegistryBlobClient) CancelUpload(ctx context.Context, location string, options *ContainerRegistryBlobClientCancelUploadOptions) (ContainerRegistryBlobClientCancelUploadResponse, error) {
+	req, err := client.cancelUploadCreateRequest(ctx, location, options)
 	if err != nil {
 		return ContainerRegistryBlobClientCancelUploadResponse{}, err
 	}
@@ -52,9 +52,9 @@ func (client *ContainerRegistryBlobClient) CancelUpload(ctx context.Context, nex
 }
 
 // cancelUploadCreateRequest creates the CancelUpload request.
-func (client *ContainerRegistryBlobClient) cancelUploadCreateRequest(ctx context.Context, nextLink string, options *ContainerRegistryBlobClientCancelUploadOptions) (*policy.Request, error) {
+func (client *ContainerRegistryBlobClient) cancelUploadCreateRequest(ctx context.Context, location string, options *ContainerRegistryBlobClientCancelUploadOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
-	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", nextLink)
+	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", location)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -187,11 +187,11 @@ func (client *ContainerRegistryBlobClient) checkChunkExistsHandleResponse(resp *
 //
 // Generated from API version 2021-07-01
 //   - digest - Digest of a BLOB
-//   - nextLink - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
+//   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - options - ContainerRegistryBlobClientCompleteUploadOptions contains the optional parameters for the ContainerRegistryBlobClient.CompleteUpload
 //     method.
-func (client *ContainerRegistryBlobClient) CompleteUpload(ctx context.Context, digest string, nextLink string, options *ContainerRegistryBlobClientCompleteUploadOptions) (ContainerRegistryBlobClientCompleteUploadResponse, error) {
-	req, err := client.completeUploadCreateRequest(ctx, digest, nextLink, options)
+func (client *ContainerRegistryBlobClient) CompleteUpload(ctx context.Context, digest string, location string, options *ContainerRegistryBlobClientCompleteUploadOptions) (ContainerRegistryBlobClientCompleteUploadResponse, error) {
+	req, err := client.completeUploadCreateRequest(ctx, digest, location, options)
 	if err != nil {
 		return ContainerRegistryBlobClientCompleteUploadResponse{}, err
 	}
@@ -206,9 +206,9 @@ func (client *ContainerRegistryBlobClient) CompleteUpload(ctx context.Context, d
 }
 
 // completeUploadCreateRequest creates the CompleteUpload request.
-func (client *ContainerRegistryBlobClient) completeUploadCreateRequest(ctx context.Context, digest string, nextLink string, options *ContainerRegistryBlobClientCompleteUploadOptions) (*policy.Request, error) {
+func (client *ContainerRegistryBlobClient) completeUploadCreateRequest(ctx context.Context, digest string, location string, options *ContainerRegistryBlobClientCompleteUploadOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
-	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", nextLink)
+	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", location)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -415,11 +415,11 @@ func (client *ContainerRegistryBlobClient) getChunkHandleResponse(resp *http.Res
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
-//   - nextLink - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
+//   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - options - ContainerRegistryBlobClientGetUploadStatusOptions contains the optional parameters for the ContainerRegistryBlobClient.GetUploadStatus
 //     method.
-func (client *ContainerRegistryBlobClient) GetUploadStatus(ctx context.Context, nextLink string, options *ContainerRegistryBlobClientGetUploadStatusOptions) (ContainerRegistryBlobClientGetUploadStatusResponse, error) {
-	req, err := client.getUploadStatusCreateRequest(ctx, nextLink, options)
+func (client *ContainerRegistryBlobClient) GetUploadStatus(ctx context.Context, location string, options *ContainerRegistryBlobClientGetUploadStatusOptions) (ContainerRegistryBlobClientGetUploadStatusResponse, error) {
+	req, err := client.getUploadStatusCreateRequest(ctx, location, options)
 	if err != nil {
 		return ContainerRegistryBlobClientGetUploadStatusResponse{}, err
 	}
@@ -434,9 +434,9 @@ func (client *ContainerRegistryBlobClient) GetUploadStatus(ctx context.Context, 
 }
 
 // getUploadStatusCreateRequest creates the GetUploadStatus request.
-func (client *ContainerRegistryBlobClient) getUploadStatusCreateRequest(ctx context.Context, nextLink string, options *ContainerRegistryBlobClientGetUploadStatusOptions) (*policy.Request, error) {
+func (client *ContainerRegistryBlobClient) getUploadStatusCreateRequest(ctx context.Context, location string, options *ContainerRegistryBlobClientGetUploadStatusOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
-	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", nextLink)
+	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", location)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -571,12 +571,12 @@ func (client *ContainerRegistryBlobClient) startUploadHandleResponse(resp *http.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
-//   - nextLink - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
+//   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - value - Raw data of blob
 //   - options - ContainerRegistryBlobClientUploadChunkOptions contains the optional parameters for the ContainerRegistryBlobClient.UploadChunk
 //     method.
-func (client *ContainerRegistryBlobClient) UploadChunk(ctx context.Context, nextLink string, value io.ReadSeekCloser, options *ContainerRegistryBlobClientUploadChunkOptions) (ContainerRegistryBlobClientUploadChunkResponse, error) {
-	req, err := client.uploadChunkCreateRequest(ctx, nextLink, value, options)
+func (client *ContainerRegistryBlobClient) UploadChunk(ctx context.Context, location string, value io.ReadSeekCloser, options *ContainerRegistryBlobClientUploadChunkOptions) (ContainerRegistryBlobClientUploadChunkResponse, error) {
+	req, err := client.uploadChunkCreateRequest(ctx, location, value, options)
 	if err != nil {
 		return ContainerRegistryBlobClientUploadChunkResponse{}, err
 	}
@@ -591,9 +591,9 @@ func (client *ContainerRegistryBlobClient) UploadChunk(ctx context.Context, next
 }
 
 // uploadChunkCreateRequest creates the UploadChunk request.
-func (client *ContainerRegistryBlobClient) uploadChunkCreateRequest(ctx context.Context, nextLink string, value io.ReadSeekCloser, options *ContainerRegistryBlobClientUploadChunkOptions) (*policy.Request, error) {
+func (client *ContainerRegistryBlobClient) uploadChunkCreateRequest(ctx context.Context, location string, value io.ReadSeekCloser, options *ContainerRegistryBlobClientUploadChunkOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
-	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", nextLink)
+	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", location)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err

@@ -94,30 +94,6 @@ directive:
       $.required = true
 ```
 
-### Change NextLink client name to nextLink
-
-```yaml
-directive:
-  from: swagger-document
-  where: $.parameters.NextLink
-  transform: >
-    $["x-ms-client-name"] = "nextLink"
-```
-
-### Updates to OciManifest
-
-```yaml
-directive:
-  from: swagger-document
-  where: $.definitions.OCIManifest
-  transform: >
-    delete $["allOf"];
-    $.properties["schemaVersion"] = {
-      "type": "integer",
-      "description": "Schema version"
-    };
-```
-
 ### Take stream as manifest body
 
 ```yaml

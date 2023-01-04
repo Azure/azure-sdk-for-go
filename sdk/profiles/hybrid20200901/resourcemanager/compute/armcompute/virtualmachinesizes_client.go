@@ -58,7 +58,6 @@ func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.Token
 }
 
 // NewListPager - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list]
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-06-01
 // location - The location upon which virtual-machine-sizes is queried.
 // options - VirtualMachineSizesClientListOptions contains the optional parameters for the VirtualMachineSizesClient.List

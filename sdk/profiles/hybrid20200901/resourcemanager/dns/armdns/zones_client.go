@@ -242,7 +242,6 @@ func (client *ZonesClient) getHandleResponse(resp *http.Response) (ZonesClientGe
 }
 
 // NewListPager - Lists the DNS zones in all resource groups in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-04-01
 // options - ZonesClientListOptions contains the optional parameters for the ZonesClient.List method.
 func (client *ZonesClient) NewListPager(options *ZonesClientListOptions) *runtime.Pager[ZonesClientListResponse] {
@@ -304,7 +303,6 @@ func (client *ZonesClient) listHandleResponse(resp *http.Response) (ZonesClientL
 }
 
 // NewListByResourceGroupPager - Lists the DNS zones within a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ZonesClientListByResourceGroupOptions contains the optional parameters for the ZonesClient.ListByResourceGroup

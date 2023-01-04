@@ -249,7 +249,6 @@ func (client *RoleDefinitionsClient) getByIDHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Get all role definitions that are applicable at scope and above.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-07-01
 // scope - The scope of the role definition.
 // options - RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.

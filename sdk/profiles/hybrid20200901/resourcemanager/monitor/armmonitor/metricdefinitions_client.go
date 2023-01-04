@@ -52,7 +52,6 @@ func NewMetricDefinitionsClient(credential azcore.TokenCredential, options *arm.
 }
 
 // NewListPager - Lists the metric definitions for the resource.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-01-01
 // resourceURI - The identifier of the resource.
 // options - MetricDefinitionsClientListOptions contains the optional parameters for the MetricDefinitionsClient.List method.

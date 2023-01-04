@@ -9,11 +9,6 @@
 
 package armnetwork
 
-const (
-	moduleName    = "hybrid20200901/armnetwork"
-	moduleVersion = "v1.0.0"
-)
-
 // AuthenticationMethod - VPN client Authentication Method. Possible values are: 'EAPTLS' and 'EAPMSCHAPv2'.
 type AuthenticationMethod string
 

@@ -314,7 +314,6 @@ func (client *WebhooksClient) getCallbackConfigHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Lists all the webhooks for the specified container registry.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-05-01
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
@@ -383,7 +382,6 @@ func (client *WebhooksClient) listHandleResponse(resp *http.Response) (WebhooksC
 }
 
 // NewListEventsPager - Lists recent events for the specified webhook.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-05-01
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.

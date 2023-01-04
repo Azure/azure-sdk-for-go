@@ -60,7 +60,6 @@ func NewUsageAggregatesClient(subscriptionID string, credential azcore.TokenCred
 }
 
 // NewListPager - Query aggregated Azure subscription consumption data for a date range.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-06-01-preview
 // reportedStartTime - The start of the time range to retrieve data for.
 // reportedEndTime - The end of the time range to retrieve data for.

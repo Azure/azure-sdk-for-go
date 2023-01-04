@@ -58,7 +58,6 @@ func NewRegionsClient(subscriptionID string, credential azcore.TokenCredential, 
 }
 
 // NewListBySKUPager - Gets the available Regions for a given sku
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2017-04-01
 // sku - The sku type.
 // options - RegionsClientListBySKUOptions contains the optional parameters for the RegionsClient.ListBySKU method.

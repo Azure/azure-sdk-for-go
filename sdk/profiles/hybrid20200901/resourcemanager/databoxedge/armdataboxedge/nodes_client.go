@@ -57,7 +57,6 @@ func NewNodesClient(subscriptionID string, credential azcore.TokenCredential, op
 }
 
 // NewListByDataBoxEdgeDevicePager - Gets all the nodes currently configured under this Data Box Edge device
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-08-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.

@@ -388,7 +388,6 @@ func (client *TagsClient) getAtScopeHandleResponse(resp *http.Response) (TagsCli
 // NewListPager - This operation performs a union of predefined tags, resource tags, resource group tags and subscription
 // tags, and returns a summary of usage for each tag name and value under the given subscription.
 // In case of a large number of tags, this operation may return a previously cached result.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // options - TagsClientListOptions contains the optional parameters for the TagsClient.List method.
 func (client *TagsClient) NewListPager(options *TagsClientListOptions) *runtime.Pager[TagsClientListResponse] {

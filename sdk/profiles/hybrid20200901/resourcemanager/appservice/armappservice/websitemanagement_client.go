@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armweb
+package armappservice
 
 import (
 	"context"
@@ -25,19 +25,19 @@ import (
 	"strings"
 )
 
-// SiteManagementClient contains the methods for the WebSiteManagementClient group.
-// Don't use this type directly, use NewSiteManagementClient() instead.
-type SiteManagementClient struct {
+// WebSiteManagementClient contains the methods for the WebSiteManagementClient group.
+// Don't use this type directly, use NewWebSiteManagementClient() instead.
+type WebSiteManagementClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewSiteManagementClient creates a new instance of SiteManagementClient with the specified values.
+// NewWebSiteManagementClient creates a new instance of WebSiteManagementClient with the specified values.
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSiteManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SiteManagementClient, error) {
+func NewWebSiteManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebSiteManagementClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -49,7 +49,7 @@ func NewSiteManagementClient(subscriptionID string, credential azcore.TokenCrede
 	if err != nil {
 		return nil, err
 	}
-	client := &SiteManagementClient{
+	client := &WebSiteManagementClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -61,25 +61,25 @@ func NewSiteManagementClient(subscriptionID string, credential azcore.TokenCrede
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // request - Name availability request.
-// options - SiteManagementClientCheckNameAvailabilityOptions contains the optional parameters for the SiteManagementClient.CheckNameAvailability
+// options - WebSiteManagementClientCheckNameAvailabilityOptions contains the optional parameters for the WebSiteManagementClient.CheckNameAvailability
 // method.
-func (client *SiteManagementClient) CheckNameAvailability(ctx context.Context, request ResourceNameAvailabilityRequest, options *SiteManagementClientCheckNameAvailabilityOptions) (SiteManagementClientCheckNameAvailabilityResponse, error) {
+func (client *WebSiteManagementClient) CheckNameAvailability(ctx context.Context, request ResourceNameAvailabilityRequest, options *WebSiteManagementClientCheckNameAvailabilityOptions) (WebSiteManagementClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, request, options)
 	if err != nil {
-		return SiteManagementClientCheckNameAvailabilityResponse{}, err
+		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientCheckNameAvailabilityResponse{}, err
+		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *SiteManagementClient) checkNameAvailabilityCreateRequest(ctx context.Context, request ResourceNameAvailabilityRequest, options *SiteManagementClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) checkNameAvailabilityCreateRequest(ctx context.Context, request ResourceNameAvailabilityRequest, options *WebSiteManagementClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -97,10 +97,10 @@ func (client *SiteManagementClient) checkNameAvailabilityCreateRequest(ctx conte
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *SiteManagementClient) checkNameAvailabilityHandleResponse(resp *http.Response) (SiteManagementClientCheckNameAvailabilityResponse, error) {
-	result := SiteManagementClientCheckNameAvailabilityResponse{}
+func (client *WebSiteManagementClient) checkNameAvailabilityHandleResponse(resp *http.Response) (WebSiteManagementClientCheckNameAvailabilityResponse, error) {
+	result := WebSiteManagementClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceNameAvailability); err != nil {
-		return SiteManagementClientCheckNameAvailabilityResponse{}, err
+		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
@@ -108,25 +108,25 @@ func (client *SiteManagementClient) checkNameAvailabilityHandleResponse(resp *ht
 // GetPublishingUser - Gets publishing user
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
-// options - SiteManagementClientGetPublishingUserOptions contains the optional parameters for the SiteManagementClient.GetPublishingUser
+// options - WebSiteManagementClientGetPublishingUserOptions contains the optional parameters for the WebSiteManagementClient.GetPublishingUser
 // method.
-func (client *SiteManagementClient) GetPublishingUser(ctx context.Context, options *SiteManagementClientGetPublishingUserOptions) (SiteManagementClientGetPublishingUserResponse, error) {
+func (client *WebSiteManagementClient) GetPublishingUser(ctx context.Context, options *WebSiteManagementClientGetPublishingUserOptions) (WebSiteManagementClientGetPublishingUserResponse, error) {
 	req, err := client.getPublishingUserCreateRequest(ctx, options)
 	if err != nil {
-		return SiteManagementClientGetPublishingUserResponse{}, err
+		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientGetPublishingUserResponse{}, err
+		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientGetPublishingUserResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientGetPublishingUserResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getPublishingUserHandleResponse(resp)
 }
 
 // getPublishingUserCreateRequest creates the GetPublishingUser request.
-func (client *SiteManagementClient) getPublishingUserCreateRequest(ctx context.Context, options *SiteManagementClientGetPublishingUserOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) getPublishingUserCreateRequest(ctx context.Context, options *WebSiteManagementClientGetPublishingUserOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/publishingUsers/web"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -140,10 +140,10 @@ func (client *SiteManagementClient) getPublishingUserCreateRequest(ctx context.C
 }
 
 // getPublishingUserHandleResponse handles the GetPublishingUser response.
-func (client *SiteManagementClient) getPublishingUserHandleResponse(resp *http.Response) (SiteManagementClientGetPublishingUserResponse, error) {
-	result := SiteManagementClientGetPublishingUserResponse{}
+func (client *WebSiteManagementClient) getPublishingUserHandleResponse(resp *http.Response) (WebSiteManagementClientGetPublishingUserResponse, error) {
+	result := WebSiteManagementClientGetPublishingUserResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.User); err != nil {
-		return SiteManagementClientGetPublishingUserResponse{}, err
+		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
 	return result, nil
 }
@@ -152,25 +152,25 @@ func (client *SiteManagementClient) getPublishingUserHandleResponse(resp *http.R
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // sourceControlType - Type of source control
-// options - SiteManagementClientGetSourceControlOptions contains the optional parameters for the SiteManagementClient.GetSourceControl
+// options - WebSiteManagementClientGetSourceControlOptions contains the optional parameters for the WebSiteManagementClient.GetSourceControl
 // method.
-func (client *SiteManagementClient) GetSourceControl(ctx context.Context, sourceControlType string, options *SiteManagementClientGetSourceControlOptions) (SiteManagementClientGetSourceControlResponse, error) {
+func (client *WebSiteManagementClient) GetSourceControl(ctx context.Context, sourceControlType string, options *WebSiteManagementClientGetSourceControlOptions) (WebSiteManagementClientGetSourceControlResponse, error) {
 	req, err := client.getSourceControlCreateRequest(ctx, sourceControlType, options)
 	if err != nil {
-		return SiteManagementClientGetSourceControlResponse{}, err
+		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientGetSourceControlResponse{}, err
+		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientGetSourceControlResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientGetSourceControlResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSourceControlHandleResponse(resp)
 }
 
 // getSourceControlCreateRequest creates the GetSourceControl request.
-func (client *SiteManagementClient) getSourceControlCreateRequest(ctx context.Context, sourceControlType string, options *SiteManagementClientGetSourceControlOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) getSourceControlCreateRequest(ctx context.Context, sourceControlType string, options *WebSiteManagementClientGetSourceControlOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/sourcecontrols/{sourceControlType}"
 	if sourceControlType == "" {
 		return nil, errors.New("parameter sourceControlType cannot be empty")
@@ -188,10 +188,10 @@ func (client *SiteManagementClient) getSourceControlCreateRequest(ctx context.Co
 }
 
 // getSourceControlHandleResponse handles the GetSourceControl response.
-func (client *SiteManagementClient) getSourceControlHandleResponse(resp *http.Response) (SiteManagementClientGetSourceControlResponse, error) {
-	result := SiteManagementClientGetSourceControlResponse{}
+func (client *WebSiteManagementClient) getSourceControlHandleResponse(resp *http.Response) (WebSiteManagementClientGetSourceControlResponse, error) {
+	result := WebSiteManagementClientGetSourceControlResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return SiteManagementClientGetSourceControlResponse{}, err
+		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
 	return result, nil
 }
@@ -199,25 +199,25 @@ func (client *SiteManagementClient) getSourceControlHandleResponse(resp *http.Re
 // GetSubscriptionDeploymentLocations - Gets list of available geo regions plus ministamps
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
-// options - SiteManagementClientGetSubscriptionDeploymentLocationsOptions contains the optional parameters for the SiteManagementClient.GetSubscriptionDeploymentLocations
+// options - WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions contains the optional parameters for the WebSiteManagementClient.GetSubscriptionDeploymentLocations
 // method.
-func (client *SiteManagementClient) GetSubscriptionDeploymentLocations(ctx context.Context, options *SiteManagementClientGetSubscriptionDeploymentLocationsOptions) (SiteManagementClientGetSubscriptionDeploymentLocationsResponse, error) {
+func (client *WebSiteManagementClient) GetSubscriptionDeploymentLocations(ctx context.Context, options *WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions) (WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse, error) {
 	req, err := client.getSubscriptionDeploymentLocationsCreateRequest(ctx, options)
 	if err != nil {
-		return SiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
+		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
+		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSubscriptionDeploymentLocationsHandleResponse(resp)
 }
 
 // getSubscriptionDeploymentLocationsCreateRequest creates the GetSubscriptionDeploymentLocations request.
-func (client *SiteManagementClient) getSubscriptionDeploymentLocationsCreateRequest(ctx context.Context, options *SiteManagementClientGetSubscriptionDeploymentLocationsOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsCreateRequest(ctx context.Context, options *WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deploymentLocations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -235,25 +235,24 @@ func (client *SiteManagementClient) getSubscriptionDeploymentLocationsCreateRequ
 }
 
 // getSubscriptionDeploymentLocationsHandleResponse handles the GetSubscriptionDeploymentLocations response.
-func (client *SiteManagementClient) getSubscriptionDeploymentLocationsHandleResponse(resp *http.Response) (SiteManagementClientGetSubscriptionDeploymentLocationsResponse, error) {
-	result := SiteManagementClientGetSubscriptionDeploymentLocationsResponse{}
+func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsHandleResponse(resp *http.Response) (WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse, error) {
+	result := WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentLocations); err != nil {
-		return SiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
+		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListBillingMetersPager - Gets a list of meters for a given location.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
-// options - SiteManagementClientListBillingMetersOptions contains the optional parameters for the SiteManagementClient.ListBillingMeters
+// options - WebSiteManagementClientListBillingMetersOptions contains the optional parameters for the WebSiteManagementClient.ListBillingMeters
 // method.
-func (client *SiteManagementClient) NewListBillingMetersPager(options *SiteManagementClientListBillingMetersOptions) *runtime.Pager[SiteManagementClientListBillingMetersResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SiteManagementClientListBillingMetersResponse]{
-		More: func(page SiteManagementClientListBillingMetersResponse) bool {
+func (client *WebSiteManagementClient) NewListBillingMetersPager(options *WebSiteManagementClientListBillingMetersOptions) *runtime.Pager[WebSiteManagementClientListBillingMetersResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WebSiteManagementClientListBillingMetersResponse]{
+		More: func(page WebSiteManagementClientListBillingMetersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SiteManagementClientListBillingMetersResponse) (SiteManagementClientListBillingMetersResponse, error) {
+		Fetcher: func(ctx context.Context, page *WebSiteManagementClientListBillingMetersResponse) (WebSiteManagementClientListBillingMetersResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -262,14 +261,14 @@ func (client *SiteManagementClient) NewListBillingMetersPager(options *SiteManag
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return SiteManagementClientListBillingMetersResponse{}, err
+				return WebSiteManagementClientListBillingMetersResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return SiteManagementClientListBillingMetersResponse{}, err
+				return WebSiteManagementClientListBillingMetersResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SiteManagementClientListBillingMetersResponse{}, runtime.NewResponseError(resp)
+				return WebSiteManagementClientListBillingMetersResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBillingMetersHandleResponse(resp)
 		},
@@ -277,7 +276,7 @@ func (client *SiteManagementClient) NewListBillingMetersPager(options *SiteManag
 }
 
 // listBillingMetersCreateRequest creates the ListBillingMeters request.
-func (client *SiteManagementClient) listBillingMetersCreateRequest(ctx context.Context, options *SiteManagementClientListBillingMetersOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) listBillingMetersCreateRequest(ctx context.Context, options *WebSiteManagementClientListBillingMetersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -301,25 +300,24 @@ func (client *SiteManagementClient) listBillingMetersCreateRequest(ctx context.C
 }
 
 // listBillingMetersHandleResponse handles the ListBillingMeters response.
-func (client *SiteManagementClient) listBillingMetersHandleResponse(resp *http.Response) (SiteManagementClientListBillingMetersResponse, error) {
-	result := SiteManagementClientListBillingMetersResponse{}
+func (client *WebSiteManagementClient) listBillingMetersHandleResponse(resp *http.Response) (WebSiteManagementClientListBillingMetersResponse, error) {
+	result := WebSiteManagementClientListBillingMetersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BillingMeterCollection); err != nil {
-		return SiteManagementClientListBillingMetersResponse{}, err
+		return WebSiteManagementClientListBillingMetersResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListGeoRegionsPager - Get a list of available geographical regions.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
-// options - SiteManagementClientListGeoRegionsOptions contains the optional parameters for the SiteManagementClient.ListGeoRegions
+// options - WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.ListGeoRegions
 // method.
-func (client *SiteManagementClient) NewListGeoRegionsPager(options *SiteManagementClientListGeoRegionsOptions) *runtime.Pager[SiteManagementClientListGeoRegionsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SiteManagementClientListGeoRegionsResponse]{
-		More: func(page SiteManagementClientListGeoRegionsResponse) bool {
+func (client *WebSiteManagementClient) NewListGeoRegionsPager(options *WebSiteManagementClientListGeoRegionsOptions) *runtime.Pager[WebSiteManagementClientListGeoRegionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WebSiteManagementClientListGeoRegionsResponse]{
+		More: func(page WebSiteManagementClientListGeoRegionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SiteManagementClientListGeoRegionsResponse) (SiteManagementClientListGeoRegionsResponse, error) {
+		Fetcher: func(ctx context.Context, page *WebSiteManagementClientListGeoRegionsResponse) (WebSiteManagementClientListGeoRegionsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -328,14 +326,14 @@ func (client *SiteManagementClient) NewListGeoRegionsPager(options *SiteManageme
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return SiteManagementClientListGeoRegionsResponse{}, err
+				return WebSiteManagementClientListGeoRegionsResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return SiteManagementClientListGeoRegionsResponse{}, err
+				return WebSiteManagementClientListGeoRegionsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SiteManagementClientListGeoRegionsResponse{}, runtime.NewResponseError(resp)
+				return WebSiteManagementClientListGeoRegionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listGeoRegionsHandleResponse(resp)
 		},
@@ -343,7 +341,7 @@ func (client *SiteManagementClient) NewListGeoRegionsPager(options *SiteManageme
 }
 
 // listGeoRegionsCreateRequest creates the ListGeoRegions request.
-func (client *SiteManagementClient) listGeoRegionsCreateRequest(ctx context.Context, options *SiteManagementClientListGeoRegionsOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) listGeoRegionsCreateRequest(ctx context.Context, options *WebSiteManagementClientListGeoRegionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -373,25 +371,24 @@ func (client *SiteManagementClient) listGeoRegionsCreateRequest(ctx context.Cont
 }
 
 // listGeoRegionsHandleResponse handles the ListGeoRegions response.
-func (client *SiteManagementClient) listGeoRegionsHandleResponse(resp *http.Response) (SiteManagementClientListGeoRegionsResponse, error) {
-	result := SiteManagementClientListGeoRegionsResponse{}
+func (client *WebSiteManagementClient) listGeoRegionsHandleResponse(resp *http.Response) (WebSiteManagementClientListGeoRegionsResponse, error) {
+	result := WebSiteManagementClientListGeoRegionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeoRegionCollection); err != nil {
-		return SiteManagementClientListGeoRegionsResponse{}, err
+		return WebSiteManagementClientListGeoRegionsResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListPremierAddOnOffersPager - List all premier add-on offers.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
-// options - SiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the SiteManagementClient.ListPremierAddOnOffers
+// options - WebSiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the WebSiteManagementClient.ListPremierAddOnOffers
 // method.
-func (client *SiteManagementClient) NewListPremierAddOnOffersPager(options *SiteManagementClientListPremierAddOnOffersOptions) *runtime.Pager[SiteManagementClientListPremierAddOnOffersResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SiteManagementClientListPremierAddOnOffersResponse]{
-		More: func(page SiteManagementClientListPremierAddOnOffersResponse) bool {
+func (client *WebSiteManagementClient) NewListPremierAddOnOffersPager(options *WebSiteManagementClientListPremierAddOnOffersOptions) *runtime.Pager[WebSiteManagementClientListPremierAddOnOffersResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WebSiteManagementClientListPremierAddOnOffersResponse]{
+		More: func(page WebSiteManagementClientListPremierAddOnOffersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SiteManagementClientListPremierAddOnOffersResponse) (SiteManagementClientListPremierAddOnOffersResponse, error) {
+		Fetcher: func(ctx context.Context, page *WebSiteManagementClientListPremierAddOnOffersResponse) (WebSiteManagementClientListPremierAddOnOffersResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -400,14 +397,14 @@ func (client *SiteManagementClient) NewListPremierAddOnOffersPager(options *Site
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return SiteManagementClientListPremierAddOnOffersResponse{}, err
+				return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return SiteManagementClientListPremierAddOnOffersResponse{}, err
+				return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SiteManagementClientListPremierAddOnOffersResponse{}, runtime.NewResponseError(resp)
+				return WebSiteManagementClientListPremierAddOnOffersResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listPremierAddOnOffersHandleResponse(resp)
 		},
@@ -415,7 +412,7 @@ func (client *SiteManagementClient) NewListPremierAddOnOffersPager(options *Site
 }
 
 // listPremierAddOnOffersCreateRequest creates the ListPremierAddOnOffers request.
-func (client *SiteManagementClient) listPremierAddOnOffersCreateRequest(ctx context.Context, options *SiteManagementClientListPremierAddOnOffersOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) listPremierAddOnOffersCreateRequest(ctx context.Context, options *WebSiteManagementClientListPremierAddOnOffersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -433,10 +430,10 @@ func (client *SiteManagementClient) listPremierAddOnOffersCreateRequest(ctx cont
 }
 
 // listPremierAddOnOffersHandleResponse handles the ListPremierAddOnOffers response.
-func (client *SiteManagementClient) listPremierAddOnOffersHandleResponse(resp *http.Response) (SiteManagementClientListPremierAddOnOffersResponse, error) {
-	result := SiteManagementClientListPremierAddOnOffersResponse{}
+func (client *WebSiteManagementClient) listPremierAddOnOffersHandleResponse(resp *http.Response) (WebSiteManagementClientListPremierAddOnOffersResponse, error) {
+	result := WebSiteManagementClientListPremierAddOnOffersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOnOfferCollection); err != nil {
-		return SiteManagementClientListPremierAddOnOffersResponse{}, err
+		return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
 	}
 	return result, nil
 }
@@ -444,24 +441,25 @@ func (client *SiteManagementClient) listPremierAddOnOffersHandleResponse(resp *h
 // ListSKUs - List all SKUs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
-// options - SiteManagementClientListSKUsOptions contains the optional parameters for the SiteManagementClient.ListSKUs method.
-func (client *SiteManagementClient) ListSKUs(ctx context.Context, options *SiteManagementClientListSKUsOptions) (SiteManagementClientListSKUsResponse, error) {
+// options - WebSiteManagementClientListSKUsOptions contains the optional parameters for the WebSiteManagementClient.ListSKUs
+// method.
+func (client *WebSiteManagementClient) ListSKUs(ctx context.Context, options *WebSiteManagementClientListSKUsOptions) (WebSiteManagementClientListSKUsResponse, error) {
 	req, err := client.listSKUsCreateRequest(ctx, options)
 	if err != nil {
-		return SiteManagementClientListSKUsResponse{}, err
+		return WebSiteManagementClientListSKUsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientListSKUsResponse{}, err
+		return WebSiteManagementClientListSKUsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientListSKUsResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientListSKUsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listSKUsHandleResponse(resp)
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
-func (client *SiteManagementClient) listSKUsCreateRequest(ctx context.Context, options *SiteManagementClientListSKUsOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) listSKUsCreateRequest(ctx context.Context, options *WebSiteManagementClientListSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -479,26 +477,25 @@ func (client *SiteManagementClient) listSKUsCreateRequest(ctx context.Context, o
 }
 
 // listSKUsHandleResponse handles the ListSKUs response.
-func (client *SiteManagementClient) listSKUsHandleResponse(resp *http.Response) (SiteManagementClientListSKUsResponse, error) {
-	result := SiteManagementClientListSKUsResponse{}
+func (client *WebSiteManagementClient) listSKUsHandleResponse(resp *http.Response) (WebSiteManagementClientListSKUsResponse, error) {
+	result := WebSiteManagementClientListSKUsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUInfos); err != nil {
-		return SiteManagementClientListSKUsResponse{}, err
+		return WebSiteManagementClientListSKUsResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListSiteIdentifiersAssignedToHostNamePager - List all apps that are assigned to a hostname.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // nameIdentifier - Hostname information.
-// options - SiteManagementClientListSiteIdentifiersAssignedToHostNameOptions contains the optional parameters for the SiteManagementClient.ListSiteIdentifiersAssignedToHostName
-// method.
-func (client *SiteManagementClient) NewListSiteIdentifiersAssignedToHostNamePager(nameIdentifier NameIdentifier, options *SiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) *runtime.Pager[SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]{
-		More: func(page SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse) bool {
+// options - WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions contains the optional parameters for the
+// WebSiteManagementClient.ListSiteIdentifiersAssignedToHostName method.
+func (client *WebSiteManagementClient) NewListSiteIdentifiersAssignedToHostNamePager(nameIdentifier NameIdentifier, options *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) *runtime.Pager[WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]{
+		More: func(page WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse) (SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse, error) {
+		Fetcher: func(ctx context.Context, page *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse) (WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -507,14 +504,14 @@ func (client *SiteManagementClient) NewListSiteIdentifiersAssignedToHostNamePage
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
+				return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
+				return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, runtime.NewResponseError(resp)
+				return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listSiteIdentifiersAssignedToHostNameHandleResponse(resp)
 		},
@@ -522,7 +519,7 @@ func (client *SiteManagementClient) NewListSiteIdentifiersAssignedToHostNamePage
 }
 
 // listSiteIdentifiersAssignedToHostNameCreateRequest creates the ListSiteIdentifiersAssignedToHostName request.
-func (client *SiteManagementClient) listSiteIdentifiersAssignedToHostNameCreateRequest(ctx context.Context, nameIdentifier NameIdentifier, options *SiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameCreateRequest(ctx context.Context, nameIdentifier NameIdentifier, options *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -540,25 +537,24 @@ func (client *SiteManagementClient) listSiteIdentifiersAssignedToHostNameCreateR
 }
 
 // listSiteIdentifiersAssignedToHostNameHandleResponse handles the ListSiteIdentifiersAssignedToHostName response.
-func (client *SiteManagementClient) listSiteIdentifiersAssignedToHostNameHandleResponse(resp *http.Response) (SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse, error) {
-	result := SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}
+func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameHandleResponse(resp *http.Response) (WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse, error) {
+	result := WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentifierCollection); err != nil {
-		return SiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
+		return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListSourceControlsPager - Gets the source controls available for Azure websites.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
-// options - SiteManagementClientListSourceControlsOptions contains the optional parameters for the SiteManagementClient.ListSourceControls
+// options - WebSiteManagementClientListSourceControlsOptions contains the optional parameters for the WebSiteManagementClient.ListSourceControls
 // method.
-func (client *SiteManagementClient) NewListSourceControlsPager(options *SiteManagementClientListSourceControlsOptions) *runtime.Pager[SiteManagementClientListSourceControlsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SiteManagementClientListSourceControlsResponse]{
-		More: func(page SiteManagementClientListSourceControlsResponse) bool {
+func (client *WebSiteManagementClient) NewListSourceControlsPager(options *WebSiteManagementClientListSourceControlsOptions) *runtime.Pager[WebSiteManagementClientListSourceControlsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WebSiteManagementClientListSourceControlsResponse]{
+		More: func(page WebSiteManagementClientListSourceControlsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SiteManagementClientListSourceControlsResponse) (SiteManagementClientListSourceControlsResponse, error) {
+		Fetcher: func(ctx context.Context, page *WebSiteManagementClientListSourceControlsResponse) (WebSiteManagementClientListSourceControlsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -567,14 +563,14 @@ func (client *SiteManagementClient) NewListSourceControlsPager(options *SiteMana
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return SiteManagementClientListSourceControlsResponse{}, err
+				return WebSiteManagementClientListSourceControlsResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return SiteManagementClientListSourceControlsResponse{}, err
+				return WebSiteManagementClientListSourceControlsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SiteManagementClientListSourceControlsResponse{}, runtime.NewResponseError(resp)
+				return WebSiteManagementClientListSourceControlsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listSourceControlsHandleResponse(resp)
 		},
@@ -582,7 +578,7 @@ func (client *SiteManagementClient) NewListSourceControlsPager(options *SiteMana
 }
 
 // listSourceControlsCreateRequest creates the ListSourceControls request.
-func (client *SiteManagementClient) listSourceControlsCreateRequest(ctx context.Context, options *SiteManagementClientListSourceControlsOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) listSourceControlsCreateRequest(ctx context.Context, options *WebSiteManagementClientListSourceControlsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/sourcecontrols"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -596,10 +592,10 @@ func (client *SiteManagementClient) listSourceControlsCreateRequest(ctx context.
 }
 
 // listSourceControlsHandleResponse handles the ListSourceControls response.
-func (client *SiteManagementClient) listSourceControlsHandleResponse(resp *http.Response) (SiteManagementClientListSourceControlsResponse, error) {
-	result := SiteManagementClientListSourceControlsResponse{}
+func (client *WebSiteManagementClient) listSourceControlsHandleResponse(resp *http.Response) (WebSiteManagementClientListSourceControlsResponse, error) {
+	result := WebSiteManagementClientListSourceControlsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlCollection); err != nil {
-		return SiteManagementClientListSourceControlsResponse{}, err
+		return WebSiteManagementClientListSourceControlsResponse{}, err
 	}
 	return result, nil
 }
@@ -609,24 +605,24 @@ func (client *SiteManagementClient) listSourceControlsHandleResponse(resp *http.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // moveResourceEnvelope - Object that represents the resource to move.
-// options - SiteManagementClientMoveOptions contains the optional parameters for the SiteManagementClient.Move method.
-func (client *SiteManagementClient) Move(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *SiteManagementClientMoveOptions) (SiteManagementClientMoveResponse, error) {
+// options - WebSiteManagementClientMoveOptions contains the optional parameters for the WebSiteManagementClient.Move method.
+func (client *WebSiteManagementClient) Move(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *WebSiteManagementClientMoveOptions) (WebSiteManagementClientMoveResponse, error) {
 	req, err := client.moveCreateRequest(ctx, resourceGroupName, moveResourceEnvelope, options)
 	if err != nil {
-		return SiteManagementClientMoveResponse{}, err
+		return WebSiteManagementClientMoveResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientMoveResponse{}, err
+		return WebSiteManagementClientMoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return SiteManagementClientMoveResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientMoveResponse{}, runtime.NewResponseError(resp)
 	}
-	return SiteManagementClientMoveResponse{}, nil
+	return WebSiteManagementClientMoveResponse{}, nil
 }
 
 // moveCreateRequest creates the Move request.
-func (client *SiteManagementClient) moveCreateRequest(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *SiteManagementClientMoveOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) moveCreateRequest(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *WebSiteManagementClientMoveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/moveResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -650,25 +646,25 @@ func (client *SiteManagementClient) moveCreateRequest(ctx context.Context, resou
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // userDetails - Details of publishing user
-// options - SiteManagementClientUpdatePublishingUserOptions contains the optional parameters for the SiteManagementClient.UpdatePublishingUser
+// options - WebSiteManagementClientUpdatePublishingUserOptions contains the optional parameters for the WebSiteManagementClient.UpdatePublishingUser
 // method.
-func (client *SiteManagementClient) UpdatePublishingUser(ctx context.Context, userDetails User, options *SiteManagementClientUpdatePublishingUserOptions) (SiteManagementClientUpdatePublishingUserResponse, error) {
+func (client *WebSiteManagementClient) UpdatePublishingUser(ctx context.Context, userDetails User, options *WebSiteManagementClientUpdatePublishingUserOptions) (WebSiteManagementClientUpdatePublishingUserResponse, error) {
 	req, err := client.updatePublishingUserCreateRequest(ctx, userDetails, options)
 	if err != nil {
-		return SiteManagementClientUpdatePublishingUserResponse{}, err
+		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientUpdatePublishingUserResponse{}, err
+		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientUpdatePublishingUserResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientUpdatePublishingUserResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updatePublishingUserHandleResponse(resp)
 }
 
 // updatePublishingUserCreateRequest creates the UpdatePublishingUser request.
-func (client *SiteManagementClient) updatePublishingUserCreateRequest(ctx context.Context, userDetails User, options *SiteManagementClientUpdatePublishingUserOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) updatePublishingUserCreateRequest(ctx context.Context, userDetails User, options *WebSiteManagementClientUpdatePublishingUserOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/publishingUsers/web"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -682,10 +678,10 @@ func (client *SiteManagementClient) updatePublishingUserCreateRequest(ctx contex
 }
 
 // updatePublishingUserHandleResponse handles the UpdatePublishingUser response.
-func (client *SiteManagementClient) updatePublishingUserHandleResponse(resp *http.Response) (SiteManagementClientUpdatePublishingUserResponse, error) {
-	result := SiteManagementClientUpdatePublishingUserResponse{}
+func (client *WebSiteManagementClient) updatePublishingUserHandleResponse(resp *http.Response) (WebSiteManagementClientUpdatePublishingUserResponse, error) {
+	result := WebSiteManagementClientUpdatePublishingUserResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.User); err != nil {
-		return SiteManagementClientUpdatePublishingUserResponse{}, err
+		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
 	return result, nil
 }
@@ -695,25 +691,25 @@ func (client *SiteManagementClient) updatePublishingUserHandleResponse(resp *htt
 // Generated from API version 2018-02-01
 // sourceControlType - Type of source control
 // requestMessage - Source control token information
-// options - SiteManagementClientUpdateSourceControlOptions contains the optional parameters for the SiteManagementClient.UpdateSourceControl
+// options - WebSiteManagementClientUpdateSourceControlOptions contains the optional parameters for the WebSiteManagementClient.UpdateSourceControl
 // method.
-func (client *SiteManagementClient) UpdateSourceControl(ctx context.Context, sourceControlType string, requestMessage SourceControl, options *SiteManagementClientUpdateSourceControlOptions) (SiteManagementClientUpdateSourceControlResponse, error) {
+func (client *WebSiteManagementClient) UpdateSourceControl(ctx context.Context, sourceControlType string, requestMessage SourceControl, options *WebSiteManagementClientUpdateSourceControlOptions) (WebSiteManagementClientUpdateSourceControlResponse, error) {
 	req, err := client.updateSourceControlCreateRequest(ctx, sourceControlType, requestMessage, options)
 	if err != nil {
-		return SiteManagementClientUpdateSourceControlResponse{}, err
+		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientUpdateSourceControlResponse{}, err
+		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientUpdateSourceControlResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientUpdateSourceControlResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateSourceControlHandleResponse(resp)
 }
 
 // updateSourceControlCreateRequest creates the UpdateSourceControl request.
-func (client *SiteManagementClient) updateSourceControlCreateRequest(ctx context.Context, sourceControlType string, requestMessage SourceControl, options *SiteManagementClientUpdateSourceControlOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) updateSourceControlCreateRequest(ctx context.Context, sourceControlType string, requestMessage SourceControl, options *WebSiteManagementClientUpdateSourceControlOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/sourcecontrols/{sourceControlType}"
 	if sourceControlType == "" {
 		return nil, errors.New("parameter sourceControlType cannot be empty")
@@ -731,10 +727,10 @@ func (client *SiteManagementClient) updateSourceControlCreateRequest(ctx context
 }
 
 // updateSourceControlHandleResponse handles the UpdateSourceControl response.
-func (client *SiteManagementClient) updateSourceControlHandleResponse(resp *http.Response) (SiteManagementClientUpdateSourceControlResponse, error) {
-	result := SiteManagementClientUpdateSourceControlResponse{}
+func (client *WebSiteManagementClient) updateSourceControlHandleResponse(resp *http.Response) (WebSiteManagementClientUpdateSourceControlResponse, error) {
+	result := WebSiteManagementClientUpdateSourceControlResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
-		return SiteManagementClientUpdateSourceControlResponse{}, err
+		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
 	return result, nil
 }
@@ -744,24 +740,25 @@ func (client *SiteManagementClient) updateSourceControlHandleResponse(resp *http
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // validateRequest - Request with the resources to validate.
-// options - SiteManagementClientValidateOptions contains the optional parameters for the SiteManagementClient.Validate method.
-func (client *SiteManagementClient) Validate(ctx context.Context, resourceGroupName string, validateRequest ValidateRequest, options *SiteManagementClientValidateOptions) (SiteManagementClientValidateResponse, error) {
+// options - WebSiteManagementClientValidateOptions contains the optional parameters for the WebSiteManagementClient.Validate
+// method.
+func (client *WebSiteManagementClient) Validate(ctx context.Context, resourceGroupName string, validateRequest ValidateRequest, options *WebSiteManagementClientValidateOptions) (WebSiteManagementClientValidateResponse, error) {
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, validateRequest, options)
 	if err != nil {
-		return SiteManagementClientValidateResponse{}, err
+		return WebSiteManagementClientValidateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientValidateResponse{}, err
+		return WebSiteManagementClientValidateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientValidateResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientValidateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateHandleResponse(resp)
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *SiteManagementClient) validateCreateRequest(ctx context.Context, resourceGroupName string, validateRequest ValidateRequest, options *SiteManagementClientValidateOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) validateCreateRequest(ctx context.Context, resourceGroupName string, validateRequest ValidateRequest, options *WebSiteManagementClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/validate"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -783,10 +780,10 @@ func (client *SiteManagementClient) validateCreateRequest(ctx context.Context, r
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *SiteManagementClient) validateHandleResponse(resp *http.Response) (SiteManagementClientValidateResponse, error) {
-	result := SiteManagementClientValidateResponse{}
+func (client *WebSiteManagementClient) validateHandleResponse(resp *http.Response) (WebSiteManagementClientValidateResponse, error) {
+	result := WebSiteManagementClientValidateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateResponse); err != nil {
-		return SiteManagementClientValidateResponse{}, err
+		return WebSiteManagementClientValidateResponse{}, err
 	}
 	return result, nil
 }
@@ -795,25 +792,25 @@ func (client *SiteManagementClient) validateHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
-// options - SiteManagementClientValidateContainerSettingsOptions contains the optional parameters for the SiteManagementClient.ValidateContainerSettings
+// options - WebSiteManagementClientValidateContainerSettingsOptions contains the optional parameters for the WebSiteManagementClient.ValidateContainerSettings
 // method.
-func (client *SiteManagementClient) ValidateContainerSettings(ctx context.Context, resourceGroupName string, validateContainerSettingsRequest ValidateContainerSettingsRequest, options *SiteManagementClientValidateContainerSettingsOptions) (SiteManagementClientValidateContainerSettingsResponse, error) {
+func (client *WebSiteManagementClient) ValidateContainerSettings(ctx context.Context, resourceGroupName string, validateContainerSettingsRequest ValidateContainerSettingsRequest, options *WebSiteManagementClientValidateContainerSettingsOptions) (WebSiteManagementClientValidateContainerSettingsResponse, error) {
 	req, err := client.validateContainerSettingsCreateRequest(ctx, resourceGroupName, validateContainerSettingsRequest, options)
 	if err != nil {
-		return SiteManagementClientValidateContainerSettingsResponse{}, err
+		return WebSiteManagementClientValidateContainerSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientValidateContainerSettingsResponse{}, err
+		return WebSiteManagementClientValidateContainerSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientValidateContainerSettingsResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientValidateContainerSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateContainerSettingsHandleResponse(resp)
 }
 
 // validateContainerSettingsCreateRequest creates the ValidateContainerSettings request.
-func (client *SiteManagementClient) validateContainerSettingsCreateRequest(ctx context.Context, resourceGroupName string, validateContainerSettingsRequest ValidateContainerSettingsRequest, options *SiteManagementClientValidateContainerSettingsOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) validateContainerSettingsCreateRequest(ctx context.Context, resourceGroupName string, validateContainerSettingsRequest ValidateContainerSettingsRequest, options *WebSiteManagementClientValidateContainerSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/validateContainerSettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -835,10 +832,10 @@ func (client *SiteManagementClient) validateContainerSettingsCreateRequest(ctx c
 }
 
 // validateContainerSettingsHandleResponse handles the ValidateContainerSettings response.
-func (client *SiteManagementClient) validateContainerSettingsHandleResponse(resp *http.Response) (SiteManagementClientValidateContainerSettingsResponse, error) {
-	result := SiteManagementClientValidateContainerSettingsResponse{}
+func (client *WebSiteManagementClient) validateContainerSettingsHandleResponse(resp *http.Response) (WebSiteManagementClientValidateContainerSettingsResponse, error) {
+	result := WebSiteManagementClientValidateContainerSettingsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
-		return SiteManagementClientValidateContainerSettingsResponse{}, err
+		return WebSiteManagementClientValidateContainerSettingsResponse{}, err
 	}
 	return result, nil
 }
@@ -848,25 +845,25 @@ func (client *SiteManagementClient) validateContainerSettingsHandleResponse(resp
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // moveResourceEnvelope - Object that represents the resource to move.
-// options - SiteManagementClientValidateMoveOptions contains the optional parameters for the SiteManagementClient.ValidateMove
+// options - WebSiteManagementClientValidateMoveOptions contains the optional parameters for the WebSiteManagementClient.ValidateMove
 // method.
-func (client *SiteManagementClient) ValidateMove(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *SiteManagementClientValidateMoveOptions) (SiteManagementClientValidateMoveResponse, error) {
+func (client *WebSiteManagementClient) ValidateMove(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *WebSiteManagementClientValidateMoveOptions) (WebSiteManagementClientValidateMoveResponse, error) {
 	req, err := client.validateMoveCreateRequest(ctx, resourceGroupName, moveResourceEnvelope, options)
 	if err != nil {
-		return SiteManagementClientValidateMoveResponse{}, err
+		return WebSiteManagementClientValidateMoveResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientValidateMoveResponse{}, err
+		return WebSiteManagementClientValidateMoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return SiteManagementClientValidateMoveResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientValidateMoveResponse{}, runtime.NewResponseError(resp)
 	}
-	return SiteManagementClientValidateMoveResponse{}, nil
+	return WebSiteManagementClientValidateMoveResponse{}, nil
 }
 
 // validateMoveCreateRequest creates the ValidateMove request.
-func (client *SiteManagementClient) validateMoveCreateRequest(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *SiteManagementClientValidateMoveOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) validateMoveCreateRequest(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope, options *WebSiteManagementClientValidateMoveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/validateMoveResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -891,25 +888,25 @@ func (client *SiteManagementClient) validateMoveCreateRequest(ctx context.Contex
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // parameters - VNET information
-// options - SiteManagementClientVerifyHostingEnvironmentVnetOptions contains the optional parameters for the SiteManagementClient.VerifyHostingEnvironmentVnet
+// options - WebSiteManagementClientVerifyHostingEnvironmentVnetOptions contains the optional parameters for the WebSiteManagementClient.VerifyHostingEnvironmentVnet
 // method.
-func (client *SiteManagementClient) VerifyHostingEnvironmentVnet(ctx context.Context, parameters VnetParameters, options *SiteManagementClientVerifyHostingEnvironmentVnetOptions) (SiteManagementClientVerifyHostingEnvironmentVnetResponse, error) {
+func (client *WebSiteManagementClient) VerifyHostingEnvironmentVnet(ctx context.Context, parameters VnetParameters, options *WebSiteManagementClientVerifyHostingEnvironmentVnetOptions) (WebSiteManagementClientVerifyHostingEnvironmentVnetResponse, error) {
 	req, err := client.verifyHostingEnvironmentVnetCreateRequest(ctx, parameters, options)
 	if err != nil {
-		return SiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
+		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
+		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SiteManagementClientVerifyHostingEnvironmentVnetResponse{}, runtime.NewResponseError(resp)
+		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.verifyHostingEnvironmentVnetHandleResponse(resp)
 }
 
 // verifyHostingEnvironmentVnetCreateRequest creates the VerifyHostingEnvironmentVnet request.
-func (client *SiteManagementClient) verifyHostingEnvironmentVnetCreateRequest(ctx context.Context, parameters VnetParameters, options *SiteManagementClientVerifyHostingEnvironmentVnetOptions) (*policy.Request, error) {
+func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetCreateRequest(ctx context.Context, parameters VnetParameters, options *WebSiteManagementClientVerifyHostingEnvironmentVnetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/verifyHostingEnvironmentVnet"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -927,10 +924,10 @@ func (client *SiteManagementClient) verifyHostingEnvironmentVnetCreateRequest(ct
 }
 
 // verifyHostingEnvironmentVnetHandleResponse handles the VerifyHostingEnvironmentVnet response.
-func (client *SiteManagementClient) verifyHostingEnvironmentVnetHandleResponse(resp *http.Response) (SiteManagementClientVerifyHostingEnvironmentVnetResponse, error) {
-	result := SiteManagementClientVerifyHostingEnvironmentVnetResponse{}
+func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetHandleResponse(resp *http.Response) (WebSiteManagementClientVerifyHostingEnvironmentVnetResponse, error) {
+	result := WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetValidationFailureDetails); err != nil {
-		return SiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
+		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
 	return result, nil
 }

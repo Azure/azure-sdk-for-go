@@ -343,7 +343,6 @@ func (client *DeploymentOperationsClient) getAtTenantScopeHandleResponse(resp *h
 }
 
 // NewListPager - Gets all deployments operations for a deployment.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deploymentName - The name of the deployment.
@@ -416,7 +415,6 @@ func (client *DeploymentOperationsClient) listHandleResponse(resp *http.Response
 }
 
 // NewListAtManagementGroupScopePager - Gets all deployments operations for a deployment.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // groupID - The management group ID.
 // deploymentName - The name of the deployment.
@@ -485,7 +483,6 @@ func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleRespon
 }
 
 // NewListAtScopePager - Gets all deployments operations for a deployment.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // scope - The resource scope.
 // deploymentName - The name of the deployment.
@@ -551,7 +548,6 @@ func (client *DeploymentOperationsClient) listAtScopeHandleResponse(resp *http.R
 }
 
 // NewListAtSubscriptionScopePager - Gets all deployments operations for a deployment.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // deploymentName - The name of the deployment.
 // options - DeploymentOperationsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtSubscriptionScope
@@ -619,7 +615,6 @@ func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleResponse(
 }
 
 // NewListAtTenantScopePager - Gets all deployments operations for a deployment.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // deploymentName - The name of the deployment.
 // options - DeploymentOperationsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtTenantScope

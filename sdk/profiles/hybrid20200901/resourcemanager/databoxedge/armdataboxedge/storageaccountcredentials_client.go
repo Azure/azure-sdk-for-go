@@ -256,7 +256,6 @@ func (client *StorageAccountCredentialsClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByDataBoxEdgeDevicePager - Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-08-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.

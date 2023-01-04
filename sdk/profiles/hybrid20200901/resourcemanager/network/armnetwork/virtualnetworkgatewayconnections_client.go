@@ -304,7 +304,6 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleResponse
 
 // NewListPager - The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
 // created.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // options - VirtualNetworkGatewayConnectionsClientListOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.List

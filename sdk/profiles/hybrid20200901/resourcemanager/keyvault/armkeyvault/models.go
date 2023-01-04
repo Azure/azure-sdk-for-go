@@ -59,21 +59,6 @@ type CheckNameAvailabilityResult struct {
 	Reason *Reason `json:"reason,omitempty" azure:"ro"`
 }
 
-// CloudError - An error response from Key Vault resource provider
-type CloudError struct {
-	// An error response from Key Vault resource provider
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from Key Vault resource provider
-type CloudErrorBody struct {
-	// Error code. This is a mnemonic that can be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// User friendly error message. The message is typically localized and may vary with service version.
-	Message *string `json:"message,omitempty"`
-}
-
 // DeletedVault - Deleted vault information with extended details.
 type DeletedVault struct {
 	// Properties of the vault

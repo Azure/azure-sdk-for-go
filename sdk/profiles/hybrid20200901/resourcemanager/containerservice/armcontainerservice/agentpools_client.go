@@ -376,7 +376,6 @@ func (client *AgentPoolsClient) getUpgradeProfileHandleResponse(resp *http.Respo
 
 // NewListPager - Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent
 // pool.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-11-01
 // resourceGroupName - The name of the resource group.
 // resourceName - The name of the managed cluster resource.

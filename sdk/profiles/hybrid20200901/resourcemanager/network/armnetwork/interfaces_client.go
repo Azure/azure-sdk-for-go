@@ -305,7 +305,6 @@ func (client *InterfacesClient) getEffectiveRouteTableCreateRequest(ctx context.
 }
 
 // NewListPager - Gets all network interfaces in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // options - InterfacesClientListOptions contains the optional parameters for the InterfacesClient.List method.
@@ -369,7 +368,6 @@ func (client *InterfacesClient) listHandleResponse(resp *http.Response) (Interfa
 }
 
 // NewListAllPager - Gets all network interfaces in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // options - InterfacesClientListAllOptions contains the optional parameters for the InterfacesClient.ListAll method.
 func (client *InterfacesClient) NewListAllPager(options *InterfacesClientListAllOptions) *runtime.Pager[InterfacesClientListAllResponse] {

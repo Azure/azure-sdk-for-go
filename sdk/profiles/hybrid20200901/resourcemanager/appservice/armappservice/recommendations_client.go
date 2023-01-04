@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armweb
+package armappservice
 
 import (
 	"context"
@@ -436,7 +436,6 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *
 }
 
 // NewListPager - List all recommendations for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
 func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
@@ -503,7 +502,6 @@ func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (Re
 }
 
 // NewListHistoryForHostingEnvironmentPager - Get past recommendations for an app, optionally specified by the time range.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // hostingEnvironmentName - Name of the hosting environment.
@@ -581,7 +579,6 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleRespo
 }
 
 // NewListHistoryForWebAppPager - Get past recommendations for an app, optionally specified by the time range.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Name of the app.
@@ -659,7 +656,6 @@ func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *ht
 }
 
 // NewListRecommendedRulesForHostingEnvironmentPager - Get all recommendations for an app.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // hostingEnvironmentName - Name of the app.
@@ -737,7 +733,6 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHa
 }
 
 // NewListRecommendedRulesForWebAppPager - Get all recommendations for an app.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Name of the app.

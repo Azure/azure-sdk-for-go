@@ -51,7 +51,6 @@ func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 }
 
 // NewListPager - Gets the tenants for your account.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-06-01
 // options - TenantsClientListOptions contains the optional parameters for the TenantsClient.List method.
 func (client *TenantsClient) NewListPager(options *TenantsClientListOptions) *runtime.Pager[TenantsClientListResponse] {

@@ -301,12 +301,6 @@ type BootDiagnosticsInstanceView struct {
 	Status *InstanceViewStatus `json:"status,omitempty" azure:"ro"`
 }
 
-// CloudError - An error response from the Compute service.
-type CloudError struct {
-	// Api error.
-	Error *APIError `json:"error,omitempty"`
-}
-
 // CreationData - Data used when creating a disk.
 type CreationData struct {
 	// REQUIRED; This enumerates the possible sources of a disk's creation.

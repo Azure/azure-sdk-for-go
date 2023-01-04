@@ -330,7 +330,6 @@ func (client *VaultsClient) getDeletedHandleResponse(resp *http.Response) (Vault
 }
 
 // NewListPager - The List operation gets information about the vaults associated with the subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
 // filter - The filter to apply on the operation.
 // apiVersion - Azure Resource Manager Api Version.
@@ -396,7 +395,6 @@ func (client *VaultsClient) listHandleResponse(resp *http.Response) (VaultsClien
 
 // NewListByResourceGroupPager - The List operation gets information about the vaults associated with the subscription and
 // within the specified resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
 // resourceGroupName - The name of the Resource Group to which the vault belongs.
 // options - VaultsClientListByResourceGroupOptions contains the optional parameters for the VaultsClient.ListByResourceGroup
@@ -464,7 +462,6 @@ func (client *VaultsClient) listByResourceGroupHandleResponse(resp *http.Respons
 }
 
 // NewListBySubscriptionPager - The List operation gets information about the vaults associated with the subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
 // options - VaultsClientListBySubscriptionOptions contains the optional parameters for the VaultsClient.ListBySubscription
 // method.
@@ -527,7 +524,6 @@ func (client *VaultsClient) listBySubscriptionHandleResponse(resp *http.Response
 }
 
 // NewListDeletedPager - Gets information about the deleted vaults in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
 // options - VaultsClientListDeletedOptions contains the optional parameters for the VaultsClient.ListDeleted method.
 func (client *VaultsClient) NewListDeletedPager(options *VaultsClientListDeletedOptions) *runtime.Pager[VaultsClientListDeletedResponse] {

@@ -313,7 +313,6 @@ func (client *SnapshotsClient) grantAccessCreateRequest(ctx context.Context, res
 }
 
 // NewListPager - Lists snapshots under a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01
 // options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
 func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
@@ -372,7 +371,6 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 }
 
 // NewListByResourceGroupPager - Lists snapshots under a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01
 // resourceGroupName - The name of the resource group.
 // options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.ListByResourceGroup

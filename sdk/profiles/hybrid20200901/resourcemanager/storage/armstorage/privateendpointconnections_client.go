@@ -174,7 +174,6 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - List all the private endpoint connections associated with the storage account.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-06-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between

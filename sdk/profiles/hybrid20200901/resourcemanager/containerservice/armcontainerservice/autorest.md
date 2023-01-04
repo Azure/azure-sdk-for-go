@@ -17,4 +17,40 @@ directive:
 - rename-model: 
     from: 'ContainerServiceOrchestratorProfile'
     to: 'BasicOrchestratorProfile'
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    delete $.CloudError["x-ms-external"];
+    delete $.CloudErrorBody["x-ms-external"];
+```
+
+### Remove moduleName and moduleVersion constant
+
+```yaml
+directive:
+  - from: constants.go
+    where: $
+    transform: return $.replace(/const \(\n\s+moduleName.+\n\s+moduleVersion.+\n\)\n/, "");
+```
+
+### Add internal import
+
+```yaml
+directive:
+  - from:
+      - "*_client.go"
+      - "client.go"
+    where: $
+    transform: return $.replace(/import \(\n/, "import (\n\"github.com/Azure/azure-sdk-for-go/sdk/profiles/hybrid20200901/internal\"\n");
+```
+
+## Change moduleName and moduleVersion in client CTOR
+
+```yaml
+directive:
+  - from:
+      - "*_client.go"
+      - "client.go"
+    where: $
+    transform: return $.replace(/moduleName, moduleVersion/, "internal.ModuleName, internal.ModuleVersion");
 ```

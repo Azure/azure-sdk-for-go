@@ -601,7 +601,6 @@ func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, de
 }
 
 // NewListByResourceGroupPager - Gets all the Data Box Edge/Data Box Gateway devices in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-08-01
 // resourceGroupName - The resource group name.
 // options - DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup
@@ -669,7 +668,6 @@ func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Respon
 }
 
 // NewListBySubscriptionPager - Gets all the Data Box Edge/Data Box Gateway devices in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-08-01
 // options - DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription
 // method.

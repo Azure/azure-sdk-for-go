@@ -1706,7 +1706,6 @@ func (client *DeploymentsClient) getAtTenantScopeHandleResponse(resp *http.Respo
 }
 
 // NewListAtManagementGroupScopePager - Get all the deployments for a management group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // groupID - The management group ID.
 // options - DeploymentsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.ListAtManagementGroupScope
@@ -1773,7 +1772,6 @@ func (client *DeploymentsClient) listAtManagementGroupScopeHandleResponse(resp *
 }
 
 // NewListAtScopePager - Get all the deployments at the given scope.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // scope - The resource scope.
 // options - DeploymentsClientListAtScopeOptions contains the optional parameters for the DeploymentsClient.ListAtScope method.
@@ -1836,7 +1834,6 @@ func (client *DeploymentsClient) listAtScopeHandleResponse(resp *http.Response) 
 }
 
 // NewListAtSubscriptionScopePager - Get all the deployments for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // options - DeploymentsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.ListAtSubscriptionScope
 // method.
@@ -1902,7 +1899,6 @@ func (client *DeploymentsClient) listAtSubscriptionScopeHandleResponse(resp *htt
 }
 
 // NewListAtTenantScopePager - Get all the deployments at the tenant scope.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // options - DeploymentsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.ListAtTenantScope
 // method.
@@ -1964,7 +1960,6 @@ func (client *DeploymentsClient) listAtTenantScopeHandleResponse(resp *http.Resp
 }
 
 // NewListByResourceGroupPager - Get all the deployments for a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // resourceGroupName - The name of the resource group with the deployments to get. The name is case insensitive.
 // options - DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.ListByResourceGroup

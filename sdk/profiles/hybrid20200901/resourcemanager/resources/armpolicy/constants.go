@@ -9,11 +9,6 @@
 
 package armpolicy
 
-const (
-	moduleName    = "hybrid20200901/armpolicy"
-	moduleVersion = "v1.0.0"
-)
-
 // PolicyMode - The policy definition mode. Possible values are NotSpecified, Indexed, and All.
 type PolicyMode string
 

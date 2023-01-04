@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armweb
+package armappservice
 
 import (
 	"context"
@@ -217,7 +217,6 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 }
 
 // NewListPager - Get all certificates for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
 func (client *CertificatesClient) NewListPager(options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
@@ -276,7 +275,6 @@ func (client *CertificatesClient) listHandleResponse(resp *http.Response) (Certi
 }
 
 // NewListByResourceGroupPager - Get all certificates in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.ListByResourceGroup

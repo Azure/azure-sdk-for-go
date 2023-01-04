@@ -243,7 +243,6 @@ func (client *PublicIPAddressesClient) getHandleResponse(resp *http.Response) (P
 }
 
 // NewListPager - Gets all public IP addresses in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // options - PublicIPAddressesClientListOptions contains the optional parameters for the PublicIPAddressesClient.List method.
@@ -307,7 +306,6 @@ func (client *PublicIPAddressesClient) listHandleResponse(resp *http.Response) (
 }
 
 // NewListAllPager - Gets all the public IP addresses in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // options - PublicIPAddressesClientListAllOptions contains the optional parameters for the PublicIPAddressesClient.ListAll
 // method.

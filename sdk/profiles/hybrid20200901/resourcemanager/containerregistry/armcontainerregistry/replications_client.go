@@ -254,7 +254,6 @@ func (client *ReplicationsClient) getHandleResponse(resp *http.Response) (Replic
 }
 
 // NewListPager - Lists all the replications for the specified container registry.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-05-01
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.

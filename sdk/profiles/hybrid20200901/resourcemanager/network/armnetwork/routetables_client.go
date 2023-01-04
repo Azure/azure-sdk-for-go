@@ -242,7 +242,6 @@ func (client *RouteTablesClient) getHandleResponse(resp *http.Response) (RouteTa
 }
 
 // NewListPager - Gets all route tables in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // options - RouteTablesClientListOptions contains the optional parameters for the RouteTablesClient.List method.
@@ -306,7 +305,6 @@ func (client *RouteTablesClient) listHandleResponse(resp *http.Response) (RouteT
 }
 
 // NewListAllPager - Gets all route tables in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // options - RouteTablesClientListAllOptions contains the optional parameters for the RouteTablesClient.ListAll method.
 func (client *RouteTablesClient) NewListAllPager(options *RouteTablesClientListAllOptions) *runtime.Pager[RouteTablesClientListAllResponse] {

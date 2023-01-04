@@ -16,3 +16,34 @@ tag: package-subscriptions-2016-06
 modelerfour:
   lenient-model-deduplication: true
 ```
+
+### Remove moduleName and moduleVersion constant
+
+```yaml
+directive:
+  - from: constants.go
+    where: $
+    transform: return $.replace(/const \(\n\s+moduleName.+\n\s+moduleVersion.+\n\)\n/, "");
+```
+
+### Add internal import
+
+```yaml
+directive:
+  - from:
+      - "*_client.go"
+      - "client.go"
+    where: $
+    transform: return $.replace(/import \(\n/, "import (\n\"github.com/Azure/azure-sdk-for-go/sdk/profiles/hybrid20200901/internal\"\n");
+```
+
+## Change moduleName and moduleVersion in client CTOR
+
+```yaml
+directive:
+  - from:
+      - "*_client.go"
+      - "client.go"
+    where: $
+    transform: return $.replace(/moduleName, moduleVersion/, "internal.ModuleName, internal.ModuleVersion");
+```

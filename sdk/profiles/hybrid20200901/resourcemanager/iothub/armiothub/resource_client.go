@@ -480,7 +480,6 @@ func (client *ResourceClient) getHandleResponse(resp *http.Response) (ResourceCl
 }
 
 // NewGetEndpointHealthPager - Get the health for routing endpoints.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01-preview
 // options - ResourceClientGetEndpointHealthOptions contains the optional parameters for the ResourceClient.GetEndpointHealth
 // method.
@@ -738,7 +737,6 @@ func (client *ResourceClient) getKeysForKeyNameHandleResponse(resp *http.Respons
 }
 
 // NewGetQuotaMetricsPager - Get the quota metrics for an IoT hub.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01-preview
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
@@ -864,7 +862,6 @@ func (client *ResourceClient) getStatsHandleResponse(resp *http.Response) (Resou
 }
 
 // NewGetValidSKUsPager - Get the list of valid SKUs for an IoT hub.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01-preview
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
@@ -992,7 +989,6 @@ func (client *ResourceClient) importDevicesHandleResponse(resp *http.Response) (
 }
 
 // NewListByResourceGroupPager - Get all the IoT hubs in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01-preview
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // options - ResourceClientListByResourceGroupOptions contains the optional parameters for the ResourceClient.ListByResourceGroup
@@ -1057,7 +1053,6 @@ func (client *ResourceClient) listByResourceGroupHandleResponse(resp *http.Respo
 }
 
 // NewListBySubscriptionPager - Get all the IoT hubs in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01-preview
 // options - ResourceClientListBySubscriptionOptions contains the optional parameters for the ResourceClient.ListBySubscription
 // method.
@@ -1118,7 +1113,6 @@ func (client *ResourceClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // NewListEventHubConsumerGroupsPager - Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint
 // in an IoT hub.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01-preview
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
@@ -1193,7 +1187,6 @@ func (client *ResourceClient) listEventHubConsumerGroupsHandleResponse(resp *htt
 }
 
 // NewListJobsPager - Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01-preview
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
@@ -1262,7 +1255,6 @@ func (client *ResourceClient) listJobsHandleResponse(resp *http.Response) (Resou
 }
 
 // NewListKeysPager - Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01-preview
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.

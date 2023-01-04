@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armweb
+package armappservice
 
 import (
 	"context"
@@ -57,7 +57,6 @@ func NewProviderClient(subscriptionID string, credential azcore.TokenCredential,
 }
 
 // NewGetAvailableStacksPager - Get available application frameworks and their versions
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.GetAvailableStacks
 // method.
@@ -116,7 +115,6 @@ func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Respon
 }
 
 // NewGetAvailableStacksOnPremPager - Get available application frameworks and their versions
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // options - ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.GetAvailableStacksOnPrem
 // method.
@@ -180,7 +178,6 @@ func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.
 
 // NewListOperationsPager - Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric
 // definitions
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // options - ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.ListOperations method.
 func (client *ProviderClient) NewListOperationsPager(options *ProviderClientListOperationsOptions) *runtime.Pager[ProviderClientListOperationsResponse] {

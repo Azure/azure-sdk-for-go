@@ -254,7 +254,6 @@ func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesClient
 }
 
 // NewListPager - Gets all routes in a route table.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // routeTableName - The name of the route table.

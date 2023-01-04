@@ -149,7 +149,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 }
 
 // NewListPager - Gets all subscriptions for a tenant.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-06-01
 // options - ClientListOptions contains the optional parameters for the Client.List method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
@@ -205,7 +204,6 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 
 // NewListLocationsPager - This operation provides all the locations that are available for resource providers; however, each
 // resource provider may support a subset of this list.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-06-01
 // subscriptionID - The ID of the target subscription.
 // options - ClientListLocationsOptions contains the optional parameters for the Client.ListLocations method.

@@ -105,7 +105,6 @@ func (client *ProviderOperationsMetadataClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Gets provider operations metadata for all resource providers.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-07-01
 // options - ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.List
 // method.

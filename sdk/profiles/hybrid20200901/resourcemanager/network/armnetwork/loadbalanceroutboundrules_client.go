@@ -120,7 +120,6 @@ func (client *LoadBalancerOutboundRulesClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListPager - Gets all the outbound rules in a load balancer.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // loadBalancerName - The name of the load balancer.

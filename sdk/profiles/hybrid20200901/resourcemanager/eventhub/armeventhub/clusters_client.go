@@ -287,7 +287,6 @@ func (client *ClustersClient) listAvailableClusterRegionHandleResponse(resp *htt
 }
 
 // NewListByResourceGroupPager - Lists the available Event Hubs Clusters within an ARM resource group
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup

@@ -251,7 +251,6 @@ func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (Cons
 
 // NewListByEventHubPager - Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists
 // in the Namespace.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2017-04-01
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name

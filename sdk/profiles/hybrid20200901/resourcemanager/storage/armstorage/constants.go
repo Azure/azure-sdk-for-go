@@ -9,11 +9,6 @@
 
 package armstorage
 
-const (
-	moduleName    = "hybrid20200901/armstorage"
-	moduleVersion = "v1.0.0"
-)
-
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing.
 type AccessTier string
 

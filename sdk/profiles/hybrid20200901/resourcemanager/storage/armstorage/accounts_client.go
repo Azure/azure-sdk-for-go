@@ -353,7 +353,6 @@ func (client *AccountsClient) getPropertiesHandleResponse(resp *http.Response) (
 
 // NewListPager - Lists all the storage accounts available under the subscription. Note that storage keys are not returned;
 // use the ListKeys operation for this.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-06-01
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
 func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
@@ -471,7 +470,6 @@ func (client *AccountsClient) listAccountSASHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - Lists all the storage accounts available under the given resource group. Note that storage
 // keys are not returned; use the ListKeys operation for this.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-06-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup

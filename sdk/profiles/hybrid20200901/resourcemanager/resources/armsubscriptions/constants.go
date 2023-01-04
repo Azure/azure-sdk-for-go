@@ -9,11 +9,6 @@
 
 package armsubscriptions
 
-const (
-	moduleName    = "hybrid20200901/armsubscriptions"
-	moduleVersion = "v1.0.0"
-)
-
 // ResourceNameStatus - Is the resource name Allowed or Reserved
 type ResourceNameStatus string
 

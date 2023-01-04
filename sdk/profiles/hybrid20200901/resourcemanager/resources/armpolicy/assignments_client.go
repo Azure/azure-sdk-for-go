@@ -350,7 +350,6 @@ func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (Ass
 }
 
 // NewListPager - Gets all the policy assignments for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-12-01
 // options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
 func (client *AssignmentsClient) NewListPager(options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
@@ -412,7 +411,6 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 }
 
 // NewListForResourcePager - Gets policy assignments for a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-12-01
 // resourceGroupName - The name of the resource group containing the resource. The name is case insensitive.
 // resourceProviderNamespace - The namespace of the resource provider.
@@ -494,7 +492,6 @@ func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Respon
 }
 
 // NewListForResourceGroupPager - Gets policy assignments for the resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-12-01
 // resourceGroupName - The name of the resource group that contains policy assignments.
 // options - AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.ListForResourceGroup

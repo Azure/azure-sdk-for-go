@@ -429,7 +429,6 @@ func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Res
 }
 
 // NewListAuthorizationRulesPager - Gets the authorization rules for an Event Hub.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2017-04-01
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
@@ -504,7 +503,6 @@ func (client *EventHubsClient) listAuthorizationRulesHandleResponse(resp *http.R
 }
 
 // NewListByNamespacePager - Gets all the Event Hubs in a Namespace.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2017-04-01
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name

@@ -179,13 +179,6 @@ type ClientListOptions struct {
 	Top *int32
 }
 
-// CloudError - An error response for a resource management request.
-type CloudError struct {
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
-	// the OData error response format.)
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
 // DebugSetting - The debug setting.
 type DebugSetting struct {
 	// Specifies the type of information to log for debugging. The permitted values are none, requestContent, responseContent,

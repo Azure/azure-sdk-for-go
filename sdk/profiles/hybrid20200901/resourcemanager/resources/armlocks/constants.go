@@ -9,11 +9,6 @@
 
 package armlocks
 
-const (
-	moduleName    = "hybrid20200901/armlocks"
-	moduleVersion = "v1.0.0"
-)
-
 // LockLevel - The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
 // users are able to read and modify the resources, but not delete. ReadOnly means
 // authorized users can only read from a resource, but they can't modify or delete it.

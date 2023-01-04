@@ -252,7 +252,6 @@ func (client *ContainerServicesClient) getHandleResponse(resp *http.Response) (C
 // NewListPager - Gets a list of container services in the specified subscription. The operation returns properties of each
 // container service including state, orchestrator, number of masters and agents, and FQDNs of
 // masters and agents.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2017-07-01
 // options - ContainerServicesClientListOptions contains the optional parameters for the ContainerServicesClient.List method.
 func (client *ContainerServicesClient) NewListPager(options *ContainerServicesClientListOptions) *runtime.Pager[ContainerServicesClientListResponse] {
@@ -313,7 +312,6 @@ func (client *ContainerServicesClient) listHandleResponse(resp *http.Response) (
 // NewListByResourceGroupPager - Gets a list of container services in the specified subscription and resource group. The operation
 // returns properties of each container service including state, orchestrator, number of masters and
 // agents, and FQDNs of masters and agents.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2017-07-01
 // resourceGroupName - The name of the resource group.
 // options - ContainerServicesClientListByResourceGroupOptions contains the optional parameters for the ContainerServicesClient.ListByResourceGroup

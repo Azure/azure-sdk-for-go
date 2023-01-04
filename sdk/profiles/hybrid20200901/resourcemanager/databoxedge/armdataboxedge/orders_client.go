@@ -239,7 +239,6 @@ func (client *OrdersClient) getHandleResponse(resp *http.Response) (OrdersClient
 }
 
 // NewListByDataBoxEdgeDevicePager - Lists all the orders related to a Data Box Edge/Data Box Gateway device.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-08-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.

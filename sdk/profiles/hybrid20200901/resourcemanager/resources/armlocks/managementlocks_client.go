@@ -739,7 +739,6 @@ func (client *ManagementLocksClient) getByScopeHandleResponse(resp *http.Respons
 }
 
 // NewListAtResourceGroupLevelPager - Gets all the management locks for a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-09-01
 // resourceGroupName - The name of the resource group containing the locks to get.
 // options - ManagementLocksClientListAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtResourceGroupLevel
@@ -807,7 +806,6 @@ func (client *ManagementLocksClient) listAtResourceGroupLevelHandleResponse(resp
 }
 
 // NewListAtResourceLevelPager - Gets all the management locks for a resource or any level below resource.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-09-01
 // resourceGroupName - The name of the resource group containing the locked resource. The name is case insensitive.
 // resourceProviderNamespace - The namespace of the resource provider.
@@ -889,7 +887,6 @@ func (client *ManagementLocksClient) listAtResourceLevelHandleResponse(resp *htt
 }
 
 // NewListAtSubscriptionLevelPager - Gets all the management locks for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-09-01
 // options - ManagementLocksClientListAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtSubscriptionLevel
 // method.
@@ -952,7 +949,6 @@ func (client *ManagementLocksClient) listAtSubscriptionLevelHandleResponse(resp 
 }
 
 // NewListByScopePager - Gets all the management locks for a scope.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-09-01
 // scope - The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions,
 // '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for

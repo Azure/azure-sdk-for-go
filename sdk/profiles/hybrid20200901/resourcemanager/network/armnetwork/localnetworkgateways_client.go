@@ -245,7 +245,6 @@ func (client *LocalNetworkGatewaysClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Gets all the local network gateways in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // options - LocalNetworkGatewaysClientListOptions contains the optional parameters for the LocalNetworkGatewaysClient.List

@@ -721,7 +721,6 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientIPSecParametersCreateReq
 }
 
 // NewListPager - Gets all virtual network gateways by resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // options - VirtualNetworkGatewaysClientListOptions contains the optional parameters for the VirtualNetworkGatewaysClient.List
@@ -786,7 +785,6 @@ func (client *VirtualNetworkGatewaysClient) listHandleResponse(resp *http.Respon
 }
 
 // NewListConnectionsPager - Gets all the connections in a virtual network gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // virtualNetworkGatewayName - The name of the virtual network gateway.

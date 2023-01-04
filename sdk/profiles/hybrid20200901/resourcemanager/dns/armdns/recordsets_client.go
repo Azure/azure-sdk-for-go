@@ -251,7 +251,6 @@ func (client *RecordSetsClient) getHandleResponse(resp *http.Response) (RecordSe
 }
 
 // NewListByDNSZonePager - Lists all record sets in a DNS zone.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // zoneName - The name of the DNS zone (without a terminating dot).
@@ -327,7 +326,6 @@ func (client *RecordSetsClient) listByDNSZoneHandleResponse(resp *http.Response)
 }
 
 // NewListByTypePager - Lists the record sets of a specified type in a DNS zone.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // zoneName - The name of the DNS zone (without a terminating dot).

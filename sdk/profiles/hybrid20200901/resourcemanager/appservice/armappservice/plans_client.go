@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armweb
+package armappservice
 
 import (
 	"context"
@@ -25,19 +25,19 @@ import (
 	"strings"
 )
 
-// AppServicePlansClient contains the methods for the AppServicePlans group.
-// Don't use this type directly, use NewAppServicePlansClient() instead.
-type AppServicePlansClient struct {
+// PlansClient contains the methods for the AppServicePlans group.
+// Don't use this type directly, use NewPlansClient() instead.
+type PlansClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewAppServicePlansClient creates a new instance of AppServicePlansClient with the specified values.
+// NewPlansClient creates a new instance of PlansClient with the specified values.
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAppServicePlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AppServicePlansClient, error) {
+func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PlansClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -49,7 +49,7 @@ func NewAppServicePlansClient(subscriptionID string, credential azcore.TokenCred
 	if err != nil {
 		return nil, err
 	}
-	client := &AppServicePlansClient{
+	client := &PlansClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -63,24 +63,24 @@ func NewAppServicePlansClient(subscriptionID string, credential azcore.TokenCred
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
 // appServicePlan - Details of the App Service plan.
-// options - AppServicePlansClientBeginCreateOrUpdateOptions contains the optional parameters for the AppServicePlansClient.BeginCreateOrUpdate
+// options - PlansClientBeginCreateOrUpdateOptions contains the optional parameters for the PlansClient.BeginCreateOrUpdate
 // method.
-func (client *AppServicePlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlan, options *AppServicePlansClientBeginCreateOrUpdateOptions) (*runtime.Poller[AppServicePlansClientCreateOrUpdateResponse], error) {
+func (client *PlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan Plan, options *PlansClientBeginCreateOrUpdateOptions) (*runtime.Poller[PlansClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, appServicePlan, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AppServicePlansClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PlansClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AppServicePlansClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PlansClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
-func (client *AppServicePlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlan, options *AppServicePlansClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *PlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan Plan, options *PlansClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, appServicePlan, options)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (client *AppServicePlansClient) createOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AppServicePlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlan, options *AppServicePlansClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan Plan, options *PlansClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -129,25 +129,25 @@ func (client *AppServicePlansClient) createOrUpdateCreateRequest(ctx context.Con
 // vnetName - Name of the Virtual Network.
 // routeName - Name of the Virtual Network route.
 // route - Definition of the Virtual Network route.
-// options - AppServicePlansClientCreateOrUpdateVnetRouteOptions contains the optional parameters for the AppServicePlansClient.CreateOrUpdateVnetRoute
+// options - PlansClientCreateOrUpdateVnetRouteOptions contains the optional parameters for the PlansClient.CreateOrUpdateVnetRoute
 // method.
-func (client *AppServicePlansClient) CreateOrUpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansClientCreateOrUpdateVnetRouteOptions) (AppServicePlansClientCreateOrUpdateVnetRouteResponse, error) {
+func (client *PlansClient) CreateOrUpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *PlansClientCreateOrUpdateVnetRouteOptions) (PlansClientCreateOrUpdateVnetRouteResponse, error) {
 	req, err := client.createOrUpdateVnetRouteCreateRequest(ctx, resourceGroupName, name, vnetName, routeName, route, options)
 	if err != nil {
-		return AppServicePlansClientCreateOrUpdateVnetRouteResponse{}, err
+		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientCreateOrUpdateVnetRouteResponse{}, err
+		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusBadRequest, http.StatusNotFound) {
-		return AppServicePlansClientCreateOrUpdateVnetRouteResponse{}, runtime.NewResponseError(resp)
+		return PlansClientCreateOrUpdateVnetRouteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateVnetRouteHandleResponse(resp)
 }
 
 // createOrUpdateVnetRouteCreateRequest creates the CreateOrUpdateVnetRoute request.
-func (client *AppServicePlansClient) createOrUpdateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansClientCreateOrUpdateVnetRouteOptions) (*policy.Request, error) {
+func (client *PlansClient) createOrUpdateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *PlansClientCreateOrUpdateVnetRouteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -181,10 +181,10 @@ func (client *AppServicePlansClient) createOrUpdateVnetRouteCreateRequest(ctx co
 }
 
 // createOrUpdateVnetRouteHandleResponse handles the CreateOrUpdateVnetRoute response.
-func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleResponse(resp *http.Response) (AppServicePlansClientCreateOrUpdateVnetRouteResponse, error) {
-	result := AppServicePlansClientCreateOrUpdateVnetRouteResponse{}
+func (client *PlansClient) createOrUpdateVnetRouteHandleResponse(resp *http.Response) (PlansClientCreateOrUpdateVnetRouteResponse, error) {
+	result := PlansClientCreateOrUpdateVnetRouteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
-		return AppServicePlansClientCreateOrUpdateVnetRouteResponse{}, err
+		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
 	}
 	return result, nil
 }
@@ -194,24 +194,24 @@ func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleResponse(resp 
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientDeleteOptions contains the optional parameters for the AppServicePlansClient.Delete method.
-func (client *AppServicePlansClient) Delete(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientDeleteOptions) (AppServicePlansClientDeleteResponse, error) {
+// options - PlansClientDeleteOptions contains the optional parameters for the PlansClient.Delete method.
+func (client *PlansClient) Delete(ctx context.Context, resourceGroupName string, name string, options *PlansClientDeleteOptions) (PlansClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AppServicePlansClientDeleteResponse{}, err
+		return PlansClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientDeleteResponse{}, err
+		return PlansClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return AppServicePlansClientDeleteResponse{}, runtime.NewResponseError(resp)
+		return PlansClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AppServicePlansClientDeleteResponse{}, nil
+	return PlansClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AppServicePlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientDeleteOptions) (*policy.Request, error) {
+func (client *PlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -242,25 +242,25 @@ func (client *AppServicePlansClient) deleteCreateRequest(ctx context.Context, re
 // name - Name of the App Service plan.
 // namespaceName - Name of the Service Bus namespace.
 // relayName - Name of the Service Bus relay.
-// options - AppServicePlansClientDeleteHybridConnectionOptions contains the optional parameters for the AppServicePlansClient.DeleteHybridConnection
+// options - PlansClientDeleteHybridConnectionOptions contains the optional parameters for the PlansClient.DeleteHybridConnection
 // method.
-func (client *AppServicePlansClient) DeleteHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansClientDeleteHybridConnectionOptions) (AppServicePlansClientDeleteHybridConnectionResponse, error) {
+func (client *PlansClient) DeleteHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientDeleteHybridConnectionOptions) (PlansClientDeleteHybridConnectionResponse, error) {
 	req, err := client.deleteHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
-		return AppServicePlansClientDeleteHybridConnectionResponse{}, err
+		return PlansClientDeleteHybridConnectionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientDeleteHybridConnectionResponse{}, err
+		return PlansClientDeleteHybridConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return AppServicePlansClientDeleteHybridConnectionResponse{}, runtime.NewResponseError(resp)
+		return PlansClientDeleteHybridConnectionResponse{}, runtime.NewResponseError(resp)
 	}
-	return AppServicePlansClientDeleteHybridConnectionResponse{}, nil
+	return PlansClientDeleteHybridConnectionResponse{}, nil
 }
 
 // deleteHybridConnectionCreateRequest creates the DeleteHybridConnection request.
-func (client *AppServicePlansClient) deleteHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansClientDeleteHybridConnectionOptions) (*policy.Request, error) {
+func (client *PlansClient) deleteHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientDeleteHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -299,25 +299,24 @@ func (client *AppServicePlansClient) deleteHybridConnectionCreateRequest(ctx con
 // name - Name of the App Service plan.
 // vnetName - Name of the Virtual Network.
 // routeName - Name of the Virtual Network route.
-// options - AppServicePlansClientDeleteVnetRouteOptions contains the optional parameters for the AppServicePlansClient.DeleteVnetRoute
-// method.
-func (client *AppServicePlansClient) DeleteVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansClientDeleteVnetRouteOptions) (AppServicePlansClientDeleteVnetRouteResponse, error) {
+// options - PlansClientDeleteVnetRouteOptions contains the optional parameters for the PlansClient.DeleteVnetRoute method.
+func (client *PlansClient) DeleteVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *PlansClientDeleteVnetRouteOptions) (PlansClientDeleteVnetRouteResponse, error) {
 	req, err := client.deleteVnetRouteCreateRequest(ctx, resourceGroupName, name, vnetName, routeName, options)
 	if err != nil {
-		return AppServicePlansClientDeleteVnetRouteResponse{}, err
+		return PlansClientDeleteVnetRouteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientDeleteVnetRouteResponse{}, err
+		return PlansClientDeleteVnetRouteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return AppServicePlansClientDeleteVnetRouteResponse{}, runtime.NewResponseError(resp)
+		return PlansClientDeleteVnetRouteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AppServicePlansClientDeleteVnetRouteResponse{}, nil
+	return PlansClientDeleteVnetRouteResponse{}, nil
 }
 
 // deleteVnetRouteCreateRequest creates the DeleteVnetRoute request.
-func (client *AppServicePlansClient) deleteVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansClientDeleteVnetRouteOptions) (*policy.Request, error) {
+func (client *PlansClient) deleteVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *PlansClientDeleteVnetRouteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -354,24 +353,24 @@ func (client *AppServicePlansClient) deleteVnetRouteCreateRequest(ctx context.Co
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientGetOptions contains the optional parameters for the AppServicePlansClient.Get method.
-func (client *AppServicePlansClient) Get(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientGetOptions) (AppServicePlansClientGetResponse, error) {
+// options - PlansClientGetOptions contains the optional parameters for the PlansClient.Get method.
+func (client *PlansClient) Get(ctx context.Context, resourceGroupName string, name string, options *PlansClientGetOptions) (PlansClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AppServicePlansClientGetResponse{}, err
+		return PlansClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientGetResponse{}, err
+		return PlansClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return AppServicePlansClientGetResponse{}, runtime.NewResponseError(resp)
+		return PlansClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AppServicePlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientGetOptions) (*policy.Request, error) {
+func (client *PlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -397,10 +396,10 @@ func (client *AppServicePlansClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppServicePlansClient) getHandleResponse(resp *http.Response) (AppServicePlansClientGetResponse, error) {
-	result := AppServicePlansClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlan); err != nil {
-		return AppServicePlansClientGetResponse{}, err
+func (client *PlansClient) getHandleResponse(resp *http.Response) (PlansClientGetResponse, error) {
+	result := PlansClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Plan); err != nil {
+		return PlansClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -412,25 +411,25 @@ func (client *AppServicePlansClient) getHandleResponse(resp *http.Response) (App
 // name - Name of the App Service plan.
 // namespaceName - Name of the Service Bus namespace.
 // relayName - Name of the Service Bus relay.
-// options - AppServicePlansClientGetHybridConnectionOptions contains the optional parameters for the AppServicePlansClient.GetHybridConnection
+// options - PlansClientGetHybridConnectionOptions contains the optional parameters for the PlansClient.GetHybridConnection
 // method.
-func (client *AppServicePlansClient) GetHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansClientGetHybridConnectionOptions) (AppServicePlansClientGetHybridConnectionResponse, error) {
+func (client *PlansClient) GetHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientGetHybridConnectionOptions) (PlansClientGetHybridConnectionResponse, error) {
 	req, err := client.getHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
-		return AppServicePlansClientGetHybridConnectionResponse{}, err
+		return PlansClientGetHybridConnectionResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientGetHybridConnectionResponse{}, err
+		return PlansClientGetHybridConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppServicePlansClientGetHybridConnectionResponse{}, runtime.NewResponseError(resp)
+		return PlansClientGetHybridConnectionResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHybridConnectionHandleResponse(resp)
 }
 
 // getHybridConnectionCreateRequest creates the GetHybridConnection request.
-func (client *AppServicePlansClient) getHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansClientGetHybridConnectionOptions) (*policy.Request, error) {
+func (client *PlansClient) getHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientGetHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -464,10 +463,10 @@ func (client *AppServicePlansClient) getHybridConnectionCreateRequest(ctx contex
 }
 
 // getHybridConnectionHandleResponse handles the GetHybridConnection response.
-func (client *AppServicePlansClient) getHybridConnectionHandleResponse(resp *http.Response) (AppServicePlansClientGetHybridConnectionResponse, error) {
-	result := AppServicePlansClientGetHybridConnectionResponse{}
+func (client *PlansClient) getHybridConnectionHandleResponse(resp *http.Response) (PlansClientGetHybridConnectionResponse, error) {
+	result := PlansClientGetHybridConnectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
-		return AppServicePlansClientGetHybridConnectionResponse{}, err
+		return PlansClientGetHybridConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -477,25 +476,25 @@ func (client *AppServicePlansClient) getHybridConnectionHandleResponse(resp *htt
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientGetHybridConnectionPlanLimitOptions contains the optional parameters for the AppServicePlansClient.GetHybridConnectionPlanLimit
+// options - PlansClientGetHybridConnectionPlanLimitOptions contains the optional parameters for the PlansClient.GetHybridConnectionPlanLimit
 // method.
-func (client *AppServicePlansClient) GetHybridConnectionPlanLimit(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientGetHybridConnectionPlanLimitOptions) (AppServicePlansClientGetHybridConnectionPlanLimitResponse, error) {
+func (client *PlansClient) GetHybridConnectionPlanLimit(ctx context.Context, resourceGroupName string, name string, options *PlansClientGetHybridConnectionPlanLimitOptions) (PlansClientGetHybridConnectionPlanLimitResponse, error) {
 	req, err := client.getHybridConnectionPlanLimitCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AppServicePlansClientGetHybridConnectionPlanLimitResponse{}, err
+		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientGetHybridConnectionPlanLimitResponse{}, err
+		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppServicePlansClientGetHybridConnectionPlanLimitResponse{}, runtime.NewResponseError(resp)
+		return PlansClientGetHybridConnectionPlanLimitResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHybridConnectionPlanLimitHandleResponse(resp)
 }
 
 // getHybridConnectionPlanLimitCreateRequest creates the GetHybridConnectionPlanLimit request.
-func (client *AppServicePlansClient) getHybridConnectionPlanLimitCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientGetHybridConnectionPlanLimitOptions) (*policy.Request, error) {
+func (client *PlansClient) getHybridConnectionPlanLimitCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientGetHybridConnectionPlanLimitOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionPlanLimits/limit"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -521,10 +520,10 @@ func (client *AppServicePlansClient) getHybridConnectionPlanLimitCreateRequest(c
 }
 
 // getHybridConnectionPlanLimitHandleResponse handles the GetHybridConnectionPlanLimit response.
-func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleResponse(resp *http.Response) (AppServicePlansClientGetHybridConnectionPlanLimitResponse, error) {
-	result := AppServicePlansClientGetHybridConnectionPlanLimitResponse{}
+func (client *PlansClient) getHybridConnectionPlanLimitHandleResponse(resp *http.Response) (PlansClientGetHybridConnectionPlanLimitResponse, error) {
+	result := PlansClientGetHybridConnectionPlanLimitResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionLimits); err != nil {
-		return AppServicePlansClientGetHybridConnectionPlanLimitResponse{}, err
+		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
 	}
 	return result, nil
 }
@@ -536,25 +535,24 @@ func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleResponse(
 // name - Name of the App Service plan.
 // vnetName - Name of the Virtual Network.
 // routeName - Name of the Virtual Network route.
-// options - AppServicePlansClientGetRouteForVnetOptions contains the optional parameters for the AppServicePlansClient.GetRouteForVnet
-// method.
-func (client *AppServicePlansClient) GetRouteForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansClientGetRouteForVnetOptions) (AppServicePlansClientGetRouteForVnetResponse, error) {
+// options - PlansClientGetRouteForVnetOptions contains the optional parameters for the PlansClient.GetRouteForVnet method.
+func (client *PlansClient) GetRouteForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *PlansClientGetRouteForVnetOptions) (PlansClientGetRouteForVnetResponse, error) {
 	req, err := client.getRouteForVnetCreateRequest(ctx, resourceGroupName, name, vnetName, routeName, options)
 	if err != nil {
-		return AppServicePlansClientGetRouteForVnetResponse{}, err
+		return PlansClientGetRouteForVnetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientGetRouteForVnetResponse{}, err
+		return PlansClientGetRouteForVnetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return AppServicePlansClientGetRouteForVnetResponse{}, runtime.NewResponseError(resp)
+		return PlansClientGetRouteForVnetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getRouteForVnetHandleResponse(resp)
 }
 
 // getRouteForVnetCreateRequest creates the GetRouteForVnet request.
-func (client *AppServicePlansClient) getRouteForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansClientGetRouteForVnetOptions) (*policy.Request, error) {
+func (client *PlansClient) getRouteForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *PlansClientGetRouteForVnetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -588,10 +586,10 @@ func (client *AppServicePlansClient) getRouteForVnetCreateRequest(ctx context.Co
 }
 
 // getRouteForVnetHandleResponse handles the GetRouteForVnet response.
-func (client *AppServicePlansClient) getRouteForVnetHandleResponse(resp *http.Response) (AppServicePlansClientGetRouteForVnetResponse, error) {
-	result := AppServicePlansClientGetRouteForVnetResponse{}
+func (client *PlansClient) getRouteForVnetHandleResponse(resp *http.Response) (PlansClientGetRouteForVnetResponse, error) {
+	result := PlansClientGetRouteForVnetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
-		return AppServicePlansClientGetRouteForVnetResponse{}, err
+		return PlansClientGetRouteForVnetResponse{}, err
 	}
 	return result, nil
 }
@@ -601,25 +599,24 @@ func (client *AppServicePlansClient) getRouteForVnetHandleResponse(resp *http.Re
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of App Service Plan
-// options - AppServicePlansClientGetServerFarmSKUsOptions contains the optional parameters for the AppServicePlansClient.GetServerFarmSKUs
-// method.
-func (client *AppServicePlansClient) GetServerFarmSKUs(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientGetServerFarmSKUsOptions) (AppServicePlansClientGetServerFarmSKUsResponse, error) {
+// options - PlansClientGetServerFarmSKUsOptions contains the optional parameters for the PlansClient.GetServerFarmSKUs method.
+func (client *PlansClient) GetServerFarmSKUs(ctx context.Context, resourceGroupName string, name string, options *PlansClientGetServerFarmSKUsOptions) (PlansClientGetServerFarmSKUsResponse, error) {
 	req, err := client.getServerFarmSKUsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AppServicePlansClientGetServerFarmSKUsResponse{}, err
+		return PlansClientGetServerFarmSKUsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientGetServerFarmSKUsResponse{}, err
+		return PlansClientGetServerFarmSKUsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppServicePlansClientGetServerFarmSKUsResponse{}, runtime.NewResponseError(resp)
+		return PlansClientGetServerFarmSKUsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getServerFarmSKUsHandleResponse(resp)
 }
 
 // getServerFarmSKUsCreateRequest creates the GetServerFarmSKUs request.
-func (client *AppServicePlansClient) getServerFarmSKUsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientGetServerFarmSKUsOptions) (*policy.Request, error) {
+func (client *PlansClient) getServerFarmSKUsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientGetServerFarmSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/skus"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -645,10 +642,10 @@ func (client *AppServicePlansClient) getServerFarmSKUsCreateRequest(ctx context.
 }
 
 // getServerFarmSKUsHandleResponse handles the GetServerFarmSKUs response.
-func (client *AppServicePlansClient) getServerFarmSKUsHandleResponse(resp *http.Response) (AppServicePlansClientGetServerFarmSKUsResponse, error) {
-	result := AppServicePlansClientGetServerFarmSKUsResponse{}
+func (client *PlansClient) getServerFarmSKUsHandleResponse(resp *http.Response) (PlansClientGetServerFarmSKUsResponse, error) {
+	result := PlansClientGetServerFarmSKUsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
-		return AppServicePlansClientGetServerFarmSKUsResponse{}, err
+		return PlansClientGetServerFarmSKUsResponse{}, err
 	}
 	return result, nil
 }
@@ -659,25 +656,25 @@ func (client *AppServicePlansClient) getServerFarmSKUsHandleResponse(resp *http.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
 // vnetName - Name of the Virtual Network.
-// options - AppServicePlansClientGetVnetFromServerFarmOptions contains the optional parameters for the AppServicePlansClient.GetVnetFromServerFarm
+// options - PlansClientGetVnetFromServerFarmOptions contains the optional parameters for the PlansClient.GetVnetFromServerFarm
 // method.
-func (client *AppServicePlansClient) GetVnetFromServerFarm(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansClientGetVnetFromServerFarmOptions) (AppServicePlansClientGetVnetFromServerFarmResponse, error) {
+func (client *PlansClient) GetVnetFromServerFarm(ctx context.Context, resourceGroupName string, name string, vnetName string, options *PlansClientGetVnetFromServerFarmOptions) (PlansClientGetVnetFromServerFarmResponse, error) {
 	req, err := client.getVnetFromServerFarmCreateRequest(ctx, resourceGroupName, name, vnetName, options)
 	if err != nil {
-		return AppServicePlansClientGetVnetFromServerFarmResponse{}, err
+		return PlansClientGetVnetFromServerFarmResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientGetVnetFromServerFarmResponse{}, err
+		return PlansClientGetVnetFromServerFarmResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return AppServicePlansClientGetVnetFromServerFarmResponse{}, runtime.NewResponseError(resp)
+		return PlansClientGetVnetFromServerFarmResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getVnetFromServerFarmHandleResponse(resp)
 }
 
 // getVnetFromServerFarmCreateRequest creates the GetVnetFromServerFarm request.
-func (client *AppServicePlansClient) getVnetFromServerFarmCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansClientGetVnetFromServerFarmOptions) (*policy.Request, error) {
+func (client *PlansClient) getVnetFromServerFarmCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, options *PlansClientGetVnetFromServerFarmOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -707,10 +704,10 @@ func (client *AppServicePlansClient) getVnetFromServerFarmCreateRequest(ctx cont
 }
 
 // getVnetFromServerFarmHandleResponse handles the GetVnetFromServerFarm response.
-func (client *AppServicePlansClient) getVnetFromServerFarmHandleResponse(resp *http.Response) (AppServicePlansClientGetVnetFromServerFarmResponse, error) {
-	result := AppServicePlansClientGetVnetFromServerFarmResponse{}
+func (client *PlansClient) getVnetFromServerFarmHandleResponse(resp *http.Response) (PlansClientGetVnetFromServerFarmResponse, error) {
+	result := PlansClientGetVnetFromServerFarmResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfo); err != nil {
-		return AppServicePlansClientGetVnetFromServerFarmResponse{}, err
+		return PlansClientGetVnetFromServerFarmResponse{}, err
 	}
 	return result, nil
 }
@@ -722,25 +719,24 @@ func (client *AppServicePlansClient) getVnetFromServerFarmHandleResponse(resp *h
 // name - Name of the App Service plan.
 // vnetName - Name of the Virtual Network.
 // gatewayName - Name of the gateway. Only the 'primary' gateway is supported.
-// options - AppServicePlansClientGetVnetGatewayOptions contains the optional parameters for the AppServicePlansClient.GetVnetGateway
-// method.
-func (client *AppServicePlansClient) GetVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *AppServicePlansClientGetVnetGatewayOptions) (AppServicePlansClientGetVnetGatewayResponse, error) {
+// options - PlansClientGetVnetGatewayOptions contains the optional parameters for the PlansClient.GetVnetGateway method.
+func (client *PlansClient) GetVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *PlansClientGetVnetGatewayOptions) (PlansClientGetVnetGatewayResponse, error) {
 	req, err := client.getVnetGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, options)
 	if err != nil {
-		return AppServicePlansClientGetVnetGatewayResponse{}, err
+		return PlansClientGetVnetGatewayResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientGetVnetGatewayResponse{}, err
+		return PlansClientGetVnetGatewayResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppServicePlansClientGetVnetGatewayResponse{}, runtime.NewResponseError(resp)
+		return PlansClientGetVnetGatewayResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getVnetGatewayHandleResponse(resp)
 }
 
 // getVnetGatewayCreateRequest creates the GetVnetGateway request.
-func (client *AppServicePlansClient) getVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *AppServicePlansClientGetVnetGatewayOptions) (*policy.Request, error) {
+func (client *PlansClient) getVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *PlansClientGetVnetGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -774,24 +770,23 @@ func (client *AppServicePlansClient) getVnetGatewayCreateRequest(ctx context.Con
 }
 
 // getVnetGatewayHandleResponse handles the GetVnetGateway response.
-func (client *AppServicePlansClient) getVnetGatewayHandleResponse(resp *http.Response) (AppServicePlansClientGetVnetGatewayResponse, error) {
-	result := AppServicePlansClientGetVnetGatewayResponse{}
+func (client *PlansClient) getVnetGatewayHandleResponse(resp *http.Response) (PlansClientGetVnetGatewayResponse, error) {
+	result := PlansClientGetVnetGatewayResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
-		return AppServicePlansClientGetVnetGatewayResponse{}, err
+		return PlansClientGetVnetGatewayResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListPager - Get all App Service plans for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
-// options - AppServicePlansClientListOptions contains the optional parameters for the AppServicePlansClient.List method.
-func (client *AppServicePlansClient) NewListPager(options *AppServicePlansClientListOptions) *runtime.Pager[AppServicePlansClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AppServicePlansClientListResponse]{
-		More: func(page AppServicePlansClientListResponse) bool {
+// options - PlansClientListOptions contains the optional parameters for the PlansClient.List method.
+func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListResponse]{
+		More: func(page PlansClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AppServicePlansClientListResponse) (AppServicePlansClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *PlansClientListResponse) (PlansClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -800,14 +795,14 @@ func (client *AppServicePlansClient) NewListPager(options *AppServicePlansClient
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return AppServicePlansClientListResponse{}, err
+				return PlansClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return AppServicePlansClientListResponse{}, err
+				return PlansClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppServicePlansClientListResponse{}, runtime.NewResponseError(resp)
+				return PlansClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -815,7 +810,7 @@ func (client *AppServicePlansClient) NewListPager(options *AppServicePlansClient
 }
 
 // listCreateRequest creates the List request.
-func (client *AppServicePlansClient) listCreateRequest(ctx context.Context, options *AppServicePlansClientListOptions) (*policy.Request, error) {
+func (client *PlansClient) listCreateRequest(ctx context.Context, options *PlansClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -836,26 +831,25 @@ func (client *AppServicePlansClient) listCreateRequest(ctx context.Context, opti
 }
 
 // listHandleResponse handles the List response.
-func (client *AppServicePlansClient) listHandleResponse(resp *http.Response) (AppServicePlansClientListResponse, error) {
-	result := AppServicePlansClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlanCollection); err != nil {
-		return AppServicePlansClientListResponse{}, err
+func (client *PlansClient) listHandleResponse(resp *http.Response) (PlansClientListResponse, error) {
+	result := PlansClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PlanCollection); err != nil {
+		return PlansClientListResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListByResourceGroupPager - Get all App Service plans in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
-// options - AppServicePlansClientListByResourceGroupOptions contains the optional parameters for the AppServicePlansClient.ListByResourceGroup
+// options - PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.ListByResourceGroup
 // method.
-func (client *AppServicePlansClient) NewListByResourceGroupPager(resourceGroupName string, options *AppServicePlansClientListByResourceGroupOptions) *runtime.Pager[AppServicePlansClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AppServicePlansClientListByResourceGroupResponse]{
-		More: func(page AppServicePlansClientListByResourceGroupResponse) bool {
+func (client *PlansClient) NewListByResourceGroupPager(resourceGroupName string, options *PlansClientListByResourceGroupOptions) *runtime.Pager[PlansClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListByResourceGroupResponse]{
+		More: func(page PlansClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AppServicePlansClientListByResourceGroupResponse) (AppServicePlansClientListByResourceGroupResponse, error) {
+		Fetcher: func(ctx context.Context, page *PlansClientListByResourceGroupResponse) (PlansClientListByResourceGroupResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -864,14 +858,14 @@ func (client *AppServicePlansClient) NewListByResourceGroupPager(resourceGroupNa
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return AppServicePlansClientListByResourceGroupResponse{}, err
+				return PlansClientListByResourceGroupResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return AppServicePlansClientListByResourceGroupResponse{}, err
+				return PlansClientListByResourceGroupResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppServicePlansClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+				return PlansClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -879,7 +873,7 @@ func (client *AppServicePlansClient) NewListByResourceGroupPager(resourceGroupNa
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AppServicePlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AppServicePlansClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *PlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PlansClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -901,10 +895,10 @@ func (client *AppServicePlansClient) listByResourceGroupCreateRequest(ctx contex
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AppServicePlansClient) listByResourceGroupHandleResponse(resp *http.Response) (AppServicePlansClientListByResourceGroupResponse, error) {
-	result := AppServicePlansClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlanCollection); err != nil {
-		return AppServicePlansClientListByResourceGroupResponse{}, err
+func (client *PlansClient) listByResourceGroupHandleResponse(resp *http.Response) (PlansClientListByResourceGroupResponse, error) {
+	result := PlansClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PlanCollection); err != nil {
+		return PlansClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -914,25 +908,24 @@ func (client *AppServicePlansClient) listByResourceGroupHandleResponse(resp *htt
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientListCapabilitiesOptions contains the optional parameters for the AppServicePlansClient.ListCapabilities
-// method.
-func (client *AppServicePlansClient) ListCapabilities(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientListCapabilitiesOptions) (AppServicePlansClientListCapabilitiesResponse, error) {
+// options - PlansClientListCapabilitiesOptions contains the optional parameters for the PlansClient.ListCapabilities method.
+func (client *PlansClient) ListCapabilities(ctx context.Context, resourceGroupName string, name string, options *PlansClientListCapabilitiesOptions) (PlansClientListCapabilitiesResponse, error) {
 	req, err := client.listCapabilitiesCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AppServicePlansClientListCapabilitiesResponse{}, err
+		return PlansClientListCapabilitiesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientListCapabilitiesResponse{}, err
+		return PlansClientListCapabilitiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppServicePlansClientListCapabilitiesResponse{}, runtime.NewResponseError(resp)
+		return PlansClientListCapabilitiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listCapabilitiesHandleResponse(resp)
 }
 
 // listCapabilitiesCreateRequest creates the ListCapabilities request.
-func (client *AppServicePlansClient) listCapabilitiesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientListCapabilitiesOptions) (*policy.Request, error) {
+func (client *PlansClient) listCapabilitiesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientListCapabilitiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/capabilities"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -958,10 +951,10 @@ func (client *AppServicePlansClient) listCapabilitiesCreateRequest(ctx context.C
 }
 
 // listCapabilitiesHandleResponse handles the ListCapabilities response.
-func (client *AppServicePlansClient) listCapabilitiesHandleResponse(resp *http.Response) (AppServicePlansClientListCapabilitiesResponse, error) {
-	result := AppServicePlansClientListCapabilitiesResponse{}
+func (client *PlansClient) listCapabilitiesHandleResponse(resp *http.Response) (PlansClientListCapabilitiesResponse, error) {
+	result := PlansClientListCapabilitiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityArray); err != nil {
-		return AppServicePlansClientListCapabilitiesResponse{}, err
+		return PlansClientListCapabilitiesResponse{}, err
 	}
 	return result, nil
 }
@@ -973,25 +966,25 @@ func (client *AppServicePlansClient) listCapabilitiesHandleResponse(resp *http.R
 // name - Name of the App Service plan.
 // namespaceName - The name of the Service Bus namespace.
 // relayName - The name of the Service Bus relay.
-// options - AppServicePlansClientListHybridConnectionKeysOptions contains the optional parameters for the AppServicePlansClient.ListHybridConnectionKeys
+// options - PlansClientListHybridConnectionKeysOptions contains the optional parameters for the PlansClient.ListHybridConnectionKeys
 // method.
-func (client *AppServicePlansClient) ListHybridConnectionKeys(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansClientListHybridConnectionKeysOptions) (AppServicePlansClientListHybridConnectionKeysResponse, error) {
+func (client *PlansClient) ListHybridConnectionKeys(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListHybridConnectionKeysOptions) (PlansClientListHybridConnectionKeysResponse, error) {
 	req, err := client.listHybridConnectionKeysCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
-		return AppServicePlansClientListHybridConnectionKeysResponse{}, err
+		return PlansClientListHybridConnectionKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientListHybridConnectionKeysResponse{}, err
+		return PlansClientListHybridConnectionKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppServicePlansClientListHybridConnectionKeysResponse{}, runtime.NewResponseError(resp)
+		return PlansClientListHybridConnectionKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHybridConnectionKeysHandleResponse(resp)
 }
 
 // listHybridConnectionKeysCreateRequest creates the ListHybridConnectionKeys request.
-func (client *AppServicePlansClient) listHybridConnectionKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansClientListHybridConnectionKeysOptions) (*policy.Request, error) {
+func (client *PlansClient) listHybridConnectionKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListHybridConnectionKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1025,27 +1018,26 @@ func (client *AppServicePlansClient) listHybridConnectionKeysCreateRequest(ctx c
 }
 
 // listHybridConnectionKeysHandleResponse handles the ListHybridConnectionKeys response.
-func (client *AppServicePlansClient) listHybridConnectionKeysHandleResponse(resp *http.Response) (AppServicePlansClientListHybridConnectionKeysResponse, error) {
-	result := AppServicePlansClientListHybridConnectionKeysResponse{}
+func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Response) (PlansClientListHybridConnectionKeysResponse, error) {
+	result := PlansClientListHybridConnectionKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionKey); err != nil {
-		return AppServicePlansClientListHybridConnectionKeysResponse{}, err
+		return PlansClientListHybridConnectionKeysResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListHybridConnectionsPager - Retrieve all Hybrid Connections in use in an App Service plan.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientListHybridConnectionsOptions contains the optional parameters for the AppServicePlansClient.ListHybridConnections
+// options - PlansClientListHybridConnectionsOptions contains the optional parameters for the PlansClient.ListHybridConnections
 // method.
-func (client *AppServicePlansClient) NewListHybridConnectionsPager(resourceGroupName string, name string, options *AppServicePlansClientListHybridConnectionsOptions) *runtime.Pager[AppServicePlansClientListHybridConnectionsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AppServicePlansClientListHybridConnectionsResponse]{
-		More: func(page AppServicePlansClientListHybridConnectionsResponse) bool {
+func (client *PlansClient) NewListHybridConnectionsPager(resourceGroupName string, name string, options *PlansClientListHybridConnectionsOptions) *runtime.Pager[PlansClientListHybridConnectionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListHybridConnectionsResponse]{
+		More: func(page PlansClientListHybridConnectionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AppServicePlansClientListHybridConnectionsResponse) (AppServicePlansClientListHybridConnectionsResponse, error) {
+		Fetcher: func(ctx context.Context, page *PlansClientListHybridConnectionsResponse) (PlansClientListHybridConnectionsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -1054,14 +1046,14 @@ func (client *AppServicePlansClient) NewListHybridConnectionsPager(resourceGroup
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return AppServicePlansClientListHybridConnectionsResponse{}, err
+				return PlansClientListHybridConnectionsResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return AppServicePlansClientListHybridConnectionsResponse{}, err
+				return PlansClientListHybridConnectionsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppServicePlansClientListHybridConnectionsResponse{}, runtime.NewResponseError(resp)
+				return PlansClientListHybridConnectionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHybridConnectionsHandleResponse(resp)
 		},
@@ -1069,7 +1061,7 @@ func (client *AppServicePlansClient) NewListHybridConnectionsPager(resourceGroup
 }
 
 // listHybridConnectionsCreateRequest creates the ListHybridConnections request.
-func (client *AppServicePlansClient) listHybridConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientListHybridConnectionsOptions) (*policy.Request, error) {
+func (client *PlansClient) listHybridConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientListHybridConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionRelays"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1095,27 +1087,26 @@ func (client *AppServicePlansClient) listHybridConnectionsCreateRequest(ctx cont
 }
 
 // listHybridConnectionsHandleResponse handles the ListHybridConnections response.
-func (client *AppServicePlansClient) listHybridConnectionsHandleResponse(resp *http.Response) (AppServicePlansClientListHybridConnectionsResponse, error) {
-	result := AppServicePlansClientListHybridConnectionsResponse{}
+func (client *PlansClient) listHybridConnectionsHandleResponse(resp *http.Response) (PlansClientListHybridConnectionsResponse, error) {
+	result := PlansClientListHybridConnectionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionCollection); err != nil {
-		return AppServicePlansClientListHybridConnectionsResponse{}, err
+		return PlansClientListHybridConnectionsResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListMetricDefintionsPager - Get metrics that can be queried for an App Service plan, and their definitions.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientListMetricDefintionsOptions contains the optional parameters for the AppServicePlansClient.ListMetricDefintions
+// options - PlansClientListMetricDefintionsOptions contains the optional parameters for the PlansClient.ListMetricDefintions
 // method.
-func (client *AppServicePlansClient) NewListMetricDefintionsPager(resourceGroupName string, name string, options *AppServicePlansClientListMetricDefintionsOptions) *runtime.Pager[AppServicePlansClientListMetricDefintionsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AppServicePlansClientListMetricDefintionsResponse]{
-		More: func(page AppServicePlansClientListMetricDefintionsResponse) bool {
+func (client *PlansClient) NewListMetricDefintionsPager(resourceGroupName string, name string, options *PlansClientListMetricDefintionsOptions) *runtime.Pager[PlansClientListMetricDefintionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListMetricDefintionsResponse]{
+		More: func(page PlansClientListMetricDefintionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AppServicePlansClientListMetricDefintionsResponse) (AppServicePlansClientListMetricDefintionsResponse, error) {
+		Fetcher: func(ctx context.Context, page *PlansClientListMetricDefintionsResponse) (PlansClientListMetricDefintionsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -1124,14 +1115,14 @@ func (client *AppServicePlansClient) NewListMetricDefintionsPager(resourceGroupN
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return AppServicePlansClientListMetricDefintionsResponse{}, err
+				return PlansClientListMetricDefintionsResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return AppServicePlansClientListMetricDefintionsResponse{}, err
+				return PlansClientListMetricDefintionsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppServicePlansClientListMetricDefintionsResponse{}, runtime.NewResponseError(resp)
+				return PlansClientListMetricDefintionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listMetricDefintionsHandleResponse(resp)
 		},
@@ -1139,7 +1130,7 @@ func (client *AppServicePlansClient) NewListMetricDefintionsPager(resourceGroupN
 }
 
 // listMetricDefintionsCreateRequest creates the ListMetricDefintions request.
-func (client *AppServicePlansClient) listMetricDefintionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientListMetricDefintionsOptions) (*policy.Request, error) {
+func (client *PlansClient) listMetricDefintionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientListMetricDefintionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/metricdefinitions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1165,27 +1156,25 @@ func (client *AppServicePlansClient) listMetricDefintionsCreateRequest(ctx conte
 }
 
 // listMetricDefintionsHandleResponse handles the ListMetricDefintions response.
-func (client *AppServicePlansClient) listMetricDefintionsHandleResponse(resp *http.Response) (AppServicePlansClientListMetricDefintionsResponse, error) {
-	result := AppServicePlansClientListMetricDefintionsResponse{}
+func (client *PlansClient) listMetricDefintionsHandleResponse(resp *http.Response) (PlansClientListMetricDefintionsResponse, error) {
+	result := PlansClientListMetricDefintionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceMetricDefinitionCollection); err != nil {
-		return AppServicePlansClientListMetricDefintionsResponse{}, err
+		return PlansClientListMetricDefintionsResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListMetricsPager - Get metrics for an App Service plan.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientListMetricsOptions contains the optional parameters for the AppServicePlansClient.ListMetrics
-// method.
-func (client *AppServicePlansClient) NewListMetricsPager(resourceGroupName string, name string, options *AppServicePlansClientListMetricsOptions) *runtime.Pager[AppServicePlansClientListMetricsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AppServicePlansClientListMetricsResponse]{
-		More: func(page AppServicePlansClientListMetricsResponse) bool {
+// options - PlansClientListMetricsOptions contains the optional parameters for the PlansClient.ListMetrics method.
+func (client *PlansClient) NewListMetricsPager(resourceGroupName string, name string, options *PlansClientListMetricsOptions) *runtime.Pager[PlansClientListMetricsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListMetricsResponse]{
+		More: func(page PlansClientListMetricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AppServicePlansClientListMetricsResponse) (AppServicePlansClientListMetricsResponse, error) {
+		Fetcher: func(ctx context.Context, page *PlansClientListMetricsResponse) (PlansClientListMetricsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -1194,14 +1183,14 @@ func (client *AppServicePlansClient) NewListMetricsPager(resourceGroupName strin
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return AppServicePlansClientListMetricsResponse{}, err
+				return PlansClientListMetricsResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return AppServicePlansClientListMetricsResponse{}, err
+				return PlansClientListMetricsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppServicePlansClientListMetricsResponse{}, runtime.NewResponseError(resp)
+				return PlansClientListMetricsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listMetricsHandleResponse(resp)
 		},
@@ -1209,7 +1198,7 @@ func (client *AppServicePlansClient) NewListMetricsPager(resourceGroupName strin
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *AppServicePlansClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientListMetricsOptions) (*policy.Request, error) {
+func (client *PlansClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/metrics"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1243,10 +1232,10 @@ func (client *AppServicePlansClient) listMetricsCreateRequest(ctx context.Contex
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *AppServicePlansClient) listMetricsHandleResponse(resp *http.Response) (AppServicePlansClientListMetricsResponse, error) {
-	result := AppServicePlansClientListMetricsResponse{}
+func (client *PlansClient) listMetricsHandleResponse(resp *http.Response) (PlansClientListMetricsResponse, error) {
+	result := PlansClientListMetricsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceMetricCollection); err != nil {
-		return AppServicePlansClientListMetricsResponse{}, err
+		return PlansClientListMetricsResponse{}, err
 	}
 	return result, nil
 }
@@ -1257,25 +1246,24 @@ func (client *AppServicePlansClient) listMetricsHandleResponse(resp *http.Respon
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
 // vnetName - Name of the Virtual Network.
-// options - AppServicePlansClientListRoutesForVnetOptions contains the optional parameters for the AppServicePlansClient.ListRoutesForVnet
-// method.
-func (client *AppServicePlansClient) ListRoutesForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansClientListRoutesForVnetOptions) (AppServicePlansClientListRoutesForVnetResponse, error) {
+// options - PlansClientListRoutesForVnetOptions contains the optional parameters for the PlansClient.ListRoutesForVnet method.
+func (client *PlansClient) ListRoutesForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, options *PlansClientListRoutesForVnetOptions) (PlansClientListRoutesForVnetResponse, error) {
 	req, err := client.listRoutesForVnetCreateRequest(ctx, resourceGroupName, name, vnetName, options)
 	if err != nil {
-		return AppServicePlansClientListRoutesForVnetResponse{}, err
+		return PlansClientListRoutesForVnetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientListRoutesForVnetResponse{}, err
+		return PlansClientListRoutesForVnetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppServicePlansClientListRoutesForVnetResponse{}, runtime.NewResponseError(resp)
+		return PlansClientListRoutesForVnetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listRoutesForVnetHandleResponse(resp)
 }
 
 // listRoutesForVnetCreateRequest creates the ListRoutesForVnet request.
-func (client *AppServicePlansClient) listRoutesForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansClientListRoutesForVnetOptions) (*policy.Request, error) {
+func (client *PlansClient) listRoutesForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, options *PlansClientListRoutesForVnetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1305,27 +1293,25 @@ func (client *AppServicePlansClient) listRoutesForVnetCreateRequest(ctx context.
 }
 
 // listRoutesForVnetHandleResponse handles the ListRoutesForVnet response.
-func (client *AppServicePlansClient) listRoutesForVnetHandleResponse(resp *http.Response) (AppServicePlansClientListRoutesForVnetResponse, error) {
-	result := AppServicePlansClientListRoutesForVnetResponse{}
+func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response) (PlansClientListRoutesForVnetResponse, error) {
+	result := PlansClientListRoutesForVnetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
-		return AppServicePlansClientListRoutesForVnetResponse{}, err
+		return PlansClientListRoutesForVnetResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListUsagesPager - Gets server farm usage information
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of App Service Plan
-// options - AppServicePlansClientListUsagesOptions contains the optional parameters for the AppServicePlansClient.ListUsages
-// method.
-func (client *AppServicePlansClient) NewListUsagesPager(resourceGroupName string, name string, options *AppServicePlansClientListUsagesOptions) *runtime.Pager[AppServicePlansClientListUsagesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AppServicePlansClientListUsagesResponse]{
-		More: func(page AppServicePlansClientListUsagesResponse) bool {
+// options - PlansClientListUsagesOptions contains the optional parameters for the PlansClient.ListUsages method.
+func (client *PlansClient) NewListUsagesPager(resourceGroupName string, name string, options *PlansClientListUsagesOptions) *runtime.Pager[PlansClientListUsagesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListUsagesResponse]{
+		More: func(page PlansClientListUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AppServicePlansClientListUsagesResponse) (AppServicePlansClientListUsagesResponse, error) {
+		Fetcher: func(ctx context.Context, page *PlansClientListUsagesResponse) (PlansClientListUsagesResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -1334,14 +1320,14 @@ func (client *AppServicePlansClient) NewListUsagesPager(resourceGroupName string
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return AppServicePlansClientListUsagesResponse{}, err
+				return PlansClientListUsagesResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return AppServicePlansClientListUsagesResponse{}, err
+				return PlansClientListUsagesResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppServicePlansClientListUsagesResponse{}, runtime.NewResponseError(resp)
+				return PlansClientListUsagesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listUsagesHandleResponse(resp)
 		},
@@ -1349,7 +1335,7 @@ func (client *AppServicePlansClient) NewListUsagesPager(resourceGroupName string
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
-func (client *AppServicePlansClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientListUsagesOptions) (*policy.Request, error) {
+func (client *PlansClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientListUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1380,10 +1366,10 @@ func (client *AppServicePlansClient) listUsagesCreateRequest(ctx context.Context
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *AppServicePlansClient) listUsagesHandleResponse(resp *http.Response) (AppServicePlansClientListUsagesResponse, error) {
-	result := AppServicePlansClientListUsagesResponse{}
+func (client *PlansClient) listUsagesHandleResponse(resp *http.Response) (PlansClientListUsagesResponse, error) {
+	result := PlansClientListUsagesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmUsageQuotaCollection); err != nil {
-		return AppServicePlansClientListUsagesResponse{}, err
+		return PlansClientListUsagesResponse{}, err
 	}
 	return result, nil
 }
@@ -1393,25 +1379,24 @@ func (client *AppServicePlansClient) listUsagesHandleResponse(resp *http.Respons
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientListVnetsOptions contains the optional parameters for the AppServicePlansClient.ListVnets
-// method.
-func (client *AppServicePlansClient) ListVnets(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientListVnetsOptions) (AppServicePlansClientListVnetsResponse, error) {
+// options - PlansClientListVnetsOptions contains the optional parameters for the PlansClient.ListVnets method.
+func (client *PlansClient) ListVnets(ctx context.Context, resourceGroupName string, name string, options *PlansClientListVnetsOptions) (PlansClientListVnetsResponse, error) {
 	req, err := client.listVnetsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AppServicePlansClientListVnetsResponse{}, err
+		return PlansClientListVnetsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientListVnetsResponse{}, err
+		return PlansClientListVnetsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppServicePlansClientListVnetsResponse{}, runtime.NewResponseError(resp)
+		return PlansClientListVnetsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listVnetsHandleResponse(resp)
 }
 
 // listVnetsCreateRequest creates the ListVnets request.
-func (client *AppServicePlansClient) listVnetsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientListVnetsOptions) (*policy.Request, error) {
+func (client *PlansClient) listVnetsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientListVnetsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1437,27 +1422,25 @@ func (client *AppServicePlansClient) listVnetsCreateRequest(ctx context.Context,
 }
 
 // listVnetsHandleResponse handles the ListVnets response.
-func (client *AppServicePlansClient) listVnetsHandleResponse(resp *http.Response) (AppServicePlansClientListVnetsResponse, error) {
-	result := AppServicePlansClientListVnetsResponse{}
+func (client *PlansClient) listVnetsHandleResponse(resp *http.Response) (PlansClientListVnetsResponse, error) {
+	result := PlansClientListVnetsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoArray); err != nil {
-		return AppServicePlansClientListVnetsResponse{}, err
+		return PlansClientListVnetsResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListWebAppsPager - Get all apps associated with an App Service plan.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientListWebAppsOptions contains the optional parameters for the AppServicePlansClient.ListWebApps
-// method.
-func (client *AppServicePlansClient) NewListWebAppsPager(resourceGroupName string, name string, options *AppServicePlansClientListWebAppsOptions) *runtime.Pager[AppServicePlansClientListWebAppsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AppServicePlansClientListWebAppsResponse]{
-		More: func(page AppServicePlansClientListWebAppsResponse) bool {
+// options - PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.ListWebApps method.
+func (client *PlansClient) NewListWebAppsPager(resourceGroupName string, name string, options *PlansClientListWebAppsOptions) *runtime.Pager[PlansClientListWebAppsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListWebAppsResponse]{
+		More: func(page PlansClientListWebAppsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AppServicePlansClientListWebAppsResponse) (AppServicePlansClientListWebAppsResponse, error) {
+		Fetcher: func(ctx context.Context, page *PlansClientListWebAppsResponse) (PlansClientListWebAppsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -1466,14 +1449,14 @@ func (client *AppServicePlansClient) NewListWebAppsPager(resourceGroupName strin
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return AppServicePlansClientListWebAppsResponse{}, err
+				return PlansClientListWebAppsResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return AppServicePlansClientListWebAppsResponse{}, err
+				return PlansClientListWebAppsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppServicePlansClientListWebAppsResponse{}, runtime.NewResponseError(resp)
+				return PlansClientListWebAppsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listWebAppsHandleResponse(resp)
 		},
@@ -1481,7 +1464,7 @@ func (client *AppServicePlansClient) NewListWebAppsPager(resourceGroupName strin
 }
 
 // listWebAppsCreateRequest creates the ListWebApps request.
-func (client *AppServicePlansClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientListWebAppsOptions) (*policy.Request, error) {
+func (client *PlansClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientListWebAppsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1518,29 +1501,28 @@ func (client *AppServicePlansClient) listWebAppsCreateRequest(ctx context.Contex
 }
 
 // listWebAppsHandleResponse handles the ListWebApps response.
-func (client *AppServicePlansClient) listWebAppsHandleResponse(resp *http.Response) (AppServicePlansClientListWebAppsResponse, error) {
-	result := AppServicePlansClientListWebAppsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AppCollection); err != nil {
-		return AppServicePlansClientListWebAppsResponse{}, err
+func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response) (PlansClientListWebAppsResponse, error) {
+	result := PlansClientListWebAppsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
+		return PlansClientListWebAppsResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListWebAppsByHybridConnectionPager - Get all apps that use a Hybrid Connection in an App Service Plan.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
 // namespaceName - Name of the Hybrid Connection namespace.
 // relayName - Name of the Hybrid Connection relay.
-// options - AppServicePlansClientListWebAppsByHybridConnectionOptions contains the optional parameters for the AppServicePlansClient.ListWebAppsByHybridConnection
+// options - PlansClientListWebAppsByHybridConnectionOptions contains the optional parameters for the PlansClient.ListWebAppsByHybridConnection
 // method.
-func (client *AppServicePlansClient) NewListWebAppsByHybridConnectionPager(resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansClientListWebAppsByHybridConnectionOptions) *runtime.Pager[AppServicePlansClientListWebAppsByHybridConnectionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AppServicePlansClientListWebAppsByHybridConnectionResponse]{
-		More: func(page AppServicePlansClientListWebAppsByHybridConnectionResponse) bool {
+func (client *PlansClient) NewListWebAppsByHybridConnectionPager(resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListWebAppsByHybridConnectionOptions) *runtime.Pager[PlansClientListWebAppsByHybridConnectionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListWebAppsByHybridConnectionResponse]{
+		More: func(page PlansClientListWebAppsByHybridConnectionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AppServicePlansClientListWebAppsByHybridConnectionResponse) (AppServicePlansClientListWebAppsByHybridConnectionResponse, error) {
+		Fetcher: func(ctx context.Context, page *PlansClientListWebAppsByHybridConnectionResponse) (PlansClientListWebAppsByHybridConnectionResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -1549,14 +1531,14 @@ func (client *AppServicePlansClient) NewListWebAppsByHybridConnectionPager(resou
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return AppServicePlansClientListWebAppsByHybridConnectionResponse{}, err
+				return PlansClientListWebAppsByHybridConnectionResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return AppServicePlansClientListWebAppsByHybridConnectionResponse{}, err
+				return PlansClientListWebAppsByHybridConnectionResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AppServicePlansClientListWebAppsByHybridConnectionResponse{}, runtime.NewResponseError(resp)
+				return PlansClientListWebAppsByHybridConnectionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listWebAppsByHybridConnectionHandleResponse(resp)
 		},
@@ -1564,7 +1546,7 @@ func (client *AppServicePlansClient) NewListWebAppsByHybridConnectionPager(resou
 }
 
 // listWebAppsByHybridConnectionCreateRequest creates the ListWebAppsByHybridConnection request.
-func (client *AppServicePlansClient) listWebAppsByHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansClientListWebAppsByHybridConnectionOptions) (*policy.Request, error) {
+func (client *PlansClient) listWebAppsByHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListWebAppsByHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1598,10 +1580,10 @@ func (client *AppServicePlansClient) listWebAppsByHybridConnectionCreateRequest(
 }
 
 // listWebAppsByHybridConnectionHandleResponse handles the ListWebAppsByHybridConnection response.
-func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleResponse(resp *http.Response) (AppServicePlansClientListWebAppsByHybridConnectionResponse, error) {
-	result := AppServicePlansClientListWebAppsByHybridConnectionResponse{}
+func (client *PlansClient) listWebAppsByHybridConnectionHandleResponse(resp *http.Response) (PlansClientListWebAppsByHybridConnectionResponse, error) {
+	result := PlansClientListWebAppsByHybridConnectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceCollection); err != nil {
-		return AppServicePlansClientListWebAppsByHybridConnectionResponse{}, err
+		return PlansClientListWebAppsByHybridConnectionResponse{}, err
 	}
 	return result, nil
 }
@@ -1612,25 +1594,24 @@ func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleResponse
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
 // workerName - Name of worker machine, which typically starts with RD.
-// options - AppServicePlansClientRebootWorkerOptions contains the optional parameters for the AppServicePlansClient.RebootWorker
-// method.
-func (client *AppServicePlansClient) RebootWorker(ctx context.Context, resourceGroupName string, name string, workerName string, options *AppServicePlansClientRebootWorkerOptions) (AppServicePlansClientRebootWorkerResponse, error) {
+// options - PlansClientRebootWorkerOptions contains the optional parameters for the PlansClient.RebootWorker method.
+func (client *PlansClient) RebootWorker(ctx context.Context, resourceGroupName string, name string, workerName string, options *PlansClientRebootWorkerOptions) (PlansClientRebootWorkerResponse, error) {
 	req, err := client.rebootWorkerCreateRequest(ctx, resourceGroupName, name, workerName, options)
 	if err != nil {
-		return AppServicePlansClientRebootWorkerResponse{}, err
+		return PlansClientRebootWorkerResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientRebootWorkerResponse{}, err
+		return PlansClientRebootWorkerResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AppServicePlansClientRebootWorkerResponse{}, runtime.NewResponseError(resp)
+		return PlansClientRebootWorkerResponse{}, runtime.NewResponseError(resp)
 	}
-	return AppServicePlansClientRebootWorkerResponse{}, nil
+	return PlansClientRebootWorkerResponse{}, nil
 }
 
 // rebootWorkerCreateRequest creates the RebootWorker request.
-func (client *AppServicePlansClient) rebootWorkerCreateRequest(ctx context.Context, resourceGroupName string, name string, workerName string, options *AppServicePlansClientRebootWorkerOptions) (*policy.Request, error) {
+func (client *PlansClient) rebootWorkerCreateRequest(ctx context.Context, resourceGroupName string, name string, workerName string, options *PlansClientRebootWorkerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/workers/{workerName}/reboot"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1663,25 +1644,24 @@ func (client *AppServicePlansClient) rebootWorkerCreateRequest(ctx context.Conte
 // Generated from API version 2018-02-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
-// options - AppServicePlansClientRestartWebAppsOptions contains the optional parameters for the AppServicePlansClient.RestartWebApps
-// method.
-func (client *AppServicePlansClient) RestartWebApps(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientRestartWebAppsOptions) (AppServicePlansClientRestartWebAppsResponse, error) {
+// options - PlansClientRestartWebAppsOptions contains the optional parameters for the PlansClient.RestartWebApps method.
+func (client *PlansClient) RestartWebApps(ctx context.Context, resourceGroupName string, name string, options *PlansClientRestartWebAppsOptions) (PlansClientRestartWebAppsResponse, error) {
 	req, err := client.restartWebAppsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AppServicePlansClientRestartWebAppsResponse{}, err
+		return PlansClientRestartWebAppsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientRestartWebAppsResponse{}, err
+		return PlansClientRestartWebAppsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AppServicePlansClientRestartWebAppsResponse{}, runtime.NewResponseError(resp)
+		return PlansClientRestartWebAppsResponse{}, runtime.NewResponseError(resp)
 	}
-	return AppServicePlansClientRestartWebAppsResponse{}, nil
+	return PlansClientRestartWebAppsResponse{}, nil
 }
 
 // restartWebAppsCreateRequest creates the RestartWebApps request.
-func (client *AppServicePlansClient) restartWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansClientRestartWebAppsOptions) (*policy.Request, error) {
+func (client *PlansClient) restartWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientRestartWebAppsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/restartSites"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1714,24 +1694,24 @@ func (client *AppServicePlansClient) restartWebAppsCreateRequest(ctx context.Con
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
 // appServicePlan - Details of the App Service plan.
-// options - AppServicePlansClientUpdateOptions contains the optional parameters for the AppServicePlansClient.Update method.
-func (client *AppServicePlansClient) Update(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlanPatchResource, options *AppServicePlansClientUpdateOptions) (AppServicePlansClientUpdateResponse, error) {
+// options - PlansClientUpdateOptions contains the optional parameters for the PlansClient.Update method.
+func (client *PlansClient) Update(ctx context.Context, resourceGroupName string, name string, appServicePlan PlanPatchResource, options *PlansClientUpdateOptions) (PlansClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, appServicePlan, options)
 	if err != nil {
-		return AppServicePlansClientUpdateResponse{}, err
+		return PlansClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientUpdateResponse{}, err
+		return PlansClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return AppServicePlansClientUpdateResponse{}, runtime.NewResponseError(resp)
+		return PlansClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AppServicePlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlanPatchResource, options *AppServicePlansClientUpdateOptions) (*policy.Request, error) {
+func (client *PlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan PlanPatchResource, options *PlansClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1757,10 +1737,10 @@ func (client *AppServicePlansClient) updateCreateRequest(ctx context.Context, re
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AppServicePlansClient) updateHandleResponse(resp *http.Response) (AppServicePlansClientUpdateResponse, error) {
-	result := AppServicePlansClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlan); err != nil {
-		return AppServicePlansClientUpdateResponse{}, err
+func (client *PlansClient) updateHandleResponse(resp *http.Response) (PlansClientUpdateResponse, error) {
+	result := PlansClientUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Plan); err != nil {
+		return PlansClientUpdateResponse{}, err
 	}
 	return result, nil
 }
@@ -1773,25 +1753,24 @@ func (client *AppServicePlansClient) updateHandleResponse(resp *http.Response) (
 // vnetName - Name of the Virtual Network.
 // gatewayName - Name of the gateway. Only the 'primary' gateway is supported.
 // connectionEnvelope - Definition of the gateway.
-// options - AppServicePlansClientUpdateVnetGatewayOptions contains the optional parameters for the AppServicePlansClient.UpdateVnetGateway
-// method.
-func (client *AppServicePlansClient) UpdateVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *AppServicePlansClientUpdateVnetGatewayOptions) (AppServicePlansClientUpdateVnetGatewayResponse, error) {
+// options - PlansClientUpdateVnetGatewayOptions contains the optional parameters for the PlansClient.UpdateVnetGateway method.
+func (client *PlansClient) UpdateVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *PlansClientUpdateVnetGatewayOptions) (PlansClientUpdateVnetGatewayResponse, error) {
 	req, err := client.updateVnetGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, options)
 	if err != nil {
-		return AppServicePlansClientUpdateVnetGatewayResponse{}, err
+		return PlansClientUpdateVnetGatewayResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientUpdateVnetGatewayResponse{}, err
+		return PlansClientUpdateVnetGatewayResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppServicePlansClientUpdateVnetGatewayResponse{}, runtime.NewResponseError(resp)
+		return PlansClientUpdateVnetGatewayResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateVnetGatewayHandleResponse(resp)
 }
 
 // updateVnetGatewayCreateRequest creates the UpdateVnetGateway request.
-func (client *AppServicePlansClient) updateVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *AppServicePlansClientUpdateVnetGatewayOptions) (*policy.Request, error) {
+func (client *PlansClient) updateVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *PlansClientUpdateVnetGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1825,10 +1804,10 @@ func (client *AppServicePlansClient) updateVnetGatewayCreateRequest(ctx context.
 }
 
 // updateVnetGatewayHandleResponse handles the UpdateVnetGateway response.
-func (client *AppServicePlansClient) updateVnetGatewayHandleResponse(resp *http.Response) (AppServicePlansClientUpdateVnetGatewayResponse, error) {
-	result := AppServicePlansClientUpdateVnetGatewayResponse{}
+func (client *PlansClient) updateVnetGatewayHandleResponse(resp *http.Response) (PlansClientUpdateVnetGatewayResponse, error) {
+	result := PlansClientUpdateVnetGatewayResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
-		return AppServicePlansClientUpdateVnetGatewayResponse{}, err
+		return PlansClientUpdateVnetGatewayResponse{}, err
 	}
 	return result, nil
 }
@@ -1841,25 +1820,24 @@ func (client *AppServicePlansClient) updateVnetGatewayHandleResponse(resp *http.
 // vnetName - Name of the Virtual Network.
 // routeName - Name of the Virtual Network route.
 // route - Definition of the Virtual Network route.
-// options - AppServicePlansClientUpdateVnetRouteOptions contains the optional parameters for the AppServicePlansClient.UpdateVnetRoute
-// method.
-func (client *AppServicePlansClient) UpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansClientUpdateVnetRouteOptions) (AppServicePlansClientUpdateVnetRouteResponse, error) {
+// options - PlansClientUpdateVnetRouteOptions contains the optional parameters for the PlansClient.UpdateVnetRoute method.
+func (client *PlansClient) UpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *PlansClientUpdateVnetRouteOptions) (PlansClientUpdateVnetRouteResponse, error) {
 	req, err := client.updateVnetRouteCreateRequest(ctx, resourceGroupName, name, vnetName, routeName, route, options)
 	if err != nil {
-		return AppServicePlansClientUpdateVnetRouteResponse{}, err
+		return PlansClientUpdateVnetRouteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AppServicePlansClientUpdateVnetRouteResponse{}, err
+		return PlansClientUpdateVnetRouteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusBadRequest, http.StatusNotFound) {
-		return AppServicePlansClientUpdateVnetRouteResponse{}, runtime.NewResponseError(resp)
+		return PlansClientUpdateVnetRouteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateVnetRouteHandleResponse(resp)
 }
 
 // updateVnetRouteCreateRequest creates the UpdateVnetRoute request.
-func (client *AppServicePlansClient) updateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansClientUpdateVnetRouteOptions) (*policy.Request, error) {
+func (client *PlansClient) updateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *PlansClientUpdateVnetRouteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1893,10 +1871,10 @@ func (client *AppServicePlansClient) updateVnetRouteCreateRequest(ctx context.Co
 }
 
 // updateVnetRouteHandleResponse handles the UpdateVnetRoute response.
-func (client *AppServicePlansClient) updateVnetRouteHandleResponse(resp *http.Response) (AppServicePlansClientUpdateVnetRouteResponse, error) {
-	result := AppServicePlansClientUpdateVnetRouteResponse{}
+func (client *PlansClient) updateVnetRouteHandleResponse(resp *http.Response) (PlansClientUpdateVnetRouteResponse, error) {
+	result := PlansClientUpdateVnetRouteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
-		return AppServicePlansClientUpdateVnetRouteResponse{}, err
+		return PlansClientUpdateVnetRouteResponse{}, err
 	}
 	return result, nil
 }

@@ -9,11 +9,6 @@
 
 package armresources
 
-const (
-	moduleName    = "hybrid20200901/armresources"
-	moduleVersion = "v1.0.0"
-)
-
 // AliasPatternType - The type of alias pattern
 type AliasPatternType string
 

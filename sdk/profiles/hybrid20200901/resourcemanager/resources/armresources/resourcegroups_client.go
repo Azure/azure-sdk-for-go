@@ -326,7 +326,6 @@ func (client *ResourceGroupsClient) getHandleResponse(resp *http.Response) (Reso
 }
 
 // NewListPager - Gets all the resource groups for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // options - ResourceGroupsClientListOptions contains the optional parameters for the ResourceGroupsClient.List method.
 func (client *ResourceGroupsClient) NewListPager(options *ResourceGroupsClientListOptions) *runtime.Pager[ResourceGroupsClientListResponse] {

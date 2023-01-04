@@ -251,7 +251,6 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Gets the available PrivateEndpointConnections within a namespace.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name

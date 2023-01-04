@@ -57,7 +57,6 @@ func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredenti
 }
 
 // NewListForResourcePager - Gets all permissions the caller has for a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceProviderNamespace - The namespace of the resource provider.
@@ -136,7 +135,6 @@ func (client *PermissionsClient) listForResourceHandleResponse(resp *http.Respon
 }
 
 // NewListForResourceGroupPager - Gets all permissions the caller has for a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.ListForResourceGroup

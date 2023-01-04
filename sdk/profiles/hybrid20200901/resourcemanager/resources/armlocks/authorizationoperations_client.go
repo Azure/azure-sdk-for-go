@@ -51,7 +51,6 @@ func NewAuthorizationOperationsClient(credential azcore.TokenCredential, options
 }
 
 // NewListPager - Lists all of the available Microsoft.Authorization REST API operations.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-09-01
 // options - AuthorizationOperationsClientListOptions contains the optional parameters for the AuthorizationOperationsClient.List
 // method.

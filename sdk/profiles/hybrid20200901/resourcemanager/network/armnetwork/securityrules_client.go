@@ -255,7 +255,6 @@ func (client *SecurityRulesClient) getHandleResponse(resp *http.Response) (Secur
 }
 
 // NewListPager - Gets all security rules in a network security group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-11-01
 // resourceGroupName - The name of the resource group.
 // networkSecurityGroupName - The name of the network security group.

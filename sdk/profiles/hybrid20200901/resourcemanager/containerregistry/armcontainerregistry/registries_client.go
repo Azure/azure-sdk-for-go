@@ -349,7 +349,6 @@ func (client *RegistriesClient) importImageCreateRequest(ctx context.Context, re
 }
 
 // NewListPager - Lists all the container registries under the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-05-01
 // options - RegistriesClientListOptions contains the optional parameters for the RegistriesClient.List method.
 func (client *RegistriesClient) NewListPager(options *RegistriesClientListOptions) *runtime.Pager[RegistriesClientListResponse] {
@@ -408,7 +407,6 @@ func (client *RegistriesClient) listHandleResponse(resp *http.Response) (Registr
 }
 
 // NewListByResourceGroupPager - Lists all the container registries under the specified resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-05-01
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // options - RegistriesClientListByResourceGroupOptions contains the optional parameters for the RegistriesClient.ListByResourceGroup

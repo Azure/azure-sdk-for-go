@@ -163,7 +163,6 @@ func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Gets all resource providers for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // options - ProvidersClientListOptions contains the optional parameters for the ProvidersClient.List method.
 func (client *ProvidersClient) NewListPager(options *ProvidersClientListOptions) *runtime.Pager[ProvidersClientListResponse] {
@@ -228,7 +227,6 @@ func (client *ProvidersClient) listHandleResponse(resp *http.Response) (Provider
 }
 
 // NewListAtTenantScopePager - Gets all resource providers for the tenant.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // options - ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.ListAtTenantScope
 // method.

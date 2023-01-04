@@ -513,7 +513,6 @@ func (client *Client) getByIDHandleResponse(resp *http.Response) (ClientGetByIDR
 }
 
 // NewListPager - Get all the resources in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // options - ClientListOptions contains the optional parameters for the Client.List method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
@@ -581,7 +580,6 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 }
 
 // NewListByResourceGroupPager - Get all the resources for a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-10-01
 // resourceGroupName - The resource group with the resources to get.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.

@@ -187,7 +187,6 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 // NewListPager - The List operation gets information about the secrets in a vault. NOTE: This API is intended for internal
 // use in ARM deployments. Users should use the data-plane REST service for interaction with
 // vault secrets.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
 // resourceGroupName - The name of the Resource Group to which the vault belongs.
 // vaultName - The name of the vault.

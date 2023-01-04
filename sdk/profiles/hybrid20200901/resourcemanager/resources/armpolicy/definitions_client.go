@@ -399,7 +399,6 @@ func (client *DefinitionsClient) getBuiltInHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets all the policy definitions for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-12-01
 // options - DefinitionsClientListOptions contains the optional parameters for the DefinitionsClient.List method.
 func (client *DefinitionsClient) NewListPager(options *DefinitionsClientListOptions) *runtime.Pager[DefinitionsClientListResponse] {
@@ -458,7 +457,6 @@ func (client *DefinitionsClient) listHandleResponse(resp *http.Response) (Defini
 }
 
 // NewListBuiltInPager - Gets all the built in policy definitions.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-12-01
 // options - DefinitionsClientListBuiltInOptions contains the optional parameters for the DefinitionsClient.ListBuiltIn method.
 func (client *DefinitionsClient) NewListBuiltInPager(options *DefinitionsClientListBuiltInOptions) *runtime.Pager[DefinitionsClientListBuiltInResponse] {
@@ -513,7 +511,6 @@ func (client *DefinitionsClient) listBuiltInHandleResponse(resp *http.Response) 
 }
 
 // NewListByManagementGroupPager - Gets all the policy definitions for a subscription at management group level.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2016-12-01
 // managementGroupID - The ID of the management group.
 // options - DefinitionsClientListByManagementGroupOptions contains the optional parameters for the DefinitionsClient.ListByManagementGroup

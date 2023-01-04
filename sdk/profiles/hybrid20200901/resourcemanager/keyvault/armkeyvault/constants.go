@@ -9,11 +9,6 @@
 
 package armkeyvault
 
-const (
-	moduleName    = "hybrid20200901/armkeyvault"
-	moduleVersion = "v1.0.0"
-)
-
 type AccessPolicyUpdateKind string
 
 const (

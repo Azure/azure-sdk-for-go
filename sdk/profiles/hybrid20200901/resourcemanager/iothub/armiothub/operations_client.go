@@ -51,7 +51,6 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 }
 
 // NewListPager - Lists all of the available IoT Hub REST API operations.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-07-01-preview
 // options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {

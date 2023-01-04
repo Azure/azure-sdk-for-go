@@ -9,11 +9,6 @@
 
 package armiothub
 
-const (
-	moduleName    = "hybrid20200901/armiothub"
-	moduleVersion = "v1.0.0"
-)
-
 // AccessRights - The permissions assigned to the shared access policy.
 type AccessRights string
 

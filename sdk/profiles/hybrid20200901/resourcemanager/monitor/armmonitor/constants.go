@@ -9,11 +9,6 @@
 
 package armmonitor
 
-const (
-	moduleName    = "hybrid20200901/armmonitor"
-	moduleVersion = "v1.0.0"
-)
-
 // AggregationType - the aggregation type of the metric.
 type AggregationType string
 

@@ -350,7 +350,6 @@ func (client *RoleAssignmentsClient) getByIDHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Gets all role assignments for the subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-07-01
 // options - RoleAssignmentsClientListOptions contains the optional parameters for the RoleAssignmentsClient.List method.
 func (client *RoleAssignmentsClient) NewListPager(options *RoleAssignmentsClientListOptions) *runtime.Pager[RoleAssignmentsClientListResponse] {
@@ -412,7 +411,6 @@ func (client *RoleAssignmentsClient) listHandleResponse(resp *http.Response) (Ro
 }
 
 // NewListForResourcePager - Gets role assignments for a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceProviderNamespace - The namespace of the resource provider.
@@ -494,7 +492,6 @@ func (client *RoleAssignmentsClient) listForResourceHandleResponse(resp *http.Re
 }
 
 // NewListForResourceGroupPager - Gets role assignments for a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.ListForResourceGroup
@@ -562,7 +559,6 @@ func (client *RoleAssignmentsClient) listForResourceGroupHandleResponse(resp *ht
 }
 
 // NewListForScopePager - Gets role assignments for a scope.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-07-01
 // scope - The scope of the role assignments.
 // options - RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope

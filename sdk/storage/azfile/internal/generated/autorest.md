@@ -1,4 +1,4 @@
-# Code Generation - Azure Blob SDK for Golang
+# Code Generation - Azure File SDK for Golang
 
 ### Settings
 
@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.43"
 ```
 
-### Don't include share name, directory, or file name in path - we have direct URIs.
+### Don't include share name, directory, or file name in path - we have direct URIs
 
 ``` yaml
 directive:

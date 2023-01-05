@@ -12,12 +12,10 @@ package generated
 import (
 	"context"
 	"encoding/base64"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -44,14 +42,11 @@ func NewFileClient(endpoint string, pl runtime.Pipeline) *FileClient {
 // AbortCopy - Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // copyID - The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
 // options - FileClientAbortCopyOptions contains the optional parameters for the FileClient.AbortCopy method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) AbortCopy(ctx context.Context, shareName string, directory string, fileName string, copyID string, options *FileClientAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientAbortCopyResponse, error) {
-	req, err := client.abortCopyCreateRequest(ctx, shareName, directory, fileName, copyID, options, leaseAccessConditions)
+func (client *FileClient) AbortCopy(ctx context.Context, copyID string, options *FileClientAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientAbortCopyResponse, error) {
+	req, err := client.abortCopyCreateRequest(ctx, copyID, options, leaseAccessConditions)
 	if err != nil {
 		return FileClientAbortCopyResponse{}, err
 	}
@@ -66,21 +61,8 @@ func (client *FileClient) AbortCopy(ctx context.Context, shareName string, direc
 }
 
 // abortCopyCreateRequest creates the AbortCopy request.
-func (client *FileClient) abortCopyCreateRequest(ctx context.Context, shareName string, directory string, fileName string, copyID string, options *FileClientAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) abortCopyCreateRequest(ctx context.Context, copyID string, options *FileClientAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -122,12 +104,9 @@ func (client *FileClient) abortCopyHandleResponse(resp *http.Response) (FileClie
 // AcquireLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // options - FileClientAcquireLeaseOptions contains the optional parameters for the FileClient.AcquireLease method.
-func (client *FileClient) AcquireLease(ctx context.Context, shareName string, directory string, fileName string, options *FileClientAcquireLeaseOptions) (FileClientAcquireLeaseResponse, error) {
-	req, err := client.acquireLeaseCreateRequest(ctx, shareName, directory, fileName, options)
+func (client *FileClient) AcquireLease(ctx context.Context, options *FileClientAcquireLeaseOptions) (FileClientAcquireLeaseResponse, error) {
+	req, err := client.acquireLeaseCreateRequest(ctx, options)
 	if err != nil {
 		return FileClientAcquireLeaseResponse{}, err
 	}
@@ -142,21 +121,8 @@ func (client *FileClient) AcquireLease(ctx context.Context, shareName string, di
 }
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
-func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, shareName string, directory string, fileName string, options *FileClientAcquireLeaseOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, options *FileClientAcquireLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -219,13 +185,10 @@ func (client *FileClient) acquireLeaseHandleResponse(resp *http.Response) (FileC
 // BreakLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // options - FileClientBreakLeaseOptions contains the optional parameters for the FileClient.BreakLease method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) BreakLease(ctx context.Context, shareName string, directory string, fileName string, options *FileClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientBreakLeaseResponse, error) {
-	req, err := client.breakLeaseCreateRequest(ctx, shareName, directory, fileName, options, leaseAccessConditions)
+func (client *FileClient) BreakLease(ctx context.Context, options *FileClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientBreakLeaseResponse, error) {
+	req, err := client.breakLeaseCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return FileClientBreakLeaseResponse{}, err
 	}
@@ -240,21 +203,8 @@ func (client *FileClient) BreakLease(ctx context.Context, shareName string, dire
 }
 
 // breakLeaseCreateRequest creates the BreakLease request.
-func (client *FileClient) breakLeaseCreateRequest(ctx context.Context, shareName string, directory string, fileName string, options *FileClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) breakLeaseCreateRequest(ctx context.Context, options *FileClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -314,13 +264,10 @@ func (client *FileClient) breakLeaseHandleResponse(resp *http.Response) (FileCli
 // ChangeLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // leaseID - Specifies the current lease ID on the resource.
 // options - FileClientChangeLeaseOptions contains the optional parameters for the FileClient.ChangeLease method.
-func (client *FileClient) ChangeLease(ctx context.Context, shareName string, directory string, fileName string, leaseID string, options *FileClientChangeLeaseOptions) (FileClientChangeLeaseResponse, error) {
-	req, err := client.changeLeaseCreateRequest(ctx, shareName, directory, fileName, leaseID, options)
+func (client *FileClient) ChangeLease(ctx context.Context, leaseID string, options *FileClientChangeLeaseOptions) (FileClientChangeLeaseResponse, error) {
+	req, err := client.changeLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
 		return FileClientChangeLeaseResponse{}, err
 	}
@@ -335,21 +282,8 @@ func (client *FileClient) ChangeLease(ctx context.Context, shareName string, dir
 }
 
 // changeLeaseCreateRequest creates the ChangeLease request.
-func (client *FileClient) changeLeaseCreateRequest(ctx context.Context, shareName string, directory string, fileName string, leaseID string, options *FileClientChangeLeaseOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) changeLeaseCreateRequest(ctx context.Context, leaseID string, options *FileClientChangeLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -410,9 +344,6 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 // Create - Creates a new file or replaces a file. Note it only initializes the file with no content.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // fileContentLength - Specifies the maximum size for the file, up to 4 TB.
 // fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
 // for directory. ‘None’ can also be specified as default.
@@ -421,8 +352,8 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 // options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 // FileHTTPHeaders - FileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) Create(ctx context.Context, shareName string, directory string, fileName string, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, shareName, directory, fileName, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, options, fileHTTPHeaders, leaseAccessConditions)
+func (client *FileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, options, fileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientCreateResponse{}, err
 	}
@@ -437,21 +368,8 @@ func (client *FileClient) Create(ctx context.Context, shareName string, director
 }
 
 // createCreateRequest creates the Create request.
-func (client *FileClient) createCreateRequest(ctx context.Context, shareName string, directory string, fileName string, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -542,25 +460,13 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientCreateResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientCreateResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientCreateResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -574,13 +480,10 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 // Delete - removes the file from the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // options - FileClientDeleteOptions contains the optional parameters for the FileClient.Delete method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) Delete(ctx context.Context, shareName string, directory string, fileName string, options *FileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, shareName, directory, fileName, options, leaseAccessConditions)
+func (client *FileClient) Delete(ctx context.Context, options *FileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return FileClientDeleteResponse{}, err
 	}
@@ -595,21 +498,8 @@ func (client *FileClient) Delete(ctx context.Context, shareName string, director
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FileClient) deleteCreateRequest(ctx context.Context, shareName string, directory string, fileName string, options *FileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) deleteCreateRequest(ctx context.Context, options *FileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -648,13 +538,10 @@ func (client *FileClient) deleteHandleResponse(resp *http.Response) (FileClientD
 // Download - Reads or downloads a file from the system, including its metadata and properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // options - FileClientDownloadOptions contains the optional parameters for the FileClient.Download method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) Download(ctx context.Context, shareName string, directory string, fileName string, options *FileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDownloadResponse, error) {
-	req, err := client.downloadCreateRequest(ctx, shareName, directory, fileName, options, leaseAccessConditions)
+func (client *FileClient) Download(ctx context.Context, options *FileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDownloadResponse, error) {
+	req, err := client.downloadCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return FileClientDownloadResponse{}, err
 	}
@@ -669,21 +556,8 @@ func (client *FileClient) Download(ctx context.Context, shareName string, direct
 }
 
 // downloadCreateRequest creates the Download request.
-func (client *FileClient) downloadCreateRequest(ctx context.Context, shareName string, directory string, fileName string, options *FileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) downloadCreateRequest(ctx context.Context, options *FileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -816,25 +690,13 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientDownloadResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientDownloadResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientDownloadResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -860,14 +722,11 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 // ForceCloseHandles - Closes all handles open for given file
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
 // all handles.
 // options - FileClientForceCloseHandlesOptions contains the optional parameters for the FileClient.ForceCloseHandles method.
-func (client *FileClient) ForceCloseHandles(ctx context.Context, shareName string, directory string, fileName string, handleID string, options *FileClientForceCloseHandlesOptions) (FileClientForceCloseHandlesResponse, error) {
-	req, err := client.forceCloseHandlesCreateRequest(ctx, shareName, directory, fileName, handleID, options)
+func (client *FileClient) ForceCloseHandles(ctx context.Context, handleID string, options *FileClientForceCloseHandlesOptions) (FileClientForceCloseHandlesResponse, error) {
+	req, err := client.forceCloseHandlesCreateRequest(ctx, handleID, options)
 	if err != nil {
 		return FileClientForceCloseHandlesResponse{}, err
 	}
@@ -882,21 +741,8 @@ func (client *FileClient) ForceCloseHandles(ctx context.Context, shareName strin
 }
 
 // forceCloseHandlesCreateRequest creates the ForceCloseHandles request.
-func (client *FileClient) forceCloseHandlesCreateRequest(ctx context.Context, shareName string, directory string, fileName string, handleID string, options *FileClientForceCloseHandlesOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) forceCloseHandlesCreateRequest(ctx context.Context, handleID string, options *FileClientForceCloseHandlesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -960,13 +806,10 @@ func (client *FileClient) forceCloseHandlesHandleResponse(resp *http.Response) (
 // not return the content of the file.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // options - FileClientGetPropertiesOptions contains the optional parameters for the FileClient.GetProperties method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) GetProperties(ctx context.Context, shareName string, directory string, fileName string, options *FileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetPropertiesResponse, error) {
-	req, err := client.getPropertiesCreateRequest(ctx, shareName, directory, fileName, options, leaseAccessConditions)
+func (client *FileClient) GetProperties(ctx context.Context, options *FileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetPropertiesResponse, error) {
+	req, err := client.getPropertiesCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return FileClientGetPropertiesResponse{}, err
 	}
@@ -981,21 +824,8 @@ func (client *FileClient) GetProperties(ctx context.Context, shareName string, d
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *FileClient) getPropertiesCreateRequest(ctx context.Context, shareName string, directory string, fileName string, options *FileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) getPropertiesCreateRequest(ctx context.Context, options *FileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodHead, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1114,25 +944,13 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientGetPropertiesResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientGetPropertiesResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientGetPropertiesResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -1158,13 +976,10 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 // GetRangeList - Returns the list of valid ranges for a file.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // options - FileClientGetRangeListOptions contains the optional parameters for the FileClient.GetRangeList method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) GetRangeList(ctx context.Context, shareName string, directory string, fileName string, options *FileClientGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetRangeListResponse, error) {
-	req, err := client.getRangeListCreateRequest(ctx, shareName, directory, fileName, options, leaseAccessConditions)
+func (client *FileClient) GetRangeList(ctx context.Context, options *FileClientGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetRangeListResponse, error) {
+	req, err := client.getRangeListCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return FileClientGetRangeListResponse{}, err
 	}
@@ -1179,21 +994,8 @@ func (client *FileClient) GetRangeList(ctx context.Context, shareName string, di
 }
 
 // getRangeListCreateRequest creates the GetRangeList request.
-func (client *FileClient) getRangeListCreateRequest(ctx context.Context, shareName string, directory string, fileName string, options *FileClientGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) getRangeListCreateRequest(ctx context.Context, options *FileClientGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1262,12 +1064,9 @@ func (client *FileClient) getRangeListHandleResponse(resp *http.Response) (FileC
 // ListHandles - Lists handles for file
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // options - FileClientListHandlesOptions contains the optional parameters for the FileClient.ListHandles method.
-func (client *FileClient) ListHandles(ctx context.Context, shareName string, directory string, fileName string, options *FileClientListHandlesOptions) (FileClientListHandlesResponse, error) {
-	req, err := client.listHandlesCreateRequest(ctx, shareName, directory, fileName, options)
+func (client *FileClient) ListHandles(ctx context.Context, options *FileClientListHandlesOptions) (FileClientListHandlesResponse, error) {
+	req, err := client.listHandlesCreateRequest(ctx, options)
 	if err != nil {
 		return FileClientListHandlesResponse{}, err
 	}
@@ -1282,21 +1081,8 @@ func (client *FileClient) ListHandles(ctx context.Context, shareName string, dir
 }
 
 // listHandlesCreateRequest creates the ListHandles request.
-func (client *FileClient) listHandlesCreateRequest(ctx context.Context, shareName string, directory string, fileName string, options *FileClientListHandlesOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) listHandlesCreateRequest(ctx context.Context, options *FileClientListHandlesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1348,13 +1134,10 @@ func (client *FileClient) listHandlesHandleResponse(resp *http.Response) (FileCl
 // ReleaseLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // leaseID - Specifies the current lease ID on the resource.
 // options - FileClientReleaseLeaseOptions contains the optional parameters for the FileClient.ReleaseLease method.
-func (client *FileClient) ReleaseLease(ctx context.Context, shareName string, directory string, fileName string, leaseID string, options *FileClientReleaseLeaseOptions) (FileClientReleaseLeaseResponse, error) {
-	req, err := client.releaseLeaseCreateRequest(ctx, shareName, directory, fileName, leaseID, options)
+func (client *FileClient) ReleaseLease(ctx context.Context, leaseID string, options *FileClientReleaseLeaseOptions) (FileClientReleaseLeaseResponse, error) {
+	req, err := client.releaseLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
 		return FileClientReleaseLeaseResponse{}, err
 	}
@@ -1369,21 +1152,8 @@ func (client *FileClient) ReleaseLease(ctx context.Context, shareName string, di
 }
 
 // releaseLeaseCreateRequest creates the ReleaseLease request.
-func (client *FileClient) releaseLeaseCreateRequest(ctx context.Context, shareName string, directory string, fileName string, leaseID string, options *FileClientReleaseLeaseOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID string, options *FileClientReleaseLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1438,9 +1208,6 @@ func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileC
 // SetHTTPHeaders - Sets HTTP headers on the file.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
 // for directory. ‘None’ can also be specified as default.
 // fileCreationTime - Creation time for the file/directory. Default value: Now.
@@ -1448,8 +1215,8 @@ func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileC
 // options - FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
 // FileHTTPHeaders - FileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) SetHTTPHeaders(ctx context.Context, shareName string, directory string, fileName string, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
-	req, err := client.setHTTPHeadersCreateRequest(ctx, shareName, directory, fileName, fileAttributes, fileCreationTime, fileLastWriteTime, options, fileHTTPHeaders, leaseAccessConditions)
+func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
+	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options, fileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientSetHTTPHeadersResponse{}, err
 	}
@@ -1464,21 +1231,8 @@ func (client *FileClient) SetHTTPHeaders(ctx context.Context, shareName string, 
 }
 
 // setHTTPHeadersCreateRequest creates the SetHTTPHeaders request.
-func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, shareName string, directory string, fileName string, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1566,25 +1320,13 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientSetHTTPHeadersResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientSetHTTPHeadersResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileClientSetHTTPHeadersResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -1598,13 +1340,10 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 // SetMetadata - Updates user-defined metadata for the specified file.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // options - FileClientSetMetadataOptions contains the optional parameters for the FileClient.SetMetadata method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) SetMetadata(ctx context.Context, shareName string, directory string, fileName string, options *FileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientSetMetadataResponse, error) {
-	req, err := client.setMetadataCreateRequest(ctx, shareName, directory, fileName, options, leaseAccessConditions)
+func (client *FileClient) SetMetadata(ctx context.Context, options *FileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientSetMetadataResponse, error) {
+	req, err := client.setMetadataCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return FileClientSetMetadataResponse{}, err
 	}
@@ -1619,21 +1358,8 @@ func (client *FileClient) SetMetadata(ctx context.Context, shareName string, dir
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
-func (client *FileClient) setMetadataCreateRequest(ctx context.Context, shareName string, directory string, fileName string, options *FileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) setMetadataCreateRequest(ctx context.Context, options *FileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1688,9 +1414,6 @@ func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileCl
 // StartCopy - Copies a blob or file to a destination file within the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
 // the same storage account, you may use Shared Key to authenticate the source file. If you are
 // copying a file from another storage account, or if you are copying a blob from the same storage account or another storage
@@ -1700,8 +1423,8 @@ func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileCl
 // options - FileClientStartCopyOptions contains the optional parameters for the FileClient.StartCopy method.
 // CopyFileSmbInfo - CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) StartCopy(ctx context.Context, shareName string, directory string, fileName string, copySource string, options *FileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (FileClientStartCopyResponse, error) {
-	req, err := client.startCopyCreateRequest(ctx, shareName, directory, fileName, copySource, options, copyFileSmbInfo, leaseAccessConditions)
+func (client *FileClient) StartCopy(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (FileClientStartCopyResponse, error) {
+	req, err := client.startCopyCreateRequest(ctx, copySource, options, copyFileSmbInfo, leaseAccessConditions)
 	if err != nil {
 		return FileClientStartCopyResponse{}, err
 	}
@@ -1716,21 +1439,8 @@ func (client *FileClient) StartCopy(ctx context.Context, shareName string, direc
 }
 
 // startCopyCreateRequest creates the StartCopy request.
-func (client *FileClient) startCopyCreateRequest(ctx context.Context, shareName string, directory string, fileName string, copySource string, options *FileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1815,9 +1525,6 @@ func (client *FileClient) startCopyHandleResponse(resp *http.Response) (FileClie
 // UploadRange - Upload a range of bytes to a file.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // rangeParam - Specifies the range of bytes to be written. Both the start and end of the range must be specified. For an
 // update operation, the range can be up to 4 MB in size. For a clear operation, the range can be
 // up to the value of the file's full size. The File service accepts only a single byte range for the Range and 'x-ms-range'
@@ -1833,8 +1540,8 @@ func (client *FileClient) startCopyHandleResponse(resp *http.Response) (FileClie
 // optionalbody - Initial data.
 // options - FileClientUploadRangeOptions contains the optional parameters for the FileClient.UploadRange method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) UploadRange(ctx context.Context, shareName string, directory string, fileName string, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, optionalbody io.ReadSeekCloser, options *FileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientUploadRangeResponse, error) {
-	req, err := client.uploadRangeCreateRequest(ctx, shareName, directory, fileName, rangeParam, fileRangeWrite, contentLength, optionalbody, options, leaseAccessConditions)
+func (client *FileClient) UploadRange(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, optionalbody io.ReadSeekCloser, options *FileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientUploadRangeResponse, error) {
+	req, err := client.uploadRangeCreateRequest(ctx, rangeParam, fileRangeWrite, contentLength, optionalbody, options, leaseAccessConditions)
 	if err != nil {
 		return FileClientUploadRangeResponse{}, err
 	}
@@ -1849,21 +1556,8 @@ func (client *FileClient) UploadRange(ctx context.Context, shareName string, dir
 }
 
 // uploadRangeCreateRequest creates the UploadRange request.
-func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, shareName string, directory string, fileName string, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, optionalbody io.ReadSeekCloser, options *FileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, optionalbody io.ReadSeekCloser, options *FileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1933,9 +1627,6 @@ func (client *FileClient) uploadRangeHandleResponse(resp *http.Response) (FileCl
 // UploadRangeFromURL - Upload a range of bytes to a file where the contents are read from a URL.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
-// fileName - The path of the target file.
 // rangeParam - Writes data to the specified byte range in the file.
 // copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
 // the same storage account, you may use Shared Key to authenticate the source file. If you are
@@ -1949,8 +1640,8 @@ func (client *FileClient) uploadRangeHandleResponse(resp *http.Response) (FileCl
 // SourceModifiedAccessConditions - SourceModifiedAccessConditions contains a group of parameters for the FileClient.UploadRangeFromURL
 // method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) UploadRangeFromURL(ctx context.Context, shareName string, directory string, fileName string, rangeParam string, copySource string, contentLength int64, options *FileClientUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (FileClientUploadRangeFromURLResponse, error) {
-	req, err := client.uploadRangeFromURLCreateRequest(ctx, shareName, directory, fileName, rangeParam, copySource, contentLength, options, sourceModifiedAccessConditions, leaseAccessConditions)
+func (client *FileClient) UploadRangeFromURL(ctx context.Context, rangeParam string, copySource string, contentLength int64, options *FileClientUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (FileClientUploadRangeFromURLResponse, error) {
+	req, err := client.uploadRangeFromURLCreateRequest(ctx, rangeParam, copySource, contentLength, options, sourceModifiedAccessConditions, leaseAccessConditions)
 	if err != nil {
 		return FileClientUploadRangeFromURLResponse{}, err
 	}
@@ -1965,21 +1656,8 @@ func (client *FileClient) UploadRangeFromURL(ctx context.Context, shareName stri
 }
 
 // uploadRangeFromURLCreateRequest creates the UploadRangeFromURL request.
-func (client *FileClient) uploadRangeFromURLCreateRequest(ctx context.Context, shareName string, directory string, fileName string, rangeParam string, copySource string, contentLength int64, options *FileClientUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}/{fileName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	if fileName == "" {
-		return nil, errors.New("parameter fileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileName}", url.PathEscape(fileName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *FileClient) uploadRangeFromURLCreateRequest(ctx context.Context, rangeParam string, copySource string, contentLength int64, options *FileClientUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}

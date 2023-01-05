@@ -12,11 +12,9 @@ package generated
 import (
 	"context"
 	"encoding/xml"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -44,10 +42,9 @@ func NewShareClient(endpoint string, pl runtime.Pipeline) *ShareClient {
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientAcquireLeaseOptions contains the optional parameters for the ShareClient.AcquireLease method.
-func (client *ShareClient) AcquireLease(ctx context.Context, shareName string, options *ShareClientAcquireLeaseOptions) (ShareClientAcquireLeaseResponse, error) {
-	req, err := client.acquireLeaseCreateRequest(ctx, shareName, options)
+func (client *ShareClient) AcquireLease(ctx context.Context, options *ShareClientAcquireLeaseOptions) (ShareClientAcquireLeaseResponse, error) {
+	req, err := client.acquireLeaseCreateRequest(ctx, options)
 	if err != nil {
 		return ShareClientAcquireLeaseResponse{}, err
 	}
@@ -62,13 +59,8 @@ func (client *ShareClient) AcquireLease(ctx context.Context, shareName string, o
 }
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
-func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, shareName string, options *ShareClientAcquireLeaseOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, options *ShareClientAcquireLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -136,11 +128,10 @@ func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response) (Shar
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientBreakLeaseOptions contains the optional parameters for the ShareClient.BreakLease method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *ShareClient) BreakLease(ctx context.Context, shareName string, options *ShareClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientBreakLeaseResponse, error) {
-	req, err := client.breakLeaseCreateRequest(ctx, shareName, options, leaseAccessConditions)
+func (client *ShareClient) BreakLease(ctx context.Context, options *ShareClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientBreakLeaseResponse, error) {
+	req, err := client.breakLeaseCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return ShareClientBreakLeaseResponse{}, err
 	}
@@ -155,13 +146,8 @@ func (client *ShareClient) BreakLease(ctx context.Context, shareName string, opt
 }
 
 // breakLeaseCreateRequest creates the BreakLease request.
-func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, shareName string, options *ShareClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, options *ShareClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -237,11 +223,10 @@ func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareC
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // leaseID - Specifies the current lease ID on the resource.
 // options - ShareClientChangeLeaseOptions contains the optional parameters for the ShareClient.ChangeLease method.
-func (client *ShareClient) ChangeLease(ctx context.Context, shareName string, leaseID string, options *ShareClientChangeLeaseOptions) (ShareClientChangeLeaseResponse, error) {
-	req, err := client.changeLeaseCreateRequest(ctx, shareName, leaseID, options)
+func (client *ShareClient) ChangeLease(ctx context.Context, leaseID string, options *ShareClientChangeLeaseOptions) (ShareClientChangeLeaseResponse, error) {
+	req, err := client.changeLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
 		return ShareClientChangeLeaseResponse{}, err
 	}
@@ -256,13 +241,8 @@ func (client *ShareClient) ChangeLease(ctx context.Context, shareName string, le
 }
 
 // changeLeaseCreateRequest creates the ChangeLease request.
-func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, shareName string, leaseID string, options *ShareClientChangeLeaseOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, leaseID string, options *ShareClientChangeLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -328,10 +308,9 @@ func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response) (Share
 // fails.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientCreateOptions contains the optional parameters for the ShareClient.Create method.
-func (client *ShareClient) Create(ctx context.Context, shareName string, options *ShareClientCreateOptions) (ShareClientCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, shareName, options)
+func (client *ShareClient) Create(ctx context.Context, options *ShareClientCreateOptions) (ShareClientCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, options)
 	if err != nil {
 		return ShareClientCreateResponse{}, err
 	}
@@ -346,13 +325,8 @@ func (client *ShareClient) Create(ctx context.Context, shareName string, options
 }
 
 // createCreateRequest creates the Create request.
-func (client *ShareClient) createCreateRequest(ctx context.Context, shareName string, options *ShareClientCreateOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) createCreateRequest(ctx context.Context, options *ShareClientCreateOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -416,11 +390,10 @@ func (client *ShareClient) createHandleResponse(resp *http.Response) (ShareClien
 // CreatePermission - Create a permission (a security descriptor).
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // sharePermission - A permission (a security descriptor) at the share level.
 // options - ShareClientCreatePermissionOptions contains the optional parameters for the ShareClient.CreatePermission method.
-func (client *ShareClient) CreatePermission(ctx context.Context, shareName string, sharePermission SharePermission, options *ShareClientCreatePermissionOptions) (ShareClientCreatePermissionResponse, error) {
-	req, err := client.createPermissionCreateRequest(ctx, shareName, sharePermission, options)
+func (client *ShareClient) CreatePermission(ctx context.Context, sharePermission SharePermission, options *ShareClientCreatePermissionOptions) (ShareClientCreatePermissionResponse, error) {
+	req, err := client.createPermissionCreateRequest(ctx, sharePermission, options)
 	if err != nil {
 		return ShareClientCreatePermissionResponse{}, err
 	}
@@ -435,13 +408,8 @@ func (client *ShareClient) CreatePermission(ctx context.Context, shareName strin
 }
 
 // createPermissionCreateRequest creates the CreatePermission request.
-func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, shareName string, sharePermission SharePermission, options *ShareClientCreatePermissionOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, sharePermission SharePermission, options *ShareClientCreatePermissionOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -482,10 +450,9 @@ func (client *ShareClient) createPermissionHandleResponse(resp *http.Response) (
 // CreateSnapshot - Creates a read-only snapshot of a share.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientCreateSnapshotOptions contains the optional parameters for the ShareClient.CreateSnapshot method.
-func (client *ShareClient) CreateSnapshot(ctx context.Context, shareName string, options *ShareClientCreateSnapshotOptions) (ShareClientCreateSnapshotResponse, error) {
-	req, err := client.createSnapshotCreateRequest(ctx, shareName, options)
+func (client *ShareClient) CreateSnapshot(ctx context.Context, options *ShareClientCreateSnapshotOptions) (ShareClientCreateSnapshotResponse, error) {
+	req, err := client.createSnapshotCreateRequest(ctx, options)
 	if err != nil {
 		return ShareClientCreateSnapshotResponse{}, err
 	}
@@ -500,13 +467,8 @@ func (client *ShareClient) CreateSnapshot(ctx context.Context, shareName string,
 }
 
 // createSnapshotCreateRequest creates the CreateSnapshot request.
-func (client *ShareClient) createSnapshotCreateRequest(ctx context.Context, shareName string, options *ShareClientCreateSnapshotOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) createSnapshotCreateRequest(ctx context.Context, options *ShareClientCreateSnapshotOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -563,11 +525,10 @@ func (client *ShareClient) createSnapshotHandleResponse(resp *http.Response) (Sh
 // contained within it are later deleted during garbage collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientDeleteOptions contains the optional parameters for the ShareClient.Delete method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *ShareClient) Delete(ctx context.Context, shareName string, options *ShareClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, shareName, options, leaseAccessConditions)
+func (client *ShareClient) Delete(ctx context.Context, options *ShareClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return ShareClientDeleteResponse{}, err
 	}
@@ -582,13 +543,8 @@ func (client *ShareClient) Delete(ctx context.Context, shareName string, options
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ShareClient) deleteCreateRequest(ctx context.Context, shareName string, options *ShareClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) deleteCreateRequest(ctx context.Context, options *ShareClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -634,11 +590,10 @@ func (client *ShareClient) deleteHandleResponse(resp *http.Response) (ShareClien
 // GetAccessPolicy - Returns information about stored access policies specified on the share.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientGetAccessPolicyOptions contains the optional parameters for the ShareClient.GetAccessPolicy method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *ShareClient) GetAccessPolicy(ctx context.Context, shareName string, options *ShareClientGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetAccessPolicyResponse, error) {
-	req, err := client.getAccessPolicyCreateRequest(ctx, shareName, options, leaseAccessConditions)
+func (client *ShareClient) GetAccessPolicy(ctx context.Context, options *ShareClientGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetAccessPolicyResponse, error) {
+	req, err := client.getAccessPolicyCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return ShareClientGetAccessPolicyResponse{}, err
 	}
@@ -653,13 +608,8 @@ func (client *ShareClient) GetAccessPolicy(ctx context.Context, shareName string
 }
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
-func (client *ShareClient) getAccessPolicyCreateRequest(ctx context.Context, shareName string, options *ShareClientGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) getAccessPolicyCreateRequest(ctx context.Context, options *ShareClientGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -713,11 +663,10 @@ func (client *ShareClient) getAccessPolicyHandleResponse(resp *http.Response) (S
 // GetPermission - Returns the permission (security descriptor) for a given key
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // filePermissionKey - Key of the permission to be set for the directory/file.
 // options - ShareClientGetPermissionOptions contains the optional parameters for the ShareClient.GetPermission method.
-func (client *ShareClient) GetPermission(ctx context.Context, shareName string, filePermissionKey string, options *ShareClientGetPermissionOptions) (ShareClientGetPermissionResponse, error) {
-	req, err := client.getPermissionCreateRequest(ctx, shareName, filePermissionKey, options)
+func (client *ShareClient) GetPermission(ctx context.Context, filePermissionKey string, options *ShareClientGetPermissionOptions) (ShareClientGetPermissionResponse, error) {
+	req, err := client.getPermissionCreateRequest(ctx, filePermissionKey, options)
 	if err != nil {
 		return ShareClientGetPermissionResponse{}, err
 	}
@@ -732,13 +681,8 @@ func (client *ShareClient) GetPermission(ctx context.Context, shareName string, 
 }
 
 // getPermissionCreateRequest creates the GetPermission request.
-func (client *ShareClient) getPermissionCreateRequest(ctx context.Context, shareName string, filePermissionKey string, options *ShareClientGetPermissionOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) getPermissionCreateRequest(ctx context.Context, filePermissionKey string, options *ShareClientGetPermissionOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -781,11 +725,10 @@ func (client *ShareClient) getPermissionHandleResponse(resp *http.Response) (Sha
 // data returned does not include the share's list of files.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientGetPropertiesOptions contains the optional parameters for the ShareClient.GetProperties method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *ShareClient) GetProperties(ctx context.Context, shareName string, options *ShareClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetPropertiesResponse, error) {
-	req, err := client.getPropertiesCreateRequest(ctx, shareName, options, leaseAccessConditions)
+func (client *ShareClient) GetProperties(ctx context.Context, options *ShareClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetPropertiesResponse, error) {
+	req, err := client.getPropertiesCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return ShareClientGetPropertiesResponse{}, err
 	}
@@ -800,13 +743,8 @@ func (client *ShareClient) GetProperties(ctx context.Context, shareName string, 
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *ShareClient) getPropertiesCreateRequest(ctx context.Context, shareName string, options *ShareClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) getPropertiesCreateRequest(ctx context.Context, options *ShareClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -934,11 +872,10 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 // GetStatistics - Retrieves statistics related to the share.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientGetStatisticsOptions contains the optional parameters for the ShareClient.GetStatistics method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *ShareClient) GetStatistics(ctx context.Context, shareName string, options *ShareClientGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetStatisticsResponse, error) {
-	req, err := client.getStatisticsCreateRequest(ctx, shareName, options, leaseAccessConditions)
+func (client *ShareClient) GetStatistics(ctx context.Context, options *ShareClientGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientGetStatisticsResponse, error) {
+	req, err := client.getStatisticsCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return ShareClientGetStatisticsResponse{}, err
 	}
@@ -953,13 +890,8 @@ func (client *ShareClient) GetStatistics(ctx context.Context, shareName string, 
 }
 
 // getStatisticsCreateRequest creates the GetStatistics request.
-func (client *ShareClient) getStatisticsCreateRequest(ctx context.Context, shareName string, options *ShareClientGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) getStatisticsCreateRequest(ctx context.Context, options *ShareClientGetStatisticsOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1014,11 +946,10 @@ func (client *ShareClient) getStatisticsHandleResponse(resp *http.Response) (Sha
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // leaseID - Specifies the current lease ID on the resource.
 // options - ShareClientReleaseLeaseOptions contains the optional parameters for the ShareClient.ReleaseLease method.
-func (client *ShareClient) ReleaseLease(ctx context.Context, shareName string, leaseID string, options *ShareClientReleaseLeaseOptions) (ShareClientReleaseLeaseResponse, error) {
-	req, err := client.releaseLeaseCreateRequest(ctx, shareName, leaseID, options)
+func (client *ShareClient) ReleaseLease(ctx context.Context, leaseID string, options *ShareClientReleaseLeaseOptions) (ShareClientReleaseLeaseResponse, error) {
+	req, err := client.releaseLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
 		return ShareClientReleaseLeaseResponse{}, err
 	}
@@ -1033,13 +964,8 @@ func (client *ShareClient) ReleaseLease(ctx context.Context, shareName string, l
 }
 
 // releaseLeaseCreateRequest creates the ReleaseLease request.
-func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, shareName string, leaseID string, options *ShareClientReleaseLeaseOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, leaseID string, options *ShareClientReleaseLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1099,11 +1025,10 @@ func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response) (Shar
 // delete share operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // leaseID - Specifies the current lease ID on the resource.
 // options - ShareClientRenewLeaseOptions contains the optional parameters for the ShareClient.RenewLease method.
-func (client *ShareClient) RenewLease(ctx context.Context, shareName string, leaseID string, options *ShareClientRenewLeaseOptions) (ShareClientRenewLeaseResponse, error) {
-	req, err := client.renewLeaseCreateRequest(ctx, shareName, leaseID, options)
+func (client *ShareClient) RenewLease(ctx context.Context, leaseID string, options *ShareClientRenewLeaseOptions) (ShareClientRenewLeaseResponse, error) {
+	req, err := client.renewLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
 		return ShareClientRenewLeaseResponse{}, err
 	}
@@ -1118,13 +1043,8 @@ func (client *ShareClient) RenewLease(ctx context.Context, shareName string, lea
 }
 
 // renewLeaseCreateRequest creates the RenewLease request.
-func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, shareName string, leaseID string, options *ShareClientRenewLeaseOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, leaseID string, options *ShareClientRenewLeaseOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1186,10 +1106,9 @@ func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response) (ShareC
 // Restore - Restores a previously deleted Share.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientRestoreOptions contains the optional parameters for the ShareClient.Restore method.
-func (client *ShareClient) Restore(ctx context.Context, shareName string, options *ShareClientRestoreOptions) (ShareClientRestoreResponse, error) {
-	req, err := client.restoreCreateRequest(ctx, shareName, options)
+func (client *ShareClient) Restore(ctx context.Context, options *ShareClientRestoreOptions) (ShareClientRestoreResponse, error) {
+	req, err := client.restoreCreateRequest(ctx, options)
 	if err != nil {
 		return ShareClientRestoreResponse{}, err
 	}
@@ -1204,13 +1123,8 @@ func (client *ShareClient) Restore(ctx context.Context, shareName string, option
 }
 
 // restoreCreateRequest creates the Restore request.
-func (client *ShareClient) restoreCreateRequest(ctx context.Context, shareName string, options *ShareClientRestoreOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *ShareClientRestoreOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1270,12 +1184,11 @@ func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClie
 // SetAccessPolicy - Sets a stored access policy for use with shared access signatures.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // shareACL - The ACL for the share.
 // options - ShareClientSetAccessPolicyOptions contains the optional parameters for the ShareClient.SetAccessPolicy method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *ShareClient) SetAccessPolicy(ctx context.Context, shareName string, shareACL []*SignedIdentifier, options *ShareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetAccessPolicyResponse, error) {
-	req, err := client.setAccessPolicyCreateRequest(ctx, shareName, shareACL, options, leaseAccessConditions)
+func (client *ShareClient) SetAccessPolicy(ctx context.Context, shareACL []*SignedIdentifier, options *ShareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetAccessPolicyResponse, error) {
+	req, err := client.setAccessPolicyCreateRequest(ctx, shareACL, options, leaseAccessConditions)
 	if err != nil {
 		return ShareClientSetAccessPolicyResponse{}, err
 	}
@@ -1290,13 +1203,8 @@ func (client *ShareClient) SetAccessPolicy(ctx context.Context, shareName string
 }
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
-func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, shareName string, shareACL []*SignedIdentifier, options *ShareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, shareACL []*SignedIdentifier, options *ShareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1351,11 +1259,10 @@ func (client *ShareClient) setAccessPolicyHandleResponse(resp *http.Response) (S
 // SetMetadata - Sets one or more user-defined name-value pairs for the specified share.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientSetMetadataOptions contains the optional parameters for the ShareClient.SetMetadata method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *ShareClient) SetMetadata(ctx context.Context, shareName string, options *ShareClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetMetadataResponse, error) {
-	req, err := client.setMetadataCreateRequest(ctx, shareName, options, leaseAccessConditions)
+func (client *ShareClient) SetMetadata(ctx context.Context, options *ShareClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetMetadataResponse, error) {
+	req, err := client.setMetadataCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return ShareClientSetMetadataResponse{}, err
 	}
@@ -1370,13 +1277,8 @@ func (client *ShareClient) SetMetadata(ctx context.Context, shareName string, op
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
-func (client *ShareClient) setMetadataCreateRequest(ctx context.Context, shareName string, options *ShareClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) setMetadataCreateRequest(ctx context.Context, options *ShareClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1432,11 +1334,10 @@ func (client *ShareClient) setMetadataHandleResponse(resp *http.Response) (Share
 // SetProperties - Sets properties for the specified share.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
 // options - ShareClientSetPropertiesOptions contains the optional parameters for the ShareClient.SetProperties method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *ShareClient) SetProperties(ctx context.Context, shareName string, options *ShareClientSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetPropertiesResponse, error) {
-	req, err := client.setPropertiesCreateRequest(ctx, shareName, options, leaseAccessConditions)
+func (client *ShareClient) SetProperties(ctx context.Context, options *ShareClientSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetPropertiesResponse, error) {
+	req, err := client.setPropertiesCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return ShareClientSetPropertiesResponse{}, err
 	}
@@ -1451,13 +1352,8 @@ func (client *ShareClient) SetProperties(ctx context.Context, shareName string, 
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, shareName string, options *ShareClientSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
-	urlPath := "/{shareName}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, options *ShareClientSetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}

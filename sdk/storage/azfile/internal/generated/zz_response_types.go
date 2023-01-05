@@ -26,16 +26,16 @@ type DirectoryClientCreateResponse struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -101,16 +101,16 @@ type DirectoryClientGetPropertiesResponse struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -196,16 +196,16 @@ type DirectoryClientSetPropertiesResponse struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -322,16 +322,16 @@ type FileClientCreateResponse struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -424,19 +424,19 @@ type FileClientDownloadResponse struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileContentMD5 contains the information returned from the x-ms-content-md5 header response.
 	FileContentMD5 []byte
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -541,16 +541,16 @@ type FileClientGetPropertiesResponse struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -657,16 +657,16 @@ type FileClientSetHTTPHeadersResponse struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string

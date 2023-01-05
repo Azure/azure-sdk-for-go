@@ -22,3 +22,48 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.43"
 ```
 
+### Don't include share name, directory, or file name in path - we have direct URIs.
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    for (const property in $)
+    {
+        if (property.includes('/{shareName}/{directory}/{fileName}'))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) { return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/ShareName") && false == param['$ref'].endsWith("#/parameters/DirectoryPath") && false == param['$ref'].endsWith("#/parameters/FilePath"))});
+        } 
+        else if (property.includes('/{shareName}/{directory}'))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) { return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/ShareName") && false == param['$ref'].endsWith("#/parameters/DirectoryPath"))});
+        }
+        else if (property.includes('/{shareName}'))
+        {
+            $[property]["parameters"] = $[property]["parameters"].filter(function(param) { return (typeof param['$ref'] === "undefined") || (false == param['$ref'].endsWith("#/parameters/ShareName"))});
+        }
+    }
+```
+
+### Use strings for dates in responses
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]..responses..headers["x-ms-file-last-write-time"]
+  transform: >
+    $.format = "str";
+- from: swagger-document
+  where: $["x-ms-paths"]..responses..headers["x-ms-file-change-time"]
+  transform: >
+    $.format = "str";
+- from: swagger-document
+  where: $["x-ms-paths"]..responses..headers["x-ms-file-creation-time"]
+  transform: >
+    $.format = "str";
+- from: swagger-document
+  where: $.parameters.FileChangeTime
+  transform: >
+    $.format = "str";
+```

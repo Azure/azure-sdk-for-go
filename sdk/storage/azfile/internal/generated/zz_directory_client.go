@@ -11,12 +11,10 @@ package generated
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -43,15 +41,13 @@ func NewDirectoryClient(endpoint string, pl runtime.Pipeline) *DirectoryClient {
 // Create - Creates a new directory under the specified share or parent directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
 // fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
 // for directory. ‘None’ can also be specified as default.
 // fileCreationTime - Creation time for the file/directory. Default value: Now.
 // fileLastWriteTime - Last write time for the file/directory. Default value: Now.
 // options - DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
-func (client *DirectoryClient) Create(ctx context.Context, shareName string, directory string, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, shareName, directory, fileAttributes, fileCreationTime, fileLastWriteTime, options)
+func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
 		return DirectoryClientCreateResponse{}, err
 	}
@@ -66,17 +62,8 @@ func (client *DirectoryClient) Create(ctx context.Context, shareName string, dir
 }
 
 // createCreateRequest creates the Create request.
-func (client *DirectoryClient) createCreateRequest(ctx context.Context, shareName string, directory string, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientCreateOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientCreateOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -145,25 +132,13 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryClientCreateResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryClientCreateResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryClientCreateResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -177,11 +152,9 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 // Delete - Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
 // options - DirectoryClientDeleteOptions contains the optional parameters for the DirectoryClient.Delete method.
-func (client *DirectoryClient) Delete(ctx context.Context, shareName string, directory string, options *DirectoryClientDeleteOptions) (DirectoryClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, shareName, directory, options)
+func (client *DirectoryClient) Delete(ctx context.Context, options *DirectoryClientDeleteOptions) (DirectoryClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, options)
 	if err != nil {
 		return DirectoryClientDeleteResponse{}, err
 	}
@@ -196,17 +169,8 @@ func (client *DirectoryClient) Delete(ctx context.Context, shareName string, dir
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DirectoryClient) deleteCreateRequest(ctx context.Context, shareName string, directory string, options *DirectoryClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *DirectoryClient) deleteCreateRequest(ctx context.Context, options *DirectoryClientDeleteOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -243,14 +207,12 @@ func (client *DirectoryClient) deleteHandleResponse(resp *http.Response) (Direct
 // ForceCloseHandles - Closes all handles open for given directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
 // handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
 // all handles.
 // options - DirectoryClientForceCloseHandlesOptions contains the optional parameters for the DirectoryClient.ForceCloseHandles
 // method.
-func (client *DirectoryClient) ForceCloseHandles(ctx context.Context, shareName string, directory string, handleID string, options *DirectoryClientForceCloseHandlesOptions) (DirectoryClientForceCloseHandlesResponse, error) {
-	req, err := client.forceCloseHandlesCreateRequest(ctx, shareName, directory, handleID, options)
+func (client *DirectoryClient) ForceCloseHandles(ctx context.Context, handleID string, options *DirectoryClientForceCloseHandlesOptions) (DirectoryClientForceCloseHandlesResponse, error) {
+	req, err := client.forceCloseHandlesCreateRequest(ctx, handleID, options)
 	if err != nil {
 		return DirectoryClientForceCloseHandlesResponse{}, err
 	}
@@ -265,17 +227,8 @@ func (client *DirectoryClient) ForceCloseHandles(ctx context.Context, shareName 
 }
 
 // forceCloseHandlesCreateRequest creates the ForceCloseHandles request.
-func (client *DirectoryClient) forceCloseHandlesCreateRequest(ctx context.Context, shareName string, directory string, handleID string, options *DirectoryClientForceCloseHandlesOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *DirectoryClient) forceCloseHandlesCreateRequest(ctx context.Context, handleID string, options *DirectoryClientForceCloseHandlesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -343,11 +296,9 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 // subdirectories.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
 // options - DirectoryClientGetPropertiesOptions contains the optional parameters for the DirectoryClient.GetProperties method.
-func (client *DirectoryClient) GetProperties(ctx context.Context, shareName string, directory string, options *DirectoryClientGetPropertiesOptions) (DirectoryClientGetPropertiesResponse, error) {
-	req, err := client.getPropertiesCreateRequest(ctx, shareName, directory, options)
+func (client *DirectoryClient) GetProperties(ctx context.Context, options *DirectoryClientGetPropertiesOptions) (DirectoryClientGetPropertiesResponse, error) {
+	req, err := client.getPropertiesCreateRequest(ctx, options)
 	if err != nil {
 		return DirectoryClientGetPropertiesResponse{}, err
 	}
@@ -362,17 +313,8 @@ func (client *DirectoryClient) GetProperties(ctx context.Context, shareName stri
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *DirectoryClient) getPropertiesCreateRequest(ctx context.Context, shareName string, directory string, options *DirectoryClientGetPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *DirectoryClient) getPropertiesCreateRequest(ctx context.Context, options *DirectoryClientGetPropertiesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -435,25 +377,13 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryClientGetPropertiesResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryClientGetPropertiesResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryClientGetPropertiesResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -471,11 +401,9 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 // It lists the contents only for a single level of the directory hierarchy.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
 // options - DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.ListFilesAndDirectoriesSegment
 // method.
-func (client *DirectoryClient) NewListFilesAndDirectoriesSegmentPager(shareName string, directory string, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) *runtime.Pager[DirectoryClientListFilesAndDirectoriesSegmentResponse] {
+func (client *DirectoryClient) NewListFilesAndDirectoriesSegmentPager(options *DirectoryClientListFilesAndDirectoriesSegmentOptions) *runtime.Pager[DirectoryClientListFilesAndDirectoriesSegmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DirectoryClientListFilesAndDirectoriesSegmentResponse]{
 		More: func(page DirectoryClientListFilesAndDirectoriesSegmentResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -484,7 +412,7 @@ func (client *DirectoryClient) NewListFilesAndDirectoriesSegmentPager(shareName 
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listFilesAndDirectoriesSegmentCreateRequest(ctx, shareName, directory, options)
+				req, err = client.listFilesAndDirectoriesSegmentCreateRequest(ctx, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
 			}
@@ -504,17 +432,8 @@ func (client *DirectoryClient) NewListFilesAndDirectoriesSegmentPager(shareName 
 }
 
 // listFilesAndDirectoriesSegmentCreateRequest creates the ListFilesAndDirectoriesSegment request.
-func (client *DirectoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx context.Context, shareName string, directory string, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *DirectoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx context.Context, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -576,11 +495,9 @@ func (client *DirectoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp
 // ListHandles - Lists handles for directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
 // options - DirectoryClientListHandlesOptions contains the optional parameters for the DirectoryClient.ListHandles method.
-func (client *DirectoryClient) ListHandles(ctx context.Context, shareName string, directory string, options *DirectoryClientListHandlesOptions) (DirectoryClientListHandlesResponse, error) {
-	req, err := client.listHandlesCreateRequest(ctx, shareName, directory, options)
+func (client *DirectoryClient) ListHandles(ctx context.Context, options *DirectoryClientListHandlesOptions) (DirectoryClientListHandlesResponse, error) {
+	req, err := client.listHandlesCreateRequest(ctx, options)
 	if err != nil {
 		return DirectoryClientListHandlesResponse{}, err
 	}
@@ -595,17 +512,8 @@ func (client *DirectoryClient) ListHandles(ctx context.Context, shareName string
 }
 
 // listHandlesCreateRequest creates the ListHandles request.
-func (client *DirectoryClient) listHandlesCreateRequest(ctx context.Context, shareName string, directory string, options *DirectoryClientListHandlesOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *DirectoryClient) listHandlesCreateRequest(ctx context.Context, options *DirectoryClientListHandlesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -660,11 +568,9 @@ func (client *DirectoryClient) listHandlesHandleResponse(resp *http.Response) (D
 // SetMetadata - Updates user defined metadata for the specified directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
 // options - DirectoryClientSetMetadataOptions contains the optional parameters for the DirectoryClient.SetMetadata method.
-func (client *DirectoryClient) SetMetadata(ctx context.Context, shareName string, directory string, options *DirectoryClientSetMetadataOptions) (DirectoryClientSetMetadataResponse, error) {
-	req, err := client.setMetadataCreateRequest(ctx, shareName, directory, options)
+func (client *DirectoryClient) SetMetadata(ctx context.Context, options *DirectoryClientSetMetadataOptions) (DirectoryClientSetMetadataResponse, error) {
+	req, err := client.setMetadataCreateRequest(ctx, options)
 	if err != nil {
 		return DirectoryClientSetMetadataResponse{}, err
 	}
@@ -679,17 +585,8 @@ func (client *DirectoryClient) SetMetadata(ctx context.Context, shareName string
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
-func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, shareName string, directory string, options *DirectoryClientSetMetadataOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, options *DirectoryClientSetMetadataOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -742,15 +639,13 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 // SetProperties - Sets properties on the directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// shareName - The name of the target share.
-// directory - The path of the target directory.
 // fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
 // for directory. ‘None’ can also be specified as default.
 // fileCreationTime - Creation time for the file/directory. Default value: Now.
 // fileLastWriteTime - Last write time for the file/directory. Default value: Now.
 // options - DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
-func (client *DirectoryClient) SetProperties(ctx context.Context, shareName string, directory string, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
-	req, err := client.setPropertiesCreateRequest(ctx, shareName, directory, fileAttributes, fileCreationTime, fileLastWriteTime, options)
+func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
+	req, err := client.setPropertiesCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
 		return DirectoryClientSetPropertiesResponse{}, err
 	}
@@ -765,17 +660,8 @@ func (client *DirectoryClient) SetProperties(ctx context.Context, shareName stri
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, shareName string, directory string, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientSetPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/{shareName}/{directory}"
-	if shareName == "" {
-		return nil, errors.New("parameter shareName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{shareName}", url.PathEscape(shareName))
-	if directory == "" {
-		return nil, errors.New("parameter directory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{directory}", url.PathEscape(directory))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientSetPropertiesOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -840,25 +726,13 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryClientSetPropertiesResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryClientSetPropertiesResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryClientSetPropertiesResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val

@@ -281,6 +281,22 @@ func (s *SharePropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartEl
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type ShareServiceProperties.
+func (s ShareServiceProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "StorageServiceProperties"
+	type alias ShareServiceProperties
+	aux := &struct {
+		*alias
+		Cors *[]*ShareCorsRule `xml:"Cors>CorsRule"`
+	}{
+		alias: (*alias)(&s),
+	}
+	if s.Cors != nil {
+		aux.Cors = &s.Cors
+	}
+	return e.EncodeElement(aux, start)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type StorageError.
 func (s StorageError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -306,21 +322,6 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// MarshalXML implements the xml.Marshaller interface for type StorageServiceProperties.
-func (s StorageServiceProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias StorageServiceProperties
-	aux := &struct {
-		*alias
-		Cors *[]*CorsRule `xml:"Cors>CorsRule"`
-	}{
-		alias: (*alias)(&s),
-	}
-	if s.Cors != nil {
-		aux.Cors = &s.Cors
-	}
-	return e.EncodeElement(aux, start)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

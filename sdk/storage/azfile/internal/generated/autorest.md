@@ -119,3 +119,53 @@ directive:
         "description": "This header is returned so that the client can check for message content integrity. The value of this header is computed by the File service; it is not necessarily the same value as may have been specified in the request headers."
     }
 ```
+
+### ShareServiceProperties, ShareMetrics, ShareCorsRule, and ShareRetentionPolicy
+
+``` yaml
+directive:
+- rename-model:
+    from: Metrics
+    to: ShareMetrics
+- rename-model:
+    from: CorsRule
+    to: ShareCorsRule
+- rename-model:
+    from: RetentionPolicy
+    to: ShareRetentionPolicy
+- rename-model:
+    from: StorageServiceProperties
+    to: ShareServiceProperties
+    
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.ShareMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
+    $.ShareServiceProperties.xml = {"name": "StorageServiceProperties"};
+    $.ShareCorsRule.xml = {"name": "CorsRule"};
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.StorageServiceProperties.name = "ShareServiceProperties";
+```
+
+### Rename FileHttpHeaders to ShareFileHTTPHeaders and remove file prefix from properties
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.FileCacheControl["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileCacheControl["x-ms-client-name"] = "cacheControl";
+    $.FileContentDisposition["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentDisposition["x-ms-client-name"] = "contentDisposition";
+    $.FileContentEncoding["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentEncoding["x-ms-client-name"] = "contentEncoding";
+    $.FileContentLanguage["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentLanguage["x-ms-client-name"] = "contentLanguage";
+    $.FileContentMD5["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentMD5["x-ms-client-name"] = "contentMd5";
+    $.FileContentType["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentType["x-ms-client-name"] = "contentType";
+```

@@ -350,10 +350,10 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 // fileCreationTime - Creation time for the file/directory. Default value: Now.
 // fileLastWriteTime - Last write time for the file/directory. Default value: Now.
 // options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
-// FileHTTPHeaders - FileHTTPHeaders contains a group of parameters for the FileClient.Create method.
+// ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, options, fileHTTPHeaders, leaseAccessConditions)
+func (client *FileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, options, shareFileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientCreateResponse{}, err
 	}
@@ -368,7 +368,7 @@ func (client *FileClient) Create(ctx context.Context, fileContentLength int64, f
 }
 
 // createCreateRequest creates the Create request.
-func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -381,23 +381,23 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	req.Raw().Header["x-ms-content-length"] = []string{strconv.FormatInt(fileContentLength, 10)}
 	req.Raw().Header["x-ms-type"] = []string{"file"}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentType != nil {
-		req.Raw().Header["x-ms-content-type"] = []string{*fileHTTPHeaders.FileContentType}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentType != nil {
+		req.Raw().Header["x-ms-content-type"] = []string{*shareFileHTTPHeaders.ContentType}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentEncoding != nil {
-		req.Raw().Header["x-ms-content-encoding"] = []string{*fileHTTPHeaders.FileContentEncoding}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentEncoding != nil {
+		req.Raw().Header["x-ms-content-encoding"] = []string{*shareFileHTTPHeaders.ContentEncoding}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentLanguage != nil {
-		req.Raw().Header["x-ms-content-language"] = []string{*fileHTTPHeaders.FileContentLanguage}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentLanguage != nil {
+		req.Raw().Header["x-ms-content-language"] = []string{*shareFileHTTPHeaders.ContentLanguage}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileCacheControl != nil {
-		req.Raw().Header["x-ms-cache-control"] = []string{*fileHTTPHeaders.FileCacheControl}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.CacheControl != nil {
+		req.Raw().Header["x-ms-cache-control"] = []string{*shareFileHTTPHeaders.CacheControl}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentMD5 != nil {
-		req.Raw().Header["x-ms-content-md5"] = []string{base64.StdEncoding.EncodeToString(fileHTTPHeaders.FileContentMD5)}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentMD5 != nil {
+		req.Raw().Header["x-ms-content-md5"] = []string{base64.StdEncoding.EncodeToString(shareFileHTTPHeaders.ContentMD5)}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentDisposition != nil {
-		req.Raw().Header["x-ms-content-disposition"] = []string{*fileHTTPHeaders.FileContentDisposition}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentDisposition != nil {
+		req.Raw().Header["x-ms-content-disposition"] = []string{*shareFileHTTPHeaders.ContentDisposition}
 	}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
@@ -1213,10 +1213,10 @@ func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileC
 // fileCreationTime - Creation time for the file/directory. Default value: Now.
 // fileLastWriteTime - Last write time for the file/directory. Default value: Now.
 // options - FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
-// FileHTTPHeaders - FileHTTPHeaders contains a group of parameters for the FileClient.Create method.
+// ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
-	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options, fileHTTPHeaders, leaseAccessConditions)
+func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
+	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options, shareFileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientSetHTTPHeadersResponse{}, err
 	}
@@ -1231,7 +1231,7 @@ func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes str
 }
 
 // setHTTPHeadersCreateRequest creates the SetHTTPHeaders request.
-func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1246,23 +1246,23 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 	if options != nil && options.FileContentLength != nil {
 		req.Raw().Header["x-ms-content-length"] = []string{strconv.FormatInt(*options.FileContentLength, 10)}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentType != nil {
-		req.Raw().Header["x-ms-content-type"] = []string{*fileHTTPHeaders.FileContentType}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentType != nil {
+		req.Raw().Header["x-ms-content-type"] = []string{*shareFileHTTPHeaders.ContentType}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentEncoding != nil {
-		req.Raw().Header["x-ms-content-encoding"] = []string{*fileHTTPHeaders.FileContentEncoding}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentEncoding != nil {
+		req.Raw().Header["x-ms-content-encoding"] = []string{*shareFileHTTPHeaders.ContentEncoding}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentLanguage != nil {
-		req.Raw().Header["x-ms-content-language"] = []string{*fileHTTPHeaders.FileContentLanguage}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentLanguage != nil {
+		req.Raw().Header["x-ms-content-language"] = []string{*shareFileHTTPHeaders.ContentLanguage}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileCacheControl != nil {
-		req.Raw().Header["x-ms-cache-control"] = []string{*fileHTTPHeaders.FileCacheControl}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.CacheControl != nil {
+		req.Raw().Header["x-ms-cache-control"] = []string{*shareFileHTTPHeaders.CacheControl}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentMD5 != nil {
-		req.Raw().Header["x-ms-content-md5"] = []string{base64.StdEncoding.EncodeToString(fileHTTPHeaders.FileContentMD5)}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentMD5 != nil {
+		req.Raw().Header["x-ms-content-md5"] = []string{base64.StdEncoding.EncodeToString(shareFileHTTPHeaders.ContentMD5)}
 	}
-	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentDisposition != nil {
-		req.Raw().Header["x-ms-content-disposition"] = []string{*fileHTTPHeaders.FileContentDisposition}
+	if shareFileHTTPHeaders != nil && shareFileHTTPHeaders.ContentDisposition != nil {
+		req.Raw().Header["x-ms-content-disposition"] = []string{*shareFileHTTPHeaders.ContentDisposition}
 	}
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}

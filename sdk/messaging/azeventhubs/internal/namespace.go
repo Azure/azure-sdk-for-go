@@ -279,6 +279,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
 	return nil
 }
 
+// negotiateClaimFn matches the signature for NegotiateClaim, and is used when we want to stub things out for tests.
 type negotiateClaimFn func(
 	ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider,
 	contextWithTimeoutFn contextWithTimeoutFn) error

@@ -24,6 +24,9 @@ const (
 )
 
 // NegotiateClaim attempts to put a token to the $cbs management endpoint to negotiate auth for the given audience
+//
+// contextWithTimeoutFn is intended to be context.WithTimeout in production code, but can be stubbed out when writing
+// unit tests to keep timeouts reasonable.
 func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
 	link, err := NewRPCLink(ctx, RPCLinkArgs{
 		Client:   conn,

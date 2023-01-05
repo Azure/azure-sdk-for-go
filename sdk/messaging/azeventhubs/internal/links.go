@@ -59,10 +59,11 @@ type Links[LinkT AMQPLink] struct {
 	managementLinkMu *sync.RWMutex
 	managementLink   *linkState[amqpwrap.RPCLink]
 
-	managementPath       string
-	newLinkFn            func(ctx context.Context, session amqpwrap.AMQPSession, partitionID string) (LinkT, error)
-	entityPathFn         func(partitionID string) string
-	contextWithTimeoutFn contextWithTimeoutFn
+	managementPath string
+	newLinkFn      func(ctx context.Context, session amqpwrap.AMQPSession, partitionID string) (LinkT, error)
+	entityPathFn   func(partitionID string) string
+
+	contextWithTimeoutFn contextWithTimeoutFn // stubbable version of context.WithTimeout
 }
 
 type NewLinksFn[LinkT AMQPLink] func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (LinkT, error)
@@ -524,4 +525,6 @@ func (ls *linkState[LinkT]) Close(ctx context.Context) error {
 
 const defaultCloseTimeout = time.Minute
 
+// contextWithTimeoutFn matches the signature for `context.WithTimeout` and is used when we want to
+// stub things out for tests.
 type contextWithTimeoutFn func(parent context.Context, timeout time.Duration) (context.Context, context.CancelFunc)

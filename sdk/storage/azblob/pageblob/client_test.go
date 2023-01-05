@@ -3981,6 +3981,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
 
 	_, err = pbClient.SetTags(context.Background(), testcommon.SpecialCharBlobTagsMap, nil)
 	_require.Nil(err)
+	time.Sleep(10 * time.Second)
 
 	resp, err := pbClient.CreateSnapshot(context.Background(), nil)
 	_require.Nil(err)

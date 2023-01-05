@@ -97,17 +97,17 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 
 		err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName())
 
-		if IsCancelError(err) {
-			azlog.Writef(exported.EventConn, "(%s) Link close was cancelled, connection will reset on next recovery", lwid.String())
-			// if we failed to close a link then something odd is going on with
-			// our connection or the user has cancelled. Let the next attempt to use
-			// the connection recover it.
-			return errConnResetNeeded
-		}
-
-		// we don't need to propagate this error - it'll just be the link detach error or whatever
-		// caused the link to detach (for instance, if the Event Hub itself has been Disabled).
 		if err != nil {
+			if IsCancelError(err) {
+				azlog.Writef(exported.EventConn, "(%s) Link close was cancelled, connection will reset on next recovery", lwid.String())
+				// if we failed to close a link then something odd is going on with
+				// our connection or the user has cancelled. Let the next attempt to use
+				// the connection recover it.
+				return errConnResetNeeded
+			}
+
+			// we don't need to propagate this error - it'll just be the link detach error or whatever
+			// caused the link to detach (for instance, if the Event Hub itself has been Disabled).
 			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link for link recovery: %s", lwid.String(), err)
 		}
 

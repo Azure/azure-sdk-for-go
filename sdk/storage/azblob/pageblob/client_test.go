@@ -3918,6 +3918,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestCreatePageBlobWithTags() {
 
 	_, err = pbClient.SetTags(context.Background(), testcommon.BasicBlobTagsMap, nil)
 	_require.Nil(err)
+	time.Sleep(10 * time.Second)
 	// _require.Equal(setTagResp.RawResponse.StatusCode, 204)
 
 	gpResp, err := pbClient.GetProperties(context.Background(), nil)

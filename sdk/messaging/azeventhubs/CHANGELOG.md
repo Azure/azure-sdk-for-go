@@ -1,10 +1,12 @@
 # Release History
 
-## 0.3.1 (2023-01-10)
+## 0.4.0 (2023-01-10)
 
 ### Bugs Fixed
 
 - User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
+- Connection recovery has been improved, removing some unnecessasry retries as well as adding a bound around 
+  some operations (Close) that could potentially block recovery for a long time. (PR#19683)
 
 ## 0.3.0 (2022-11-10)
 

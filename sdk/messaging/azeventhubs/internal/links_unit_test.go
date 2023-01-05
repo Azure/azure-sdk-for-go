@@ -10,6 +10,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/mock"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -120,56 +122,130 @@ func TestLinks_LinkRecoveryOnly(t *testing.T) {
 }
 
 func TestLinks_ConnectionRecovery(t *testing.T) {
-	recoverClientCalled := 0
+	ctrl := gomock.NewController(t)
+	ns := mock.NewMockNamespaceForAMQPLinks(ctrl)
+	receiver := mock.NewMockAMQPReceiverCloser(ctrl)
+	session := mock.NewMockAMQPSession(ctrl)
 
-	fakeNS := &FakeNSForPartClient{
-		RecoverFn: func(ctx context.Context, clientRevision uint64) error {
-			// we'll just always recover for our test.
-			recoverClientCalled++
-			return nil
-		},
-	}
+	negotiateClaimCtx, cancelNegotiateClaim := context.WithCancel(context.Background())
 
-	var nextID int
-	var receivers []*FakeAMQPReceiver
+	ns.EXPECT().NegotiateClaim(mock.NotCancelled, gomock.Any()).Return(cancelNegotiateClaim, negotiateClaimCtx.Done(), nil)
+	ns.EXPECT().NewAMQPSession(mock.NotCancelled).Return(session, uint64(1), nil)
 
-	links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
+	receiver.EXPECT().LinkName().Return("link1").AnyTimes()
+
+	links := NewLinks(ns, "managementPath", func(partitionID string) string {
 		return fmt.Sprintf("part:%s", partitionID)
-	},
-		func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (*FakeAMQPReceiver, error) {
-			nextID++
-			receivers = append(receivers, &FakeAMQPReceiver{
-				NameForLink: fmt.Sprintf("Link%d", nextID),
-			})
-			return receivers[len(receivers)-1], nil
-		})
+	}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (amqpwrap.AMQPReceiverCloser, error) {
+		return receiver, nil
+	})
+
+	require.NotNil(t, links.contextWithTimeoutFn, "sanity check, we are setting the context.WithTimeout func")
+	links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
 
 	lwid, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)
-	require.NotNil(t, lwid)
-	require.NotNil(t, links.links["0"], "cache contains the newly created link for partition 0")
+	require.NotNil(t, links.links["0"])
+	require.Equal(t, 1, len(links.links))
 
-	require.Equal(t, recoverClientCalled, 0)
+	// if the connection has closed in response to an error then it'll propagate it's error to
+	// the children, including receivers. Which means closing the receiver here will _also_ return
+	// a connection error.
+	receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).Return(&amqp.ConnectionError{})
 
+	ns.EXPECT().Recover(mock.NotCancelledAndHasTimeout, gomock.Any()).Return(nil)
+
+	// initiate a connection level recovery
 	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.ConnectionError{})
 	require.NoError(t, err)
-	require.Nil(t, links.links["0"], "cache will no longer a link for partition 0")
 
-	require.Equal(t, recoverClientCalled, 1, "client was recovered")
+	// we still cleanup what we can (including cancelling our background negotiate claim loop)
+	require.ErrorIs(t, context.Canceled, negotiateClaimCtx.Err())
+	require.Empty(t, links.links, "link is removed")
+}
 
-	// no new links are create - we'll need to do something that requires a link
-	// to cause it to come back.
-	require.Equal(t, 1, len(receivers))
-	require.Equal(t, 1, receivers[0].CloseCalled)
+func TestLinks_closeWithTimeout(t *testing.T) {
+	for _, errToReturn := range []error{context.DeadlineExceeded, context.Canceled} {
+		t.Run(fmt.Sprintf("Close() cancels with error %v", errToReturn), func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			ns := mock.NewMockNamespaceForAMQPLinks(ctrl)
+			receiver := mock.NewMockAMQPReceiverCloser(ctrl)
+			session := mock.NewMockAMQPSession(ctrl)
 
-	// cause a new link to get created to replace the old one.
-	receivers = nil
+			negotiateClaimCtx, cancelNegotiateClaim := context.WithCancel(context.Background())
 
-	newLWID, err := links.GetLink(context.Background(), "0")
+			ns.EXPECT().NegotiateClaim(mock.NotCancelled, gomock.Any()).Return(cancelNegotiateClaim, negotiateClaimCtx.Done(), nil)
+			ns.EXPECT().NewAMQPSession(mock.NotCancelled).Return(session, uint64(1), nil)
+
+			receiver.EXPECT().LinkName().Return("link1").AnyTimes()
+
+			links := NewLinks(ns, "managementPath", func(partitionID string) string {
+				return fmt.Sprintf("part:%s", partitionID)
+			}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (amqpwrap.AMQPReceiverCloser, error) {
+				return receiver, nil
+			})
+
+			require.NotNil(t, links.contextWithTimeoutFn, "sanity check, we are setting the context.WithTimeout func")
+			links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
+
+			lwid, err := links.GetLink(context.Background(), "0")
+			require.NoError(t, err)
+
+			// now set ourselves up so Close() is "slow" and we end up timing out, or
+			// the user "cancels"
+			receiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).DoAndReturn(func(ctx context.Context) error {
+				<-ctx.Done()
+				return errToReturn
+			})
+
+			// purposefully recover with what should be a link level recovery. However, the Close() failing
+			// means we end up "upgrading" to a connection reset instead.
+			err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.DetachError{})
+			require.ErrorIs(t, err, errConnResetNeeded)
+
+			// the error that comes back when the link times out being closed can only
+			// be fixed by a connection reset.
+			require.Equal(t, RecoveryKindConn, GetRecoveryKind(errConnResetNeeded))
+
+			// we still cleanup what we can (including cancelling our background negotiate claim loop)
+			require.ErrorIs(t, context.Canceled, negotiateClaimCtx.Err())
+		})
+	}
+}
+
+func TestLinks_linkRecoveryOnly(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	fakeNS := mock.NewMockNamespaceForAMQPLinks(ctrl)
+	fakeReceiver := mock.NewMockAMQPReceiverCloser(ctrl)
+	session := mock.NewMockAMQPSession(ctrl)
+
+	negotiateClaimCtx, cancelNegotiateClaim := context.WithCancel(context.Background())
+
+	fakeNS.EXPECT().NegotiateClaim(mock.NotCancelled, gomock.Any()).Return(
+		cancelNegotiateClaim, negotiateClaimCtx.Done(), nil,
+	)
+	fakeNS.EXPECT().NewAMQPSession(mock.NotCancelled).Return(session, uint64(1), nil)
+
+	fakeReceiver.EXPECT().LinkName().Return("link1").AnyTimes()
+
+	// super important that when we close we're given a context that properly times out.
+	// (in this test the Close(ctx) call doesn't time out)
+	fakeReceiver.EXPECT().Close(mock.NotCancelledAndHasTimeout).Return(nil)
+
+	links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
+		return fmt.Sprintf("part:%s", partitionID)
+	}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (amqpwrap.AMQPReceiverCloser, error) {
+		return fakeReceiver, nil
+	})
+
+	links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
+
+	lwid, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)
-	require.NotEqual(t, lwid, newLWID, "new link gets a new ID")
-	require.NotNil(t, links.links["0"], "cache contains the newly created link for partition 0")
 
-	require.Equal(t, 1, len(receivers))
-	require.Equal(t, 0, receivers[0].CloseCalled)
+	err = links.RecoverIfNeeded(context.Background(), "0", lwid, &amqp.DetachError{})
+	require.NoError(t, err)
+
+	// we still cleanup what we can (including cancelling our background negotiate claim loop)
+	require.ErrorIs(t, context.Canceled, negotiateClaimCtx.Err())
 }

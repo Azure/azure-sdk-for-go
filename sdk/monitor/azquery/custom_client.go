@@ -110,89 +110,20 @@ func (e *ErrorInfo) Error() string {
 // Row of data in a table, types of data used by service specified in LogsColumnType
 type Row []any
 
-type ISO8601Duration string
+// ISO8601TimeInterval specifies the time range over which to query
+// Use NewISO8601TimeInterval() for help formating.
+// Follows the ISO8601 time interval standard with most common format being startISOTime/endISOTime
+// Use UTC for all times
+type ISO8601TimeInterval string
 
-// Common ISO8601 durations
-// NEED TO RENAME
-const (
-	SevenDays        ISO8601Duration = "P7D"
-	ThreeDays        ISO8601Duration = "P3D"
-	TwoDays          ISO8601Duration = "P2D"
-	OneDay           ISO8601Duration = "P1D"
-	OneHour          ISO8601Duration = "PT1H"
-	FourHours        ISO8601Duration = "PT4H"
-	TwentyFourHours  ISO8601Duration = "PT24H"
-	FourtyEightHours ISO8601Duration = "PT48H"
-	ThirtyMinutes    ISO8601Duration = "PT30M"
-	FiveMinutes      ISO8601Duration = "PT5M"
-)
-
-// Don't use this type directly, use NewISO8601TimeIntervalFromStartEnd() instead.
-type ISO8601TimeInterval struct {
-	start    time.Time
-	end      time.Time
-	duration ISO8601Duration
-}
-
-func (i ISO8601TimeInterval) String() string {
-	var timespan string
-	if !i.start.IsZero() && !i.end.IsZero() {
-		timespan = i.start.Format(time.RFC3339) + "/" + i.end.Format(time.RFC3339)
-	} else if !i.start.IsZero() && i.duration != "" {
-		timespan = i.start.Format(time.RFC3339) + "/" + string(i.duration)
-	} else if i.duration != "" && !i.end.IsZero() {
-		timespan = string(i.duration) + "/" + i.end.Format(time.RFC3339)
-	} else if i.duration != "" {
-		timespan = string(i.duration)
-	}
-
-	return timespan
-}
-
-func NewISO8601TimeIntervalFromStartEnd(start time.Time, end time.Time) (*ISO8601TimeInterval, error) {
-	if start.IsZero() {
-		return nil, errors.New("start time is zero")
-	}
-	if end.IsZero() {
-		return nil, errors.New("end time is zero")
-	}
+// NewISO8601TimeInterval creates a ISO8601TimeInterval for use in a query.
+// Use UTC for start and end times.
+// Start time must be before end time.
+func NewISO8601TimeInterval(start time.Time, end time.Time) (*ISO8601TimeInterval, error) {
 	if end.Before(start) {
 		return nil, errors.New("end time occurs before start time")
 	}
+	timespan := ISO8601TimeInterval(start.Format(time.RFC3339) + "/" + end.Format(time.RFC3339))
 
-	return &ISO8601TimeInterval{start: start, end: end}, nil
-}
-
-// Timespan in the format start_time/duration
-func NewISO8601TimeIntervalFromStartDuration(start time.Time, duration ISO8601Duration) (*ISO8601TimeInterval, error) {
-	if start.IsZero() {
-		return nil, errors.New("start time is zero")
-	}
-	if duration == "" {
-		return nil, errors.New("duration string is empty")
-	}
-	return &ISO8601TimeInterval{start: start, duration: duration}, nil
-}
-
-func NewISO8601TimeIntervalFromDurationEnd(duration ISO8601Duration, end time.Time) (*ISO8601TimeInterval, error) {
-	if duration == "" {
-		return nil, errors.New("duration string is empty")
-	}
-	if end.IsZero() {
-		return nil, errors.New("end time is zero")
-	}
-	return &ISO8601TimeInterval{duration: duration, end: end}, nil
-}
-
-// NewISO8601TimeIntervalFromDuration creates a ISO8601TimeInterval used to specify the timespan for a logs query
-// Uses
-func NewISO8601TimeIntervalFromDuration(duration ISO8601Duration) (*ISO8601TimeInterval, error) {
-	if duration == "" {
-		return nil, errors.New("duration string is empty")
-	}
-	return &ISO8601TimeInterval{duration: duration}, nil
-}
-
-func (i ISO8601TimeInterval) MarshalJSON() ([]byte, error) {
-	return json.Marshal(i.String())
+	return &timespan, nil
 }

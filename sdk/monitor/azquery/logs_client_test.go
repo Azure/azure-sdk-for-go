@@ -11,6 +11,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
@@ -24,42 +26,7 @@ type queryTest struct {
 	String string
 }
 
-func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
-	client := startLogsTest(t)
-	timespan, err := azquery.NewISO8601TimeIntervalFromStartEnd(time.Date(2022, 11, 17, 0, 0, 0, 0, time.UTC), time.Date(2022, 11, 18, 0, 0, 0, 0, time.UTC))
-	require.NoError(t, err)
-
-	res, err := client.QueryWorkspace(context.Background(),
-		workspaceID2,
-		azquery.Body{
-			Query:    to.Ptr(query),
-			Timespan: timespan,
-		},
-		nil)
-	require.Error(t, err)
-	_ = res
-
-}
-
-/*func TestTimeInterval(t *testing.T) {
-	start := time.Date(2022, 11, 17, 0, 0, 0, 0, time.UTC)
-	end := time.Date(2022, 11, 18, 0, 0, 0, 0, time.UTC)
-	duration := azquery.OneHour
-
-	startEnd := azquery.NewISO8601TimeIntervalFromStartEnd(start, end)
-	require.Equal(t, startEnd.String(), "2022-11-17T00:00:00Z/2022-11-18T00:00:00Z")
-
-	startDuration := azquery.NewISO8601TimeIntervalFromStartDuration(start, duration)
-	require.Equal(t, startDuration.String(), "2022-11-17T00:00:00Z/PT1H")
-
-	durationEnd := azquery.NewISO8601TimeIntervalFromDurationEnd(duration, end)
-	require.Equal(t, durationEnd.String(), "PT1H/2022-11-18T00:00:00Z")
-
-	durationTimespan := azquery.NewISO8601TimeIntervalFromDuration(duration)
-	require.Equal(t, durationTimespan.String(), "PT1H")
-}*/
-
-/*func TestLogsClient(t *testing.T) {
+func TestLogsClient(t *testing.T) {
 	client, err := azquery.NewLogsClient(credential, nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
@@ -82,9 +49,11 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
+	timespan, err := azquery.NewISO8601TimeInterval(time.Date(2022, 12, 1, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 2, 0, 0, 0, 0, time.UTC))
+	require.NoError(t, err)
 	body := azquery.Body{
 		Query:    to.Ptr(query),
-		Timespan: to.Ptr("2015-12-31/2016-01-01"),
+		Timespan: timespan,
 	}
 	testSerde(t, &body)
 
@@ -120,7 +89,15 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
 	client := startLogsTest(t)
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: to.Ptr("not a valid query")}, nil)
+	res, err := client.QueryWorkspace(
+		context.Background(),
+		workspaceID,
+		azquery.Body{
+			Query:    to.Ptr("not a valid query"),
+			Timespan: to.Ptr(azquery.ISO8601TimeInterval("PT2H")),
+		},
+		nil,
+	)
 	require.Error(t, err)
 	require.Nil(t, res.Error)
 	require.Nil(t, res.Tables)
@@ -178,10 +155,12 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 func TestQueryBatch_QuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
 	query1, query2 := query, query+" | take 2"
+	timespan, err := azquery.NewISO8601TimeInterval(time.Now(), time.Now().Add(-time.Hour))
+	require.NoError(t, err)
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(query1)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(query2)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query1), Timespan: timespan}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query2), Timespan: timespan}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
 	}}
 	testSerde(t, &batchRequest)
 
@@ -281,4 +260,4 @@ func TestLogConstants(t *testing.T) {
 	logsColumnType := []azquery.LogsColumnType{azquery.LogsColumnTypeBool, azquery.LogsColumnTypeDatetime, azquery.LogsColumnTypeDecimal, azquery.LogsColumnTypeDynamic, azquery.LogsColumnTypeGUID, azquery.LogsColumnTypeInt, azquery.LogsColumnTypeLong, azquery.LogsColumnTypeReal, azquery.LogsColumnTypeString, azquery.LogsColumnTypeTimespan}
 	logsColumnTypeRes := azquery.PossibleLogsColumnTypeValues()
 	require.Equal(t, logsColumnType, logsColumnTypeRes)
-}*/
+}

@@ -167,3 +167,8 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/err(.*)b\.Visualization\)/, "b.Visualization = val");
+
+  # change type of timespan from *string to *ISO8601TimeInterval
+  - from: models.go
+    where: $
+    transform: return $.replace(/Timespan \*string/, "Timespan *ISO8601TimeInterval");

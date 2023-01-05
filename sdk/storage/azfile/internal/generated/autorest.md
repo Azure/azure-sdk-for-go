@@ -67,3 +67,55 @@ directive:
   transform: >
     $.format = "str";
 ```
+
+### Change new SMB file parameters to use default values
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FileCreationTime
+  transform: >
+    $.format = "str";
+    $.default = "now";
+- from: swagger-document
+  where: $.parameters.FileLastWriteTime
+  transform: >
+    $.format = "str";
+    $.default = "now";
+- from: swagger-document
+  where: $.parameters.FileAttributes
+  transform: >
+    $.default = "none";
+- from: swagger-document
+  where: $.parameters.FilePermission
+  transform: >
+    $.default = "inherit";
+```
+
+### Add Last-Modified to SetMetadata
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}/{directory}/{fileName}?comp=metadata"]
+  transform: >
+    $.put.responses["200"].headers["Last-Modified"] = {
+        "type": "string",
+        "format": "date-time-rfc1123",
+        "description": "Returns the date and time the file was last modified. Any operation that modifies the file, including an update of the file's metadata or properties, changes the last-modified time of the file."
+    }
+```
+
+### Add Content-MD5 to Put Range from URL
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}/{directory}/{fileName}?comp=range&fromURL"]
+  transform: >
+    $.put.responses["201"].headers["Content-MD5"] = {
+        "type": "string",
+        "format": "byte",
+        "description": "This header is returned so that the client can check for message content integrity. The value of this header is computed by the File service; it is not necessarily the same value as may have been specified in the request headers."
+    }
+```

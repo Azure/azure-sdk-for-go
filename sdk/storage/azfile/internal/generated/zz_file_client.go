@@ -352,7 +352,7 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 // options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 // FileHTTPHeaders - FileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
+func (client *FileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, options, fileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientCreateResponse{}, err
@@ -368,7 +368,7 @@ func (client *FileClient) Create(ctx context.Context, fileContentLength int64, f
 }
 
 // createCreateRequest creates the Create request.
-func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -411,8 +411,8 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
 	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
-	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime.Format(time.RFC1123)}
-	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime.Format(time.RFC1123)}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1215,7 +1215,7 @@ func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileC
 // options - FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
 // FileHTTPHeaders - FileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
+func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
 	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options, fileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientSetHTTPHeadersResponse{}, err
@@ -1231,7 +1231,7 @@ func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes str
 }
 
 // setHTTPHeadersCreateRequest creates the SetHTTPHeaders request.
-func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1271,8 +1271,8 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
 	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
-	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime.Format(time.RFC1123)}
-	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime.Format(time.RFC1123)}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1407,6 +1407,13 @@ func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileCl
 			return FileClientSetMetadataResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientSetMetadataResponse{}, err
+		}
+		result.LastModified = &lastModified
 	}
 	return result, nil
 }
@@ -1733,6 +1740,13 @@ func (client *FileClient) uploadRangeFromURLHandleResponse(resp *http.Response) 
 			return FileClientUploadRangeFromURLResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
+	}
+	if val := resp.Header.Get("Content-MD5"); val != "" {
+		contentMD5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return FileClientUploadRangeFromURLResponse{}, err
+		}
+		result.ContentMD5 = contentMD5
 	}
 	return result, nil
 }

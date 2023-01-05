@@ -698,6 +698,9 @@ type FileClientSetMetadataResponse struct {
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -731,6 +734,9 @@ type FileClientStartCopyResponse struct {
 
 // FileClientUploadRangeFromURLResponse contains the response from method FileClient.UploadRangeFromURL.
 type FileClientUploadRangeFromURLResponse struct {
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
+	ContentMD5 []byte
+
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 

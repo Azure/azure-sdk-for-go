@@ -2788,7 +2788,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	}
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
+func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2818,6 +2818,11 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
 	_, err = blobClient2.SetTags(context.Background(), blobTagsMap2, nil)
 	_require.Nil(err)
 
+	blobTagsResp, err := blobClient2.GetTags(context.Background(), nil)
+	_require.Nil(err)
+	blobTagsSet := blobTagsResp.BlobTagSet
+	_require.NotNil(blobTagsSet)
+
 	// Test invalid tag
 	where := "\"tag4\"='fourthtag'"
 	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
@@ -2829,17 +2834,16 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
 	// where := "foo=\"value 1\""
 	lResp, err = svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
 	_require.Nil(err)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "tag1")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "firsttag")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1].Key, "tag2")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1].Value, "secondtag")
+	_require.Equal(len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet), 2)
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[1])
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1], blobTagsSet[2])
 
 	// Test tags with spaces
 	where = "\"tag key\"='tag value'"
 	lResp, err = svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
 	_require.Nil(err)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "tag key")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "tag value")
+	_require.Equal(len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet), 1)
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
 
 }
 

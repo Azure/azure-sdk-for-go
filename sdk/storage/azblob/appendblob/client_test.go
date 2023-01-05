@@ -1540,8 +1540,8 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 		Where: &where,
 	})
 	_require.Nil(err)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "GO ")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, ".Net")
+	_require.Equal(len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet), 1)
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[2])
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlobGetPropertiesUsingVID() {

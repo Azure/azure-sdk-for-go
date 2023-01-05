@@ -327,7 +327,7 @@ func (l *Links[LinkT]) newLinkState(ctx context.Context, partitionID string) (*l
 
 	if err != nil {
 		azlog.Writef(exported.EventConn, "(%s): Failed to create AMQP session for partition ID '%s': %s", ls.String(), partitionID, err)
-		err = ls.Close(ctx)
+		_ = ls.Close(ctx)
 		return nil, err
 	}
 

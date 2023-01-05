@@ -124,7 +124,7 @@ func TestRequestEmptyBody(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, req.SetBody(NopCloser(strings.NewReader("")), "application/text"))
 	require.Nil(t, req.Body())
-	require.Equal(t, []string{"0"}, req.Raw().Header[shared.HeaderContentLength])
+	require.NotContains(t, req.Raw().Header, shared.HeaderContentLength)
 	require.Equal(t, []string{"application/text"}, req.Raw().Header[shared.HeaderContentType])
 
 	// SetBody should treat a nil ReadSeekCloser the same as one having no content
@@ -132,6 +132,7 @@ func TestRequestEmptyBody(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, req.SetBody(nil, ""))
 	require.Nil(t, req.Body())
+	require.NotContains(t, req.Raw().Header, shared.HeaderContentLength)
 
 	// SetBody should allow replacing a previously set body with an empty one
 	req, err = NewRequest(context.Background(), http.MethodPost, testURL)
@@ -139,7 +140,7 @@ func TestRequestEmptyBody(t *testing.T) {
 	require.NoError(t, req.SetBody(NopCloser(strings.NewReader("content")), "application/text"))
 	require.NoError(t, req.SetBody(nil, "application/json"))
 	require.Nil(t, req.Body())
-	require.Equal(t, []string{"0"}, req.Raw().Header[shared.HeaderContentLength])
+	require.NotContains(t, req.Raw().Header, shared.HeaderContentLength)
 	require.Equal(t, []string{"application/json"}, req.Raw().Header[shared.HeaderContentType])
 }
 

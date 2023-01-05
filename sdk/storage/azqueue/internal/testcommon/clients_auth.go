@@ -110,3 +110,7 @@ func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountT
 	svcClient, err := service.NewClientFromConnectionString(connectionString, options)
 	return svcClient, err
 }
+
+// TODO: GetQueueClient()
+// TODO: CreateNewQueue()
+// TODO: DeleteQueue()

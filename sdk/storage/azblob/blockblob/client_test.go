@@ -2817,6 +2817,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 	blobClient2 := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName2, containerClient)
 	_, err = blobClient2.SetTags(context.Background(), blobTagsMap2, nil)
 	_require.Nil(err)
+	time.Sleep(10 * time.Second)
 
 	blobTagsResp, err := blobClient2.GetTags(context.Background(), nil)
 	_require.Nil(err)

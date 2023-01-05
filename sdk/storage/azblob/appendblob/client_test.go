@@ -1502,6 +1502,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
 	_require.NotNil(createResp.VersionID)
+	time.Sleep(10 * time.Second)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)

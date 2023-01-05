@@ -26,7 +26,7 @@ import (
 // Don't use this type directly, use NewDirectoryClient() instead.
 type DirectoryClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewDirectoryClient creates a new instance of DirectoryClient with the specified values.
@@ -35,7 +35,7 @@ type DirectoryClient struct {
 func NewDirectoryClient(endpoint string, pl runtime.Pipeline) *DirectoryClient {
 	client := &DirectoryClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -475,7 +475,7 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 // directory - The path of the target directory.
 // options - DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.ListFilesAndDirectoriesSegment
 // method.
-func (client *DirectoryClient) NewListFilesAndDirectoriesSegmentPager(shareName string, directory string, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) (*runtime.Pager[DirectoryClientListFilesAndDirectoriesSegmentResponse]) {
+func (client *DirectoryClient) NewListFilesAndDirectoriesSegmentPager(shareName string, directory string, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) *runtime.Pager[DirectoryClientListFilesAndDirectoriesSegmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DirectoryClientListFilesAndDirectoriesSegmentResponse]{
 		More: func(page DirectoryClientListFilesAndDirectoriesSegmentResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -868,4 +868,3 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
-

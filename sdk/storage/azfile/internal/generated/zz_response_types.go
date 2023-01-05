@@ -1017,7 +1017,7 @@ type ShareClientGetPropertiesResponse struct {
 	Metadata map[string]string
 
 	// NextAllowedQuotaDowngradeTime contains the information returned from the x-ms-share-next-allowed-quota-downgrade-time header
-// response.
+	// response.
 	NextAllowedQuotaDowngradeTime *time.Time
 
 	// ProvisionedEgressMBps contains the information returned from the x-ms-share-provisioned-egress-mbps header response.
@@ -1180,4 +1180,3 @@ type ShareClientSetPropertiesResponse struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
-

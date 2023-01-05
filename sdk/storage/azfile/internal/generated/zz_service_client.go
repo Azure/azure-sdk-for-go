@@ -23,7 +23,7 @@ import (
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
@@ -32,7 +32,7 @@ type ServiceClient struct {
 func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 	client := &ServiceClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -96,7 +96,7 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // Generated from API version 2020-10-02
 // options - ServiceClientListSharesSegmentOptions contains the optional parameters for the ServiceClient.ListSharesSegment
 // method.
-func (client *ServiceClient) NewListSharesSegmentPager(options *ServiceClientListSharesSegmentOptions) (*runtime.Pager[ServiceClientListSharesSegmentResponse]) {
+func (client *ServiceClient) NewListSharesSegmentPager(options *ServiceClientListSharesSegmentOptions) *runtime.Pager[ServiceClientListSharesSegmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ServiceClientListSharesSegmentResponse]{
 		More: func(page ServiceClientListSharesSegmentResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -218,4 +218,3 @@ func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (S
 	}
 	return result, nil
 }
-

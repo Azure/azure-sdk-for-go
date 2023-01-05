@@ -27,7 +27,7 @@ import (
 // Don't use this type directly, use NewFileClient() instead.
 type FileClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewFileClient creates a new instance of FileClient with the specified values.
@@ -36,7 +36,7 @@ type FileClient struct {
 func NewFileClient(endpoint string, pl runtime.Pipeline) *FileClient {
 	client := &FileClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -2058,4 +2058,3 @@ func (client *FileClient) uploadRangeFromURLHandleResponse(resp *http.Response) 
 	}
 	return result, nil
 }
-

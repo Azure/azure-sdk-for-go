@@ -26,7 +26,7 @@ import (
 // Don't use this type directly, use NewShareClient() instead.
 type ShareClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewShareClient creates a new instance of ShareClient with the specified values.
@@ -35,7 +35,7 @@ type ShareClient struct {
 func NewShareClient(endpoint string, pl runtime.Pipeline) *ShareClient {
 	client := &ShareClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -1313,7 +1313,7 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		ShareACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	return req, runtime.MarshalAsXML(req, wrapper{ShareACL: &shareACL})
@@ -1513,4 +1513,3 @@ func (client *ShareClient) setPropertiesHandleResponse(resp *http.Response) (Sha
 	}
 	return result, nil
 }
-

@@ -24,11 +24,11 @@ func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start *timeRFC3339 `xml:"Start"`
+		Start  *timeRFC3339 `xml:"Start"`
 	}{
-		alias: (*alias)(&a),
+		alias:  (*alias)(&a),
 		Expiry: (*timeRFC3339)(a.Expiry),
-		Start: (*timeRFC3339)(a.Start),
+		Start:  (*timeRFC3339)(a.Start),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -39,7 +39,7 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start *timeRFC3339 `xml:"Start"`
+		Start  *timeRFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
@@ -56,18 +56,18 @@ func (f FileProperty) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	type alias FileProperty
 	aux := &struct {
 		*alias
-		ChangeTime *timeRFC3339 `xml:"ChangeTime"`
-		CreationTime *timeRFC3339 `xml:"CreationTime"`
+		ChangeTime     *timeRFC3339 `xml:"ChangeTime"`
+		CreationTime   *timeRFC3339 `xml:"CreationTime"`
 		LastAccessTime *timeRFC3339 `xml:"LastAccessTime"`
-		LastModified *timeRFC1123 `xml:"Last-Modified"`
-		LastWriteTime *timeRFC3339 `xml:"LastWriteTime"`
+		LastModified   *timeRFC1123 `xml:"Last-Modified"`
+		LastWriteTime  *timeRFC3339 `xml:"LastWriteTime"`
 	}{
-		alias: (*alias)(&f),
-		ChangeTime: (*timeRFC3339)(f.ChangeTime),
-		CreationTime: (*timeRFC3339)(f.CreationTime),
+		alias:          (*alias)(&f),
+		ChangeTime:     (*timeRFC3339)(f.ChangeTime),
+		CreationTime:   (*timeRFC3339)(f.CreationTime),
 		LastAccessTime: (*timeRFC3339)(f.LastAccessTime),
-		LastModified: (*timeRFC1123)(f.LastModified),
-		LastWriteTime: (*timeRFC3339)(f.LastWriteTime),
+		LastModified:   (*timeRFC1123)(f.LastModified),
+		LastWriteTime:  (*timeRFC3339)(f.LastWriteTime),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -77,11 +77,11 @@ func (f *FileProperty) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	type alias FileProperty
 	aux := &struct {
 		*alias
-		ChangeTime *timeRFC3339 `xml:"ChangeTime"`
-		CreationTime *timeRFC3339 `xml:"CreationTime"`
+		ChangeTime     *timeRFC3339 `xml:"ChangeTime"`
+		CreationTime   *timeRFC3339 `xml:"CreationTime"`
 		LastAccessTime *timeRFC3339 `xml:"LastAccessTime"`
-		LastModified *timeRFC1123 `xml:"Last-Modified"`
-		LastWriteTime *timeRFC3339 `xml:"LastWriteTime"`
+		LastModified   *timeRFC1123 `xml:"Last-Modified"`
+		LastWriteTime  *timeRFC3339 `xml:"LastWriteTime"`
 	}{
 		alias: (*alias)(f),
 	}
@@ -102,7 +102,7 @@ func (f FilesAndDirectoriesListSegment) MarshalXML(e *xml.Encoder, start xml.Sta
 	aux := &struct {
 		*alias
 		DirectoryItems *[]*DirectoryItem `xml:"Directory"`
-		FileItems *[]*FileItem `xml:"File"`
+		FileItems      *[]*FileItem      `xml:"File"`
 	}{
 		alias: (*alias)(&f),
 	}
@@ -121,11 +121,11 @@ func (h HandleItem) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime *timeRFC1123 `xml:"OpenTime"`
+		OpenTime          *timeRFC1123 `xml:"OpenTime"`
 	}{
-		alias: (*alias)(&h),
+		alias:             (*alias)(&h),
 		LastReconnectTime: (*timeRFC1123)(h.LastReconnectTime),
-		OpenTime: (*timeRFC1123)(h.OpenTime),
+		OpenTime:          (*timeRFC1123)(h.OpenTime),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -136,7 +136,7 @@ func (h *HandleItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 	aux := &struct {
 		*alias
 		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime *timeRFC1123 `xml:"OpenTime"`
+		OpenTime          *timeRFC1123 `xml:"OpenTime"`
 	}{
 		alias: (*alias)(h),
 	}
@@ -184,7 +184,7 @@ func (s ShareFileRangeList) MarshalXML(e *xml.Encoder, start xml.StartElement) e
 	aux := &struct {
 		*alias
 		ClearRanges *[]*ClearRange `xml:"ClearRange"`
-		Ranges *[]*FileRange `xml:"Range"`
+		Ranges      *[]*FileRange  `xml:"Range"`
 	}{
 		alias: (*alias)(&s),
 	}
@@ -230,8 +230,8 @@ func (s *SharePermission) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "permission":
-				err = unpopulate(val, "Permission", &s.Permission)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Permission", &s.Permission)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -245,15 +245,15 @@ func (s SharePropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartEleme
 	type alias SharePropertiesInternal
 	aux := &struct {
 		*alias
-		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
-		LastModified *timeRFC1123 `xml:"Last-Modified"`
+		AccessTierChangeTime          *timeRFC1123 `xml:"AccessTierChangeTime"`
+		DeletedTime                   *timeRFC1123 `xml:"DeletedTime"`
+		LastModified                  *timeRFC1123 `xml:"Last-Modified"`
 		NextAllowedQuotaDowngradeTime *timeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
 	}{
-		alias: (*alias)(&s),
-		AccessTierChangeTime: (*timeRFC1123)(s.AccessTierChangeTime),
-		DeletedTime: (*timeRFC1123)(s.DeletedTime),
-		LastModified: (*timeRFC1123)(s.LastModified),
+		alias:                         (*alias)(&s),
+		AccessTierChangeTime:          (*timeRFC1123)(s.AccessTierChangeTime),
+		DeletedTime:                   (*timeRFC1123)(s.DeletedTime),
+		LastModified:                  (*timeRFC1123)(s.LastModified),
 		NextAllowedQuotaDowngradeTime: (*timeRFC1123)(s.NextAllowedQuotaDowngradeTime),
 	}
 	return e.EncodeElement(aux, start)
@@ -264,9 +264,9 @@ func (s *SharePropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartEl
 	type alias SharePropertiesInternal
 	aux := &struct {
 		*alias
-		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
-		LastModified *timeRFC1123 `xml:"Last-Modified"`
+		AccessTierChangeTime          *timeRFC1123 `xml:"AccessTierChangeTime"`
+		DeletedTime                   *timeRFC1123 `xml:"DeletedTime"`
+		LastModified                  *timeRFC1123 `xml:"Last-Modified"`
 		NextAllowedQuotaDowngradeTime *timeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
 	}{
 		alias: (*alias)(s),
@@ -298,8 +298,8 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "Message":
-				err = unpopulate(val, "Message", &s.Message)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Message", &s.Message)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -342,4 +342,3 @@ func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	}
 	return nil
 }
-

@@ -21,8 +21,8 @@ import (
 func (b BatchQueryRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "body", b.Body)
+	populate(objectMap, "id", b.CorrelationID)
 	populate(objectMap, "headers", b.Headers)
-	populate(objectMap, "id", b.ID)
 	if b.Method == nil {
 		b.Method = to.Ptr(BatchQueryRequestMethodPOST)
 	}
@@ -31,7 +31,7 @@ func (b BatchQueryRequest) MarshalJSON() ([]byte, error) {
 		b.Path = to.Ptr(BatchQueryRequestPathQuery)
 	}
 	populate(objectMap, "path", b.Path)
-	populate(objectMap, "workspace", b.Workspace)
+	populate(objectMap, "workspace", b.WorkspaceID)
 	return json.Marshal(objectMap)
 }
 
@@ -47,11 +47,11 @@ func (b *BatchQueryRequest) UnmarshalJSON(data []byte) error {
 		case "body":
 			err = unpopulate(val, "Body", &b.Body)
 			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "CorrelationID", &b.CorrelationID)
+			delete(rawMsg, key)
 		case "headers":
 			err = unpopulate(val, "Headers", &b.Headers)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &b.ID)
 			delete(rawMsg, key)
 		case "method":
 			err = unpopulate(val, "Method", &b.Method)
@@ -60,7 +60,7 @@ func (b *BatchQueryRequest) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Path", &b.Path)
 			delete(rawMsg, key)
 		case "workspace":
-			err = unpopulate(val, "Workspace", &b.Workspace)
+			err = unpopulate(val, "WorkspaceID", &b.WorkspaceID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -74,8 +74,8 @@ func (b *BatchQueryRequest) UnmarshalJSON(data []byte) error {
 func (b BatchQueryResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "body", b.Body)
+	populate(objectMap, "id", b.CorrelationID)
 	populate(objectMap, "headers", b.Headers)
-	populate(objectMap, "id", b.ID)
 	populate(objectMap, "status", b.Status)
 	return json.Marshal(objectMap)
 }
@@ -92,11 +92,11 @@ func (b *BatchQueryResponse) UnmarshalJSON(data []byte) error {
 		case "body":
 			err = unpopulate(val, "Body", &b.Body)
 			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "CorrelationID", &b.CorrelationID)
+			delete(rawMsg, key)
 		case "headers":
 			err = unpopulate(val, "Headers", &b.Headers)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &b.ID)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &b.Status)

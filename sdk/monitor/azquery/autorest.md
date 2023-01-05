@@ -81,6 +81,19 @@ directive:
     where: $.definitions.batchQueryResults.properties.render
     transform: $["x-ms-client-name"] = "Visualization"
 
+  # rename BatchQueryRequest.ID to BatchQueryRequest.RequestID
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.id
+    transform: $["x-ms-client-name"] = "CorrelationID"
+  - from: swagger-document
+    where: $.definitions.batchQueryResponse.properties.id
+    transform: $["x-ms-client-name"] = "CorrelationID"
+
+  # rename BatchQueryRequest.ID to BatchQueryRequest.RequestID
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.workspace
+    transform: $["x-ms-client-name"] = "WorkspaceID"
+  
   # add default values for batch request path and method attributes
   - from: swagger-document
     where: $.definitions.batchQueryRequest.properties.path

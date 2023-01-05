@@ -17,10 +17,10 @@ type BatchQueryRequest struct {
 	Body *Body `json:"body,omitempty"`
 
 	// REQUIRED; The error details.
-	ID *string `json:"id,omitempty"`
+	CorrelationID *string `json:"id,omitempty"`
 
 	// REQUIRED; Workspace Id to be included in the query
-	Workspace *string `json:"workspace,omitempty"`
+	WorkspaceID *string `json:"workspace,omitempty"`
 
 	// Dictionary of
 	Headers map[string]*string `json:"headers,omitempty"`
@@ -35,11 +35,11 @@ type BatchQueryRequest struct {
 // BatchQueryResponse - Contains the batch query response and the headers, id, and status of the request
 type BatchQueryResponse struct {
 	// Contains the tables, columns & rows resulting from a query.
-	Body *BatchQueryResults `json:"body,omitempty"`
+	Body          *BatchQueryResults `json:"body,omitempty"`
+	CorrelationID *string            `json:"id,omitempty"`
 
 	// Dictionary of
 	Headers map[string]*string `json:"headers,omitempty"`
-	ID      *string            `json:"id,omitempty"`
 	Status  *int32             `json:"status,omitempty"`
 }
 

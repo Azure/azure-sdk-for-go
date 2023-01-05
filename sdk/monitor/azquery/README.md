@@ -146,8 +146,8 @@ full example: [link][example_query_workspace]
 ```
 Body
 |---Query *string // Kusto Query
-|---Timespan *string // ISO8601 Standard Timespan
-|---Workspaces []*string // Optional- additional workspaces to query
+|---Timespan *ISO8601TimeInterval // ISO8601 Standard Time Interval
+|---AdditionalWorkspaces []*string // Optional- additional workspaces to query
 ```
 
 #### Logs query result structure
@@ -159,7 +159,6 @@ Results
 		|---Type *LogsColumnType
 	|---Name *string
 	|---Rows []Row
-	|---ColumnIndexLookup map[string]int
 |---Error *ErrorInfo
 	|---Code *string // custom error type
 |---Render []byte
@@ -190,7 +189,7 @@ full example: [link][example_batch]
 BatchRequest
 |---Body *Body
 	|---Query *string // Kusto Query
-	|---Timespan *string // ISO8601 Standard Timespan
+	|---Timespan *ISO8601TimeInterval // ISO8601 Standard Time Interval
 	|---Workspaces []*string // Optional- additional workspaces to query
 |---ID *string // unique identifier for each query in batch
 |---Workspace *string
@@ -215,9 +214,8 @@ BatchResponse
 				|---Type *LogsColumnType
 			|---Name *string
 			|---Rows []Row
-			|---ColumnIndexLookup map[string]int
 	|---Headers map[string]*string
-	|---ID *string
+	|---CorrelationID *string
 	|---Status *int32
 ```
 

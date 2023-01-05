@@ -6,9 +6,10 @@
 
 package azquery_test
 
-/*import (
+import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -63,13 +64,17 @@ func ExampleLogsClient_QueryWorkspace() {
 		//TODO: handle error
 	}
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+	timespan, err := azquery.NewISO8601TimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))
+	if err != nil {
+		//TODO: handle error
+	}
 
 	res, err := client.QueryWorkspace(
 		context.TODO(),
 		workspaceID,
 		azquery.Body{
 			Query:    to.Ptr("AzureActivity | top 10 by TimeGenerated"),
-			Timespan: azquery.NewTimespanStartEndTime("2022-08-30", "2022-08-31"),
+			Timespan: timespan,
 		},
 		nil)
 	if err != nil {
@@ -99,15 +104,18 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	workspaceID1 := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
 	workspaceID2 := "h4bc4471-2e8c-4b1c-8f47-12b9a4d5ac71"
 	query := "search * | take 5"               // Example Kusto query
-	timespan := "PT2H"                         // Last 2 hours. ISO8601 Standard timespan. See docs: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-timespan
 	preferOptions := "include-statistics=true" // Advanced option to include stats. See docs: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
+	timespan, err := azquery.NewISO8601TimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))
+	if err != nil {
+		//TODO: handle error
+	}
 
 	res, err := client.QueryWorkspace(
 		context.TODO(),
 		workspaceID1,
 		azquery.Body{
 			Query:                &query,
-			Timespan:             &timespan,
+			Timespan:             timespan,
 			AdditionalWorkspaces: []*string{&workspaceID2},
 		},
 		&azquery.LogsClientQueryWorkspaceOptions{Prefer: &preferOptions})
@@ -146,12 +154,15 @@ func ExampleLogsClient_QueryBatch() {
 	}
 
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
-	timespan := "2022-08-30/2022-08-31"                    // ISO8601 Standard Timespan
+	timespan, err := azquery.NewISO8601TimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))
+	if err != nil {
+		//TODO: handle error
+	}
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(kustoQuery2), Timespan: to.Ptr(timespan)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("3"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: timespan}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery2), Timespan: timespan}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: timespan}, CorrelationID: to.Ptr("3"), WorkspaceID: to.Ptr(workspaceID)},
 	}}
 
 	res, err := client.QueryBatch(context.TODO(), batchRequest, nil)
@@ -163,7 +174,7 @@ func ExampleLogsClient_QueryBatch() {
 	fmt.Println("ID's of successful responses:")
 	for _, response := range responses {
 		if response.Body.Error == nil {
-			fmt.Println(*response.ID)
+			fmt.Println(*response.CorrelationID)
 		}
 	}
 }
@@ -188,4 +199,4 @@ func ExampleMetricsClient_QueryResource() {
 		//TODO: handle error
 	}
 	_ = res
-}*/
+}

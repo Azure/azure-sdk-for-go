@@ -155,12 +155,12 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 func TestQueryBatch_QuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
 	query1, query2 := query, query+" | take 2"
-	timespan, err := azquery.NewISO8601TimeInterval(time.Now(), time.Now().Add(-time.Hour))
+	timespan, err := azquery.NewISO8601TimeInterval(time.Date(2022, 3, 2, 0, 0, 0, 0, time.UTC), time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
 	require.NoError(t, err)
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(query1), Timespan: timespan}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(query2), Timespan: timespan}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query1), Timespan: timespan}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query2), Timespan: timespan}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID)},
 	}}
 	testSerde(t, &batchRequest)
 
@@ -170,10 +170,10 @@ func TestQueryBatch_QuerySuccess(t *testing.T) {
 	for _, resp := range res.Responses {
 		require.Nil(t, resp.Body.Error)
 		require.NotNil(t, resp.Body.Tables)
-		if *resp.ID == "1" && len(resp.Body.Tables[0].Rows) != 100 {
+		if *resp.CorrelationID == "1" && len(resp.Body.Tables[0].Rows) != 100 {
 			t.Fatal("expected 100 rows from batch request 1")
 		}
-		if *resp.ID == "2" && len(resp.Body.Tables[0].Rows) != 2 {
+		if *resp.CorrelationID == "2" && len(resp.Body.Tables[0].Rows) != 2 {
 			t.Fatal("expected 2 rows from batch request 2")
 		}
 	}
@@ -185,8 +185,8 @@ func TestQueryBatch_BasicQueryFailure(t *testing.T) {
 	query1, query2 := query, query+" | take 2"
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(query1)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(query2)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query1)}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query2)}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID)},
 	}}
 	testSerde(t, &batchRequest)
 
@@ -206,8 +206,8 @@ func TestQueryBatch_AdvancedQuerySuccess(t *testing.T) {
 	headers := map[string]*string{"prefer": &batchPrefer}
 
 	batchRequestAdvanced := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID2), Headers: headers},
-		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID2), Headers: headers},
+		{Body: &azquery.Body{Query: to.Ptr(query)}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID2), Headers: headers},
+		{Body: &azquery.Body{Query: to.Ptr(query)}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID2), Headers: headers},
 	}}
 	testSerde(t, &batchRequestAdvanced)
 
@@ -228,20 +228,20 @@ func TestQueryBatch_PartialError(t *testing.T) {
 	client := startLogsTest(t)
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr("not a valid query")}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr("not a valid query")}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query)}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID)},
 	}}
 
 	res, err := client.QueryBatch(context.Background(), batchRequest, nil)
 	require.NoError(t, err)
 	require.Len(t, res.Responses, 2)
 	for _, resp := range res.Responses {
-		if *resp.ID == "1" {
+		if *resp.CorrelationID == "1" {
 			require.NotNil(t, resp.Body.Error)
 			require.Equal(t, resp.Body.Error.Code, "BadArgumentError")
 			require.Contains(t, resp.Body.Error.Error(), "BadArgumentError")
 		}
-		if *resp.ID == "2" {
+		if *resp.CorrelationID == "2" {
 			require.Nil(t, resp.Body.Error)
 			require.Len(t, resp.Body.Tables[0].Rows, 100)
 		}

@@ -110,10 +110,10 @@ func (e *ErrorInfo) Error() string {
 // Row of data in a table, types of data used by service specified in LogsColumnType
 type Row []any
 
-// ISO8601TimeInterval specifies the time range over which to query
+// ISO8601TimeInterval specifies the time range over which to query.
 // Use NewISO8601TimeInterval() for help formating.
-// Follows the ISO8601 time interval standard with most common format being startISOTime/endISOTime
-// Use UTC for all times
+// Follows the ISO8601 time interval standard with most common format being startISOTime/endISOTime.
+// Use UTC for all times.
 type ISO8601TimeInterval string
 
 // NewISO8601TimeInterval creates a ISO8601TimeInterval for use in a query.

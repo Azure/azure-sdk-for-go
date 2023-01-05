@@ -412,14 +412,17 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 		return uploadFromReaderResponse{}, errors.New("block limit exceeded")
 	}
 
-	log.Writef(exported.EventUpload, "=====> actual size %v, block-size %v, block-count %v",
-		actualSize, o.BlockSize, numBlocks)
+	urlparts, err := blob.ParseURL(bb.generated().Endpoint())
+	if err == nil {
+		log.Writef(exported.EventUpload, "blob name %s actual size %v block-size %v block-count %v",
+			urlparts.BlobName, actualSize, o.BlockSize, numBlocks)
+	}
 
 	blockIDList := make([]string, numBlocks) // Base-64 encoded block IDs
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
 
-	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
+	err = shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		OperationName: "uploadFromReader",
 		TransferSize:  readerSize,
 		ChunkSize:     o.BlockSize,

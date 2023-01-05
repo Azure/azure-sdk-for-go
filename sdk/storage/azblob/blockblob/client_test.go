@@ -3983,11 +3983,14 @@ func TestUploadLogEvent(t *testing.T) {
 	log.SetEvents(azblob.EventUpload, log.EventRequest, log.EventResponse)
 	log.SetListener(func(cls log.Event, msg string) {
 		t.Logf("%s: %s\n", cls, msg)
-		listnercalled = true
+		if cls == azblob.EventUpload {
+			listnercalled = true
+			require.Equal(t, msg, "blob name path1/path2 actual size 270000000 block-size 4194304 block-count 65")
+		}
 	})
 
 	fbb := &fakeBlockBlob{}
-	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path1/path2", &blockblob.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Transport: fbb,
 			Telemetry: policy.TelemetryOptions{ApplicationID: "testApp/1.0.0-preview.2"},

@@ -41,7 +41,6 @@ func TestConsumerClient_Recovery(t *testing.T) {
 
 	// trim the partition list down so the test executes in resonable time.
 	ehProps.PartitionIDs = ehProps.PartitionIDs[0:3] // min for testing is 3 partitions anyways
-	//ehProps.PartitionIDs = ehProps.PartitionIDs[0:1] // min for testing is 3 partitions anyways
 
 	type sendResult struct {
 		PartitionID  string

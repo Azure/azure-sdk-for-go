@@ -5,7 +5,9 @@ package internal
 
 import (
 	"context"
+	"fmt"
 	"sync"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -27,6 +29,17 @@ type LinkWithID[LinkT AMQPLink] struct {
 
 	// Link will be an amqp.Receiver or amqp.Sender link.
 	Link LinkT
+
+	// PartitionID, if available.
+	PartitionID string
+}
+
+func (lwid *LinkWithID[LinkT]) String() string {
+	if lwid == nil {
+		return "none"
+	}
+
+	return fmt.Sprintf("c:%d,l:%.5s,p:%s", lwid.ConnID, lwid.Link.LinkName(), lwid.PartitionID)
 }
 
 // LinksForPartitionClient are the functions that the PartitionClient uses within Links[T]
@@ -44,11 +57,12 @@ type Links[LinkT AMQPLink] struct {
 	links   map[string]*linkState[LinkT]
 
 	managementLinkMu *sync.RWMutex
-	managementLink   *linkState[RPCLink]
+	managementLink   *linkState[amqpwrap.RPCLink]
 
-	managementPath string
-	newLinkFn      func(ctx context.Context, session amqpwrap.AMQPSession, partitionID string) (LinkT, error)
-	entityPathFn   func(partitionID string) string
+	managementPath       string
+	newLinkFn            func(ctx context.Context, session amqpwrap.AMQPSession, partitionID string) (LinkT, error)
+	entityPathFn         func(partitionID string) string
+	contextWithTimeoutFn contextWithTimeoutFn
 }
 
 type NewLinksFn[LinkT AMQPLink] func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (LinkT, error)
@@ -59,9 +73,11 @@ func NewLinks[LinkT AMQPLink](ns NamespaceForAMQPLinks, managementPath string, e
 		linksMu:          &sync.RWMutex{},
 		links:            map[string]*linkState[LinkT]{},
 		managementLinkMu: &sync.RWMutex{},
-		newLinkFn:        newLinkFn,
-		entityPathFn:     entityPathFn,
 		managementPath:   managementPath,
+
+		newLinkFn:            newLinkFn,
+		entityPathFn:         entityPathFn,
+		contextWithTimeoutFn: context.WithTimeout,
 	}
 }
 
@@ -76,8 +92,41 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 	case RecoveryKindNone:
 		return nil
 	case RecoveryKindLink:
-		return l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName())
+		ctx, cancel := l.contextWithTimeoutFn(ctx, defaultCloseTimeout)
+		defer cancel()
+
+		err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName())
+
+		if IsCancelError(err) {
+			azlog.Writef(exported.EventConn, "(%s) Link close was cancelled, connection will reset on next recovery", lwid.String())
+			// if we failed to close a link then something odd is going on with
+			// our connection or the user has cancelled. Let the next attempt to use
+			// the connection recover it.
+			return errConnResetNeeded
+		}
+
+		// we don't need to propagate this error - it'll just be the link detach error or whatever
+		// caused the link to detach (for instance, if the Event Hub itself has been Disabled).
+		if err != nil {
+			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link for link recovery: %s", lwid.String(), err)
+		}
+
+		return nil
 	case RecoveryKindConn:
+		// We only close _this_ partition's link. Other partitions will also get an error, and will recover.
+		// We used to close _all_ the links, but no longer do that since it's possible (when we do receiver
+		// redirect) to have more than one active connection at a time which means not all links would be
+		// affected when a single connection goes down.
+		ctx, cancel := l.contextWithTimeoutFn(ctx, defaultCloseTimeout)
+		defer cancel()
+
+		if err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName()); err != nil {
+			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link: %s", lwid.String(), err)
+
+			// NOTE: this is best effort - it's probable the connection is dead anyways so we'll log
+			// but ignore the error for recovery purposes.
+		}
+
 		// There are two possibilities here:
 		//
 		// 1. (stale) The caller got this error but the `lwid` they're passing us is 'stale' - ie, '
@@ -92,17 +141,18 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 		// not match the current link.
 		//
 		// For #2, we may recreate the connection. It's possible we won't if the connection itself
-		// has already been recovered by another goroutine. After that we'll recycle the link if
-		// it matches - we don't care about what happened with the connection because the link ID is
-		// unique - it wouldn't match unless it really was the same one that got the error.
-		if err := l.ns.Recover(ctx, lwid.ConnID); err != nil {
+		// has already been recovered by another goroutine.
+		ctx, cancel = l.contextWithTimeoutFn(ctx, defaultCloseTimeout)
+		defer cancel()
+
+		err := l.ns.Recover(ctx, lwid.ConnID)
+
+		if err != nil {
+			azlog.Writef(exported.EventConn, "(%s) Failure recovering connection for link: %s", lwid.String(), err)
 			return err
 		}
 
-		// We only close _this_ partition's link. Other partitions will also get an error, and will recover.
-		// We used to close _all_ the links, but no longer do that since it's possible (when we do receiver
-		// redirect) to have more than one active connection at a time.
-		return l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName())
+		return nil
 	default:
 		return err
 	}
@@ -117,7 +167,11 @@ func (l *Links[LinkT]) Retry(ctx context.Context, eventName log.Event, operation
 		return GetRecoveryKind(err) == RecoveryKindFatal
 	}
 
-	return utils.Retry(ctx, eventName, operation, retryOptions, func(ctx context.Context, args *utils.RetryFnArgs) error {
+	prefix := func() string {
+		return prevLinkWithID.String()
+	}
+
+	return utils.Retry(ctx, eventName, prefix, retryOptions, func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := l.RecoverIfNeeded(ctx, partitionID, prevLinkWithID, args.LastErr); err != nil {
 			return err
 		}
@@ -150,7 +204,7 @@ func (l *Links[LinkT]) Retry(ctx context.Context, eventName log.Event, operation
 				// Whereas normally you'd do (for non-detach errors):
 				//   0th attempt
 				//   (actual retries)
-				azlog.Writef(exported.EventConn, "(%s) Link was previously detached. Attempting quick reconnect to recover from error: %s", operation, err.Error())
+				azlog.Writef(exported.EventConn, "(%s, %s) Link was previously detached. Attempting quick reconnect to recover from error: %s", linkWithID.String(), operation, err.Error())
 				didQuickRetry = true
 				args.ResetAttempts()
 			}
@@ -197,8 +251,9 @@ func (l *Links[LinkT]) GetLink(ctx context.Context, partitionID string) (*LinkWi
 
 	if current != nil {
 		return &LinkWithID[LinkT]{
-			ConnID: l.links[partitionID].ConnID,
-			Link:   *l.links[partitionID].Link,
+			ConnID:      l.links[partitionID].ConnID,
+			Link:        *l.links[partitionID].Link,
+			PartitionID: partitionID,
 		}, nil
 	}
 
@@ -220,14 +275,15 @@ func (l *Links[LinkT]) GetLink(ctx context.Context, partitionID string) (*LinkWi
 	}
 
 	return &LinkWithID[LinkT]{
-		ConnID: l.links[partitionID].ConnID,
-		Link:   *l.links[partitionID].Link,
+		ConnID:      l.links[partitionID].ConnID,
+		Link:        *l.links[partitionID].Link,
+		PartitionID: partitionID,
 	}, nil
 }
 
-func (l *Links[LinkT]) GetManagementLink(ctx context.Context) (LinkWithID[RPCLink], error) {
+func (l *Links[LinkT]) GetManagementLink(ctx context.Context) (LinkWithID[amqpwrap.RPCLink], error) {
 	if err := l.checkOpen(); err != nil {
-		return LinkWithID[RPCLink]{}, err
+		return LinkWithID[amqpwrap.RPCLink]{}, err
 	}
 
 	l.managementLinkMu.Lock()
@@ -237,25 +293,30 @@ func (l *Links[LinkT]) GetManagementLink(ctx context.Context) (LinkWithID[RPCLin
 		ls, err := l.newManagementLinkState(ctx)
 
 		if err != nil {
-			return LinkWithID[RPCLink]{}, err
+			return LinkWithID[amqpwrap.RPCLink]{}, err
 		}
 
 		l.managementLink = ls
 	}
 
-	return LinkWithID[RPCLink]{
+	return LinkWithID[amqpwrap.RPCLink]{
 		ConnID: l.managementLink.ConnID,
 		Link:   *l.managementLink.Link,
 	}, nil
 }
 
 func (l *Links[LinkT]) newLinkState(ctx context.Context, partitionID string) (*linkState[LinkT], error) {
+	azlog.Writef(exported.EventConn, "Creating link for partition ID '%s'", partitionID)
+
 	// check again now that we have the write lock
-	ls := &linkState[LinkT]{}
+	ls := &linkState[LinkT]{
+		PartitionID: partitionID,
+	}
 
 	cancelAuth, _, err := l.ns.NegotiateClaim(ctx, l.entityPathFn(partitionID))
 
 	if err != nil {
+		azlog.Writef(exported.EventConn, "(%s): Failed to negotiate claim for partition ID '%s': %s", ls.String(), partitionID, err)
 		return nil, err
 	}
 
@@ -264,7 +325,8 @@ func (l *Links[LinkT]) newLinkState(ctx context.Context, partitionID string) (*l
 	session, connID, err := l.ns.NewAMQPSession(ctx)
 
 	if err != nil {
-		_ = ls.Close(ctx)
+		azlog.Writef(exported.EventConn, "(%s): Failed to create AMQP session for partition ID '%s': %s", ls.String(), partitionID, err)
+		err = ls.Close(ctx)
 		return nil, err
 	}
 
@@ -274,16 +336,18 @@ func (l *Links[LinkT]) newLinkState(ctx context.Context, partitionID string) (*l
 	tmpLink, err := l.newLinkFn(ctx, session, l.entityPathFn(partitionID))
 
 	if err != nil {
+		azlog.Writef(exported.EventConn, "(%s): Failed to create link for partition ID '%s': %s", ls.String(), partitionID, err)
 		_ = ls.Close(ctx)
 		return nil, err
 	}
 
 	ls.Link = &tmpLink
+	azlog.Writef(exported.EventConn, "(%s): Succesfully created link for partition ID '%s'", ls.String(), partitionID)
 	return ls, nil
 }
 
-func (l *Links[LinkT]) newManagementLinkState(ctx context.Context) (*linkState[RPCLink], error) {
-	ls := &linkState[RPCLink]{}
+func (l *Links[LinkT]) newManagementLinkState(ctx context.Context) (*linkState[amqpwrap.RPCLink], error) {
+	ls := &linkState[amqpwrap.RPCLink]{}
 
 	cancelAuth, _, err := l.ns.NegotiateClaim(ctx, l.managementPath)
 
@@ -310,13 +374,15 @@ func (l *Links[LinkT]) Close(ctx context.Context) error {
 	return l.closeLinks(ctx, true)
 }
 
-func (l *Links[LinkT]) closeLinks(_ context.Context, permanent bool) error {
-	// we're finding, in practice, that allowing cancellations when cleaning up state
-	// just results in inconsistencies. We'll cut cancellation off here for now.
-	ctx := context.Background()
+func (l *Links[LinkT]) closeLinks(ctx context.Context, permanent bool) error {
+	cancelled := false
 
 	if err := l.closeManagementLink(ctx); err != nil {
 		azlog.Writef(exported.EventConn, "Error while cleaning up management link while doing connection recovery: %s", err.Error())
+
+		if IsCancelError(err) {
+			cancelled = true
+		}
 	}
 
 	l.linksMu.Lock()
@@ -328,12 +394,23 @@ func (l *Links[LinkT]) closeLinks(_ context.Context, permanent bool) error {
 	for partitionID, link := range tmpLinks {
 		if err := link.Close(ctx); err != nil {
 			azlog.Writef(exported.EventConn, "Error while cleaning up link for partition ID '%s' while doing connection recovery: %s", partitionID, err.Error())
+
+			if IsCancelError(err) {
+				cancelled = true
+			}
 		}
 	}
 
 	if !permanent {
 		l.links = map[string]*linkState[LinkT]{}
 	}
+
+	if cancelled {
+		// this is the only kind of error I'd consider usable from Close() - it'll indicate
+		// that some of the links haven't been cleanly closed.
+		return ctx.Err()
+	}
+
 	return nil
 }
 
@@ -351,6 +428,9 @@ func (l *Links[LinkT]) checkOpen() error {
 // closePartitionLinkIfMatch will close the link in the cache if it matches the passed in linkName.
 // This is similar to how an etag works - we'll only close it if you are working with the latest link -
 // if not, it's a no-op since somebody else has already 'saved' (recovered) before you.
+//
+// Note that the only error that can be returned here will come from go-amqp. Cleanup of _our_ internal state
+// will always happen, if needed.
 func (l *Links[LinkT]) closePartitionLinkIfMatch(ctx context.Context, partitionID string, linkName string) error {
 	l.linksMu.RLock()
 	current, exists := l.links[partitionID]
@@ -371,9 +451,7 @@ func (l *Links[LinkT]) closePartitionLinkIfMatch(ctx context.Context, partitionI
 		return nil
 	}
 
-	current.cancelAuth()
 	delete(l.links, partitionID)
-
 	return current.Close(ctx)
 }
 
@@ -399,6 +477,9 @@ type linkState[LinkT AMQPLink] struct {
 	// Link will be an amqp.Receiver, an amqp.Sender link, or an RPCLink.
 	Link *LinkT
 
+	// PartitionID, if available.
+	PartitionID string
+
 	// cancelAuth cancels the backround claim negotation for this link.
 	cancelAuth func()
 
@@ -407,6 +488,28 @@ type linkState[LinkT AMQPLink] struct {
 	session amqpwrap.AMQPSession
 }
 
+// String returns a string that can be used for logging, of the format:
+// (c:<connid>,l:<5 characters of link id>)
+//
+// It can also handle nil and partial initialization.
+func (ls *linkState[LinkT]) String() string {
+	if ls == nil {
+		return "none"
+	}
+
+	linkName := ""
+
+	if ls.Link != nil {
+		linkName = (*ls.Link).LinkName()
+	}
+
+	return fmt.Sprintf("c:%d,l:%.5s,p:%s", ls.ConnID, linkName, ls.PartitionID)
+}
+
+// Close cancels the background authentication loop for this link and
+// then closes the AMQP links.
+// NOTE: this avoids any issues where closing fails on the broker-side or
+// locally and we leak a goroutine.
 func (ls *linkState[LinkT]) Close(ctx context.Context) error {
 	if ls.cancelAuth != nil {
 		ls.cancelAuth()
@@ -418,3 +521,7 @@ func (ls *linkState[LinkT]) Close(ctx context.Context) error {
 
 	return nil
 }
+
+const defaultCloseTimeout = time.Minute
+
+type contextWithTimeoutFn func(parent context.Context, timeout time.Duration) (context.Context, context.CancelFunc)

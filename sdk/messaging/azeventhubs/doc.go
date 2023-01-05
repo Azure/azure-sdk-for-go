@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 //go:build go1.16
 // +build go1.16
 
@@ -11,4 +13,5 @@
 // There are two clients for consuming events:
 //   - [azeventhubs.Processor], which handles checkpointing and load balancing using durable storage.
 //   - [azeventhubs.ConsumerClient], which is fully manual, but provides full control.
+
 package azeventhubs

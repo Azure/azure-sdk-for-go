@@ -23,7 +23,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
 	// Uncomment to see the entire recovery playbook run.
-	// test.EnableStdoutLogging()
+	test.EnableStdoutLogging()
 
 	dac, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)
@@ -41,6 +41,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 
 	// trim the partition list down so the test executes in resonable time.
 	ehProps.PartitionIDs = ehProps.PartitionIDs[0:3] // min for testing is 3 partitions anyways
+	//ehProps.PartitionIDs = ehProps.PartitionIDs[0:1] // min for testing is 3 partitions anyways
 
 	type sendResult struct {
 		PartitionID  string
@@ -122,7 +123,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 
 	defer test.RequireClose(t, consumerClient)
 
-	log.Printf("3. closing connection, which will force recovery for each partition client so they can read the next event")
+	log.Printf("3. closing internal connection (non-permanently), which will force recovery for each partition client so they can read the next event")
 
 	// now we'll close the internal connection, simulating a connection break
 	require.NoError(t, consumerClient.namespace.Close(context.Background(), false))
@@ -158,7 +159,7 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
 	// Uncomment to see the entire recovery playbook run.
-	// test.EnableStdoutLogging()
+	test.EnableStdoutLogging()
 
 	dac, err := azidentity.NewDefaultAzureCredential(nil)
 	require.NoError(t, err)

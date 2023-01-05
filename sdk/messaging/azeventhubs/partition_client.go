@@ -109,9 +109,10 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 			if count > int(remainingCredits) {
 				newCredits := uint32(count) - remainingCredits
 
-				log.Writef(EventConsumer, "Have %d outstanding credit, only issuing %d credits", remainingCredits, newCredits)
+				log.Writef(EventConsumer, "(%s) Have %d outstanding credit, only issuing %d credits", lwid.String(), remainingCredits, newCredits)
 
 				if err := lwid.Link.IssueCredit(newCredits); err != nil {
+					log.Writef(EventConsumer, "(%s) Error when issuing credits: %s", lwid.String(), err)
 					return err
 				}
 			}
@@ -121,6 +122,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 			amqpMessage, err := lwid.Link.Receive(ctx)
 
 			if internal.IsOwnershipLostError(err) {
+				log.Writef(EventConsumer, "(%s) Error, link ownership lost: %s", lwid.String(), err)
 				events = nil
 				return err
 			}
@@ -132,6 +134,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 					re, err := newReceivedEventData(amqpMsg)
 
 					if err != nil {
+						log.Writef(EventConsumer, "(%s) Failed converting AMQP message to EventData: %s", lwid.String(), err)
 						return err
 					}
 
@@ -149,6 +152,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 			receivedEvent, err := newReceivedEventData(amqpMessage)
 
 			if err != nil {
+				log.Writef(EventConsumer, "(%s) Failed converting AMQP message to EventData: %s", lwid.String(), err)
 				return err
 			}
 

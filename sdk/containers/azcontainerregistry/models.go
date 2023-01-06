@@ -312,7 +312,7 @@ type Repositories struct {
 	Link *string `json:"link,omitempty"`
 
 	// Repository names
-	Repositories []*string `json:"repositories,omitempty"`
+	Names []*string `json:"repositories,omitempty"`
 }
 
 // RepositoryWriteableProperties - Changeable attributes for Repository

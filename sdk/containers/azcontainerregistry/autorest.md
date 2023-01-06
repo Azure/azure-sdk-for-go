@@ -357,7 +357,7 @@ directive:
     transform: return $.replaceAll(/Acr/g, "ACR");
 ```
 
-### Rename TagAttributesBase and ManifestAttributesBase and TagAttributeBases
+### Rename TagAttributesBase, ManifestAttributesBase, TagAttributeBases and Repositories
 
 ```yaml
 directive:
@@ -373,4 +373,8 @@ directive:
     where: $.definitions.TagList
     transform: >
       delete $.properties.tags["x-ms-client-name"];
+  - from: containerregistry.json
+    where: $.definitions.Repositories
+    transform: >
+      $.properties.repositories["x-ms-client-name"] = "Names";
 ```

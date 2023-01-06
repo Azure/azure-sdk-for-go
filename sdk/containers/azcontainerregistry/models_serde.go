@@ -367,7 +367,7 @@ func (m *ManifestWriteableProperties) UnmarshalJSON(data []byte) error {
 func (r Repositories) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "link", r.Link)
-	populate(objectMap, "repositories", r.Repositories)
+	populate(objectMap, "repositories", r.Names)
 	return json.Marshal(objectMap)
 }
 
@@ -384,7 +384,7 @@ func (r *Repositories) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Link", &r.Link)
 			delete(rawMsg, key)
 		case "repositories":
-			err = unpopulate(val, "Repositories", &r.Repositories)
+			err = unpopulate(val, "Names", &r.Names)
 			delete(rawMsg, key)
 		}
 		if err != nil {

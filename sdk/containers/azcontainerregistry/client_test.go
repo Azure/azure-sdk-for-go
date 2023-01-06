@@ -182,9 +182,9 @@ func TestClient_NewListRepositoriesPager(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.Repositories.Repositories)
+		require.NotEmpty(t, page.Repositories.Names)
 		pages++
-		for i, v := range page.Repositories.Repositories {
+		for i, v := range page.Repositories.Names {
 			fmt.Printf("page %d repository %d: %s\n", pages, i+1, *v)
 			items++
 		}

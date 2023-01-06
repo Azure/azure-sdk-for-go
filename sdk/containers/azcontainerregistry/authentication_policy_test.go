@@ -132,9 +132,9 @@ func Test_authenticationPolicy_anonymousAccess(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.Repositories.Repositories)
+		require.NotEmpty(t, page.Repositories.Names)
 		if repositoryName == "" {
-			repositoryName = *page.Repositories.Repositories[0]
+			repositoryName = *page.Repositories.Names[0]
 		}
 	}
 	require.NotEmpty(t, repositoryName)

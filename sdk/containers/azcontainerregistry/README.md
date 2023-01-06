@@ -110,7 +110,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range page.Repositories.Repositories {
+		for _, v := range page.Repositories.Names {
 			fmt.Printf("repository: %s\n", *v)
 		}
 	}
@@ -208,7 +208,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("failed to advance repository page: %v", err)
 		}
-		for _, r := range repositoryPage.Repositories.Repositories {
+		for _, r := range repositoryPage.Repositories.Names {
 			manifestPager := client.NewListManifestsPager(*r, &azcontainerregistry.ClientListManifestsOptions{
 				OrderBy: to.Ptr(azcontainerregistry.ArtifactManifestOrderByLastUpdatedOnDescending),
 			})

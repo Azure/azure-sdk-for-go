@@ -181,7 +181,7 @@ func ExampleClient_NewListRepositoriesPager() {
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for i, v := range page.Repositories.Repositories {
+		for i, v := range page.Repositories.Names {
 			fmt.Printf("repository %d: %s\n", i+1, *v)
 		}
 	}

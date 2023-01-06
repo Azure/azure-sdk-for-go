@@ -9,8 +9,43 @@
 
 package armpostgresqlflexibleservers
 
+// AdministratorsClientCreateResponse contains the response from method AdministratorsClient.Create.
+type AdministratorsClientCreateResponse struct {
+	ActiveDirectoryAdministrator
+}
+
+// AdministratorsClientDeleteResponse contains the response from method AdministratorsClient.Delete.
+type AdministratorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AdministratorsClientGetResponse contains the response from method AdministratorsClient.Get.
+type AdministratorsClientGetResponse struct {
+	ActiveDirectoryAdministrator
+}
+
+// AdministratorsClientListByServerResponse contains the response from method AdministratorsClient.ListByServer.
+type AdministratorsClientListByServerResponse struct {
+	AdministratorListResult
+}
+
+// BackupsClientGetResponse contains the response from method BackupsClient.Get.
+type BackupsClientGetResponse struct {
+	ServerBackup
+}
+
+// BackupsClientListByServerResponse contains the response from method BackupsClient.ListByServer.
+type BackupsClientListByServerResponse struct {
+	ServerBackupListResult
+}
+
 // CheckNameAvailabilityClientExecuteResponse contains the response from method CheckNameAvailabilityClient.Execute.
 type CheckNameAvailabilityClientExecuteResponse struct {
+	NameAvailability
+}
+
+// CheckNameAvailabilityWithLocationClientExecuteResponse contains the response from method CheckNameAvailabilityWithLocationClient.Execute.
+type CheckNameAvailabilityWithLocationClientExecuteResponse struct {
 	NameAvailability
 }
 
@@ -88,6 +123,11 @@ type LocationBasedCapabilitiesClientExecuteResponse struct {
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationListResult
+}
+
+// ReplicasClientListByServerResponse contains the response from method ReplicasClient.ListByServer.
+type ReplicasClientListByServerResponse struct {
+	ServerListResult
 }
 
 // ServersClientCreateResponse contains the response from method ServersClient.Create.

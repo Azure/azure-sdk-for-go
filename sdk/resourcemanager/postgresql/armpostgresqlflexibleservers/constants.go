@@ -11,8 +11,56 @@ package armpostgresqlflexibleservers
 
 const (
 	moduleName    = "armpostgresqlflexibleservers"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0"
 )
+
+// ActiveDirectoryAuthEnum - If Enabled, Azure Active Directory authentication is enabled.
+type ActiveDirectoryAuthEnum string
+
+const (
+	ActiveDirectoryAuthEnumDisabled ActiveDirectoryAuthEnum = "Disabled"
+	ActiveDirectoryAuthEnumEnabled  ActiveDirectoryAuthEnum = "Enabled"
+)
+
+// PossibleActiveDirectoryAuthEnumValues returns the possible values for the ActiveDirectoryAuthEnum const type.
+func PossibleActiveDirectoryAuthEnumValues() []ActiveDirectoryAuthEnum {
+	return []ActiveDirectoryAuthEnum{
+		ActiveDirectoryAuthEnumDisabled,
+		ActiveDirectoryAuthEnumEnabled,
+	}
+}
+
+// ArmServerKeyType - Data encryption type to depict if it is System assigned vs Azure Key vault.
+type ArmServerKeyType string
+
+const (
+	ArmServerKeyTypeAzureKeyVault  ArmServerKeyType = "AzureKeyVault"
+	ArmServerKeyTypeSystemAssigned ArmServerKeyType = "SystemAssigned"
+)
+
+// PossibleArmServerKeyTypeValues returns the possible values for the ArmServerKeyType const type.
+func PossibleArmServerKeyTypeValues() []ArmServerKeyType {
+	return []ArmServerKeyType{
+		ArmServerKeyTypeAzureKeyVault,
+		ArmServerKeyTypeSystemAssigned,
+	}
+}
+
+// CheckNameAvailabilityReason - The reason why the given name is not available.
+type CheckNameAvailabilityReason string
+
+const (
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{
+		CheckNameAvailabilityReasonAlreadyExists,
+		CheckNameAvailabilityReasonInvalid,
+	}
+}
 
 // ConfigurationDataType - Data type of the configuration.
 type ConfigurationDataType string
@@ -40,7 +88,9 @@ type CreateMode string
 const (
 	CreateModeCreate             CreateMode = "Create"
 	CreateModeDefault            CreateMode = "Default"
+	CreateModeGeoRestore         CreateMode = "GeoRestore"
 	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
+	CreateModeReplica            CreateMode = "Replica"
 	CreateModeUpdate             CreateMode = "Update"
 )
 
@@ -49,7 +99,9 @@ func PossibleCreateModeValues() []CreateMode {
 	return []CreateMode{
 		CreateModeCreate,
 		CreateModeDefault,
+		CreateModeGeoRestore,
 		CreateModePointInTimeRestore,
+		CreateModeReplica,
 		CreateModeUpdate,
 	}
 }
@@ -131,6 +183,7 @@ type HighAvailabilityMode string
 
 const (
 	HighAvailabilityModeDisabled      HighAvailabilityMode = "Disabled"
+	HighAvailabilityModeSameZone      HighAvailabilityMode = "SameZone"
 	HighAvailabilityModeZoneRedundant HighAvailabilityMode = "ZoneRedundant"
 )
 
@@ -138,7 +191,26 @@ const (
 func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
 	return []HighAvailabilityMode{
 		HighAvailabilityModeDisabled,
+		HighAvailabilityModeSameZone,
 		HighAvailabilityModeZoneRedundant,
+	}
+}
+
+// IdentityType - the types of identities associated with this resource; currently restricted to 'SystemAssigned and UserAssigned'
+type IdentityType string
+
+const (
+	IdentityTypeNone           IdentityType = "None"
+	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
+)
+
+// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{
+		IdentityTypeNone,
+		IdentityTypeSystemAssigned,
+		IdentityTypeUserAssigned,
 	}
 }
 
@@ -160,19 +232,81 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	}
 }
 
-// Reason - The name availability reason.
-type Reason string
+// Origin - Backup type.
+type Origin string
 
 const (
-	ReasonAlreadyExists Reason = "AlreadyExists"
-	ReasonInvalid       Reason = "Invalid"
+	OriginFull Origin = "Full"
 )
 
-// PossibleReasonValues returns the possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{
-		ReasonAlreadyExists,
-		ReasonInvalid,
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginFull,
+	}
+}
+
+// PasswordAuthEnum - If Enabled, Password authentication is enabled.
+type PasswordAuthEnum string
+
+const (
+	PasswordAuthEnumDisabled PasswordAuthEnum = "Disabled"
+	PasswordAuthEnumEnabled  PasswordAuthEnum = "Enabled"
+)
+
+// PossiblePasswordAuthEnumValues returns the possible values for the PasswordAuthEnum const type.
+func PossiblePasswordAuthEnumValues() []PasswordAuthEnum {
+	return []PasswordAuthEnum{
+		PasswordAuthEnumDisabled,
+		PasswordAuthEnumEnabled,
+	}
+}
+
+// PrincipalType - The principal type used to represent the type of Active Directory Administrator.
+type PrincipalType string
+
+const (
+	PrincipalTypeGroup            PrincipalType = "Group"
+	PrincipalTypeServicePrincipal PrincipalType = "ServicePrincipal"
+	PrincipalTypeUnknown          PrincipalType = "Unknown"
+	PrincipalTypeUser             PrincipalType = "User"
+)
+
+// PossiblePrincipalTypeValues returns the possible values for the PrincipalType const type.
+func PossiblePrincipalTypeValues() []PrincipalType {
+	return []PrincipalType{
+		PrincipalTypeGroup,
+		PrincipalTypeServicePrincipal,
+		PrincipalTypeUnknown,
+		PrincipalTypeUser,
+	}
+}
+
+// ReplicationRole - Used to indicate role of the server in replication set.
+type ReplicationRole string
+
+const (
+	ReplicationRoleAsyncReplica    ReplicationRole = "AsyncReplica"
+	ReplicationRoleGeoAsyncReplica ReplicationRole = "GeoAsyncReplica"
+	ReplicationRoleGeoSyncReplica  ReplicationRole = "GeoSyncReplica"
+	ReplicationRoleNone            ReplicationRole = "None"
+	ReplicationRolePrimary         ReplicationRole = "Primary"
+	ReplicationRoleSecondary       ReplicationRole = "Secondary"
+	ReplicationRoleSyncReplica     ReplicationRole = "SyncReplica"
+	ReplicationRoleWalReplica      ReplicationRole = "WalReplica"
+)
+
+// PossibleReplicationRoleValues returns the possible values for the ReplicationRole const type.
+func PossibleReplicationRoleValues() []ReplicationRole {
+	return []ReplicationRole{
+		ReplicationRoleAsyncReplica,
+		ReplicationRoleGeoAsyncReplica,
+		ReplicationRoleGeoSyncReplica,
+		ReplicationRoleNone,
+		ReplicationRolePrimary,
+		ReplicationRoleSecondary,
+		ReplicationRoleSyncReplica,
+		ReplicationRoleWalReplica,
 	}
 }
 

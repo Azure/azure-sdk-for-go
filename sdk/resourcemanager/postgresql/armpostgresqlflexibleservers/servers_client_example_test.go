@@ -16,11 +16,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerCreatePointInTimeRestore.json
-func ExampleServersClient_BeginCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateGeoRestore.json
+func ExampleServersClient_BeginCreate_createADatabaseAsAGeoRestoreInGeoPairedLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,18 +30,14 @@ func ExampleServersClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx,
-		"testrg",
-		"pgtestsvc5",
-		armpostgresqlflexibleservers.Server{
-			Location: to.Ptr("westus"),
-			Properties: &armpostgresqlflexibleservers.ServerProperties{
-				CreateMode:             to.Ptr(armpostgresqlflexibleservers.CreateModePointInTimeRestore),
-				PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
-				SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
-			},
+	poller, err := client.BeginCreate(ctx, "testrg", "pgtestsvc5geo", armpostgresqlflexibleservers.Server{
+		Location: to.Ptr("eastus"),
+		Properties: &armpostgresqlflexibleservers.ServerProperties{
+			CreateMode:             to.Ptr(armpostgresqlflexibleservers.CreateModeGeoRestore),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -53,8 +49,8 @@ func ExampleServersClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerUpdate.json
-func ExampleServersClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreatePointInTimeRestore.json
+func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -64,27 +60,14 @@ func ExampleServersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"TestGroup",
-		"pgtestsvc4",
-		armpostgresqlflexibleservers.ServerForUpdate{
-			Location: to.Ptr("westus"),
-			Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
-				AdministratorLoginPassword: to.Ptr("newpassword"),
-				Backup: &armpostgresqlflexibleservers.Backup{
-					BackupRetentionDays: to.Ptr[int32](20),
-				},
-				CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForUpdateUpdate),
-				Storage: &armpostgresqlflexibleservers.Storage{
-					StorageSizeGB: to.Ptr[int32](1024),
-				},
-			},
-			SKU: &armpostgresqlflexibleservers.SKU{
-				Name: to.Ptr("Standard_D8s_v3"),
-				Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
-			},
+	poller, err := client.BeginCreate(ctx, "testrg", "pgtestsvc5", armpostgresqlflexibleservers.Server{
+		Location: to.Ptr("westus"),
+		Properties: &armpostgresqlflexibleservers.ServerProperties{
+			CreateMode:             to.Ptr(armpostgresqlflexibleservers.CreateModePointInTimeRestore),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -96,7 +79,406 @@ func ExampleServersClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreate.json
+func ExampleServersClient_BeginCreate_createANewServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreate(ctx, "testrg", "pgtestsvc4", armpostgresqlflexibleservers.Server{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"ElasticServer": to.Ptr("1"),
+		},
+		Properties: &armpostgresqlflexibleservers.ServerProperties{
+			AdministratorLogin:         to.Ptr("cloudsa"),
+			AdministratorLoginPassword: to.Ptr("password"),
+			AvailabilityZone:           to.Ptr("1"),
+			Backup: &armpostgresqlflexibleservers.Backup{
+				BackupRetentionDays: to.Ptr[int32](7),
+				GeoRedundantBackup:  to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
+			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
+				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
+			},
+			Network: &armpostgresqlflexibleservers.Network{
+				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+				PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+			},
+			Storage: &armpostgresqlflexibleservers.Storage{
+				StorageSizeGB: to.Ptr[int32](512),
+			},
+			Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
+		},
+		SKU: &armpostgresqlflexibleservers.SKU{
+			Name: to.Ptr("Standard_D4s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateWithAadAuthEnabled.json
+func ExampleServersClient_BeginCreate_createANewServerWithActiveDirectoryAuthenticationEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreate(ctx, "testrg", "pgtestsvc4", armpostgresqlflexibleservers.Server{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"ElasticServer": to.Ptr("1"),
+		},
+		Properties: &armpostgresqlflexibleservers.ServerProperties{
+			AdministratorLogin:         to.Ptr("cloudsa"),
+			AdministratorLoginPassword: to.Ptr("password"),
+			AuthConfig: &armpostgresqlflexibleservers.AuthConfig{
+				ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.ActiveDirectoryAuthEnumEnabled),
+				PasswordAuth:        to.Ptr(armpostgresqlflexibleservers.PasswordAuthEnumEnabled),
+				TenantID:            to.Ptr("tttttt-tttt-tttt-tttt-tttttttttttt"),
+			},
+			AvailabilityZone: to.Ptr("1"),
+			Backup: &armpostgresqlflexibleservers.Backup{
+				BackupRetentionDays: to.Ptr[int32](7),
+				GeoRedundantBackup:  to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
+			DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
+				Type: to.Ptr(armpostgresqlflexibleservers.ArmServerKeyType("SystemManaged")),
+			},
+			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
+				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
+			},
+			Network: &armpostgresqlflexibleservers.Network{
+				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+				PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+			},
+			Storage: &armpostgresqlflexibleservers.Storage{
+				StorageSizeGB: to.Ptr[int32](512),
+			},
+			Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
+		},
+		SKU: &armpostgresqlflexibleservers.SKU{
+			Name: to.Ptr("Standard_D4s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateReplica.json
+func ExampleServersClient_BeginCreate_serverCreateReplica() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreate(ctx, "testrg", "pgtestsvc5rep", armpostgresqlflexibleservers.Server{
+		Location: to.Ptr("westus"),
+		Properties: &armpostgresqlflexibleservers.ServerProperties{
+			CreateMode:             to.Ptr(armpostgresqlflexibleservers.CreateModeReplica),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
+			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateWithDataEncryptionEnabled.json
+func ExampleServersClient_BeginCreate_serverCreateWithDataEncryptionEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreate(ctx, "testrg", "pgtestsvc4", armpostgresqlflexibleservers.Server{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"ElasticServer": to.Ptr("1"),
+		},
+		Identity: &armpostgresqlflexibleservers.UserAssignedIdentity{
+			Type: to.Ptr(armpostgresqlflexibleservers.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armpostgresqlflexibleservers.UserIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity": {},
+			},
+		},
+		Properties: &armpostgresqlflexibleservers.ServerProperties{
+			AdministratorLogin:         to.Ptr("cloudsa"),
+			AdministratorLoginPassword: to.Ptr("password"),
+			AvailabilityZone:           to.Ptr("1"),
+			Backup: &armpostgresqlflexibleservers.Backup{
+				BackupRetentionDays: to.Ptr[int32](7),
+				GeoRedundantBackup:  to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
+			DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
+				Type:                          to.Ptr(armpostgresqlflexibleservers.ArmServerKeyTypeAzureKeyVault),
+				PrimaryKeyURI:                 to.Ptr("https://test-kv.vault.azure.net/keys/test-key1/77f57315bab34b0189daa113fbc78787"),
+				PrimaryUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity"),
+			},
+			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
+				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
+			},
+			Network: &armpostgresqlflexibleservers.Network{
+				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+				PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourcegroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+			},
+			Storage: &armpostgresqlflexibleservers.Storage{
+				StorageSizeGB: to.Ptr[int32](512),
+			},
+			Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
+		},
+		SKU: &armpostgresqlflexibleservers.SKU{
+			Name: to.Ptr("Standard_D4s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdate.json
+func ExampleServersClient_BeginUpdate_serverUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginUpdate(ctx, "TestGroup", "pgtestsvc4", armpostgresqlflexibleservers.ServerForUpdate{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
+			AdministratorLoginPassword: to.Ptr("newpassword"),
+			Backup: &armpostgresqlflexibleservers.Backup{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForUpdateUpdate),
+			Storage: &armpostgresqlflexibleservers.Storage{
+				StorageSizeGB: to.Ptr[int32](1024),
+			},
+		},
+		SKU: &armpostgresqlflexibleservers.SKU{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithAadAuthEnabled.json
+func ExampleServersClient_BeginUpdate_serverUpdateWithAadAuthEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginUpdate(ctx, "TestGroup", "pgtestsvc4", armpostgresqlflexibleservers.ServerForUpdate{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
+			AdministratorLoginPassword: to.Ptr("newpassword"),
+			AuthConfig: &armpostgresqlflexibleservers.AuthConfig{
+				ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.ActiveDirectoryAuthEnumEnabled),
+				PasswordAuth:        to.Ptr(armpostgresqlflexibleservers.PasswordAuthEnumEnabled),
+				TenantID:            to.Ptr("tttttt-tttt-tttt-tttt-tttttttttttt"),
+			},
+			Backup: &armpostgresqlflexibleservers.Backup{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForUpdateUpdate),
+			Storage: &armpostgresqlflexibleservers.Storage{
+				StorageSizeGB: to.Ptr[int32](1024),
+			},
+		},
+		SKU: &armpostgresqlflexibleservers.SKU{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+func ExampleServersClient_BeginUpdate_serverUpdateWithCustomerMaintenanceWindow() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginUpdate(ctx, "testrg", "pgtestsvc4", armpostgresqlflexibleservers.ServerForUpdate{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForUpdateUpdate),
+			MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
+				CustomWindow: to.Ptr("Enabled"),
+				DayOfWeek:    to.Ptr[int32](0),
+				StartHour:    to.Ptr[int32](8),
+				StartMinute:  to.Ptr[int32](0),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithDataEncryptionEnabled.json
+func ExampleServersClient_BeginUpdate_serverUpdateWithDataEncryptionEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginUpdate(ctx, "TestGroup", "pgtestsvc4", armpostgresqlflexibleservers.ServerForUpdate{
+		Identity: &armpostgresqlflexibleservers.UserAssignedIdentity{
+			Type: to.Ptr(armpostgresqlflexibleservers.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armpostgresqlflexibleservers.UserIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity": {},
+			},
+		},
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
+			AdministratorLoginPassword: to.Ptr("newpassword"),
+			Backup: &armpostgresqlflexibleservers.Backup{
+				BackupRetentionDays: to.Ptr[int32](20),
+			},
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForUpdateUpdate),
+			DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
+				Type:                          to.Ptr(armpostgresqlflexibleservers.ArmServerKeyTypeAzureKeyVault),
+				PrimaryKeyURI:                 to.Ptr("https://test-kv.vault.azure.net/keys/test-key1/77f57315bab34b0189daa113fbc78787"),
+				PrimaryUserAssignedIdentityID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity"),
+			},
+			Storage: &armpostgresqlflexibleservers.Storage{
+				StorageSizeGB: to.Ptr[int32](1024),
+			},
+		},
+		SKU: &armpostgresqlflexibleservers.SKU{
+			Name: to.Ptr("Standard_D8s_v3"),
+			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithMajorVersionUpgrade.json
+func ExampleServersClient_BeginUpdate_serverUpdateWithMajorVersionUpgrade() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginUpdate(ctx, "testrg", "pgtestsvc4", armpostgresqlflexibleservers.ServerForUpdate{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
+			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForUpdateUpdate),
+			Version:    to.Ptr(armpostgresqlflexibleservers.ServerVersionFourteen),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerDelete.json
 func ExampleServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,10 +489,7 @@ func ExampleServersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"testrg",
-		"testserver",
-		nil)
+	poller, err := client.BeginDelete(ctx, "testrg", "testserver", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -120,8 +499,8 @@ func ExampleServersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerGet.json
-func ExampleServersClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerGet.json
+func ExampleServersClient_Get_serverGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -131,10 +510,7 @@ func ExampleServersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"testrg",
-		"pgtestsvc1",
-		nil)
+	res, err := client.Get(ctx, "testrg", "pgtestsvc1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -142,7 +518,26 @@ func ExampleServersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerGetWithVnet.json
+func ExampleServersClient_Get_serverGetWithVnet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Get(ctx, "testrg", "pgtestsvc4", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerListByResourceGroup.json
 func ExampleServersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,8 +548,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("testrg",
-		nil)
+	pager := client.NewListByResourceGroupPager("testrg", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -167,7 +561,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerList.json
 func ExampleServersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,8 +585,8 @@ func ExampleServersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerRestart.json
-func ExampleServersClient_BeginRestart() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerRestart.json
+func ExampleServersClient_BeginRestart_serverRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -202,10 +596,7 @@ func ExampleServersClient_BeginRestart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRestart(ctx,
-		"testrg",
-		"testserver",
-		&armpostgresqlflexibleservers.ServersClientBeginRestartOptions{Parameters: nil})
+	poller, err := client.BeginRestart(ctx, "testrg", "testserver", &armpostgresqlflexibleservers.ServersClientBeginRestartOptions{Parameters: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -215,7 +606,32 @@ func ExampleServersClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerRestartWithFailover.json
+func ExampleServersClient_BeginRestart_serverRestartWithFailover() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armpostgresqlflexibleservers.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginRestart(ctx, "testrg", "testserver", &armpostgresqlflexibleservers.ServersClientBeginRestartOptions{Parameters: &armpostgresqlflexibleservers.RestartParameter{
+		FailoverMode:        to.Ptr(armpostgresqlflexibleservers.FailoverModeForcedFailover),
+		RestartWithFailover: to.Ptr(true),
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerStart.json
 func ExampleServersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,10 +642,7 @@ func ExampleServersClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx,
-		"testrg",
-		"testserver",
-		nil)
+	poller, err := client.BeginStart(ctx, "testrg", "testserver", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -239,7 +652,7 @@ func ExampleServersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerStop.json
 func ExampleServersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,10 +663,7 @@ func ExampleServersClient_BeginStop() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStop(ctx,
-		"testrg",
-		"testserver",
-		nil)
+	poller, err := client.BeginStop(ctx, "testrg", "testserver", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

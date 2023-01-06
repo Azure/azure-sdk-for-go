@@ -11,6 +11,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -1501,6 +1502,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 	createResp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
 	_require.NotNil(createResp.VersionID)
+	time.Sleep(10 * time.Second)
 
 	_, err = abClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
@@ -1532,6 +1534,15 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 	for _, blobTag := range blobTagsSet {
 		_require.Equal(testcommon.SpecialCharBlobTagsMap[*blobTag.Key], *blobTag.Value)
 	}
+
+	// Tags with spaces
+	where := "\"GO \"='.Net'"
+	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{
+		Where: &where,
+	})
+	_require.Nil(err)
+	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
+	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[2])
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlobGetPropertiesUsingVID() {

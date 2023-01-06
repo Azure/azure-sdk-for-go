@@ -21,6 +21,9 @@ const credNameBrowser = "InteractiveBrowserCredentiall"
 type InteractiveBrowserCredentialOptions struct {
 	azcore.ClientOptions
 
+	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire
+	// tokens. Add the wildcard value "*" to allow the credential to acquire tokens for any tenant.
+	AdditionallyAllowedTenants []string
 	// ClientID is the ID of the application users will authenticate to.
 	// Defaults to the ID of an Azure development application.
 	ClientID string
@@ -51,9 +54,10 @@ func (o *InteractiveBrowserCredentialOptions) init() {
 
 // InteractiveBrowserCredential opens a browser to interactively authenticate a user.
 type InteractiveBrowserCredential struct {
-	account public.Account
-	client  publicClient
-	options InteractiveBrowserCredentialOptions
+	account                    public.Account
+	additionallyAllowedTenants []string
+	client                     publicClient
+	options                    InteractiveBrowserCredentialOptions
 }
 
 // NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential. Pass nil to accept default options.
@@ -67,7 +71,11 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	if err != nil {
 		return nil, err
 	}
-	return &InteractiveBrowserCredential{options: cp, client: c}, nil
+	return &InteractiveBrowserCredential{
+		additionallyAllowedTenants: resolveAdditionallyAllowedTenants(cp.AdditionallyAllowedTenants),
+		client:                     c,
+		options:                    cp,
+	}, nil
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
@@ -75,13 +83,21 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 	if len(opts.Scopes) == 0 {
 		return azcore.AccessToken{}, errors.New(credNameBrowser + ": GetToken() requires at least one scope")
 	}
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account))
+	tenant, err := resolveTenant(c.options.TenantID, opts.TenantID, c.additionallyAllowedTenants)
+	if err != nil {
+		return azcore.AccessToken{}, err
+	}
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account), public.WithTenantID(tenant))
 	if err == nil {
 		logGetTokenSuccess(c, opts)
 		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
-	ar, err = c.client.AcquireTokenInteractive(ctx, opts.Scopes, public.WithLoginHint(c.options.LoginHint), public.WithRedirectURI(c.options.RedirectURL))
+	ar, err = c.client.AcquireTokenInteractive(ctx, opts.Scopes,
+		public.WithLoginHint(c.options.LoginHint),
+		public.WithRedirectURI(c.options.RedirectURL),
+		public.WithTenantID(tenant),
+	)
 	if err != nil {
 		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameBrowser, err)
 	}

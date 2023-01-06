@@ -23,9 +23,12 @@ import (
 type DefaultAzureCredentialOptions struct {
 	azcore.ClientOptions
 
+	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire tokens. Add
+	// the wildcard value "*" to allow the credential to acquire tokens for any tenant. This value can also be
+	// set as a semicolon delimited list of tenants in the environment variable AZURE_ADDITIONALLY_ALLOWED_TENANTS.
+	AdditionallyAllowedTenants []string
 	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
 	DisableInstanceDiscovery bool
-
 	// TenantID identifies the tenant the Azure CLI should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
 	TenantID string
@@ -58,8 +61,17 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	if options == nil {
 		options = &DefaultAzureCredentialOptions{}
 	}
+	additionalTenants := options.AdditionallyAllowedTenants
+	if len(additionalTenants) == 0 {
+		if tenants := os.Getenv(azureAdditionallyAllowedTenants); tenants != "" {
+			additionalTenants = strings.Split(tenants, ";")
+		}
+	}
+	additionalTenants = resolveAdditionallyAllowedTenants(additionalTenants)
 
-	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: options.ClientOptions, DisableInstanceDiscovery: options.DisableInstanceDiscovery})
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
+		ClientOptions: options.ClientOptions, DisableInstanceDiscovery: options.DisableInstanceDiscovery, additionallyAllowedTenants: additionalTenants},
+	)
 	if err == nil {
 		creds = append(creds, envCred)
 	} else {
@@ -105,7 +117,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameManagedIdentity, err: err})
 	}
 
-	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
+	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{AdditionallyAllowedTenants: additionalTenants, TenantID: options.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {

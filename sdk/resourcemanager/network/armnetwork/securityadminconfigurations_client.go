@@ -59,7 +59,7 @@ func NewSecurityAdminConfigurationsClient(subscriptionID string, credential azco
 
 // CreateOrUpdate - Creates or updates a network manager security admin configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // networkManagerName - The name of the network manager.
 // configurationName - The name of the network manager Security Configuration.
@@ -105,7 +105,7 @@ func (client *SecurityAdminConfigurationsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, securityAdminConfiguration)
@@ -122,7 +122,7 @@ func (client *SecurityAdminConfigurationsClient) createOrUpdateHandleResponse(re
 
 // BeginDelete - Deletes a network manager security admin configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // networkManagerName - The name of the network manager.
 // configurationName - The name of the network manager Security Configuration.
@@ -144,7 +144,7 @@ func (client *SecurityAdminConfigurationsClient) BeginDelete(ctx context.Context
 
 // Delete - Deletes a network manager security admin configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 func (client *SecurityAdminConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *SecurityAdminConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, options)
 	if err != nil {
@@ -184,7 +184,7 @@ func (client *SecurityAdminConfigurationsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -195,7 +195,7 @@ func (client *SecurityAdminConfigurationsClient) deleteCreateRequest(ctx context
 
 // Get - Retrieves a network manager security admin configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // networkManagerName - The name of the network manager.
 // configurationName - The name of the network manager Security Configuration.
@@ -240,7 +240,7 @@ func (client *SecurityAdminConfigurationsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,7 +256,7 @@ func (client *SecurityAdminConfigurationsClient) getHandleResponse(resp *http.Re
 }
 
 // NewListPager - Lists all the network manager security admin configurations in a network manager, in a paginated format.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group.
 // networkManagerName - The name of the network manager.
 // options - SecurityAdminConfigurationsClientListOptions contains the optional parameters for the SecurityAdminConfigurationsClient.List
@@ -309,7 +309,7 @@ func (client *SecurityAdminConfigurationsClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-07-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

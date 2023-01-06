@@ -17,6 +17,37 @@ import (
 	"reflect"
 )
 
+// MarshalJSON implements the json.Marshaller interface for type AbsoluteMonthlySchedule.
+func (a AbsoluteMonthlySchedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "dayOfMonth", a.DayOfMonth)
+	populate(objectMap, "intervalMonths", a.IntervalMonths)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AbsoluteMonthlySchedule.
+func (a *AbsoluteMonthlySchedule) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dayOfMonth":
+			err = unpopulate(val, "DayOfMonth", &a.DayOfMonth)
+			delete(rawMsg, key)
+		case "intervalMonths":
+			err = unpopulate(val, "IntervalMonths", &a.IntervalMonths)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AccessProfile.
 func (a AccessProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -579,6 +610,64 @@ func (c *CredentialResults) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DailySchedule.
+func (d DailySchedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "intervalDays", d.IntervalDays)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DailySchedule.
+func (d *DailySchedule) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "intervalDays":
+			err = unpopulate(val, "IntervalDays", &d.IntervalDays)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DateSpan.
+func (d DateSpan) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateDateType(objectMap, "end", d.End)
+	populateDateType(objectMap, "start", d.Start)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DateSpan.
+func (d *DateSpan) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "end":
+			err = unpopulateDateType(val, "End", &d.End)
+			delete(rawMsg, key)
+		case "start":
+			err = unpopulateDateType(val, "Start", &d.Start)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
 		}
 	}
 	return nil
@@ -1315,6 +1404,7 @@ func (m *MaintenanceConfigurationListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MaintenanceConfigurationProperties.
 func (m MaintenanceConfigurationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "maintenanceWindow", m.MaintenanceWindow)
 	populate(objectMap, "notAllowedTime", m.NotAllowedTime)
 	populate(objectMap, "timeInWeek", m.TimeInWeek)
 	return json.Marshal(objectMap)
@@ -1329,11 +1419,61 @@ func (m *MaintenanceConfigurationProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "maintenanceWindow":
+			err = unpopulate(val, "MaintenanceWindow", &m.MaintenanceWindow)
+			delete(rawMsg, key)
 		case "notAllowedTime":
 			err = unpopulate(val, "NotAllowedTime", &m.NotAllowedTime)
 			delete(rawMsg, key)
 		case "timeInWeek":
 			err = unpopulate(val, "TimeInWeek", &m.TimeInWeek)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MaintenanceWindow.
+func (m MaintenanceWindow) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "durationHours", m.DurationHours)
+	populate(objectMap, "notAllowedDates", m.NotAllowedDates)
+	populate(objectMap, "schedule", m.Schedule)
+	populateDateType(objectMap, "startDate", m.StartDate)
+	populate(objectMap, "startTime", m.StartTime)
+	populate(objectMap, "utcOffset", m.UTCOffset)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MaintenanceWindow.
+func (m *MaintenanceWindow) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "durationHours":
+			err = unpopulate(val, "DurationHours", &m.DurationHours)
+			delete(rawMsg, key)
+		case "notAllowedDates":
+			err = unpopulate(val, "NotAllowedDates", &m.NotAllowedDates)
+			delete(rawMsg, key)
+		case "schedule":
+			err = unpopulate(val, "Schedule", &m.Schedule)
+			delete(rawMsg, key)
+		case "startDate":
+			err = unpopulateDateType(val, "StartDate", &m.StartDate)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulate(val, "StartTime", &m.StartTime)
+			delete(rawMsg, key)
+		case "utcOffset":
+			err = unpopulate(val, "UTCOffset", &m.UTCOffset)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2050,6 +2190,7 @@ func (m *ManagedClusterAgentPoolProfileProperties) UnmarshalJSON(data []byte) er
 // MarshalJSON implements the json.Marshaller interface for type ManagedClusterAutoUpgradeProfile.
 func (m ManagedClusterAutoUpgradeProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "nodeOSUpgradeChannel", m.NodeOSUpgradeChannel)
 	populate(objectMap, "upgradeChannel", m.UpgradeChannel)
 	return json.Marshal(objectMap)
 }
@@ -2063,6 +2204,9 @@ func (m *ManagedClusterAutoUpgradeProfile) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "nodeOSUpgradeChannel":
+			err = unpopulate(val, "NodeOSUpgradeChannel", &m.NodeOSUpgradeChannel)
+			delete(rawMsg, key)
 		case "upgradeChannel":
 			err = unpopulate(val, "UpgradeChannel", &m.UpgradeChannel)
 			delete(rawMsg, key)
@@ -4680,6 +4824,41 @@ func (p *PrivateLinkServiceConnectionState) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RelativeMonthlySchedule.
+func (r RelativeMonthlySchedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "dayOfWeek", r.DayOfWeek)
+	populate(objectMap, "intervalMonths", r.IntervalMonths)
+	populate(objectMap, "weekIndex", r.WeekIndex)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RelativeMonthlySchedule.
+func (r *RelativeMonthlySchedule) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dayOfWeek":
+			err = unpopulate(val, "DayOfWeek", &r.DayOfWeek)
+			delete(rawMsg, key)
+		case "intervalMonths":
+			err = unpopulate(val, "IntervalMonths", &r.IntervalMonths)
+			delete(rawMsg, key)
+		case "weekIndex":
+			err = unpopulate(val, "WeekIndex", &r.WeekIndex)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ResourceReference.
 func (r ResourceReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4818,6 +4997,45 @@ func (s *SSHPublicKey) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "keyData":
 			err = unpopulate(val, "KeyData", &s.KeyData)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Schedule.
+func (s Schedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "absoluteMonthly", s.AbsoluteMonthly)
+	populate(objectMap, "daily", s.Daily)
+	populate(objectMap, "relativeMonthly", s.RelativeMonthly)
+	populate(objectMap, "weekly", s.Weekly)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Schedule.
+func (s *Schedule) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "absoluteMonthly":
+			err = unpopulate(val, "AbsoluteMonthly", &s.AbsoluteMonthly)
+			delete(rawMsg, key)
+		case "daily":
+			err = unpopulate(val, "Daily", &s.Daily)
+			delete(rawMsg, key)
+		case "relativeMonthly":
+			err = unpopulate(val, "RelativeMonthly", &s.RelativeMonthly)
+			delete(rawMsg, key)
+		case "weekly":
+			err = unpopulate(val, "Weekly", &s.Weekly)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5483,6 +5701,37 @@ func (u *UserAssignedIdentity) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type WeeklySchedule.
+func (w WeeklySchedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "dayOfWeek", w.DayOfWeek)
+	populate(objectMap, "intervalWeeks", w.IntervalWeeks)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type WeeklySchedule.
+func (w *WeeklySchedule) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", w, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dayOfWeek":
+			err = unpopulate(val, "DayOfWeek", &w.DayOfWeek)
+			delete(rawMsg, key)
+		case "intervalWeeks":
+			err = unpopulate(val, "IntervalWeeks", &w.IntervalWeeks)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", w, err)
 		}
 	}
 	return nil

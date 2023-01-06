@@ -2,14 +2,12 @@ module github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 
 go 1.18
 
-retract (
-    v1.1.2 // Breaks customers in situations where close is slow/infinite.
-)
+retract v1.1.2 // Breaks customers in situations where close is slow/infinite.
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.0.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.0.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.2
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
 

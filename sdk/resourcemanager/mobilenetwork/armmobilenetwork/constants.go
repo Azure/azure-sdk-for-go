@@ -11,40 +11,79 @@ package armmobilenetwork
 
 const (
 	moduleName    = "armmobilenetwork"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v1.0.0"
 )
+
+// AuthenticationType - How to authenticate users who access local diagnostics APIs.
+type AuthenticationType string
+
+const (
+	// AuthenticationTypeAAD - Use AAD SSO to authenticate the user (this requires internet access).
+	AuthenticationTypeAAD AuthenticationType = "AAD"
+	// AuthenticationTypePassword - Use locally stored passwords to authenticate the user.
+	AuthenticationTypePassword AuthenticationType = "Password"
+)
+
+// PossibleAuthenticationTypeValues returns the possible values for the AuthenticationType const type.
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return []AuthenticationType{
+		AuthenticationTypeAAD,
+		AuthenticationTypePassword,
+	}
+}
 
 // BillingSKU - The SKU of the packet core control plane resource. The SKU list may change over time when a new SKU gets added
 // or an exiting SKU gets removed.
 type BillingSKU string
 
 const (
-	// BillingSKUEdgeSite2GBPS - Edge site 2Gbps plan
-	BillingSKUEdgeSite2GBPS BillingSKU = "EdgeSite2GBPS"
-	// BillingSKUEdgeSite3GBPS - Edge site 3Gbps plan
-	BillingSKUEdgeSite3GBPS BillingSKU = "EdgeSite3GBPS"
-	// BillingSKUEdgeSite4GBPS - Edge site 4Gbps plan
-	BillingSKUEdgeSite4GBPS BillingSKU = "EdgeSite4GBPS"
-	// BillingSKUEvaluationPackage - Evaluation package plan
-	BillingSKUEvaluationPackage BillingSKU = "EvaluationPackage"
-	// BillingSKUFlagshipStarterPackage - Flagship starter package plan
-	BillingSKUFlagshipStarterPackage BillingSKU = "FlagshipStarterPackage"
-	// BillingSKULargePackage - Large package plan
-	BillingSKULargePackage BillingSKU = "LargePackage"
-	// BillingSKUMediumPackage - Medium package plan
-	BillingSKUMediumPackage BillingSKU = "MediumPackage"
+	// BillingSKUG0 - 100 Mbps, 20 active SIMs plan
+	BillingSKUG0 BillingSKU = "G0"
+	// BillingSKUG1 - 1 Gbps, 100 active SIMs plan
+	BillingSKUG1 BillingSKU = "G1"
+	// BillingSKUG10 - 10 Gbps, 1000 active SIMs plan
+	BillingSKUG10 BillingSKU = "G10"
+	// BillingSKUG2 - 2 Gbps, 200 active SIMs plan
+	BillingSKUG2 BillingSKU = "G2"
+	// BillingSKUG3 - 3 Gbps, 300 active SIMs plan
+	BillingSKUG3 BillingSKU = "G3"
+	// BillingSKUG4 - 4 Gbps, 400 active SIMs plan
+	BillingSKUG4 BillingSKU = "G4"
+	// BillingSKUG5 - 5 Gbps, 500 active SIMs plan
+	BillingSKUG5 BillingSKU = "G5"
 )
 
 // PossibleBillingSKUValues returns the possible values for the BillingSKU const type.
 func PossibleBillingSKUValues() []BillingSKU {
 	return []BillingSKU{
-		BillingSKUEdgeSite2GBPS,
-		BillingSKUEdgeSite3GBPS,
-		BillingSKUEdgeSite4GBPS,
-		BillingSKUEvaluationPackage,
-		BillingSKUFlagshipStarterPackage,
-		BillingSKULargePackage,
-		BillingSKUMediumPackage,
+		BillingSKUG0,
+		BillingSKUG1,
+		BillingSKUG10,
+		BillingSKUG2,
+		BillingSKUG3,
+		BillingSKUG4,
+		BillingSKUG5,
+	}
+}
+
+// CertificateProvisioningState - The certificate's provisioning state
+type CertificateProvisioningState string
+
+const (
+	// CertificateProvisioningStateFailed - The certificate failed to be provisioned. The "reason" property explains why.
+	CertificateProvisioningStateFailed CertificateProvisioningState = "Failed"
+	// CertificateProvisioningStateNotProvisioned - The certificate has not been provisioned.
+	CertificateProvisioningStateNotProvisioned CertificateProvisioningState = "NotProvisioned"
+	// CertificateProvisioningStateProvisioned - The certificate has been provisioned.
+	CertificateProvisioningStateProvisioned CertificateProvisioningState = "Provisioned"
+)
+
+// PossibleCertificateProvisioningStateValues returns the possible values for the CertificateProvisioningState const type.
+func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState {
+	return []CertificateProvisioningState{
+		CertificateProvisioningStateFailed,
+		CertificateProvisioningStateNotProvisioned,
+		CertificateProvisioningStateProvisioned,
 	}
 }
 
@@ -52,17 +91,17 @@ func PossibleBillingSKUValues() []BillingSKU {
 type CoreNetworkType string
 
 const (
-	// CoreNetworkTypeEPC - EPC / 4G core
-	CoreNetworkTypeEPC CoreNetworkType = "EPC"
 	// CoreNetworkTypeFiveGC - 5G core
 	CoreNetworkTypeFiveGC CoreNetworkType = "5GC"
+	// CoreNetworkTypeEPC - EPC / 4G core
+	CoreNetworkTypeEPC CoreNetworkType = "EPC"
 )
 
 // PossibleCoreNetworkTypeValues returns the possible values for the CoreNetworkType const type.
 func PossibleCoreNetworkTypeValues() []CoreNetworkType {
 	return []CoreNetworkType{
-		CoreNetworkTypeEPC,
 		CoreNetworkTypeFiveGC,
+		CoreNetworkTypeEPC,
 	}
 }
 
@@ -83,6 +122,45 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// InstallationState - The installation state of the packet core.
+type InstallationState string
+
+const (
+	// InstallationStateFailed - The packet core is in failed state.
+	InstallationStateFailed InstallationState = "Failed"
+	// InstallationStateInstalled - The packet core is installed.
+	InstallationStateInstalled InstallationState = "Installed"
+	// InstallationStateInstalling - The packet core is installing.
+	InstallationStateInstalling InstallationState = "Installing"
+	// InstallationStateReinstalling - The packet core is reinstalling.
+	InstallationStateReinstalling InstallationState = "Reinstalling"
+	// InstallationStateRollingBack - The packet core is rolling back to its previous version.
+	InstallationStateRollingBack InstallationState = "RollingBack"
+	// InstallationStateUninstalled - The packet core is uninstalled.
+	InstallationStateUninstalled InstallationState = "Uninstalled"
+	// InstallationStateUninstalling - The packet core is uninstalling.
+	InstallationStateUninstalling InstallationState = "Uninstalling"
+	// InstallationStateUpdating - The packet core is updating its configuration.
+	InstallationStateUpdating InstallationState = "Updating"
+	// InstallationStateUpgrading - The packet core is upgrading to a different software version.
+	InstallationStateUpgrading InstallationState = "Upgrading"
+)
+
+// PossibleInstallationStateValues returns the possible values for the InstallationState const type.
+func PossibleInstallationStateValues() []InstallationState {
+	return []InstallationState{
+		InstallationStateFailed,
+		InstallationStateInstalled,
+		InstallationStateInstalling,
+		InstallationStateReinstalling,
+		InstallationStateRollingBack,
+		InstallationStateUninstalled,
+		InstallationStateUninstalling,
+		InstallationStateUpdating,
+		InstallationStateUpgrading,
 	}
 }
 
@@ -124,6 +202,24 @@ func PossibleNaptEnabledValues() []NaptEnabled {
 	}
 }
 
+// ObsoleteVersion - Indicates whether this version is obsolete.
+type ObsoleteVersion string
+
+const (
+	// ObsoleteVersionNotObsolete - This version is not obsolete for use in new packet core control plane deployments.
+	ObsoleteVersionNotObsolete ObsoleteVersion = "NotObsolete"
+	// ObsoleteVersionObsolete - This version is obsolete for use in new packet core control plane deployments.
+	ObsoleteVersionObsolete ObsoleteVersion = "Obsolete"
+)
+
+// PossibleObsoleteVersionValues returns the possible values for the ObsoleteVersion const type.
+func PossibleObsoleteVersionValues() []ObsoleteVersion {
+	return []ObsoleteVersion{
+		ObsoleteVersionNotObsolete,
+		ObsoleteVersionObsolete,
+	}
+}
+
 // PduSessionType - PDU session type (IPv4/IPv6).
 type PduSessionType string
 
@@ -145,18 +241,18 @@ type PlatformType string
 
 const (
 	// PlatformTypeAKSHCI - If this option is chosen, you must set one of "azureStackEdgeDevice", "connectedCluster" or "customLocation".
-	// If multiple are set then "customLocation" will take precedence over "connectedCluster" which takes precedence over "azureStackEdgeDevice".
+	// If multiple are set, they must be consistent with each other.
 	PlatformTypeAKSHCI PlatformType = "AKS-HCI"
-	// PlatformTypeBaseVM - If this option is chosen, you must set one of "connectedCluster" or "customLocation". If multiple
-	// are set then "customLocation" will take precedence over "connectedCluster".
-	PlatformTypeBaseVM PlatformType = "BaseVM"
+	// PlatformTypeThreePAZURESTACKHCI - If this option is chosen, you must set one of "azureStackHciCluster", "connectedCluster"
+	// or "customLocation". If multiple are set, they must be consistent with each other.
+	PlatformTypeThreePAZURESTACKHCI PlatformType = "3P-AZURE-STACK-HCI"
 )
 
 // PossiblePlatformTypeValues returns the possible values for the PlatformType const type.
 func PossiblePlatformTypeValues() []PlatformType {
 	return []PlatformType{
 		PlatformTypeAKSHCI,
-		PlatformTypeBaseVM,
+		PlatformTypeThreePAZURESTACKHCI,
 	}
 }
 
@@ -279,6 +375,36 @@ func PossibleSimStateValues() []SimState {
 		SimStateDisabled,
 		SimStateEnabled,
 		SimStateInvalid,
+	}
+}
+
+// SiteProvisioningState - The provisioning state of a resource e.g. SIM/SIM policy on a site.
+type SiteProvisioningState string
+
+const (
+	// SiteProvisioningStateAdding - The resource is being added to this site.
+	SiteProvisioningStateAdding SiteProvisioningState = "Adding"
+	// SiteProvisioningStateDeleting - The resource is being deleted from this site.
+	SiteProvisioningStateDeleting SiteProvisioningState = "Deleting"
+	// SiteProvisioningStateFailed - The resource failed to be provisioned on this site.
+	SiteProvisioningStateFailed SiteProvisioningState = "Failed"
+	// SiteProvisioningStateNotApplicable - The resource should not be provisioned on this site.
+	SiteProvisioningStateNotApplicable SiteProvisioningState = "NotApplicable"
+	// SiteProvisioningStateProvisioned - The resource is provisioned on this site.
+	SiteProvisioningStateProvisioned SiteProvisioningState = "Provisioned"
+	// SiteProvisioningStateUpdating - The resource is being updated on this site.
+	SiteProvisioningStateUpdating SiteProvisioningState = "Updating"
+)
+
+// PossibleSiteProvisioningStateValues returns the possible values for the SiteProvisioningState const type.
+func PossibleSiteProvisioningStateValues() []SiteProvisioningState {
+	return []SiteProvisioningState{
+		SiteProvisioningStateAdding,
+		SiteProvisioningStateDeleting,
+		SiteProvisioningStateFailed,
+		SiteProvisioningStateNotApplicable,
+		SiteProvisioningStateProvisioned,
+		SiteProvisioningStateUpdating,
 	}
 }
 

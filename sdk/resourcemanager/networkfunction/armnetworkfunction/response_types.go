@@ -63,3 +63,8 @@ type CollectorPoliciesClientGetResponse struct {
 type CollectorPoliciesClientListResponse struct {
 	CollectorPolicyListResult
 }
+
+// CollectorPoliciesClientUpdateTagsResponse contains the response from method CollectorPoliciesClient.UpdateTags.
+type CollectorPoliciesClientUpdateTagsResponse struct {
+	CollectorPolicy
+}

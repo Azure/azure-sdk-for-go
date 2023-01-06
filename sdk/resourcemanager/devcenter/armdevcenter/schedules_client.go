@@ -58,7 +58,7 @@ func NewSchedulesClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Creates or updates a Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // poolName - Name of the pool.
@@ -82,7 +82,7 @@ func (client *SchedulesClient) BeginCreateOrUpdate(ctx context.Context, resource
 
 // CreateOrUpdate - Creates or updates a Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 func (client *SchedulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body Schedule, options *SchedulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, projectName, poolName, scheduleName, body, options)
 	if err != nil {
@@ -126,7 +126,7 @@ func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -137,7 +137,7 @@ func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // BeginDelete - Deletes a Scheduled.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // poolName - Name of the pool.
@@ -159,7 +159,7 @@ func (client *SchedulesClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Deletes a Scheduled.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 func (client *SchedulesClient) deleteOperation(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, options *SchedulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, projectName, poolName, scheduleName, options)
 	if err != nil {
@@ -203,7 +203,7 @@ func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -214,7 +214,7 @@ func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Gets a schedule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // poolName - Name of the pool.
@@ -263,7 +263,7 @@ func (client *SchedulesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -282,7 +282,7 @@ func (client *SchedulesClient) getHandleResponse(resp *http.Response) (Schedules
 }
 
 // NewListByPoolPager - Lists schedules for a pool
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // poolName - Name of the pool.
@@ -339,7 +339,7 @@ func (client *SchedulesClient) listByPoolCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -359,7 +359,7 @@ func (client *SchedulesClient) listByPoolHandleResponse(resp *http.Response) (Sc
 
 // BeginUpdate - Partially updates a Scheduled.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // poolName - Name of the pool.
@@ -382,7 +382,7 @@ func (client *SchedulesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 
 // Update - Partially updates a Scheduled.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 func (client *SchedulesClient) update(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body ScheduleUpdate, options *SchedulesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, projectName, poolName, scheduleName, body, options)
 	if err != nil {
@@ -426,7 +426,7 @@ func (client *SchedulesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

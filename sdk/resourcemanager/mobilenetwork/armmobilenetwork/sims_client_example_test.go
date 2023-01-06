@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimDelete.json
 func ExampleSimsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,11 +28,7 @@ func ExampleSimsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"testResourceGroupName",
-		"testSimGroup",
-		"testSim",
-		nil)
+	poller, err := client.BeginDelete(ctx, "testResourceGroupName", "testSimGroup", "testSim", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -42,7 +38,7 @@ func ExampleSimsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGet.json
 func ExampleSimsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,11 +49,7 @@ func ExampleSimsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"testResourceGroupName",
-		"testSimGroup",
-		"testSimName",
-		nil)
+	res, err := client.Get(ctx, "testResourceGroupName", "testSimGroup", "testSimName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -65,7 +57,7 @@ func ExampleSimsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimCreate.json
 func ExampleSimsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,35 +68,30 @@ func ExampleSimsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"testSimGroup",
-		"testSim",
-		armmobilenetwork.Sim{
-			Properties: &armmobilenetwork.SimPropertiesFormat{
-				AuthenticationKey:                     to.Ptr("00000000000000000000000000000000"),
-				DeviceType:                            to.Ptr("Video camera"),
-				IntegratedCircuitCardIdentifier:       to.Ptr("8900000000000000000"),
-				InternationalMobileSubscriberIdentity: to.Ptr("00000"),
-				OperatorKeyCode:                       to.Ptr("00000000000000000000000000000000"),
-				SimPolicy: &armmobilenetwork.SimPolicyResourceID{
-					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
-				},
-				StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
-					{
-						AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
-						},
-						Slice: &armmobilenetwork.SliceResourceID{
-							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
-						},
-						StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
-							IPv4Address: to.Ptr("2.4.0.1"),
-						},
-					}},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testSimGroup", "testSim", armmobilenetwork.Sim{
+		Properties: &armmobilenetwork.SimPropertiesFormat{
+			DeviceType:                            to.Ptr("Video camera"),
+			IntegratedCircuitCardIdentifier:       to.Ptr("8900000000000000000"),
+			InternationalMobileSubscriberIdentity: to.Ptr("00000"),
+			SimPolicy: &armmobilenetwork.SimPolicyResourceID{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"),
 			},
+			StaticIPConfiguration: []*armmobilenetwork.SimStaticIPProperties{
+				{
+					AttachedDataNetwork: &armmobilenetwork.AttachedDataNetworkResourceID{
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"),
+					},
+					Slice: &armmobilenetwork.SliceResourceID{
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
+					},
+					StaticIP: &armmobilenetwork.SimStaticIPPropertiesStaticIP{
+						IPv4Address: to.Ptr("2.4.0.1"),
+					},
+				}},
+			AuthenticationKey: to.Ptr("00000000000000000000000000000000"),
+			OperatorKeyCode:   to.Ptr("00000000000000000000000000000000"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -116,8 +103,8 @@ func ExampleSimsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimListBySimGroup.json
-func ExampleSimsClient_NewListBySimGroupPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimListBySimGroup.json
+func ExampleSimsClient_NewListByGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,9 +114,7 @@ func ExampleSimsClient_NewListBySimGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySimGroupPager("rg1",
-		"testSimGroup",
-		nil)
+	pager := client.NewListByGroupPager("rg1", "testSimGroup", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

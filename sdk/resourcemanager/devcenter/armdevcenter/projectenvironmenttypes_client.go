@@ -58,7 +58,7 @@ func NewProjectEnvironmentTypesClient(subscriptionID string, credential azcore.T
 
 // CreateOrUpdate - Creates or updates a project environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // environmentTypeName - The name of the environment type.
@@ -104,7 +104,7 @@ func (client *ProjectEnvironmentTypesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -121,7 +121,7 @@ func (client *ProjectEnvironmentTypesClient) createOrUpdateHandleResponse(resp *
 
 // Delete - Deletes a project environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // environmentTypeName - The name of the environment type.
@@ -166,7 +166,7 @@ func (client *ProjectEnvironmentTypesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -174,7 +174,7 @@ func (client *ProjectEnvironmentTypesClient) deleteCreateRequest(ctx context.Con
 
 // Get - Gets a project environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // environmentTypeName - The name of the environment type.
@@ -219,7 +219,7 @@ func (client *ProjectEnvironmentTypesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -235,7 +235,7 @@ func (client *ProjectEnvironmentTypesClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListPager - Lists environment types for a project.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // options - ProjectEnvironmentTypesClientListOptions contains the optional parameters for the ProjectEnvironmentTypesClient.List
@@ -288,7 +288,7 @@ func (client *ProjectEnvironmentTypesClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -308,7 +308,7 @@ func (client *ProjectEnvironmentTypesClient) listHandleResponse(resp *http.Respo
 
 // Update - Partially updates a project environment type.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-12-preview
+// Generated from API version 2022-11-11-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // environmentTypeName - The name of the environment type.
@@ -354,7 +354,7 @@ func (client *ProjectEnvironmentTypesClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-12-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

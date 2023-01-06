@@ -2,7 +2,7 @@
 
 The Azure Monitor Query client library is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
 
-- [Logs](https://docs.microsoft.com/azure/azure-monitor/logs/data-platform-logs) - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace](https://docs.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces). The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language].
+- [Logs](https://docs.microsoft.com/azure/azure-monitor/logs/data-platform-logs) - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace](https://docs.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces). The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language]. See the [Kusto to SQL cheat sheet][kusto_to_sql] for more information.
 - [Metrics](https://docs.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics) - Collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
 
 **NOTE**: This library is currently a beta. There may be breaking changes until it reaches semantic version `v1.0.0`.
@@ -160,7 +160,7 @@ Results
 	|---Name *string
 	|---Rows []Row
 |---Error *ErrorInfo
-	|---Code *string // custom error type
+	|---Code *string
 |---Render []byte
 |---Statistics []byte
 ```
@@ -204,7 +204,7 @@ BatchRequest
 BatchResponse
 |---Responses []*BatchQueryResponse
 	|---Body *BatchQueryResults
-		|---Error *ErrorInfo // custom error type
+		|---Error *ErrorInfo
 			|---Code *string
 		|---Render []byte
 		|---Statistics []byte
@@ -228,15 +228,9 @@ To run the same query against multiple Log Analytics workspaces, add the additio
 When multiple workspaces are included in the query, the logs in the result table are not grouped according to the workspace from which it was retrieved.
 
 ```go
-client := azquery.NewLogsClient(cred, nil)
-timespan := "2022-08-30/2022-08-31"
 additionalWorkspaces := []*string{&workspaceID2, &workspaceID3}
 
-res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan), Workspaces: additionalWorkspaces}, nil)
-if err != nil {
-	//TODO: handle error
-}
-_ = res
+res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: timespan, Workspaces: additionalWorkspaces}, nil)
 ```
 
 #### Increase wait time, include statistics, include render (visualization)
@@ -248,18 +242,14 @@ To get logs query execution statistics, such as CPU and memory consumption, set 
 To get visualization data for logs queries, set `include-render` to true in LogsClientQueryWorkspaceOptions Prefer string.
 
 ```go
-client := azquery.NewLogsClient(cred, nil)
-timespan := "2022-08-30/2022-08-31"
-prefer := "wait=600,include-statistics=true,include-render=true"
-options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer}
-
 res, err := client.QueryWorkspace(context.TODO(), workspaceID,
-	azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, options)
-if err != nil {
-	//TODO: handle error
-}
-_ = res
+	azquery.Body{Query: to.Ptr(query), Timespan: timespan}, 
+	&azquery.LogsClientQueryWorkspaceOptions{Prefer: to.Ptr("wait=600,include-statistics=true,include-render=true")})
 ```
+
+full example: [link][example_queryworkspace_2]
+
+To do the same with `QueryBatch` set the values in the `BatchQueryRequest.Headers` map with a key of "prefer".
 
 ### Metrics query
 
@@ -365,9 +355,11 @@ comments.
 [context]: https://pkg.go.dev/context
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
-[example_batch]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.Batch
+[example_batch]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryBatch
 [example_query_workspace]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryWorkspace
+[example_queryworkspace_2]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryWorkspace-Second
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
+[kusto_to_sql]: https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/sqlcheatsheet
 [log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview
 [log_analytics_workspace_create]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace?tabs=azure-portal
 [time_go]: https://pkg.go.dev/time

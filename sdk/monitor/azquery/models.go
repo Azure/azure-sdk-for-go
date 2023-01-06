@@ -75,7 +75,7 @@ type Body struct {
 	// REQUIRED; The query to execute.
 	Query *string `json:"query,omitempty"`
 
-	// A list of workspaces that are included in the query.
+	// A list of workspaces to query in addition to the primary workspace.
 	AdditionalWorkspaces []*string `json:"workspaces,omitempty"`
 
 	// Optional. The timespan over which to query data. This is an ISO8601 time period value. This timespan is applied in addition
@@ -108,7 +108,11 @@ type LogsClientQueryBatchOptions struct {
 
 // LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
 type LogsClientQueryWorkspaceOptions struct {
-	// Optional. The prefer header to set server timeout, query statistics and visualization information.
+	// Optional. The prefer header to set server timeout, query statistics and visualization information. For server timeout,
+	// set the prefer string equal to "wait=NumOfMinutes" where NumOfMinutes is a
+	// integer (ex 600). Max server time is ten minutes. For statistics, set prefer string equal to "include-statistics=true".
+	// For visualization, set prefer string equal to "include-render=true". For more
+	// information, see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
 	Prefer *string
 }
 

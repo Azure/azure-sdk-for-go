@@ -82,7 +82,7 @@ func TestChainedTokenCredential_NilSource(t *testing.T) {
 }
 
 func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
-	// ChainedTokenCredential should continue iterating when a source returns CredentialUnavailableError, wrapped or not
+	// ChainedTokenCredential should continue iterating when a source returns credentialUnavailableError, wrapped or not
 	c1 := NewFakeCredential()
 	c1.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("test", "something went wrong"))
 	c2 := NewFakeCredential()
@@ -139,7 +139,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testin
 		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if _, ok := err.(*CredentialUnavailableError); !ok {
+	if _, ok := err.(*credentialUnavailableError); !ok {
 		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
 	expectedError := `ChainedTokenCredential: failed to acquire a token.
@@ -186,7 +186,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing
 	}
 	cred.name = "CustomNameCredential"
 	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if _, ok := err.(*CredentialUnavailableError); !ok {
+	if _, ok := err.(*credentialUnavailableError); !ok {
 		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
 	expectedError := `CustomNameCredential: failed to acquire a token.

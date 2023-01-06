@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0 (2023-01-05)
+## 1.3.0 (2023-01-06)
 
 ### Features Added
 * Added `BearerTokenOptions.AuthorizationHandler` to enable extending `runtime.BearerTokenPolicy`

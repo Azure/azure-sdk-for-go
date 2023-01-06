@@ -688,27 +688,6 @@ type PacketCoreControlPlane struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// PacketCoreControlPlaneClientBeginCollectDiagnosticsPackageOptions contains the optional parameters for the PacketCoreControlPlaneClient.BeginCollectDiagnosticsPackage
-// method.
-type PacketCoreControlPlaneClientBeginCollectDiagnosticsPackageOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PacketCoreControlPlaneClientBeginReinstallOptions contains the optional parameters for the PacketCoreControlPlaneClient.BeginReinstall
-// method.
-type PacketCoreControlPlaneClientBeginReinstallOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// PacketCoreControlPlaneClientBeginRollbackOptions contains the optional parameters for the PacketCoreControlPlaneClient.BeginRollback
-// method.
-type PacketCoreControlPlaneClientBeginRollbackOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // PacketCoreControlPlaneCollectDiagnosticsPackage - Packet core control plane collect diagnostics package options
 type PacketCoreControlPlaneCollectDiagnosticsPackage struct {
 	// REQUIRED; The Storage Account Blob URL to upload the diagnostics package to.
@@ -815,6 +794,13 @@ type PacketCoreControlPlaneVersionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginCollectDiagnosticsPackage
+// method.
+type PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // PacketCoreControlPlanesClientBeginCreateOrUpdateOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginCreateOrUpdate
 // method.
 type PacketCoreControlPlanesClientBeginCreateOrUpdateOptions struct {
@@ -825,6 +811,20 @@ type PacketCoreControlPlanesClientBeginCreateOrUpdateOptions struct {
 // PacketCoreControlPlanesClientBeginDeleteOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginDelete
 // method.
 type PacketCoreControlPlanesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PacketCoreControlPlanesClientBeginReinstallOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginReinstall
+// method.
+type PacketCoreControlPlanesClientBeginReinstallOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PacketCoreControlPlanesClientBeginRollbackOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginRollback
+// method.
+type PacketCoreControlPlanesClientBeginRollbackOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1283,24 +1283,6 @@ type Sim struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// SimClientBeginBulkDeleteOptions contains the optional parameters for the SimClient.BeginBulkDelete method.
-type SimClientBeginBulkDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// SimClientBeginBulkUploadEncryptedOptions contains the optional parameters for the SimClient.BeginBulkUploadEncrypted method.
-type SimClientBeginBulkUploadEncryptedOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// SimClientBeginBulkUploadOptions contains the optional parameters for the SimClient.BeginBulkUpload method.
-type SimClientBeginBulkUploadOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // SimDeleteList - The SIMs to delete.
 type SimDeleteList struct {
 	// REQUIRED; A list of SIM resource names to delete.
@@ -1586,6 +1568,25 @@ type SimStaticIPPropertiesStaticIP struct {
 type SimUploadList struct {
 	// REQUIRED; A list of SIMs to upload.
 	Sims []*SimNameAndProperties `json:"sims,omitempty"`
+}
+
+// SimsClientBeginBulkDeleteOptions contains the optional parameters for the SimsClient.BeginBulkDelete method.
+type SimsClientBeginBulkDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SimsClientBeginBulkUploadEncryptedOptions contains the optional parameters for the SimsClient.BeginBulkUploadEncrypted
+// method.
+type SimsClientBeginBulkUploadEncryptedOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SimsClientBeginBulkUploadOptions contains the optional parameters for the SimsClient.BeginBulkUpload method.
+type SimsClientBeginBulkUploadOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SimsClientBeginCreateOrUpdateOptions contains the optional parameters for the SimsClient.BeginCreateOrUpdate method.

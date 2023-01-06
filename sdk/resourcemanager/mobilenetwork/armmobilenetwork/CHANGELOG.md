@@ -1,5 +1,41 @@
 # Release History
 
+## 2.0.0 (2023-01-27)
+### Breaking Changes
+
+- Function `NewPacketCoreControlPlaneClient` has been removed
+- Function `*PacketCoreControlPlaneClient.BeginCollectDiagnosticsPackage` has been removed
+- Function `*PacketCoreControlPlaneClient.BeginReinstall` has been removed
+- Function `*PacketCoreControlPlaneClient.BeginRollback` has been removed
+- Function `NewSimClient` has been removed
+- Function `*SimClient.BeginBulkDelete` has been removed
+- Function `*SimClient.BeginBulkUpload` has been removed
+- Function `*SimClient.BeginBulkUploadEncrypted` has been removed
+- Struct `PacketCoreControlPlaneClient` has been removed
+- Struct `PacketCoreControlPlaneClientCollectDiagnosticsPackageResponse` has been removed
+- Struct `PacketCoreControlPlaneClientReinstallResponse` has been removed
+- Struct `PacketCoreControlPlaneClientRollbackResponse` has been removed
+- Struct `SimClient` has been removed
+- Struct `SimClientBulkDeleteResponse` has been removed
+- Struct `SimClientBulkUploadEncryptedResponse` has been removed
+- Struct `SimClientBulkUploadResponse` has been removed
+
+### Features Added
+
+- New function `*PacketCoreControlPlanesClient.BeginCollectDiagnosticsPackage(context.Context, string, string, PacketCoreControlPlaneCollectDiagnosticsPackage, *PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions) (*runtime.Poller[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse], error)`
+- New function `*PacketCoreControlPlanesClient.BeginReinstall(context.Context, string, string, *PacketCoreControlPlanesClientBeginReinstallOptions) (*runtime.Poller[PacketCoreControlPlanesClientReinstallResponse], error)`
+- New function `*PacketCoreControlPlanesClient.BeginRollback(context.Context, string, string, *PacketCoreControlPlanesClientBeginRollbackOptions) (*runtime.Poller[PacketCoreControlPlanesClientRollbackResponse], error)`
+- New function `*SimsClient.BeginBulkDelete(context.Context, string, string, SimDeleteList, *SimsClientBeginBulkDeleteOptions) (*runtime.Poller[SimsClientBulkDeleteResponse], error)`
+- New function `*SimsClient.BeginBulkUpload(context.Context, string, string, SimUploadList, *SimsClientBeginBulkUploadOptions) (*runtime.Poller[SimsClientBulkUploadResponse], error)`
+- New function `*SimsClient.BeginBulkUploadEncrypted(context.Context, string, string, EncryptedSimUploadList, *SimsClientBeginBulkUploadEncryptedOptions) (*runtime.Poller[SimsClientBulkUploadEncryptedResponse], error)`
+- New struct `PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse`
+- New struct `PacketCoreControlPlanesClientReinstallResponse`
+- New struct `PacketCoreControlPlanesClientRollbackResponse`
+- New struct `SimsClientBulkDeleteResponse`
+- New struct `SimsClientBulkUploadEncryptedResponse`
+- New struct `SimsClientBulkUploadResponse`
+
+
 ## 1.0.0 (2022-12-23)
 ### Breaking Changes
 

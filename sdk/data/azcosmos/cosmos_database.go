@@ -6,6 +6,8 @@ package azcosmos
 import (
 	"context"
 	"errors"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DatabaseClient lets you perform read, update, change throughput, and delete database operations.
@@ -74,6 +76,54 @@ func (db *DatabaseClient) CreateContainer(
 	}
 
 	return newContainerResponse(azResponse)
+}
+
+// NewQueryContainersPager executes query for containers within a database.
+// ctx - The context for the request.
+// query - The SQL query to execute.
+// o - Options for the operation.
+func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainersOptions) *runtime.Pager[QueryContainersResponse] {
+	queryOptions := &QueryContainersOptions{}
+	if o != nil {
+		originalOptions := *o
+		queryOptions = &originalOptions
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeCollection,
+		resourceAddress: c.link,
+	}
+
+	path, _ := generatePathForNameBased(resourceTypeCollection, operationContext.resourceAddress, true)
+
+	return runtime.NewPager(runtime.PagingHandler[QueryContainersResponse]{
+		More: func(page QueryContainersResponse) bool {
+			return page.ContinuationToken != ""
+		},
+		Fetcher: func(ctx context.Context, page *QueryContainersResponse) (QueryContainersResponse, error) {
+			if page != nil {
+				if page.ContinuationToken != "" {
+					// Use the previous page continuation if available
+					queryOptions.ContinuationToken = page.ContinuationToken
+				}
+			}
+
+			azResponse, err := c.client.sendQueryRequest(
+				path,
+				ctx,
+				query,
+				queryOptions.QueryParameters,
+				operationContext,
+				queryOptions,
+				nil)
+
+			if err != nil {
+				return QueryContainersResponse{}, err
+			}
+
+			return newContainersQueryResponse(azResponse)
+		},
+	})
 }
 
 // Read obtains the information for a Cosmos database.

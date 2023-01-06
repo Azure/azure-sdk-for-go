@@ -24,7 +24,7 @@ type ACRManifests struct {
 	Link *string `json:"link,omitempty"`
 
 	// List of manifests
-	Manifests []*ManifestAttributesBase `json:"manifests,omitempty"`
+	Manifests []*ManifestAttributes `json:"manifests,omitempty"`
 
 	// Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
 	RegistryLoginServer *string `json:"registry,omitempty"`
@@ -53,7 +53,7 @@ type ArtifactManifestPlatform struct {
 // ArtifactManifestProperties - Manifest attributes details
 type ArtifactManifestProperties struct {
 	// READ-ONLY; Manifest attributes
-	Manifest *ManifestAttributesBase `json:"manifest,omitempty" azure:"ro"`
+	Manifest *ManifestAttributes `json:"manifest,omitempty" azure:"ro"`
 
 	// READ-ONLY; Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
 	RegistryLoginServer *string `json:"registry,omitempty" azure:"ro"`
@@ -261,8 +261,8 @@ type ContainerRepositoryProperties struct {
 	TagCount *int32 `json:"tagCount,omitempty" azure:"ro"`
 }
 
-// ManifestAttributesBase - Manifest details
-type ManifestAttributesBase struct {
+// ManifestAttributes - Manifest details
+type ManifestAttributes struct {
 	// READ-ONLY; Created time
 	CreatedOn *time.Time `json:"createdTime,omitempty" azure:"ro"`
 
@@ -357,8 +357,8 @@ type TagList struct {
 	Repository *string `json:"imageName,omitempty"`
 
 	// REQUIRED; List of tag attribute details
-	TagAttributeBases []*TagAttributes `json:"tags,omitempty"`
-	Link              *string          `json:"link,omitempty"`
+	Tags []*TagAttributes `json:"tags,omitempty"`
+	Link *string          `json:"link,omitempty"`
 }
 
 // TagWriteableProperties - Changeable attributes

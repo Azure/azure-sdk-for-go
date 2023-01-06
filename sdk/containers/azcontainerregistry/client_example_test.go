@@ -203,7 +203,7 @@ func ExampleClient_NewListTagsPager() {
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for i, v := range page.TagAttributeBases {
+		for i, v := range page.Tags {
 			fmt.Printf("tag %d: %s\n", i+1, *v.Name)
 		}
 	}

@@ -139,7 +139,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range page.TagAttributeBases {
+		for _, v := range page.Tags {
 			fmt.Printf("tag: %s\n", *v.Name)
 		}
 	}

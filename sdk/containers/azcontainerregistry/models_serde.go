@@ -265,8 +265,8 @@ func (c *ContainerRepositoryProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManifestAttributesBase.
-func (m ManifestAttributesBase) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ManifestAttributes.
+func (m ManifestAttributes) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "architecture", m.Architecture)
 	populate(objectMap, "changeableAttributes", m.ChangeableAttributes)
@@ -280,8 +280,8 @@ func (m ManifestAttributesBase) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ManifestAttributesBase.
-func (m *ManifestAttributesBase) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManifestAttributes.
+func (m *ManifestAttributes) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", m, err)
@@ -482,7 +482,7 @@ func (t TagList) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "link", t.Link)
 	populate(objectMap, "registry", t.RegistryLoginServer)
 	populate(objectMap, "imageName", t.Repository)
-	populate(objectMap, "tags", t.TagAttributeBases)
+	populate(objectMap, "tags", t.Tags)
 	return json.Marshal(objectMap)
 }
 
@@ -505,7 +505,7 @@ func (t *TagList) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Repository", &t.Repository)
 			delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, "TagAttributeBases", &t.TagAttributeBases)
+			err = unpopulate(val, "Tags", &t.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {

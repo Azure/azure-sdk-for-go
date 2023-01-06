@@ -140,7 +140,7 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 	pager = client.NewListManifestsPager("hello-world", &ClientListManifestsOptions{
 		OrderBy: to.Ptr(ArtifactManifestOrderByLastUpdatedOnDescending),
 	})
-	var descendingItems []*ManifestAttributesBase
+	var descendingItems []*ManifestAttributes
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
@@ -153,7 +153,7 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 	pager = client.NewListManifestsPager("hello-world", &ClientListManifestsOptions{
 		OrderBy: to.Ptr(ArtifactManifestOrderByLastUpdatedOnAscending),
 	})
-	var ascendingItems []*ManifestAttributesBase
+	var ascendingItems []*ManifestAttributes
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
@@ -207,10 +207,10 @@ func TestClient_NewListTagsPager(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.TagAttributeBases)
+		require.NotEmpty(t, page.Tags)
 		pages++
-		require.Equal(t, len(page.TagAttributeBases), 1)
-		for i, v := range page.TagAttributeBases {
+		require.Equal(t, len(page.Tags), 1)
+		for i, v := range page.Tags {
 			fmt.Printf("page %d tag %d: %s\n", pages, i+1, *v.Name)
 			items++
 		}
@@ -225,8 +225,8 @@ func TestClient_NewListTagsPager(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.TagAttributeBases)
-		for i, v := range page.TagAttributeBases {
+		require.NotEmpty(t, page.Tags)
+		for i, v := range page.Tags {
 			fmt.Printf("tag order by last updated on descending %d: %s\n", i+1, *v.Name)
 			descendingItems = append(descendingItems, v)
 		}
@@ -238,8 +238,8 @@ func TestClient_NewListTagsPager(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.TagAttributeBases)
-		for i, v := range page.TagAttributeBases {
+		require.NotEmpty(t, page.Tags)
+		for i, v := range page.Tags {
 			fmt.Printf("tag order by last updated on descending %d: %s\n", i+1, *v.Name)
 			ascendingItems = append(ascendingItems, v)
 		}

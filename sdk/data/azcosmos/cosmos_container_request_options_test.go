@@ -39,3 +39,18 @@ func TestContainerRequestOptionsToHeaders(t *testing.T) {
 		t.Error("toHeaders should return nil")
 	}
 }
+
+
+func TestQueryContainersRequestOptionsToHeaders(t *testing.T) {
+	options := &QueryContainersOptions{}
+	options.ContinuationToken = "continuationToken"
+	header := options.toHeaders()
+	if header == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
+
+	headers := *header
+	if headers[cosmosHeaderContinuationToken] != "continuationToken" {
+		t.Errorf("ContinuationToken should be continuationToken but got %v", headers[cosmosHeaderContinuationToken])
+	}
+}

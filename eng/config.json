@@ -1,16 +1,16 @@
 {
     "Packages": [
         {
-            "Name": "azacr",
-            "CoverageGoal": 0.30
-        },
-        {
             "Name": "azappconfig",
             "CoverageGoal": 0.19
         },
         {
             "Name": "azblob",
             "CoverageGoal": 0.30
+        },
+        {
+            "Name": "azcontainerregistry",
+            "CoverageGoal": 0.60
         },
         {
             "Name": "azcore",

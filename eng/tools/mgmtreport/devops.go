@@ -6,11 +6,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/pipelines"
+	"regexp"
 	"strings"
 
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6"
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/build"
+	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/pipelines"
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/test"
 )
 
@@ -50,85 +51,81 @@ func getBuildCodeCoverage(client *azuredevops.Client, projectName string, buildI
 	return 0, 0, nil
 }
 
-func getCodeCoverage(pipelineClient pipelines.Client, azureDevopsClient *azuredevops.Client, info *mgmtInfo, pid int) (*int, error) {
+func getBuildId(pipelineClient pipelines.Client, azureDevopsClient *azuredevops.Client, pid int) (int, error) {
 	listRuns, err := pipelineClient.ListRuns(context.Background(), pipelines.ListRunsArgs{Project: &projectName, PipelineId: &pid})
-	if err != nil && len(*listRuns) > 0 {
-		return nil, err
+	if err != nil {
+		return 0, err
 	}
 
 	var buildId *int
 	for i := 0; i < 5 && i < len(*listRuns); i++ {
 		buildId = (*listRuns)[i].Id
 
-		// code coverage
-		coveredLines, coverableLines, err := getBuildCodeCoverage(azureDevopsClient, projectName, *buildId)
+		_, coverableLines, err := getBuildCodeCoverage(azureDevopsClient, projectName, *buildId)
 		if err != nil {
-			return nil, err
+			return 0, err
 		}
 
 		if coverableLines != 0 {
-			info.CoveredLines = coveredLines
-			info.CoverableLines = coverableLines
 			break
 		}
 	}
 
-	return buildId, nil
+	return *buildId, nil
 }
 
-func getMockTestResult(testClient test.Client, info *mgmtInfo, buildId *int) error {
-	buildUri := fmt.Sprintf("vstfs:///Build/Build/%d", *buildId)
-	testRuns, err := testClient.GetTestRuns(context.Background(), test.GetTestRunsArgs{
-		Project:  &projectName,
-		BuildUri: &buildUri,
-	})
-	if err != nil {
-		return err
-	}
-	for _, tr := range *testRuns {
-		if strings.Contains(*tr.Name, "Test result on resourcemanager") {
-			info.mockTestPass = *tr.PassedTests
-			info.mockTestTotal = *tr.TotalTests
-			return nil
-		}
-	}
-	return nil
-}
+func getLogID(buildClient build.Client, buildId int) (int, int, error) {
+	var mockTestLogId int
+	var liveTestLogId int
 
-func getLiveTestResult(buildClient build.Client, info *mgmtInfo, buildId *int) error {
-	buildLogs, err := buildClient.GetBuildLogs(context.Background(), build.GetBuildLogsArgs{
+	result, err := buildClient.GetBuildTimeline(context.Background(), build.GetBuildTimelineArgs{
 		Project: &projectName,
-		BuildId: buildId,
+		BuildId: &buildId,
 	})
 	if err != nil {
-		return err
+		return mockTestLogId, liveTestLogId, err
 	}
 
-	for i := 95; i < len(*buildLogs); i++ {
-		logLines, err := buildClient.GetBuildLogLines(context.Background(), build.GetBuildLogLinesArgs{
-			Project: &projectName,
-			BuildId: buildId,
-			LogId:   (*buildLogs)[i].Id,
-		})
-		if err != nil {
-			return err
-		}
-
-		if logInfo := strings.Join(*logLines, "\n"); strings.Contains(logInfo, "Starting: Run Tests") && strings.Contains(logInfo, "Finishing: Run Tests") {
-		loop:
-			for _, line := range *logLines {
-				if strings.Contains(line, "coverage:") {
-					for _, j := range strings.Split(line, " ") {
-						if strings.Contains(j, "%") {
-							info.liveTestCoverage = j
-							break loop
-						}
-					}
-				}
-			}
+	for _, record := range *result.Records {
+		if mockTestLogId != 0 && liveTestLogId != 0 {
 			break
+		} else if *record.State == build.TimelineRecordStateValues.Completed && *record.Result == build.TaskResultValues.Succeeded {
+			if *record.Name == "Mock Test" && mockTestLogId == 0 {
+				mockTestLogId = *record.Log.Id
+			} else if *record.Name == "Run Tests" && liveTestLogId == 0 {
+				liveTestLogId = *record.Log.Id
+			}
 		}
 	}
 
-	return nil
+	return mockTestLogId, liveTestLogId, nil
+}
+
+func getTestResult(buildClient build.Client, buildId, logId int, testType string) (int, int, string, error) {
+	logLines, err := buildClient.GetBuildLogLines(context.Background(), build.GetBuildLogLinesArgs{
+		Project: &projectName,
+		BuildId: &buildId,
+		LogId:   &logId,
+	})
+	if err != nil {
+		return 0, 0, "", err
+	}
+
+	logResult := strings.Join(*logLines, "\n")
+	totalTests := regexp.MustCompile("=== RUN.*/").FindAllString(logResult, -1)
+
+	passedTests := regexp.MustCompile("--- PASS:.*/").FindAllString(logResult, -1)
+
+	coverages := regexp.MustCompile("coverage:.*").FindAllString(logResult, -1)
+
+	var coverage string
+	if len(coverages) > 0 {
+		for _, s := range strings.Split(coverages[0], " ") {
+			if strings.Contains(s, "%") {
+				coverage = s
+			}
+		}
+	}
+
+	return len(totalTests), len(passedTests), coverage, nil
 }

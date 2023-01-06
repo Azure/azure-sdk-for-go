@@ -70,6 +70,7 @@ td,th {
 				<th align="left">module</th>
 				<th align="center">latest version</th>
 				<th align="center">tag</th>
+				<th align="center">live test result</th>
 				<th align="center">live test coverage</th>
 				<th align="center">mock test result</th>
 				<th align="center">mock test coverage</th>

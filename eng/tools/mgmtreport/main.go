@@ -25,7 +25,6 @@ import (
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6"
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/build"
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/pipelines"
-	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/test"
 )
 
 var (
@@ -39,13 +38,14 @@ var (
 	projectName     string
 )
 
-var mgmtReportMDHeader = `|module | latest version | tag | live test coverage | mock test result | mock test coverage |
-|---|---|---|---|---|---|
+var mgmtReportMDHeader = `|module | latest version | tag | live test result | live test coverage | mock test result | mock test coverage |
+|---|---|---|---|---|---|---|
 `
 
 var htmlTR = `
 			<tr%s>
 				<td align="left">%s</td>
+				<td align="center">%s</td>
 				<td align="center">%s</td>
 				<td align="center">%s</td>
 				<td align="center">%s</td>
@@ -98,10 +98,6 @@ func main() {
 
 func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 	conn := azuredevops.NewPatConnection(organizationUrl, personalAccessToken)
-	testClient, err := test.NewClient(context.Background(), conn)
-	if err != nil {
-		return err
-	}
 
 	buildClient, err := build.NewClient(context.Background(), conn)
 	if err != nil {
@@ -143,7 +139,6 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 			}
 
 			for _, arm := range armDirs {
-				log.Printf("%s/%s\n", dir.Name(), arm.Name())
 				// read autorest.md
 				tag, version, err := readAutorestMD(filepath.Join(modulePath, dir.Name(), arm.Name(), "autorest.md"))
 				if err != nil {
@@ -161,22 +156,33 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 					}
 
 					// code coverage
-					buildId, err := getCodeCoverage(pipelineClient, azureDevopsClient, &mInfo, *p.Id)
+					buildId, err := getBuildId(pipelineClient, azureDevopsClient, *p.Id)
+					if err != nil {
+						return err
+					}
+
+					mockTestLogId, liveTestLogId, err := getLogID(buildClient, buildId)
 					if err != nil {
 						return err
 					}
 
 					// mock test
-					err = getMockTestResult(testClient, &mInfo, buildId)
+					mockTestTotal, mockTestPassed, mockTestCoverage, err := getTestResult(buildClient, buildId, mockTestLogId, "MockTest")
 					if err != nil {
 						return err
 					}
+					mInfo.mockTestTotal = mockTestTotal
+					mInfo.mockTestPass = mockTestPassed
+					mInfo.mockTestCoverage = mockTestCoverage
 
 					// live test
-					err = getLiveTestResult(buildClient, &mInfo, buildId)
+					liveTestTotal, liveTestPassed, liveTestCoverage, err := getTestResult(buildClient, buildId, liveTestLogId, "TestSuite")
 					if err != nil {
 						return err
 					}
+					mInfo.liveTestTotal = liveTestTotal
+					mInfo.liveTestPass = liveTestPassed
+					mInfo.liveTestCoverage = liveTestCoverage
 
 					moduleName := fmt.Sprintf("%s/%s", dir.Name(), arm.Name())
 					mgmtReport[moduleName] = mInfo
@@ -185,17 +191,19 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 		}
 	}
 
-	log.Println("write the mgmt report to the mgmtreport.md file...")
+	log.Println("generate a report in Markdown format...")
 	err = generateMDReport(mgmtReport, path.Join(sdkPath, "mgmtReport.md"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("upload mgmt report to cloud...")
+	log.Println("generate a report in HTML format...")
 	w, err := generateHTMLReport(mgmtReport)
 	if err != nil {
 		return err
 	}
+
+	log.Println("upload mgmt report to cloud...")
 	err = uploadHTMLReport(w, storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
 	if err != nil {
 		return err
@@ -264,8 +272,9 @@ type mgmtInfo struct {
 	version          string
 	mockTestPass     int
 	mockTestTotal    int
-	CoveredLines     int
-	CoverableLines   int
+	mockTestCoverage string
+	liveTestPass     int
+	liveTestTotal    int
 	liveTestCoverage string
 }
 
@@ -301,12 +310,12 @@ func generateMDReport(mgmtReport map[string]mgmtInfo, path string) error {
 			mt = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.mockTestPass)/float64(m.mockTestTotal)*100, m.mockTestPass, m.mockTestTotal)
 		}
 
-		cc := "/"
-		if m.CoverableLines != 0 {
-			cc = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.CoveredLines)/float64(m.CoverableLines)*100, m.CoveredLines, m.CoverableLines)
+		lt := "/"
+		if m.liveTestTotal != 0 {
+			lt = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.liveTestPass)/float64(m.liveTestTotal)*100, m.liveTestPass, m.liveTestTotal)
 		}
 
-		f := fmt.Sprintf("|%s | %s | %s | %s | %s | %s |\n", module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), defaultPlaceholder(m.liveTestCoverage), mt, cc)
+		f := fmt.Sprintf("|%s | %s | %s | %s | %s | %s | %s |\n", module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), lt, defaultPlaceholder(m.liveTestCoverage), mt, defaultPlaceholder(m.mockTestCoverage))
 		_, err = mgmtFile.Write([]byte(f))
 		if err != nil {
 			return err
@@ -340,10 +349,15 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
 			count: 0,
 			sum:   0,
 		},
+		{
+			count: 0,
+			sum:   0,
+		},
 	}
 
 	for i, module := range sortMgmt {
 		m := mgmtReport[module]
+
 		mt := "/"
 		if m.mockTestTotal != 0 {
 			coverage := float64(m.mockTestPass) / float64(m.mockTestTotal)
@@ -352,33 +366,48 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
 			mt = fmt.Sprintf("%.2f%%(%d/%d)", coverage*100, m.mockTestPass, m.mockTestTotal)
 		}
 
-		cc := "/"
-		if m.CoverableLines != 0 {
-			coverage := float64(m.CoveredLines) / float64(m.CoverableLines)
-			average[1].sum += coverage
-			average[1].count++
-			cc = fmt.Sprintf("%.2f%%(%d/%d)", coverage*100, m.CoveredLines, m.CoverableLines)
-		}
-
-		lt := defaultPlaceholder(m.liveTestCoverage)
-		if lt != "/" {
-			f, err := strconv.ParseFloat(strings.TrimRight(lt, "%"), 64)
+		mtc := defaultPlaceholder(m.mockTestCoverage)
+		if mtc != "/" {
+			f, err := strconv.ParseFloat(strings.TrimRight(mtc, "%"), 64)
 			if err != nil {
 				return nil, err
 			}
-			average[2].sum += f
+			average[1].sum += f
+			average[1].count++
+		}
+
+		lt := "/"
+		if m.liveTestTotal != 0 {
+			coverage := float64(m.liveTestPass) / float64(m.liveTestTotal)
+			average[2].sum += coverage
 			average[2].count++
+			lt = fmt.Sprintf("%.2f%%(%d/%d)", coverage*100, m.liveTestPass, m.liveTestTotal)
+		}
+
+		ltc := defaultPlaceholder(m.liveTestCoverage)
+		if ltc != "/" {
+			f, err := strconv.ParseFloat(strings.TrimRight(ltc, "%"), 64)
+			if err != nil {
+				return nil, err
+			}
+			average[3].sum += f
+			average[3].count++
 		}
 
 		tdBackground := ""
 		if i%2 == 0 {
 			tdBackground = tdBackgroundStyle
 		}
-		htmlData = append(htmlData, fmt.Sprintf(htmlTR, tdBackground, module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), defaultPlaceholder(m.liveTestCoverage), mt, cc))
+		htmlData = append(htmlData, fmt.Sprintf(htmlTR, tdBackground, module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), lt, ltc, mt, mtc))
 	}
 
 	// average
-	htmlData = append(htmlData, fmt.Sprintf(htmlTR, "", "Average", "", "", fmt.Sprintf("%.2f%%", average[2].sum/float64(average[2].count)), fmt.Sprintf("%.2f%%", (average[0].sum/float64(average[0].count))*100), fmt.Sprintf("%.2f%%", (average[1].sum/float64(average[1].count))*100)))
+	htmlData = append(htmlData, fmt.Sprintf(htmlTR, "", "Average", "", "",
+		fmt.Sprintf("%.2f%%", (average[2].sum/float64(average[2].count))*100),
+		fmt.Sprintf("%.1f%%", average[3].sum/float64(average[3].count)),
+		fmt.Sprintf("%.2f%%", (average[0].sum/float64(average[0].count))*100),
+		fmt.Sprintf("%.1f%%", average[1].sum/float64(average[1].count)),
+	))
 
 	// parse template file
 	t, err := template.ParseFiles("./mgmtreport.tpl")

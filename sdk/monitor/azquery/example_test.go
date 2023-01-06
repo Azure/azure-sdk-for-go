@@ -54,6 +54,15 @@ func ExampleNewMetricsClient() {
 	_ = client
 }
 
+func ExampleNewISO8601TimeInterval() {
+	// Use time.UTC
+	timespan, err := azquery.NewISO8601TimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))
+	if err != nil {
+		//TODO: handle error
+	}
+	_ = timespan
+}
+
 func ExampleLogsClient_QueryWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,4 +208,44 @@ func ExampleMetricsClient_QueryResource() {
 		//TODO: handle error
 	}
 	_ = res
+}
+
+func ExampleMetricsClient_NewListDefinitionsPager() {
+	client, err := azquery.NewMetricsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	pager := client.NewListDefinitionsPager("subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill/providers/microsoft.insights/metricdefinitions", &azquery.MetricsClientListDefinitionsOptions{Metricnamespace: to.Ptr("microsoft.insights/components")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(context.TODO())
+		if err != nil {
+			//TODO: handle error
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+func ExampleMetricsClient_NewListNamespacesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	client, err := azquery.NewMetricsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	pager := client.NewListNamespacesPager("subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill", &azquery.MetricsClientListNamespacesOptions{StartTime: to.Ptr("2020-08-31T15:53:00Z")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(context.TODO())
+		if err != nil {
+			//TODO: handle error
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }

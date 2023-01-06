@@ -111,7 +111,7 @@ func (e *ErrorInfo) Error() string {
 type Row []any
 
 // ISO8601TimeInterval specifies the time range over which to query.
-// Use NewISO8601TimeInterval() for help formating.
+// Use NewISO8601TimeInterval() for help formatting.
 // Follows the ISO8601 time interval standard with most common format being startISOTime/endISOTime.
 // Use UTC for all times.
 type ISO8601TimeInterval string

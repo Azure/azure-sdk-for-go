@@ -23,7 +23,8 @@ type BatchQueryRequest struct {
 	WorkspaceID *string `json:"workspace,omitempty"`
 
 	// Optional. Headers of the request. Can use prefer header to set server timeout, query statistics and visualization information.
-	// For more information, see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
+	// For more information, see
+	// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
 	Headers map[string]*string `json:"headers,omitempty"`
 
 	// The method of a single request in a batch, defaults to POST

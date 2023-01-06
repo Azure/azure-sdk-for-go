@@ -64,9 +64,9 @@ Each set of metric values is a time series with the following characteristics:
 
 ### Timespan
 
-It's best practice to always query with a timespan to prevent excessive queries of the entire logs or metrics data set. Logs uses the ISO8601 Time Interval Standard. All time should be in UTC.
+It's best practice to always query with a timespan (type ISO8601TimeInterval) to prevent excessive queries of the entire logs or metrics data set. Logs uses the ISO8601 Time Interval Standard. All time should be in UTC.
 
-Use the NewISO8601TimeInterval() type for easy creation.
+Use the NewISO8601TimeInterval() method for easy creation.
 
 Example timespan: [link][example_timespan]
 

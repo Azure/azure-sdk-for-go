@@ -9,6 +9,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `AzureCLICredential` reports token expiration in local time (should be UTC)
 
 ### Other Changes
 * `AzureCLICredential` imposes its default timeout only when the `Context`

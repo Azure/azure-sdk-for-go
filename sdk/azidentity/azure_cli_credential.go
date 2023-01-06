@@ -162,15 +162,15 @@ func (c *AzureCLICredential) createAccessToken(tk []byte) (azcore.AccessToken, e
 		return azcore.AccessToken{}, err
 	}
 
-	// note the Azure CLI's "expiresOn" field is local time
-	tokenExpirationDate, err := time.ParseInLocation("2006-01-02 15:04:05.999999", t.ExpiresOn, time.Local)
+	// the Azure CLI's "expiresOn" is local time
+	exp, err := time.ParseInLocation("2006-01-02 15:04:05.999999", t.ExpiresOn, time.Local)
 	if err != nil {
 		return azcore.AccessToken{}, fmt.Errorf("Error parsing token expiration time %q: %v", t.ExpiresOn, err)
 	}
 
 	converted := azcore.AccessToken{
 		Token:     t.AccessToken,
-		ExpiresOn: tokenExpirationDate,
+		ExpiresOn: exp.UTC(),
 	}
 	return converted, nil
 }

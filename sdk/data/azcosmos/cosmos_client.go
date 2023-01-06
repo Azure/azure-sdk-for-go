@@ -196,7 +196,7 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 		resourceAddress: "",
 	}
 
-	path, _ := generatePathForNameBased(resourceTypeCollection, operationContext.resourceAddress, true)
+	path, _ := generatePathForNameBased(resourceTypeDatabase, operationContext.resourceAddress, true)
 
 	return runtime.NewPager(runtime.PagingHandler[QueryDatabasesResponse]{
 		More: func(page QueryDatabasesResponse) bool {

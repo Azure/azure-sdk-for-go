@@ -40,7 +40,6 @@ func TestContainerRequestOptionsToHeaders(t *testing.T) {
 	}
 }
 
-
 func TestQueryContainersRequestOptionsToHeaders(t *testing.T) {
 	options := &QueryContainersOptions{}
 	options.ContinuationToken = "continuationToken"

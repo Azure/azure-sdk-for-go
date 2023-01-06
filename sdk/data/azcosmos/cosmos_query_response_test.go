@@ -98,8 +98,8 @@ func TestQueryResponseParsing(t *testing.T) {
 func TestQueryContainersResponseParsing(t *testing.T) {
 	queryResponseRaw := map[string][]map[string]string{
 		"DocumentCollections": {
-			{"id": "id1" },
-			{"id": "id2" },
+			{"id": "id1"},
+			{"id": "id2"},
 		},
 	}
 
@@ -162,8 +162,8 @@ func TestQueryContainersResponseParsing(t *testing.T) {
 func TestQueryDatabasesResponseParsing(t *testing.T) {
 	queryResponseRaw := map[string][]map[string]string{
 		"Databases": {
-			{"id": "id1" },
-			{"id": "id2" },
+			{"id": "id1"},
+			{"id": "id2"},
 		},
 	}
 

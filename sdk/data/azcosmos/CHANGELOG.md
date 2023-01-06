@@ -4,6 +4,7 @@
 
 ### Features Added
 * Added `PatchItem` function to patch documents
+* Added support for querying databases and containers
 
 ### Breaking Changes
 

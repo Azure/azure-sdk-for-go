@@ -110,6 +110,44 @@ func ExampleClient_CreateDatabase() {
 	fmt.Printf("Database created. ActivityId %s", databaseResponse.ActivityID)
 }
 
+func ExampleClient_NewQueryDatabasesPager() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	queryPager := client.NewQueryDatabasesPager("select * from dbs d", nil)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.Background())
+		if err != nil {
+			var responseErr *azcore.ResponseError
+			errors.As(err, &responseErr)
+			panic(responseErr)
+		}
+
+		for _, container := range queryResponse.Databases {
+			fmt.Printf("Received database %s", container.ID)
+		}
+
+		fmt.Printf("Query page received with %v databases. ActivityId %s consuming %v RU", len(queryResponse.Databases), queryResponse.ActivityID, queryResponse.RequestCharge)
+	}
+}
+
 func ExampleDatabaseClient_CreateContainer() {
 	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
@@ -153,6 +191,48 @@ func ExampleDatabaseClient_CreateContainer() {
 	}
 
 	fmt.Printf("Container created. ActivityId %s", resp.ActivityID)
+}
+func ExampleDatabaseClient_NewQueryContainersPager() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	database, err := client.NewDatabase("databaseName")
+	if err != nil {
+		panic(err)
+	}
+
+	queryPager := database.NewQueryContainersPager("select * from containers c", nil)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.Background())
+		if err != nil {
+			var responseErr *azcore.ResponseError
+			errors.As(err, &responseErr)
+			panic(responseErr)
+		}
+
+		for _, container := range queryResponse.Containers {
+			fmt.Printf("Received container %s", container.ID)
+		}
+
+		fmt.Printf("Query page received with %v containers. ActivityId %s consuming %v RU", len(queryResponse.Containers), queryResponse.ActivityID, queryResponse.RequestCharge)
+	}
 }
 
 func ExampleContainerClient_ReplaceThroughput() {

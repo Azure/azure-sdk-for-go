@@ -1,12 +1,10 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.0-beta.2 (2023-01-10)
 
 ### Features Added
 * Added `OnBehalfOfCredential` to support the on-behalf-of flow
   ([#16642](https://github.com/Azure/azure-sdk-for-go/issues/16642))
-
-### Breaking Changes
 
 ### Bugs Fixed
 * `AzureCLICredential` reports token expiration in local time (should be UTC)

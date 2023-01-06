@@ -133,6 +133,7 @@ func TestRequestEmptyBody(t *testing.T) {
 	require.NoError(t, req.SetBody(nil, ""))
 	require.Nil(t, req.Body())
 	require.NotContains(t, req.Raw().Header, shared.HeaderContentLength)
+	require.NotContains(t, req.Raw().Header, shared.HeaderContentType)
 
 	// SetBody should allow replacing a previously set body with an empty one
 	req, err = NewRequest(context.Background(), http.MethodPost, testURL)

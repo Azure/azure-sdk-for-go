@@ -101,7 +101,8 @@ func (req *Request) OperationValue(value interface{}) bool {
 }
 
 // SetBody sets the specified ReadSeekCloser as the HTTP request body, and sets Content-Type and Content-Length
-// accordingly. If the ReadSeekCloser is nil or empty, Content-Length won't be set.
+// accordingly. If the ReadSeekCloser is nil or empty, Content-Length won't be set. If contentType is "",
+// Content-Type won't be set.
 func (req *Request) SetBody(body io.ReadSeekCloser, contentType string) error {
 	var err error
 	var size int64
@@ -115,14 +116,14 @@ func (req *Request) SetBody(body io.ReadSeekCloser, contentType string) error {
 		// treat an empty stream the same as a nil one: assign req a nil body
 		body = nil
 		// RFC 9110 specifies a client shouldn't set Content-Length on a request containing no content
-		// (Del is a no-op when the header isn't set already)
+		// (Del is a no-op when the header has no value)
 		req.req.Header.Del(shared.HeaderContentLength)
 	} else {
-		req.req.Header.Set(shared.HeaderContentLength, strconv.FormatInt(size, 10))
 		_, err = body.Seek(0, io.SeekStart)
 		if err != nil {
 			return err
 		}
+		req.req.Header.Set(shared.HeaderContentLength, strconv.FormatInt(size, 10))
 		req.Raw().GetBody = func() (io.ReadCloser, error) {
 			_, err := body.Seek(0, io.SeekStart) // Seek back to the beginning of the stream
 			return body, err
@@ -133,7 +134,12 @@ func (req *Request) SetBody(body io.ReadSeekCloser, contentType string) error {
 	req.body = body
 	req.req.Body = body
 	req.req.ContentLength = size
-	req.req.Header.Set(shared.HeaderContentType, contentType)
+	if contentType == "" {
+		// Del is a no-op when the header has no value
+		req.req.Header.Del(shared.HeaderContentType)
+	} else {
+		req.req.Header.Set(shared.HeaderContentType, contentType)
+	}
 	return nil
 }
 

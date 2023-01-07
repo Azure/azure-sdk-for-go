@@ -27,7 +27,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 ### Authentication
 
-This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate. Client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
+This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate. The client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
 The clients default to the Azure Public Cloud. See the [cloud][cloud_documentation] documentation for more information about other cloud configurations. 
 

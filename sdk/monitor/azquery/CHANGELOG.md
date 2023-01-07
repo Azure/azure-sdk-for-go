@@ -3,7 +3,7 @@
 ## 0.4.0 (Unreleased)
 
 ### Features Added
-* Added ISO8601TimeInterval type with constructor to aide with logs timespan creation
+* Added `ISO8601TimeInterval` type with constructor to aid with logs timespan creation
 
 ### Breaking Changes
 * Changed type of `Body.Timespan` from *string to *ISO8601TimeInterval

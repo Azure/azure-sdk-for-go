@@ -79,7 +79,6 @@ func (db *DatabaseClient) CreateContainer(
 }
 
 // NewQueryContainersPager executes query for containers within a database.
-// ctx - The context for the request.
 // query - The SQL query to execute.
 // o - Options for the operation.
 func (c *DatabaseClient) NewQueryContainersPager(query string, o *QueryContainersOptions) *runtime.Pager[QueryContainersResponse] {

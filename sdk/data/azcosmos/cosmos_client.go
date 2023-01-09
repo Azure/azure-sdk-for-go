@@ -181,7 +181,6 @@ func (c *Client) CreateDatabase(
 }
 
 // NewQueryDatabasesPager executes query for databases.
-// ctx - The context for the request.
 // query - The SQL query to execute.
 // o - Options for the operation.
 func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) *runtime.Pager[QueryDatabasesResponse] {

@@ -49,11 +49,10 @@ func TestLogsClient(t *testing.T) {
 
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
-	timespan, err := azquery.NewISO8601TimeInterval(time.Date(2022, 12, 1, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 2, 0, 0, 0, 0, time.UTC))
-	require.NoError(t, err)
+	timespan := azquery.NewISO8601TimeInterval(time.Date(2022, 12, 1, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 2, 0, 0, 0, 0, time.UTC))
 	body := azquery.Body{
 		Query:    to.Ptr(query),
-		Timespan: timespan,
+		Timespan: to.Ptr(timespan),
 	}
 	testSerde(t, &body)
 
@@ -155,12 +154,11 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 func TestQueryBatch_QuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
 	query1, query2 := query, query+" | take 2"
-	timespan, err := azquery.NewISO8601TimeInterval(time.Date(2022, 3, 2, 0, 0, 0, 0, time.UTC), time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
-	require.NoError(t, err)
+	timespan := azquery.NewISO8601TimeInterval(time.Date(2022, 3, 2, 0, 0, 0, 0, time.UTC), time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(query1), Timespan: timespan}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(query2), Timespan: timespan}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query1), Timespan: to.Ptr(timespan)}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(query2), Timespan: to.Ptr(timespan)}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID)},
 	}}
 	testSerde(t, &batchRequest)
 
@@ -246,6 +244,19 @@ func TestQueryBatch_PartialError(t *testing.T) {
 			require.Len(t, resp.Body.Tables[0].Rows, 100)
 		}
 	}
+}
+
+func TestISO8601TimeInterval(t *testing.T) {
+	timespan := azquery.NewISO8601TimeInterval(time.Date(2022, 3, 2, 1, 2, 3, 0, time.UTC), time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
+	require.Equal(t, timespan, azquery.ISO8601TimeInterval("2022-03-02T01:02:03Z/2022-03-03T00:00:00Z"))
+
+	start, end, err := timespan.Times()
+	require.NoError(t, err)
+	require.Equal(t, start, time.Date(2022, 3, 2, 1, 2, 3, 0, time.UTC))
+	require.Equal(t, end, time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
+
+	_, _, err = to.Ptr(azquery.ISO8601TimeInterval("hi")).Times()
+	require.Error(t, err)
 }
 
 func TestLogConstants(t *testing.T) {

@@ -68,7 +68,7 @@ It's best practice to always query with a timespan (type ISO8601TimeInterval) to
 
 Use the NewISO8601TimeInterval() method for easy creation.
 
-Example timespan: [link][example_timespan]
+Example timespan: [link][example_query_workspace]
 
 ## Examples
 
@@ -165,7 +165,7 @@ BatchResponse
 
 #### Query multiple workspaces
 
-To run the same query against multiple Log Analytics workspaces, add the additional workspace ID strings to the Workspaces array in the Body struct.
+To run the same query against multiple Log Analytics workspaces, add the additional workspace ID strings to the `AdditionalWorkspaces` slice in the `Body` struct. 
 
 When multiple workspaces are included in the query, the logs in the result table are not grouped according to the workspace from which it was retrieved.
 
@@ -269,7 +269,7 @@ comments.
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
 [context]: https://pkg.go.dev/context
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
-[create_workspace]: https://learn.microsoft.com/en-us/azure/azure-monitor/logs/quick-create-workspace?tabs=azure-portal
+[create_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace?tabs=azure-portal
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [example_batch]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryBatch
 [example_query_workspace]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryWorkspace
@@ -279,7 +279,6 @@ comments.
 [example_metrics_listdefinitions]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-MetricsClient.NewListDefinitionsPager
 [example_metrics_listnamespaces]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-MetricsClient.NewListNamespacesPager
 [example_metrics_queryresource]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-MetricsClient.QueryResource
-[example_timespan]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#NewISO8601TimeInterval
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [kusto_to_sql]: https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/sqlcheatsheet
 [log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview

@@ -40,7 +40,7 @@ func TestMetricsClient(t *testing.T) {
 
 func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	client := startMetricsTest(t)
-	timespan := "PT12H"
+	timespan := azquery.ISO8601TimeInterval("PT12H")
 	res, err := client.QueryResource(context.Background(), resourceURI,
 		&azquery.MetricsClientQueryResourceOptions{Timespan: to.Ptr(timespan),
 			Interval:        to.Ptr("PT1M"),

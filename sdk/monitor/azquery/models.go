@@ -111,7 +111,7 @@ type LogsClientQueryBatchOptions struct {
 // LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
 type LogsClientQueryWorkspaceOptions struct {
 	// Optional. The prefer header to set server timeout, query statistics and visualization information. For server timeout,
-	// set the prefer string equal to "wait=NumOfMinutes" where NumOfMinutes is a
+	// set the prefer string equal to "wait=NumOfMinutes", where NumOfMinutes is an
 	// integer (ex 600). Max server time is ten minutes. For statistics, set prefer string equal to "include-statistics=true".
 	// For visualization, set prefer string equal to "include-render=true". For more
 	// information, see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
@@ -304,7 +304,7 @@ type MetricsClientQueryResourceOptions struct {
 	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
 	ResultType *ResultType
 	// The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
-	Timespan *string
+	Timespan *ISO8601TimeInterval
 	// The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
 	Top *int32
 }
@@ -314,7 +314,7 @@ type Response struct {
 	// REQUIRED; The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
 	// '/'. This may be adjusted in the future and returned back from what was originally
 	// requested.
-	Timespan *string `json:"timespan,omitempty"`
+	Timespan *ISO8601TimeInterval `json:"timespan,omitempty"`
 
 	// REQUIRED; the value of the collection.
 	Value []*Metric `json:"value,omitempty"`

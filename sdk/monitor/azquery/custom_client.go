@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -119,11 +120,25 @@ type ISO8601TimeInterval string
 // NewISO8601TimeInterval creates a ISO8601TimeInterval for use in a query.
 // Use UTC for start and end times.
 // Start time must be before end time.
-func NewISO8601TimeInterval(start time.Time, end time.Time) (*ISO8601TimeInterval, error) {
-	if end.Before(start) {
-		return nil, errors.New("end time occurs before start time")
-	}
-	timespan := ISO8601TimeInterval(start.Format(time.RFC3339) + "/" + end.Format(time.RFC3339))
+func NewISO8601TimeInterval(start time.Time, end time.Time) ISO8601TimeInterval {
+	return ISO8601TimeInterval(start.Format(time.RFC3339) + "/" + end.Format(time.RFC3339))
+}
 
-	return &timespan, nil
+// Time returns the interval's start and end times if it's in the format startISOTime/endISOTime, else it will return an error.
+func (i ISO8601TimeInterval) Times() (time.Time, time.Time, error) {
+	// split into different start and end times
+	times := strings.Split(string(i), "/")
+	if len(times) != 2 {
+		return time.Time{}, time.Time{}, errors.New("time interval should be in format startISOTime/endISOTime")
+	}
+	start, err := time.Parse(time.RFC3339, times[0])
+	if err != nil {
+		return time.Time{}, time.Time{}, errors.New("error parsing start time")
+	}
+	end, err := time.Parse(time.RFC3339, times[1])
+	if err != nil {
+		return time.Time{}, time.Time{}, errors.New("error parsing end time")
+	}
+	// return times
+	return start, end, nil
 }

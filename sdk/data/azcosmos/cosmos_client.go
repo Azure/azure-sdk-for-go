@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
@@ -177,6 +178,53 @@ func (c *Client) CreateDatabase(
 	}
 
 	return newDatabaseResponse(azResponse)
+}
+
+// NewQueryDatabasesPager executes query for databases.
+// query - The SQL query to execute.
+// o - Options for the operation.
+func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) *runtime.Pager[QueryDatabasesResponse] {
+	queryOptions := &QueryDatabasesOptions{}
+	if o != nil {
+		originalOptions := *o
+		queryOptions = &originalOptions
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	path, _ := generatePathForNameBased(resourceTypeDatabase, operationContext.resourceAddress, true)
+
+	return runtime.NewPager(runtime.PagingHandler[QueryDatabasesResponse]{
+		More: func(page QueryDatabasesResponse) bool {
+			return page.ContinuationToken != ""
+		},
+		Fetcher: func(ctx context.Context, page *QueryDatabasesResponse) (QueryDatabasesResponse, error) {
+			if page != nil {
+				if page.ContinuationToken != "" {
+					// Use the previous page continuation if available
+					queryOptions.ContinuationToken = page.ContinuationToken
+				}
+			}
+
+			azResponse, err := c.sendQueryRequest(
+				path,
+				ctx,
+				query,
+				queryOptions.QueryParameters,
+				operationContext,
+				queryOptions,
+				nil)
+
+			if err != nil {
+				return QueryDatabasesResponse{}, err
+			}
+
+			return newDatabasesQueryResponse(azResponse)
+		},
+	})
 }
 
 func (c *Client) sendPostRequest(

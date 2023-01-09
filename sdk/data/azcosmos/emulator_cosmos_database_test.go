@@ -33,6 +33,28 @@ func TestDatabaseCRUD(t *testing.T) {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
 
+	receivedIds := []string{}
+	opt := QueryDatabasesOptions{
+		QueryParameters: []QueryParameter{
+			{"@id", "baseDbTest"},
+		},
+	}
+	queryPager := client.NewQueryDatabasesPager("SELECT * FROM root r WHERE r.id = @id", &opt)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to query databases: %v", err)
+		}
+
+		for _, db := range queryResponse.Databases {
+			receivedIds = append(receivedIds, db.ID)
+		}
+	}
+
+	if len(receivedIds) != 1 {
+		t.Fatalf("Expected 1 database, got %d", len(receivedIds))
+	}
+
 	throughputResponse, err := db.ReadThroughput(context.TODO(), nil)
 	if err == nil {
 		t.Fatalf("Expected not finding throughput but instead got : %v", throughputResponse)

@@ -199,7 +199,7 @@ func (client *Client) getManifestCreateRequest(ctx context.Context, name string,
 
 // getManifestHandleResponse handles the GetManifest response.
 func (client *Client) getManifestHandleResponse(resp *http.Response) (ClientGetManifestResponse, error) {
-	result := ClientGetManifestResponse{Body: resp.Body}
+	result := ClientGetManifestResponse{ManifestData: resp.Body}
 	if val := resp.Header.Get("Docker-Content-Digest"); val != "" {
 		result.DockerContentDigest = &val
 	}
@@ -747,10 +747,10 @@ func (client *Client) updateTagPropertiesHandleResponse(resp *http.Response) (Cl
 //   - name - Name of the image (including the namespace)
 //   - reference - A tag or a digest, pointing to a specific image
 //   - contentType - Upload file type
-//   - payload - Manifest body, can take v1 or v2 values depending on accept header
+//   - manifestData - Manifest body, can take v1 or v2 values depending on accept header
 //   - options - ClientUploadManifestOptions contains the optional parameters for the Client.UploadManifest method.
-func (client *Client) UploadManifest(ctx context.Context, name string, reference string, contentType ContentType, payload io.ReadSeekCloser, options *ClientUploadManifestOptions) (ClientUploadManifestResponse, error) {
-	req, err := client.uploadManifestCreateRequest(ctx, name, reference, contentType, payload, options)
+func (client *Client) UploadManifest(ctx context.Context, name string, reference string, contentType ContentType, manifestData io.ReadSeekCloser, options *ClientUploadManifestOptions) (ClientUploadManifestResponse, error) {
+	req, err := client.uploadManifestCreateRequest(ctx, name, reference, contentType, manifestData, options)
 	if err != nil {
 		return ClientUploadManifestResponse{}, err
 	}
@@ -765,7 +765,7 @@ func (client *Client) UploadManifest(ctx context.Context, name string, reference
 }
 
 // uploadManifestCreateRequest creates the UploadManifest request.
-func (client *Client) uploadManifestCreateRequest(ctx context.Context, name string, reference string, contentType ContentType, payload io.ReadSeekCloser, options *ClientUploadManifestOptions) (*policy.Request, error) {
+func (client *Client) uploadManifestCreateRequest(ctx context.Context, name string, reference string, contentType ContentType, manifestData io.ReadSeekCloser, options *ClientUploadManifestOptions) (*policy.Request, error) {
 	urlPath := "/v2/{name}/manifests/{reference}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -781,7 +781,7 @@ func (client *Client) uploadManifestCreateRequest(ctx context.Context, name stri
 	}
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, req.SetBody(payload, string(contentType))
+	return req, req.SetBody(manifestData, string(contentType))
 }
 
 // uploadManifestHandleResponse handles the UploadManifest response.

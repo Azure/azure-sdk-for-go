@@ -1,0 +1,494 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world/blobs/sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/octet-stream",
+        "Accept-Encoding": "gzip",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": [
+          "Docker-Content-Digest",
+          "WWW-Authenticate",
+          "Link",
+          "X-Ms-Correlation-Request-Id"
+        ],
+        "Connection": "keep-alive",
+        "Content-Length": "205",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:00 GMT",
+        "Docker-Distribution-Api-Version": "registry/2.0",
+        "Server": "openresty",
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains",
+          "max-age=31536000; includeSubDomains"
+        ],
+        "WWW-Authenticate": "Bearer realm=\u0022https://azacrlivetest.azurecr.io/oauth2/token\u0022,service=\u0022azacrlivetest.azurecr.io\u0022,scope=\u0022repository:hello-world:pull\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "errors": [
+          {
+            "code": "UNAUTHORIZED",
+            "message": "authentication required, visit https://aka.ms/acr/authorization for more information.",
+            "detail": [
+              {
+                "Type": "repository",
+                "Name": "hello-world",
+                "Action": "pull"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/oauth2/exchange?api-version=2021-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "79",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": "access_token=Sanitized\u0026grant_type=access_token\u0026service=azacrlivetest.azurecr.io",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:02 GMT",
+        "Server": "openresty",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "refresh_token": ".eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0=."
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/oauth2/token?api-version=2021-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "694",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": "grant_type=refresh_token\u0026refresh_token=.eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0%3D.\u0026scope=repository%3Ahello-world%3Apull\u0026service=azacrlivetest.azurecr.io",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:02 GMT",
+        "Server": "openresty",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "access_token": "Sanitized"
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world/blobs/sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/octet-stream",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "2479",
+        "Content-Type": "application/octet-stream",
+        "Date": "Mon, 09 Jan 2023 05:38:04 GMT",
+        "ETag": "\u00220x8DADA7DA475EE24\u0022",
+        "Last-Modified": "Sat, 10 Dec 2022 07:10:39 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-committed-block-count": "1",
+        "x-ms-blob-type": "AppendBlob",
+        "x-ms-copy-completion-time": "Sat, 10 Dec 2022 07:10:39 GMT",
+        "x-ms-copy-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-copy-progress": "2479/2479",
+        "x-ms-copy-source": "https://eusmanaged133.blob.core.windows.net/4fa83e50614a4b55a16d371f25f2f3b9-omgtqdfkiz//docker/registry/v2/blobs/sha256/2d/2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54/data?sv=2018-03-28\u0026sr=b\u0026se=2022-12-17T07%3A10%3A38Z\u0026sp=r\u0026api-version=2018-03-28",
+        "x-ms-copy-status": "success",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2016-05-31"
+      },
+      "ResponseBody": "H4sIAAAAAAAA/\u002Bxbf2wT1x1/jrnkMD/iqKSNxLq\u002BskNLQ7DjEMqPlWIXp/16OtRAkg2RIrjYF2zV9qV37xKyVhrRJVNfT5bYv5u09Y9O2tR/tqp/AKuKiSEm1TS1dH\u002BwrttQW1qztJCJCgKU3PTubOpYqLTqqmnbff7I1\u002B/d5/P99d6zddFdUk6nFfTNoiPU0bFp00bU4aDGbghtCnWgUFeoc0NnKNTR9TDjd27qQrjjG87Lhq4RSUUdXztWbXH/Jfhxt/h4ncdze1yHHkVs1OcP2\u002BNwef75qorCaDOqR2G0Ai23uUsWeQwvskfKrisW\u002BR3DhlzVGJXjVeyqBrTIVuvseLg8j8OLbNqLFtlqXT1CqBR0xqXt4UX2kTL9t3WLdbsukET9FzWwBpVydl8giSVfEK\u002BlzKtYz1eI4cKFCxcuXLhw4cKFCxcuXHxV9OwpLBqD8XELfU5YXnrYi1Cp04tQKF9q8yJksskf1CPUA7nm6UaEjn3Xvvg6u3M9wf6UnIm9BQh9AvQjyG385eUTFhgfzJVsz\u002BYmyP2Q7w7NxIr5pvvCCIon2d0\u002BFIud/jC6SOsQGjoCuW0/DSIEOe4FZrbMk2Yo5m39ZJ4stc43PnCYjQplC7ltks3fuJeZhxaAzsHJS9vh5LwXPNPw1gJZVeWAt84PNT4Q/Vx/eNsWdoeuB/vB2PZhgNHoBbIczG03AgiV/nrphFVKWpY1zTUFEfLsK9TEv/isZVmFXqA3QvljIpOPf9zjYQk9J\u002BArL0MxXwqHEVB/KA/m8imw8jA5o38KuSVTQLl6lrPZApN/Ic1g3Fw7uhTMHh5o37sYjLx/9n0wJ4QX7aS4VwKMOyFgj1NKA1DuJ/ZcVOgByr3HPk9e1e8F81WhxU6Be7LJnoPG6BwU8z0sk\u002BLUHjuhDqCdL9SDNT2RJ/WPBPUrs5fsnEuf1DGfrwls0UprLMtiQVmtsCUqHNLvZ8Mj9nBCeJ61bhkYrwnnWDPIM8frEdsDzBP/utdO/C0xFxX4Ky8Xo4KfbZOjDQghkRaLUaGlzma80chN5sc8nx6vcxb0iB\u002Bh1\u002BsOIxS5Gj1Xj8kyoG82cmBzwCqAcdOrfzDNTa1HyAPjp1i7Bwq9pdAty4JiobQ9jGD85tz2MNJ46x4wCvzs5YFCpD/SF6N/6u8FerMH4tNAT4u59BRfKliWRS\u002BL9B8i/dB6mxZL1z\u002BzrEg/xKdj9FY/5J6b4oGeZucCzE6gfQJfWrFgWZDjfsOUl0R6Gcw\u002BgQfjVMu\u002ByD7rfKEXioX5z7MY8YExy4fy1j2zn4TyAxd/5rWP2R6g8yIVBYgcw3YbRGEz5EQBizQqhHfSMzHPDAvXETHyPOT6hANAidAK5hgP5jP\u002BnWYTu\u002BpnuhYwd7VEaVTgI8Z8cHRVNz3ZTfMR4yQf85yJUlHgZ1eKZlTw78wBz2L6o6Yo8DtNJHpmIsb14AgHpij4RXNpIwe0WJpge8A4tYdt7JtAt5fO1CEUoXnjjNU9mT\u002B0W2\u002BY5iLtCHmKOzazRTv6jrNyjwYQauTojg7IcXvbWVHGr\u002B0rxvN2iY4xuT\u002BuY6MBP9CBFqA7cCjPFkjMKXykrx/ord5dYHLX1yEkmmtvMK55//vM5CYaNluWFbv2buzBU\u002BzUtIr0PKzb0Qqmxov0oxjtRmD2\u002BmPGaR7WPdta\u002Bhs7B\u002Bbq2bfB5I7ZQbuRSM/HaFrg9w7sizwV2Vfo7w6dDc30/h6hw2i3aO5vCZ0VzSdboyZntbGdem7n5Aw5YHYYC/U6J9I/z642FupIg7HQQB6dbYbitPPlcpVsAPpPWAf\u002B2bbxhV0XSEJfA\u002BZwa5Sehi2XRu6F8QUWIfKKBxqfuBKjc7NeoFMxawa8T\u002BDZn3dPnCUNUcqZbczZWdIN5mMYvN/3A12x386cO2B34rFWKHIX25x/GQLldjuzHUC5J\u002B0eca0O/XfMk7mi077OrbZNczsznjNw7RzkVAsenGMDyq1wJPcyY9xoGF0GRe5WG0K8vV7NV9vs5W20/b/q/7sdufkAmzU\u002BnAe6cSf7OL7AjuLItyPH1yCEYmyzhGZC1tGlCKHj7MvA2Vz3sNNDi6UXb1mWfab3DOwrQNw6\u002BpFNOf6I7f3NRm72Ojuyn8G4heYsa6SxtBshFLn2bpTimPEHS6TnI08VgM6DcYNXV10rsi8WsvwlsN5wPuufAn0LTl70XoFfGe81EO4l6w39ZgHowok6P0JHf2HHKyTAXLLW\u002Be3LdxVqfxBduHDhwoULFy7\u002Bx\u002BADOZ1W8JCqZHBUiT8tqw/6\u002BpIpDWdkTZMOylhLKqMaJkmJ4DFFV3EqqxEpnZZISsliaXhYllQNEwUPynhUUZ9OZQ/iuKKqcpykxwI\u002BX5\u002BCD8pZWZWIjEmV3/ZyNEwU5WlMkjIeUtJpZZTpNSIPa1t9OBTAfUm5QoynU3KW4LiSJVKcyAlbVL6WkOSMkg34cOciiTONh/V0usxfYz/vsn5UUdOJNTiVYRXatVc5A30w4MMY41Ypk3i46yEf3nAnr3FVllgaEs7Ko05aqaysVtxJpOx\u002BNJmKJ7GqZ1kXZduxfEiO60QaTMsOcVhVEnpctglY0cmwbjcbS6qM47qqylmSHsOqLCVS2YMBH\u002B66Uz4aUWUpY9cpkYoXolRX5rSwvZySxtqZInZGRHFWl8hqJpWV0s7KEXUMa0pGJkm2LBlFlbGUGUyRlKJr7XaGcSnLSsNSFvcP6lmiVzViNEWSW31YwAknOuOtTxGsO8RBSUv6fL1JVqTdKa0dSzpRMmyrsK00lFZG2Vw24YRm/rCEh1T5dkGx6FYfThIyrG0NBpP6YMAJFYgrmaDP97iiOkr5kJQZTsua7SuVkCWtHY\u002BktBSpUieUuFYtPyiT9RqRVCIngj4fCibkkWBWT6fL52ZV2Xp\u002BtBt5Dvk9q5c38Ec8zvy3EELvfGxZ7C4IRVb6D6zk/3MH3IULFy5cuHDhwoULF/93CDeVn5Ov2LugJVzh1SEU0JIaUYk0iAKpbIqgAJEPERQYSmVTKKAqCYlIKCAn9w\u002BpUkZ2OPslVZXGHE7l80GF2H8Cw2mCAo5qUNP\u002BLfUtq3rG38bt9wkc463h1z5v31Sj95f1/sr7Aw2L\u002Bf4a/X01\u002Bqb7wmX75eLfX56rvH7w\u002BXsNjumscYBr9Gtr9Ju/Ey5bZ9xVw6\u002B9Iw0ihFZW5Xn7fYXgnfl8jf0eQqixSj9X1s99Sf0T5fwr\u002Bvmyfv4u\u002BgrEGj2q7N/yeystd4nfX6Ov7P\u002BWsn75XeIPlOe8t8M7eqGs31O3mF\u002B7fp477JFq/YE78F24cOHi6\u002BBfAQAA//99KYxPADoAAA=="
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": [
+          "Docker-Content-Digest",
+          "WWW-Authenticate",
+          "Link",
+          "X-Ms-Correlation-Request-Id"
+        ],
+        "Connection": "keep-alive",
+        "Content-Length": "274",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:05 GMT",
+        "Docker-Distribution-Api-Version": "registry/2.0",
+        "Server": "openresty",
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains",
+          "max-age=31536000; includeSubDomains"
+        ],
+        "WWW-Authenticate": "Bearer realm=\u0022https://azacrlivetest.azurecr.io/oauth2/token\u0022,service=\u0022azacrlivetest.azurecr.io\u0022,scope=\u0022repository:hello-world-test:push,pull\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "errors": [
+          {
+            "code": "UNAUTHORIZED",
+            "message": "authentication required, visit https://aka.ms/acr/authorization for more information.",
+            "detail": [
+              {
+                "Type": "repository",
+                "Name": "hello-world-test",
+                "Action": "pull"
+              },
+              {
+                "Type": "repository",
+                "Name": "hello-world-test",
+                "Action": "push"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/oauth2/token?api-version=2021-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "706",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": "grant_type=refresh_token\u0026refresh_token=.eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0%3D.\u0026scope=repository%3Ahello-world-test%3Apush%2Cpull\u0026service=azacrlivetest.azurecr.io",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:05 GMT",
+        "Server": "openresty",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "access_token": "Sanitized"
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": [
+          "Docker-Content-Digest",
+          "WWW-Authenticate",
+          "Link",
+          "X-Ms-Correlation-Request-Id"
+        ],
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "Date": "Mon, 09 Jan 2023 05:38:06 GMT",
+        "Docker-Distribution-Api-Version": "registry/2.0",
+        "Docker-Upload-Uuid": "00000000-0000-0000-0000-000000000000",
+        "Location": "/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=3rIqtgFi23DRsPfEXMIQIwNIiMyOXa7bTlEAB1obkOF7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6IjQ2NGY4MDc2LWJmMWYtNDA2MC1iNWJmLWI4ODI4NTk1MmM1YiIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMy0wMS0wOVQwNTozODowNi40MTA5MjM0MzhaIn0%3D",
+        "Range": "0-0",
+        "Server": "openresty",
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains",
+          "max-age=31536000; includeSubDomains"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "X-Ms-Client-Request-Id": "",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000",
+        "X-Ms-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=3rIqtgFi23DRsPfEXMIQIwNIiMyOXa7bTlEAB1obkOF7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6IjQ2NGY4MDc2LWJmMWYtNDA2MC1iNWJmLWI4ODI4NTk1MmM1YiIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMy0wMS0wOVQwNTozODowNi40MTA5MjM0MzhaIn0%3D",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": [
+          "Docker-Content-Digest",
+          "WWW-Authenticate",
+          "Link",
+          "X-Ms-Correlation-Request-Id"
+        ],
+        "Connection": "keep-alive",
+        "Content-Length": "274",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:06 GMT",
+        "Docker-Distribution-Api-Version": "registry/2.0",
+        "Server": "openresty",
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains",
+          "max-age=31536000; includeSubDomains"
+        ],
+        "WWW-Authenticate": "Bearer realm=\u0022https://azacrlivetest.azurecr.io/oauth2/token\u0022,service=\u0022azacrlivetest.azurecr.io\u0022,scope=\u0022repository:hello-world-test:pull,push\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "errors": [
+          {
+            "code": "UNAUTHORIZED",
+            "message": "authentication required, visit https://aka.ms/acr/authorization for more information.",
+            "detail": [
+              {
+                "Type": "repository",
+                "Name": "hello-world-test",
+                "Action": "pull"
+              },
+              {
+                "Type": "repository",
+                "Name": "hello-world-test",
+                "Action": "push"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/oauth2/token?api-version=2021-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "706",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": "grant_type=refresh_token\u0026refresh_token=.eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0%3D.\u0026scope=repository%3Ahello-world-test%3Apull%2Cpush\u0026service=azacrlivetest.azurecr.io",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:07 GMT",
+        "Server": "openresty",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "access_token": "Sanitized"
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=3rIqtgFi23DRsPfEXMIQIwNIiMyOXa7bTlEAB1obkOF7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6IjQ2NGY4MDc2LWJmMWYtNDA2MC1iNWJmLWI4ODI4NTk1MmM1YiIsIk9mZnNldCI6MCwiU3RhcnRlZEF0IjoiMjAyMy0wMS0wOVQwNTozODowNi40MTA5MjM0MzhaIn0%3D",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "2479",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": "H4sIAAAAAAAA/\u002Bxbf2wT1x1/jrnkMD/iqKSNxLq\u002BskNLQ7DjEMqPlWIXp/16OtRAkg2RIrjYF2zV9qV37xKyVhrRJVNfT5bYv5u09Y9O2tR/tqp/AKuKiSEm1TS1dH\u002BwrttQW1qztJCJCgKU3PTubOpYqLTqqmnbff7I1\u002B/d5/P99d6zddFdUk6nFfTNoiPU0bFp00bU4aDGbghtCnWgUFeoc0NnKNTR9TDjd27qQrjjG87Lhq4RSUUdXztWbXH/Jfhxt/h4ncdze1yHHkVs1OcP2\u002BNwef75qorCaDOqR2G0Ai23uUsWeQwvskfKrisW\u002BR3DhlzVGJXjVeyqBrTIVuvseLg8j8OLbNqLFtlqXT1CqBR0xqXt4UX2kTL9t3WLdbsukET9FzWwBpVydl8giSVfEK\u002BlzKtYz1eI4cKFCxcuXLhw4cKFCxcuXHxV9OwpLBqD8XELfU5YXnrYi1Cp04tQKF9q8yJksskf1CPUA7nm6UaEjn3Xvvg6u3M9wf6UnIm9BQh9AvQjyG385eUTFhgfzJVsz\u002BYmyP2Q7w7NxIr5pvvCCIon2d0\u002BFIud/jC6SOsQGjoCuW0/DSIEOe4FZrbMk2Yo5m39ZJ4stc43PnCYjQplC7ltks3fuJeZhxaAzsHJS9vh5LwXPNPw1gJZVeWAt84PNT4Q/Vx/eNsWdoeuB/vB2PZhgNHoBbIczG03AgiV/nrphFVKWpY1zTUFEfLsK9TEv/isZVmFXqA3QvljIpOPf9zjYQk9J\u002BArL0MxXwqHEVB/KA/m8imw8jA5o38KuSVTQLl6lrPZApN/Ic1g3Fw7uhTMHh5o37sYjLx/9n0wJ4QX7aS4VwKMOyFgj1NKA1DuJ/ZcVOgByr3HPk9e1e8F81WhxU6Be7LJnoPG6BwU8z0sk\u002BLUHjuhDqCdL9SDNT2RJ/WPBPUrs5fsnEuf1DGfrwls0UprLMtiQVmtsCUqHNLvZ8Mj9nBCeJ61bhkYrwnnWDPIM8frEdsDzBP/utdO/C0xFxX4Ky8Xo4KfbZOjDQghkRaLUaGlzma80chN5sc8nx6vcxb0iB\u002Bh1\u002BsOIxS5Gj1Xj8kyoG82cmBzwCqAcdOrfzDNTa1HyAPjp1i7Bwq9pdAty4JiobQ9jGD85tz2MNJ46x4wCvzs5YFCpD/SF6N/6u8FerMH4tNAT4u59BRfKliWRS\u002BL9B8i/dB6mxZL1z\u002BzrEg/xKdj9FY/5J6b4oGeZucCzE6gfQJfWrFgWZDjfsOUl0R6Gcw\u002BgQfjVMu\u002ByD7rfKEXioX5z7MY8YExy4fy1j2zn4TyAxd/5rWP2R6g8yIVBYgcw3YbRGEz5EQBizQqhHfSMzHPDAvXETHyPOT6hANAidAK5hgP5jP\u002BnWYTu\u002BpnuhYwd7VEaVTgI8Z8cHRVNz3ZTfMR4yQf85yJUlHgZ1eKZlTw78wBz2L6o6Yo8DtNJHpmIsb14AgHpij4RXNpIwe0WJpge8A4tYdt7JtAt5fO1CEUoXnjjNU9mT\u002B0W2\u002BY5iLtCHmKOzazRTv6jrNyjwYQauTojg7IcXvbWVHGr\u002B0rxvN2iY4xuT\u002BuY6MBP9CBFqA7cCjPFkjMKXykrx/ord5dYHLX1yEkmmtvMK55//vM5CYaNluWFbv2buzBU\u002BzUtIr0PKzb0Qqmxov0oxjtRmD2\u002BmPGaR7WPdta\u002Bhs7B\u002Bbq2bfB5I7ZQbuRSM/HaFrg9w7sizwV2Vfo7w6dDc30/h6hw2i3aO5vCZ0VzSdboyZntbGdem7n5Aw5YHYYC/U6J9I/z642FupIg7HQQB6dbYbitPPlcpVsAPpPWAf\u002B2bbxhV0XSEJfA\u002BZwa5Sehi2XRu6F8QUWIfKKBxqfuBKjc7NeoFMxawa8T\u002BDZn3dPnCUNUcqZbczZWdIN5mMYvN/3A12x386cO2B34rFWKHIX25x/GQLldjuzHUC5J\u002B0eca0O/XfMk7mi077OrbZNczsznjNw7RzkVAsenGMDyq1wJPcyY9xoGF0GRe5WG0K8vV7NV9vs5W20/b/q/7sdufkAmzU\u002BnAe6cSf7OL7AjuLItyPH1yCEYmyzhGZC1tGlCKHj7MvA2Vz3sNNDi6UXb1mWfab3DOwrQNw6\u002BpFNOf6I7f3NRm72Ojuyn8G4heYsa6SxtBshFLn2bpTimPEHS6TnI08VgM6DcYNXV10rsi8WsvwlsN5wPuufAn0LTl70XoFfGe81EO4l6w39ZgHowok6P0JHf2HHKyTAXLLW\u002Be3LdxVqfxBduHDhwoULFy7\u002Bx\u002BADOZ1W8JCqZHBUiT8tqw/6\u002BpIpDWdkTZMOylhLKqMaJkmJ4DFFV3EqqxEpnZZISsliaXhYllQNEwUPynhUUZ9OZQ/iuKKqcpykxwI\u002BX5\u002BCD8pZWZWIjEmV3/ZyNEwU5WlMkjIeUtJpZZTpNSIPa1t9OBTAfUm5QoynU3KW4LiSJVKcyAlbVL6WkOSMkg34cOciiTONh/V0usxfYz/vsn5UUdOJNTiVYRXatVc5A30w4MMY41Ypk3i46yEf3nAnr3FVllgaEs7Ko05aqaysVtxJpOx\u002BNJmKJ7GqZ1kXZduxfEiO60QaTMsOcVhVEnpctglY0cmwbjcbS6qM47qqylmSHsOqLCVS2YMBH\u002B66Uz4aUWUpY9cpkYoXolRX5rSwvZySxtqZInZGRHFWl8hqJpWV0s7KEXUMa0pGJkm2LBlFlbGUGUyRlKJr7XaGcSnLSsNSFvcP6lmiVzViNEWSW31YwAknOuOtTxGsO8RBSUv6fL1JVqTdKa0dSzpRMmyrsK00lFZG2Vw24YRm/rCEh1T5dkGx6FYfThIyrG0NBpP6YMAJFYgrmaDP97iiOkr5kJQZTsua7SuVkCWtHY\u002BktBSpUieUuFYtPyiT9RqRVCIngj4fCibkkWBWT6fL52ZV2Xp\u002BtBt5Dvk9q5c38Ec8zvy3EELvfGxZ7C4IRVb6D6zk/3MH3IULFy5cuHDhwoULF/93CDeVn5Ov2LugJVzh1SEU0JIaUYk0iAKpbIqgAJEPERQYSmVTKKAqCYlIKCAn9w\u002BpUkZ2OPslVZXGHE7l80GF2H8Cw2mCAo5qUNP\u002BLfUtq3rG38bt9wkc463h1z5v31Sj95f1/sr7Aw2L\u002Bf4a/X01\u002Bqb7wmX75eLfX56rvH7w\u002BXsNjumscYBr9Gtr9Ju/Ey5bZ9xVw6\u002B9Iw0ihFZW5Xn7fYXgnfl8jf0eQqixSj9X1s99Sf0T5fwr\u002Bvmyfv4u\u002BgrEGj2q7N/yeystd4nfX6Ov7P\u002BWsn75XeIPlOe8t8M7eqGs31O3mF\u002B7fp477JFq/YE78F24cOHi6\u002BBfAQAA//99KYxPADoAAA==",
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": [
+          "Docker-Content-Digest",
+          "WWW-Authenticate",
+          "Link",
+          "X-Ms-Correlation-Request-Id"
+        ],
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "Date": "Mon, 09 Jan 2023 05:38:07 GMT",
+        "Docker-Distribution-Api-Version": "registry/2.0",
+        "Docker-Upload-Uuid": "00000000-0000-0000-0000-000000000000",
+        "Location": "/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=0eFv_T9Exu-Oxd5ZrKahD_EGQV53MBoKrTYrNc7bi2B7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6IjQ2NGY4MDc2LWJmMWYtNDA2MC1iNWJmLWI4ODI4NTk1MmM1YiIsIk9mZnNldCI6MjQ3OSwiU3RhcnRlZEF0IjoiMjAyMy0wMS0wOVQwNTozODowNloifQ%3D%3D",
+        "Range": "0-2478",
+        "Server": "openresty",
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains",
+          "max-age=31536000; includeSubDomains"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "X-Ms-Client-Request-Id": "",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000",
+        "X-Ms-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=0eFv_T9Exu-Oxd5ZrKahD_EGQV53MBoKrTYrNc7bi2B7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6IjQ2NGY4MDc2LWJmMWYtNDA2MC1iNWJmLWI4ODI4NTk1MmM1YiIsIk9mZnNldCI6MjQ3OSwiU3RhcnRlZEF0IjoiMjAyMy0wMS0wOVQwNTozODowNloifQ%3D%3D\u0026digest=sha256%3A00000000",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": [
+          "Docker-Content-Digest",
+          "WWW-Authenticate",
+          "Link",
+          "X-Ms-Correlation-Request-Id"
+        ],
+        "Connection": "keep-alive",
+        "Content-Length": "274",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:07 GMT",
+        "Docker-Distribution-Api-Version": "registry/2.0",
+        "Server": "openresty",
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains",
+          "max-age=31536000; includeSubDomains"
+        ],
+        "WWW-Authenticate": "Bearer realm=\u0022https://azacrlivetest.azurecr.io/oauth2/token\u0022,service=\u0022azacrlivetest.azurecr.io\u0022,scope=\u0022repository:hello-world-test:pull,push\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "errors": [
+          {
+            "code": "UNAUTHORIZED",
+            "message": "authentication required, visit https://aka.ms/acr/authorization for more information.",
+            "detail": [
+              {
+                "Type": "repository",
+                "Name": "hello-world-test",
+                "Action": "pull"
+              },
+              {
+                "Type": "repository",
+                "Name": "hello-world-test",
+                "Action": "push"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/oauth2/token?api-version=2021-07-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "706",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": "grant_type=refresh_token\u0026refresh_token=.eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0%3D.\u0026scope=repository%3Ahello-world-test%3Apull%2Cpush\u0026service=azacrlivetest.azurecr.io",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:08 GMT",
+        "Server": "openresty",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "access_token": "Sanitized"
+      }
+    },
+    {
+      "RequestUri": "https://azacrlivetest.azurecr.io/v2/hello-world-test/blobs/uploads/00000000-0000-0000-0000-000000000000?_nouploadcache=false\u0026_state=0eFv_T9Exu-Oxd5ZrKahD_EGQV53MBoKrTYrNc7bi2B7Ik5hbWUiOiJoZWxsby13b3JsZC10ZXN0IiwiVVVJRCI6IjQ2NGY4MDc2LWJmMWYtNDA2MC1iNWJmLWI4ODI4NTk1MmM1YiIsIk9mZnNldCI6MjQ3OSwiU3RhcnRlZEF0IjoiMjAyMy0wMS0wOVQwNTozODowNloifQ%3D%3D\u0026digest=sha256%3A00000000",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azcontainerregistry/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": [
+          "Docker-Content-Digest",
+          "WWW-Authenticate",
+          "Link",
+          "X-Ms-Correlation-Request-Id"
+        ],
+        "Connection": "keep-alive",
+        "Content-Length": "131",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 05:38:09 GMT",
+        "Docker-Distribution-Api-Version": "registry/2.0",
+        "Server": "openresty",
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains",
+          "max-age=31536000; includeSubDomains"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "X-Ms-Client-Request-Id": "",
+        "X-Ms-Correlation-Request-Id": "00000000-0000-0000-0000-000000000000",
+        "X-Ms-Request-Id": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "errors": [
+          {
+            "code": "DIGEST_INVALID",
+            "message": "provided digest did not match uploaded content",
+            "detail": "digest parsing failed"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}

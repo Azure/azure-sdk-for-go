@@ -378,3 +378,27 @@ directive:
     transform: >
       $.properties.repositories["x-ms-client-name"] = "Names";
 ```
+
+### Rename binary request param and 
+
+```yaml
+directive:
+  - from: containerregistry.json
+    where: $.parameters
+    transform: >
+      $.RawData["x-ms-client-name"] = "chunkData";
+      $.RawDataOptional["x-ms-client-name"] = "blobData";
+      $.ManifestBody["x-ms-client-name"] = "manifestData";
+  - from:
+      - blob_client.go
+    where: $
+    transform: return $.replace(/BlobClientGetBlobResponse\{Body/, "BlobClientGetBlobResponse{BlobData").replace(/BlobClientGetChunkResponse\{Body/, "BlobClientGetChunkResponse{ChunkData");
+  - from:
+      - client.go
+    where: $
+    transform: return $.replace(/ClientGetManifestResponse\{Body/, "ClientGetManifestResponse{ManifestData");
+  - from:
+      - response_types.go
+    where: $
+    transform: return $.replace(/Body io\.ReadCloser/, "BlobData io.ReadCloser").replace(/Body io\.ReadCloser/, "ChunkData io.ReadCloser").replace(/Body io\.ReadCloser/, "ManifestData io.ReadCloser");
+```

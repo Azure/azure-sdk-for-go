@@ -84,7 +84,7 @@ func ExampleClient_GetManifest() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	manifest, err := io.ReadAll(res.Body)
+	manifest, err := io.ReadAll(res.ManifestData)
 	fmt.Printf("manifest content: %s\n", manifest)
 }
 

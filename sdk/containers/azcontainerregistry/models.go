@@ -110,7 +110,7 @@ type BlobClientCheckChunkExistsOptions struct {
 // BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.CompleteUpload method.
 type BlobClientCompleteUploadOptions struct {
 	// Optional raw data of blob
-	Value io.ReadSeekCloser
+	BlobData io.ReadSeekCloser
 }
 
 // BlobClientDeleteBlobOptions contains the optional parameters for the BlobClient.DeleteBlob method.

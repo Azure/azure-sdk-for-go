@@ -65,7 +65,7 @@ type BlobClientDeleteBlobResponse struct {
 // BlobClientGetBlobResponse contains the response from method BlobClient.GetBlob.
 type BlobClientGetBlobResponse struct {
 	// Body contains the streaming response.
-	Body io.ReadCloser
+	BlobData io.ReadCloser
 
 	// ContentLength contains the information returned from the Content-Length header response.
 	ContentLength *int64
@@ -77,7 +77,7 @@ type BlobClientGetBlobResponse struct {
 // BlobClientGetChunkResponse contains the response from method BlobClient.GetChunk.
 type BlobClientGetChunkResponse struct {
 	// Body contains the streaming response.
-	Body io.ReadCloser
+	ChunkData io.ReadCloser
 
 	// ContentLength contains the information returned from the Content-Length header response.
 	ContentLength *int64
@@ -154,7 +154,7 @@ type ClientGetManifestPropertiesResponse struct {
 // ClientGetManifestResponse contains the response from method Client.GetManifest.
 type ClientGetManifestResponse struct {
 	// Body contains the streaming response.
-	Body io.ReadCloser
+	ManifestData io.ReadCloser
 
 	// DockerContentDigest contains the information returned from the Docker-Content-Digest header response.
 	DockerContentDigest *string

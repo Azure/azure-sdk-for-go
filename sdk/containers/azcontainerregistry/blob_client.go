@@ -213,8 +213,8 @@ func (client *BlobClient) completeUploadCreateRequest(ctx context.Context, diges
 	reqQP.Set("digest", digest)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Value != nil {
-		return req, req.SetBody(options.Value, "application/octet-stream")
+	if options != nil && options.BlobData != nil {
+		return req, req.SetBody(options.BlobData, "application/octet-stream")
 	}
 	return req, nil
 }
@@ -327,7 +327,7 @@ func (client *BlobClient) getBlobCreateRequest(ctx context.Context, name string,
 
 // getBlobHandleResponse handles the GetBlob response.
 func (client *BlobClient) getBlobHandleResponse(resp *http.Response) (BlobClientGetBlobResponse, error) {
-	result := BlobClientGetBlobResponse{Body: resp.Body}
+	result := BlobClientGetBlobResponse{BlobData: resp.Body}
 	if val := resp.Header.Get("Content-Length"); val != "" {
 		contentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
@@ -389,7 +389,7 @@ func (client *BlobClient) getChunkCreateRequest(ctx context.Context, name string
 
 // getChunkHandleResponse handles the GetChunk response.
 func (client *BlobClient) getChunkHandleResponse(resp *http.Response) (BlobClientGetChunkResponse, error) {
-	result := BlobClientGetChunkResponse{Body: resp.Body}
+	result := BlobClientGetChunkResponse{ChunkData: resp.Body}
 	if val := resp.Header.Get("Content-Length"); val != "" {
 		contentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
@@ -562,10 +562,10 @@ func (client *BlobClient) startUploadHandleResponse(resp *http.Response) (BlobCl
 //
 // Generated from API version 2021-07-01
 //   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
-//   - value - Raw data of blob
+//   - chunkData - Raw data of blob
 //   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
-func (client *BlobClient) UploadChunk(ctx context.Context, location string, value io.ReadSeekCloser, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
-	req, err := client.uploadChunkCreateRequest(ctx, location, value, options)
+func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
+	req, err := client.uploadChunkCreateRequest(ctx, location, chunkData, options)
 	if err != nil {
 		return BlobClientUploadChunkResponse{}, err
 	}
@@ -580,7 +580,7 @@ func (client *BlobClient) UploadChunk(ctx context.Context, location string, valu
 }
 
 // uploadChunkCreateRequest creates the UploadChunk request.
-func (client *BlobClient) uploadChunkCreateRequest(ctx context.Context, location string, value io.ReadSeekCloser, options *BlobClientUploadChunkOptions) (*policy.Request, error) {
+func (client *BlobClient) uploadChunkCreateRequest(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *BlobClientUploadChunkOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
 	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", location)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
@@ -588,7 +588,7 @@ func (client *BlobClient) uploadChunkCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, req.SetBody(value, "application/octet-stream")
+	return req, req.SetBody(chunkData, "application/octet-stream")
 }
 
 // uploadChunkHandleResponse handles the UploadChunk response.

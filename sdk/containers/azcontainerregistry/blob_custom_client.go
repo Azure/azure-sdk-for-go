@@ -59,9 +59,18 @@ func NewBlobClient(endpoint string, credential azcore.TokenCredential, options *
 
 // CalculateDigest - Calculate the digest of a payload
 //   - payload - Payload io
-func CalculateDigest(payload io.ReadSeekCloser) (string, error) {
+func CalculateDigest(payload io.ReadSeeker) (string, error) {
 	h := sha256.New()
+	if _, err := payload.Seek(0, io.SeekStart); err != nil {
+		return "", err
+	}
 	if _, err := io.Copy(h, payload); err != nil {
+		if _, err := payload.Seek(0, io.SeekStart); err != nil {
+			return "", err
+		}
+		return "", err
+	}
+	if _, err := payload.Seek(0, io.SeekStart); err != nil {
 		return "", err
 	}
 	return fmt.Sprintf("sha256:%x", h.Sum(nil)), nil

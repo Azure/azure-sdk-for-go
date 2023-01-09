@@ -79,7 +79,7 @@ func ExampleBlobClient_CompleteUpload() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CompleteUpload(ctx, "sha256:a05a7abc31b0caadd5058069eaa623cdd0538512dbddacc7ca5bad73c3957c5e", "v2/blobland/blobs/uploads/2b28c60d-d296-44b7-b2b4-1f01c63195c6?_nouploadcache=false&_state=VYABvUSCNW2yY5e5VabLHppXqwU0K7cvT0YUdq57KBt7Ik5hbWUiOiJibG9ibGFuZCIsIlVVSUQiOiIyYjI4YzYwZC1kMjk2LTQ0YjctYjJiNC0xZjAxYzYzMTk1YzYiLCJPZmZzZXQiOjAsIlN0YXJ0ZWRBdCI6IjIwMTktMDgtMjdUMjM6NTI6NDcuMDUzNjU2Mjg1WiJ9", &azcontainerregistry.BlobClientCompleteUploadOptions{
-		Value: streaming.NopCloser(bytes.NewReader([]byte("usuallyEmpty"))),
+		BlobData: streaming.NopCloser(bytes.NewReader([]byte("usuallyEmpty"))),
 	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -118,7 +118,7 @@ func ExampleBlobClient_GetBlob() {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// deal with the blob io
-	_ = res.Body
+	_ = res.BlobData
 }
 
 func ExampleBlobClient_GetChunk() {
@@ -136,7 +136,7 @@ func ExampleBlobClient_GetChunk() {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// deal with the chunk io
-	_ = res.Body
+	_ = res.ChunkData
 }
 
 func ExampleBlobClient_GetUploadStatus() {

@@ -27,7 +27,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 ### Authentication
 
-This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate. Client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
+This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate. The client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
 The clients default to the Azure Public Cloud. See the [cloud][cloud_documentation] documentation for more information about other cloud configurations. 
 
@@ -64,9 +64,9 @@ Each set of metric values is a time series with the following characteristics:
 
 ### Timespan
 
-It's best practice to always query with a timespan (type ISO8601TimeInterval) to prevent excessive queries of the entire logs or metrics data set. Logs uses the ISO8601 Time Interval Standard. All time should be in UTC.
+It's best practice to always query with a timespan (type `ISO8601TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Logs uses the ISO8601 Time Interval Standard. All time should be represented in UTC.
 
-Use the NewISO8601TimeInterval() method for easy creation.
+Use the `NewISO8601TimeInterval()` method for easy creation.
 
 Example timespan: [link][example_query_workspace]
 
@@ -121,7 +121,7 @@ Results
 ```
 
 ### Batch query
-`QueryBatch` is an advanced method allowing users to execute multiple logs queries in a single request. It takes in a [BatchRequest](#batch-query-request-structure) and returns a [BatchResponse](#batch-query-result-structure). `QueryBatch` can return results in any order (usually in order of completion/success). Please use the `CorrelationID` field to identify the correct response. 
+`QueryBatch` is an advanced method allowing users to execute multiple logs queries in a single request. The method accepts a [BatchRequest](#batch-query-request-structure) and returns a [BatchResponse](#batch-query-result-structure). `QueryBatch` can return results in any order (usually in order of completion/success). Use the `CorrelationID` field to identify the correct response. 
 
 Example QueryBatch: [link][example_batch]
 
@@ -177,7 +177,7 @@ By default, the Azure Monitor Query service will run your query for up to three 
 
 To get logs query execution statistics, such as CPU and memory consumption, set `include-statistics` to true in LogsClientQueryWorkspaceOptions Prefer string.
 
-To get visualization data for logs queries, set `include-render` to true in LogsClientQueryWorkspaceOptions Prefer string.
+To get visualization data for logs queries, set `include-render` to `true` in the `LogsClientQueryWorkspaceOptions` `Prefer` string.
 
 ```go
 azquery.LogsClientQueryWorkspaceOptions{Prefer: to.Ptr("wait=600,include-statistics=true,include-render=true")}
@@ -185,7 +185,7 @@ azquery.LogsClientQueryWorkspaceOptions{Prefer: to.Ptr("wait=600,include-statist
 
 Example QueryWorkspace options: [link][example_queryworkspace_2]
 
-To do the same with `QueryBatch` set the values in the `BatchQueryRequest.Headers` map with a key of "prefer".
+To do the same with `QueryBatch`, set the values in the `BatchQueryRequest.Headers` map with a key of "prefer".
 
 ### Metrics query
 
@@ -269,7 +269,7 @@ comments.
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
 [context]: https://pkg.go.dev/context
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
-[create_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace?tabs=azure-portal
+[create_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [example_batch]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryBatch
 [example_query_workspace]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryWorkspace
@@ -280,7 +280,7 @@ comments.
 [example_metrics_listnamespaces]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-MetricsClient.NewListNamespacesPager
 [example_metrics_queryresource]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-MetricsClient.QueryResource
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
-[kusto_to_sql]: https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/sqlcheatsheet
+[kusto_to_sql]: https://learn.microsoft.com/azure/data-explorer/kusto/query/sqlcheatsheet
 [log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview
 [log_analytics_workspace_create]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace?tabs=azure-portal
 [time_go]: https://pkg.go.dev/time

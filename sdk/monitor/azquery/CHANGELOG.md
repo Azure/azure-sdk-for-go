@@ -3,7 +3,7 @@
 ## 0.4.0 (Unreleased)
 
 ### Features Added
-* Added ISO8601TimeInterval type with helper methods to aide with timespan creation
+* Added `ISO8601TimeInterval` type with constructor to aid with logs timespan creation
 
 ### Breaking Changes
 * Changed type of `Body.Timespan`, `MetricsClientQueryResourceOptions.Timespan`, `Response.Timespan` from *string to *ISO8601TimeInterval

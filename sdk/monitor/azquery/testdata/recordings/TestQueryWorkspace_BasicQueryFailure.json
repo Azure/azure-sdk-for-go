@@ -7,12 +7,13 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "29",
+        "Content-Length": "47",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azquery/v0.2.1 (go1.19; Windows_NT)"
+        "User-Agent": "azsdk-go-azquery/v0.4.0 (go1.19.3; Windows_NT)"
       },
       "RequestBody": {
-        "query": "not a valid query"
+        "query": "not a valid query",
+        "timespan": "PT2H"
       },
       "StatusCode": 400,
       "ResponseHeaders": {
@@ -21,17 +22,17 @@
         "Connection": "keep-alive",
         "Content-Length": "355",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 08 Nov 2022 21:06:28 GMT",
+        "Date": "Mon, 09 Jan 2023 23:40:20 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-7f9bc6678d-89pjs",
+        "Via": "1.1 draft-oms-7cf8995455-927xc",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
         "error": {
           "message": "The request had some invalid properties",
           "code": "BadArgumentError",
-          "correlationId": "e2bed1a4-4e2a-436a-8a81-d1c7fa96b536",
+          "correlationId": "11d8c5fd-769b-4dc9-988f-f689b7c274c2",
           "innererror": {
             "code": "SyntaxError",
             "message": "A recognition error occurred in the query.",

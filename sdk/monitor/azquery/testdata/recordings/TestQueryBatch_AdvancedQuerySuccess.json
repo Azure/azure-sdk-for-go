@@ -9,7 +9,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "1350",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azquery/v0.2.1 (go1.19; Windows_NT)"
+        "User-Agent": "azsdk-go-azquery/v0.4.0 (go1.19.3; Windows_NT)"
       },
       "RequestBody": {
         "requests": [
@@ -46,20 +46,20 @@
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 08 Nov 2022 22:26:10 GMT",
+        "Date": "Mon, 09 Jan 2023 23:40:31 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-7f9bc6678d-94zmm",
+        "Via": "1.1 draft-oms-7cf8995455-qj99m",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
         "responses": [
           {
-            "id": "1",
+            "id": "2",
             "status": 200,
             "headers": {
-              "Age": "90",
+              "Preference-Applied": "wait=180",
               "request-context": "appId=cid-v1:70941e4f-7e8f-40b7-b730-183893db0297"
             },
             "body": {
@@ -1541,7 +1541,7 @@
               },
               "statistics": {
                 "query": {
-                  "executionTime": 0.0156275,
+                  "executionTime": 0,
                   "resourceUsage": {
                     "cache": {
                       "memory": {
@@ -1574,7 +1574,7 @@
                       "totalCpu": "00:00:00"
                     },
                     "memory": {
-                      "peakPerNode": 4048416
+                      "peakPerNode": 3820832
                     },
                     "network": {
                       "interClusterTotalBytes": 19875,
@@ -1613,10 +1613,10 @@
             }
           },
           {
-            "id": "2",
+            "id": "1",
             "status": 200,
             "headers": {
-              "Age": "90",
+              "Preference-Applied": "wait=180",
               "request-context": "appId=cid-v1:70941e4f-7e8f-40b7-b730-183893db0297"
             },
             "body": {
@@ -3098,7 +3098,7 @@
               },
               "statistics": {
                 "query": {
-                  "executionTime": 0.0156275,
+                  "executionTime": 0,
                   "resourceUsage": {
                     "cache": {
                       "memory": {
@@ -3131,7 +3131,7 @@
                       "totalCpu": "00:00:00"
                     },
                     "memory": {
-                      "peakPerNode": 4048416
+                      "peakPerNode": 8037040
                     },
                     "network": {
                       "interClusterTotalBytes": 19875,

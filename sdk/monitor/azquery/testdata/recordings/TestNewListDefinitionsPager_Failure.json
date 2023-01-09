@@ -7,31 +7,30 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azquery/v0.2.1 (go1.19; Windows_NT)"
+        "User-Agent": "azsdk-go-azquery/v0.4.0 (go1.19.3; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Access-Control-Expose-Headers": "Request-Context",
+        "Access-Control-Allow-Origin": "*",
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
-        "Content-Type": "application/json",
-        "Date": "Tue, 08 Nov 2022 21:07:48 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 09 Jan 2023 23:40:42 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
         "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
-        "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": [
           "Accept-Encoding",
           "Accept-Encoding"
         ],
-        "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "a0cbb300-6c4f-4ad0-91e4-0edf786a6fc4",
+        "x-ms-correlation-request-id": "37e19070-35da-41cf-b80a-f597c196d0db",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "398",
-        "x-ms-request-id": "{a0cbb300-6c4f-4ad0-91e4-0edf786a6fc4}",
-        "x-ms-routing-request-id": "WESTUS:20221108T210749Z:a0cbb300-6c4f-4ad0-91e4-0edf786a6fc4",
-        "X-Powered-By": "ASP.NET"
+        "x-ms-request-id": "{37e19070-35da-41cf-b80a-f597c196d0db}",
+        "x-ms-routing-request-id": "WESTUS:20230109T234043Z:37e19070-35da-41cf-b80a-f597c196d0db"
       },
       "ResponseBody": {
         "value": [
@@ -97,6 +96,10 @@
               {
                 "value": "Authentication",
                 "localizedValue": "AuthenticationScheme"
+              },
+              {
+                "value": "Endpoint",
+                "localizedValue": "Endpoint"
               }
             ]
           },
@@ -162,6 +165,10 @@
               {
                 "value": "Authentication",
                 "localizedValue": "AuthenticationScheme"
+              },
+              {
+                "value": "Endpoint",
+                "localizedValue": "Endpoint"
               }
             ]
           },
@@ -217,6 +224,12 @@
               {
                 "timeGrain": "P1D",
                 "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "Endpoint",
+                "localizedValue": "Endpoint"
               }
             ]
           },

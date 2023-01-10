@@ -124,7 +124,7 @@ func NewISO8601TimeInterval(start time.Time, end time.Time) ISO8601TimeInterval 
 	return ISO8601TimeInterval(start.Format(time.RFC3339) + "/" + end.Format(time.RFC3339))
 }
 
-// Time returns the interval's start and end times if it's in the format startISOTime/endISOTime, else it will return an error.
+// Times returns the interval's start and end times if it's in the format startISOTime/endISOTime, else it will return an error.
 func (i ISO8601TimeInterval) Times() (time.Time, time.Time, error) {
 	// split into different start and end times
 	times := strings.Split(string(i), "/")

@@ -9,7 +9,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "2",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azquery/v0.2.1 (go1.19; Windows_NT)"
+        "User-Agent": "azsdk-go-azquery/v0.4.0 (go1.19.3; Windows_NT)"
       },
       "RequestBody": {},
       "StatusCode": 400,
@@ -19,17 +19,17 @@
         "Connection": "keep-alive",
         "Content-Length": "239",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 08 Nov 2022 21:06:42 GMT",
+        "Date": "Mon, 09 Jan 2023 23:40:28 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-7f9bc6678d-ctsjp",
+        "Via": "1.1 draft-oms-7cf8995455-c4b8x",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
         "error": {
           "message": "The request had some invalid properties",
           "code": "BadArgumentError",
-          "correlationId": "2a2a6204-d772-4396-b44e-9d38c8b2ce7a",
+          "correlationId": "40476c85-a90b-4517-8fe3-a0ccd178aa8f",
           "innererror": {
             "code": "QueryValidationError",
             "message": "body must contain \u0027requests\u0027 property"

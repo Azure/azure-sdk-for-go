@@ -10,6 +10,7 @@ package armeventgrid_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -83,6 +84,7 @@ func TestEventGridTestSuite(t *testing.T) {
 func (testsuite *EventGridTestSuite) Prepare() {
 	var err error
 	// From step Domains_CreateOrUpdate
+	fmt.Println("Call operation: Domains_CreateOrUpdate")
 	domainsClient, err := armeventgrid.NewDomainsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	domainsClientCreateOrUpdateResponsePoller, err := domainsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, armeventgrid.Domain{
@@ -111,6 +113,7 @@ func (testsuite *EventGridTestSuite) Prepare() {
 	testsuite.domainId = *domainsClientCreateOrUpdateResponse.ID
 
 	// From step Topics_CreateOrUpdate
+	fmt.Println("Call operation: Topics_CreateOrUpdate")
 	topicsClient, err := armeventgrid.NewTopicsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	topicsClientCreateOrUpdateResponsePoller, err := topicsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, armeventgrid.Topic{
@@ -137,6 +140,7 @@ func (testsuite *EventGridTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step PartnerRegistrations_CreateOrUpdate
+	fmt.Println("Call operation: PartnerRegistrations_CreateOrUpdate")
 	partnerRegistrationsClient, err := armeventgrid.NewPartnerRegistrationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	partnerRegistrationsClientCreateOrUpdateResponsePoller, err := partnerRegistrationsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerRegistrationName, armeventgrid.PartnerRegistration{
@@ -149,6 +153,7 @@ func (testsuite *EventGridTestSuite) Prepare() {
 	testsuite.partnerRegistrationId = *partnerRegistrationsClientCreateOrUpdateResponse.ID
 
 	// From step SystemTopics_CreateOrUpdate
+	fmt.Println("Call operation: SystemTopics_CreateOrUpdate")
 	systemTopicsClient, err := armeventgrid.NewSystemTopicsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	systemTopicsClientCreateOrUpdateResponsePoller, err := systemTopicsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.systemTopicName, armeventgrid.SystemTopic{
@@ -235,6 +240,7 @@ func (testsuite *EventGridTestSuite) Prepare() {
 func (testsuite *EventGridTestSuite) TestDomains() {
 	var err error
 	// From step Domains_ListBySubscription
+	fmt.Println("Call operation: Domains_ListBySubscription")
 	domainsClient, err := armeventgrid.NewDomainsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	domainsClientNewListBySubscriptionPager := domainsClient.NewListBySubscriptionPager(&armeventgrid.DomainsClientListBySubscriptionOptions{Filter: nil,
@@ -247,6 +253,7 @@ func (testsuite *EventGridTestSuite) TestDomains() {
 	}
 
 	// From step Domains_ListByResourceGroup
+	fmt.Println("Call operation: Domains_ListByResourceGroup")
 	domainsClientNewListByResourceGroupPager := domainsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, &armeventgrid.DomainsClientListByResourceGroupOptions{Filter: nil,
 		Top: nil,
 	})
@@ -257,10 +264,12 @@ func (testsuite *EventGridTestSuite) TestDomains() {
 	}
 
 	// From step Domains_Get
+	fmt.Println("Call operation: Domains_Get")
 	_, err = domainsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Domains_Update
+	fmt.Println("Call operation: Domains_Update")
 	domainsClientUpdateResponsePoller, err := domainsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, armeventgrid.DomainUpdateParameters{
 		Properties: &armeventgrid.DomainUpdateParameterProperties{
 			InboundIPRules: []*armeventgrid.InboundIPRule{
@@ -284,10 +293,12 @@ func (testsuite *EventGridTestSuite) TestDomains() {
 	testsuite.Require().NoError(err)
 
 	// From step Domains_ListSharedAccessKeys
+	fmt.Println("Call operation: Domains_ListSharedAccessKeys")
 	_, err = domainsClient.ListSharedAccessKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Domains_RegenerateKey
+	fmt.Println("Call operation: Domains_RegenerateKey")
 	_, err = domainsClient.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, armeventgrid.DomainRegenerateKeyRequest{
 		KeyName: to.Ptr("key1"),
 	}, nil)
@@ -298,6 +309,7 @@ func (testsuite *EventGridTestSuite) TestDomains() {
 func (testsuite *EventGridTestSuite) TestDomainEventSubscriptions() {
 	var err error
 	// From step DomainEventSubscriptions_CreateOrUpdate
+	fmt.Println("Call operation: DomainEventSubscriptions_CreateOrUpdate")
 	domainEventSubscriptionsClient, err := armeventgrid.NewDomainEventSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	domainEventSubscriptionsClientCreateOrUpdateResponsePoller, err := domainEventSubscriptionsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.eventSubscriptionName, armeventgrid.EventSubscription{
@@ -315,6 +327,7 @@ func (testsuite *EventGridTestSuite) TestDomainEventSubscriptions() {
 	testsuite.Require().NoError(err)
 
 	// From step DomainEventSubscriptions_List
+	fmt.Println("Call operation: DomainEventSubscriptions_List")
 	domainEventSubscriptionsClientNewListPager := domainEventSubscriptionsClient.NewListPager(testsuite.resourceGroupName, testsuite.domainName, &armeventgrid.DomainEventSubscriptionsClientListOptions{Filter: nil,
 		Top: nil,
 	})
@@ -325,10 +338,12 @@ func (testsuite *EventGridTestSuite) TestDomainEventSubscriptions() {
 	}
 
 	// From step DomainEventSubscriptions_Get
+	fmt.Println("Call operation: DomainEventSubscriptions_Get")
 	_, err = domainEventSubscriptionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DomainEventSubscriptions_Update
+	fmt.Println("Call operation: DomainEventSubscriptions_Update")
 	domainEventSubscriptionsClientUpdateResponsePoller, err := domainEventSubscriptionsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.eventSubscriptionName, armeventgrid.EventSubscriptionUpdateParameters{
 		Labels: []*string{
 			to.Ptr("label1")},
@@ -338,10 +353,12 @@ func (testsuite *EventGridTestSuite) TestDomainEventSubscriptions() {
 	testsuite.Require().NoError(err)
 
 	// From step DomainEventSubscriptions_GetDeliveryAttributes
+	fmt.Println("Call operation: DomainEventSubscriptions_GetDeliveryAttributes")
 	_, err = domainEventSubscriptionsClient.GetDeliveryAttributes(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DomainEventSubscriptions_Delete
+	fmt.Println("Call operation: DomainEventSubscriptions_Delete")
 	domainEventSubscriptionsClientDeleteResponsePoller, err := domainEventSubscriptionsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, domainEventSubscriptionsClientDeleteResponsePoller)
@@ -352,6 +369,7 @@ func (testsuite *EventGridTestSuite) TestDomainEventSubscriptions() {
 func (testsuite *EventGridTestSuite) TestDomainTopics() {
 	var err error
 	// From step DomainTopics_CreateOrUpdate
+	fmt.Println("Call operation: DomainTopics_CreateOrUpdate")
 	domainTopicsClient, err := armeventgrid.NewDomainTopicsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	domainTopicsClientCreateOrUpdateResponsePoller, err := domainTopicsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.domainTopicName, nil)
@@ -360,6 +378,7 @@ func (testsuite *EventGridTestSuite) TestDomainTopics() {
 	testsuite.Require().NoError(err)
 
 	// From step DomainTopics_ListByDomain
+	fmt.Println("Call operation: DomainTopics_ListByDomain")
 	domainTopicsClientNewListByDomainPager := domainTopicsClient.NewListByDomainPager(testsuite.resourceGroupName, testsuite.domainName, &armeventgrid.DomainTopicsClientListByDomainOptions{Filter: nil,
 		Top: nil,
 	})
@@ -370,10 +389,12 @@ func (testsuite *EventGridTestSuite) TestDomainTopics() {
 	}
 
 	// From step DomainTopics_Get
+	fmt.Println("Call operation: DomainTopics_Get")
 	_, err = domainTopicsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.domainTopicName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DomainTopicEventSubscriptions_CreateOrUpdate
+	fmt.Println("Call operation: DomainTopicEventSubscriptions_CreateOrUpdate")
 	domainTopicEventSubscriptionsClient, err := armeventgrid.NewDomainTopicEventSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	domainTopicEventSubscriptionsClientCreateOrUpdateResponsePoller, err := domainTopicEventSubscriptionsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.topicName, testsuite.eventSubscriptionName, armeventgrid.EventSubscription{
@@ -391,6 +412,7 @@ func (testsuite *EventGridTestSuite) TestDomainTopics() {
 	testsuite.Require().NoError(err)
 
 	// From step DomainTopicEventSubscriptions_List
+	fmt.Println("Call operation: DomainTopicEventSubscriptions_List")
 	domainTopicEventSubscriptionsClientNewListPager := domainTopicEventSubscriptionsClient.NewListPager(testsuite.resourceGroupName, testsuite.domainName, testsuite.topicName, &armeventgrid.DomainTopicEventSubscriptionsClientListOptions{Filter: nil,
 		Top: nil,
 	})
@@ -401,20 +423,24 @@ func (testsuite *EventGridTestSuite) TestDomainTopics() {
 	}
 
 	// From step DomainTopicEventSubscriptions_Get
+	fmt.Println("Call operation: DomainTopicEventSubscriptions_Get")
 	_, err = domainTopicEventSubscriptionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.topicName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DomainTopicEventSubscriptions_GetDeliveryAttributes
+	fmt.Println("Call operation: DomainTopicEventSubscriptions_GetDeliveryAttributes")
 	_, err = domainTopicEventSubscriptionsClient.GetDeliveryAttributes(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.topicName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DomainTopicEventSubscriptions_Delete
+	fmt.Println("Call operation: DomainTopicEventSubscriptions_Delete")
 	domainTopicEventSubscriptionsClientDeleteResponsePoller, err := domainTopicEventSubscriptionsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.topicName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, domainTopicEventSubscriptionsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step DomainTopics_Delete
+	fmt.Println("Call operation: DomainTopics_Delete")
 	domainTopicsClientDeleteResponsePoller, err := domainTopicsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.domainName, testsuite.domainTopicName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, domainTopicsClientDeleteResponsePoller)
@@ -425,6 +451,7 @@ func (testsuite *EventGridTestSuite) TestDomainTopics() {
 func (testsuite *EventGridTestSuite) TestTopics() {
 	var err error
 	// From step Topics_ListBySubscription
+	fmt.Println("Call operation: Topics_ListBySubscription")
 	topicsClient, err := armeventgrid.NewTopicsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	topicsClientNewListBySubscriptionPager := topicsClient.NewListBySubscriptionPager(&armeventgrid.TopicsClientListBySubscriptionOptions{Filter: nil,
@@ -437,6 +464,7 @@ func (testsuite *EventGridTestSuite) TestTopics() {
 	}
 
 	// From step Topics_ListByResourceGroup
+	fmt.Println("Call operation: Topics_ListByResourceGroup")
 	topicsClientNewListByResourceGroupPager := topicsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, &armeventgrid.TopicsClientListByResourceGroupOptions{Filter: nil,
 		Top: nil,
 	})
@@ -447,10 +475,12 @@ func (testsuite *EventGridTestSuite) TestTopics() {
 	}
 
 	// From step Topics_Get
+	fmt.Println("Call operation: Topics_Get")
 	_, err = topicsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topics_Update
+	fmt.Println("Call operation: Topics_Update")
 	topicsClientUpdateResponsePoller, err := topicsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, armeventgrid.TopicUpdateParameters{
 		Properties: &armeventgrid.TopicUpdateParameterProperties{
 			InboundIPRules: []*armeventgrid.InboundIPRule{
@@ -474,10 +504,12 @@ func (testsuite *EventGridTestSuite) TestTopics() {
 	testsuite.Require().NoError(err)
 
 	// From step Topics_ListSharedAccessKeys
+	fmt.Println("Call operation: Topics_ListSharedAccessKeys")
 	_, err = topicsClient.ListSharedAccessKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topics_RegenerateKey
+	fmt.Println("Call operation: Topics_RegenerateKey")
 	topicsClientRegenerateKeyResponsePoller, err := topicsClient.BeginRegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, armeventgrid.TopicRegenerateKeyRequest{
 		KeyName: to.Ptr("key1"),
 	}, nil)
@@ -490,6 +522,7 @@ func (testsuite *EventGridTestSuite) TestTopics() {
 func (testsuite *EventGridTestSuite) TestTopicEventSubscriptions() {
 	var err error
 	// From step TopicEventSubscriptions_CreateOrUpdate
+	fmt.Println("Call operation: TopicEventSubscriptions_CreateOrUpdate")
 	topicEventSubscriptionsClient, err := armeventgrid.NewTopicEventSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	topicEventSubscriptionsClientCreateOrUpdateResponsePoller, err := topicEventSubscriptionsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, testsuite.eventSubscriptionName, armeventgrid.EventSubscription{
@@ -507,6 +540,7 @@ func (testsuite *EventGridTestSuite) TestTopicEventSubscriptions() {
 	testsuite.Require().NoError(err)
 
 	// From step TopicEventSubscriptions_List
+	fmt.Println("Call operation: TopicEventSubscriptions_List")
 	topicEventSubscriptionsClientNewListPager := topicEventSubscriptionsClient.NewListPager(testsuite.resourceGroupName, testsuite.topicName, &armeventgrid.TopicEventSubscriptionsClientListOptions{Filter: nil,
 		Top: nil,
 	})
@@ -517,10 +551,12 @@ func (testsuite *EventGridTestSuite) TestTopicEventSubscriptions() {
 	}
 
 	// From step TopicEventSubscriptions_Get
+	fmt.Println("Call operation: TopicEventSubscriptions_Get")
 	_, err = topicEventSubscriptionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TopicEventSubscriptions_Update
+	fmt.Println("Call operation: TopicEventSubscriptions_Update")
 	topicEventSubscriptionsClientUpdateResponsePoller, err := topicEventSubscriptionsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, testsuite.eventSubscriptionName, armeventgrid.EventSubscriptionUpdateParameters{
 		Labels: []*string{
 			to.Ptr("label1")},
@@ -530,10 +566,12 @@ func (testsuite *EventGridTestSuite) TestTopicEventSubscriptions() {
 	testsuite.Require().NoError(err)
 
 	// From step TopicEventSubscriptions_GetDeliveryAttributes
+	fmt.Println("Call operation: TopicEventSubscriptions_GetDeliveryAttributes")
 	_, err = topicEventSubscriptionsClient.GetDeliveryAttributes(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TopicEventSubscriptions_Delete
+	fmt.Println("Call operation: TopicEventSubscriptions_Delete")
 	topicEventSubscriptionsClientDeleteResponsePoller, err := topicEventSubscriptionsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, topicEventSubscriptionsClientDeleteResponsePoller)
@@ -544,6 +582,7 @@ func (testsuite *EventGridTestSuite) TestTopicEventSubscriptions() {
 func (testsuite *EventGridTestSuite) TestPartnerRegistrations() {
 	var err error
 	// From step PartnerRegistrations_ListBySubscription
+	fmt.Println("Call operation: PartnerRegistrations_ListBySubscription")
 	partnerRegistrationsClient, err := armeventgrid.NewPartnerRegistrationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	partnerRegistrationsClientNewListBySubscriptionPager := partnerRegistrationsClient.NewListBySubscriptionPager(&armeventgrid.PartnerRegistrationsClientListBySubscriptionOptions{Filter: nil,
@@ -556,10 +595,12 @@ func (testsuite *EventGridTestSuite) TestPartnerRegistrations() {
 	}
 
 	// From step PartnerRegistrations_Get
+	fmt.Println("Call operation: PartnerRegistrations_Get")
 	_, err = partnerRegistrationsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerRegistrationName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PartnerRegistrations_ListByResourceGroup
+	fmt.Println("Call operation: PartnerRegistrations_ListByResourceGroup")
 	partnerRegistrationsClientNewListByResourceGroupPager := partnerRegistrationsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, &armeventgrid.PartnerRegistrationsClientListByResourceGroupOptions{Filter: nil,
 		Top: nil,
 	})
@@ -570,6 +611,7 @@ func (testsuite *EventGridTestSuite) TestPartnerRegistrations() {
 	}
 
 	// From step PartnerRegistrations_Update
+	fmt.Println("Call operation: PartnerRegistrations_Update")
 	partnerRegistrationsClientUpdateResponsePoller, err := partnerRegistrationsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerRegistrationName, armeventgrid.PartnerRegistrationUpdateParameters{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -585,6 +627,7 @@ func (testsuite *EventGridTestSuite) TestPartnerRegistrations() {
 func (testsuite *EventGridTestSuite) TestPartnerNamespaces() {
 	var err error
 	// From step PartnerNamespaces_CreateOrUpdate
+	fmt.Println("Call operation: PartnerNamespaces_CreateOrUpdate")
 	partnerNamespacesClient, err := armeventgrid.NewPartnerNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	partnerNamespacesClientCreateOrUpdateResponsePoller, err := partnerNamespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerNamespaceName, armeventgrid.PartnerNamespace{
@@ -602,6 +645,7 @@ func (testsuite *EventGridTestSuite) TestPartnerNamespaces() {
 	testsuite.Require().NoError(err)
 
 	// From step PartnerNamespaces_ListBySubscription
+	fmt.Println("Call operation: PartnerNamespaces_ListBySubscription")
 	partnerNamespacesClientNewListBySubscriptionPager := partnerNamespacesClient.NewListBySubscriptionPager(&armeventgrid.PartnerNamespacesClientListBySubscriptionOptions{Filter: nil,
 		Top: nil,
 	})
@@ -612,6 +656,7 @@ func (testsuite *EventGridTestSuite) TestPartnerNamespaces() {
 	}
 
 	// From step PartnerNamespaces_ListByResourceGroup
+	fmt.Println("Call operation: PartnerNamespaces_ListByResourceGroup")
 	partnerNamespacesClientNewListByResourceGroupPager := partnerNamespacesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, &armeventgrid.PartnerNamespacesClientListByResourceGroupOptions{Filter: nil,
 		Top: nil,
 	})
@@ -622,10 +667,12 @@ func (testsuite *EventGridTestSuite) TestPartnerNamespaces() {
 	}
 
 	// From step PartnerNamespaces_Get
+	fmt.Println("Call operation: PartnerNamespaces_Get")
 	_, err = partnerNamespacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerNamespaceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PartnerNamespaces_Update
+	fmt.Println("Call operation: PartnerNamespaces_Update")
 	partnerNamespacesClientUpdateResponsePoller, err := partnerNamespacesClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerNamespaceName, armeventgrid.PartnerNamespaceUpdateParameters{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -636,16 +683,19 @@ func (testsuite *EventGridTestSuite) TestPartnerNamespaces() {
 	testsuite.Require().NoError(err)
 
 	// From step PartnerNamespaces_ListSharedAccessKeys
+	fmt.Println("Call operation: PartnerNamespaces_ListSharedAccessKeys")
 	_, err = partnerNamespacesClient.ListSharedAccessKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerNamespaceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PartnerNamespaces_RegenerateKey
+	fmt.Println("Call operation: PartnerNamespaces_RegenerateKey")
 	_, err = partnerNamespacesClient.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerNamespaceName, armeventgrid.PartnerNamespaceRegenerateKeyRequest{
 		KeyName: to.Ptr("key1"),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PartnerNamespaces_Delete
+	fmt.Println("Call operation: PartnerNamespaces_Delete")
 	partnerNamespacesClientDeleteResponsePoller, err := partnerNamespacesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerNamespaceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, partnerNamespacesClientDeleteResponsePoller)
@@ -656,6 +706,7 @@ func (testsuite *EventGridTestSuite) TestPartnerNamespaces() {
 func (testsuite *EventGridTestSuite) TestPartnerConfigurations() {
 	var err error
 	// From step PartnerConfigurations_CreateOrUpdate
+	fmt.Println("Call operation: PartnerConfigurations_CreateOrUpdate")
 	partnerConfigurationsClient, err := armeventgrid.NewPartnerConfigurationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	partnerConfigurationsClientCreateOrUpdateResponsePoller, err := partnerConfigurationsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, armeventgrid.PartnerConfiguration{
@@ -666,6 +717,7 @@ func (testsuite *EventGridTestSuite) TestPartnerConfigurations() {
 	testsuite.Require().NoError(err)
 
 	// From step PartnerConfigurations_ListBySubscription
+	fmt.Println("Call operation: PartnerConfigurations_ListBySubscription")
 	partnerConfigurationsClientNewListBySubscriptionPager := partnerConfigurationsClient.NewListBySubscriptionPager(&armeventgrid.PartnerConfigurationsClientListBySubscriptionOptions{Filter: nil,
 		Top: nil,
 	})
@@ -676,10 +728,12 @@ func (testsuite *EventGridTestSuite) TestPartnerConfigurations() {
 	}
 
 	// From step PartnerConfigurations_Get
+	fmt.Println("Call operation: PartnerConfigurations_Get")
 	_, err = partnerConfigurationsClient.Get(testsuite.ctx, testsuite.resourceGroupName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PartnerConfigurations_ListByResourceGroup
+	fmt.Println("Call operation: PartnerConfigurations_ListByResourceGroup")
 	partnerConfigurationsClientNewListByResourceGroupPager := partnerConfigurationsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for partnerConfigurationsClientNewListByResourceGroupPager.More() {
 		_, err := partnerConfigurationsClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -688,6 +742,7 @@ func (testsuite *EventGridTestSuite) TestPartnerConfigurations() {
 	}
 
 	// From step PartnerConfigurations_Update
+	fmt.Println("Call operation: PartnerConfigurations_Update")
 	partnerConfigurationsClientUpdateResponsePoller, err := partnerConfigurationsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, armeventgrid.PartnerConfigurationUpdateParameters{
 		Properties: &armeventgrid.PartnerConfigurationUpdateParameterProperties{
 			DefaultMaximumExpirationTimeInDays: to.Ptr[int32](100),
@@ -702,18 +757,21 @@ func (testsuite *EventGridTestSuite) TestPartnerConfigurations() {
 	testsuite.Require().NoError(err)
 
 	// From step PartnerConfigurations_AuthorizePartner
+	fmt.Println("Call operation: PartnerConfigurations_AuthorizePartner")
 	_, err = partnerConfigurationsClient.AuthorizePartner(testsuite.ctx, testsuite.resourceGroupName, armeventgrid.Partner{
 		PartnerName: to.Ptr("Auth0"),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PartnerConfigurations_UnauthorizePartner
+	fmt.Println("Call operation: PartnerConfigurations_UnauthorizePartner")
 	_, err = partnerConfigurationsClient.AuthorizePartner(testsuite.ctx, testsuite.resourceGroupName, armeventgrid.Partner{
 		PartnerName: to.Ptr("Auth0"),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PartnerConfigurations_Delete
+	fmt.Println("Call operation: PartnerConfigurations_Delete")
 	partnerConfigurationsClientDeleteResponsePoller, err := partnerConfigurationsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, partnerConfigurationsClientDeleteResponsePoller)
@@ -724,6 +782,7 @@ func (testsuite *EventGridTestSuite) TestPartnerConfigurations() {
 func (testsuite *EventGridTestSuite) TestSystemTopics() {
 	var err error
 	// From step SystemTopics_ListBySubscription
+	fmt.Println("Call operation: SystemTopics_ListBySubscription")
 	systemTopicsClient, err := armeventgrid.NewSystemTopicsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	systemTopicsClientNewListBySubscriptionPager := systemTopicsClient.NewListBySubscriptionPager(&armeventgrid.SystemTopicsClientListBySubscriptionOptions{Filter: nil,
@@ -736,6 +795,7 @@ func (testsuite *EventGridTestSuite) TestSystemTopics() {
 	}
 
 	// From step SystemTopics_ListByResourceGroup
+	fmt.Println("Call operation: SystemTopics_ListByResourceGroup")
 	systemTopicsClientNewListByResourceGroupPager := systemTopicsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, &armeventgrid.SystemTopicsClientListByResourceGroupOptions{Filter: nil,
 		Top: nil,
 	})
@@ -746,10 +806,12 @@ func (testsuite *EventGridTestSuite) TestSystemTopics() {
 	}
 
 	// From step SystemTopics_Get
+	fmt.Println("Call operation: SystemTopics_Get")
 	_, err = systemTopicsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.systemTopicName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SystemTopics_Update
+	fmt.Println("Call operation: SystemTopics_Update")
 	systemTopicsClientUpdateResponsePoller, err := systemTopicsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.systemTopicName, armeventgrid.SystemTopicUpdateParameters{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -765,6 +827,7 @@ func (testsuite *EventGridTestSuite) TestSystemTopics() {
 func (testsuite *EventGridTestSuite) TestSystemTopicEventSubscriptions() {
 	var err error
 	// From step SystemTopicEventSubscriptions_CreateOrUpdate
+	fmt.Println("Call operation: SystemTopicEventSubscriptions_CreateOrUpdate")
 	systemTopicEventSubscriptionsClient, err := armeventgrid.NewSystemTopicEventSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	systemTopicEventSubscriptionsClientCreateOrUpdateResponsePoller, err := systemTopicEventSubscriptionsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.systemTopicName, testsuite.eventSubscriptionName, armeventgrid.EventSubscription{
@@ -782,6 +845,7 @@ func (testsuite *EventGridTestSuite) TestSystemTopicEventSubscriptions() {
 	testsuite.Require().NoError(err)
 
 	// From step SystemTopicEventSubscriptions_ListBySystemTopic
+	fmt.Println("Call operation: SystemTopicEventSubscriptions_ListBySystemTopic")
 	systemTopicEventSubscriptionsClientNewListBySystemTopicPager := systemTopicEventSubscriptionsClient.NewListBySystemTopicPager(testsuite.resourceGroupName, testsuite.systemTopicName, &armeventgrid.SystemTopicEventSubscriptionsClientListBySystemTopicOptions{Filter: nil,
 		Top: nil,
 	})
@@ -792,10 +856,12 @@ func (testsuite *EventGridTestSuite) TestSystemTopicEventSubscriptions() {
 	}
 
 	// From step SystemTopicEventSubscriptions_Get
+	fmt.Println("Call operation: SystemTopicEventSubscriptions_Get")
 	_, err = systemTopicEventSubscriptionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.systemTopicName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SystemTopicEventSubscriptions_Update
+	fmt.Println("Call operation: SystemTopicEventSubscriptions_Update")
 	systemTopicEventSubscriptionsClientUpdateResponsePoller, err := systemTopicEventSubscriptionsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.systemTopicName, testsuite.eventSubscriptionName, armeventgrid.EventSubscriptionUpdateParameters{
 		Labels: []*string{
 			to.Ptr("label1")},
@@ -805,10 +871,12 @@ func (testsuite *EventGridTestSuite) TestSystemTopicEventSubscriptions() {
 	testsuite.Require().NoError(err)
 
 	// From step SystemTopicEventSubscriptions_GetDeliveryAttributes
+	fmt.Println("Call operation: SystemTopicEventSubscriptions_GetDeliveryAttributes")
 	_, err = systemTopicEventSubscriptionsClient.GetDeliveryAttributes(testsuite.ctx, testsuite.resourceGroupName, testsuite.systemTopicName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SystemTopicEventSubscriptions_Delete
+	fmt.Println("Call operation: SystemTopicEventSubscriptions_Delete")
 	systemTopicEventSubscriptionsClientDeleteResponsePoller, err := systemTopicEventSubscriptionsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.systemTopicName, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, systemTopicEventSubscriptionsClientDeleteResponsePoller)
@@ -819,6 +887,7 @@ func (testsuite *EventGridTestSuite) TestSystemTopicEventSubscriptions() {
 func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	var err error
 	// From step EventSubscriptions_CreateOrUpdate
+	fmt.Println("Call operation: EventSubscriptions_CreateOrUpdate")
 	eventSubscriptionsClient, err := armeventgrid.NewEventSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	eventSubscriptionsClientCreateOrUpdateResponsePoller, err := eventSubscriptionsClient.BeginCreateOrUpdate(testsuite.ctx, "subscriptions/"+testsuite.subscriptionId, testsuite.eventSubscriptionName, armeventgrid.EventSubscription{
@@ -836,6 +905,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	testsuite.Require().NoError(err)
 
 	// From step EventSubscriptions_ListGlobalBySubscription
+	fmt.Println("Call operation: EventSubscriptions_ListGlobalBySubscription")
 	eventSubscriptionsClientNewListGlobalBySubscriptionPager := eventSubscriptionsClient.NewListGlobalBySubscriptionPager(&armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions{Filter: nil,
 		Top: nil,
 	})
@@ -846,6 +916,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_ListGlobalBySubscriptionForTopicType
+	fmt.Println("Call operation: EventSubscriptions_ListGlobalBySubscriptionForTopicType")
 	eventSubscriptionsClientNewListGlobalBySubscriptionForTopicTypePager := eventSubscriptionsClient.NewListGlobalBySubscriptionForTopicTypePager("Microsoft.Resources.Subscriptions", &armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions{Filter: nil,
 		Top: nil,
 	})
@@ -856,6 +927,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_ListGlobalByResourceGroup
+	fmt.Println("Call operation: EventSubscriptions_ListGlobalByResourceGroup")
 	eventSubscriptionsClientNewListGlobalByResourceGroupPager := eventSubscriptionsClient.NewListGlobalByResourceGroupPager(testsuite.resourceGroupName, &armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupOptions{Filter: nil,
 		Top: nil,
 	})
@@ -866,6 +938,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_ListRegionalByResourceGroup
+	fmt.Println("Call operation: EventSubscriptions_ListRegionalByResourceGroup")
 	eventSubscriptionsClientNewListRegionalByResourceGroupPager := eventSubscriptionsClient.NewListRegionalByResourceGroupPager(testsuite.resourceGroupName, testsuite.location, &armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupOptions{Filter: nil,
 		Top: nil,
 	})
@@ -876,6 +949,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_ListByDomainTopic
+	fmt.Println("Call operation: EventSubscriptions_ListByDomainTopic")
 	eventSubscriptionsClientNewListByDomainTopicPager := eventSubscriptionsClient.NewListByDomainTopicPager(testsuite.resourceGroupName, testsuite.domainName, testsuite.topicName, &armeventgrid.EventSubscriptionsClientListByDomainTopicOptions{Filter: nil,
 		Top: nil,
 	})
@@ -886,10 +960,12 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_Get
+	fmt.Println("Call operation: EventSubscriptions_Get")
 	_, err = eventSubscriptionsClient.Get(testsuite.ctx, "subscriptions/"+testsuite.subscriptionId, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step EventSubscriptions_ListRegionalBySubscription
+	fmt.Println("Call operation: EventSubscriptions_ListRegionalBySubscription")
 	eventSubscriptionsClientNewListRegionalBySubscriptionPager := eventSubscriptionsClient.NewListRegionalBySubscriptionPager(testsuite.location, &armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionOptions{Filter: nil,
 		Top: nil,
 	})
@@ -900,6 +976,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_ListRegionalBySubscriptionForTopicType
+	fmt.Println("Call operation: EventSubscriptions_ListRegionalBySubscriptionForTopicType")
 	eventSubscriptionsClientNewListRegionalBySubscriptionForTopicTypePager := eventSubscriptionsClient.NewListRegionalBySubscriptionForTopicTypePager(testsuite.location, "Microsoft.EventHub.namespaces", &armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions{Filter: nil,
 		Top: nil,
 	})
@@ -910,6 +987,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_ListRegionalByResourceGroupForTopicType
+	fmt.Println("Call operation: EventSubscriptions_ListRegionalByResourceGroupForTopicType")
 	eventSubscriptionsClientNewListRegionalByResourceGroupForTopicTypePager := eventSubscriptionsClient.NewListRegionalByResourceGroupForTopicTypePager(testsuite.resourceGroupName, testsuite.location, "Microsoft.EventHub.namespaces", &armeventgrid.EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions{Filter: nil,
 		Top: nil,
 	})
@@ -920,6 +998,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_ListByResource
+	fmt.Println("Call operation: EventSubscriptions_ListByResource")
 	eventSubscriptionsClientNewListByResourcePager := eventSubscriptionsClient.NewListByResourcePager(testsuite.resourceGroupName, "Microsoft.EventGrid", "topics", testsuite.topicName, &armeventgrid.EventSubscriptionsClientListByResourceOptions{Filter: nil,
 		Top: nil,
 	})
@@ -930,6 +1009,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_ListGlobalByResourceGroupForTopicType
+	fmt.Println("Call operation: EventSubscriptions_ListGlobalByResourceGroupForTopicType")
 	eventSubscriptionsClientNewListGlobalByResourceGroupForTopicTypePager := eventSubscriptionsClient.NewListGlobalByResourceGroupForTopicTypePager(testsuite.resourceGroupName, "Microsoft.Resources.ResourceGroups", &armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions{Filter: nil,
 		Top: nil,
 	})
@@ -940,6 +1020,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	}
 
 	// From step EventSubscriptions_Update
+	fmt.Println("Call operation: EventSubscriptions_Update")
 	eventSubscriptionsClientUpdateResponsePoller, err := eventSubscriptionsClient.BeginUpdate(testsuite.ctx, "subscriptions/"+testsuite.subscriptionId, testsuite.eventSubscriptionName, armeventgrid.EventSubscriptionUpdateParameters{
 		Labels: []*string{
 			to.Ptr("label1")},
@@ -949,10 +1030,12 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 	testsuite.Require().NoError(err)
 
 	// From step EventSubscriptions_GetDeliveryAttributes
+	fmt.Println("Call operation: EventSubscriptions_GetDeliveryAttributes")
 	_, err = eventSubscriptionsClient.GetDeliveryAttributes(testsuite.ctx, "subscriptions/"+testsuite.subscriptionId, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step EventSubscriptions_Delete
+	fmt.Println("Call operation: EventSubscriptions_Delete")
 	eventSubscriptionsClientDeleteResponsePoller, err := eventSubscriptionsClient.BeginDelete(testsuite.ctx, "subscriptions/"+testsuite.subscriptionId, testsuite.eventSubscriptionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, eventSubscriptionsClientDeleteResponsePoller)
@@ -963,6 +1046,7 @@ func (testsuite *EventGridTestSuite) TestEventSubscriptions() {
 func (testsuite *EventGridTestSuite) TestOperations() {
 	var err error
 	// From step Operations_List
+	fmt.Println("Call operation: Operations_List")
 	operationsClient, err := armeventgrid.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	operationsClientNewListPager := operationsClient.NewListPager(nil)
@@ -977,6 +1061,7 @@ func (testsuite *EventGridTestSuite) TestOperations() {
 func (testsuite *EventGridTestSuite) TestTopicTypes() {
 	var err error
 	// From step TopicTypes_List
+	fmt.Println("Call operation: TopicTypes_List")
 	topicTypesClient, err := armeventgrid.NewTopicTypesClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	topicTypesClientNewListPager := topicTypesClient.NewListPager(nil)
@@ -987,10 +1072,12 @@ func (testsuite *EventGridTestSuite) TestTopicTypes() {
 	}
 
 	// From step TopicTypes_Get
+	fmt.Println("Call operation: TopicTypes_Get")
 	_, err = topicTypesClient.Get(testsuite.ctx, "Microsoft.Storage.StorageAccounts", nil)
 	testsuite.Require().NoError(err)
 
 	// From step TopicTypes_ListEventTypes
+	fmt.Println("Call operation: TopicTypes_ListEventTypes")
 	topicTypesClientNewListEventTypesPager := topicTypesClient.NewListEventTypesPager("Microsoft.Storage.StorageAccounts", nil)
 	for topicTypesClientNewListEventTypesPager.More() {
 		_, err := topicTypesClientNewListEventTypesPager.NextPage(testsuite.ctx)
@@ -1003,6 +1090,7 @@ func (testsuite *EventGridTestSuite) TestTopicTypes() {
 func (testsuite *EventGridTestSuite) TestVerifiedPartners() {
 	var err error
 	// From step VerifiedPartners_List
+	fmt.Println("Call operation: VerifiedPartners_List")
 	verifiedPartnersClient, err := armeventgrid.NewVerifiedPartnersClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	verifiedPartnersClientNewListPager := verifiedPartnersClient.NewListPager(&armeventgrid.VerifiedPartnersClientListOptions{Filter: nil,
@@ -1015,6 +1103,7 @@ func (testsuite *EventGridTestSuite) TestVerifiedPartners() {
 	}
 
 	// From step VerifiedPartners_Get
+	fmt.Println("Call operation: VerifiedPartners_Get")
 	_, err = verifiedPartnersClient.Get(testsuite.ctx, "Auth0", nil)
 	testsuite.Require().NoError(err)
 }
@@ -1158,6 +1247,7 @@ func (testsuite *EventGridTestSuite) TestPrivateEndpointConnections() {
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnections_ListByResource
+	fmt.Println("Call operation: PrivateEndpointConnections_ListByResource")
 	privateEndpointConnectionsClient, err := armeventgrid.NewPrivateEndpointConnectionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateEndpointConnectionsClientNewListByResourcePager := privateEndpointConnectionsClient.NewListByResourcePager(testsuite.resourceGroupName, armeventgrid.PrivateEndpointConnectionsParentType(parentType), parentName, &armeventgrid.PrivateEndpointConnectionsClientListByResourceOptions{Filter: nil,
@@ -1172,6 +1262,7 @@ func (testsuite *EventGridTestSuite) TestPrivateEndpointConnections() {
 	}
 
 	// From step PrivateEndpointConnections_Update
+	fmt.Println("Call operation: PrivateEndpointConnections_Update")
 	privateEndpointConnectionsClientUpdateResponsePoller, err := privateEndpointConnectionsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, armeventgrid.PrivateEndpointConnectionsParentType(parentType), parentName, privateEndpointConnectionName, armeventgrid.PrivateEndpointConnection{
 		Properties: &armeventgrid.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armeventgrid.ConnectionState{
@@ -1186,10 +1277,12 @@ func (testsuite *EventGridTestSuite) TestPrivateEndpointConnections() {
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnections_Get
+	fmt.Println("Call operation: PrivateEndpointConnections_Get")
 	_, err = privateEndpointConnectionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, armeventgrid.PrivateEndpointConnectionsParentType(parentType), parentName, privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PrivateLinkResources_ListByResource
+	fmt.Println("Call operation: PrivateLinkResources_ListByResource")
 	privateLinkResourcesClient, err := armeventgrid.NewPrivateLinkResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateLinkResourcesClientNewListByResourcePager := privateLinkResourcesClient.NewListByResourcePager(testsuite.resourceGroupName, parentType, parentName, &armeventgrid.PrivateLinkResourcesClientListByResourceOptions{Filter: nil,
@@ -1205,6 +1298,7 @@ func (testsuite *EventGridTestSuite) TestPrivateEndpointConnections() {
 func (testsuite *EventGridTestSuite) Cleanup() {
 	var err error
 	// From step SystemTopics_Delete
+	fmt.Println("Call operation: SystemTopics_Delete")
 	systemTopicsClient, err := armeventgrid.NewSystemTopicsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	systemTopicsClientDeleteResponsePoller, err := systemTopicsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.systemTopicName, nil)
@@ -1213,6 +1307,7 @@ func (testsuite *EventGridTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step PartnerRegistrations_Delete
+	fmt.Println("Call operation: PartnerRegistrations_Delete")
 	partnerRegistrationsClient, err := armeventgrid.NewPartnerRegistrationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	partnerRegistrationsClientDeleteResponsePoller, err := partnerRegistrationsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.partnerRegistrationName, nil)
@@ -1221,6 +1316,7 @@ func (testsuite *EventGridTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step Topics_Delete
+	fmt.Println("Call operation: Topics_Delete")
 	topicsClient, err := armeventgrid.NewTopicsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	topicsClientDeleteResponsePoller, err := topicsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.topicName, nil)

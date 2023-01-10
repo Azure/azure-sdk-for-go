@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimauthorizationserversTestSuite(t *testing.T) {
 func (testsuite *ApimauthorizationserversTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimauthorizationserversTestSuite) Prepare() {
 func (testsuite *ApimauthorizationserversTestSuite) TestAuthorizationserver() {
 	var err error
 	// From step AuthorizationServer_CreateOrUpdate
+	fmt.Println("Call operation: AuthorizationServer_CreateOrUpdate")
 	authorizationServerClient, err := armapimanagement.NewAuthorizationServerClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = authorizationServerClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.authsid, armapimanagement.AuthorizationServerContract{
@@ -115,6 +118,7 @@ func (testsuite *ApimauthorizationserversTestSuite) TestAuthorizationserver() {
 	testsuite.Require().NoError(err)
 
 	// From step AuthorizationServer_GetEntityTag
+	fmt.Println("Call operation: AuthorizationServer_GetEntityTag")
 	_, err = authorizationServerClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.authsid, nil)
 	testsuite.Require().NoError(err)
 
@@ -130,10 +134,12 @@ func (testsuite *ApimauthorizationserversTestSuite) TestAuthorizationserver() {
 	}
 
 	// From step AuthorizationServer_Get
+	fmt.Println("Call operation: AuthorizationServer_Get")
 	_, err = authorizationServerClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.authsid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AuthorizationServer_Update
+	fmt.Println("Call operation: AuthorizationServer_Update")
 	_, err = authorizationServerClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.authsid, "*", armapimanagement.AuthorizationServerUpdateContract{
 		Properties: &armapimanagement.AuthorizationServerUpdateContractProperties{
 			ClientID:     to.Ptr("update"),
@@ -143,10 +149,12 @@ func (testsuite *ApimauthorizationserversTestSuite) TestAuthorizationserver() {
 	testsuite.Require().NoError(err)
 
 	// From step AuthorizationServer_ListSecrets
+	fmt.Println("Call operation: AuthorizationServer_ListSecrets")
 	_, err = authorizationServerClient.ListSecrets(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.authsid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AuthorizationServer_Delete
+	fmt.Println("Call operation: AuthorizationServer_Delete")
 	_, err = authorizationServerClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.authsid, "*", nil)
 	testsuite.Require().NoError(err)
 }

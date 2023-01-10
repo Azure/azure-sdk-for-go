@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimtagsTestSuite(t *testing.T) {
 func (testsuite *ApimtagsTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimtagsTestSuite) Prepare() {
 func (testsuite *ApimtagsTestSuite) TestTags() {
 	var err error
 	// From step Tag_CreateOrUpdate
+	fmt.Println("Call operation: Tag_CreateOrUpdate")
 	tagClient, err := armapimanagement.NewTagClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = tagClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagId, armapimanagement.TagCreateUpdateParameters{
@@ -98,6 +101,7 @@ func (testsuite *ApimtagsTestSuite) TestTags() {
 	testsuite.Require().NoError(err)
 
 	// From step Tag_ListByService
+	fmt.Println("Call operation: Tag_ListByService")
 	tagClientNewListByServicePager := tagClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.TagClientListByServiceOptions{Filter: nil,
 		Top:   nil,
 		Skip:  nil,
@@ -110,14 +114,17 @@ func (testsuite *ApimtagsTestSuite) TestTags() {
 	}
 
 	// From step Tag_GetEntityState
+	fmt.Println("Call operation: Tag_GetEntityState")
 	_, err = tagClient.GetEntityState(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_Get
+	fmt.Println("Call operation: Tag_Get")
 	_, err = tagClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_Update
+	fmt.Println("Call operation: Tag_Update")
 	_, err = tagClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagId, "*", armapimanagement.TagCreateUpdateParameters{
 		Properties: &armapimanagement.TagContractProperties{
 			DisplayName: to.Ptr("update_" + testsuite.tagId),
@@ -126,6 +133,7 @@ func (testsuite *ApimtagsTestSuite) TestTags() {
 	testsuite.Require().NoError(err)
 
 	// From step Tag_Delete
+	fmt.Println("Call operation: Tag_Delete")
 	_, err = tagClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagId, "*", nil)
 	testsuite.Require().NoError(err)
 }

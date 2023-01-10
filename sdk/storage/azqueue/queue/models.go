@@ -1,4 +1,4 @@
-package service
+package queue
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"

@@ -1,3 +1,4 @@
+// Deprecated: The service backing this library is retired on November 30th, 2022. At that point, this library will no longer work. Please migrate to Azure Monitor Log Alerts API in module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor.
 package workloadmonitorapi
 
 // Copyright (c) Microsoft Corporation. All rights reserved.

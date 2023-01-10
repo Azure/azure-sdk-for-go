@@ -8,6 +8,7 @@ package armnetwork_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -52,6 +53,7 @@ func TestIPGroupsClient(t *testing.T) {
 
 func (testsuite *IPGroupsClientTestSuite) TestIPGroupsCRUD() {
 	// create ip group
+	fmt.Println("Call operation: IPGroup_CreateOrUpdate")
 	ipgClient, err := armnetwork.NewIPGroupsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	ipgName := "go-test-ipg"
@@ -77,6 +79,7 @@ func (testsuite *IPGroupsClientTestSuite) TestIPGroupsCRUD() {
 	testsuite.Require().Equal(ipgName, *resp.Name)
 
 	// update
+	fmt.Println("Call operation: IPGroup_UpdateGroups")
 	updateResp, err := ipgClient.UpdateGroups(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -92,15 +95,18 @@ func (testsuite *IPGroupsClientTestSuite) TestIPGroupsCRUD() {
 	testsuite.Require().Equal("live", *updateResp.Tags["test"])
 
 	// get ip group
+	fmt.Println("Call operation: IPGroup_Get")
 	getResp, err := ipgClient.Get(testsuite.ctx, testsuite.resourceGroupName, ipgName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(ipgName, *getResp.Name)
 
 	// list ip group
+	fmt.Println("Call operation: IPGroup_List")
 	listPager := ipgClient.NewListPager(nil)
 	testsuite.Require().True(listPager.More())
 
 	// delete ip group
+	fmt.Println("Call operation: IPGroup_Delete")
 	delPoller, err := ipgClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, ipgName, nil)
 	testsuite.Require().NoError(err)
 	delResp, err := testutil.PollForTest(testsuite.ctx, delPoller)

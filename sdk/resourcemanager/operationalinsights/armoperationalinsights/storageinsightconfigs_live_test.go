@@ -10,6 +10,7 @@ package armoperationalinsights_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -141,6 +142,7 @@ func (testsuite *StorageInsightConfigsTestSuite) Prepare() {
 	testsuite.storageAccountId = deploymentExtend.Properties.Outputs.(map[string]interface{})["storageAccountId"].(map[string]interface{})["value"].(string)
 
 	// From step Workspaces_Create
+	fmt.Println("Call operation: Workspaces_Create")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{
@@ -161,6 +163,7 @@ func (testsuite *StorageInsightConfigsTestSuite) Prepare() {
 func (testsuite *StorageInsightConfigsTestSuite) TestStorageInsightConfig() {
 	var err error
 	// From step StorageInsightConfigs_CreateOrUpdate
+	fmt.Println("Call operation: StorageInsightConfigs_CreateOrUpdate")
 	storageInsightConfigsClient, err := armoperationalinsights.NewStorageInsightConfigsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = storageInsightConfigsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "AzTestSI1110", armoperationalinsights.StorageInsight{
@@ -179,6 +182,7 @@ func (testsuite *StorageInsightConfigsTestSuite) TestStorageInsightConfig() {
 	testsuite.Require().NoError(err)
 
 	// From step StorageInsightConfigs_ListByWorkspace
+	fmt.Println("Call operation: StorageInsightConfigs_ListByWorkspace")
 	storageInsightConfigsClientNewListByWorkspacePager := storageInsightConfigsClient.NewListByWorkspacePager(testsuite.resourceGroupName, testsuite.workspaceName, nil)
 	for storageInsightConfigsClientNewListByWorkspacePager.More() {
 		_, err := storageInsightConfigsClientNewListByWorkspacePager.NextPage(testsuite.ctx)
@@ -187,10 +191,12 @@ func (testsuite *StorageInsightConfigsTestSuite) TestStorageInsightConfig() {
 	}
 
 	// From step StorageInsightConfigs_Get
+	fmt.Println("Call operation: StorageInsightConfigs_Get")
 	_, err = storageInsightConfigsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "AzTestSI1110", nil)
 	testsuite.Require().NoError(err)
 
 	// From step StorageInsightConfigs_Delete
+	fmt.Println("Call operation: StorageInsightConfigs_Delete")
 	_, err = storageInsightConfigsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "AzTestSI1110", nil)
 	testsuite.Require().NoError(err)
 }

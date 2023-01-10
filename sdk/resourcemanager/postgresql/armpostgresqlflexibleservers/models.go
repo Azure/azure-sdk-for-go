@@ -184,18 +184,6 @@ type CheckNameAvailabilityRequest struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckNameAvailabilityResponse - The check availability result.
-type CheckNameAvailabilityResponse struct {
-	// Detailed reason why the given name is available.
-	Message *string `json:"message,omitempty"`
-
-	// Indicates if the resource name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
-
-	// The reason why the given name is not available.
-	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
-}
-
 // CheckNameAvailabilityWithLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithLocationClient.Execute
 // method.
 type CheckNameAvailabilityWithLocationClientExecuteOptions struct {
@@ -370,40 +358,6 @@ type DelegatedSubnetUsage struct {
 
 	// READ-ONLY; Number of IP addresses used by the delegated subnet
 	Usage *int64 `json:"usage,omitempty" azure:"ro"`
-}
-
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
-
-	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 type FastProvisioningEditionCapability struct {
@@ -637,40 +591,9 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.ListByServer method.
 type ReplicasClientListByServerOptions struct {
 	// placeholder for future optional parameters
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RestartParameter - Represents server restart parameters.
@@ -1019,28 +942,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UserAssignedIdentity - Information describing the identities associated with this application.

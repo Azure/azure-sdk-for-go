@@ -7,13 +7,7 @@
 - Function `*ConfigurationsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Configuration, *ConfigurationsClientBeginUpdateOptions)` to `(context.Context, string, string, string, ConfigurationForUpdate, *ConfigurationsClientBeginUpdateOptions)`
 - Type of `NameAvailability.Reason` has been changed from `*Reason` to `*CheckNameAvailabilityReason`
 - Type alias `Reason` has been removed
-- Struct `CloudError` has been removed
 - Struct `NameAvailabilityRequest` has been removed
-- Field `AdditionalInfo` of struct `ErrorResponse` has been removed
-- Field `Code` of struct `ErrorResponse` has been removed
-- Field `Details` of struct `ErrorResponse` has been removed
-- Field `Message` of struct `ErrorResponse` has been removed
-- Field `Target` of struct `ErrorResponse` has been removed
 - Field `Location` of struct `ServerForUpdate` has been removed
 
 ### Features Added
@@ -53,11 +47,9 @@
 - New struct `BackupsClient`
 - New struct `BackupsClientListByServerResponse`
 - New struct `CheckNameAvailabilityRequest`
-- New struct `CheckNameAvailabilityResponse`
 - New struct `CheckNameAvailabilityWithLocationClient`
 - New struct `ConfigurationForUpdate`
 - New struct `DataEncryption`
-- New struct `ErrorDetail`
 - New struct `FastProvisioningEditionCapability`
 - New struct `ReplicasClient`
 - New struct `ReplicasClientListByServerResponse`
@@ -69,9 +61,6 @@
 - New struct `UserIdentity`
 - New field `FastProvisioningSupported` in struct `CapabilityProperties`
 - New field `SupportedFastProvisioningEditions` in struct `CapabilityProperties`
-- New field `Error` in struct `ErrorResponse`
-- New field `SystemData` in struct `ProxyResource`
-- New field `SystemData` in struct `Resource`
 - New field `Identity` in struct `Server`
 - New field `Identity` in struct `ServerForUpdate`
 - New field `AuthConfig` in struct `ServerProperties`
@@ -84,7 +73,6 @@
 - New field `Version` in struct `ServerPropertiesForUpdate`
 - New field `SupportedVersionsToUpgrade` in struct `ServerVersionCapability`
 - New field `SupportedUpgradableTierList` in struct `StorageMBCapability`
-- New field `SystemData` in struct `TrackedResource`
 
 
 ## 1.1.0 (2022-07-21)

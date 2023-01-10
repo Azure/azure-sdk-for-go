@@ -218,6 +218,63 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 	_require.GreaterOrEqual(count, 0)
 }
 
+func (s *ServiceUnrecordedTestsSuite) TestListContainersPaged() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+	const numContainers = 6
+	maxResults := int32(2)
+	const pagedContainersPrefix = "azcontainerpaged"
+
+	containers := make([]*container.Client, numContainers)
+	expectedResults := make(map[string]bool)
+	for i := 0; i < numContainers; i++ {
+		containerName := pagedContainersPrefix + testcommon.GenerateContainerName(testName) + fmt.Sprintf("%d", i)
+		containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+		containers[i] = containerClient
+		expectedResults[containerName] = false
+	}
+
+	defer func() {
+		for i := range containers {
+			testcommon.DeleteContainer(context.Background(), _require, containers[i])
+		}
+	}()
+
+	prefix := pagedContainersPrefix + testcommon.ContainerPrefix
+	listOptions := service.ListContainersOptions{MaxResults: &maxResults, Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
+	count := 0
+	results := make([]service.ContainerItem, 0)
+	pager := svcClient.NewListContainersPager(&listOptions)
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, ctnr := range resp.ContainerItems {
+			_require.NotNil(ctnr.Name)
+			results = append(results, *ctnr)
+			count += 1
+		}
+	}
+
+	_require.Equal(count, numContainers)
+	_require.Equal(len(results), numContainers)
+
+	// make sure each container we see is expected
+	for _, ctnr := range results {
+		_, ok := expectedResults[*ctnr.Name]
+		_require.Equal(ok, true)
+		expectedResults[*ctnr.Name] = true
+	}
+
+	// make sure every expected container was seen
+	for _, seen := range expectedResults {
+		_require.Equal(seen, true)
+	}
+
+}
+
 //func (s *ServiceRecordedTestsSuite) TestListContainersPaged() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()

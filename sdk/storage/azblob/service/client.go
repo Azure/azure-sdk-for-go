@@ -186,7 +186,7 @@ func (s *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager
 			if page == nil {
 				req, err = s.generated().ListContainersSegmentCreateRequest(ctx, &listOptions)
 			} else {
-				listOptions.Marker = page.Marker
+				listOptions.Marker = page.NextMarker
 				req, err = s.generated().ListContainersSegmentCreateRequest(ctx, &listOptions)
 			}
 			if err != nil {

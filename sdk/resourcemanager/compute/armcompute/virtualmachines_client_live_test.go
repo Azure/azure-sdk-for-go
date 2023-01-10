@@ -8,6 +8,7 @@ package armcompute_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -216,6 +217,7 @@ func (testsuite *VirtualMachinesClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal(*nicResp.Name, nicName)
 
 	// create virtual machine
+	fmt.Println("Call operation: VirtualMachine_CreateOrUpdate")
 	vmClient, err := armcompute.NewVirtualMachinesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	vmName := "go-test-vm"
@@ -273,6 +275,7 @@ func (testsuite *VirtualMachinesClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal(*vmResp.Name, vmName)
 
 	// virtual machine update
+	fmt.Println("Call operation: VirtualMachine_Update")
 	updatePoller, err := vmClient.BeginUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -290,15 +293,18 @@ func (testsuite *VirtualMachinesClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal(*updateResp.Name, vmName)
 
 	// virtual machine get
+	fmt.Println("Call operation: VirtualMachine_Get")
 	resp, err := vmClient.Get(testsuite.ctx, testsuite.resourceGroupName, vmName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(*resp.Name, vmName)
 
 	// virtual machine list
+	fmt.Println("Call operation: VirtualMachine_List")
 	vmList := vmClient.NewListPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().Equal(vmList.More(), true)
 
 	// delete virtual machine
+	fmt.Println("Call operation: VirtualMachine_Delete")
 	delPoller, err := vmClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, vmName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, delPoller)

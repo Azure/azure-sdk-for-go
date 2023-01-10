@@ -127,7 +127,7 @@ func (s *Client) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[ListQue
 			if page == nil {
 				req, err = s.generated().ListQueuesSegmentCreateRequest(ctx, &listOptions)
 			} else {
-				listOptions.Marker = page.Marker
+				listOptions.Marker = page.NextMarker
 				req, err = s.generated().ListQueuesSegmentCreateRequest(ctx, &listOptions)
 			}
 			if err != nil {

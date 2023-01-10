@@ -215,7 +215,7 @@ func Example_blockblob_uploadLogs() {
 	azlog.SetEvents(azblob.EventUpload, azlog.EventRequest, azlog.EventResponse)
 	azlog.SetListener(func(cls azlog.Event, msg string) {
 		if cls == azblob.EventUpload {
-			fmt.Printf(msg)
+			fmt.Println(msg)
 		}
 	})
 

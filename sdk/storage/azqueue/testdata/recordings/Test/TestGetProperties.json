@@ -8,7 +8,7 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-azqueue/v0.1.0 (go1.19; Windows_NT)",
-        "X-Ms-Date": "Tue, 03 Jan 2023 21:44:55 GMT",
+        "X-Ms-Date": "Tue, 10 Jan 2023 04:01:35 GMT",
         "x-ms-version": "2018-03-28"
       },
       "RequestBody": null,
@@ -16,7 +16,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/xml",
-        "Date": "Tue, 03 Jan 2023 21:44:55 GMT",
+        "Date": "Tue, 10 Jan 2023 04:01:35 GMT",
         "Server": [
           "Windows-Azure-Queue/1.0",
           "Microsoft-HTTPAPI/2.0"

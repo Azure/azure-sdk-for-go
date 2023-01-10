@@ -8,6 +8,7 @@ package armfeatures_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -54,14 +55,17 @@ func (testsuite *FeaturesClientTestSuite) TestFeaturesCRUD() {
 	testsuite.Require().NoError(err)
 
 	// list
+	fmt.Println("Call operation: Feature_List")
 	pager := featureClient.NewListPager("Microsoft.Network", nil)
 	testsuite.Require().True(pager.More())
 
 	// list all
+	fmt.Println("Call operation: Feature_ListAll")
 	listAll := featureClient.NewListAllPager(nil)
 	testsuite.Require().True(listAll.More())
 
 	// list operation
+	fmt.Println("Call operation: Feature_ListOperations")
 	featuresClient, err := armfeatures.NewFeatureClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	listOperations := featuresClient.NewListOperationsPager(nil)

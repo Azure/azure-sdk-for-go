@@ -8,6 +8,7 @@ package armpolicy_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,6 +54,7 @@ func TestPolicyDefinitionsClient(t *testing.T) {
 
 func (testsuite *PolicyDefinitionsClientTestSuite) TestPolicyDefinitionsCRUD() {
 	// create policy definition
+	fmt.Println("Call operation: Definition_CreateOrUpdate")
 	policyDefinitionName := "go-test-definition"
 	policyDefinitionsClient, err := armpolicy.NewDefinitionsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -98,19 +100,23 @@ func (testsuite *PolicyDefinitionsClientTestSuite) TestPolicyDefinitionsCRUD() {
 	testsuite.Require().Equal(policyDefinitionName, *cResp.Name)
 
 	// get policy definition
+	fmt.Println("Call operation: Definition_Get")
 	getResp, err := policyDefinitionsClient.Get(testsuite.ctx, policyDefinitionName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(policyDefinitionName, *getResp.Name)
 
 	// list policy definition
+	fmt.Println("Call operation: Definition_List")
 	list := policyDefinitionsClient.NewListPager(nil)
 	testsuite.Require().True(list.More())
 
 	// list policy definition
+	fmt.Println("Call operation: Definition_ListBuiltIn")
 	listBuiltIn := policyDefinitionsClient.NewListBuiltInPager(nil)
 	testsuite.Require().True(listBuiltIn.More())
 
 	// delete policy definition
+	fmt.Println("Call operation: Definition_Delete")
 	_, err = policyDefinitionsClient.Delete(testsuite.ctx, policyDefinitionName, nil)
 	testsuite.Require().NoError(err)
 }

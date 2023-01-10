@@ -8,6 +8,7 @@ package armresources_test
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"testing"
 
@@ -54,6 +55,7 @@ func TestResourcesClient(t *testing.T) {
 
 func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	// check existence resource
+	fmt.Println("Call operation: Resource_CheckExistence")
 	resourcesClient, err := armresources.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	resourceName := "go-test-resource"
@@ -71,6 +73,7 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().False(check.Success)
 
 	// check existence resource by id
+	fmt.Println("Call operation: Resource_CheckExistenceByID")
 	resourceID := "/subscriptions/{guid}/resourceGroups/{resourcegroupname}/providers/{resourceprovidernamespace}/{resourcetype}/{resourcename}"
 	resourceID = strings.ReplaceAll(resourceID, "{guid}", testsuite.subscriptionID)
 	resourceID = strings.ReplaceAll(resourceID, "{resourcegroupname}", testsuite.resourceGroupName)
@@ -82,6 +85,7 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().False(checkByID.Success)
 
 	// create resource
+	fmt.Println("Call operation: Resource_CreateOrUpdate")
 	createPoller, err := resourcesClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -101,6 +105,7 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().Equal(resourceName, *resp.Name)
 
 	// create resource by id
+	fmt.Println("Call operation: Resource_CreateOrUpdateByID")
 	createByIDPoller, err := resourcesClient.BeginCreateOrUpdateByID(
 		testsuite.ctx,
 		resourceID,
@@ -116,6 +121,7 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().Equal(resourceName, *createByIDResp.Name)
 
 	// update resources
+	fmt.Println("Call operation: Resource_Update")
 	updatePoller, err := resourcesClient.BeginUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -137,6 +143,7 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().Equal("value1", *updateResp.Tags["tag1"])
 
 	// update resource by id
+	fmt.Println("Call operation: Resource_UpdateByID")
 	updateByIDPoller, err := resourcesClient.BeginUpdateByID(
 		testsuite.ctx,
 		resourceID,
@@ -154,6 +161,7 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().Equal("value2", *updateByIDResp.Tags["key2"])
 
 	// get resource
+	fmt.Println("Call operation: Resource_Get")
 	getResp, err := resourcesClient.Get(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -168,6 +176,7 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().Equal(resourceName, *getResp.Name)
 
 	// get resource by id
+	fmt.Println("Call operation: Resource_GetByID")
 	getByIDResp, err := resourcesClient.GetByID(
 		testsuite.ctx,
 		resourceID,
@@ -178,16 +187,19 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().Equal(resourceName, *getByIDResp.Name)
 
 	// list resource
+	fmt.Println("Call operation: Resource_List")
 	listPager := resourcesClient.NewListPager(nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().True(listPager.More())
 
 	// list resource by resource group
+	fmt.Println("Call operation: Resource_ListByResourceGroup")
 	listByResourceGroup := resourcesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().True(listByResourceGroup.More())
 
 	// delete resource
+	fmt.Println("Call operation: Resource_Delete")
 	delPoller, err := resourcesClient.BeginDelete(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -203,6 +215,7 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().NoError(err)
 
 	// delete resources by id
+	fmt.Println("Call operation: Resource_DeleteByID")
 	delByIDPoller, err := resourcesClient.BeginDeleteByID(
 		testsuite.ctx,
 		resourceID,

@@ -8,6 +8,7 @@ package armstorage_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -51,6 +52,7 @@ func TestOperationsClient(t *testing.T) {
 }
 
 func (testsuite *OperationsClientTestSuite) TestOperations() {
+	fmt.Println("Call operation: Operation_List")
 	operationsClient, err := armstorage.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	resp := operationsClient.NewListPager(nil)

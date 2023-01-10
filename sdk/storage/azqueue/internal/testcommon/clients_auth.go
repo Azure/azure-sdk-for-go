@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/service"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
@@ -49,9 +48,9 @@ func setClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Transport = transport
 }
 
-func GetServiceClient(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {
+func GetServiceClient(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.Client, error) {
 	if options == nil {
-		options = &service.ClientOptions{}
+		options = &azqueue.ClientOptions{}
 	}
 
 	setClientOptions(t, &options.ClientOptions)
@@ -61,7 +60,7 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 		return nil, err
 	}
 
-	serviceClient, err := service.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".queue.core.windows.net/", cred, options)
+	serviceClient, err := azqueue.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".queue.core.windows.net/", cred, options)
 
 	return serviceClient, err
 }
@@ -93,9 +92,9 @@ func GetConnectionString(accountType TestAccountType) string {
 	return connectionString
 }
 
-func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {
+func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.Client, error) {
 	if options == nil {
-		options = &service.ClientOptions{}
+		options = &azqueue.ClientOptions{}
 	}
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
@@ -103,11 +102,11 @@ func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountT
 	options.Transport = transport
 
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		return service.NewClientWithNoCredential(FakeStorageURL, options)
+		return azqueue.NewClientWithNoCredential(FakeStorageURL, options)
 	}
 
 	connectionString := GetConnectionString(accountType)
-	svcClient, err := service.NewClientFromConnectionString(connectionString, options)
+	svcClient, err := azqueue.NewClientFromConnectionString(connectionString, options)
 	return svcClient, err
 }
 

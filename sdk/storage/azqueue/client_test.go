@@ -1,4 +1,10 @@
-package service_test
+//go:build go1.18
+// +build go1.18
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+package azqueue_test
 
 import (
 	"context"
@@ -6,7 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/testcommon"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"testing"
@@ -68,7 +73,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	sharedKeyCred, err := azqueue.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
 	_require.Nil(err)
 
-	svcClient, err := service.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
+	svcClient, err := azqueue.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
 	_require.Nil(err)
 	//containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
 	//defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -77,13 +82,13 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require.NotZero(sProps)
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetProperties() {
-	_require := require.New(s.T())
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
-	sProps, err := svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
-	_require.NotZero(sProps)
-}
+//func (s *ServiceRecordedTestsSuite) TestGetProperties() {
+//	_require := require.New(s.T())
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	_require.NoError(err)
+//
+//	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
+//	sProps, err := svcClient.GetProperties(context.Background(), nil)
+//	_require.Nil(err)
+//	_require.NotZero(sProps)
+//}

@@ -10,6 +10,7 @@ package armcdn_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"time"
@@ -77,6 +78,7 @@ func TestAfdxTestSuite(t *testing.T) {
 func (testsuite *AfdxTestSuite) Prepare() {
 	var err error
 	// From step Profiles_Create
+	fmt.Println("Call operation: Profiles_Create")
 	profilesClient, err := armcdn.NewProfilesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	profilesClientCreateResponsePoller, err := profilesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, armcdn.Profile{
@@ -90,6 +92,7 @@ func (testsuite *AfdxTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDCustomDomains_Create
+	fmt.Println("Call operation: AFDCustomDomains_Create")
 	aFDCustomDomainsClient, err := armcdn.NewAFDCustomDomainsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDCustomDomainsClientCreateResponsePoller, err := aFDCustomDomainsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.customDomainName, armcdn.AFDDomain{
@@ -106,6 +109,7 @@ func (testsuite *AfdxTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDEndpoints_Create
+	fmt.Println("Call operation: AFDEndpoints_Create")
 	aFDEndpointsClient, err := armcdn.NewAFDEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDEndpointsClientCreateResponsePoller, err := aFDEndpointsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, armcdn.AFDEndpoint{
@@ -121,6 +125,7 @@ func (testsuite *AfdxTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDOriginGroups_Create
+	fmt.Println("Call operation: AFDOriginGroups_Create")
 	aFDOriginGroupsClient, err := armcdn.NewAFDOriginGroupsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDOriginGroupsClientCreateResponsePoller, err := aFDOriginGroupsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, armcdn.AFDOriginGroup{
@@ -143,7 +148,8 @@ func (testsuite *AfdxTestSuite) Prepare() {
 	_, err = testutil.PollForTest(testsuite.ctx, aFDOriginGroupsClientCreateResponsePoller)
 	testsuite.Require().NoError(err)
 
-	// From step AFDOrigins_Create
+	// From step RuleSets_Create
+	fmt.Println("Call operation: RuleSets_Create")
 	aFDOriginsClient, err := armcdn.NewAFDOriginsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDOriginsClientCreateResponsePoller, err := aFDOriginsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, testsuite.originName, armcdn.AFDOrigin{
@@ -160,6 +166,7 @@ func (testsuite *AfdxTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step RuleSets_Create
+	fmt.Println("Call operation: RuleSets_Create")
 	ruleSetsClient, err := armcdn.NewRuleSetsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = ruleSetsClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, nil)
@@ -170,6 +177,7 @@ func (testsuite *AfdxTestSuite) Prepare() {
 func (testsuite *AfdxTestSuite) TestCheckEndpointNameAvailability() {
 	var err error
 	// From step CheckEndpointNameAvailability
+	fmt.Println("Call operation: CheckEndpointNameAvailability")
 	managementClient, err := armcdn.NewManagementClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = managementClient.CheckEndpointNameAvailability(testsuite.ctx, testsuite.resourceGroupName, armcdn.CheckEndpointNameAvailabilityInput{
@@ -180,6 +188,7 @@ func (testsuite *AfdxTestSuite) TestCheckEndpointNameAvailability() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDProfiles_CheckHostNameAvailability
+	fmt.Println("Call operation: AFDProfiles_CheckHostNameAvailability")
 	aFDProfilesClient, err := armcdn.NewAFDProfilesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aFDProfilesClient.CheckHostNameAvailability(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, armcdn.CheckHostNameAvailabilityInput{
@@ -188,6 +197,7 @@ func (testsuite *AfdxTestSuite) TestCheckEndpointNameAvailability() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDProfiles_ListResourceUsage
+	fmt.Println("Call operation: AFDProfiles_ListResourceUsage")
 	aFDProfilesClientNewListResourceUsagePager := aFDProfilesClient.NewListResourceUsagePager(testsuite.resourceGroupName, testsuite.profileName, nil)
 	for aFDProfilesClientNewListResourceUsagePager.More() {
 		_, err := aFDProfilesClientNewListResourceUsagePager.NextPage(testsuite.ctx)
@@ -200,6 +210,7 @@ func (testsuite *AfdxTestSuite) TestCheckEndpointNameAvailability() {
 func (testsuite *AfdxTestSuite) TestAfdCustomDomains() {
 	var err error
 	// From step AFDCustomDomains_ListByProfile
+	fmt.Println("Call operation: AFDCustomDomains_ListByProfile")
 	aFDCustomDomainsClient, err := armcdn.NewAFDCustomDomainsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDCustomDomainsClientNewListByProfilePager := aFDCustomDomainsClient.NewListByProfilePager(testsuite.resourceGroupName, testsuite.profileName, nil)
@@ -210,10 +221,12 @@ func (testsuite *AfdxTestSuite) TestAfdCustomDomains() {
 	}
 
 	// From step AFDCustomDomains_Get
+	fmt.Println("Call operation: AFDCustomDomains_Get")
 	_, err = aFDCustomDomainsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.customDomainName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AFDCustomDomains_Update
+	fmt.Println("Call operation: AFDCustomDomains_Update")
 	aFDCustomDomainsClientUpdateResponsePoller, err := aFDCustomDomainsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.customDomainName, armcdn.AFDDomainUpdateParameters{
 		Properties: &armcdn.AFDDomainUpdatePropertiesParameters{
 			TLSSettings: &armcdn.AFDDomainHTTPSParameters{
@@ -231,6 +244,7 @@ func (testsuite *AfdxTestSuite) TestAfdCustomDomains() {
 func (testsuite *AfdxTestSuite) TestAfdEndpoints() {
 	var err error
 	// From step AFDEndpoints_ListByProfile
+	fmt.Println("Call operation: AFDEndpoints_ListByProfile")
 	aFDEndpointsClient, err := armcdn.NewAFDEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDEndpointsClientNewListByProfilePager := aFDEndpointsClient.NewListByProfilePager(testsuite.resourceGroupName, testsuite.profileName, nil)
@@ -241,10 +255,12 @@ func (testsuite *AfdxTestSuite) TestAfdEndpoints() {
 	}
 
 	// From step AFDEndpoints_Get
+	fmt.Println("Call operation: AFDEndpoints_Get")
 	_, err = aFDEndpointsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AFDEndpoints_Update
+	fmt.Println("Call operation: AFDEndpoints_Update")
 	aFDEndpointsClientUpdateResponsePoller, err := aFDEndpointsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, armcdn.AFDEndpointUpdateParameters{
 		Properties: &armcdn.AFDEndpointPropertiesUpdateParameters{
 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
@@ -256,6 +272,7 @@ func (testsuite *AfdxTestSuite) TestAfdEndpoints() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDEndpoints_PurgeContent
+	fmt.Println("Call operation: AFDEndpoints_PurgeContent")
 	aFDEndpointsClientPurgeContentResponsePoller, err := aFDEndpointsClient.BeginPurgeContent(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, armcdn.AfdPurgeParameters{
 		ContentPaths: []*string{
 			to.Ptr("/folder1")},
@@ -265,6 +282,7 @@ func (testsuite *AfdxTestSuite) TestAfdEndpoints() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDEndpoints_ListResourceUsage
+	fmt.Println("Call operation: AFDEndpoints_ListResourceUsage")
 	aFDEndpointsClientNewListResourceUsagePager := aFDEndpointsClient.NewListResourceUsagePager(testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
 	for aFDEndpointsClientNewListResourceUsagePager.More() {
 		_, err := aFDEndpointsClientNewListResourceUsagePager.NextPage(testsuite.ctx)
@@ -273,6 +291,7 @@ func (testsuite *AfdxTestSuite) TestAfdEndpoints() {
 	}
 
 	// From step AFDEndpoints_ValidateCustomDomain
+	fmt.Println("Call operation: AFDEndpoints_ValidateCustomDomain")
 	_, err = aFDEndpointsClient.ValidateCustomDomain(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, armcdn.ValidateCustomDomainInput{
 		HostName: to.Ptr("www.someDomain.com"),
 	}, nil)
@@ -283,6 +302,7 @@ func (testsuite *AfdxTestSuite) TestAfdEndpoints() {
 func (testsuite *AfdxTestSuite) TestAfdOriginGroups() {
 	var err error
 	// From step AFDOriginGroups_ListByProfile
+	fmt.Println("Call operation: AFDOriginGroups_ListByProfile")
 	aFDOriginGroupsClient, err := armcdn.NewAFDOriginGroupsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDOriginGroupsClientNewListByProfilePager := aFDOriginGroupsClient.NewListByProfilePager(testsuite.resourceGroupName, testsuite.profileName, nil)
@@ -293,10 +313,12 @@ func (testsuite *AfdxTestSuite) TestAfdOriginGroups() {
 	}
 
 	// From step AFDOriginGroups_Get
+	fmt.Println("Call operation: AFDOriginGroups_Get")
 	_, err = aFDOriginGroupsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AFDOriginGroups_Update
+	fmt.Println("Call operation: AFDOriginGroups_Update")
 	aFDOriginGroupsClientUpdateResponsePoller, err := aFDOriginGroupsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, armcdn.AFDOriginGroupUpdateParameters{
 		Properties: &armcdn.AFDOriginGroupUpdatePropertiesParameters{
 			HealthProbeSettings: &armcdn.HealthProbeParameters{
@@ -318,6 +340,7 @@ func (testsuite *AfdxTestSuite) TestAfdOriginGroups() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDOriginGroups_ListResourceUsage
+	fmt.Println("Call operation: AFDOriginGroups_ListResourceUsage")
 	aFDOriginGroupsClientNewListResourceUsagePager := aFDOriginGroupsClient.NewListResourceUsagePager(testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, nil)
 	for aFDOriginGroupsClientNewListResourceUsagePager.More() {
 		_, err := aFDOriginGroupsClientNewListResourceUsagePager.NextPage(testsuite.ctx)
@@ -330,6 +353,7 @@ func (testsuite *AfdxTestSuite) TestAfdOriginGroups() {
 func (testsuite *AfdxTestSuite) TestAfdOrigins() {
 	var err error
 	// From step AFDOrigins_ListByOriginGroup
+	fmt.Println("Call operation: AFDOrigins_ListByOriginGroup")
 	aFDOriginsClient, err := armcdn.NewAFDOriginsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDOriginsClientNewListByOriginGroupPager := aFDOriginsClient.NewListByOriginGroupPager(testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, nil)
@@ -340,10 +364,12 @@ func (testsuite *AfdxTestSuite) TestAfdOrigins() {
 	}
 
 	// From step AFDOrigins_Get
+	fmt.Println("Call operation: AFDOrigins_Get")
 	_, err = aFDOriginsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, testsuite.originName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AFDOrigins_Update
+	fmt.Println("Call operation: AFDOrigins_Update")
 	aFDOriginsClientUpdateResponsePoller, err := aFDOriginsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, testsuite.originName, armcdn.AFDOriginUpdateParameters{
 		Properties: &armcdn.AFDOriginUpdatePropertiesParameters{
 			EnabledState: to.Ptr(armcdn.EnabledStateEnabled),
@@ -361,6 +387,7 @@ func (testsuite *AfdxTestSuite) TestAfdOrigins() {
 func (testsuite *AfdxTestSuite) TestRoutes() {
 	var err error
 	// From step Routes_Create
+	fmt.Println("Call operation: Routes_Create")
 	routesClient, err := armcdn.NewRoutesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	routesClientCreateResponsePoller, err := routesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.routeName, armcdn.Route{
@@ -402,6 +429,7 @@ func (testsuite *AfdxTestSuite) TestRoutes() {
 	testsuite.Require().NoError(err)
 
 	// From step Routes_ListByEndpoint
+	fmt.Println("Call operation: Routes_ListByEndpoint")
 	routesClientNewListByEndpointPager := routesClient.NewListByEndpointPager(testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
 	for routesClientNewListByEndpointPager.More() {
 		_, err := routesClientNewListByEndpointPager.NextPage(testsuite.ctx)
@@ -410,10 +438,12 @@ func (testsuite *AfdxTestSuite) TestRoutes() {
 	}
 
 	// From step Routes_Get
+	fmt.Println("Call operation: Routes_Get")
 	_, err = routesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.routeName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Routes_Update
+	fmt.Println("Call operation: Routes_Update")
 	routesClientUpdateResponsePoller, err := routesClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.routeName, armcdn.RouteUpdateParameters{
 		Properties: &armcdn.RouteUpdatePropertiesParameters{
 			CacheConfiguration: &armcdn.AfdRouteCacheConfiguration{
@@ -452,6 +482,7 @@ func (testsuite *AfdxTestSuite) TestRoutes() {
 	testsuite.Require().NoError(err)
 
 	// From step Routes_Delete
+	fmt.Println("Call operation: Routes_Delete")
 	routesClientDeleteResponsePoller, err := routesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.routeName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, routesClientDeleteResponsePoller)
@@ -462,6 +493,7 @@ func (testsuite *AfdxTestSuite) TestRoutes() {
 func (testsuite *AfdxTestSuite) TestRuleSets() {
 	var err error
 	// From step RuleSets_ListByProfile
+	fmt.Println("Call operation: RuleSets_ListByProfile")
 	ruleSetsClient, err := armcdn.NewRuleSetsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	ruleSetsClientNewListByProfilePager := ruleSetsClient.NewListByProfilePager(testsuite.resourceGroupName, testsuite.profileName, nil)
@@ -472,10 +504,12 @@ func (testsuite *AfdxTestSuite) TestRuleSets() {
 	}
 
 	// From step RuleSets_Get
+	fmt.Println("Call operation: RuleSets_Get")
 	_, err = ruleSetsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step RuleSets_ListResourceUsage
+	fmt.Println("Call operation: RuleSets_ListResourceUsage")
 	ruleSetsClientNewListResourceUsagePager := ruleSetsClient.NewListResourceUsagePager(testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, nil)
 	for ruleSetsClientNewListResourceUsagePager.More() {
 		_, err := ruleSetsClientNewListResourceUsagePager.NextPage(testsuite.ctx)
@@ -488,6 +522,7 @@ func (testsuite *AfdxTestSuite) TestRuleSets() {
 func (testsuite *AfdxTestSuite) TestRules() {
 	var err error
 	// From step Rules_Create
+	fmt.Println("Call operation: Rules_Create")
 	rulesClient, err := armcdn.NewRulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	rulesClientCreateResponsePoller, err := rulesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, testsuite.ruleName, armcdn.Rule{
@@ -521,6 +556,7 @@ func (testsuite *AfdxTestSuite) TestRules() {
 	testsuite.Require().NoError(err)
 
 	// From step Rules_ListByRuleSet
+	fmt.Println("Call operation: Rules_ListByRuleSet")
 	rulesClientNewListByRuleSetPager := rulesClient.NewListByRuleSetPager(testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, nil)
 	for rulesClientNewListByRuleSetPager.More() {
 		_, err := rulesClientNewListByRuleSetPager.NextPage(testsuite.ctx)
@@ -529,10 +565,12 @@ func (testsuite *AfdxTestSuite) TestRules() {
 	}
 
 	// From step Rules_Get
+	fmt.Println("Call operation: Rules_Get")
 	_, err = rulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Rules_Update
+	fmt.Println("Call operation: Rules_Update")
 	rulesClientUpdateResponsePoller, err := rulesClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, testsuite.ruleName, armcdn.RuleUpdateParameters{
 		Properties: &armcdn.RuleUpdatePropertiesParameters{
 			Actions: []armcdn.DeliveryRuleActionAutoGeneratedClassification{
@@ -553,6 +591,7 @@ func (testsuite *AfdxTestSuite) TestRules() {
 	testsuite.Require().NoError(err)
 
 	// From step Rules_Delete
+	fmt.Println("Call operation: Rules_Delete")
 	rulesClientDeleteResponsePoller, err := rulesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, rulesClientDeleteResponsePoller)
@@ -563,22 +602,26 @@ func (testsuite *AfdxTestSuite) TestRules() {
 func (testsuite *AfdxTestSuite) TestLogAnalytics() {
 	var err error
 	// From step LogAnalytics_GetLogAnalyticsLocations
+	fmt.Println("Call operation: LogAnalytics_GetLogAnalyticsLocations")
 	logAnalyticsClient, err := armcdn.NewLogAnalyticsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = logAnalyticsClient.GetLogAnalyticsLocations(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step LogAnalytics_GetLogAnalyticsRankings
+	fmt.Println("Call operation: LogAnalytics_GetLogAnalyticsRankings")
 	_, err = logAnalyticsClient.GetLogAnalyticsRankings(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, []armcdn.LogRanking{
 		armcdn.LogRankingURL}, []armcdn.LogRankingMetric{
 		armcdn.LogRankingMetricClientRequestCount}, 5, func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t }(), &armcdn.LogAnalyticsClientGetLogAnalyticsRankingsOptions{CustomDomains: []string{}})
 	testsuite.Require().NoError(err)
 
 	// From step LogAnalytics_GetLogAnalyticsResources
+	fmt.Println("Call operation: LogAnalytics_GetLogAnalyticsResources")
 	_, err = logAnalyticsClient.GetLogAnalyticsResources(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step LogAnalytics_GetWafLogAnalyticsMetrics
+	fmt.Println("Call operation: LogAnalytics_GetWafLogAnalyticsMetrics")
 	_, err = logAnalyticsClient.GetWafLogAnalyticsMetrics(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, []armcdn.WafMetric{
 		armcdn.WafMetricClientRequestCount}, func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t }(), armcdn.WafGranularityPT5M, &armcdn.LogAnalyticsClientGetWafLogAnalyticsMetricsOptions{Actions: []armcdn.WafAction{
 		armcdn.WafActionBlock,
@@ -589,6 +632,7 @@ func (testsuite *AfdxTestSuite) TestLogAnalytics() {
 	testsuite.Require().NoError(err)
 
 	// From step LogAnalytics_GetWafLogAnalyticsRankings
+	fmt.Println("Call operation: LogAnalytics_GetWafLogAnalyticsRankings")
 	_, err = logAnalyticsClient.GetWafLogAnalyticsRankings(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, []armcdn.WafMetric{
 		armcdn.WafMetricClientRequestCount}, func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t }(), 5, []armcdn.WafRankingType{
 		armcdn.WafRankingTypeRuleID}, &armcdn.LogAnalyticsClientGetWafLogAnalyticsRankingsOptions{Actions: []armcdn.WafAction{},
@@ -600,6 +644,7 @@ func (testsuite *AfdxTestSuite) TestLogAnalytics() {
 func (testsuite *AfdxTestSuite) Cleanup() {
 	var err error
 	// From step RuleSets_Delete
+	fmt.Println("Call operation: RuleSets_Delete")
 	ruleSetsClient, err := armcdn.NewRuleSetsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	ruleSetsClientDeleteResponsePoller, err := ruleSetsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.ruleSetName, nil)
@@ -608,6 +653,7 @@ func (testsuite *AfdxTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDOrigins_Delete
+	fmt.Println("Call operation: AFDOrigins_Delete")
 	aFDOriginsClient, err := armcdn.NewAFDOriginsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDOriginsClientDeleteResponsePoller, err := aFDOriginsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, testsuite.originName, nil)
@@ -616,6 +662,7 @@ func (testsuite *AfdxTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDOriginGroups_Delete
+	fmt.Println("Call operation: AFDOriginGroups_Delete")
 	aFDOriginGroupsClient, err := armcdn.NewAFDOriginGroupsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDOriginGroupsClientDeleteResponsePoller, err := aFDOriginGroupsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.originGroupName, nil)
@@ -624,6 +671,7 @@ func (testsuite *AfdxTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDEndpoints_Delete
+	fmt.Println("Call operation: AFDEndpoints_Delete")
 	aFDEndpointsClient, err := armcdn.NewAFDEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDEndpointsClientDeleteResponsePoller, err := aFDEndpointsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
@@ -632,6 +680,7 @@ func (testsuite *AfdxTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step AFDCustomDomains_Delete
+	fmt.Println("Call operation: AFDCustomDomains_Delete")
 	aFDCustomDomainsClient, err := armcdn.NewAFDCustomDomainsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aFDCustomDomainsClientDeleteResponsePoller, err := aFDCustomDomainsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.customDomainName, nil)

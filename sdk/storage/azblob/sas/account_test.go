@@ -107,7 +107,7 @@ func TestAccountPermissions_Parse(t *testing.T) {
 }
 
 func TestAccountPermissions_ParseNegative(t *testing.T) {
-	_, err := parseContainerPermissions("trwlapdixfycuz") // Here 'z' is invalid
+	_, err := parseAccountPermissions("trwlapdixfycuz") // Here 'z' is invalid
 	require.NotNil(t, err)
 	require.Contains(t, err.Error(), "122")
 }

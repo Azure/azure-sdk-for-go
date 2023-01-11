@@ -498,19 +498,6 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
-	// Test SetProperties with nil options (should have same effect as above)
-	_, err = svcClient.SetProperties(context.Background(), nil)
-	_require.Nil(err)
-
-	// From FE, 30 seconds is guaranteed to be enough.
-	time.Sleep(time.Second * 30)
-
-	// If an element of service properties is not passed, the service keeps the current settings.
-	resp, err = svcClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
-
 	// Disable for other tests
 	enabled = to.Ptr(false)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled}})

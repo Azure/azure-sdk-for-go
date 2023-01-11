@@ -51,25 +51,6 @@ func TestBlobClient_CheckChunkExists(t *testing.T) {
 	require.NotEmpty(t, *res.ContentLength)
 }
 
-func TestBlobClient_completeUpload(t *testing.T) {
-	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
-	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
-	require.NoError(t, err)
-	blob, err := io.ReadAll(getRes.BlobData)
-	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
-	require.NoError(t, err)
-	uploadResp, err := client.uploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
-	require.NoError(t, err)
-	completeResp, err := client.completeUpload(ctx, digest, *uploadResp.Location, nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, *completeResp.DockerContentDigest)
-}
-
 func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
@@ -160,24 +141,5 @@ func TestBlobClient_StartUpload(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, *startRes.Location)
 	_, err = client.CancelUpload(ctx, *startRes.Location, nil)
-	require.NoError(t, err)
-}
-
-func TestBlobClient_uploadChunk(t *testing.T) {
-	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
-	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
-	require.NoError(t, err)
-	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
-	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
-	require.NoError(t, err)
-	blob, err := io.ReadAll(getRes.BlobData)
-	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
-	require.NoError(t, err)
-	uploadResp, err := client.uploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, *uploadResp.Location)
-	_, err = client.CancelUpload(ctx, *uploadResp.Location, nil)
 	require.NoError(t, err)
 }

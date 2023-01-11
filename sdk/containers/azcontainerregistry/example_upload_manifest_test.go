@@ -44,7 +44,7 @@ func Example_uploadManifest() {
 	if err != nil {
 		log.Fatalf("failed to complete layer upload: %v", err)
 	}
-	layerDigest := completeResp.DockerContentDigest
+	layerDigest := *completeResp.DockerContentDigest
 	config := []byte(fmt.Sprintf(`{
   architecture: "amd64",
   os: "windows",
@@ -83,7 +83,7 @@ func Example_uploadManifest() {
 	  },
 	  },
   ],
-}`, layerDigest, len(config), completeResp.DockerContentDigest, len(layer))
+}`, layerDigest, len(config), *completeResp.DockerContentDigest, len(layer))
 	uploadManifestRes, err := client.UploadManifest(ctx, "library/hello-world", "1.0.0", "application/vnd.oci.image.config.v1+json", streaming.NopCloser(bytes.NewReader([]byte(manifest))), nil)
 	if err != nil {
 		log.Fatalf("failed to upload manifest: %v", err)

@@ -15,12 +15,12 @@ const (
 
 func init() {
 	cloud.AzureChina.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https://management.chinacloudapi.cn/",
+		Audience: "https://management.core.chinacloudapi.cn",
 	}
 	cloud.AzureGovernment.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https://management.usgovcloudapi.net/",
+		Audience: "https://management.core.usgovcloudapi.net",
 	}
 	cloud.AzurePublic.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https://management.azure.com",
+		Audience: "https://management.core.windows.net/",
 	}
 }

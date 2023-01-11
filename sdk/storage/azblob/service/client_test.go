@@ -917,3 +917,20 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountGetStatistics() {
 		_require.Nil(resp.GeoReplication.LastSyncTime)
 	}
 }
+
+// Note: Further tests for filterblobs in pageblob and appendblob
+func (s *ServiceUnrecordedTestsSuite) TestAccountFilterBlobs() {
+	_require := require.New(s.T())
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	filter := "\"key\"='value'"
+	resp, err := serviceClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &filter})
+	_require.Nil(err)
+	_require.Len(resp.FilterBlobSegment.Blobs, 0)
+}

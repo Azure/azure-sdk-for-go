@@ -46,7 +46,7 @@ func TestContainerPermissions_String(t *testing.T) {
 		}, expected: "racwdxlfmeopi"},
 	}
 	for _, c := range testdata {
-		require.Equal(t, c.input.String(), c.expected)
+		require.Equal(t, c.expected, c.input.String())
 	}
 }
 
@@ -102,7 +102,7 @@ func TestContainerPermissions_Parse(t *testing.T) {
 	for _, c := range testdata {
 		permissions, err := parseContainerPermissions(c.input)
 		require.Nil(t, err)
-		require.Equal(t, permissions, c.expected)
+		require.Equal(t, c.expected, permissions)
 	}
 }
 
@@ -149,7 +149,7 @@ func TestBlobPermissions_String(t *testing.T) {
 		}, expected: "racwdxyltmeopi"},
 	}
 	for _, c := range testdata {
-		require.Equal(t, c.input.String(), c.expected)
+		require.Equal(t, c.expected, c.input.String())
 	}
 }
 
@@ -208,7 +208,7 @@ func TestBlobPermissions_Parse(t *testing.T) {
 	for _, c := range testdata {
 		permissions, err := parseBlobPermissions(c.input)
 		require.Nil(t, err)
-		require.Equal(t, permissions, c.expected)
+		require.Equal(t, c.expected, permissions)
 	}
 }
 

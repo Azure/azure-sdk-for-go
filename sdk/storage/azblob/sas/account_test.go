@@ -46,7 +46,7 @@ func TestAccountPermissions_String(t *testing.T) {
 		}, expected: "rwdxylacuptfi"},
 	}
 	for _, c := range testdata {
-		require.Equal(t, c.input.String(), c.expected)
+		require.Equal(t, c.expected, c.input.String())
 	}
 }
 
@@ -102,12 +102,12 @@ func TestAccountPermissions_Parse(t *testing.T) {
 	for _, c := range testdata {
 		permissions, err := parseAccountPermissions(c.input)
 		require.Nil(t, err)
-		require.Equal(t, permissions, c.expected)
+		require.Equal(t, c.expected, permissions)
 	}
 }
 
 func TestAccountPermissions_ParseNegative(t *testing.T) {
-	_, err := parseContainerPermissions("rwdylacuptfiz") // Here 'z' is invalid
+	_, err := parseContainerPermissions("trwlapdixfycuz") // Here 'z' is invalid
 	require.NotNil(t, err)
 	require.Contains(t, err.Error(), "122")
 }
@@ -127,7 +127,7 @@ func TestAccountServices_String(t *testing.T) {
 		}, expected: "bqf"},
 	}
 	for _, c := range testdata {
-		require.Equal(t, c.input.String(), c.expected)
+		require.Equal(t, c.expected, c.input.String())
 	}
 }
 
@@ -146,7 +146,7 @@ func TestAccountResourceTypes_String(t *testing.T) {
 		}, expected: "sco"},
 	}
 	for _, c := range testdata {
-		require.Equal(t, c.input.String(), c.expected)
+		require.Equal(t, c.expected, c.input.String())
 	}
 }
 

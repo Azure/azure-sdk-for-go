@@ -29,37 +29,14 @@ spec:
       # NOTE: -verbose activates _all_ the Azure internal logging, which can get quite large.
       # so it's not enabled for every target in here. We also have an issue filed to whittle it
       # down (https://github.com/Azure/azure-sdk-for-go/issues/19459)
-      {{ if (eq .Stress.testTarget "batch") }}
-      - batch
+      - "{{.Stress.testTarget}}"
       - "-rounds"
-      - "100"
-      - "-verbose"
-      {{ else if (eq .Stress.testTarget "batchprefetchoff") }}
-      - batch
-      - "-rounds"
-      - "100"
+      - "{{.Stress.rounds}}"
       - "-prefetch"
-      - "-1"
-      - "-verbose"
-      {{ else if (eq .Stress.testTarget "batchinfinite") }}
-      - batch
-      - "-rounds"
-      - "-1"      
-      {{ else if (eq .Stress.testTarget "processor") }}
-      - processor
-      - "-rounds"
-      - "100"
-      {{ else if (eq .Stress.testTarget "processorprefetchoff") }}
-      - processor
-      - "-rounds"
-      - "100"
-      - "-prefetch"
-      - "-1"
-      {{ else if (eq .Stress.testTarget "processorinfinite") }}
-      - processor
-      - "-rounds"
-      - "-1"
-      {{- end -}}
+      - "{{.Stress.prefetch}}"
+      - "{{.Stress.verbose}}"
+      - "-sleepAfter"
+      - "{{.Stress.sleepAfter}}"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
 

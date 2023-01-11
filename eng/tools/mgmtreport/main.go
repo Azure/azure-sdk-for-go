@@ -38,13 +38,15 @@ var (
 	projectName     string
 )
 
-var mgmtReportMDHeader = `|module | latest version | tag | live test result | live test coverage | mock test result | mock test coverage |
-|---|---|---|---|---|---|---|
+var mgmtReportMDHeader = `|module | latest version | tag | live test result | live test coverage (line) | live test coverage (operation) | mock test result | mock test coverage (line) | mock test coverage (operation) |
+|---|---|---|---|---|---|---|---|---|
 `
 
 var htmlTR = `
 			<tr%s>
 				<td align="left">%s</td>
+				<td align="center">%s</td>
+				<td align="center">%s</td>
 				<td align="center">%s</td>
 				<td align="center">%s</td>
 				<td align="center">%s</td>
@@ -167,7 +169,7 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 					}
 
 					// mock test
-					mockTestTotal, mockTestPassed, mockTestCoverage, err := getTestResult(buildClient, buildId, mockTestLogId, "MockTest")
+					mockTestTotal, mockTestPassed, mockTestCoverage, err := getTestResult(buildClient, buildId, mockTestLogId)
 					if err != nil {
 						return err
 					}
@@ -175,14 +177,28 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 					mInfo.mockTestPass = mockTestPassed
 					mInfo.mockTestCoverage = mockTestCoverage
 
+					skipped, err := getSkippedMockTest(buildClient, buildId, mockTestLogId)
+					if err != nil {
+						return err
+					}
+					mInfo.mockTestSkip = skipped
+
 					// live test
-					liveTestTotal, liveTestPassed, liveTestCoverage, err := getTestResult(buildClient, buildId, liveTestLogId, "TestSuite")
+					liveTestTotal, liveTestPassed, liveTestCoverage, err := getTestResult(buildClient, buildId, liveTestLogId)
 					if err != nil {
 						return err
 					}
 					mInfo.liveTestTotal = liveTestTotal
 					mInfo.liveTestPass = liveTestPassed
 					mInfo.liveTestCoverage = liveTestCoverage
+
+					if mInfo.liveTestTotal != 0 {
+						operations, err := getCallOperations(buildClient, buildId, liveTestLogId)
+						if err != nil {
+							return err
+						}
+						mInfo.liveTestCallOperations = operations
+					}
 
 					moduleName := fmt.Sprintf("%s/%s", dir.Name(), arm.Name())
 					mgmtReport[moduleName] = mInfo
@@ -268,14 +284,18 @@ func readAutorestMD(path string) (string, string, error) {
 }
 
 type mgmtInfo struct {
-	tag              string
-	version          string
+	tag     string
+	version string
+
 	mockTestPass     int
 	mockTestTotal    int
 	mockTestCoverage string
-	liveTestPass     int
-	liveTestTotal    int
-	liveTestCoverage string
+	mockTestSkip     int
+
+	liveTestPass           int
+	liveTestTotal          int
+	liveTestCoverage       string
+	liveTestCallOperations int
 }
 
 func defaultPlaceholder(v string) string {
@@ -306,16 +326,24 @@ func generateMDReport(mgmtReport map[string]mgmtInfo, path string) error {
 	for _, module := range sortMgmt {
 		m := mgmtReport[module]
 		mt := "/"
+		mto := "/"
 		if m.mockTestTotal != 0 {
 			mt = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.mockTestPass)/float64(m.mockTestTotal)*100, m.mockTestPass, m.mockTestTotal)
+			operations := m.mockTestTotal - m.mockTestSkip
+			mto = fmt.Sprintf("%.2f%%(%d/%d)", float64(operations)/float64(m.mockTestTotal)*100, operations, m.mockTestTotal)
 		}
 
 		lt := "/"
+		lto := "/"
 		if m.liveTestTotal != 0 {
 			lt = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.liveTestPass)/float64(m.liveTestTotal)*100, m.liveTestPass, m.liveTestTotal)
+
+			if m.liveTestCallOperations != 0 {
+				lto = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.liveTestCallOperations)/float64(m.mockTestTotal)*100, m.liveTestCallOperations, m.mockTestTotal)
+			}
 		}
 
-		f := fmt.Sprintf("|%s | %s | %s | %s | %s | %s | %s |\n", module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), lt, defaultPlaceholder(m.liveTestCoverage), mt, defaultPlaceholder(m.mockTestCoverage))
+		f := fmt.Sprintf("|%s | %s | %s | %s | %s | %s | %s | %s | %s |\n", module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), lt, defaultPlaceholder(m.liveTestCoverage), lto, mt, defaultPlaceholder(m.mockTestCoverage), mto)
 		_, err = mgmtFile.Write([]byte(f))
 		if err != nil {
 			return err
@@ -353,17 +381,31 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
 			count: 0,
 			sum:   0,
 		},
+		{
+			count: 0,
+			sum:   0,
+		},
+		{
+			count: 0,
+			sum:   0,
+		},
 	}
 
 	for i, module := range sortMgmt {
 		m := mgmtReport[module]
 
 		mt := "/"
+		mto := "/"
 		if m.mockTestTotal != 0 {
 			coverage := float64(m.mockTestPass) / float64(m.mockTestTotal)
 			average[0].sum += coverage
 			average[0].count++
 			mt = fmt.Sprintf("%.2f%%(%d/%d)", coverage*100, m.mockTestPass, m.mockTestTotal)
+
+			mtoCoverage := float64(m.mockTestTotal-m.mockTestSkip) / float64(m.mockTestTotal)
+			average[4].sum += mtoCoverage
+			average[4].count++
+			mto = fmt.Sprintf("%.2f%%(%d/%d)", mtoCoverage*100, m.mockTestTotal-m.mockTestSkip, m.mockTestTotal)
 		}
 
 		mtc := defaultPlaceholder(m.mockTestCoverage)
@@ -377,11 +419,19 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
 		}
 
 		lt := "/"
+		lto := "/"
 		if m.liveTestTotal != 0 {
 			coverage := float64(m.liveTestPass) / float64(m.liveTestTotal)
 			average[2].sum += coverage
 			average[2].count++
 			lt = fmt.Sprintf("%.2f%%(%d/%d)", coverage*100, m.liveTestPass, m.liveTestTotal)
+
+			if m.mockTestTotal != 0 && m.liveTestCallOperations != 0 {
+				ltoCoverage := float64(m.liveTestCallOperations) / float64(m.mockTestTotal)
+				average[5].sum += ltoCoverage
+				average[5].count++
+				lto = fmt.Sprintf("%.2f%%(%d/%d)", ltoCoverage*100, m.liveTestCallOperations, m.mockTestTotal)
+			}
 		}
 
 		ltc := defaultPlaceholder(m.liveTestCoverage)
@@ -398,15 +448,21 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
 		if i%2 == 0 {
 			tdBackground = tdBackgroundStyle
 		}
-		htmlData = append(htmlData, fmt.Sprintf(htmlTR, tdBackground, module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), lt, ltc, mt, mtc))
+		htmlData = append(htmlData, fmt.Sprintf(htmlTR, tdBackground, module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), lt, ltc, lto, mt, mtc, mto))
 	}
 
 	// average
+	ltoc := "/"
+	if average[5].sum != 0 {
+		ltoc = fmt.Sprintf("%.2f%%", (average[5].sum/float64(average[5].count))*100)
+	}
 	htmlData = append(htmlData, fmt.Sprintf(htmlTR, "", "Average", "", "",
 		fmt.Sprintf("%.2f%%", (average[2].sum/float64(average[2].count))*100),
 		fmt.Sprintf("%.1f%%", average[3].sum/float64(average[3].count)),
+		ltoc,
 		fmt.Sprintf("%.2f%%", (average[0].sum/float64(average[0].count))*100),
 		fmt.Sprintf("%.1f%%", average[1].sum/float64(average[1].count)),
+		fmt.Sprintf("%.2f%%", (average[4].sum/float64(average[4].count))*100),
 	))
 
 	// parse template file

@@ -101,7 +101,7 @@ func getLogID(buildClient build.Client, buildId int) (int, int, error) {
 	return mockTestLogId, liveTestLogId, nil
 }
 
-func getTestResult(buildClient build.Client, buildId, logId int, testType string) (int, int, string, error) {
+func getTestResult(buildClient build.Client, buildId, logId int) (int, int, string, error) {
 	logLines, err := buildClient.GetBuildLogLines(context.Background(), build.GetBuildLogLinesArgs{
 		Project: &projectName,
 		BuildId: &buildId,
@@ -128,4 +128,46 @@ func getTestResult(buildClient build.Client, buildId, logId int, testType string
 	}
 
 	return len(totalTests), len(passedTests), coverage, nil
+}
+
+func getSkippedMockTest(buildClient build.Client, buildId, mockTestLogId int) (int, error) {
+	logLines, err := buildClient.GetBuildLogLines(context.Background(), build.GetBuildLogLinesArgs{
+		Project: &projectName,
+		BuildId: &buildId,
+		LogId:   &mockTestLogId,
+	})
+	if err != nil {
+		return 0, err
+	}
+
+	logResult := strings.Join(*logLines, "\n")
+	skipOperations := regexp.MustCompile("--- SKIP:.*/").FindAllString(logResult, -1)
+
+	return len(skipOperations), nil
+}
+
+func getCallOperations(buildClient build.Client, buildId, liveTestLogId int) (int, error) {
+	logLines, err := buildClient.GetBuildLogLines(context.Background(), build.GetBuildLogLinesArgs{
+		Project: &projectName,
+		BuildId: &buildId,
+		LogId:   &liveTestLogId,
+	})
+	if err != nil {
+		return 0, err
+	}
+
+	logResult := strings.Join(*logLines, "\n")
+	result := regexp.MustCompile("Call operation:.*").FindAllString(logResult, -1)
+
+	callOperation := make(map[string]int)
+	for _, co := range result {
+		_, after, b := strings.Cut(co, "Call operation: ")
+		if b {
+			if _, ok := callOperation[after]; !ok {
+				callOperation[after] = 0
+			}
+		}
+	}
+
+	return len(callOperation), nil
 }

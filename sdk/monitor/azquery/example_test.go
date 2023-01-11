@@ -16,7 +16,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 )
 
-var cred *azidentity.DefaultAzureCredential
+var logsClient azquery.LogsClient
+var metricsClient azquery.MetricsClient
 var kustoQuery1 string
 var kustoQuery2 string
 var kustoQuery3 string
@@ -55,17 +56,9 @@ func ExampleNewMetricsClient() {
 }
 
 func ExampleLogsClient_QueryWorkspace() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	client, err := azquery.NewLogsClient(cred, nil)
-	if err != nil {
-		//TODO: handle error
-	}
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
 
-	res, err := client.QueryWorkspace(
+	res, err := logsClient.QueryWorkspace(
 		context.TODO(),
 		workspaceID,
 		azquery.Body{
@@ -89,18 +82,10 @@ func ExampleLogsClient_QueryWorkspace() {
 }
 
 func ExampleLogsClient_QueryWorkspace_second() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	client, err := azquery.NewLogsClient(cred, nil)
-	if err != nil {
-		//TODO: handle error
-	}
 	workspaceID1 := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
 	workspaceID2 := "h4bc4471-2e8c-4b1c-8f47-12b9a4d5ac71"
 	preferOptions := "include-statistics=true" // Advanced option to include stats. See docs: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
-	res, err := client.QueryWorkspace(
+	res, err := logsClient.QueryWorkspace(
 		context.TODO(),
 		workspaceID1,
 		azquery.Body{
@@ -134,15 +119,6 @@ func ExampleLogsClient_QueryWorkspace_second() {
 }
 
 func ExampleLogsClient_QueryBatch() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	client, err := azquery.NewLogsClient(cred, nil)
-	if err != nil {
-		//TODO: handle error
-	}
-
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
 	timespan := azquery.NewISO8601TimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))
 
@@ -152,7 +128,7 @@ func ExampleLogsClient_QueryBatch() {
 		{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, CorrelationID: to.Ptr("3"), WorkspaceID: to.Ptr(workspaceID)},
 	}}
 
-	res, err := client.QueryBatch(context.TODO(), batchRequest, nil)
+	res, err := logsClient.QueryBatch(context.TODO(), batchRequest, nil)
 	if err != nil {
 		//TODO: handle error
 	}
@@ -167,15 +143,7 @@ func ExampleLogsClient_QueryBatch() {
 }
 
 func ExampleMetricsClient_QueryResource() {
-	client, err := azquery.NewMetricsClient(cred, nil)
-	if err != nil {
-		//TODO: handle error
-	}
-
-	if err != nil {
-		//TODO: handle error
-	}
-	res, err := client.QueryResource(context.TODO(), resourceURI,
+	res, err := metricsClient.QueryResource(context.TODO(), resourceURI,
 		&azquery.MetricsClientQueryResourceOptions{
 			Timespan:        to.Ptr(azquery.NewISO8601TimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
 			Interval:        to.Ptr("PT1M"),
@@ -194,11 +162,7 @@ func ExampleMetricsClient_QueryResource() {
 }
 
 func ExampleMetricsClient_NewListDefinitionsPager() {
-	client, err := azquery.NewMetricsClient(cred, nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	pager := client.NewListDefinitionsPager("subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill/providers/microsoft.insights/metricdefinitions", &azquery.MetricsClientListDefinitionsOptions{Metricnamespace: to.Ptr("microsoft.insights/components")})
+	pager := metricsClient.NewListDefinitionsPager("subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill/providers/microsoft.insights/metricdefinitions", &azquery.MetricsClientListDefinitionsOptions{Metricnamespace: to.Ptr("microsoft.insights/components")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -212,15 +176,7 @@ func ExampleMetricsClient_NewListDefinitionsPager() {
 }
 
 func ExampleMetricsClient_NewListNamespacesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	client, err := azquery.NewMetricsClient(cred, nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	pager := client.NewListNamespacesPager("subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill", &azquery.MetricsClientListNamespacesOptions{StartTime: to.Ptr("2020-08-31T15:53:00Z")})
+	pager := metricsClient.NewListNamespacesPager("subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill", &azquery.MetricsClientListNamespacesOptions{StartTime: to.Ptr("2020-08-31T15:53:00Z")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(context.TODO())
 		if err != nil {

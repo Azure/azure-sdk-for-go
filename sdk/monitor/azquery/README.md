@@ -64,7 +64,7 @@ Each set of metric values is a time series with the following characteristics:
 
 ### Timespan
 
-It's best practice to always query with a timespan (type `ISO8601TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Logs uses the ISO8601 Time Interval Standard. All time should be represented in UTC.
+It's best practice to always query with a timespan (type `ISO8601TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Logs uses the ISO8601 Time Interval Standard. All time should be represented in UTC. If the timespan  is included in both the kusto query string and `Timespan` field, the timespan will be the intersection of the two values.
 
 Use the `NewISO8601TimeInterval()` method for easy creation.
 

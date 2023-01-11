@@ -89,7 +89,7 @@ directive:
     where: $.definitions.batchQueryResponse.properties.id
     transform: $["x-ms-client-name"] = "CorrelationID"
 
-  # rename BatchQueryRequest.ID to BatchQueryRequest.RequestID
+  # rename BatchQueryRequest.Workspace to BatchQueryRequest.WorkspaceID
   - from: swagger-document
     where: $.definitions.batchQueryRequest.properties.workspace
     transform: $["x-ms-client-name"] = "WorkspaceID"
@@ -171,12 +171,15 @@ directive:
   # change Table.Rows from type [][]interface{} to type []Row
   - from: models.go
     where: $
-    transform: return $.replace(/\[\]\[\]interface{}/, "[]Row");
+    transform: return $.replace(/Rows \[\]\[\]interface{}/, "Rows []Row");
 
   # change render and statistics type to []byte
   - from: models.go
     where: $
-    transform: return $.replace(/ interface{}/g, "[]byte");
+    transform: return $.replace(/Statistics interface{}/g, "Statistics []byte");
+  - from: models.go
+    where: $
+    transform: return $.replace(/Visualization interface{}/g, "Visualization []byte");
   - from: models_serde.go
     where: $
     transform: return 

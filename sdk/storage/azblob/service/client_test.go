@@ -77,7 +77,7 @@ func (s *ServiceRecordedTestsSuite) TestGetAccountInfo() {
 	_require.NotZero(sAccInfo)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
+func (s *ServiceRecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -97,7 +97,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
+func (s *ServiceRecordedTestsSuite) TestListContainersBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -157,7 +157,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
+func (s *ServiceRecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
@@ -218,7 +218,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 	_require.GreaterOrEqual(count, 0)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestListContainersPaged() {
+func (s *ServiceRecordedTestsSuite) TestListContainersPaged() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -528,7 +528,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall
 	_require.NotNil(err)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
+func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 	_require := require.New(s.T())
 	var svcClient *service.Client
 	var err error
@@ -562,7 +562,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
+func (s *ServiceRecordedTestsSuite) TestSASServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -615,7 +615,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
+func (s *ServiceRecordedTestsSuite) TestSASServiceClientNoKey() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 
@@ -651,7 +651,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
 	_require.Error(err, "SAS can only be signed with a SharedKeyCredential")
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
+func (s *ServiceRecordedTestsSuite) TestSASServiceClientSignNegative() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 
@@ -687,7 +687,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
 	_require.Error(err, "account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
+func (s *ServiceRecordedTestsSuite) TestSASContainerClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -719,7 +719,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
+func (s *ServiceRecordedTestsSuite) TestSASContainerClient2() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -835,7 +835,7 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestoreFailures() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
+func (s *ServiceRecordedTestsSuite) TestServiceSASUploadDownload() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -894,7 +894,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 	_require.Nil(err)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestAccountGetStatistics() {
+func (s *ServiceRecordedTestsSuite) TestAccountGetStatistics() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
@@ -919,7 +919,7 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountGetStatistics() {
 }
 
 // Note: Further tests for filterblobs in pageblob and appendblob
-func (s *ServiceUnrecordedTestsSuite) TestAccountFilterBlobs() {
+func (s *ServiceRecordedTestsSuite) TestAccountFilterBlobs() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")

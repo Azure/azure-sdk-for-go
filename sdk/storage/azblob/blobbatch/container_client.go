@@ -23,6 +23,8 @@ import (
 )
 
 // ContainerBatchClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
+// It includes auth policy as a parameters which is set when the client is created.
+// Executing the auth policy returns the Authorization header which needs to be set in the sub-request.
 type ContainerBatchClient struct {
 	cnt    *container.Client
 	policy policy.Policy
@@ -108,6 +110,8 @@ func (c *ContainerBatchClient) URL() string {
 	return c.generated().Endpoint()
 }
 
+// SubmitBatch operation allows multiple API calls to be embedded into a single HTTP request.
+//   - BatchBuilder - contains the list of operations to be submitted. It supports up to 256 sub-requests in a single batch.
 func (c *ContainerBatchClient) SubmitBatch(ctx context.Context, bb *BatchBuilder) (ContainerClientSubmitBatchResponse, error) {
 	if bb == nil {
 		return ContainerClientSubmitBatchResponse{}, errors.New("batch builder is empty")
@@ -118,6 +122,7 @@ func (c *ContainerBatchClient) SubmitBatch(ctx context.Context, bb *BatchBuilder
 		return ContainerClientSubmitBatchResponse{}, err
 	}
 
+	// create the request body
 	batchReq, err := bb.createBatchRequest(ctx, c.policy, to.Ptr(c.URL()), &batchID)
 	if err != nil {
 		return ContainerClientSubmitBatchResponse{}, err
@@ -127,5 +132,7 @@ func (c *ContainerBatchClient) SubmitBatch(ctx context.Context, bb *BatchBuilder
 	rsc := streaming.NopCloser(reader)
 	multipartContentType := "multipart/mixed; boundary=" + batchID
 	resp, err := c.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, nil)
+
+	// TODO: parse the response body to map individual operations to their responses
 	return resp, err
 }

@@ -23,6 +23,7 @@ const (
 	HttpNewline   = "\r\n"
 )
 
+// CreateBatchID is used for creating a new batch id which is used as batch boundary in the request body
 func CreateBatchID() (string, error) {
 	batchID, err := uuid.New()
 	if err != nil {
@@ -32,6 +33,9 @@ func CreateBatchID() (string, error) {
 	return BatchIdPrefix + batchID.String(), nil
 }
 
+// GetBatchRequestDelimiter is used for creating the batch boundary
+// e.g. --batch_357de4f7-6d0b-4e02-8cd2-6361411a9525
+// last line of the request body: --batch_357de4f7-6d0b-4e02-8cd2-6361411a9525--
 func GetBatchRequestDelimiter(batchID string, prefixDash bool, postfixDash bool) string {
 	outString := ""
 
@@ -48,6 +52,11 @@ func GetBatchRequestDelimiter(batchID string, prefixDash bool, postfixDash bool)
 	return outString
 }
 
+// CreateSubReqHeader is used to create the sub-request header. Example:
+// --batch_357de4f7-6d0b-4e02-8cd2-6361411a9525
+// Content-Type: application/http
+// Content-Transfer-Encoding: binary
+// Content-ID: 0
 func CreateSubReqHeader(batchID string, contentID int) string {
 	var subReqHeader strings.Builder
 	subReqHeader.WriteString(GetBatchRequestDelimiter(batchID, true, false) + HttpNewline)
@@ -59,6 +68,8 @@ func CreateSubReqHeader(batchID string, contentID int) string {
 	return subReqHeader.String()
 }
 
+// UpdateSubRequestHeaders updates the sub-request headers.
+// Adds x-ms-date and removes x-ms-version header
 func UpdateSubRequestHeaders(req *policy.Request) {
 	// setting x-ms-date header
 	dt := time.Now().UTC().Format(http.TimeFormat)
@@ -73,6 +84,11 @@ func UpdateSubRequestHeaders(req *policy.Request) {
 	}
 }
 
+// BuildSubRequest is used for building the sub-request. Example:
+// DELETE /container0/blob0 HTTP/1.1
+// x-ms-date: Thu, 14 Jun 2018 16:46:54 GMT
+// Authorization: SharedKey account:G4jjBXA7LI/RnWKIOQ8i9xH4p76pAQ+4Fs4R1VxasaE=
+// Content-Length: 0
 func BuildSubRequest(req *policy.Request) string {
 	var batchSubRequest strings.Builder
 	blobPath := req.Raw().URL.Path

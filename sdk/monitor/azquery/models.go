@@ -16,10 +16,10 @@ type BatchQueryRequest struct {
 	// REQUIRED; The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
 	Body *Body `json:"body,omitempty"`
 
-	// REQUIRED; The error details.
+	// REQUIRED; Unique ID corresponding to each request in the batch
 	CorrelationID *string `json:"id,omitempty"`
 
-	// REQUIRED; Workspace Id to be included in the query
+	// REQUIRED; Primary Workspace ID of the query
 	WorkspaceID *string `json:"workspace,omitempty"`
 
 	// Optional. Headers of the request. Can use prefer header to set server timeout, query statistics and visualization information.

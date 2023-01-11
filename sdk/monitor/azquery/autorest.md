@@ -81,7 +81,7 @@ directive:
     where: $.definitions.batchQueryResults.properties.render
     transform: $["x-ms-client-name"] = "Visualization"
 
-  # rename BatchQueryRequest.ID to BatchQueryRequest.RequestID
+  # rename BatchQueryRequest.ID to BatchQueryRequest.CorrelationID
   - from: swagger-document
     where: $.definitions.batchQueryRequest.properties.id
     transform: $["x-ms-client-name"] = "CorrelationID"
@@ -126,6 +126,15 @@ directive:
   - from: swagger-document
     where: $.definitions.batchQueryRequest.properties.headers
     transform: $["description"] = "Optional. Headers of the request. Can use prefer header to set server timeout, query statistics and visualization information. For more information, see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization"
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.workspace
+    transform: $["description"] = "Primary Workspace ID of the query"
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.id
+    transform: $["description"] = "Unique ID corresponding to each request in the batch"
+  - from: swagger-document
+    where: $.parameters.workspaceId
+    transform: $["description"] = "Primary Workspace ID of the query. This is Workspace ID from the Properties blade in the Azure portal"
 
   # delete unused error models
   - from: models.go

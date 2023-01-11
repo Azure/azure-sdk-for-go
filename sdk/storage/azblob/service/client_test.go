@@ -498,6 +498,19 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
 	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
 
+	// Test SetProperties with nil options (should have same effect as above)
+	_, err = svcClient.SetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+
+	// If an element of service properties is not passed, the service keeps the current settings.
+	resp, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
+	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
+
 	// Disable for other tests
 	enabled = to.Ptr(false)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled}})
@@ -562,21 +575,30 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 
+	// Note: Always set all permissions, services, types to true to ensure order of string formed is correct.
 	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,
 		Container: true,
 	}
 	permissions := sas.AccountPermissions{
-		Read:   true,
-		Add:    true,
-		Write:  true,
-		Create: true,
-		Update: true,
-		Delete: true,
+		Read:                  true,
+		Write:                 true,
+		Delete:                true,
+		DeletePreviousVersion: true,
+		List:                  true,
+		Add:                   true,
+		Create:                true,
+		Update:                true,
+		Process:               true,
+		Tag:                   true,
+		FilterByTags:          true,
+		PermanentDelete:       true,
 	}
 	services := sas.AccountServices{
-		Blob: true,
+		Blob:  true,
+		Queue: true,
+		File:  true,
 	}
 	start := time.Now().Add(-time.Hour)
 	expiry := start.Add(time.Hour)
@@ -591,6 +613,78 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	_, err = svcClient.CreateContainer(context.Background(), containerName+"002", nil)
 	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
+	_require := require.New(s.T())
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), nil)
+	_require.Nil(err)
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:                  true,
+		Write:                 true,
+		Delete:                true,
+		DeletePreviousVersion: true,
+		List:                  true,
+		Add:                   true,
+		Create:                true,
+		Update:                true,
+		Process:               true,
+		Tag:                   true,
+		FilterByTags:          true,
+		PermanentDelete:       true,
+	}
+	services := sas.AccountServices{
+		Blob:  true,
+		Queue: true,
+		File:  true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
+	_, err = serviceClient.GetSASURL(resources, permissions, services, start, expiry)
+	_require.Error(err, "SAS can only be signed with a SharedKeyCredential")
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
+	_require := require.New(s.T())
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), nil)
+	_require.Nil(err)
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:                  true,
+		Write:                 true,
+		Delete:                true,
+		DeletePreviousVersion: true,
+		List:                  true,
+		Add:                   true,
+		Create:                true,
+		Update:                true,
+		Process:               true,
+		Tag:                   true,
+		FilterByTags:          true,
+		PermanentDelete:       true,
+	}
+	services := sas.AccountServices{
+		Blob:  true,
+		Queue: true,
+		File:  true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := time.Time{}
+	_, err = serviceClient.GetSASURL(resources, permissions, services, start, expiry)
+	_require.Error(err, "account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
@@ -798,4 +892,28 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 
 	err = reader.Close()
 	_require.Nil(err)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestAccountGetStatistics() {
+	_require := require.New(s.T())
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s-secondary.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	resp, err := serviceClient.GetStatistics(context.Background(), &service.GetStatisticsOptions{})
+	_require.Nil(err)
+	_require.NotNil(resp.Version)
+	_require.NotNil(resp.RequestID)
+	_require.NotNil(resp.Date)
+	_require.NotNil(resp.GeoReplication)
+	_require.NotNil(resp.GeoReplication.Status)
+	if *resp.GeoReplication.Status == service.BlobGeoReplicationStatusLive {
+		_require.NotNil(resp.GeoReplication.LastSyncTime)
+	} else {
+		_require.Nil(resp.GeoReplication.LastSyncTime)
+	}
 }

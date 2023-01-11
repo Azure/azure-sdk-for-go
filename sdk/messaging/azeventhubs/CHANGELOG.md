@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Adds ProcessorOptions.Prefetch field, allowing configuration of Prefetch values for PartitionClients created using the Processor. (PR#19786)
+
 ### Breaking Changes
 
 ### Bugs Fixed

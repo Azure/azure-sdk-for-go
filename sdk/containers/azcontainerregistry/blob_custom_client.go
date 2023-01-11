@@ -7,6 +7,7 @@
 package azcontainerregistry
 
 import (
+	"context"
 	"crypto/sha256"
 	"errors"
 	"fmt"
@@ -14,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"hash"
 	"io"
 	"reflect"
 )
@@ -57,21 +59,42 @@ func NewBlobClient(endpoint string, credential azcore.TokenCredential, options *
 	}, nil
 }
 
-// CalculateDigest - Calculate the digest of a payload
-//   - payload - Payload io
-func CalculateDigest(payload io.ReadSeeker) (string, error) {
-	h := sha256.New()
-	if _, err := payload.Seek(0, io.SeekStart); err != nil {
-		return "", err
+// BlobDigestCalculator help to calculate all final blob digest when uploading blob.
+// Don't use this type directly, use NewBlobDigestCalculator() instead.
+type BlobDigestCalculator struct {
+	h hash.Hash
+}
+
+type wrappedReadSeekCloser struct {
+	io.Reader
+	io.Seeker
+	io.Closer
+}
+
+// NewBlobDigestCalculator creates a new calculator to help to calculate blob digest when uploading blob.
+func NewBlobDigestCalculator() *BlobDigestCalculator {
+	return &BlobDigestCalculator{
+		h: sha256.New(),
 	}
-	if _, err := io.Copy(h, payload); err != nil {
-		if _, err := payload.Seek(0, io.SeekStart); err != nil {
-			return "", err
-		}
-		return "", err
-	}
-	if _, err := payload.Seek(0, io.SeekStart); err != nil {
-		return "", err
-	}
-	return fmt.Sprintf("sha256:%x", h.Sum(nil)), nil
+}
+
+// UploadChunk - Upload a stream of data without completing the upload.
+//
+//   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
+//   - chunkData - Raw data of blob
+//   - blobDigestCalculator - Calculator that help to calculate all final blob digest
+//   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
+func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeekCloser, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
+	wrappedChunkData := &wrappedReadSeekCloser{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData, Closer: chunkData}
+	return client.uploadChunk(ctx, location, wrappedChunkData, nil)
+}
+
+// CompleteUpload - Complete the upload with previously uploaded content.
+//
+//   - digest - Digest of a BLOB
+//   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
+//   - blobDigestCalculator - Calculator that help to calculate all final blob digest
+//   - options - BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.CompleteUpload method.
+func (client *BlobClient) CompleteUpload(ctx context.Context, location string, blobDigestCalculator *BlobDigestCalculator, options *BlobClientCompleteUploadOptions) (BlobClientCompleteUploadResponse, error) {
+	return client.completeUpload(ctx, fmt.Sprintf("sha256:%x", blobDigestCalculator.h.Sum(nil)), location, nil)
 }

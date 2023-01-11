@@ -178,15 +178,15 @@ func (client *BlobClient) checkChunkExistsHandleResponse(resp *http.Response) (B
 	return result, nil
 }
 
-// CompleteUpload - Complete the upload, providing all the data in the body, if necessary. A request without a body will just
+// completeUpload - Complete the upload, providing all the data in the body, if necessary. A request without a body will just
 // complete the upload with previously uploaded content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - digest - Digest of a BLOB
 //   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
-//   - options - BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.CompleteUpload method.
-func (client *BlobClient) CompleteUpload(ctx context.Context, digest string, location string, options *BlobClientCompleteUploadOptions) (BlobClientCompleteUploadResponse, error) {
+//   - options - BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.completeUpload method.
+func (client *BlobClient) completeUpload(ctx context.Context, digest string, location string, options *BlobClientCompleteUploadOptions) (BlobClientCompleteUploadResponse, error) {
 	req, err := client.completeUploadCreateRequest(ctx, digest, location, options)
 	if err != nil {
 		return BlobClientCompleteUploadResponse{}, err
@@ -201,7 +201,7 @@ func (client *BlobClient) CompleteUpload(ctx context.Context, digest string, loc
 	return client.completeUploadHandleResponse(resp)
 }
 
-// completeUploadCreateRequest creates the CompleteUpload request.
+// completeUploadCreateRequest creates the completeUpload request.
 func (client *BlobClient) completeUploadCreateRequest(ctx context.Context, digest string, location string, options *BlobClientCompleteUploadOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
 	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", location)
@@ -213,13 +213,10 @@ func (client *BlobClient) completeUploadCreateRequest(ctx context.Context, diges
 	reqQP.Set("digest", digest)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.BlobData != nil {
-		return req, req.SetBody(options.BlobData, "application/octet-stream")
-	}
 	return req, nil
 }
 
-// completeUploadHandleResponse handles the CompleteUpload response.
+// completeUploadHandleResponse handles the completeUpload response.
 func (client *BlobClient) completeUploadHandleResponse(resp *http.Response) (BlobClientCompleteUploadResponse, error) {
 	result := BlobClientCompleteUploadResponse{}
 	if val := resp.Header.Get("Location"); val != "" {
@@ -557,14 +554,14 @@ func (client *BlobClient) startUploadHandleResponse(resp *http.Response) (BlobCl
 	return result, nil
 }
 
-// UploadChunk - Upload a stream of data without completing the upload.
+// uploadChunk - Upload a stream of data without completing the upload.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-07-01
 //   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - chunkData - Raw data of blob
-//   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
-func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
+//   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.uploadChunk method.
+func (client *BlobClient) uploadChunk(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
 	req, err := client.uploadChunkCreateRequest(ctx, location, chunkData, options)
 	if err != nil {
 		return BlobClientUploadChunkResponse{}, err
@@ -579,7 +576,7 @@ func (client *BlobClient) UploadChunk(ctx context.Context, location string, chun
 	return client.uploadChunkHandleResponse(resp)
 }
 
-// uploadChunkCreateRequest creates the UploadChunk request.
+// uploadChunkCreateRequest creates the uploadChunk request.
 func (client *BlobClient) uploadChunkCreateRequest(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *BlobClientUploadChunkOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
 	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", location)
@@ -587,11 +584,17 @@ func (client *BlobClient) uploadChunkCreateRequest(ctx context.Context, location
 	if err != nil {
 		return nil, err
 	}
+	if options != nil && options.ContentRange != nil {
+		req.Raw().Header["Content-Range"] = []string{*options.ContentRange}
+	}
+	if options != nil && options.ContentLength != nil {
+		req.Raw().Header["Content-Length"] = []string{*options.ContentLength}
+	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, req.SetBody(chunkData, "application/octet-stream")
 }
 
-// uploadChunkHandleResponse handles the UploadChunk response.
+// uploadChunkHandleResponse handles the uploadChunk response.
 func (client *BlobClient) uploadChunkHandleResponse(resp *http.Response) (BlobClientUploadChunkResponse, error) {
 	result := BlobClientUploadChunkResponse{}
 	if val := resp.Header.Get("Location"); val != "" {

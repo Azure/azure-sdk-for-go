@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"net/http"
 	"strings"
 	"time"
@@ -116,28 +115,10 @@ func (p *authenticationPolicy) getAccessToken(req *policy.Request) (string, erro
 	return *resp.acrAccessToken.AccessToken, nil
 }
 
-type challengePolicyError struct {
-	err error
-}
-
-func (c *challengePolicyError) Error() string {
-	return c.err.Error()
-}
-
-func (*challengePolicyError) NonRetriable() {
-	// marker method
-}
-
-func (c *challengePolicyError) Unwrap() error {
-	return c.err
-}
-
-var _ errorinfo.NonRetriable = (*challengePolicyError)(nil)
-
 func (p *authenticationPolicy) findServiceAndScope(resp *http.Response) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" {
-		return &challengePolicyError{err: errors.New("response has no WWW-Authenticate header for challenge authentication")}
+		return errors.New("response has no WWW-Authenticate header for challenge authentication")
 	}
 
 	authHeader = strings.ReplaceAll(authHeader, "Bearer ", "")
@@ -154,14 +135,14 @@ func (p *authenticationPolicy) findServiceAndScope(resp *http.Response) error {
 		p.acrScope = v
 	}
 	if p.acrScope == "" {
-		return &challengePolicyError{err: errors.New("could not find a valid scope in the WWW-Authenticate header")}
+		return errors.New("could not find a valid scope in the WWW-Authenticate header")
 	}
 
 	if v, ok := valuesMap["service"]; ok {
 		p.acrService = v
 	}
 	if p.acrService == "" {
-		return &challengePolicyError{err: errors.New("could not find a valid service in the WWW-Authenticate header")}
+		return errors.New("could not find a valid service in the WWW-Authenticate header")
 	}
 
 	return nil
@@ -170,7 +151,7 @@ func (p *authenticationPolicy) findServiceAndScope(resp *http.Response) error {
 func (p authenticationPolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
 	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
 	if err != nil {
-		return nil, &challengePolicyError{err: err}
+		return nil, err
 	}
 
 	req.Raw().Header = orig.Raw().Header
@@ -183,7 +164,7 @@ func (p authenticationPolicy) getChallengeRequest(orig policy.Request) (*policy.
 	copied.Raw().Header.Set("Content-Length", "0")
 	err = copied.SetBody(streaming.NopCloser(bytes.NewReader([]byte{})), "application/json")
 	if err != nil {
-		return nil, &challengePolicyError{err: err}
+		return nil, err
 	}
 	copied.Raw().Header.Del("Content-Type")
 
@@ -237,7 +218,7 @@ func getJWTExpireTime(token string) (time.Time, error) {
 		value := values[1]
 		padding := len(value) % 4
 		if padding > 0 {
-			for i := 0; i < padding; i++ {
+			for i := 0; i < 4-padding; i++ {
 				value += "="
 			}
 		}
@@ -254,7 +235,7 @@ func getJWTExpireTime(token string) (time.Time, error) {
 		return time.Unix(jsonValue.Exp, 0), nil
 	}
 
-	return time.Time{}, &challengePolicyError{err: errors.New("could not parse refresh token expire time")}
+	return time.Time{}, errors.New("could not parse refresh token expire time")
 }
 
 type jwtOnlyWithExp struct {

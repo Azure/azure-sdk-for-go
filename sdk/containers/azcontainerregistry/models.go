@@ -9,10 +9,7 @@
 
 package azcontainerregistry
 
-import (
-	"io"
-	"time"
-)
+import "time"
 
 type acrAccessToken struct {
 	// The access token for performing authenticated requests
@@ -109,8 +106,7 @@ type BlobClientCheckChunkExistsOptions struct {
 
 // BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.CompleteUpload method.
 type BlobClientCompleteUploadOptions struct {
-	// Optional raw data of blob
-	BlobData io.ReadSeekCloser
+	// placeholder for future optional parameters
 }
 
 // BlobClientDeleteBlobOptions contains the optional parameters for the BlobClient.DeleteBlob method.
@@ -145,7 +141,12 @@ type BlobClientStartUploadOptions struct {
 
 // BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 type BlobClientUploadChunkOptions struct {
-	// placeholder for future optional parameters
+	// Length of the chunk being uploaded, corresponding the length of the request body.
+	ContentLength *string
+	// Range of bytes identifying the desired block of content represented by the body. Start must the end offset retrieved via
+	// status check plus one. Note that this is a non-standard use of the
+	// Content-Range header.
+	ContentRange *string
 }
 
 // ClientDeleteManifestOptions contains the optional parameters for the Client.DeleteManifest method.

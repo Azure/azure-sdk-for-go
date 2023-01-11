@@ -37,6 +37,30 @@ func Test_getJWTExpireTime(t *testing.T) {
 			time.Unix(1670422241, 0),
 			false,
 		},
+		{
+			"test-padding",
+			".ewogICJqdGkiOiAiMzY1ZTNiNWItODQ0ZS00YTIxLWEzOGMtNGQ4YWViZGQ2YTA2IiwKICAic3ViIjogInVzZXJAY29udG9zby5jb20iLAogICJuYmYiOiAxNDk3OTg4NzEyLAogICJleHAiOiAxNDk3OTkwODAxLAogICJpYXQiOiAxNDk3OTg4NzEyLAogICJpc3MiOiAiQXp1cmUgQ29udGFpbmVyIFJlZ2lzdHJ5IiwKICAiYXVkIjogImNvbnRvc29yZWdpc3RyeS5henVyZWNyLmlvIiwKICAidmVyc2lvbiI6ICIxLjAiLAogICJncmFudF90eXBlIjogInJlZnJlc2hfdG9rZW4iLAogICJ0ZW5hbnQiOiAiNDA5NTIwZDQtODEwMC00ZDFkLWFkNDctNzI0MzJkZGNjMTIwIiwKICAicGVybWlzc2lvbnMiOiB7CiAgICAiYWN0aW9ucyI6IFsKICAgICAgIioiCiAgICBdLAogICAgIm5vdEFjdGlvbnMiOiBbXQogIH0sCiAgInJvbGVzIjogW10KfQ=.",
+			time.Unix(1497990801, 0),
+			false,
+		},
+		{
+			"test-error",
+			".error.",
+			time.Unix(1497990801, 0),
+			true,
+		},
+		{
+			"test-unmarshal-error",
+			".ewogICJqdGkiOiAiMzY1ZTNiNWItODQ0ZS00YTIxLWEzOGMtNGQ4YWViZGQ2YTA2IiwKICAic3ViIjogInVzZXJAY29udG9zby5jb20iLAogICJuYmYiOiAxNDk3OTg4NzEyLAogICJleHAiOiAiMTQ5Nzk5MDgwMSIsCiAgImlhdCI6IDE0OTc5ODg3MTIsCiAgImlzcyI6ICJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLAogICJhdWQiOiAiY29udG9zb3JlZ2lzdHJ5LmF6dXJlY3IuaW8iLAogICJ2ZXJzaW9uIjogIjEuMCIsCiAgImdyYW50X3R5cGUiOiAicmVmcmVzaF90b2tlbiIsCiAgInRlbmFudCI6ICI0MDk1MjBkNC04MTAwLTRkMWQtYWQ0Ny03MjQzMmRkY2MxMjAiLAogICJwZXJtaXNzaW9ucyI6IHsKICAgICJhY3Rpb25zIjogWwogICAgICAiKiIKICAgIF0sCiAgICAibm90QWN0aW9ucyI6IFtdCiAgfSwKICAicm9sZXMiOiBbXQp9.",
+			time.Unix(1497990801, 0),
+			true,
+		},
+		{
+			"test-length-error",
+			".",
+			time.Unix(1497990801, 0),
+			true,
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			expire, err := getJWTExpireTime(test.token)

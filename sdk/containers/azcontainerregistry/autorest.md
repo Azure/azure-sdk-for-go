@@ -347,7 +347,7 @@ directive:
     transform: return $.replaceAll(/ AcrAccessToken/g, " acrAccessToken").replace(/\*AcrAccessToken/g, "*acrAccessToken").replaceAll(/ AcrRefreshToken/g, " acrRefreshToken").replace(/\*AcrRefreshToken/g, "*acrRefreshToken");
 ```
 
-### Do not export Authentication client and related models
+### Rename all Acr to ACR
 
 ```yaml
 directive:
@@ -379,7 +379,7 @@ directive:
       $.properties.repositories["x-ms-client-name"] = "Names";
 ```
 
-### Rename binary request param and 
+### Rename binary request param and response property
 
 ```yaml
 directive:
@@ -401,4 +401,38 @@ directive:
       - response_types.go
     where: $
     transform: return $.replace(/Body io\.ReadCloser/, "BlobData io.ReadCloser").replace(/Body io\.ReadCloser/, "ChunkData io.ReadCloser").replace(/Body io\.ReadCloser/, "ManifestData io.ReadCloser");
+```
+
+### Hide original UploadChunk and CompleteUpload method
+```yaml
+directive:
+  - from: containerregistry.json
+    where: $.paths["/{nextBlobUuidLink}"]
+    transform: >
+      $.put.parameters.splice(1,1);
+  - from:
+      - blob_client.go
+    where: $
+    transform: return $.replaceAll(/ UploadChunk/g, " uploadChunk").replace(/\.UploadChunk/, ".uploadChunk").replaceAll(/ CompleteUpload/g, " completeUpload").replace(/\.CompleteUpload/, ".completeUpload");
+```
+
+### Add content-range and content-length parameters to upload chunk
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths["/{nextBlobUuidLink}"].patch
+    transform: >
+        $.parameters.push({
+            "name": "Content-Range",
+            "in": "header",
+            "type": "string",
+            "description": "Range of bytes identifying the desired block of content represented by the body. Start must the end offset retrieved via status check plus one. Note that this is a non-standard use of the Content-Range header."
+        });
+        $.parameters.push({
+            "name": "Content-Length",
+            "in": "header",
+            "type": "string",
+            "description": "Length of the chunk being uploaded, corresponding the length of the request body."
+        });
 ```

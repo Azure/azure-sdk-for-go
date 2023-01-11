@@ -15,72 +15,37 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
+var client *azcontainerregistry.Client
+
 func ExampleClient_DeleteManifest() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	resp, err := client.GetTagProperties(ctx, "alpine", "3.7", nil)
+	resp, err := client.GetTagProperties(context.TODO(), "alpine", "3.7", nil)
 	if err != nil {
 		log.Fatalf("failed to get tag properties: %v", err)
 	}
-	_, err = client.DeleteManifest(ctx, "alpine", *resp.Tag.Digest, nil)
+	_, err = client.DeleteManifest(context.TODO(), "alpine", *resp.Tag.Digest, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
 func ExampleClient_DeleteRepository() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = client.DeleteRepository(ctx, "nanoserver", nil)
+	_, err := client.DeleteRepository(context.TODO(), "nanoserver", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
 func ExampleClient_DeleteTag() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = client.DeleteTag(ctx, "nanoserver", "4.7.2-20180905-nanoserver-1803", nil)
+	_, err := client.DeleteTag(context.TODO(), "nanoserver", "4.7.2-20180905-nanoserver-1803", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
 func ExampleClient_GetManifest() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.GetManifest(ctx, "hello-world-dangling", "20190628-033033z", &azcontainerregistry.ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
+	res, err := client.GetManifest(context.TODO(), "hello-world-dangling", "20190628-033033z", &azcontainerregistry.ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -89,16 +54,7 @@ func ExampleClient_GetManifest() {
 }
 
 func ExampleClient_GetManifestProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.GetManifestProperties(ctx, "nanoserver", "sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086", nil)
+	res, err := client.GetManifestProperties(context.TODO(), "nanoserver", "sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -107,16 +63,7 @@ func ExampleClient_GetManifestProperties() {
 }
 
 func ExampleClient_GetRepositoryProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.GetRepositoryProperties(ctx, "nanoserver", nil)
+	res, err := client.GetRepositoryProperties(context.TODO(), "nanoserver", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -126,16 +73,7 @@ func ExampleClient_GetRepositoryProperties() {
 }
 
 func ExampleClient_GetTagProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.GetTagProperties(ctx, "test/bash", "latest", nil)
+	res, err := client.GetTagProperties(context.TODO(), "test/bash", "latest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -144,18 +82,9 @@ func ExampleClient_GetTagProperties() {
 }
 
 func ExampleClient_NewListManifestsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
 	pager := client.NewListManifestsPager("nanoserver", nil)
 	for pager.More() {
-		page, err := pager.NextPage(ctx)
+		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
@@ -166,18 +95,9 @@ func ExampleClient_NewListManifestsPager() {
 }
 
 func ExampleClient_NewListRepositoriesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
 	pager := client.NewListRepositoriesPager(nil)
 	for pager.More() {
-		page, err := pager.NextPage(ctx)
+		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
@@ -188,18 +108,9 @@ func ExampleClient_NewListRepositoriesPager() {
 }
 
 func ExampleClient_NewListTagsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
 	pager := client.NewListTagsPager("nanoserver", nil)
 	for pager.More() {
-		page, err := pager.NextPage(ctx)
+		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
@@ -210,16 +121,7 @@ func ExampleClient_NewListTagsPager() {
 }
 
 func ExampleClient_UpdateManifestProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.UpdateManifestProperties(ctx, "nanoserver", "sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086", &azcontainerregistry.ClientUpdateManifestPropertiesOptions{Value: &azcontainerregistry.ManifestWriteableProperties{
+	res, err := client.UpdateManifestProperties(context.TODO(), "nanoserver", "sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086", &azcontainerregistry.ClientUpdateManifestPropertiesOptions{Value: &azcontainerregistry.ManifestWriteableProperties{
 		CanWrite: to.Ptr(false),
 	},
 	})
@@ -229,16 +131,7 @@ func ExampleClient_UpdateManifestProperties() {
 	fmt.Printf("repository nanoserver - manifest sha256:110d2b6c84592561338aa040b1b14b7ab81c2f9edbd564c2285dd7d70d777086 - 'CanWrite' property: %t", *res.Manifest.ChangeableAttributes.CanWrite)
 }
 func ExampleClient_UpdateRepositoryProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.UpdateRepositoryProperties(ctx, "nanoserver", &azcontainerregistry.ClientUpdateRepositoryPropertiesOptions{Value: &azcontainerregistry.RepositoryWriteableProperties{
+	res, err := client.UpdateRepositoryProperties(context.TODO(), "nanoserver", &azcontainerregistry.ClientUpdateRepositoryPropertiesOptions{Value: &azcontainerregistry.RepositoryWriteableProperties{
 		CanWrite: to.Ptr(false),
 	},
 	})
@@ -249,16 +142,7 @@ func ExampleClient_UpdateRepositoryProperties() {
 }
 
 func ExampleClient_UpdateTagProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.UpdateTagProperties(ctx, "nanoserver", "4.7.2-20180905-nanoserver-1803", &azcontainerregistry.ClientUpdateTagPropertiesOptions{
+	res, err := client.UpdateTagProperties(context.TODO(), "nanoserver", "4.7.2-20180905-nanoserver-1803", &azcontainerregistry.ClientUpdateTagPropertiesOptions{
 		Value: &azcontainerregistry.TagWriteableProperties{
 			CanWrite: to.Ptr(false),
 		}})
@@ -269,19 +153,10 @@ func ExampleClient_UpdateTagProperties() {
 }
 
 func ExampleClient_UploadManifest() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := azcontainerregistry.NewClient("https://example.azurecr.io", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
 	payload, err := os.Open("example-manifest.json")
 	if err != nil {
 		log.Fatalf("failed to read manifest file: %v", err)
 	}
-	resp, err := client.UploadManifest(ctx, "nanoserver", "test", "application/vnd.docker.distribution.manifest.v2+json", payload, nil)
+	resp, err := client.UploadManifest(context.TODO(), "nanoserver", "test", "application/vnd.docker.distribution.manifest.v2+json", payload, nil)
 	fmt.Printf("uploaded manifest digest: %s", *resp.DockerContentDigest)
 }

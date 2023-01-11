@@ -51,7 +51,7 @@ func TestBlobClient_CheckChunkExists(t *testing.T) {
 	require.NotEmpty(t, *res.ContentLength)
 }
 
-func TestBlobClient_CompleteUpload(t *testing.T) {
+func TestBlobClient_completeUpload(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
 	ctx := context.Background()
@@ -63,16 +63,14 @@ func TestBlobClient_CompleteUpload(t *testing.T) {
 	blob, err := io.ReadAll(getRes.BlobData)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
+	uploadResp, err := client.uploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
 	require.NoError(t, err)
-	calculatedDigest, err := CalculateDigest(streaming.NopCloser(bytes.NewReader(blob)))
-	require.NoError(t, err)
-	completeResp, err := client.CompleteUpload(ctx, calculatedDigest, *uploadResp.Location, nil)
+	completeResp, err := client.completeUpload(ctx, digest, *uploadResp.Location, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *completeResp.DockerContentDigest)
 }
 
-func TestBlobClient_CompleteUpload_wrongDigest(t *testing.T) {
+func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
 	ctx := context.Background()
@@ -84,9 +82,9 @@ func TestBlobClient_CompleteUpload_wrongDigest(t *testing.T) {
 	blob, err := io.ReadAll(getRes.BlobData)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
+	uploadResp, err := client.uploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
 	require.NoError(t, err)
-	_, err = client.CompleteUpload(ctx, "sha256:00000000", *uploadResp.Location, nil)
+	_, err = client.completeUpload(ctx, "sha256:00000000", *uploadResp.Location, nil)
 	require.Error(t, err)
 }
 
@@ -165,7 +163,7 @@ func TestBlobClient_StartUpload(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestBlobClient_UploadChunk(t *testing.T) {
+func TestBlobClient_uploadChunk(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
 	ctx := context.Background()
@@ -177,7 +175,7 @@ func TestBlobClient_UploadChunk(t *testing.T) {
 	blob, err := io.ReadAll(getRes.BlobData)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
+	uploadResp, err := client.uploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *uploadResp.Location)
 	_, err = client.CancelUpload(ctx, *uploadResp.Location, nil)

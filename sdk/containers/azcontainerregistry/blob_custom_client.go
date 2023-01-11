@@ -80,21 +80,21 @@ func NewBlobDigestCalculator() *BlobDigestCalculator {
 
 // UploadChunk - Upload a stream of data without completing the upload.
 //
-//   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
+//   - location - Link acquired from upload start or previous chunk
 //   - chunkData - Raw data of blob
 //   - blobDigestCalculator - Calculator that help to calculate blob digest
 //   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeekCloser, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
 	wrappedChunkData := &wrappedReadSeekCloser{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData, Closer: chunkData}
-	return client.uploadChunk(ctx, location, wrappedChunkData, nil)
+	return client.uploadChunk(ctx, location, wrappedChunkData, options)
 }
 
 // CompleteUpload - Complete the upload with previously uploaded content.
 //
 //   - digest - Digest of a BLOB
-//   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
+//   - location - Link acquired from upload start or previous chunk
 //   - blobDigestCalculator - Calculator that help to calculate blob digest
 //   - options - BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.CompleteUpload method.
 func (client *BlobClient) CompleteUpload(ctx context.Context, location string, blobDigestCalculator *BlobDigestCalculator, options *BlobClientCompleteUploadOptions) (BlobClientCompleteUploadResponse, error) {
-	return client.completeUpload(ctx, fmt.Sprintf("sha256:%x", blobDigestCalculator.h.Sum(nil)), location, nil)
+	return client.completeUpload(ctx, fmt.Sprintf("sha256:%x", blobDigestCalculator.h.Sum(nil)), location, options)
 }

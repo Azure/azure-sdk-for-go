@@ -81,17 +81,14 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
-	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	connectionString, _ := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
 
-	parsedConnStr, err := shared.ParseConnectionString(connectionString)
+	parsedConnStr, err := shared.ParseConnectionString(*connectionString)
 	_require.Nil(err)
 	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".blob.core.windows.net/")
 
-	sharedKeyCred, err := azblob.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
-	_require.Nil(err)
-
-	svcClient, err := service.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
+	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -549,7 +546,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
 }
 
-func (s *ServiceRecordedTestsSuite) TestSASServiceClient() {
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -602,7 +599,7 @@ func (s *ServiceRecordedTestsSuite) TestSASServiceClient() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
 
-func (s *ServiceRecordedTestsSuite) TestSASServiceClientNoKey() {
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 
@@ -638,7 +635,7 @@ func (s *ServiceRecordedTestsSuite) TestSASServiceClientNoKey() {
 	_require.Error(err, "SAS can only be signed with a SharedKeyCredential")
 }
 
-func (s *ServiceRecordedTestsSuite) TestSASServiceClientSignNegative() {
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 
@@ -674,7 +671,7 @@ func (s *ServiceRecordedTestsSuite) TestSASServiceClientSignNegative() {
 	_require.Error(err, "account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 }
 
-func (s *ServiceRecordedTestsSuite) TestSASContainerClient() {
+func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -706,7 +703,7 @@ func (s *ServiceRecordedTestsSuite) TestSASContainerClient() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
 }
 
-func (s *ServiceRecordedTestsSuite) TestSASContainerClient2() {
+func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -833,7 +830,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceSASUploadDownload() {
 	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	sasQueryParams, err := sas.BlobSignatureValues{

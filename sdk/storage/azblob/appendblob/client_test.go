@@ -1742,7 +1742,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	parts, err := sas.ParseURL(abClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	// Set Account SAS and set Permanent Delete to true
@@ -1852,7 +1852,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 	parts, err := sas.ParseURL(abClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	// Set Account SAS

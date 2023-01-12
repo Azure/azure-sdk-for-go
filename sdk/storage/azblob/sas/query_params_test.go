@@ -131,7 +131,8 @@ func TestIPRange_String(t *testing.T) {
 }
 
 func TestSAS(t *testing.T) {
-	const sas = "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
+	// Note: This is a totally invalid fake SAS, this is just testing our ability to parse different query parameters on a SAS
+	const sas = "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&skoid=oid&sktid=tid&skt=2111-01-09T01:42:34.936Z&ske=2222-03-09T01:42:34.936Z&sks=s&skv=v&sdd=3&saoid=oid&suoid=oid&scid=cid&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
 	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
 	_uri, err := url.Parse(_url)
 	require.NoError(t, err)
@@ -202,4 +203,30 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 	require.Equal(t, parameters.AuthorizedObjectID(), sasCompMap["saoid"])
 	require.Equal(t, parameters.UnauthorizedObjectID(), sasCompMap["suoid"])
 	require.Equal(t, parameters.SignedCorrelationID(), sasCompMap["scid"])
+}
+
+func TestSASInvalidQueryParameter(t *testing.T) {
+	// Signature is invalid below
+	const sas = "sv=2019-12-12&signature=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&sr=b"
+	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
+	_uri, err := url.Parse(_url)
+	require.NoError(t, err)
+	NewQueryParameters(_uri.Query(), true)
+	// NewQueryParameters should not delete signature
+	require.Contains(t, _uri.Query(), "signature")
+}
+
+func TestEncode(t *testing.T) {
+	// Note: This is a totally invalid fake SAS, this is just testing our ability to parse different query parameters on a SAS
+	expected := "rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&saoid=oid&scid=cid&sdd=3&se=2222-03-09T01%3A42%3A34Z&si=myIdentifier&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&sip=168.1.5.60-168.1.5.70&ske=2222-03-09T01%3A42%3A34Z&skoid=oid&sks=s&skt=2111-01-09T01%3A42%3A34Z&sktid=tid&skv=v&sp=rw&spr=https%2Chttp&sr=b&srt=sco&ss=bf&st=2111-01-09T01%3A42%3A34Z&suoid=oid&sv=2019-12-12"
+	randomOrder := "sdd=3&scid=cid&se=2222-03-09T01:42:34.936Z&rsce=ce&ss=bf&skoid=oid&si=myIdentifier&ske=2222-03-09T01:42:34.936Z&saoid=oid&sip=168.1.5.60-168.1.5.70&rscc=cc&srt=sco&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&rsct=ct&skt=2111-01-09T01:42:34.936Z&rscl=cl&suoid=oid&sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&rscd=cd&sp=rw&sktid=tid&spr=https,http&sks=s&skv=v"
+	testdata := []string{expected, randomOrder}
+
+	for _, sas := range testdata {
+		_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
+		_uri, err := url.Parse(_url)
+		require.NoError(t, err)
+		queryParams := NewQueryParameters(_uri.Query(), true)
+		require.Equal(t, expected, queryParams.Encode())
+	}
 }

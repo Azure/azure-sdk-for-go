@@ -819,7 +819,7 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestoreFailures() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceSASUploadDownload() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)

@@ -8,8 +8,9 @@ Use the client library for Azure Container Registry to:
 - Obtain metadata for images and artifacts, repositories and tags
 - Set read/write/delete properties on registry items
 - Delete images and artifacts, repositories and tags
+- Upload and download images
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containers/azcontainerregistry) | [Package (pkg.go.dev)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry) | [REST API documentation](https://docs.microsoft.com/rest/api/containerregistry/) | [Product documentation](https://docs.microsoft.com/azure/container-registry/) | [Samples]()
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containers/azcontainerregistry) | [Package (pkg.go.dev)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry) | [REST API documentation](https://docs.microsoft.com/rest/api/containerregistry/) | [Product documentation](https://docs.microsoft.com/azure/container-registry/)
 
 ## Getting started
 
@@ -41,7 +42,7 @@ This document demonstrates using [azidentity.NewDefaultAzureCredential](https://
 This credential type works in both local development and production environments. 
 We recommend using a [managed identity](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) in production.
 
-[Client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#Client) and [BlobClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#BlobClient) accepts any [azidentity][azure_identity] credential. 
+[Client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#Client) and [BlobClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#BlobClient) accepts any [azidentity][https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity] credential. 
 See the [azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity) documentation for more information about other credential types.
 
 #### Create a client

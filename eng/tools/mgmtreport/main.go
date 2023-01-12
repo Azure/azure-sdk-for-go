@@ -177,12 +177,6 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 					mInfo.mockTestPass = mockTestPassed
 					mInfo.mockTestCoverage = mockTestCoverage
 
-					skipped, err := getSkippedMockTest(buildClient, buildId, mockTestLogId)
-					if err != nil {
-						return err
-					}
-					mInfo.mockTestSkip = skipped
-
 					// live test
 					liveTestTotal, liveTestPassed, liveTestCoverage, err := getTestResult(buildClient, buildId, liveTestLogId)
 					if err != nil {
@@ -192,8 +186,14 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 					mInfo.liveTestPass = liveTestPassed
 					mInfo.liveTestCoverage = liveTestCoverage
 
+					allOperation, skipped, err := getOperation(buildClient, buildId, mockTestLogId)
+					if err != nil {
+						return err
+					}
+					mInfo.mockTestSkip = skipped
+
 					if mInfo.liveTestTotal != 0 {
-						operations, err := getCallOperations(buildClient, buildId, liveTestLogId)
+						operations, err := getLiveTestOperationCalls(buildClient, allOperation, buildId, liveTestLogId)
 						if err != nil {
 							return err
 						}
@@ -214,13 +214,13 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 	}
 
 	log.Println("generate a report in HTML format...")
-	w, err := generateHTMLReport(mgmtReport)
+	err = generateHTMLReport(mgmtReport, path.Join(sdkPath, "mgmtReport.html"))
 	if err != nil {
 		return err
 	}
 
 	log.Println("upload mgmt report to cloud...")
-	err = uploadHTMLReport(w, storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
+	err = uploadHTMLReport(path.Join(sdkPath, "mgmtReport.html"), storageAccountName, storageAccountKey, storageContainerName, containerBlobName)
 	if err != nil {
 		return err
 	}
@@ -353,7 +353,7 @@ func generateMDReport(mgmtReport map[string]mgmtInfo, path string) error {
 	return nil
 }
 
-func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
+func generateHTMLReport(mgmtReport map[string]mgmtInfo, path string) error {
 	sortMgmt := make([]string, 0, len(mgmtReport))
 	for k := range mgmtReport {
 		sortMgmt = append(sortMgmt, k)
@@ -412,7 +412,7 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
 		if mtc != "/" {
 			f, err := strconv.ParseFloat(strings.TrimRight(mtc, "%"), 64)
 			if err != nil {
-				return nil, err
+				return err
 			}
 			average[1].sum += f
 			average[1].count++
@@ -438,7 +438,7 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
 		if ltc != "/" {
 			f, err := strconv.ParseFloat(strings.TrimRight(ltc, "%"), 64)
 			if err != nil {
-				return nil, err
+				return err
 			}
 			average[3].sum += f
 			average[3].count++
@@ -468,30 +468,30 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo) (io.Reader, error) {
 	// parse template file
 	t, err := template.ParseFiles("./mgmtreport.tpl")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	w := bytes.Buffer{}
 	err = t.Execute(&w, htmlData)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	reportHTML, err := os.OpenFile(path.Join(sdkPath, "mgmtReport.html"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+	reportHTML, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer reportHTML.Close()
 
 	_, err = reportHTML.Write(w.Bytes())
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &w, err
+	return err
 }
 
-func uploadHTMLReport(r io.Reader, accountName, accountKey, containerName, blobName string) error {
+func uploadHTMLReport(path, accountName, accountKey, containerName, blobName string) error {
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
 		return err
@@ -503,11 +503,16 @@ func uploadHTMLReport(r io.Reader, accountName, accountKey, containerName, blobN
 		return err
 	}
 
+	htmlReport, err := os.OpenFile(path, os.O_RDONLY, 0666)
+	if err != nil {
+		return err
+	}
+
 	contentType := "text/html"
 	_, err = client.UploadStream(context.TODO(),
 		containerName,
 		blobName,
-		r,
+		htmlReport,
 		&azblob.UploadStreamOptions{
 			HTTPHeaders: &blob.HTTPHeaders{
 				BlobContentType: &contentType,

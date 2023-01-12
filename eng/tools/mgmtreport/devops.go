@@ -130,23 +130,36 @@ func getTestResult(buildClient build.Client, buildId, logId int) (int, int, stri
 	return len(totalTests), len(passedTests), coverage, nil
 }
 
-func getSkippedMockTest(buildClient build.Client, buildId, mockTestLogId int) (int, error) {
+func getOperation(buildClient build.Client, buildId, mockTestLogId int) (map[string]struct{}, int, error) {
 	logLines, err := buildClient.GetBuildLogLines(context.Background(), build.GetBuildLogLinesArgs{
 		Project: &projectName,
 		BuildId: &buildId,
 		LogId:   &mockTestLogId,
 	})
 	if err != nil {
-		return 0, err
+		return nil, 0, err
 	}
 
 	logResult := strings.Join(*logLines, "\n")
 	skipOperations := regexp.MustCompile("--- SKIP:.*/").FindAllString(logResult, -1)
 
-	return len(skipOperations), nil
+	allOperation := make(map[string]struct{})
+	var v struct{}
+	all := regexp.MustCompile("=== RUN.*/.*").FindAllString(logResult, -1)
+	for _, o := range all {
+		_, after, b := strings.Cut(o, "/")
+		if b {
+			operation := strings.TrimLeft(after, "Test")
+			if _, ok := allOperation[operation]; !ok {
+				allOperation[operation] = v
+			}
+		}
+	}
+
+	return allOperation, len(skipOperations), nil
 }
 
-func getCallOperations(buildClient build.Client, buildId, liveTestLogId int) (int, error) {
+func getLiveTestOperationCalls(buildClient build.Client, allOperation map[string]struct{}, buildId, liveTestLogId int) (int, error) {
 	logLines, err := buildClient.GetBuildLogLines(context.Background(), build.GetBuildLogLinesArgs{
 		Project: &projectName,
 		BuildId: &buildId,
@@ -159,12 +172,15 @@ func getCallOperations(buildClient build.Client, buildId, liveTestLogId int) (in
 	logResult := strings.Join(*logLines, "\n")
 	result := regexp.MustCompile("Call operation:.*").FindAllString(logResult, -1)
 
-	callOperation := make(map[string]int)
+	callOperation := make(map[string]struct{})
+	var v struct{}
 	for _, co := range result {
 		_, after, b := strings.Cut(co, "Call operation: ")
 		if b {
-			if _, ok := callOperation[after]; !ok {
-				callOperation[after] = 0
+			if _, ok := allOperation[after]; ok {
+				if _, ok = callOperation[after]; !ok {
+					callOperation[after] = v
+				}
 			}
 		}
 	}

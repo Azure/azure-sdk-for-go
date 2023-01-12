@@ -9,8 +9,8 @@
         "Authorization": "Sanitized",
         "Content-Length": "162",
         "Content-Type": "application/xml",
-        "User-Agent": "azsdk-go-azblob/v0.5.0 (go1.19; Windows_NT)",
-        "X-Ms-Date": "Thu, 11 Aug 2022 15:05:38 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.6.2 (go1.19.3; Windows_NT)",
+        "X-Ms-Date": "Thu, 12 Jan 2023 19:49:30 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": [
@@ -21,7 +21,7 @@
       "ResponseHeaders": {
         "Content-Length": "327",
         "Content-Type": "application/xml",
-        "Date": "Thu, 11 Aug 2022 15:05:38 GMT",
+        "Date": "Thu, 12 Jan 2023 19:49:30 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -32,8 +32,8 @@
       },
       "ResponseBody": [
         "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EInvalidXmlDocument\u003C/Code\u003E\u003CMessage\u003EXML specified is not syntactically valid.\n",
-        "RequestId:ed1a5232-e01e-0088-1d93-ad59f2000000\n",
-        "Time:2022-08-11T15:05:38.6185065Z\u003C/Message\u003E\u003CLineNumber\u003E2\u003C/LineNumber\u003E\u003CLinePosition\u003E75\u003C/LinePosition\u003E\u003CReason\u003EElement is missing: Days.\u003C/Reason\u003E\u003C/Error\u003E"
+        "RequestId:9d05a7a7-e01e-009c-27be-26dcbb000000\n",
+        "Time:2023-01-12T19:49:31.4056196Z\u003C/Message\u003E\u003CLineNumber\u003E2\u003C/LineNumber\u003E\u003CLinePosition\u003E75\u003C/LinePosition\u003E\u003CReason\u003EElement is missing: Days.\u003C/Reason\u003E\u003C/Error\u003E"
       ]
     }
   ],

@@ -8,8 +8,8 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.19; Windows_NT)",
-        "X-Ms-Date": "Tue, 11 Oct 2022 03:51:30 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.6.2 (go1.19.3; Windows_NT)",
+        "X-Ms-Date": "Thu, 12 Jan 2023 19:51:02 GMT",
         "x-ms-deleted-container-name": "goccontainerrestorefailures",
         "x-ms-deleted-container-version": "",
         "x-ms-version": "2020-10-02"
@@ -19,7 +19,7 @@
       "ResponseHeaders": {
         "Content-Length": "317",
         "Content-Type": "application/xml",
-        "Date": "Tue, 11 Oct 2022 03:51:30 GMT",
+        "Date": "Thu, 12 Jan 2023 19:51:02 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -31,8 +31,8 @@
       "ResponseBody": [
         "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\n",
         "\u003CError\u003E\u003CCode\u003EMissingRequiredHeader\u003C/Code\u003E\u003CMessage\u003EAn HTTP header that\u0026apos;s mandatory for this request is not specified.\n",
-        "RequestId:b3048f87-a01e-0071-7a24-dd23c4000000\n",
-        "Time:2022-10-11T03:51:30.6559536Z\u003C/Message\u003E\u003CHeaderName\u003Ex-ms-deleted-container-version\u003C/HeaderName\u003E\u003C/Error\u003E"
+        "RequestId:9d06e0e6-e01e-009c-0dbf-26dcbb000000\n",
+        "Time:2023-01-12T19:51:02.7098206Z\u003C/Message\u003E\u003CHeaderName\u003Ex-ms-deleted-container-version\u003C/HeaderName\u003E\u003C/Error\u003E"
       ]
     },
     {
@@ -43,8 +43,8 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.19; Windows_NT)",
-        "X-Ms-Date": "Tue, 11 Oct 2022 03:51:30 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.6.2 (go1.19.3; Windows_NT)",
+        "X-Ms-Date": "Thu, 12 Jan 2023 19:51:02 GMT",
         "x-ms-deleted-container-name": "",
         "x-ms-deleted-container-version": "",
         "x-ms-version": "2020-10-02"
@@ -54,7 +54,7 @@
       "ResponseHeaders": {
         "Content-Length": "314",
         "Content-Type": "application/xml",
-        "Date": "Tue, 11 Oct 2022 03:51:30 GMT",
+        "Date": "Thu, 12 Jan 2023 19:51:02 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -66,8 +66,8 @@
       "ResponseBody": [
         "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\n",
         "\u003CError\u003E\u003CCode\u003EMissingRequiredHeader\u003C/Code\u003E\u003CMessage\u003EAn HTTP header that\u0026apos;s mandatory for this request is not specified.\n",
-        "RequestId:b3049089-a01e-0071-7324-dd23c4000000\n",
-        "Time:2022-10-11T03:51:30.8958066Z\u003C/Message\u003E\u003CHeaderName\u003Ex-ms-deleted-container-name\u003C/HeaderName\u003E\u003C/Error\u003E"
+        "RequestId:9d06e0fa-e01e-009c-21bf-26dcbb000000\n",
+        "Time:2023-01-12T19:51:02.7258113Z\u003C/Message\u003E\u003CHeaderName\u003Ex-ms-deleted-container-name\u003C/HeaderName\u003E\u003C/Error\u003E"
       ]
     }
   ],

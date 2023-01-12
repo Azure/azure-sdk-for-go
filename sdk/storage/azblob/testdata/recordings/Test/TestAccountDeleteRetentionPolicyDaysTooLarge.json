@@ -10,7 +10,7 @@
         "Content-Length": "178",
         "Content-Type": "application/xml",
         "User-Agent": "azsdk-go-azblob/v0.6.2 (go1.19.3; Windows_NT)",
-        "X-Ms-Date": "Wed, 11 Jan 2023 23:06:50 GMT",
+        "X-Ms-Date": "Thu, 12 Jan 2023 19:49:31 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": [
@@ -21,7 +21,7 @@
       "ResponseHeaders": {
         "Content-Length": "375",
         "Content-Type": "application/xml",
-        "Date": "Wed, 11 Jan 2023 23:06:51 GMT",
+        "Date": "Thu, 12 Jan 2023 19:49:30 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -32,8 +32,8 @@
       },
       "ResponseBody": [
         "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EInvalidXmlDocument\u003C/Code\u003E\u003CMessage\u003EXML specified is not syntactically valid.\n",
-        "RequestId:78bd93d8-e01e-00a3-3e11-261418000000\n",
-        "Time:2023-01-11T23:06:52.3660605Z\u003C/Message\u003E\u003CLineNumber\u003E2\u003C/LineNumber\u003E\u003CLinePosition\u003E91\u003C/LinePosition\u003E\u003CReason\u003ERetention days must be greater than 0 and less than or equal to 365 days.\u003C/Reason\u003E\u003C/Error\u003E"
+        "RequestId:9d05a7bf-e01e-009c-3fbe-26dcbb000000\n",
+        "Time:2023-01-12T19:49:31.4525928Z\u003C/Message\u003E\u003CLineNumber\u003E2\u003C/LineNumber\u003E\u003CLinePosition\u003E91\u003C/LinePosition\u003E\u003CReason\u003ERetention days must be greater than 0 and less than or equal to 365 days.\u003C/Reason\u003E\u003C/Error\u003E"
       ]
     },
     {
@@ -46,7 +46,7 @@
         "Content-Length": "178",
         "Content-Type": "application/xml",
         "User-Agent": "azsdk-go-azblob/v0.6.2 (go1.19.3; Windows_NT)",
-        "X-Ms-Date": "Wed, 11 Jan 2023 23:06:50 GMT",
+        "X-Ms-Date": "Thu, 12 Jan 2023 19:49:31 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": [
@@ -57,7 +57,7 @@
       "ResponseHeaders": {
         "Content-Length": "375",
         "Content-Type": "application/xml",
-        "Date": "Wed, 11 Jan 2023 23:06:51 GMT",
+        "Date": "Thu, 12 Jan 2023 19:49:31 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -68,8 +68,8 @@
       },
       "ResponseBody": [
         "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EInvalidXmlDocument\u003C/Code\u003E\u003CMessage\u003EXML specified is not syntactically valid.\n",
-        "RequestId:78bd9437-e01e-00a3-1911-261418000000\n",
-        "Time:2023-01-11T23:06:52.3950433Z\u003C/Message\u003E\u003CLineNumber\u003E2\u003C/LineNumber\u003E\u003CLinePosition\u003E91\u003C/LinePosition\u003E\u003CReason\u003ERetention days must be greater than 0 and less than or equal to 365 days.\u003C/Reason\u003E\u003C/Error\u003E"
+        "RequestId:9d05a7d9-e01e-009c-56be-26dcbb000000\n",
+        "Time:2023-01-12T19:49:31.5455404Z\u003C/Message\u003E\u003CLineNumber\u003E2\u003C/LineNumber\u003E\u003CLinePosition\u003E91\u003C/LinePosition\u003E\u003CReason\u003ERetention days must be greater than 0 and less than or equal to 365 days.\u003C/Reason\u003E\u003C/Error\u003E"
       ]
     }
   ],

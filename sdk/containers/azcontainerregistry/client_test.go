@@ -31,6 +31,16 @@ func TestClient_DeleteManifest(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestClient_DeleteManifest_wrongDigest(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	_, err = client.DeleteManifest(ctx, "hello-world", "error-digest", nil)
+	require.Error(t, err)
+}
+
 func TestClient_DeleteRepository(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
@@ -65,6 +75,16 @@ func TestClient_GetManifest(t *testing.T) {
 	fmt.Printf("manifest content: %s\n", manifest)
 }
 
+func TestClient_GetManifest_wrongTag(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	_, err = client.GetManifest(ctx, "hello-world", "wrong-tag", &ClientGetManifestOptions{Accept: to.Ptr("application/vnd.docker.distribution.manifest.v2+json")})
+	require.Error(t, err)
+}
+
 func TestClient_GetManifestProperties(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
@@ -83,6 +103,16 @@ func TestClient_GetManifestProperties(t *testing.T) {
 	require.Equal(t, *tagRes.Manifest.Digest, digest)
 }
 
+func TestClient_GetManifestProperties_wrongDigest(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	_, err = client.GetManifestProperties(ctx, "hello-world", "wrong-digest", nil)
+	require.Error(t, err)
+}
+
 func TestClient_GetRepositoryProperties(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
@@ -99,6 +129,16 @@ func TestClient_GetRepositoryProperties(t *testing.T) {
 	fmt.Printf("repository manifest count: %d\n", *res.ManifestCount)
 }
 
+func TestClient_GetRepositoryProperties_wrongName(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	_, err = client.GetRepositoryProperties(ctx, "wrong-name", nil)
+	require.Error(t, err)
+}
+
 func TestClient_GetTagProperties(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
@@ -111,6 +151,16 @@ func TestClient_GetTagProperties(t *testing.T) {
 	fmt.Printf("tag name: %s\n", *res.Tag.Name)
 	require.NotEmpty(t, *res.Tag.Digest)
 	fmt.Printf("tag digest: %s\n", *res.Tag.Digest)
+}
+
+func TestClient_GetTagProperties_wrongTag(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	_, err = client.GetTagProperties(ctx, "hello-world", "wrong-tag", nil)
+	require.Error(t, err)
 }
 
 func TestClient_NewListManifestsPager(t *testing.T) {
@@ -165,6 +215,20 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 	}
 	for i := range descendingItems {
 		require.Equal(t, descendingItems[i].Digest, ascendingItems[len(ascendingItems)-1-i].Digest)
+	}
+}
+
+func TestClient_NewListManifestsPager_wrongRepositoryName(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	pager := client.NewListManifestsPager("wrong-name", nil)
+	for pager.More() {
+		_, err := pager.NextPage(ctx)
+		require.Error(t, err)
+		break
 	}
 }
 
@@ -249,6 +313,20 @@ func TestClient_NewListTagsPager(t *testing.T) {
 	}
 }
 
+func TestClient_NewListTagsPager_wrongRepositoryName(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	pager := client.NewListTagsPager("wrong-name", nil)
+	for pager.More() {
+		_, err := pager.NextPage(ctx)
+		require.Error(t, err)
+		break
+	}
+}
+
 func TestClient_UpdateManifestProperties(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
@@ -273,6 +351,16 @@ func TestClient_UpdateManifestProperties(t *testing.T) {
 	require.Equal(t, *res.Manifest.ChangeableAttributes.CanWrite, true)
 }
 
+func TestClient_UpdateManifestProperties_wrongDigest(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	_, err = client.GetTagProperties(ctx, "hello-world", "wrong-digest", nil)
+	require.Error(t, err)
+}
+
 func TestClient_UpdateRepositoryProperties(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
@@ -293,6 +381,19 @@ func TestClient_UpdateRepositoryProperties(t *testing.T) {
 	require.Equal(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite, true)
 }
 
+func TestClient_UpdateRepositoryProperties_wrongRepository(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	_, err = client.UpdateRepositoryProperties(ctx, "wrong-repository", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
+		CanWrite: to.Ptr(false),
+	},
+	})
+	require.Error(t, err)
+}
+
 func TestClient_UpdateTagProperties(t *testing.T) {
 	startRecording(t)
 	cred, options := getCredAndClientOptions(t)
@@ -311,6 +412,19 @@ func TestClient_UpdateTagProperties(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, *res.Tag.ChangeableAttributes.CanWrite, true)
+}
+
+func TestClient_UpdateTagProperties_wrongTag(t *testing.T) {
+	startRecording(t)
+	cred, options := getCredAndClientOptions(t)
+	ctx := context.Background()
+	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
+	require.NoError(t, err)
+	_, err = client.UpdateTagProperties(ctx, "hello-world", "wrong-tag", &ClientUpdateTagPropertiesOptions{Value: &TagWriteableProperties{
+		CanWrite: to.Ptr(false),
+	},
+	})
+	require.Error(t, err)
 }
 
 func TestClient_UploadManifest(t *testing.T) {

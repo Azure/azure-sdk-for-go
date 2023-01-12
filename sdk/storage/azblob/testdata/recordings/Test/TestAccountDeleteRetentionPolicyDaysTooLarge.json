@@ -1,0 +1,77 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/?comp=properties\u0026restype=service",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "178",
+        "Content-Type": "application/xml",
+        "User-Agent": "azsdk-go-azblob/v0.6.2 (go1.19.3; Windows_NT)",
+        "X-Ms-Date": "Wed, 11 Jan 2023 23:06:50 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": [
+        "\u003C?xml version=\u00221.0\u0022 encoding=\u0022UTF-8\u0022?\u003E\n",
+        "\u003CStorageServiceProperties\u003E\u003CDeleteRetentionPolicy\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CDays\u003E366\u003C/Days\u003E\u003C/DeleteRetentionPolicy\u003E\u003C/StorageServiceProperties\u003E"
+      ],
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "375",
+        "Content-Type": "application/xml",
+        "Date": "Wed, 11 Jan 2023 23:06:51 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-error-code": "InvalidXmlDocument",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EInvalidXmlDocument\u003C/Code\u003E\u003CMessage\u003EXML specified is not syntactically valid.\n",
+        "RequestId:78bd93d8-e01e-00a3-3e11-261418000000\n",
+        "Time:2023-01-11T23:06:52.3660605Z\u003C/Message\u003E\u003CLineNumber\u003E2\u003C/LineNumber\u003E\u003CLinePosition\u003E91\u003C/LinePosition\u003E\u003CReason\u003ERetention days must be greater than 0 and less than or equal to 365 days.\u003C/Reason\u003E\u003C/Error\u003E"
+      ]
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/?comp=properties\u0026restype=service",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "178",
+        "Content-Type": "application/xml",
+        "User-Agent": "azsdk-go-azblob/v0.6.2 (go1.19.3; Windows_NT)",
+        "X-Ms-Date": "Wed, 11 Jan 2023 23:06:50 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": [
+        "\u003C?xml version=\u00221.0\u0022 encoding=\u0022UTF-8\u0022?\u003E\n",
+        "\u003CStorageServiceProperties\u003E\u003CDeleteRetentionPolicy\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CDays\u003E366\u003C/Days\u003E\u003C/DeleteRetentionPolicy\u003E\u003C/StorageServiceProperties\u003E"
+      ],
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "375",
+        "Content-Type": "application/xml",
+        "Date": "Wed, 11 Jan 2023 23:06:51 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-error-code": "InvalidXmlDocument",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EInvalidXmlDocument\u003C/Code\u003E\u003CMessage\u003EXML specified is not syntactically valid.\n",
+        "RequestId:78bd9437-e01e-00a3-1911-261418000000\n",
+        "Time:2023-01-11T23:06:52.3950433Z\u003C/Message\u003E\u003CLineNumber\u003E2\u003C/LineNumber\u003E\u003CLinePosition\u003E91\u003C/LinePosition\u003E\u003CReason\u003ERetention days must be greater than 0 and less than or equal to 365 days.\u003C/Reason\u003E\u003C/Error\u003E"
+      ]
+    }
+  ],
+  "Variables": {}
+}

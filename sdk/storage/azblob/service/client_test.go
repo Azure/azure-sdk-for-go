@@ -878,7 +878,8 @@ func (s *ServiceRecordedTestsSuite) TestServiceSASUploadDownload() {
 	_require.Nil(err)
 }
 
-func (s *ServiceRecordedTestsSuite) TestAccountGetStatistics() {
+// TODO : Need to add logic to use secondary endpoint
+func (s *ServiceUnrecordedTestsSuite) TestAccountGetStatistics() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
@@ -903,7 +904,8 @@ func (s *ServiceRecordedTestsSuite) TestAccountGetStatistics() {
 }
 
 // Note: Further tests for filterblobs in pageblob and appendblob
-func (s *ServiceRecordedTestsSuite) TestAccountFilterBlobs() {
+// TODO : Need to add scraping logic to remove any endpoints from Body
+func (s *ServiceUnrecordedTestsSuite) TestAccountFilterBlobs() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)

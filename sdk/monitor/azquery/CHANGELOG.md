@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (Unreleased)
+## 0.4.0 (2022-01-12)
 
 ### Features Added
 * Added `TimeInterval` type with constructor to aid with timespan creation
@@ -13,9 +13,8 @@
 * Renamed `Body.Workspaces` to `Body.AdditionalWorkspaces`
 * Renamed `Results.Render` and `BatchResponse.Render` to `Results.Visualization` and `BatchResponse.Visualization`
 
-### Bugs Fixed
-
 ### Other Changes
+* Doc and example updates
 
 ## 0.3.0 (2022-11-08)
 

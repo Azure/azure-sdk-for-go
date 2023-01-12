@@ -24,19 +24,22 @@ func TestClient(t *testing.T) {
 
 	key := "key"
 	label := "label"
+	contentType := "content-type"
 	value := "value"
 	client, err := NewClientFromConnectionString(connectionString, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, client)
 
-	addResp, err2 := client.AddSetting(context.TODO(), key, &value, &AddSettingOptions{Label: &label})
+	addResp, err2 := client.AddSetting(context.TODO(), key, &value, &AddSettingOptions{Label: &label, ContentType: &contentType})
 	require.NoError(t, err2)
 	require.NotEmpty(t, addResp)
 	require.NotNil(t, addResp.Key)
 	require.NotNil(t, addResp.Label)
+	require.NotNil(t, addResp.ContentType)
 	require.NotNil(t, addResp.Value)
 	require.Equal(t, key, *addResp.Key)
 	require.Equal(t, label, *addResp.Label)
+	require.Equal(t, contentType, *addResp.ContentType)
 	require.Equal(t, value, *addResp.Value)
 
 	getResp, err3 := client.GetSetting(context.TODO(), key, &GetSettingOptions{Label: &label})
@@ -44,9 +47,11 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, getResp)
 	require.NotNil(t, getResp.Key)
 	require.NotNil(t, getResp.Label)
+	require.NotNil(t, getResp.ContentType)
 	require.NotNil(t, getResp.Value)
 	require.Equal(t, key, *getResp.Key)
 	require.Equal(t, label, *getResp.Label)
+	require.Equal(t, contentType, *getResp.ContentType)
 	require.Equal(t, value, *getResp.Value)
 
 	etag := getResp.ETag
@@ -55,14 +60,17 @@ func TestClient(t *testing.T) {
 	require.Empty(t, getResp2)
 
 	value = "value2"
-	setResp, err5 := client.SetSetting(context.TODO(), key, &value, &SetSettingOptions{Label: &label})
+	contentType = "content-type2"
+	setResp, err5 := client.SetSetting(context.TODO(), key, &value, &SetSettingOptions{Label: &label, ContentType: &contentType})
 	require.NoError(t, err5)
 	require.NotEmpty(t, setResp)
 	require.NotNil(t, setResp.Key)
 	require.NotNil(t, setResp.Label)
+	require.NotNil(t, setResp.ContentType)
 	require.NotNil(t, setResp.Value)
 	require.Equal(t, key, *setResp.Key)
 	require.Equal(t, label, *setResp.Label)
+	require.Equal(t, contentType, *setResp.ContentType)
 	require.Equal(t, value, *setResp.Value)
 
 	getResp3, err6 := client.GetSetting(context.TODO(), key, &GetSettingOptions{Label: &label, OnlyIfChanged: etag})
@@ -70,9 +78,11 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, getResp3)
 	require.NotNil(t, getResp3.Key)
 	require.NotNil(t, getResp3.Label)
+	require.NotNil(t, getResp3.ContentType)
 	require.NotNil(t, getResp3.Value)
 	require.Equal(t, key, *getResp3.Key)
 	require.Equal(t, label, *getResp3.Label)
+	require.Equal(t, contentType, *getResp3.ContentType)
 	require.Equal(t, value, *getResp3.Value)
 
 	etag = getResp3.ETag
@@ -82,9 +92,11 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, setResp2)
 	require.NotNil(t, setResp2.Key)
 	require.NotNil(t, setResp2.Label)
+	require.NotNil(t, setResp2.ContentType)
 	require.NotNil(t, setResp2.Value)
 	require.Equal(t, key, *setResp2.Key)
 	require.Equal(t, label, *setResp2.Label)
+	require.Equal(t, contentType, *setResp2.ContentType)
 	require.Equal(t, value, *setResp2.Value)
 
 	setResp3, err8 := client.SetSetting(context.TODO(), key, &value, &SetSettingOptions{Label: &label, OnlyIfUnchanged: etag})
@@ -96,10 +108,12 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, roResp)
 	require.NotNil(t, roResp.Key)
 	require.NotNil(t, roResp.Label)
+	require.NotNil(t, roResp.ContentType)
 	require.NotNil(t, roResp.Value)
 	require.NotNil(t, roResp.IsReadOnly)
 	require.Equal(t, key, *roResp.Key)
 	require.Equal(t, label, *roResp.Label)
+	require.Equal(t, contentType, *roResp.ContentType)
 	require.Equal(t, value, *roResp.Value)
 	require.True(t, *roResp.IsReadOnly)
 
@@ -108,10 +122,12 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, roResp2)
 	require.NotNil(t, roResp2.Key)
 	require.NotNil(t, roResp2.Label)
+	require.NotNil(t, roResp2.ContentType)
 	require.NotNil(t, roResp2.Value)
 	require.NotNil(t, roResp2.IsReadOnly)
 	require.Equal(t, key, *roResp2.Key)
 	require.Equal(t, label, *roResp2.Label)
+	require.Equal(t, contentType, *roResp2.ContentType)
 	require.Equal(t, value, *roResp2.Value)
 	require.False(t, *roResp2.IsReadOnly)
 
@@ -125,10 +141,12 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, roResp4)
 	require.NotNil(t, roResp4.Key)
 	require.NotNil(t, roResp4.Label)
+	require.NotNil(t, roResp4.ContentType)
 	require.NotNil(t, roResp4.Value)
 	require.NotNil(t, roResp4.IsReadOnly)
 	require.Equal(t, key, *roResp4.Key)
 	require.Equal(t, label, *roResp4.Label)
+	require.Equal(t, contentType, *roResp4.ContentType)
 	require.Equal(t, value, *roResp4.Value)
 	require.True(t, *roResp4.IsReadOnly)
 
@@ -142,10 +160,12 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, roResp6)
 	require.NotNil(t, roResp6.Key)
 	require.NotNil(t, roResp6.Label)
+	require.NotNil(t, roResp6.ContentType)
 	require.NotNil(t, roResp6.Value)
 	require.NotNil(t, roResp6.IsReadOnly)
 	require.Equal(t, key, *roResp6.Key)
 	require.Equal(t, label, *roResp6.Label)
+	require.Equal(t, contentType, *roResp6.ContentType)
 	require.Equal(t, value, *roResp6.Value)
 	require.False(t, *roResp6.IsReadOnly)
 
@@ -159,6 +179,7 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, revResp)
 	require.Equal(t, key, *revResp.Settings[0].Key)
 	require.Equal(t, label, *revResp.Settings[0].Label)
+	require.Equal(t, contentType, *revResp.Settings[0].ContentType)
 
 	settsPgr := client.NewListSettingsPager(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
 	require.NotEmpty(t, settsPgr)
@@ -169,6 +190,7 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, settsResp)
 	require.Equal(t, key, *settsResp.Settings[0].Key)
 	require.Equal(t, label, *settsResp.Settings[0].Label)
+	require.Equal(t, contentType, *settsResp.Settings[0].ContentType)
 	require.Equal(t, value, *settsResp.Settings[0].Value)
 	require.False(t, *settsResp.Settings[0].IsReadOnly)
 
@@ -177,9 +199,11 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, delResp)
 	require.NotNil(t, delResp.Key)
 	require.NotNil(t, delResp.Label)
+	require.NotNil(t, delResp.ContentType)
 	require.NotNil(t, delResp.Value)
 	require.Equal(t, key, *delResp.Key)
 	require.Equal(t, label, *delResp.Label)
+	require.Equal(t, contentType, *delResp.ContentType)
 	require.Equal(t, value, *delResp.Value)
 
 	addResp2, err18 := client.AddSetting(context.TODO(), key, &value, &AddSettingOptions{Label: &label})
@@ -187,9 +211,11 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, addResp2)
 	require.NotNil(t, addResp2.Key)
 	require.NotNil(t, addResp2.Label)
+	require.NotNil(t, addResp2.ContentType)
 	require.NotNil(t, addResp2.Value)
 	require.Equal(t, key, *addResp2.Key)
 	require.Equal(t, label, *addResp2.Label)
+	require.Equal(t, contentType, *addResp2.ContentType)
 	require.Equal(t, value, *addResp2.Value)
 
 	delResp2, err19 := client.DeleteSetting(context.TODO(), key, &DeleteSettingOptions{Label: &label, OnlyIfUnchanged: etag})
@@ -202,8 +228,10 @@ func TestClient(t *testing.T) {
 	require.NotEmpty(t, delResp3)
 	require.NotNil(t, delResp3.Key)
 	require.NotNil(t, delResp3.Label)
+	require.NotNil(t, delResp3.ContentType)
 	require.NotNil(t, delResp3.Value)
 	require.Equal(t, key, *delResp3.Key)
 	require.Equal(t, label, *delResp3.Label)
+	require.Equal(t, contentType, *delResp3.ContentType)
 	require.Equal(t, value, *delResp3.Value)
 }

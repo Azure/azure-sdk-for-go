@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (2022-01-12)
+## 0.4.0 (2023-01-12)
 
 ### Features Added
 * Added `TimeInterval` type with constructor to aid with timespan creation

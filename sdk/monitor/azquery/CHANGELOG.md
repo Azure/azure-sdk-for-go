@@ -1,14 +1,20 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.4.0 (2023-01-12)
 
 ### Features Added
+* Added `TimeInterval` type with constructor to aid with timespan creation
+* Added `NewBatchQueryRequest` constructor to aid with logs batch requests
+* Added `LogsQueryOptions` model for easier setting of logs options
 
 ### Breaking Changes
-
-### Bugs Fixed
+* Changed type of `Body.Timespan`, `MetricsClientQueryResourceOptions.Timespan`, `Response.Timespan` from *string to *TimeInterval
+* Remove `ColumnIndexLookup` field from Table struct
+* Renamed `Body.Workspaces` to `Body.AdditionalWorkspaces`
+* Renamed `Results.Render` and `BatchResponse.Render` to `Results.Visualization` and `BatchResponse.Visualization`
 
 ### Other Changes
+* Doc and example updates
 
 ## 0.3.0 (2022-11-08)
 

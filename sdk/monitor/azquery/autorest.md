@@ -68,6 +68,43 @@ directive:
       from: MetricNamespaces_List
       to: Metrics_ListNamespaces
 
+  # rename Body.Workspaces to Body.AdditionalWorkspaces
+  - from: swagger-document
+    where: $.definitions.queryBody.properties.workspaces
+    transform: $["x-ms-client-name"] = "AdditionalWorkspaces"
+  
+  # rename Render to Visualization
+  - from: swagger-document
+    where: $.definitions.queryResults.properties.render
+    transform: $["x-ms-client-name"] = "Visualization"
+  - from: swagger-document
+    where: $.definitions.batchQueryResults.properties.render
+    transform: $["x-ms-client-name"] = "Visualization"
+
+  # rename BatchQueryRequest.ID to BatchQueryRequest.CorrelationID
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.id
+    transform: $["x-ms-client-name"] = "CorrelationID"
+  - from: swagger-document
+    where: $.definitions.batchQueryResponse.properties.id
+    transform: $["x-ms-client-name"] = "CorrelationID"
+
+  # rename BatchQueryRequest.Workspace to BatchQueryRequest.WorkspaceID
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.workspace
+    transform: $["x-ms-client-name"] = "WorkspaceID"
+  
+  # rename Prefer to Options
+  - from: swagger-document
+    where: $.parameters.PreferHeaderParameter
+    transform: $["x-ms-client-name"] = "Options"
+  - from: models.go
+    where: $
+    transform: return $.replace(/Options \*string/g, "Options *LogsQueryOptions");
+  - from: logs_client.go
+    where: $
+    transform: return $.replace(/\*options\.Options/, "options.Options.String()");
+  
   # add default values for batch request path and method attributes
   - from: swagger-document
     where: $.definitions.batchQueryRequest.properties.path
@@ -90,6 +127,23 @@ directive:
     where: $
     transform: return $.replace(/type ResultType string/, "//ResultType - Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.\ntype ResultType string");
 
+  # update doc comments
+  - from: swagger-document
+    where: $.definitions.queryBody.properties.workspaces
+    transform: $["description"] = "A list of workspaces to query in addition to the primary workspace."
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.headers
+    transform: $["description"] = "Optional. Headers of the request. Can use prefer header to set server timeout, query statistics and visualization information. For more information, see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization"
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.workspace
+    transform: $["description"] = "Primary Workspace ID of the query"
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.id
+    transform: $["description"] = "Unique ID corresponding to each request in the batch"
+  - from: swagger-document
+    where: $.parameters.workspaceId
+    transform: $["description"] = "Primary Workspace ID of the query. This is Workspace ID from the Properties blade in the Azure portal"
+
   # delete unused error models
   - from: models.go
     where: $
@@ -103,14 +157,6 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:ErrorInfo|ErrorDetail)\).*\{\s(?:.+\s)+\}\s/g, "");
-
-  # delete generated table struct, using custom one instead
-  - from: models.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+type (Table).+\{(?:\s.+\s)+\}\s/g, "");
-  - from: models_serde.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(\*Table)\).*\{\s(?:.+\s)+\}\s/g, "");
 
   # delete generated constructor and client
   - from: logs_client.go
@@ -139,21 +185,37 @@ directive:
     where: $
     transform: return $.replace(/const host = "(.*?)"/, "");
 
+  # change Table.Rows from type [][]interface{} to type []Row
+  - from: models.go
+    where: $
+    transform: return $.replace(/Rows \[\]\[\]interface{}/, "Rows []Row");
+
   # change render and statistics type to []byte
   - from: models.go
     where: $
-    transform: return $.replace(/interface{}/g, "[]byte");
+    transform: return $.replace(/Statistics interface{}/g, "Statistics []byte");
+  - from: models.go
+    where: $
+    transform: return $.replace(/Visualization interface{}/g, "Visualization []byte");
   - from: models_serde.go
     where: $
     transform: return 
       $.replace(/err(.*)r\.Statistics\)/, "r.Statistics = val") 
   - from: models_serde.go
     where: $
-    transform: return $.replace(/err(.*)r\.Render\)/, "r.Render = val");
+    transform: return $.replace(/err(.*)r\.Visualization\)/, "r.Visualization = val");
   - from: models_serde.go
     where: $
     transform: return 
       $.replace(/err(.*)b\.Statistics\)/, "b.Statistics = val") 
   - from: models_serde.go
     where: $
-    transform: return $.replace(/err(.*)b\.Render\)/, "b.Render = val");
+    transform: return $.replace(/err(.*)b\.Visualization\)/, "b.Visualization = val");
+
+  # change type of timespan from *string to *TimeInterval
+  - from: models.go
+    where: $
+    transform: return $.replace(/Timespan \*string/g, "Timespan *TimeInterval");
+  - from: metrics_client.go
+    where: $
+    transform: return $.replace(/reqQP\.Set\(\"timespan\", \*options\.Timespan\)/g, "reqQP.Set(\"timespan\", string(*options.Timespan))");

@@ -1336,9 +1336,9 @@ func (s *AppendBlobRecordedTestsSuite) TestSeal() {
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
 
-	sealResp, err := abClient.Seal(context.Background(), nil)
+	resp, err := abClient.Seal(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(*sealResp.IsSealed, true)
+	_require.Equal(*resp.IsSealed, true)
 
 	appendResp, err = abClient.AppendBlock(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), nil)
 	_require.NotNil(err)
@@ -1374,7 +1374,7 @@ func (s *AppendBlobRecordedTestsSuite) TestSealWithAccessConditions() {
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &futureTime},
 	}, AppendPositionAccessConditions: nil}
 
-	sealResp, err := abClient.Seal(context.Background(), sealOpts)
+	resp, err := abClient.Seal(context.Background(), sealOpts)
 	// seal should fail on the condition
 	_require.NotNil(err)
 
@@ -1382,9 +1382,9 @@ func (s *AppendBlobRecordedTestsSuite) TestSealWithAccessConditions() {
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &pastTime},
 	}, AppendPositionAccessConditions: nil}
 
-	sealResp, err = abClient.Seal(context.Background(), sealOpts)
+	resp, err = abClient.Seal(context.Background(), sealOpts)
 	_require.Nil(err)
-	_require.Equal(*sealResp.IsSealed, true)
+	_require.Equal(*resp.IsSealed, true)
 
 	_, err = abClient.Delete(context.Background(), nil)
 	_require.Nil(err)

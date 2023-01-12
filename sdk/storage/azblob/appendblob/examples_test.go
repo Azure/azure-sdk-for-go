@@ -98,3 +98,21 @@ func Example_appendblob_SetExpiry() {
 		return
 	}
 }
+
+func Example_appendblob_Seal() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	blobName := "test_append_blob_seal.txt"
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	appendBlobClient, err := appendblob.NewClient(blobURL, cred, nil)
+	handleError(err)
+
+	_, err = appendBlobClient.Seal(context.Background(), nil)
+	handleError(err)
+}

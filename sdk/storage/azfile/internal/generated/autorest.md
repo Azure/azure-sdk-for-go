@@ -46,28 +46,6 @@ directive:
     }
 ```
 
-### Use strings for dates in responses
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]..responses..headers["x-ms-file-last-write-time"]
-  transform: >
-    $.format = "str";
-- from: swagger-document
-  where: $["x-ms-paths"]..responses..headers["x-ms-file-change-time"]
-  transform: >
-    $.format = "str";
-- from: swagger-document
-  where: $["x-ms-paths"]..responses..headers["x-ms-file-creation-time"]
-  transform: >
-    $.format = "str";
-- from: swagger-document
-  where: $.parameters.FileChangeTime
-  transform: >
-    $.format = "str";
-```
-
 ### Change new SMB file parameters to use default values
 
 ``` yaml
@@ -75,12 +53,10 @@ directive:
 - from: swagger-document
   where: $.parameters.FileCreationTime
   transform: >
-    $.format = "str";
     $.default = "now";
 - from: swagger-document
   where: $.parameters.FileLastWriteTime
   transform: >
-    $.format = "str";
     $.default = "now";
 - from: swagger-document
   where: $.parameters.FileAttributes

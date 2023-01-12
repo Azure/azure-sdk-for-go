@@ -352,7 +352,7 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 // options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 // ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
+func (client *FileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, options, shareFileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientCreateResponse{}, err
@@ -368,7 +368,7 @@ func (client *FileClient) Create(ctx context.Context, fileContentLength int64, f
 }
 
 // createCreateRequest creates the Create request.
-func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -411,8 +411,8 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
 	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
-	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
-	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime.Format(time.RFC1123)}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime.Format(time.RFC1123)}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -460,13 +460,25 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientCreateResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientCreateResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientCreateResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -690,13 +702,25 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientDownloadResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientDownloadResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientDownloadResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -944,13 +968,25 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientGetPropertiesResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientGetPropertiesResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientGetPropertiesResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -1215,7 +1251,7 @@ func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileC
 // options - FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
 // ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
+func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
 	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options, shareFileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientSetHTTPHeadersResponse{}, err
@@ -1231,7 +1267,7 @@ func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes str
 }
 
 // setHTTPHeadersCreateRequest creates the SetHTTPHeaders request.
-func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1271,8 +1307,8 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
 	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
-	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
-	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime.Format(time.RFC1123)}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime.Format(time.RFC1123)}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
@@ -1320,13 +1356,25 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		result.FileCreationTime = &val
+		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientSetHTTPHeadersResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		result.FileLastWriteTime = &val
+		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientSetHTTPHeadersResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		result.FileChangeTime = &val
+		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientSetHTTPHeadersResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val

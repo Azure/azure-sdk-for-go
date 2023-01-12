@@ -33,7 +33,7 @@ func NewBatchBuilder() *BatchBuilder {
 //   - DeleteOptions - delete options; pass nil to accept default values
 func (b *BatchBuilder) AddBlobBatchDelete(blobPath string, o *DeleteOptions) {
 	b.batchDeleteList = append(b.batchDeleteList, &BatchDeleteOptions{
-		BlobPath:      &blobPath,
+		BlobPath:      blobPath,
 		DeleteOptions: o,
 	})
 }
@@ -46,7 +46,7 @@ func (b *BatchBuilder) AddBlobBatchDelete(blobPath string, o *DeleteOptions) {
 //   - SetTierOptions - set tier options; pass nil to accept default values
 func (b *BatchBuilder) AddBlobBatchSetTier(blobPath string, accessTier blob.AccessTier, o *SetTierOptions) {
 	b.batchSetTierList = append(b.batchSetTierList, &BatchSetTierOptions{
-		BlobPath:       &blobPath,
+		BlobPath:       blobPath,
 		AccessTier:     accessTier,
 		SetTierOptions: o,
 	})
@@ -118,7 +118,7 @@ func (b *BatchBuilder) createBatchRequest(ctx context.Context, p policy.Policy, 
 // e.g. /containerName/blobName?queryParams
 // TODO: add query parameters in the blob path, make this a common method for BatchDeleteOptions and BatchSetTierOptions
 func (d *BatchDeleteOptions) getBlobPath(urlParts *blob.URLParts) string {
-	urlPath := *d.BlobPath
+	urlPath := d.BlobPath
 	if len(urlParts.ContainerName) != 0 {
 		urlPath = "/" + urlParts.ContainerName + "/" + urlPath
 	}
@@ -162,7 +162,7 @@ func (d *BatchDeleteOptions) createDeleteRequest(ctx context.Context, p policy.P
 // e.g. /containerName/blobName?queryParams
 // TODO: add query parameters in the blob path, make this a common method for BatchDeleteOptions and BatchSetTierOptions
 func (b *BatchSetTierOptions) getBlobPath(urlParts *blob.URLParts) string {
-	urlPath := *b.BlobPath
+	urlPath := b.BlobPath
 	if len(urlParts.ContainerName) != 0 {
 		urlPath = "/" + urlParts.ContainerName + "/" + urlPath
 	}

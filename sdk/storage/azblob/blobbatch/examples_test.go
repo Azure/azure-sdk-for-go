@@ -129,3 +129,66 @@ func Example_serviceBatchClient() {
 	handleError(err)
 	fmt.Println(string(p))
 }
+
+// ExampleContainerBatchClientDeleteBlobs shows batch delete operations using ContainerBatchClient
+func Example_containerBatchClientDeleteBlobs() {
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	const containerName = "testcontainer"
+	const blobName = "testBlob"
+
+	// create shared key credential
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	// create container batch client
+	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
+	cntBatchClient, err := blobbatch.NewContainerBatchClientWithSharedKeyCredential(containerURL, cred, nil)
+
+	var blobs []*blobbatch.BatchDeleteOptions
+	for i := 0; i < 10; i++ {
+		blobs = append(blobs, &blobbatch.BatchDeleteOptions{
+			BlobPath: fmt.Sprintf("%v%v", blobName, i),
+		})
+	}
+
+	resp, err := cntBatchClient.DeleteBlobs(context.TODO(), blobs)
+	handleError(err)
+
+	// print response body
+	p := make([]byte, 10000)
+	_, err = resp.Body.Read(p)
+	handleError(err)
+	fmt.Println(string(p))
+}
+
+// Example_serviceBatchClientSetTiers shows batch set tier operations using ServiceBatchClient
+func Example_serviceBatchClientSetTiers() {
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	const containerName = "testcontainer"
+	const blobName = "testBlob"
+
+	// create shared key credential
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	// create container batch client
+	svcURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	svcBatchClient, err := blobbatch.NewServiceBatchClientWithSharedKeyCredential(svcURL, cred, nil)
+
+	var blobs []*blobbatch.BatchSetTierOptions
+	for i := 0; i < 10; i++ {
+		blobs = append(blobs, &blobbatch.BatchSetTierOptions{
+			BlobPath:   fmt.Sprintf("%v%v", blobName, i),
+			AccessTier: blob.AccessTierCool,
+		})
+	}
+
+	resp, err := svcBatchClient.SetTiers(context.TODO(), blobs)
+	handleError(err)
+
+	// print response body
+	p := make([]byte, 10000)
+	_, err = resp.Body.Read(p)
+	handleError(err)
+	fmt.Println(string(p))
+}

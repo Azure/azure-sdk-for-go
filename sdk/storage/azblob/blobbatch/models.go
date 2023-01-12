@@ -41,7 +41,7 @@ type SetTierOptions struct {
 //   - /containerName/blobName when using ServiceBatchClient, e.g. /container/blob.txt
 //   - DeleteOptions - optional parameters for the BlobClient.Delete method.
 type BatchDeleteOptions struct {
-	BlobPath *string
+	BlobPath string
 	*DeleteOptions
 }
 
@@ -52,7 +52,7 @@ type BatchDeleteOptions struct {
 //   - AccessTier - defines values for Blob Access Tier
 //   - DeleteOptions - optional parameters for the BlobClient.Delete method.
 type BatchSetTierOptions struct {
-	BlobPath   *string
+	BlobPath   string
 	AccessTier blob.AccessTier
 	*SetTierOptions
 }

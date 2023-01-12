@@ -109,7 +109,8 @@ func (s *ServiceBatchClient) URL() string {
 }
 
 // SubmitBatch operation allows multiple API calls to be embedded into a single HTTP request.
-//   - BatchBuilder - contains the list of operations to be submitted. It supports up to 256 sub-requests in a single batch.
+// - BatchBuilder - contains the list of operations to be submitted. It supports up to 256 sub-requests in a single batch.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/blob-batch
 func (s *ServiceBatchClient) SubmitBatch(ctx context.Context, bb *BatchBuilder) (ServiceClientSubmitBatchResponse, error) {
 	if bb == nil {
 		return ServiceClientSubmitBatchResponse{}, errors.New("batch builder is empty")
@@ -133,4 +134,32 @@ func (s *ServiceBatchClient) SubmitBatch(ctx context.Context, bb *BatchBuilder) 
 
 	// TODO: parse the response body to map individual operations to their responses
 	return resp, err
+}
+
+// DeleteBlobs operation allows multiple delete blob API calls to be embedded into a single HTTP request.
+// - BatchDeleteOptions - contains the list of delete blob operations to be submitted. It supports up to 256 sub-requests in a single batch.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/blob-batch
+func (s *ServiceBatchClient) DeleteBlobs(ctx context.Context, blobs []*BatchDeleteOptions) (ServiceClientSubmitBatchResponse, error) {
+	if len(blobs) == 0 {
+		return ServiceClientSubmitBatchResponse{}, errors.New("delete batch list is empty")
+	}
+
+	bb := NewBatchBuilder()
+	bb.batchDeleteList = blobs
+
+	return s.SubmitBatch(ctx, bb)
+}
+
+// SetTiers operation allows multiple blob set tier API calls to be embedded into a single HTTP request.
+// - BatchSetTierOptions - contains the list of blob set tier operations to be submitted. It supports up to 256 sub-requests in a single batch.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/blob-batch
+func (s *ServiceBatchClient) SetTiers(ctx context.Context, blobs []*BatchSetTierOptions) (ServiceClientSubmitBatchResponse, error) {
+	if len(blobs) == 0 {
+		return ServiceClientSubmitBatchResponse{}, errors.New("set tier batch list is empty")
+	}
+
+	bb := NewBatchBuilder()
+	bb.batchSetTierList = blobs
+
+	return s.SubmitBatch(ctx, bb)
 }

@@ -40,40 +40,22 @@
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 09 Jan 2023 23:40:35 GMT",
+        "Date": "Thu, 12 Jan 2023 21:31:16 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-7cf8995455-5h5qd",
+        "Via": "1.1 draft-oms-8bd9c8fdc-z6nvs",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
         "responses": [
           {
-            "id": "1",
-            "status": 400,
-            "body": {
-              "error": {
-                "message": "The request had some invalid properties",
-                "code": "BadArgumentError",
-                "correlationId": "9f3ebcbc-1050-47e8-8a51-240683940912",
-                "innererror": {
-                  "code": "SyntaxError",
-                  "message": "A recognition error occurred in the query.",
-                  "innererror": {
-                    "code": "SYN0002",
-                    "message": "Query could not be parsed at \u0027a\u0027 on line [1,4]",
-                    "line": 1,
-                    "pos": 4,
-                    "token": "a"
-                  }
-                }
-              }
-            }
-          },
-          {
             "id": "2",
             "status": 200,
+            "headers": {
+              "Age": "102",
+              "request-context": "appId=cid-v1:70941e4f-7e8f-40b7-b730-183893db0297"
+            },
             "body": {
               "tables": [
                 {
@@ -1532,6 +1514,28 @@
                   ]
                 }
               ]
+            }
+          },
+          {
+            "id": "1",
+            "status": 400,
+            "body": {
+              "error": {
+                "message": "The request had some invalid properties",
+                "code": "BadArgumentError",
+                "correlationId": "89958c7e-d476-4bf1-8de2-fe40e828956e",
+                "innererror": {
+                  "code": "SyntaxError",
+                  "message": "A recognition error occurred in the query.",
+                  "innererror": {
+                    "code": "SYN0002",
+                    "message": "Query could not be parsed at \u0027a\u0027 on line [1,4]",
+                    "line": 1,
+                    "pos": 4,
+                    "token": "a"
+                  }
+                }
+              }
             }
           }
         ]

@@ -251,12 +251,12 @@ func TestTimeInterval(t *testing.T) {
 	timespan := azquery.NewTimeInterval(time.Date(2022, 3, 2, 1, 2, 3, 0, time.UTC), time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
 	require.Equal(t, timespan, azquery.TimeInterval("2022-03-02T01:02:03Z/2022-03-03T00:00:00Z"))
 
-	start, end, err := timespan.Times()
+	start, end, err := timespan.Values()
 	require.NoError(t, err)
 	require.Equal(t, start, time.Date(2022, 3, 2, 1, 2, 3, 0, time.UTC))
 	require.Equal(t, end, time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
 
-	_, _, err = to.Ptr(azquery.TimeInterval("hi")).Times()
+	_, _, err = to.Ptr(azquery.TimeInterval("hi")).Values()
 	require.Error(t, err)
 }
 

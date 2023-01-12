@@ -113,18 +113,19 @@ type Row []any
 
 // TimeInterval specifies the time range over which to query.
 // Use NewTimeInterval() for help formatting.
-// Follows the ISO8601 time interval standard with most common format being startISOTime/endISOTime.
+// Follows the ISO8601 time interval standard with most common
+// format being startISOTime/endISOTime. ISO8601 durations also supported (ex "PT2H" for last two hours).
 // Use UTC for all times.
 type TimeInterval string
 
-// NewTimeInterval creates a ISO8601TimeInterval for use in a query.
+// NewTimeInterval creates a TimeInterval for use in a query.
 // Use UTC for start and end times.
 func NewTimeInterval(start time.Time, end time.Time) TimeInterval {
 	return TimeInterval(start.Format(time.RFC3339) + "/" + end.Format(time.RFC3339))
 }
 
-// Times returns the interval's start and end times if it's in the format startISOTime/endISOTime, else it will return an error.
-func (i TimeInterval) Times() (time.Time, time.Time, error) {
+// Values returns the interval's start and end times if it's in the format startISOTime/endISOTime, else it will return an error.
+func (i TimeInterval) Values() (time.Time, time.Time, error) {
 	// split into different start and end times
 	times := strings.Split(string(i), "/")
 	if len(times) != 2 {
@@ -159,7 +160,7 @@ type LogsQueryOptions struct {
 	Wait *int
 }
 
-// String implements a custom string method for type LogsQueryOptions.
+// String implements the fmt.Stringer interface for type LogsQueryOptions.
 func (l LogsQueryOptions) String() string {
 	var options []string
 	if l.Statistics != nil && *l.Statistics {

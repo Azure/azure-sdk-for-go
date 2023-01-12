@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/listScheduledQueryRulesBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/listScheduledQueryRulesBySubscription.json
 func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/listScheduledQueryRulesByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/listScheduledQueryRulesByResourceGroup.json
 func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/getScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/getScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleScheduledQueryRulesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/createOrUpdateScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQueryRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,6 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 					"key12": to.Ptr("value12"),
 				},
 			},
-			AutoMitigate:                          to.Ptr(true),
 			CheckWorkspaceAlertsStorageConfigured: to.Ptr(true),
 			Criteria: &armmonitor.ScheduledQueryRuleCriteria{
 				AllOf: []*armmonitor.Condition{
@@ -140,6 +139,10 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 			Enabled:             to.Ptr(true),
 			EvaluationFrequency: to.Ptr("PT5M"),
 			MuteActionsDuration: to.Ptr("PT30M"),
+			RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+				AutoResolved:  to.Ptr(true),
+				TimeToResolve: to.Ptr("PT10M"),
+			},
 			Scopes: []*string{
 				to.Ptr("/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147/resourceGroups/scopeResourceGroup1/providers/Microsoft.Compute/virtualMachines/vm1")},
 			Severity:            to.Ptr(armmonitor.AlertSeverity(4)),
@@ -154,7 +157,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/createOrUpdateScheduledQueryRuleResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleResourceGroup.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQueryRuleOnResourceGroupS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +180,6 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 					"key12": to.Ptr("value12"),
 				},
 			},
-			AutoMitigate:                          to.Ptr(true),
 			CheckWorkspaceAlertsStorageConfigured: to.Ptr(true),
 			Criteria: &armmonitor.ScheduledQueryRuleCriteria{
 				AllOf: []*armmonitor.Condition{
@@ -196,6 +198,10 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 			Enabled:             to.Ptr(true),
 			EvaluationFrequency: to.Ptr("PT5M"),
 			MuteActionsDuration: to.Ptr("PT30M"),
+			RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+				AutoResolved:  to.Ptr(true),
+				TimeToResolve: to.Ptr("PT10M"),
+			},
 			Scopes: []*string{
 				to.Ptr("/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147/resourceGroups/scopeResourceGroup1")},
 			Severity:            to.Ptr(armmonitor.AlertSeverity(4)),
@@ -212,7 +218,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/createOrUpdateScheduledQueryRuleSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleSubscription.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQueryRuleOnSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +241,6 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 					"key12": to.Ptr("value12"),
 				},
 			},
-			AutoMitigate:                          to.Ptr(true),
 			CheckWorkspaceAlertsStorageConfigured: to.Ptr(true),
 			Criteria: &armmonitor.ScheduledQueryRuleCriteria{
 				AllOf: []*armmonitor.Condition{
@@ -268,6 +273,10 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 			Enabled:             to.Ptr(true),
 			EvaluationFrequency: to.Ptr("PT5M"),
 			MuteActionsDuration: to.Ptr("PT30M"),
+			RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+				AutoResolved:  to.Ptr(true),
+				TimeToResolve: to.Ptr("PT10M"),
+			},
 			Scopes: []*string{
 				to.Ptr("/subscriptions/aaf177ed-1330-a9f2-80ea-fd3d7783b147")},
 			Severity:            to.Ptr(armmonitor.AlertSeverity(4)),
@@ -284,7 +293,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/patchScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/patchScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +316,7 @@ func ExampleScheduledQueryRulesClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/deleteScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/deleteScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

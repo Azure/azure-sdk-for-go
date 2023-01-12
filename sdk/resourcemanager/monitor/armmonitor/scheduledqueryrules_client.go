@@ -57,7 +57,7 @@ func NewScheduledQueryRulesClient(subscriptionID string, credential azcore.Token
 
 // CreateOrUpdate - Creates or updates a scheduled query rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-06-15
+// Generated from API version 2022-08-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // parameters - The parameters of the rule to create or update.
@@ -98,7 +98,7 @@ func (client *ScheduledQueryRulesClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -115,7 +115,7 @@ func (client *ScheduledQueryRulesClient) createOrUpdateHandleResponse(resp *http
 
 // Delete - Deletes a scheduled query rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-06-15
+// Generated from API version 2022-08-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // options - ScheduledQueryRulesClientDeleteOptions contains the optional parameters for the ScheduledQueryRulesClient.Delete
@@ -155,7 +155,7 @@ func (client *ScheduledQueryRulesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -163,7 +163,7 @@ func (client *ScheduledQueryRulesClient) deleteCreateRequest(ctx context.Context
 
 // Get - Retrieve an scheduled query rule definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-06-15
+// Generated from API version 2022-08-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // options - ScheduledQueryRulesClientGetOptions contains the optional parameters for the ScheduledQueryRulesClient.Get method.
@@ -202,7 +202,7 @@ func (client *ScheduledQueryRulesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -218,7 +218,7 @@ func (client *ScheduledQueryRulesClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByResourceGroupPager - Retrieve scheduled query rule definitions in a resource group.
-// Generated from API version 2022-06-15
+// Generated from API version 2022-08-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ScheduledQueryRulesClientListByResourceGroupOptions contains the optional parameters for the ScheduledQueryRulesClient.ListByResourceGroup
 // method.
@@ -266,7 +266,7 @@ func (client *ScheduledQueryRulesClient) listByResourceGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *ScheduledQueryRulesClient) listByResourceGroupHandleResponse(resp 
 }
 
 // NewListBySubscriptionPager - Retrieve a scheduled query rule definitions in a subscription.
-// Generated from API version 2022-06-15
+// Generated from API version 2022-08-01-preview
 // options - ScheduledQueryRulesClientListBySubscriptionOptions contains the optional parameters for the ScheduledQueryRulesClient.ListBySubscription
 // method.
 func (client *ScheduledQueryRulesClient) NewListBySubscriptionPager(options *ScheduledQueryRulesClientListBySubscriptionOptions) *runtime.Pager[ScheduledQueryRulesClientListBySubscriptionResponse] {
@@ -325,7 +325,7 @@ func (client *ScheduledQueryRulesClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +342,7 @@ func (client *ScheduledQueryRulesClient) listBySubscriptionHandleResponse(resp *
 
 // Update - Update a scheduled query rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-06-15
+// Generated from API version 2022-08-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // parameters - The parameters of the rule to update.
@@ -383,7 +383,7 @@ func (client *ScheduledQueryRulesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

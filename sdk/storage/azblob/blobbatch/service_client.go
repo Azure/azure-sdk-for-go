@@ -99,10 +99,6 @@ func (s *ServiceBatchClient) generated() *generated.ServiceClient {
 	return base.InnerClient((*base.Client[generated.ServiceClient])(s.svc))
 }
 
-func (s *ServiceBatchClient) sharedKey() *SharedKeyCredential {
-	return base.SharedKey((*base.Client[generated.ServiceClient])(s.svc))
-}
-
 // URL returns the URL endpoint used by the Client object.
 func (s *ServiceBatchClient) URL() string {
 	return s.generated().Endpoint()

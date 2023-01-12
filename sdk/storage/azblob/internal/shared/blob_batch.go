@@ -76,9 +76,8 @@ func UpdateSubRequestHeaders(req *policy.Request) {
 	req.Raw().Header[HeaderXmsDate] = []string{dt}
 
 	// remove x-ms-version header from the request header
-	req.Raw().Header.Del(HeaderXmsVersion)
-	for k, _ := range req.Raw().Header {
-		if strings.ToLower(k) == strings.ToLower(HeaderXmsVersion) {
+	for k := range req.Raw().Header {
+		if strings.EqualFold(k, HeaderXmsVersion) {
 			delete(req.Raw().Header, k)
 		}
 	}
@@ -99,7 +98,7 @@ func BuildSubRequest(req *policy.Request) string {
 	batchSubRequest.WriteString(fmt.Sprintf("%s %s %s%s", req.Raw().Method, blobPath, HttpVersion, HttpNewline))
 
 	for k, v := range req.Raw().Header {
-		if strings.ToLower(k) == HeaderXmsVersion {
+		if strings.EqualFold(k, HeaderXmsVersion) {
 			continue
 		}
 		if len(v) > 0 {

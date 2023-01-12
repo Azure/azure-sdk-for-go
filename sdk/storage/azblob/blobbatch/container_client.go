@@ -101,10 +101,6 @@ func (c *ContainerBatchClient) generated() *generated.ContainerClient {
 	return base.InnerClient((*base.Client[generated.ContainerClient])(c.cnt))
 }
 
-func (c *ContainerBatchClient) sharedKey() *container.SharedKeyCredential {
-	return base.SharedKey((*base.Client[generated.ContainerClient])(c.cnt))
-}
-
 // URL returns the URL endpoint used by the Client object.
 func (c *ContainerBatchClient) URL() string {
 	return c.generated().Endpoint()

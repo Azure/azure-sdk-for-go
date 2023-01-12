@@ -36,6 +36,7 @@ func Example_containerBatchClient() {
 	// create container batch client
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 	cntBatchClient, err := blobbatch.NewContainerBatchClientWithSharedKeyCredential(containerURL, cred, nil)
+	handleError(err)
 
 	// create new batch builder
 	bb := blobbatch.NewBatchBuilder()
@@ -96,6 +97,7 @@ func Example_serviceBatchClient() {
 	// create service batch client
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	svcBatchClient, err := blobbatch.NewServiceBatchClient(serviceURL, cred, nil)
+	handleError(err)
 
 	// create new batch builder
 	bb := blobbatch.NewBatchBuilder()
@@ -143,6 +145,7 @@ func Example_containerBatchClientDeleteBlobs() {
 	// create container batch client
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 	cntBatchClient, err := blobbatch.NewContainerBatchClientWithSharedKeyCredential(containerURL, cred, nil)
+	handleError(err)
 
 	var blobs []*blobbatch.BatchDeleteOptions
 	for i := 0; i < 10; i++ {
@@ -164,7 +167,6 @@ func Example_containerBatchClientDeleteBlobs() {
 // Example_serviceBatchClientSetTiers shows batch set tier operations using ServiceBatchClient
 func Example_serviceBatchClientSetTiers() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
-	const containerName = "testcontainer"
 	const blobName = "testBlob"
 
 	// create shared key credential
@@ -174,6 +176,7 @@ func Example_serviceBatchClientSetTiers() {
 	// create container batch client
 	svcURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	svcBatchClient, err := blobbatch.NewServiceBatchClientWithSharedKeyCredential(svcURL, cred, nil)
+	handleError(err)
 
 	var blobs []*blobbatch.BatchSetTierOptions
 	for i := 0; i < 10; i++ {

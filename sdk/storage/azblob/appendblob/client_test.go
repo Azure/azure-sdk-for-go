@@ -1374,7 +1374,7 @@ func (s *AppendBlobRecordedTestsSuite) TestSealWithAccessConditions() {
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &futureTime},
 	}, AppendPositionAccessConditions: nil}
 
-	resp, err := abClient.Seal(context.Background(), sealOpts)
+	_, err = abClient.Seal(context.Background(), sealOpts)
 	// seal should fail on the condition
 	_require.NotNil(err)
 
@@ -1382,7 +1382,7 @@ func (s *AppendBlobRecordedTestsSuite) TestSealWithAccessConditions() {
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &pastTime},
 	}, AppendPositionAccessConditions: nil}
 
-	resp, err = abClient.Seal(context.Background(), sealOpts)
+	resp, err := abClient.Seal(context.Background(), sealOpts)
 	_require.Nil(err)
 	_require.Equal(*resp.IsSealed, true)
 

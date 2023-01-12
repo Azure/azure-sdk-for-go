@@ -98,7 +98,7 @@ func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
 		v.ContentLanguage,    // rscl
-		v.ContentType}, // rsct
+		v.ContentType},       // rsct
 		"\n")
 
 	signature, err := exported.ComputeHMACSHA256(sharedKeyCredential, stringToSign)
@@ -202,7 +202,7 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
 		v.ContentLanguage,    // rscl
-		v.ContentType}, // rsct
+		v.ContentType},       // rsct
 		"\n")
 
 	signature, err := exported.ComputeUDCHMACSHA256(userDelegationCredential, stringToSign)

@@ -57,7 +57,7 @@ func TestVaultsClient(t *testing.T) {
 
 func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 	// create vault
-	fmt.Println("Call operation: Vault_CreateOrUpdate")
+	fmt.Println("Call operation: Vaults_CreateOrUpdate")
 	vaultsClient, err := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	vaultName := "go-test-vault-1"
@@ -105,7 +105,7 @@ func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 	testsuite.Require().Equal(vaultName, *vResp.Name)
 
 	// create vault
-	fmt.Println("Call operation: Vault_CheckNameAvailability")
+	fmt.Println("Call operation: Vaults_CheckNameAvailability")
 	check, err := vaultsClient.CheckNameAvailability(
 		testsuite.ctx,
 		armkeyvault.VaultCheckNameAvailabilityParameters{
@@ -118,13 +118,13 @@ func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 	testsuite.Require().False(*check.NameAvailable)
 
 	// get vault
-	fmt.Println("Call operation: Vault_Get")
+	fmt.Println("Call operation: Vaults_Get")
 	getResp, err := vaultsClient.Get(testsuite.ctx, testsuite.resourceGroupName, vaultName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(vaultName, *getResp.Name)
 
 	// update vault
-	fmt.Println("Call operation: Vault_Update")
+	fmt.Println("Call operation: Vaults_Update")
 	updateResp, err := vaultsClient.Update(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -140,23 +140,23 @@ func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 	testsuite.Require().Equal("recording", *updateResp.Tags["test"])
 
 	// list vault deleted
-	fmt.Println("Call operation: Vault_ListDeleted")
+	fmt.Println("Call operation: Vaults_ListDeleted")
 	deletedPager := vaultsClient.NewListDeletedPager(nil)
 	testsuite.Require().True(deletedPager.More())
 
 	// delete vault
-	fmt.Println("Call operation: Vault_Delete")
+	fmt.Println("Call operation: Vaults_Delete")
 	_, err = vaultsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, vaultName, nil)
 	testsuite.Require().NoError(err)
 
 	// get deleted vault
-	fmt.Println("Call operation: Vault_GetDeleted")
+	fmt.Println("Call operation: Vaults_GetDeleted")
 	deletedResp, err := vaultsClient.GetDeleted(testsuite.ctx, vaultName, testsuite.location, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(vaultName, *deletedResp.Name)
 
 	// purge deleted vault
-	fmt.Println("Call operation: Vault_PurgeDeleted")
+	fmt.Println("Call operation: Vaults_PurgeDeleted")
 	purgePollerResp, err := vaultsClient.BeginPurgeDeleted(testsuite.ctx, vaultName, testsuite.location, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, purgePollerResp)

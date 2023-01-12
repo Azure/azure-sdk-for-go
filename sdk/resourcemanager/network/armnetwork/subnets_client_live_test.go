@@ -53,7 +53,7 @@ func TestSubnetsClient(t *testing.T) {
 
 func (testsuite *SubnetsClientTestSuite) TestSubnetsCRUD() {
 	// create virtual network
-	fmt.Println("Call operation: VirtualNetwork_CreateOrUpdate")
+	fmt.Println("Call operation: VirtualNetworks_CreateOrUpdate")
 	vnClient, err := armnetwork.NewVirtualNetworksClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	vnName := "go-test-vn"
@@ -79,7 +79,7 @@ func (testsuite *SubnetsClientTestSuite) TestSubnetsCRUD() {
 	testsuite.Require().Equal(vnName, *vnResp.Name)
 
 	// create subnet
-	fmt.Println("Call operation: Subnet_CreateOrUpdate")
+	fmt.Println("Call operation: Subnets_CreateOrUpdate")
 	subClient, err := armnetwork.NewSubnetsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	subName := "go-test-subnet"
@@ -101,18 +101,18 @@ func (testsuite *SubnetsClientTestSuite) TestSubnetsCRUD() {
 	testsuite.Require().Equal(subName, *subResp.Name)
 
 	// get subnet
-	fmt.Println("Call operation: Subnet_Get")
+	fmt.Println("Call operation: Subnets_Get")
 	getResp, err := subClient.Get(testsuite.ctx, testsuite.resourceGroupName, vnName, subName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(subName, *getResp.Name)
 
 	// list subnet
-	fmt.Println("Call operation: Subnet_List")
+	fmt.Println("Call operation: Subnets_List")
 	listPager := subClient.NewListPager(testsuite.resourceGroupName, vnName, nil)
 	testsuite.Require().Equal(true, listPager.More())
 
 	// delete subnet
-	fmt.Println("Call operation: Subnet_Delete")
+	fmt.Println("Call operation: Subnets_Delete")
 	delPoller, err := subClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, vnName, subName, nil)
 	testsuite.Require().NoError(err)
 	delResp, err := testutil.PollForTest(testsuite.ctx, delPoller)

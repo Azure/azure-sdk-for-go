@@ -57,7 +57,7 @@ func TestKeysClient(t *testing.T) {
 
 func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 	// create vault
-	fmt.Println("Call operation: Vault_CreateOrUpdate")
+	fmt.Println("Call operation: Vaults_CreateOrUpdate")
 	vaultsClient, err := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	vaultName := "go-test-vault-3"
@@ -105,7 +105,7 @@ func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 	testsuite.Require().Equal(vaultName, *vResp.Name)
 
 	// create key
-	fmt.Println("Call operation: Key_CreateIfNotExist")
+	fmt.Println("Call operation: Keys_CreateIfNotExist")
 	keysClient, err := armkeyvault.NewKeysClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	keyName := "go-test-key"
@@ -133,18 +133,18 @@ func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 	testsuite.Require().Equal(keyName, *createResp.Name)
 
 	// get key
-	fmt.Println("Call operation: Key_Get")
+	fmt.Println("Call operation: Keys_Get")
 	getResp, err := keysClient.Get(testsuite.ctx, testsuite.resourceGroupName, vaultName, keyName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(keyName, *getResp.Name)
 
 	// list
-	fmt.Println("Call operation: Key_List")
+	fmt.Println("Call operation: Keys_List")
 	list := keysClient.NewListPager(testsuite.resourceGroupName, vaultName, nil)
 	testsuite.Require().True(list.More())
 
 	// list versions
-	fmt.Println("Call operation: Key_ListVersions")
+	fmt.Println("Call operation: Keys_ListVersions")
 	listVersions := keysClient.NewListVersionsPager(testsuite.resourceGroupName, vaultName, keyName, nil)
 	testsuite.Require().True(listVersions.More())
 }

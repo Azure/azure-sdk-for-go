@@ -66,7 +66,7 @@ func TestMigrationconfigsTestSuite(t *testing.T) {
 func (testsuite *MigrationconfigsTestSuite) Prepare() {
 	var err error
 	// From step Namespace_Create
-	fmt.Println("Call operation: Namespace_Create")
+	fmt.Println("Call operation: Namespaces_CreateOrUpdate")
 	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespace{
@@ -85,7 +85,7 @@ func (testsuite *MigrationconfigsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_Create2
-	fmt.Println("Call operation: Namespace_Create")
+	fmt.Println("Call operation: Namespaces_CreateOrUpdate")
 	namespacesClientCreateOrUpdateResponsePoller, err = namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName2, armservicebus.SBNamespace{
 		Location: to.Ptr("westus2"),
 		SKU: &armservicebus.SBSKU{
@@ -104,7 +104,7 @@ func (testsuite *MigrationconfigsTestSuite) Prepare() {
 func (testsuite *MigrationconfigsTestSuite) TestMigrationconfig() {
 	var err error
 	// From step MigrationConfig_Create
-	fmt.Println("Call operation: MigrationConfig_Create")
+	fmt.Println("Call operation: MigrationConfigs_Create")
 	migrationConfigsClient, err := armservicebus.NewMigrationConfigsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	migrationConfigsClientCreateAndStartMigrationResponsePoller, err := migrationConfigsClient.BeginCreateAndStartMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, armservicebus.MigrationConfigProperties{
@@ -118,12 +118,12 @@ func (testsuite *MigrationconfigsTestSuite) TestMigrationconfig() {
 	testsuite.Require().NoError(err)
 
 	// From step MigrationConfig_Get
-	fmt.Println("Call operation: MigrationConfig_Get")
+	fmt.Println("Call operation: MigrationConfigs_Get")
 	_, err = migrationConfigsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
 	testsuite.Require().NoError(err)
 
 	// From step MigrationConfig_List
-	fmt.Println("Call operation: MigrationConfig_List")
+	fmt.Println("Call operation: MigrationConfigs_List")
 	migrationConfigsClientNewListPager := migrationConfigsClient.NewListPager(testsuite.resourceGroupName, testsuite.namespaceName, nil)
 	for migrationConfigsClientNewListPager.More() {
 		_, err := migrationConfigsClientNewListPager.NextPage(testsuite.ctx)
@@ -132,12 +132,12 @@ func (testsuite *MigrationconfigsTestSuite) TestMigrationconfig() {
 	}
 
 	// From step MigrationConfig_Revert
-	fmt.Println("Call operation: MigrationConfig_Revert")
+	fmt.Println("Call operation: MigrationConfigs_Revert")
 	_, err = migrationConfigsClient.Revert(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
 	testsuite.Require().NoError(err)
 
 	// From step MigrationConfig_CompleteMigration
-	fmt.Println("Call operation: MigrationConfig_CompleteMigration")
+	fmt.Println("Call operation: MigrationConfigs_CompleteMigration")
 	_, err = migrationConfigsClient.CompleteMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, nil)
 	testsuite.Require().NoError(err)
 }

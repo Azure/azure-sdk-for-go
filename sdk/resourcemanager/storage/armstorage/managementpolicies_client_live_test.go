@@ -54,7 +54,7 @@ func TestManagementPoliciesClient(t *testing.T) {
 
 func (testsuite *ManagementPoliciesClientTestSuite) TestManagementPoliciesCRUD() {
 	// create storage account
-	fmt.Println("Call operation: StorageAccount_Create")
+	fmt.Println("Call operation: StorageAccounts_Create")
 	storageAccountsClient, err := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scName := "gotestaccount3"

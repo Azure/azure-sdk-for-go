@@ -66,7 +66,7 @@ func TestQueuesTestSuite(t *testing.T) {
 func (testsuite *QueuesTestSuite) Prepare() {
 	var err error
 	// From step Namespace_Create
-	fmt.Println("Call operation: Namespace_Create")
+	fmt.Println("Call operation: Namespaces_Create")
 	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespace{

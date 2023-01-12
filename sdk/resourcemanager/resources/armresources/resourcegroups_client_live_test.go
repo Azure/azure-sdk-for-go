@@ -53,7 +53,7 @@ func TestResourceGroupsClient(t *testing.T) {
 
 func (testsuite *ResourceGroupsClientTestSuite) TestResourceGroupsCRUD() {
 	// create resource group
-	fmt.Println("Call operation: ResourceGroup_CreateOrUpdate")
+	fmt.Println("Call operation: ResourceGroups_CreateOrUpdate")
 	rgName := "go-test-rg"
 	rgClient, err := armresources.NewResourceGroupsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -64,24 +64,24 @@ func (testsuite *ResourceGroupsClientTestSuite) TestResourceGroupsCRUD() {
 	testsuite.Require().Equal(rgName, *rg.Name)
 
 	// check existence resource group
-	fmt.Println("Call operation: ResourceGroup_CheckExistence")
+	fmt.Println("Call operation: ResourceGroups_CheckExistence")
 	check, err := rgClient.CheckExistence(context.Background(), rgName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().True(check.Success)
 
 	// get resource group
-	fmt.Println("Call operation: RResourceGroup_Get")
+	fmt.Println("Call operation: RResourceGroups_Get")
 	getResp, err := rgClient.Get(context.Background(), rgName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(rgName, *getResp.Name)
 
 	// list resource group
-	fmt.Println("Call operation: ResourceGroup_List")
+	fmt.Println("Call operation: ResourceGroups_List")
 	listPager := rgClient.NewListPager(nil)
 	testsuite.Require().True(listPager.More())
 
 	// update resource group
-	fmt.Println("Call operation: ResourceGroup_Update")
+	fmt.Println("Call operation: ResourceGroups_Update")
 	updateResp, err := rgClient.Update(context.Background(), rgName, armresources.ResourceGroupPatchable{
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
@@ -91,7 +91,7 @@ func (testsuite *ResourceGroupsClientTestSuite) TestResourceGroupsCRUD() {
 	testsuite.Require().Equal("value", *updateResp.Tags["key"])
 
 	// export template resource group
-	fmt.Println("Call operation: ResourceGroup_ExportTemplate")
+	fmt.Println("Call operation: ResourceGroups_ExportTemplate")
 	pollerResp, err := rgClient.BeginExportTemplate(context.Background(), rgName, armresources.ExportTemplateRequest{
 		Resources: []*string{
 			to.Ptr("*"),
@@ -103,7 +103,7 @@ func (testsuite *ResourceGroupsClientTestSuite) TestResourceGroupsCRUD() {
 	testsuite.Require().NotNil(templateResp.Template)
 
 	// clean resource group
-	fmt.Println("Call operation: ResourceGroup_Delete")
+	fmt.Println("Call operation: ResourceGroups_Delete")
 	delPollerResp, err := rgClient.BeginDelete(context.Background(), rgName, nil)
 	testsuite.Require().NoError(err)
 	_, err = delPollerResp.PollUntilDone(context.Background(), nil)

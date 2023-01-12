@@ -54,7 +54,7 @@ func TestTagsClient(t *testing.T) {
 
 func (testsuite *TagsClientTestSuite) TestTagsCRUD() {
 	// create tag
-	fmt.Println("Call operation: Tag_CreateOrUpdate")
+	fmt.Println("Call operation: Tags_CreateOrUpdate")
 	tagsClient, err := armresources.NewTagsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	tagName := "go-test-tags"
@@ -63,31 +63,31 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUD() {
 	testsuite.Require().Equal(tagName, *resp.TagName)
 
 	// create tag value
-	fmt.Println("Call operation: Tag_CreateOrUpdateValue")
+	fmt.Println("Call operation: Tags_CreateOrUpdateValue")
 	valueName := "go-test-value"
 	valueResp, err := tagsClient.CreateOrUpdateValue(testsuite.ctx, tagName, valueName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(valueName, *valueResp.TagValue.TagValue)
 
 	// list
-	fmt.Println("Call operation: Tag_List")
+	fmt.Println("Call operation: Tags_List")
 	listPager := tagsClient.NewListPager(nil)
 	testsuite.Require().True(listPager.More())
 
 	// delete tag value
-	fmt.Println("Call operation: Tag_DeleteValue")
+	fmt.Println("Call operation: Tags_DeleteValue")
 	_, err = tagsClient.DeleteValue(testsuite.ctx, tagName, valueName, nil)
 	testsuite.Require().NoError(err)
 
 	// delete tag
-	fmt.Println("Call operation: Tag_Delete")
+	fmt.Println("Call operation: Tags_Delete")
 	_, err = tagsClient.Delete(testsuite.ctx, tagName, nil)
 	testsuite.Require().NoError(err)
 }
 
 func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 	// create scope
-	fmt.Println("Call operation: Tag_CreateOrUpdateAtScope")
+	fmt.Println("Call operation: Tags_CreateOrUpdateAtScope")
 	tagsClient, err := armresources.NewTagsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scopeName := fmt.Sprintf("/subscriptions/%v/resourceGroups/%v", testsuite.subscriptionID, testsuite.resourceGroupName)
@@ -108,7 +108,7 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 	testsuite.Require().Equal("default", *resp.Name)
 
 	// update at scope
-	fmt.Println("Call operation: Tag_UpdateAtScope")
+	fmt.Println("Call operation: Tags_UpdateAtScope")
 	updateResp, err := tagsClient.UpdateAtScope(
 		testsuite.ctx,
 		scopeName,
@@ -126,13 +126,13 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUDAtScope() {
 	testsuite.Require().Equal("default", *updateResp.Name)
 
 	// get at scopes
-	fmt.Println("Call operation: Tag_GetAtScope")
+	fmt.Println("Call operation: Tags_GetAtScope")
 	getResp, err := tagsClient.GetAtScope(testsuite.ctx, scopeName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal("default", *getResp.Name)
 
 	// delete at scope
-	fmt.Println("Call operation: Tag_DeleteAtScope")
+	fmt.Println("Call operation: Tags_DeleteAtScope")
 	_, err = tagsClient.DeleteAtScope(testsuite.ctx, scopeName, nil)
 	testsuite.Require().NoError(err)
 }

@@ -70,7 +70,7 @@ func TestTopicsTestSuite(t *testing.T) {
 func (testsuite *TopicsTestSuite) Prepare() {
 	var err error
 	// From step Namespace_Create
-	fmt.Println("Call operation: Namespace_Create")
+	fmt.Println("Call operation: Namespaces_CreateOrUpdate")
 	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespace{
@@ -93,7 +93,7 @@ func (testsuite *TopicsTestSuite) Prepare() {
 func (testsuite *TopicsTestSuite) TestTopic() {
 	var err error
 	// From step Topic_Create
-	fmt.Println("Call operation: Topic_Create")
+	fmt.Println("Call operation: Topics_Create")
 	topicsClient, err := armservicebus.NewTopicsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = topicsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, armservicebus.SBTopic{
@@ -104,12 +104,12 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	testsuite.Require().NoError(err)
 
 	// From step Topic_Get
-	fmt.Println("Call operation: Topic_Get")
+	fmt.Println("Call operation: Topics_Get")
 	_, err = topicsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_ListByNamespace
-	fmt.Println("Call operation: Topic_ListByNamespace")
+	fmt.Println("Call operation: Topics_ListByNamespace")
 	topicsClientNewListByNamespacePager := topicsClient.NewListByNamespacePager(testsuite.resourceGroupName, testsuite.namespaceName, &armservicebus.TopicsClientListByNamespaceOptions{Skip: nil,
 		Top: nil,
 	})
@@ -120,7 +120,7 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	}
 
 	// From step Topic_CreateAuthorizationRule
-	fmt.Println("Call operation: Topic_CreateAuthorizationRule")
+	fmt.Println("Call operation: Topics_CreateOrUpdateAuthorizationRule")
 	_, err = topicsClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, armservicebus.SBAuthorizationRule{
 		Properties: &armservicebus.SBAuthorizationRuleProperties{
 			Rights: []*armservicebus.AccessRights{
@@ -131,12 +131,12 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	testsuite.Require().NoError(err)
 
 	// From step Topic_GetAuthorizationRule
-	fmt.Println("Call operation: Topic_GetAuthorizationRule")
+	fmt.Println("Call operation: Topics_GetAuthorizationRule")
 	_, err = topicsClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_ListAuthorizationRules
-	fmt.Println("Call operation: Topic_ListAuthorizationRules")
+	fmt.Println("Call operation: Topics_ListAuthorizationRules")
 	topicsClientNewListAuthorizationRulesPager := topicsClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, nil)
 	for topicsClientNewListAuthorizationRulesPager.More() {
 		_, err := topicsClientNewListAuthorizationRulesPager.NextPage(testsuite.ctx)
@@ -145,24 +145,24 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	}
 
 	// From step Topic_RegenerateKeys
-	fmt.Println("Call operation: Topic_RegenerateKeys")
+	fmt.Println("Call operation: Topics_RegenerateKeys")
 	_, err = topicsClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
 		KeyType: to.Ptr(armservicebus.KeyTypePrimaryKey),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_ListKeys
-	fmt.Println("Call operation: Topic_ListKeys")
+	fmt.Println("Call operation: Topics_ListKeys")
 	_, err = topicsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_DeleteAuthorizationRule
-	fmt.Println("Call operation: Topic_DeleteAuthorizationRule")
+	fmt.Println("Call operation: Topics_DeleteAuthorizationRule")
 	_, err = topicsClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_Create
-	fmt.Println("Call operation: Subscription_Create")
+	fmt.Println("Call operation: Subscriptions_CreateOrUpdate")
 	subscriptionsClient, err := armservicebus.NewSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = subscriptionsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, armservicebus.SBSubscription{
@@ -173,12 +173,12 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_Get
-	fmt.Println("Call operation: Subscription_Get")
+	fmt.Println("Call operation: Subscriptions_Get")
 	_, err = subscriptionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_ListByTopic
-	fmt.Println("Call operation: Subscription_ListByTopic")
+	fmt.Println("Call operation: Subscriptions_ListByTopic")
 	subscriptionsClientNewListByTopicPager := subscriptionsClient.NewListByTopicPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, &armservicebus.SubscriptionsClientListByTopicOptions{Skip: nil,
 		Top: nil,
 	})
@@ -189,7 +189,7 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	}
 
 	// From step Rule_Create
-	fmt.Println("Call operation: Rule_Create")
+	fmt.Println("Call operation: Rules_CreateOrUpdate")
 	rulesClient, err := armservicebus.NewRulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = rulesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, testsuite.ruleName, armservicebus.Rule{
@@ -205,12 +205,12 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	testsuite.Require().NoError(err)
 
 	// From step Rule_Get
-	fmt.Println("Call operation: Rule_Get")
+	fmt.Println("Call operation: Rules_Get")
 	_, err = rulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Rule_ListBySubscription
-	fmt.Println("Call operation: Rule_ListBySubscription")
+	fmt.Println("Call operation: Rules_ListBySubscriptions")
 	rulesClientNewListBySubscriptionsPager := rulesClient.NewListBySubscriptionsPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, &armservicebus.RulesClientListBySubscriptionsOptions{Skip: nil,
 		Top: nil,
 	})
@@ -221,17 +221,17 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	}
 
 	// From step Rule_Delete
-	fmt.Println("Call operation: Rule_Delete")
+	fmt.Println("Call operation: Rules_Delete")
 	_, err = rulesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_Delete
-	fmt.Println("Call operation: Subscription_Delete")
+	fmt.Println("Call operation: Subscriptions_Delete")
 	_, err = subscriptionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_Delete
-	fmt.Println("Call operation: Topic_Delete")
+	fmt.Println("Call operation: Topics_Delete")
 	_, err = topicsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, nil)
 	testsuite.Require().NoError(err)
 }
@@ -239,7 +239,7 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 func (testsuite *TopicsTestSuite) Cleanup() {
 	var err error
 	// From step Namespace_Delete
-	fmt.Println("Call operation: Namespace_Delete")
+	fmt.Println("Call operation: Namespaces_Delete")
 	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namespacesClientDeleteResponsePoller, err := namespacesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)

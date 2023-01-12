@@ -54,24 +54,24 @@ func TestSubscriptionsClient(t *testing.T) {
 
 func (testsuite *SubscriptionsClientTestSuite) TestSubscriptionsCRUD() {
 	// get
-	fmt.Println("Call operation: Subscription_Get")
+	fmt.Println("Call operation: Subscriptions_Get")
 	subscriptionsClient, err := armsubscriptions.NewClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = subscriptionsClient.Get(testsuite.ctx, testsuite.subscriptionID, nil)
 	testsuite.Require().NoError(err)
 
 	// list
-	fmt.Println("Call operation: Subscription_List")
+	fmt.Println("Call operation: Subscriptions_List")
 	list := subscriptionsClient.NewListPager(nil)
 	testsuite.Require().True(list.More())
 
 	// list locations
-	fmt.Println("Call operation: Subscription_ListLocations")
+	fmt.Println("Call operation: Subscriptions_ListLocations")
 	listLocations := subscriptionsClient.NewListLocationsPager(testsuite.subscriptionID, nil)
 	testsuite.Require().True(listLocations.More())
 
 	// check resource
-	fmt.Println("Call operation: Subscription_CheckResourceName")
+	fmt.Println("Call operation: Subscriptions_CheckResourceName")
 	subscriptionClient, err := armsubscriptions.NewSubscriptionClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	resourceName, err := subscriptionClient.CheckResourceName(context.Background(), &armsubscriptions.SubscriptionClientCheckResourceNameOptions{

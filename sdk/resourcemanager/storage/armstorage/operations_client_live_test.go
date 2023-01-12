@@ -52,7 +52,7 @@ func TestOperationsClient(t *testing.T) {
 }
 
 func (testsuite *OperationsClientTestSuite) TestOperations() {
-	fmt.Println("Call operation: Operation_List")
+	fmt.Println("Call operation: Operations_List")
 	operationsClient, err := armstorage.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	resp := operationsClient.NewListPager(nil)

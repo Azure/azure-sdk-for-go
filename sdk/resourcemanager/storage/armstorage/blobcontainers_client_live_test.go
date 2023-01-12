@@ -54,7 +54,7 @@ func TestBlobContainersClient(t *testing.T) {
 
 func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	// create storage account
-	fmt.Println("Call operation: StorageAccount_Create")
+	fmt.Println("Call operation: StorageAccounts_Create")
 	storageAccountsClient, err := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scName := "gotestaccount1"
@@ -96,7 +96,7 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	testsuite.Require().Equal(scName, *resp.Name)
 
 	// put container
-	fmt.Println("Call operation: BlobContainer_Create")
+	fmt.Println("Call operation: BlobContainers_Create")
 	blobContainersClient, err := armstorage.NewBlobContainersClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	blobContainerName := "go-test-container"
@@ -105,7 +105,7 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	testsuite.Require().Equal(blobContainerName, *blobResp.Name)
 
 	// update
-	fmt.Println("Call operation: BlobContainer_Update")
+	fmt.Println("Call operation: BlobContainers_Update")
 	updateResp, err := blobContainersClient.Update(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -125,18 +125,18 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	testsuite.Require().Equal(blobContainerName, *updateResp.Name)
 
 	// get
-	fmt.Println("Call operation: BlobContainer_Get")
+	fmt.Println("Call operation: BlobContainers_Get")
 	getResp, err := blobContainersClient.Get(testsuite.ctx, testsuite.resourceGroupName, scName, blobContainerName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(blobContainerName, *getResp.Name)
 
 	// list
-	fmt.Println("Call operation: BlobContainer_List")
+	fmt.Println("Call operation: BlobContainers_List")
 	listPager := blobContainersClient.NewListPager(testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// clear legal hold
-	fmt.Println("Call operation: BlobContainer_ClearLegalHold")
+	fmt.Println("Call operation: BlobContainers_ClearLegalHold")
 	holdResp, err := blobContainersClient.ClearLegalHold(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -155,7 +155,7 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	testsuite.Require().Equal(0, len(holdResp.Tags))
 
 	// acquire lease
-	fmt.Println("Call operation: BlobContainer_Lease")
+	fmt.Println("Call operation: BlobContainers_Lease")
 	leaseResp, err := blobContainersClient.Lease(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -171,7 +171,7 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	testsuite.Require().NoError(err)
 
 	// break lease
-	fmt.Println("Call operation: BlobContainer_Lease")
+	fmt.Println("Call operation: BlobContainers_Lease")
 	breakResp, err := blobContainersClient.Lease(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -188,7 +188,7 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	testsuite.Require().Equal("0", *breakResp.LeaseTimeSeconds)
 
 	// delete
-	fmt.Println("Call operation: BlobContainer_Delete")
+	fmt.Println("Call operation: BlobContainers_Delete")
 	_, err = blobContainersClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scName, blobContainerName, nil)
 	testsuite.Require().NoError(err)
 }

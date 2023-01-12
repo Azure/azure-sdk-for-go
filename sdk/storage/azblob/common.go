@@ -24,6 +24,7 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 // NOTE: Changing any SAS-related field requires computing a new SAS signature.
 type URLParts = sas.URLParts
 
+// TODO : Can we delete below? Currently unused.
 // ParseURL parses a URL initializing URLParts' fields including any SAS-related & snapshot query parameters. Any other
 // query parameters remain in the UnparsedParams field. This method overwrites all fields in the URLParts object.
 func ParseURL(u string) (URLParts, error) {

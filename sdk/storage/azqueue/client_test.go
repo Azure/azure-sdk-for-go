@@ -75,8 +75,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 
 	svcClient, err := azqueue.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
 	_require.Nil(err)
-	//containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
-	//defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
 	sProps, err := svcClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotZero(sProps)

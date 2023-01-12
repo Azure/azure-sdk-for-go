@@ -48,7 +48,7 @@ func setClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Transport = transport
 }
 
-func GetServiceClient(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.Client, error) {
+func GetServiceClient(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.ServiceClient, error) {
 	if options == nil {
 		options = &azqueue.ClientOptions{}
 	}
@@ -60,7 +60,7 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *azqueu
 		return nil, err
 	}
 
-	serviceClient, err := azqueue.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".queue.core.windows.net/", cred, options)
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential("https://"+cred.AccountName()+".queue.core.windows.net/", cred, options)
 
 	return serviceClient, err
 }
@@ -92,7 +92,7 @@ func GetConnectionString(accountType TestAccountType) string {
 	return connectionString
 }
 
-func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.Client, error) {
+func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.ServiceClient, error) {
 	if options == nil {
 		options = &azqueue.ClientOptions{}
 	}
@@ -102,11 +102,11 @@ func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountT
 	options.Transport = transport
 
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		return azqueue.NewClientWithNoCredential(FakeStorageURL, options)
+		return azqueue.NewServiceClientWithNoCredential(FakeStorageURL, options)
 	}
 
 	connectionString := GetConnectionString(accountType)
-	svcClient, err := azqueue.NewClientFromConnectionString(connectionString, options)
+	svcClient, err := azqueue.NewServiceClientFromConnectionString(connectionString, options)
 	return svcClient, err
 }
 

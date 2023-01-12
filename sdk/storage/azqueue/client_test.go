@@ -73,7 +73,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	sharedKeyCred, err := azqueue.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
 	_require.Nil(err)
 
-	svcClient, err := azqueue.NewClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
+	svcClient, err := azqueue.NewServiceClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
 	_require.Nil(err)
 
 	sProps, err := svcClient.GetProperties(context.Background(), nil)

@@ -217,3 +217,38 @@ func TestBlobPermissions_ParseNegative(t *testing.T) {
 	require.NotNil(t, err)
 	require.Contains(t, err.Error(), "102")
 }
+
+func TestGetCanonicalName(t *testing.T) {
+	testdata := []struct {
+		inputAccount   string
+		inputContainer string
+		inputBlob      string
+		inputDirectory string
+		expected       string
+	}{
+		{inputAccount: "fakestorageaccount", inputContainer: "fakestoragecontainer", expected: "/blob/fakestorageaccount/fakestoragecontainer"},
+		{inputAccount: "fakestorageaccount", inputContainer: "fakestoragecontainer", inputBlob: "fakestorageblob", expected: "/blob/fakestorageaccount/fakestoragecontainer/fakestorageblob"},
+		{inputAccount: "fakestorageaccount", inputContainer: "fakestoragecontainer", inputBlob: "fakestoragevirtualdir/fakestorageblob", expected: "/blob/fakestorageaccount/fakestoragecontainer/fakestoragevirtualdir/fakestorageblob"},
+		{inputAccount: "fakestorageaccount", inputContainer: "fakestoragecontainer", inputBlob: "fakestoragevirtualdir\\fakestorageblob", expected: "/blob/fakestorageaccount/fakestoragecontainer/fakestoragevirtualdir/fakestorageblob"},
+		{inputAccount: "fakestorageaccount", inputContainer: "fakestoragecontainer", inputBlob: "fakestoragedirectory", expected: "/blob/fakestorageaccount/fakestoragecontainer/fakestoragedirectory"},
+	}
+	for _, c := range testdata {
+		require.Equal(t, c.expected, getCanonicalName(c.inputAccount, c.inputContainer, c.inputBlob, c.inputDirectory))
+	}
+}
+
+func TestGetDirectoryDepth(t *testing.T) {
+	testdata := []struct {
+		input    string
+		expected string
+	}{
+		{input: "", expected: ""},
+		{input: "myfile", expected: "1"},
+		{input: "mydirectory", expected: "1"},
+		{input: "mydirectory/myfile", expected: "2"},
+		{input: "mydirectory/mysubdirectory", expected: "2"},
+	}
+	for _, c := range testdata {
+		require.Equal(t, c.expected, getDirectoryDepth(c.input))
+	}
+}

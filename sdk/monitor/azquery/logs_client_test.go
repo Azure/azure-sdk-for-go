@@ -49,7 +49,7 @@ func TestLogsClient(t *testing.T) {
 
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
-	timespan := azquery.NewISO8601TimeInterval(time.Date(2022, 12, 1, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 2, 0, 0, 0, 0, time.UTC))
+	timespan := azquery.NewTimeInterval(time.Date(2022, 12, 1, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 2, 0, 0, 0, 0, time.UTC))
 	body := azquery.Body{
 		Query:    to.Ptr(query),
 		Timespan: to.Ptr(timespan),
@@ -93,7 +93,7 @@ func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
 		workspaceID,
 		azquery.Body{
 			Query:    to.Ptr("not a valid query"),
-			Timespan: to.Ptr(azquery.ISO8601TimeInterval("PT2H")),
+			Timespan: to.Ptr(azquery.TimeInterval("PT2H")),
 		},
 		nil,
 	)
@@ -125,9 +125,9 @@ func TestQueryWorkspace_PartialError(t *testing.T) {
 // tests for special options: timeout, statistics, visualization
 func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
-	prefer := "wait=180,include-statistics=true,include-render=true"
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: &query}, &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer})
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: &query},
+		&azquery.LogsClientQueryWorkspaceOptions{Options: &azquery.LogsQueryOptions{Statistics: to.Ptr(true), Visualization: to.Ptr(true), Wait: to.Ptr(600)}})
 	require.NoError(t, err)
 	require.Nil(t, res.Error)
 	require.NotNil(t, res.Tables)
@@ -154,11 +154,11 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 func TestQueryBatch_QuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
 	query1, query2 := query, query+" | take 2"
-	timespan := azquery.NewISO8601TimeInterval(time.Date(2022, 3, 2, 0, 0, 0, 0, time.UTC), time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
+	timespan := azquery.NewTimeInterval(time.Date(2022, 3, 2, 0, 0, 0, 0, time.UTC), time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
 		{Body: &azquery.Body{Query: to.Ptr(query1), Timespan: to.Ptr(timespan)}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(query2), Timespan: to.Ptr(timespan)}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID)},
+		to.Ptr(azquery.NewBatchQueryRequest(workspaceID, query2, timespan, "2", azquery.LogsQueryOptions{})),
 	}}
 	testSerde(t, &batchRequest)
 
@@ -200,12 +200,13 @@ func TestQueryBatch_BasicQueryFailure(t *testing.T) {
 
 func TestQueryBatch_AdvancedQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
+	timespan := azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))
 	batchPrefer := "wait=180,include-statistics=true,include-render=true"
 	headers := map[string]*string{"prefer": &batchPrefer}
 
 	batchRequestAdvanced := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(query)}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID2), Headers: headers},
-		{Body: &azquery.Body{Query: to.Ptr(query)}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID2), Headers: headers},
+		to.Ptr(azquery.NewBatchQueryRequest(workspaceID2, query, timespan, "1", azquery.LogsQueryOptions{Statistics: to.Ptr(true), Visualization: to.Ptr(true), Wait: to.Ptr(600)})),
+		{Body: &azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID2), Headers: headers},
 	}}
 	testSerde(t, &batchRequestAdvanced)
 
@@ -246,17 +247,21 @@ func TestQueryBatch_PartialError(t *testing.T) {
 	}
 }
 
-func TestISO8601TimeInterval(t *testing.T) {
-	timespan := azquery.NewISO8601TimeInterval(time.Date(2022, 3, 2, 1, 2, 3, 0, time.UTC), time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
-	require.Equal(t, timespan, azquery.ISO8601TimeInterval("2022-03-02T01:02:03Z/2022-03-03T00:00:00Z"))
+func TestTimeInterval(t *testing.T) {
+	timespan := azquery.NewTimeInterval(time.Date(2022, 3, 2, 1, 2, 3, 0, time.UTC), time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
+	require.Equal(t, timespan, azquery.TimeInterval("2022-03-02T01:02:03Z/2022-03-03T00:00:00Z"))
 
 	start, end, err := timespan.Times()
 	require.NoError(t, err)
 	require.Equal(t, start, time.Date(2022, 3, 2, 1, 2, 3, 0, time.UTC))
 	require.Equal(t, end, time.Date(2022, 3, 3, 0, 0, 0, 0, time.UTC))
 
-	_, _, err = to.Ptr(azquery.ISO8601TimeInterval("hi")).Times()
+	_, _, err = to.Ptr(azquery.TimeInterval("hi")).Times()
 	require.Error(t, err)
+}
+
+func TestLogsQueryOptions(t *testing.T) {
+
 }
 
 func TestLogConstants(t *testing.T) {

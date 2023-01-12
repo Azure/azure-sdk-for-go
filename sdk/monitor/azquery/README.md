@@ -64,9 +64,9 @@ Each set of metric values is a time series with the following characteristics:
 
 ### Timespan
 
-It's best practice to always query with a timespan (type `ISO8601TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Logs uses the ISO8601 Time Interval Standard. All time should be represented in UTC. If the timespan  is included in both the kusto query string and `Timespan` field, the timespan will be the intersection of the two values.
+It's best practice to always query with a timespan (type `TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Logs uses the ISO8601 Time Interval Standard. All time should be represented in UTC. If the timespan  is included in both the kusto query string and `Timespan` field, the timespan will be the intersection of the two values.
 
-Use the `NewISO8601TimeInterval()` method for easy creation.
+Use the `NewTimeInterval()` method for easy creation.
 
 Example timespan: [link][example_query_workspace]
 
@@ -101,7 +101,7 @@ Example QueryWorkspace: [link][example_query_workspace]
 ```
 Body
 |---Query *string                  // Kusto Query
-|---Timespan *ISO8601TimeInterval  // ISO8601 Standard Time Interval
+|---Timespan *TimeInterval         // ISO8601 Standard Time Interval
 |---AdditionalWorkspaces []*string // Optional- additional workspaces to query
 ```
 
@@ -131,7 +131,7 @@ Example QueryBatch: [link][example_batch]
 BatchRequest
 |---Body *Body
 	|---Query *string                 // Kusto Query
-	|---Timespan *ISO8601TimeInterval // ISO8601 Standard Time Interval
+	|---Timespan *TimeInterval        // ISO8601 Standard Time Interval
 	|---Workspaces []*string          // Optional- additional workspaces to query
 |---CorrelationID *string             // unique identifier for each query in batch
 |---WorkspaceID *string
@@ -173,14 +173,22 @@ Example additional workspaces: [link][example_queryworkspace_2]
 
 #### Increase wait time, include statistics, include render (visualization)
 
-By default, the Azure Monitor Query service will run your query for up to three minutes. To increase the default timeout, set `wait` to desired number of seconds in LogsClientQueryWorkspaceOptions Prefer string. Max wait time the service will allow is ten minutes (600 seconds).
+The `LogsQueryOptions` type is used for advanced logs options.
 
-To get logs query execution statistics, such as CPU and memory consumption, set `include-statistics` to true in LogsClientQueryWorkspaceOptions Prefer string.
+By default, the Azure Monitor Query service will run your query for up to three minutes. To increase the default timeout, set `LogsQueryOptions.Wait` to desired number of seconds. Max wait time the service will allow is ten minutes (600 seconds).
 
-To get visualization data for logs queries, set `include-render` to `true` in the `LogsClientQueryWorkspaceOptions` `Prefer` string.
+To get logs query execution statistics, such as CPU and memory consumption, set `LogsQueryOptions.Statistics` to `true`.
+
+To get visualization data for logs queries, set `LogsQueryOptions.Visualization` to `true`.
 
 ```go
-azquery.LogsClientQueryWorkspaceOptions{Prefer: to.Ptr("wait=600,include-statistics=true,include-render=true")}
+azquery.LogsClientQueryWorkspaceOptions{
+			Options: &azquery.LogsQueryOptions{
+				Statistics:    to.Ptr(true),
+				Visualization: to.Ptr(true),
+				Wait:          to.Ptr(600),
+			},
+		}
 ```
 
 Example QueryWorkspace options: [link][example_queryworkspace_2]

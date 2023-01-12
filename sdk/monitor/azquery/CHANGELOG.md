@@ -3,10 +3,12 @@
 ## 0.4.0 (Unreleased)
 
 ### Features Added
-* Added `ISO8601TimeInterval` type with constructor to aid with logs timespan creation
+* Added `TimeInterval` type with constructor to aid with timespan creation
+* Added `NewBatchQueryRequest` constructor to aid with logs batch requests
+* Added `LogsQueryOptions` model for easier setting of logs options
 
 ### Breaking Changes
-* Changed type of `Body.Timespan`, `MetricsClientQueryResourceOptions.Timespan`, `Response.Timespan` from *string to *ISO8601TimeInterval
+* Changed type of `Body.Timespan`, `MetricsClientQueryResourceOptions.Timespan`, `Response.Timespan` from *string to *TimeInterval
 * Remove `ColumnIndexLookup` field from Table struct
 * Renamed `Body.Workspaces` to `Body.AdditionalWorkspaces`
 * Renamed `Results.Render` and `BatchResponse.Render` to `Results.Visualization` and `BatchResponse.Visualization`

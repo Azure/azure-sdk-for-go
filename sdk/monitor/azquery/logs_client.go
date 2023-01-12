@@ -93,8 +93,8 @@ func (client *LogsClient) queryWorkspaceCreateRequest(ctx context.Context, works
 	if err != nil {
 		return nil, err
 	}
-	if options != nil && options.Prefer != nil {
-		req.Raw().Header["Prefer"] = []string{*options.Prefer}
+	if options != nil && options.Options != nil {
+		req.Raw().Header["Prefer"] = []string{options.Options.String()}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

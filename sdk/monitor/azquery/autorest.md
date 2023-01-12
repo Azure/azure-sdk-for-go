@@ -94,6 +94,17 @@ directive:
     where: $.definitions.batchQueryRequest.properties.workspace
     transform: $["x-ms-client-name"] = "WorkspaceID"
   
+  # rename Prefer to Options
+  - from: swagger-document
+    where: $.parameters.PreferHeaderParameter
+    transform: $["x-ms-client-name"] = "Options"
+  - from: models.go
+    where: $
+    transform: return $.replace(/Options \*string/g, "Options *LogsQueryOptions");
+  - from: logs_client.go
+    where: $
+    transform: return $.replace(/\*options\.Options/, "options.Options.String()");
+  
   # add default values for batch request path and method attributes
   - from: swagger-document
     where: $.definitions.batchQueryRequest.properties.path
@@ -120,9 +131,6 @@ directive:
   - from: swagger-document
     where: $.definitions.queryBody.properties.workspaces
     transform: $["description"] = "A list of workspaces to query in addition to the primary workspace."
-  - from: swagger-document
-    where: $.parameters.PreferHeaderParameter
-    transform: $["description"] = "Optional. The prefer header to set server timeout, query statistics and visualization information. For server timeout, set the prefer string equal to \"wait=NumOfMinutes\", where NumOfMinutes is an integer (ex 600). Max server time is ten minutes. For statistics, set prefer string equal to \"include-statistics=true\". For visualization, set prefer string equal to \"include-render=true\". For more information, see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization"
   - from: swagger-document
     where: $.definitions.batchQueryRequest.properties.headers
     transform: $["description"] = "Optional. Headers of the request. Can use prefer header to set server timeout, query statistics and visualization information. For more information, see https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization"
@@ -204,10 +212,10 @@ directive:
     where: $
     transform: return $.replace(/err(.*)b\.Visualization\)/, "b.Visualization = val");
 
-  # change type of timespan from *string to *ISO8601TimeInterval
+  # change type of timespan from *string to *TimeInterval
   - from: models.go
     where: $
-    transform: return $.replace(/Timespan \*string/g, "Timespan *ISO8601TimeInterval");
+    transform: return $.replace(/Timespan \*string/g, "Timespan *TimeInterval");
   - from: metrics_client.go
     where: $
     transform: return $.replace(/reqQP\.Set\(\"timespan\", \*options\.Timespan\)/g, "reqQP.Set(\"timespan\", string(*options.Timespan))");

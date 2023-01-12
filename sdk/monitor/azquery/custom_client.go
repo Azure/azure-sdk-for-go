@@ -111,21 +111,20 @@ func (e *ErrorInfo) Error() string {
 // Row of data in a table, types of data used by service specified in LogsColumnType
 type Row []any
 
-// ISO8601TimeInterval specifies the time range over which to query.
-// Use NewISO8601TimeInterval() for help formatting.
+// TimeInterval specifies the time range over which to query.
+// Use NewTimeInterval() for help formatting.
 // Follows the ISO8601 time interval standard with most common format being startISOTime/endISOTime.
 // Use UTC for all times.
-type ISO8601TimeInterval string
+type TimeInterval string
 
-// NewISO8601TimeInterval creates a ISO8601TimeInterval for use in a query.
+// NewTimeInterval creates a ISO8601TimeInterval for use in a query.
 // Use UTC for start and end times.
-// Start time must be before end time.
-func NewISO8601TimeInterval(start time.Time, end time.Time) ISO8601TimeInterval {
-	return ISO8601TimeInterval(start.Format(time.RFC3339) + "/" + end.Format(time.RFC3339))
+func NewTimeInterval(start time.Time, end time.Time) TimeInterval {
+	return TimeInterval(start.Format(time.RFC3339) + "/" + end.Format(time.RFC3339))
 }
 
 // Times returns the interval's start and end times if it's in the format startISOTime/endISOTime, else it will return an error.
-func (i ISO8601TimeInterval) Times() (time.Time, time.Time, error) {
+func (i TimeInterval) Times() (time.Time, time.Time, error) {
 	// split into different start and end times
 	times := strings.Split(string(i), "/")
 	if len(times) != 2 {
@@ -141,4 +140,53 @@ func (i ISO8601TimeInterval) Times() (time.Time, time.Time, error) {
 	}
 	// return times
 	return start, end, nil
+}
+
+// LogsQueryOptions sets server timeout, query statistics and visualization information
+type LogsQueryOptions struct {
+	// Set Statistics to true to get logs query execution statistics,
+	// such as CPU and memory consumption. Defaults to false.
+	Statistics *bool
+
+	// Set Visualization to true to get visualization
+	// data for logs queries. Defaults to false.
+	Visualization *bool
+
+	// By default, the Azure Monitor Query service will run your
+	// query for up to three minutes. To increase the default timeout,
+	// set Wait to desired number of seconds.
+	// Max wait time the service will allow is ten minutes (600 seconds).
+	Wait *int
+}
+
+// String implements a custom string method for type LogsQueryOptions.
+func (l LogsQueryOptions) String() string {
+	var options []string
+	if l.Statistics != nil && *l.Statistics {
+		options = append(options, "include-statistics=true")
+	}
+	if l.Visualization != nil && *l.Visualization {
+		options = append(options, "include-render=true")
+	}
+	if l.Wait != nil {
+		options = append(options, fmt.Sprintf("wait=%d", *l.Wait))
+	}
+	return strings.Join(options, ",")
+}
+
+// NewBatchQueryRequest creates a new BatchQueryRequest.
+func NewBatchQueryRequest(workspaceID string, query string, timespan TimeInterval, correlationID string, options LogsQueryOptions) BatchQueryRequest {
+	var optionsMap map[string]*string
+	if options.Statistics != nil || options.Visualization != nil || options.Wait != nil {
+		optionsMap = make(map[string]*string)
+		optionsString := options.String()
+		optionsMap["prefer"] = &optionsString
+	}
+
+	return BatchQueryRequest{
+		Body:          &Body{Query: &query, Timespan: &timespan},
+		CorrelationID: &correlationID,
+		WorkspaceID:   &workspaceID,
+		Headers:       optionsMap,
+	}
 }

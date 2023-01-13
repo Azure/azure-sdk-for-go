@@ -132,7 +132,7 @@ func TestIPRange_String(t *testing.T) {
 func TestSAS(t *testing.T) {
 	// Note: This is a totally invalid fake SAS, this is just testing our ability to parse different query parameters on a SAS
 	const sas = "sv=2019-12-12&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s&rscc=cc&rscd=cd&rsce=ce&rscl=cl&rsct=ct&skoid=oid&sktid=tid&skt=2111-01-09T01:42:34.936Z&ske=2222-03-09T01:42:34.936Z&sks=s&skv=v&sdd=3&saoid=oid&suoid=oid&scid=cid&sig=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D"
-	_url := fmt.Sprintf("https://teststorageaccount.queue.core.windows.net/testcontainer/testpath?%s", sas)
+	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
 	_uri, err := url.Parse(_url)
 	require.NoError(t, err)
 	sasQueryParams := NewQueryParameters(_uri.Query(), true)
@@ -207,7 +207,7 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 func TestSASInvalidQueryParameter(t *testing.T) {
 	// Signature is invalid below
 	const sas = "sv=2019-12-12&signature=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&sr=b"
-	_url := fmt.Sprintf("https://teststorageaccount.queue.core.windows.net/testcontainer/testpath?%s", sas)
+	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
 	_uri, err := url.Parse(_url)
 	require.NoError(t, err)
 	NewQueryParameters(_uri.Query(), true)
@@ -222,7 +222,7 @@ func TestEncode(t *testing.T) {
 	testdata := []string{expected, randomOrder}
 
 	for _, sas := range testdata {
-		_url := fmt.Sprintf("https://teststorageaccount.queue.core.windows.net/testcontainer/testpath?%s", sas)
+		_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
 		_uri, err := url.Parse(_url)
 		require.NoError(t, err)
 		queryParams := NewQueryParameters(_uri.Query(), true)

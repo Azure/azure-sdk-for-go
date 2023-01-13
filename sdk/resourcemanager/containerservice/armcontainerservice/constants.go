@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.3.0-beta.2"
+	moduleVersion = "v2.3.0"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -49,24 +49,6 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 	return []AgentPoolType{
 		AgentPoolTypeAvailabilitySet,
 		AgentPoolTypeVirtualMachineScaleSets,
-	}
-}
-
-// BackendPoolType - The type of the managed inbound Load Balancer BackendPool.
-type BackendPoolType string
-
-const (
-	// BackendPoolTypeNodeIP - The type of the managed inbound Load Balancer BackendPool. https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#configure-load-balancer-backend.
-	BackendPoolTypeNodeIP BackendPoolType = "NodeIP"
-	// BackendPoolTypeNodeIPConfiguration - The type of the managed inbound Load Balancer BackendPool. https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#configure-load-balancer-backend.
-	BackendPoolTypeNodeIPConfiguration BackendPoolType = "NodeIPConfiguration"
-)
-
-// PossibleBackendPoolTypeValues returns the possible values for the BackendPoolType const type.
-func PossibleBackendPoolTypeValues() []BackendPoolType {
-	return []BackendPoolType{
-		BackendPoolTypeNodeIP,
-		BackendPoolTypeNodeIPConfiguration,
 	}
 }
 
@@ -108,24 +90,6 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
-// ControlledValues - Controls which resource value autoscaler will change. Default value is RequestsAndLimits.
-type ControlledValues string
-
-const (
-	// ControlledValuesRequestsAndLimits - Autoscaler will control resource requests and limits.
-	ControlledValuesRequestsAndLimits ControlledValues = "RequestsAndLimits"
-	// ControlledValuesRequestsOnly - Autoscaler will control resource requests only.
-	ControlledValuesRequestsOnly ControlledValues = "RequestsOnly"
-)
-
-// PossibleControlledValuesValues returns the possible values for the ControlledValues const type.
-func PossibleControlledValuesValues() []ControlledValues {
-	return []ControlledValues{
-		ControlledValuesRequestsAndLimits,
-		ControlledValuesRequestsOnly,
-	}
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -143,21 +107,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-// EbpfDataplane - The eBPF dataplane used for building the Kubernetes network.
-type EbpfDataplane string
-
-const (
-	// EbpfDataplaneCilium - Use Cilium for networking in the Kubernetes cluster.
-	EbpfDataplaneCilium EbpfDataplane = "cilium"
-)
-
-// PossibleEbpfDataplaneValues returns the possible values for the EbpfDataplane const type.
-func PossibleEbpfDataplaneValues() []EbpfDataplane {
-	return []EbpfDataplane{
-		EbpfDataplaneCilium,
 	}
 }
 
@@ -205,58 +154,11 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
-// FleetMemberProvisioningState - The provisioning state of the last accepted operation.
-type FleetMemberProvisioningState string
-
-const (
-	FleetMemberProvisioningStateCanceled  FleetMemberProvisioningState = "Canceled"
-	FleetMemberProvisioningStateFailed    FleetMemberProvisioningState = "Failed"
-	FleetMemberProvisioningStateJoining   FleetMemberProvisioningState = "Joining"
-	FleetMemberProvisioningStateLeaving   FleetMemberProvisioningState = "Leaving"
-	FleetMemberProvisioningStateSucceeded FleetMemberProvisioningState = "Succeeded"
-	FleetMemberProvisioningStateUpdating  FleetMemberProvisioningState = "Updating"
-)
-
-// PossibleFleetMemberProvisioningStateValues returns the possible values for the FleetMemberProvisioningState const type.
-func PossibleFleetMemberProvisioningStateValues() []FleetMemberProvisioningState {
-	return []FleetMemberProvisioningState{
-		FleetMemberProvisioningStateCanceled,
-		FleetMemberProvisioningStateFailed,
-		FleetMemberProvisioningStateJoining,
-		FleetMemberProvisioningStateLeaving,
-		FleetMemberProvisioningStateSucceeded,
-		FleetMemberProvisioningStateUpdating,
-	}
-}
-
-// FleetProvisioningState - The provisioning state of the last accepted operation.
-type FleetProvisioningState string
-
-const (
-	FleetProvisioningStateCanceled  FleetProvisioningState = "Canceled"
-	FleetProvisioningStateCreating  FleetProvisioningState = "Creating"
-	FleetProvisioningStateDeleting  FleetProvisioningState = "Deleting"
-	FleetProvisioningStateFailed    FleetProvisioningState = "Failed"
-	FleetProvisioningStateSucceeded FleetProvisioningState = "Succeeded"
-	FleetProvisioningStateUpdating  FleetProvisioningState = "Updating"
-)
-
-// PossibleFleetProvisioningStateValues returns the possible values for the FleetProvisioningState const type.
-func PossibleFleetProvisioningStateValues() []FleetProvisioningState {
-	return []FleetProvisioningState{
-		FleetProvisioningStateCanceled,
-		FleetProvisioningStateCreating,
-		FleetProvisioningStateDeleting,
-		FleetProvisioningStateFailed,
-		FleetProvisioningStateSucceeded,
-		FleetProvisioningStateUpdating,
-	}
-}
-
 type Format string
 
 const (
-	// FormatAzure - Return azure auth-provider kubeconfig. This format is deprecated in 1.22 and will be fully removed in 1.25.
+	// FormatAzure - Return azure auth-provider kubeconfig. This format is deprecated in v1.22 and will be fully removed in v1.26.
+	// See: https://aka.ms/k8s/changes-1-26.
 	FormatAzure Format = "azure"
 	// FormatExec - Return exec format kubeconfig. This format requires kubelogin binary in the path.
 	FormatExec Format = "exec"
@@ -308,24 +210,6 @@ func PossibleIPFamilyValues() []IPFamily {
 	}
 }
 
-// IpvsScheduler - IPVS scheduler, for more information please see http://www.linuxvirtualserver.org/docs/scheduling.html.
-type IpvsScheduler string
-
-const (
-	// IpvsSchedulerLeastConnection - Least Connection
-	IpvsSchedulerLeastConnection IpvsScheduler = "LeastConnection"
-	// IpvsSchedulerRoundRobin - Round Robin
-	IpvsSchedulerRoundRobin IpvsScheduler = "RoundRobin"
-)
-
-// PossibleIpvsSchedulerValues returns the possible values for the IpvsScheduler const type.
-func PossibleIpvsSchedulerValues() []IpvsScheduler {
-	return []IpvsScheduler{
-		IpvsSchedulerLeastConnection,
-		IpvsSchedulerRoundRobin,
-	}
-}
-
 // KeyVaultNetworkAccessTypes - Network access of key vault. The possible values are Public and Private. Public means the
 // key vault allows public access from all networks. Private means the key vault disables public access and
 // enables private link. The default value is Public.
@@ -359,25 +243,6 @@ func PossibleKubeletDiskTypeValues() []KubeletDiskType {
 	return []KubeletDiskType{
 		KubeletDiskTypeOS,
 		KubeletDiskTypeTemporary,
-	}
-}
-
-// Level - The guardrails level to be used. By default, Guardrails is enabled for all namespaces except those that AKS excludes
-// via systemExcludedNamespaces
-type Level string
-
-const (
-	LevelEnforcement Level = "Enforcement"
-	LevelOff         Level = "Off"
-	LevelWarning     Level = "Warning"
-)
-
-// PossibleLevelValues returns the possible values for the Level const type.
-func PossibleLevelValues() []Level {
-	return []Level{
-		LevelEnforcement,
-		LevelOff,
-		LevelWarning,
 	}
 }
 
@@ -479,24 +344,6 @@ func PossibleManagedClusterSKUTierValues() []ManagedClusterSKUTier {
 	}
 }
 
-// Mode - Specify which proxy mode to use ('IPTABLES' or 'IPVS')
-type Mode string
-
-const (
-	// ModeIPTABLES - IPTables proxy mode
-	ModeIPTABLES Mode = "IPTABLES"
-	// ModeIPVS - IPVS proxy mode. Must be using Kubernetes version >= 1.22.
-	ModeIPVS Mode = "IPVS"
-)
-
-// PossibleModeValues returns the possible values for the Mode const type.
-func PossibleModeValues() []Mode {
-	return []Mode{
-		ModeIPTABLES,
-		ModeIPVS,
-	}
-}
-
 // NetworkMode - This cannot be specified if networkPlugin is anything other than 'azure'.
 type NetworkMode string
 
@@ -526,8 +373,8 @@ const (
 	// NetworkPluginKubenet - Use the Kubenet network plugin. See [Kubenet (basic) networking](https://docs.microsoft.com/azure/aks/concepts-network#kubenet-basic-networking)
 	// for more information.
 	NetworkPluginKubenet NetworkPlugin = "kubenet"
-	// NetworkPluginNone - Do not use a network plugin. A custom CNI will need to be installed after cluster creation for networking
-	// functionality.
+	// NetworkPluginNone - No CNI plugin is pre-installed. See [BYO CNI](https://docs.microsoft.com/en-us/azure/aks/use-byo-cni)
+	// for more information.
 	NetworkPluginNone NetworkPlugin = "none"
 )
 
@@ -537,22 +384,6 @@ func PossibleNetworkPluginValues() []NetworkPlugin {
 		NetworkPluginAzure,
 		NetworkPluginKubenet,
 		NetworkPluginNone,
-	}
-}
-
-// NetworkPluginMode - The mode the network plugin should use.
-type NetworkPluginMode string
-
-const (
-	// NetworkPluginModeOverlay - Pods are given IPs from the PodCIDR address space but use Azure Routing Domains rather than
-	// Kubenet reference plugins host-local and bridge.
-	NetworkPluginModeOverlay NetworkPluginMode = "Overlay"
-)
-
-// PossibleNetworkPluginModeValues returns the possible values for the NetworkPluginMode const type.
-func PossibleNetworkPluginModeValues() []NetworkPluginMode {
-	return []NetworkPluginMode{
-		NetworkPluginModeOverlay,
 	}
 }
 
@@ -573,41 +404,6 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 	return []NetworkPolicy{
 		NetworkPolicyAzure,
 		NetworkPolicyCalico,
-	}
-}
-
-// NodeOSUpgradeChannel - The default is Unmanaged, but may change to either NodeImage or SecurityPatch at GA.
-type NodeOSUpgradeChannel string
-
-const (
-	// NodeOSUpgradeChannelNodeImage - AKS will update the nodes with a newly patched VHD containing security fixes and bugfixes
-	// on a weekly cadence. With the VHD update machines will be rolling reimaged to that VHD following maintenance windows and
-	// surge settings. No extra VHD cost is incurred when choosing this option as AKS hosts the images.
-	NodeOSUpgradeChannelNodeImage NodeOSUpgradeChannel = "NodeImage"
-	// NodeOSUpgradeChannelNone - No attempt to update your machines OS will be made either by OS or by rolling VHDs. This means
-	// you are responsible for your security updates
-	NodeOSUpgradeChannelNone NodeOSUpgradeChannel = "None"
-	// NodeOSUpgradeChannelSecurityPatch - AKS will update the nodes VHD with patches from the image maintainer labelled "security
-	// only" on a regular basis. Where possible, patches will also be applied without reimaging to existing nodes. Some patches,
-	// such as kernel patches, cannot be applied to existing nodes without disruption. For such patches, the VHD will be updated,
-	// and machines will be rolling reimaged to that VHD following maintenance windows and surge settings. This option incurs
-	// the extra cost of hosting the VHDs in your node resource group.
-	NodeOSUpgradeChannelSecurityPatch NodeOSUpgradeChannel = "SecurityPatch"
-	// NodeOSUpgradeChannelUnmanaged - OS updates will be applied automatically through the OS built-in patching infrastructure.
-	// Newly scaled in machines will be unpatched initially, and will be patched at some later time by the OS's infrastructure.
-	// Behavior of this option depends on the OS in question. Ubuntu and Mariner apply security patches through unattended upgrade
-	// roughly once a day around 06:00 UTC. Windows does not apply security patches automatically and so for them this option
-	// is equivalent to None till further notice
-	NodeOSUpgradeChannelUnmanaged NodeOSUpgradeChannel = "Unmanaged"
-)
-
-// PossibleNodeOSUpgradeChannelValues returns the possible values for the NodeOSUpgradeChannel const type.
-func PossibleNodeOSUpgradeChannelValues() []NodeOSUpgradeChannel {
-	return []NodeOSUpgradeChannel{
-		NodeOSUpgradeChannelNodeImage,
-		NodeOSUpgradeChannelNone,
-		NodeOSUpgradeChannelSecurityPatch,
-		NodeOSUpgradeChannelUnmanaged,
 	}
 }
 
@@ -635,14 +431,12 @@ func PossibleOSDiskTypeValues() []OSDiskType {
 	}
 }
 
-// OSSKU - Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if OSType=Linux or Windows2019
-// if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022
-// after Windows2019 is deprecated.
+// OSSKU - Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
+// when Kubernetes = 1.25 if OSType is Windows.
 type OSSKU string
 
 const (
 	OSSKUCBLMariner  OSSKU = "CBLMariner"
-	OSSKUMariner     OSSKU = "Mariner"
 	OSSKUUbuntu      OSSKU = "Ubuntu"
 	OSSKUWindows2019 OSSKU = "Windows2019"
 	OSSKUWindows2022 OSSKU = "Windows2022"
@@ -652,7 +446,6 @@ const (
 func PossibleOSSKUValues() []OSSKU {
 	return []OSSKU{
 		OSSKUCBLMariner,
-		OSSKUMariner,
 		OSSKUUbuntu,
 		OSSKUWindows2019,
 		OSSKUWindows2022,
@@ -727,34 +520,12 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// Protocol - The network protocol of the port.
-type Protocol string
-
-const (
-	// ProtocolTCP - TCP protocol.
-	ProtocolTCP Protocol = "TCP"
-	// ProtocolUDP - UDP protocol.
-	ProtocolUDP Protocol = "UDP"
-)
-
-// PossibleProtocolValues returns the possible values for the Protocol const type.
-func PossibleProtocolValues() []Protocol {
-	return []Protocol{
-		ProtocolTCP,
-		ProtocolUDP,
-	}
-}
-
 // PublicNetworkAccess - Allow or deny public network access for AKS
 type PublicNetworkAccess string
 
 const (
-	// PublicNetworkAccessDisabled - Inbound traffic to managedCluster is disabled, traffic from managedCluster is allowed.
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	// PublicNetworkAccessEnabled - Inbound/Outbound to the managedCluster is allowed.
-	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
-	// PublicNetworkAccessSecuredByPerimeter - Inbound/Outbound traffic is managed by Microsoft.Network/NetworkSecurityPerimeters.
-	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
+	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -762,7 +533,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
-		PublicNetworkAccessSecuredByPerimeter,
 	}
 }
 
@@ -855,8 +625,6 @@ func PossibleScaleSetPriorityValues() []ScaleSetPriority {
 type SnapshotType string
 
 const (
-	// SnapshotTypeManagedCluster - The snapshot is a snapshot of a managed cluster.
-	SnapshotTypeManagedCluster SnapshotType = "ManagedCluster"
 	// SnapshotTypeNodePool - The snapshot is a snapshot of a node pool.
 	SnapshotTypeNodePool SnapshotType = "NodePool"
 )
@@ -864,86 +632,7 @@ const (
 // PossibleSnapshotTypeValues returns the possible values for the SnapshotType const type.
 func PossibleSnapshotTypeValues() []SnapshotType {
 	return []SnapshotType{
-		SnapshotTypeManagedCluster,
 		SnapshotTypeNodePool,
-	}
-}
-
-// TrustedAccessRoleBindingProvisioningState - The current provisioning state of trusted access role binding.
-type TrustedAccessRoleBindingProvisioningState string
-
-const (
-	TrustedAccessRoleBindingProvisioningStateCanceled  TrustedAccessRoleBindingProvisioningState = "Canceled"
-	TrustedAccessRoleBindingProvisioningStateDeleting  TrustedAccessRoleBindingProvisioningState = "Deleting"
-	TrustedAccessRoleBindingProvisioningStateFailed    TrustedAccessRoleBindingProvisioningState = "Failed"
-	TrustedAccessRoleBindingProvisioningStateSucceeded TrustedAccessRoleBindingProvisioningState = "Succeeded"
-	TrustedAccessRoleBindingProvisioningStateUpdating  TrustedAccessRoleBindingProvisioningState = "Updating"
-)
-
-// PossibleTrustedAccessRoleBindingProvisioningStateValues returns the possible values for the TrustedAccessRoleBindingProvisioningState const type.
-func PossibleTrustedAccessRoleBindingProvisioningStateValues() []TrustedAccessRoleBindingProvisioningState {
-	return []TrustedAccessRoleBindingProvisioningState{
-		TrustedAccessRoleBindingProvisioningStateCanceled,
-		TrustedAccessRoleBindingProvisioningStateDeleting,
-		TrustedAccessRoleBindingProvisioningStateFailed,
-		TrustedAccessRoleBindingProvisioningStateSucceeded,
-		TrustedAccessRoleBindingProvisioningStateUpdating,
-	}
-}
-
-// Type - Specifies on which instance of the allowed days specified in daysOfWeek the maintenance occurs.
-type Type string
-
-const (
-	// TypeFirst - First.
-	TypeFirst Type = "First"
-	// TypeFourth - Fourth.
-	TypeFourth Type = "Fourth"
-	// TypeLast - Last.
-	TypeLast Type = "Last"
-	// TypeSecond - Second.
-	TypeSecond Type = "Second"
-	// TypeThird - Third.
-	TypeThird Type = "Third"
-)
-
-// PossibleTypeValues returns the possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{
-		TypeFirst,
-		TypeFourth,
-		TypeLast,
-		TypeSecond,
-		TypeThird,
-	}
-}
-
-// UpdateMode - Each update mode level is a superset of the lower levels. Off<Initial<Recreate<=Auto. For example: if UpdateMode
-// is Initial, it means VPA sets the recommended resources in the VerticalPodAutoscaler
-// Custom Resource (from UpdateMode Off) and also assigns resources on pod creation (from Initial). The default value is Off.
-type UpdateMode string
-
-const (
-	// UpdateModeAuto - Autoscaler chooses the update mode. Autoscaler currently does the same as Recreate. In the future, it
-	// may take advantage of restart-free mechanisms once they are available.
-	UpdateModeAuto UpdateMode = "Auto"
-	// UpdateModeInitial - Autoscaler only assigns resources on pod creation and doesn't change them during the lifetime of the
-	// pod.
-	UpdateModeInitial UpdateMode = "Initial"
-	// UpdateModeOff - Autoscaler never changes pod resources but provides recommendations.
-	UpdateModeOff UpdateMode = "Off"
-	// UpdateModeRecreate - Autoscaler assigns resources on pod creation and updates pods that need further scaling during their
-	// lifetime by deleting and recreating.
-	UpdateModeRecreate UpdateMode = "Recreate"
-)
-
-// PossibleUpdateModeValues returns the possible values for the UpdateMode const type.
-func PossibleUpdateModeValues() []UpdateMode {
-	return []UpdateMode{
-		UpdateModeAuto,
-		UpdateModeInitial,
-		UpdateModeOff,
-		UpdateModeRecreate,
 	}
 }
 
@@ -951,8 +640,10 @@ func PossibleUpdateModeValues() []UpdateMode {
 type UpgradeChannel string
 
 const (
-	// UpgradeChannelNodeImage - Automatically upgrade the node image to the latest version available. Consider using nodeOSUpgradeChannel
-	// instead as that allows you to configure node OS patching separate from Kubernetes version patching
+	// UpgradeChannelNodeImage - Automatically upgrade the node image to the latest version available. Microsoft provides patches
+	// and new images for image nodes frequently (usually weekly), but your running nodes won't get the new images unless you
+	// do a node image upgrade. Turning on the node-image channel will automatically update your node images whenever a new version
+	// is available.
 	UpgradeChannelNodeImage UpgradeChannel = "node-image"
 	// UpgradeChannelNone - Disables auto-upgrades and keeps the cluster at its current version of Kubernetes.
 	UpgradeChannelNone UpgradeChannel = "none"

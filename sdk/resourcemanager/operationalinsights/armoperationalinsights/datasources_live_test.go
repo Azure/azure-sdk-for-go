@@ -144,7 +144,7 @@ func (testsuite *DataSourcesTestSuite) Prepare() {
 	testsuite.storageAccountId = deploymentExtend.Properties.Outputs.(map[string]interface{})["storageAccountId"].(map[string]interface{})["value"].(string)
 
 	// From step Workspaces_Create
-	fmt.Println("Call operation: Workspaces_Create")
+	fmt.Println("Call operation: Workspaces_CreateOrUpdate")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{

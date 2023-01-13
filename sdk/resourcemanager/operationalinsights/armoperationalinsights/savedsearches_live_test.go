@@ -61,7 +61,7 @@ func TestSavedSearchesTestSuite(t *testing.T) {
 func (testsuite *SavedSearchesTestSuite) Prepare() {
 	var err error
 	// From step Workspaces_Create
-	fmt.Println("Call operation: Workspaces_Create")
+	fmt.Println("Call operation: Workspaces_CreateOrUpdate")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{

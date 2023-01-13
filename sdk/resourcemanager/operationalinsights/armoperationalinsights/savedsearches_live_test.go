@@ -10,6 +10,7 @@ package armoperationalinsights_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestSavedSearchesTestSuite(t *testing.T) {
 func (testsuite *SavedSearchesTestSuite) Prepare() {
 	var err error
 	// From step Workspaces_Create
+	fmt.Println("Call operation: Workspaces_Create")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{
@@ -80,6 +82,7 @@ func (testsuite *SavedSearchesTestSuite) Prepare() {
 func (testsuite *SavedSearchesTestSuite) TestSavedSearch() {
 	var err error
 	// From step SavedSearches_CreateOrUpdate
+	fmt.Println("Call operation: SavedSearches_CreateOrUpdate")
 	savedSearchesClient, err := armoperationalinsights.NewSavedSearchesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = savedSearchesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "00000000-0000-0000-0000-00000000000", armoperationalinsights.SavedSearch{
@@ -100,14 +103,17 @@ func (testsuite *SavedSearchesTestSuite) TestSavedSearch() {
 	testsuite.Require().NoError(err)
 
 	// From step SavedSearches_ListByWorkspace
+	fmt.Println("Call operation: SavedSearches_ListByWorkspace")
 	_, err = savedSearchesClient.ListByWorkspace(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SavedSearches_Get
+	fmt.Println("Call operation: SavedSearches_Get")
 	_, err = savedSearchesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "00000000-0000-0000-0000-00000000000", nil)
 	testsuite.Require().NoError(err)
 
 	// From step SavedSearches_Delete
+	fmt.Println("Call operation: SavedSearches_Delete")
 	_, err = savedSearchesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "00000000-0000-0000-0000-00000000000", nil)
 	testsuite.Require().NoError(err)
 }

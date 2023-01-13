@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -66,6 +67,7 @@ func TestApimidentityproviderTestSuite(t *testing.T) {
 func (testsuite *ApimidentityproviderTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -92,6 +94,7 @@ func (testsuite *ApimidentityproviderTestSuite) Prepare() {
 func (testsuite *ApimidentityproviderTestSuite) TestIdentityprovider() {
 	var err error
 	// From step IdentityProvider_CreateOrUpdate
+	fmt.Println("Call operation: IdentityProvider_CreateOrUpdate")
 	identityProviderClient, err := armapimanagement.NewIdentityProviderClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = identityProviderClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.IdentityProviderTypeAAD, armapimanagement.IdentityProviderCreateContract{
@@ -105,10 +108,12 @@ func (testsuite *ApimidentityproviderTestSuite) TestIdentityprovider() {
 	testsuite.Require().NoError(err)
 
 	// From step IdentityProvider_GetEntityTag
+	fmt.Println("Call operation: IdentityProvider_GetEntityTag")
 	_, err = identityProviderClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.IdentityProviderTypeAAD, nil)
 	testsuite.Require().NoError(err)
 
 	// From step IdentityProvider_ListByService
+	fmt.Println("Call operation: IdentityProvider_ListByService")
 	identityProviderClientNewListByServicePager := identityProviderClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, nil)
 	for identityProviderClientNewListByServicePager.More() {
 		_, err := identityProviderClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -117,10 +122,12 @@ func (testsuite *ApimidentityproviderTestSuite) TestIdentityprovider() {
 	}
 
 	// From step IdentityProvider_Get
+	fmt.Println("Call operation: IdentityProvider_Get")
 	_, err = identityProviderClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.IdentityProviderTypeAAD, nil)
 	testsuite.Require().NoError(err)
 
 	// From step IdentityProvider_Update
+	fmt.Println("Call operation: IdentityProvider_Update")
 	_, err = identityProviderClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.IdentityProviderTypeAAD, "*", armapimanagement.IdentityProviderUpdateParameters{
 		Properties: &armapimanagement.IdentityProviderUpdateProperties{
 			ClientID:     to.Ptr(testsuite.azureClientId),
@@ -130,10 +137,12 @@ func (testsuite *ApimidentityproviderTestSuite) TestIdentityprovider() {
 	testsuite.Require().NoError(err)
 
 	// From step IdentityProvider_ListSecrets
+	fmt.Println("Call operation: IdentityProvider_ListSecrets")
 	_, err = identityProviderClient.ListSecrets(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.IdentityProviderTypeAAD, nil)
 	testsuite.Require().NoError(err)
 
 	// From step IdentityProvider_Delete
+	fmt.Println("Call operation: IdentityProvider_Delete")
 	_, err = identityProviderClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.IdentityProviderTypeAAD, "*", nil)
 	testsuite.Require().NoError(err)
 }

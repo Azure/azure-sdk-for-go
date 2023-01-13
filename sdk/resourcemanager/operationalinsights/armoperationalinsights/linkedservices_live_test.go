@@ -10,6 +10,7 @@ package armoperationalinsights_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -63,6 +64,7 @@ func TestLinkedServicesTestSuite(t *testing.T) {
 func (testsuite *LinkedServicesTestSuite) Prepare() {
 	var err error
 	// From step Workspaces_Create
+	fmt.Println("Call operation: Workspaces_Create")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{
@@ -79,6 +81,7 @@ func (testsuite *LinkedServicesTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Cluster_Create
+	fmt.Println("Call operation: Cluster_Create")
 	clustersClient, err := armoperationalinsights.NewClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	clustersClientCreateOrUpdateResponsePoller, err := clustersClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, armoperationalinsights.Cluster{
@@ -102,6 +105,7 @@ func (testsuite *LinkedServicesTestSuite) Prepare() {
 func (testsuite *LinkedServicesTestSuite) TestLinkedService() {
 	var err error
 	// From step LinkedServices_CreateOrUpdate
+	fmt.Println("Call operation: LinkedServices_CreateOrUpdate")
 	linkedServicesClient, err := armoperationalinsights.NewLinkedServicesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	linkedServicesClientCreateOrUpdateResponsePoller, err := linkedServicesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "Cluster", armoperationalinsights.LinkedService{
@@ -114,6 +118,7 @@ func (testsuite *LinkedServicesTestSuite) TestLinkedService() {
 	testsuite.Require().NoError(err)
 
 	// From step LinkedServices_ListByWorkspace
+	fmt.Println("Call operation: LinkedServices_ListByWorkspace")
 	linkedServicesClientNewListByWorkspacePager := linkedServicesClient.NewListByWorkspacePager(testsuite.resourceGroupName, testsuite.workspaceName, nil)
 	for linkedServicesClientNewListByWorkspacePager.More() {
 		_, err := linkedServicesClientNewListByWorkspacePager.NextPage(testsuite.ctx)
@@ -122,10 +127,12 @@ func (testsuite *LinkedServicesTestSuite) TestLinkedService() {
 	}
 
 	// From step LinkedServices_Get
+	fmt.Println("Call operation: LinkedServices_Get")
 	_, err = linkedServicesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "Cluster", nil)
 	testsuite.Require().NoError(err)
 
 	// From step LinkedServices_Delete
+	fmt.Println("Call operation: LinkedServices_Delete")
 	linkedServicesClientDeleteResponsePoller, err := linkedServicesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "Cluster", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, linkedServicesClientDeleteResponsePoller)
@@ -136,6 +143,7 @@ func (testsuite *LinkedServicesTestSuite) TestLinkedService() {
 func (testsuite *LinkedServicesTestSuite) TestAvailableServiceTiers() {
 	var err error
 	// From step AvailableServiceTiers_ListByWorkspace
+	fmt.Println("Call operation: AvailableServiceTiers_ListByWorkspace")
 	availableServiceTiersClient, err := armoperationalinsights.NewAvailableServiceTiersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = availableServiceTiersClient.ListByWorkspace(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
@@ -146,6 +154,7 @@ func (testsuite *LinkedServicesTestSuite) TestAvailableServiceTiers() {
 func (testsuite *LinkedServicesTestSuite) TestManagementGroups() {
 	var err error
 	// From step ManagementGroups_List
+	fmt.Println("Call operation: ManagementGroups_List")
 	managementGroupsClient, err := armoperationalinsights.NewManagementGroupsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	managementGroupsClientNewListPager := managementGroupsClient.NewListPager(testsuite.resourceGroupName, testsuite.workspaceName, nil)
@@ -160,6 +169,7 @@ func (testsuite *LinkedServicesTestSuite) TestManagementGroups() {
 func (testsuite *LinkedServicesTestSuite) TestSchema() {
 	var err error
 	// From step Schema_Get
+	fmt.Println("Call operation: Schema_Get")
 	schemaClient, err := armoperationalinsights.NewSchemaClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = schemaClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
@@ -170,6 +180,7 @@ func (testsuite *LinkedServicesTestSuite) TestSchema() {
 func (testsuite *LinkedServicesTestSuite) TestSharedKeys() {
 	var err error
 	// From step SharedKeys_GetSharedKeys
+	fmt.Println("Call operation: SharedKeys_GetSharedKeys")
 	sharedKeysClient, err := armoperationalinsights.NewSharedKeysClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = sharedKeysClient.GetSharedKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
@@ -180,6 +191,7 @@ func (testsuite *LinkedServicesTestSuite) TestSharedKeys() {
 func (testsuite *LinkedServicesTestSuite) TestUsages() {
 	var err error
 	// From step Usages_List
+	fmt.Println("Call operation: Usages_List")
 	usagesClient, err := armoperationalinsights.NewUsagesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	usagesClientNewListPager := usagesClient.NewListPager(testsuite.resourceGroupName, testsuite.workspaceName, nil)

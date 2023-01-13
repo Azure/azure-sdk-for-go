@@ -10,6 +10,7 @@ package armoperationalinsights_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -141,6 +142,7 @@ func (testsuite *LinkedStorageAccountsTestSuite) Prepare() {
 	testsuite.storageAccountId = deploymentExtend.Properties.Outputs.(map[string]interface{})["storageAccountId"].(map[string]interface{})["value"].(string)
 
 	// From step Workspaces_Create
+	fmt.Println("Call operation: Workspaces_Create")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{
@@ -161,6 +163,7 @@ func (testsuite *LinkedStorageAccountsTestSuite) Prepare() {
 func (testsuite *LinkedStorageAccountsTestSuite) TestLinkedStorageAccount() {
 	var err error
 	// From step LinkedStorageAccounts_CreateOrUpdate
+	fmt.Println("Call operation: LinkedStorageAccounts_CreateOrUpdate")
 	linkedStorageAccountsClient, err := armoperationalinsights.NewLinkedStorageAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = linkedStorageAccountsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.DataSourceTypeCustomLogs, armoperationalinsights.LinkedStorageAccountsResource{
@@ -172,6 +175,7 @@ func (testsuite *LinkedStorageAccountsTestSuite) TestLinkedStorageAccount() {
 	testsuite.Require().NoError(err)
 
 	// From step LinkedStorageAccounts_ListByWorkspace
+	fmt.Println("Call operation: LinkedStorageAccounts_ListByWorkspace")
 	linkedStorageAccountsClientNewListByWorkspacePager := linkedStorageAccountsClient.NewListByWorkspacePager(testsuite.resourceGroupName, testsuite.workspaceName, nil)
 	for linkedStorageAccountsClientNewListByWorkspacePager.More() {
 		_, err := linkedStorageAccountsClientNewListByWorkspacePager.NextPage(testsuite.ctx)
@@ -180,10 +184,12 @@ func (testsuite *LinkedStorageAccountsTestSuite) TestLinkedStorageAccount() {
 	}
 
 	// From step LinkedStorageAccounts_Get
+	fmt.Println("Call operation: LinkedStorageAccounts_Get")
 	_, err = linkedStorageAccountsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.DataSourceTypeCustomLogs, nil)
 	testsuite.Require().NoError(err)
 
 	// From step LinkedStorageAccounts_Delete
+	fmt.Println("Call operation: LinkedStorageAccounts_Delete")
 	_, err = linkedStorageAccountsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.DataSourceTypeCustomLogs, nil)
 	testsuite.Require().NoError(err)
 }

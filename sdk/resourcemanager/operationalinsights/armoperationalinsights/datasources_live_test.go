@@ -10,6 +10,7 @@ package armoperationalinsights_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -143,6 +144,7 @@ func (testsuite *DataSourcesTestSuite) Prepare() {
 	testsuite.storageAccountId = deploymentExtend.Properties.Outputs.(map[string]interface{})["storageAccountId"].(map[string]interface{})["value"].(string)
 
 	// From step Workspaces_Create
+	fmt.Println("Call operation: Workspaces_Create")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{
@@ -163,6 +165,7 @@ func (testsuite *DataSourcesTestSuite) Prepare() {
 func (testsuite *DataSourcesTestSuite) TestWorkspacePurge() {
 	var err error
 	// From step DataSources_Create
+	fmt.Println("Call operation: DataSources_Create")
 	dataSourcesClient, err := armoperationalinsights.NewDataSourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = dataSourcesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, testsuite.dataSourceName, armoperationalinsights.DataSource{
@@ -174,6 +177,7 @@ func (testsuite *DataSourcesTestSuite) TestWorkspacePurge() {
 	testsuite.Require().NoError(err)
 
 	// From step DataSources_ListByWorkspace
+	fmt.Println("Call operation: DataSources_ListByWorkspace")
 	dataSourcesClientNewListByWorkspacePager := dataSourcesClient.NewListByWorkspacePager(testsuite.resourceGroupName, testsuite.workspaceName, "$filter=kind eq 'WindowsEvent'", &armoperationalinsights.DataSourcesClientListByWorkspaceOptions{Skiptoken: nil})
 	for dataSourcesClientNewListByWorkspacePager.More() {
 		_, err := dataSourcesClientNewListByWorkspacePager.NextPage(testsuite.ctx)
@@ -182,10 +186,12 @@ func (testsuite *DataSourcesTestSuite) TestWorkspacePurge() {
 	}
 
 	// From step DataSources_Get
+	fmt.Println("Call operation: DataSources_Get")
 	_, err = dataSourcesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, testsuite.dataSourceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DataSources_Delete
+	fmt.Println("Call operation: DataSources_Delete")
 	_, err = dataSourcesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, testsuite.dataSourceName, nil)
 	testsuite.Require().NoError(err)
 }

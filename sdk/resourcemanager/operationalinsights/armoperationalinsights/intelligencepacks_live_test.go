@@ -10,6 +10,7 @@ package armoperationalinsights_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestIntelligencePacksTestSuite(t *testing.T) {
 func (testsuite *IntelligencePacksTestSuite) Prepare() {
 	var err error
 	// From step Workspaces_Create
+	fmt.Println("Call operation: Workspaces_Create")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{
@@ -80,16 +82,19 @@ func (testsuite *IntelligencePacksTestSuite) Prepare() {
 func (testsuite *IntelligencePacksTestSuite) TestIntelligencePack() {
 	var err error
 	// From step IntelligencePacks_List
+	fmt.Println("Call operation: IntelligencePacks_List")
 	intelligencePacksClient, err := armoperationalinsights.NewIntelligencePacksClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = intelligencePacksClient.List(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step IntelligencePacks_Enable
+	fmt.Println("Call operation: IntelligencePacks_Enable")
 	_, err = intelligencePacksClient.Enable(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "ChangeTracking", nil)
 	testsuite.Require().NoError(err)
 
 	// From step IntelligencePacks_Disable
+	fmt.Println("Call operation: IntelligencePacks_Disable")
 	_, err = intelligencePacksClient.Disable(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "ChangeTracking", nil)
 	testsuite.Require().NoError(err)
 }

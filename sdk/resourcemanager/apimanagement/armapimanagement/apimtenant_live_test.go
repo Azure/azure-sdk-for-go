@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestApimtenantTestSuite(t *testing.T) {
 func (testsuite *ApimtenantTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -82,6 +84,7 @@ func (testsuite *ApimtenantTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step TenantAccess_Create
+	fmt.Println("Call operation: TenantAccess_Create")
 	tenantAccessClient, err := armapimanagement.NewTenantAccessClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = tenantAccessClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.AccessIDNameAccess, "*", armapimanagement.AccessInformationCreateParameters{
@@ -96,12 +99,14 @@ func (testsuite *ApimtenantTestSuite) Prepare() {
 func (testsuite *ApimtenantTestSuite) TestTenantaccess() {
 	var err error
 	// From step TenantAccess_GetEntityTag
+	fmt.Println("Call operation: TenantAccess_GetEntityTag")
 	tenantAccessClient, err := armapimanagement.NewTenantAccessClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = tenantAccessClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.AccessIDNameAccess, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TenantAccess_ListByService
+	fmt.Println("Call operation: TenantAccess_ListByService")
 	tenantAccessClientNewListByServicePager := tenantAccessClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.TenantAccessClientListByServiceOptions{Filter: nil})
 	for tenantAccessClientNewListByServicePager.More() {
 		_, err := tenantAccessClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -110,10 +115,12 @@ func (testsuite *ApimtenantTestSuite) TestTenantaccess() {
 	}
 
 	// From step TenantAccess_Get
+	fmt.Println("Call operation: TenantAccess_Get")
 	_, err = tenantAccessClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.AccessIDNameAccess, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TenantAccess_Update
+	fmt.Println("Call operation: TenantAccess_Update")
 	_, err = tenantAccessClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.AccessIDNameAccess, "*", armapimanagement.AccessInformationUpdateParameters{
 		Properties: &armapimanagement.AccessInformationUpdateParameterProperties{
 			Enabled: to.Ptr(true),
@@ -122,14 +129,17 @@ func (testsuite *ApimtenantTestSuite) TestTenantaccess() {
 	testsuite.Require().NoError(err)
 
 	// From step TenantAccess_RegenerateSecondaryKey
+	fmt.Println("Call operation: TenantAccess_RegenerateSecondaryKey")
 	_, err = tenantAccessClient.RegenerateSecondaryKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.AccessIDNameAccess, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TenantAccess_ListSecrets
+	fmt.Println("Call operation: TenantAccess_ListSecrets")
 	_, err = tenantAccessClient.ListSecrets(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.AccessIDNameAccess, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TenantAccess_RegeneratePrimaryKey
+	fmt.Println("Call operation: TenantAccess_RegeneratePrimaryKey")
 	_, err = tenantAccessClient.RegeneratePrimaryKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.AccessIDNameAccess, nil)
 	testsuite.Require().NoError(err)
 }
@@ -138,12 +148,14 @@ func (testsuite *ApimtenantTestSuite) TestTenantaccess() {
 func (testsuite *ApimtenantTestSuite) TestTenantaccessgit() {
 	var err error
 	// From step TenantAccessGit_RegeneratePrimaryKey
+	fmt.Println("Call operation: TenantAccessGit_RegeneratePrimaryKey")
 	tenantAccessGitClient, err := armapimanagement.NewTenantAccessGitClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = tenantAccessGitClient.RegeneratePrimaryKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.AccessIDNameAccess, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TenantAccessGit_RegenerateSecondaryKey
+	fmt.Println("Call operation: TenantAccessGit_RegenerateSecondaryKey")
 	_, err = tenantAccessGitClient.RegenerateSecondaryKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.AccessIDNameAccess, nil)
 	testsuite.Require().NoError(err)
 }
@@ -152,6 +164,7 @@ func (testsuite *ApimtenantTestSuite) TestTenantaccessgit() {
 func (testsuite *ApimtenantTestSuite) TestTenantconfiguration() {
 	var err error
 	// From step TenantConfiguration_Save
+	fmt.Println("Call operation: TenantConfiguration_Save")
 	tenantConfigurationClient, err := armapimanagement.NewTenantConfigurationClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	tenantConfigurationClientSaveResponsePoller, err := tenantConfigurationClient.BeginSave(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ConfigurationIDNameConfiguration, armapimanagement.SaveConfigurationParameter{
@@ -164,10 +177,12 @@ func (testsuite *ApimtenantTestSuite) TestTenantconfiguration() {
 	testsuite.Require().NoError(err)
 
 	// From step TenantConfiguration_GetSyncState
+	fmt.Println("Call operation: TenantConfiguration_GetSyncState")
 	_, err = tenantConfigurationClient.GetSyncState(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ConfigurationIDNameConfiguration, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TenantConfiguration_Validate
+	fmt.Println("Call operation: TenantConfiguration_Validate")
 	tenantConfigurationClientValidateResponsePoller, err := tenantConfigurationClient.BeginValidate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ConfigurationIDNameConfiguration, armapimanagement.DeployConfigurationParameters{
 		Properties: &armapimanagement.DeployConfigurationParameterProperties{
 			Branch: to.Ptr("master"),
@@ -178,6 +193,7 @@ func (testsuite *ApimtenantTestSuite) TestTenantconfiguration() {
 	testsuite.Require().NoError(err)
 
 	// From step TenantConfiguration_Deploy
+	fmt.Println("Call operation: TenantConfiguration_Deploy")
 	tenantConfigurationClientDeployResponsePoller, err := tenantConfigurationClient.BeginDeploy(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ConfigurationIDNameConfiguration, armapimanagement.DeployConfigurationParameters{
 		Properties: &armapimanagement.DeployConfigurationParameterProperties{
 			Branch: to.Ptr("master"),

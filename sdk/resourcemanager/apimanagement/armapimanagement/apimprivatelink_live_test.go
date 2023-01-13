@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -66,6 +67,7 @@ func TestApimprivatelinkTestSuite(t *testing.T) {
 func (testsuite *ApimprivatelinkTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -237,6 +239,7 @@ func (testsuite *ApimprivatelinkTestSuite) Prepare() {
 func (testsuite *ApimprivatelinkTestSuite) TestPrivateendpointconnection() {
 	var err error
 	// From step PrivateEndpointConnection_CreateOrUpdate
+	fmt.Println("Call operation: PrivateEndpointConnection_CreateOrUpdate")
 	privateEndpointConnectionClient, err := armapimanagement.NewPrivateEndpointConnectionClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateEndpointConnectionClientCreateOrUpdateResponsePoller, err := privateEndpointConnectionClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.privateEndpointConnectionName, armapimanagement.PrivateEndpointConnectionRequest{
@@ -253,6 +256,7 @@ func (testsuite *ApimprivatelinkTestSuite) TestPrivateendpointconnection() {
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnection_ListByService
+	fmt.Println("Call operation: PrivateEndpointConnection_ListByService")
 	privateEndpointConnectionClientNewListByServicePager := privateEndpointConnectionClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, nil)
 	for privateEndpointConnectionClientNewListByServicePager.More() {
 		_, err := privateEndpointConnectionClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -261,14 +265,17 @@ func (testsuite *ApimprivatelinkTestSuite) TestPrivateendpointconnection() {
 	}
 
 	// From step PrivateEndpointConnection_ListPrivateLinkResources
+	fmt.Println("Call operation: PrivateEndpointConnection_ListPrivateLinkResources")
 	_, err = privateEndpointConnectionClient.ListPrivateLinkResources(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnection_GetByName
+	fmt.Println("Call operation: PrivateEndpointConnection_GetByName")
 	_, err = privateEndpointConnectionClient.GetByName(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnection_Delete
+	fmt.Println("Call operation: PrivateEndpointConnection_Delete")
 	privateEndpointConnectionClientDeleteResponsePoller, err := privateEndpointConnectionClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, privateEndpointConnectionClientDeleteResponsePoller)

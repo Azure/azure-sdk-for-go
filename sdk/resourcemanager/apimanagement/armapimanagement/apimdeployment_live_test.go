@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestApimdeploymentTestSuite(t *testing.T) {
 func (testsuite *ApimdeploymentTestSuite) TestApimanagementservice() {
 	var err error
 	// From step ApiManagementService_CheckNameAvailability
+	fmt.Println("Call operation: ApiManagementService_CheckNameAvailability")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = serviceClient.CheckNameAvailability(testsuite.ctx, armapimanagement.ServiceCheckNameAvailabilityParameters{
@@ -68,6 +70,7 @@ func (testsuite *ApimdeploymentTestSuite) TestApimanagementservice() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
 			"Name": to.Ptr("Contoso"),
@@ -88,6 +91,7 @@ func (testsuite *ApimdeploymentTestSuite) TestApimanagementservice() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiManagementService_List
+	fmt.Println("Call operation: ApiManagementService_List")
 	serviceClientNewListPager := serviceClient.NewListPager(nil)
 	for serviceClientNewListPager.More() {
 		_, err := serviceClientNewListPager.NextPage(testsuite.ctx)
@@ -96,6 +100,7 @@ func (testsuite *ApimdeploymentTestSuite) TestApimanagementservice() {
 	}
 
 	// From step ApiManagementService_ListByResourceGroup
+	fmt.Println("Call operation: ApiManagementService_ListByResourceGroup")
 	serviceClientNewListByResourceGroupPager := serviceClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for serviceClientNewListByResourceGroupPager.More() {
 		_, err := serviceClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -104,10 +109,12 @@ func (testsuite *ApimdeploymentTestSuite) TestApimanagementservice() {
 	}
 
 	// From step ApiManagementService_Get
+	fmt.Println("Call operation: ApiManagementService_Get")
 	_, err = serviceClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiManagementService_Update
+	fmt.Println("Call operation: ApiManagementService_Update")
 	serviceClientUpdateResponsePoller, err := serviceClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceUpdateParameters{
 		Properties: &armapimanagement.ServiceUpdateProperties{
 			CustomProperties: map[string]*string{
@@ -120,14 +127,17 @@ func (testsuite *ApimdeploymentTestSuite) TestApimanagementservice() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiManagementService_GetDomainOwnershipIdentifier
+	fmt.Println("Call operation: ApiManagementService_GetDomainOwnershipIdentifier")
 	_, err = serviceClient.GetDomainOwnershipIdentifier(testsuite.ctx, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiManagementService_GetSsoToken
+	fmt.Println("Call operation: ApiManagementService_GetSsoToken")
 	_, err = serviceClient.GetSsoToken(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiManagementServiceSkus_ListAvailableServiceSkus
+	fmt.Println("Call operation: ApiManagementServiceSkus_ListAvailableServiceSkus")
 	serviceSKUsClient, err := armapimanagement.NewServiceSKUsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceSKUsClientNewListAvailableServiceSKUsPager := serviceSKUsClient.NewListAvailableServiceSKUsPager(testsuite.resourceGroupName, testsuite.serviceName, nil)
@@ -138,12 +148,14 @@ func (testsuite *ApimdeploymentTestSuite) TestApimanagementservice() {
 	}
 
 	// From step ApiManagementService_Delete
+	fmt.Println("Call operation: ApiManagementService_Delete")
 	serviceClientDeleteResponsePoller, err := serviceClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, serviceClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step DeletedServices_ListBySubscription
+	fmt.Println("Call operation: DeletedServices_ListBySubscription")
 	deletedServicesClient, err := armapimanagement.NewDeletedServicesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	deletedServicesClientNewListBySubscriptionPager := deletedServicesClient.NewListBySubscriptionPager(nil)
@@ -154,10 +166,12 @@ func (testsuite *ApimdeploymentTestSuite) TestApimanagementservice() {
 	}
 
 	// From step DeletedServices_GetByName
+	fmt.Println("Call operation: DeletedServices_GetByName")
 	_, err = deletedServicesClient.GetByName(testsuite.ctx, testsuite.serviceName, testsuite.location, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DeletedServices_Purge
+	fmt.Println("Call operation: DeletedServices_Purge")
 	deletedServicesClientPurgeResponsePoller, err := deletedServicesClient.BeginPurge(testsuite.ctx, testsuite.serviceName, testsuite.location, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, deletedServicesClientPurgeResponsePoller)
@@ -168,6 +182,7 @@ func (testsuite *ApimdeploymentTestSuite) TestApimanagementservice() {
 func (testsuite *ApimdeploymentTestSuite) TestApimanagementoperations() {
 	var err error
 	// From step ApiManagementOperations_List
+	fmt.Println("Call operation: ApiManagementOperations_List")
 	operationsClient, err := armapimanagement.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	operationsClientNewListPager := operationsClient.NewListPager(nil)

@@ -587,9 +587,6 @@ func (client *BlobClient) uploadChunkCreateRequest(ctx context.Context, location
 	if options != nil && options.ContentRange != nil {
 		req.Raw().Header["Content-Range"] = []string{*options.ContentRange}
 	}
-	if options != nil && options.ContentLength != nil {
-		req.Raw().Header["Content-Length"] = []string{*options.ContentLength}
-	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, req.SetBody(chunkData, "application/octet-stream")
 }

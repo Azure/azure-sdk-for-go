@@ -141,8 +141,6 @@ type BlobClientStartUploadOptions struct {
 
 // BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 type BlobClientUploadChunkOptions struct {
-	// Length of the chunk being uploaded, corresponding the length of the request body.
-	ContentLength *string
 	// Range of bytes identifying the desired block of content represented by the body. Start must the end offset retrieved via
 	// status check plus one. Note that this is a non-standard use of the
 	// Content-Range header.

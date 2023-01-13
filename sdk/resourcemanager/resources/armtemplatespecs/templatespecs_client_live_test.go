@@ -8,6 +8,7 @@ package armtemplatespecs_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,6 +54,7 @@ func TestTemplateSpecsClient(t *testing.T) {
 
 func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 	// create template spec
+	fmt.Println("Call operation: TemplateSpecs_CreateOrUpdate")
 	templateSpecName := "go-test-template"
 	templateSpecsClient, err := armtemplatespecs.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -75,6 +77,7 @@ func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 	testsuite.Require().Equal(templateSpecName, *resp.Name)
 
 	// update template spec
+	fmt.Println("Call operation: TemplateSpecs_Update")
 	updateResp, err := templateSpecsClient.Update(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, &armtemplatespecs.ClientUpdateOptions{
 		TemplateSpec: &armtemplatespecs.TemplateSpecUpdateModel{
 			Tags: map[string]*string{
@@ -86,19 +89,23 @@ func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 	testsuite.Require().Equal("live", *updateResp.Tags["test"])
 
 	// get template spec
+	fmt.Println("Call operation: TemplateSpecs_Get")
 	getResp, err := templateSpecsClient.Get(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(templateSpecName, *getResp.Name)
 
 	// list template spec by resource group
+	fmt.Println("Call operation: TemplateSpecs_ListByResourceGroup")
 	listByResourceGroup := templateSpecsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listByResourceGroup.More())
 
 	// list template spec by subscription
+	fmt.Println("Call operation: TemplateSpecs_ListBySubscription")
 	listBySubscription := templateSpecsClient.NewListBySubscriptionPager(nil)
 	testsuite.Require().True(listBySubscription.More())
 
 	// delete template spec
+	fmt.Println("Call operation: TemplateSpecs_Delete")
 	_, err = templateSpecsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, nil)
 	testsuite.Require().NoError(err)
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// QueryItemsResponse contains response from the query operation.
+// QueryItemsResponse contains response from the item query operation.
 type QueryItemsResponse struct {
 	Response
 	// ContinuationToken contains the value of the x-ms-continuation header in the response.
@@ -59,4 +59,66 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 
 type queryServiceResponse struct {
 	Documents []map[string]interface{} `json:"Documents,omitempty"`
+}
+
+// QueryContainersResponse contains response from the container query operation.
+type QueryContainersResponse struct {
+	Response
+	// ContinuationToken contains the value of the x-ms-continuation header in the response.
+	// It can be used to stop a query and resume it later.
+	ContinuationToken string
+	// List of containers.
+	Containers []ContainerProperties
+}
+
+func newContainersQueryResponse(resp *http.Response) (QueryContainersResponse, error) {
+	response := QueryContainersResponse{
+		Response: newResponse(resp),
+	}
+
+	response.ContinuationToken = resp.Header.Get(cosmosHeaderContinuationToken)
+
+	result := queryContainersServiceResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
+		return QueryContainersResponse{}, err
+	}
+
+	response.Containers = result.Containers
+
+	return response, nil
+}
+
+type queryContainersServiceResponse struct {
+	Containers []ContainerProperties `json:"DocumentCollections,omitempty"`
+}
+
+// QueryDatabasesResponse contains response from the database query operation.
+type QueryDatabasesResponse struct {
+	Response
+	// ContinuationToken contains the value of the x-ms-continuation header in the response.
+	// It can be used to stop a query and resume it later.
+	ContinuationToken string
+	// List of databases.
+	Databases []DatabaseProperties
+}
+
+func newDatabasesQueryResponse(resp *http.Response) (QueryDatabasesResponse, error) {
+	response := QueryDatabasesResponse{
+		Response: newResponse(resp),
+	}
+
+	response.ContinuationToken = resp.Header.Get(cosmosHeaderContinuationToken)
+
+	result := queryDatabasesServiceResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
+		return QueryDatabasesResponse{}, err
+	}
+
+	response.Databases = result.Databases
+
+	return response, nil
+}
+
+type queryDatabasesServiceResponse struct {
+	Databases []DatabaseProperties `json:"Databases,omitempty"`
 }

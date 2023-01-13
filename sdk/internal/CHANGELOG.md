@@ -1,12 +1,20 @@
 # Release History
 
-## 1.1.2 (Unreleased)
+## 1.1.3 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.1.2 (2022-12-12)
+
+### Features Added
+
+- Export user agent formatting code that used to be in azcore's policy_telemetry.go so it can be shared with non-HTTP clients (ie: azservicebus/azeventhubs). ([#19681](https://github.com/Azure/azure-sdk-for-go/pull/19681))
 
 ### Other Changes
 * Prevented data races in `recording` ([#18763](https://github.com/Azure/azure-sdk-for-go/issues/18763))

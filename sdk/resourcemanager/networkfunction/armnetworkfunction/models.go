@@ -13,7 +13,7 @@ import "time"
 
 // AzureTrafficCollector - Azure Traffic Collector resource.
 type AzureTrafficCollector struct {
-	// Resource location.
+	// REQUIRED; Resource location.
 	Location *string `json:"location,omitempty"`
 
 	// Properties of the Azure Traffic Collector.
@@ -49,11 +49,11 @@ type AzureTrafficCollectorListResult struct {
 
 // AzureTrafficCollectorPropertiesFormat - Azure Traffic Collector resource properties.
 type AzureTrafficCollectorPropertiesFormat struct {
-	// Collector Policies for Azure Traffic Collector.
-	CollectorPolicies []*CollectorPolicy `json:"collectorPolicies,omitempty"`
-
 	// The virtualHub to which the Azure Traffic Collector belongs.
 	VirtualHub *ResourceReference `json:"virtualHub,omitempty"`
+
+	// READ-ONLY; Collector Policies for Azure Traffic Collector.
+	CollectorPolicies []*ResourceReference `json:"collectorPolicies,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the application rule collection resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -101,27 +101,6 @@ type ClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudError - An error response from the service.
-type CloudError struct {
-	// An error response from the service.
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the service.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty"`
-}
-
 // CollectorPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the CollectorPoliciesClient.BeginCreateOrUpdate
 // method.
 type CollectorPoliciesClientBeginCreateOrUpdateOptions struct {
@@ -146,24 +125,35 @@ type CollectorPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CollectorPoliciesClientUpdateTagsOptions contains the optional parameters for the CollectorPoliciesClient.UpdateTags method.
+type CollectorPoliciesClientUpdateTagsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CollectorPolicy - Collector policy resource.
 type CollectorPolicy struct {
+	// REQUIRED; Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the Collector Policy.
 	Properties *CollectorPolicyPropertiesFormat `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource Id
+	// READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource name
+	// READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *CollectorPolicySystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *TrackedResourceSystemData `json:"systemData,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource type
+	// READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -186,24 +176,6 @@ type CollectorPolicyPropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// CollectorPolicySystemData - Metadata pertaining to creation and last modification of the resource.
-type CollectorPolicySystemData struct {
-	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-
-	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
-
-	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
-
-	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-
-	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // EmissionPoliciesPropertiesFormat - Emission policy properties.
@@ -323,7 +295,7 @@ type TagsObject struct {
 
 // TrackedResource - Common resource representation.
 type TrackedResource struct {
-	// Resource location.
+	// REQUIRED; Resource location.
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.

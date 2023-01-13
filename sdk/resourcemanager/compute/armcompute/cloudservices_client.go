@@ -59,7 +59,7 @@ func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service
 // creation.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // parameters - The cloud service object.
@@ -79,7 +79,7 @@ func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, reso
 
 // CreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudService, options *CloudServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudServiceName, parameters, options)
 	if err != nil {
@@ -115,7 +115,7 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -123,7 +123,7 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 
 // BeginDelete - Deletes a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginDeleteOptions contains the optional parameters for the CloudServicesClient.BeginDelete
@@ -142,7 +142,7 @@ func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Deletes a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 func (client *CloudServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -178,7 +178,7 @@ func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -186,7 +186,7 @@ func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, reso
 
 // BeginDeleteInstances - Deletes role instances in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginDeleteInstancesOptions contains the optional parameters for the CloudServicesClient.BeginDeleteInstances
@@ -205,7 +205,7 @@ func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, res
 
 // DeleteInstances - Deletes role instances in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 func (client *CloudServicesClient) deleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteInstancesOptions) (*http.Response, error) {
 	req, err := client.deleteInstancesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -241,7 +241,7 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -252,7 +252,7 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 
 // Get - Display information about a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientGetOptions contains the optional parameters for the CloudServicesClient.Get method.
@@ -291,7 +291,7 @@ func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -308,7 +308,7 @@ func (client *CloudServicesClient) getHandleResponse(resp *http.Response) (Cloud
 
 // GetInstanceView - Gets the status of a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientGetInstanceViewOptions contains the optional parameters for the CloudServicesClient.GetInstanceView
@@ -348,7 +348,7 @@ func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -365,7 +365,7 @@ func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Resp
 
 // NewListPager - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the
 // next page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // options - CloudServicesClientListOptions contains the optional parameters for the CloudServicesClient.List method.
 func (client *CloudServicesClient) NewListPager(resourceGroupName string, options *CloudServicesClientListOptions) *runtime.Pager[CloudServicesClientListResponse] {
@@ -412,7 +412,7 @@ func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -430,7 +430,7 @@ func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (Clou
 // NewListAllPager - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use
 // nextLink property in the response to get the next page of Cloud Services. Do this till nextLink
 // is null to fetch all the Cloud Services.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // options - CloudServicesClientListAllOptions contains the optional parameters for the CloudServicesClient.ListAll method.
 func (client *CloudServicesClient) NewListAllPager(options *CloudServicesClientListAllOptions) *runtime.Pager[CloudServicesClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CloudServicesClientListAllResponse]{
@@ -472,7 +472,7 @@ func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -490,7 +490,7 @@ func (client *CloudServicesClient) listAllHandleResponse(resp *http.Response) (C
 // BeginPowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the
 // resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginPowerOffOptions contains the optional parameters for the CloudServicesClient.BeginPowerOff
@@ -509,7 +509,7 @@ func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGr
 
 // PowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 func (client *CloudServicesClient) powerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginPowerOffOptions) (*http.Response, error) {
 	req, err := client.powerOffCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -545,7 +545,7 @@ func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -555,7 +555,7 @@ func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, re
 // the storage resources that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginRebuildOptions contains the optional parameters for the CloudServicesClient.BeginRebuild
@@ -576,7 +576,7 @@ func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGro
 // the storage resources that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 func (client *CloudServicesClient) rebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRebuildOptions) (*http.Response, error) {
 	req, err := client.rebuildCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -612,7 +612,7 @@ func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -623,7 +623,7 @@ func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, res
 
 // BeginReimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginReimageOptions contains the optional parameters for the CloudServicesClient.BeginReimage
@@ -642,7 +642,7 @@ func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGro
 
 // Reimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 func (client *CloudServicesClient) reimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginReimageOptions) (*http.Response, error) {
 	req, err := client.reimageCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -678,7 +678,7 @@ func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -689,7 +689,7 @@ func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, res
 
 // BeginRestart - Restarts one or more role instances in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginRestartOptions contains the optional parameters for the CloudServicesClient.BeginRestart
@@ -708,7 +708,7 @@ func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGro
 
 // Restart - Restarts one or more role instances in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 func (client *CloudServicesClient) restart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -744,7 +744,7 @@ func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -755,7 +755,7 @@ func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, res
 
 // BeginStart - Starts the cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginStartOptions contains the optional parameters for the CloudServicesClient.BeginStart
@@ -774,7 +774,7 @@ func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroup
 
 // Start - Starts the cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 func (client *CloudServicesClient) start(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -810,7 +810,7 @@ func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -818,7 +818,7 @@ func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resou
 
 // BeginUpdate - Update a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // parameters - The cloud service object.
@@ -838,7 +838,7 @@ func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGrou
 
 // Update - Update a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudServiceUpdate, options *CloudServicesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServiceName, parameters, options)
 	if err != nil {
@@ -874,7 +874,7 @@ func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

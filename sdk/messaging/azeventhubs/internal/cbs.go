@@ -5,6 +5,7 @@ package internal
 
 import (
 	"context"
+	"errors"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
@@ -23,7 +24,10 @@ const (
 )
 
 // NegotiateClaim attempts to put a token to the $cbs management endpoint to negotiate auth for the given audience
-func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+//
+// contextWithTimeoutFn is intended to be context.WithTimeout in production code, but can be stubbed out when writing
+// unit tests to keep timeouts reasonable.
+func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
 	link, err := NewRPCLink(ctx, RPCLinkArgs{
 		Client:   conn,
 		Address:  cbsAddress,
@@ -34,15 +38,27 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 		return err
 	}
 
-	defer func() {
+	closeLink := func(ctx context.Context, origErr error) error {
+		ctx, cancel := contextWithTimeoutFn(ctx, defaultCloseTimeout)
+		defer cancel()
+
 		if err := link.Close(ctx); err != nil {
+			if IsCancelError(err) {
+				azlog.Writef(exported.EventAuth, "Failed closing claim link because it was cancelled. Connection will need to be reset")
+				return errConnResetNeeded
+			}
+
 			azlog.Writef(exported.EventAuth, "Failed closing claim link: %s", err.Error())
+			return err
 		}
-	}()
+
+		return origErr
+	}
 
 	token, err := provider.GetToken(audience)
 	if err != nil {
-		return err
+		azlog.Writef(exported.EventAuth, "Failed to get token from provider")
+		return closeLink(ctx, err)
 	}
 
 	azlog.Writef(exported.EventAuth, "negotiating claim for audience %s with token type %s and expiry of %s", audience, token.TokenType, token.Expiry)
@@ -58,8 +74,11 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 	}
 
 	if _, err := link.RPC(ctx, msg); err != nil {
-		return err
+		azlog.Writef(exported.EventAuth, "Failed to send/receive RPC message")
+		return closeLink(ctx, err)
 	}
 
-	return nil
+	return closeLink(ctx, nil)
 }
+
+var errConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")

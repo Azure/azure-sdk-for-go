@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/telemetry"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
@@ -23,9 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/utils"
 )
 
-const (
-	rootUserAgent = "/azsdk-go-azeventhubs/" + Version
-)
+var rootUserAgent = telemetry.Format("azeventhubs", Version)
 
 type (
 	// Namespace is an abstraction over an amqp.Client, allowing us to hold onto a single
@@ -72,7 +71,7 @@ type NamespaceWithNewAMQPLinks interface {
 type NamespaceForAMQPLinks interface {
 	NegotiateClaim(ctx context.Context, entityPath string) (context.CancelFunc, <-chan struct{}, error)
 	NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error)
-	NewRPCLink(ctx context.Context, managementPath string) (RPCLink, uint64, error)
+	NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error)
 	GetEntityAudience(entityPath string) string
 	Recover(ctx context.Context, clientRevision uint64) error
 	Close(ctx context.Context, permanently bool) error
@@ -264,8 +263,11 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
 		oldClient := ns.client
 		ns.client = nil
 
-		// the error on close isn't critical
-		_ = oldClient.Close()
+		if err := oldClient.Close(); err != nil {
+			// the error on close isn't critical, we don't need to exit or
+			// return it.
+			log.Writef(exported.EventConn, "Error closing old client: %s", err.Error())
+		}
 	}
 
 	log.Writef(exported.EventConn, "Creating a new client (rev:%d)", ns.connID)
@@ -276,6 +278,11 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
 
 	return nil
 }
+
+// negotiateClaimFn matches the signature for NegotiateClaim, and is used when we want to stub things out for tests.
+type negotiateClaimFn func(
+	ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider,
+	contextWithTimeoutFn contextWithTimeoutFn) error
 
 // negotiateClaim performs initial authentication and starts periodic refresh of credentials.
 // the returned func is to cancel() the refresh goroutine.
@@ -292,7 +299,7 @@ func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (con
 // when the background renewal stops or an error.
 func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	entityPath string,
-	cbsNegotiateClaim func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error,
+	cbsNegotiateClaim negotiateClaimFn,
 	nextClaimRefreshDurationFn func(expirationTime time.Time, currentTime time.Time) time.Duration) (func(), <-chan struct{}, error) {
 	audience := ns.GetEntityAudience(entityPath)
 
@@ -318,7 +325,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 		// The current cbs.NegotiateClaim implementation automatically creates and shuts
 		// down it's own link so we have to guard against that here.
 		ns.negotiateClaimMu.Lock()
-		err = cbsNegotiateClaim(ctx, audience, amqpClient, token)
+		err = cbsNegotiateClaim(ctx, audience, amqpClient, token, context.WithTimeout)
 		ns.negotiateClaimMu.Unlock()
 
 		if err != nil {
@@ -371,7 +378,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 				return
 			case <-time.After(nextClaimAt):
 				for {
-					err := utils.Retry(refreshCtx, exported.EventAuth, "NegotiateClaimRefresh", ns.RetryOptions, func(ctx context.Context, args *utils.RetryFnArgs) error {
+					err := utils.Retry(refreshCtx, exported.EventAuth, func() string { return "NegotiateClaimRefresh" }, ns.RetryOptions, func(ctx context.Context, args *utils.RetryFnArgs) error {
 						tmpExpiresOn, err := refreshClaim(ctx)
 
 						if err != nil {
@@ -457,7 +464,7 @@ func (ns *Namespace) GetEntityAudience(entityPath string) string {
 func (ns *Namespace) getUserAgent() string {
 	userAgent := rootUserAgent
 	if ns.userAgent != "" {
-		userAgent = fmt.Sprintf("%s/%s", userAgent, ns.userAgent)
+		userAgent = fmt.Sprintf("%s %s", ns.userAgent, userAgent)
 	}
 	return userAgent
 }

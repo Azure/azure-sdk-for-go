@@ -6,11 +6,13 @@ package internal
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/telemetry"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
@@ -35,6 +37,26 @@ var retryOptionsOnlyOnce = exported.RetryOptions{
 	MaxRetries: 0,
 }
 
+func TestNamespaceUserAgent(t *testing.T) {
+	ns := &Namespace{}
+
+	// Examples:
+	// User agent, no application ID  : 'azsdk-go-azeventhubs/v0.3.1 (go1.19.3; linux)'
+	// User agent, with application ID: 'userApplicationID azsdk-go-azeventhubs/v0.3.1 (go1.19.3; linux)'
+
+	baseUserAgent := telemetry.Format("azeventhubs", Version)
+	require.NotEmpty(t, baseUserAgent)
+
+	t.Logf("User agent, no application ID  : '%s'", ns.getUserAgent())
+	require.Equal(t, baseUserAgent, ns.getUserAgent())
+
+	opt := NamespaceWithUserAgent("userApplicationID")
+	require.NoError(t, opt(ns))
+
+	t.Logf("User agent, with application ID: '%s'", ns.getUserAgent())
+	require.Equal(t, fmt.Sprintf("userApplicationID %s", baseUserAgent), ns.getUserAgent())
+}
+
 func TestNamespaceNegotiateClaim(t *testing.T) {
 	expires := time.Now().Add(24 * time.Hour)
 
@@ -45,7 +67,7 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
 		cbsNegotiateClaimCalled++
 		return nil
 	}
@@ -89,7 +111,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
 		cbsNegotiateClaimCalled++
 		return nil
 	}
@@ -138,7 +160,7 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"entity path",
-		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
 			return errors.New("NegotiateClaim amqp.Client failed")
 		}, func(expirationTime, currentTime time.Time) time.Duration {
 			// refresh immediately since we're in a unit test.
@@ -160,7 +182,7 @@ func TestNamespaceNegotiateClaimNonRenewableToken(t *testing.T) {
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
 		cbsNegotiateClaimCalled++
 		return nil
 	}
@@ -200,7 +222,7 @@ func TestNamespaceNegotiateClaimFails(t *testing.T) {
 	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"entity path",
-		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
 			return errors.New("NegotiateClaim amqp.Client failed")
 		}, func(expirationTime, currentTime time.Time) time.Duration {
 			// not even used.
@@ -218,7 +240,7 @@ func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
 		cbsNegotiateClaimCalled++
 
 		// work the first time, fail on renewals.

@@ -82,11 +82,14 @@ func TestChainedTokenCredential_NilSource(t *testing.T) {
 }
 
 func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
+	// ChainedTokenCredential should continue iterating when a source returns credentialUnavailableError, wrapped or not
 	c1 := NewFakeCredential()
 	c1.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("test", "something went wrong"))
 	c2 := NewFakeCredential()
-	c2.SetResponse(azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour)}, nil)
-	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{c1, c2}, nil)
+	c2.SetResponse(azcore.AccessToken{}, fmt.Errorf("%w", newCredentialUnavailableError("...", "...")))
+	c3 := NewFakeCredential()
+	c3.SetResponse(azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour)}, nil)
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{c1, c2, c3}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

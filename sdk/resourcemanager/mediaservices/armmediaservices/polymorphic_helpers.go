@@ -49,6 +49,8 @@ func unmarshalCodecClassification(rawMsg json.RawMessage) (CodecClassification, 
 		b = &CopyAudio{}
 	case "#Microsoft.Media.CopyVideo":
 		b = &CopyVideo{}
+	case "#Microsoft.Media.DDAudio":
+		b = &DDAudio{}
 	case "#Microsoft.Media.H264Video":
 		b = &H264Video{}
 	case "#Microsoft.Media.H265Video":

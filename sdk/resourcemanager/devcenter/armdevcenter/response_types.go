@@ -69,6 +69,11 @@ type CatalogsClientUpdateResponse struct {
 	Catalog
 }
 
+// CheckNameAvailabilityClientExecuteResponse contains the response from method CheckNameAvailabilityClient.Execute.
+type CheckNameAvailabilityClientExecuteResponse struct {
+	CheckNameAvailabilityResponse
+}
+
 // DevBoxDefinitionsClientCreateOrUpdateResponse contains the response from method DevBoxDefinitionsClient.CreateOrUpdate.
 type DevBoxDefinitionsClientCreateOrUpdateResponse struct {
 	DevBoxDefinition

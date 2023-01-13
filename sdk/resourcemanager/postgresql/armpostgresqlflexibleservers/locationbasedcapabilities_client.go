@@ -56,8 +56,7 @@ func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore
 }
 
 // NewExecutePager - Get capabilities at specified location in a given subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2022-12-01
 // locationName - The name of the location.
 // options - LocationBasedCapabilitiesClientExecuteOptions contains the optional parameters for the LocationBasedCapabilitiesClient.Execute
 // method.
@@ -105,7 +104,7 @@ func (client *LocationBasedCapabilitiesClient) executeCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

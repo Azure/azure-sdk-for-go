@@ -9,6 +9,7 @@ package container_test
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"sort"
 	"strconv"
 	"strings"
@@ -2155,4 +2156,30 @@ func (s *ContainerRecordedTestsSuite) TestSetAccessPolicyWithNullId() {
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 	_require.Len(resp.SignedIdentifiers, 0)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestBlobNameSpecialCharacters() {
+	_require := require.New(s.T())
+
+	const containerURL = testcommon.FakeStorageURL + "/fakecontainer"
+	client, err := container.NewClientWithNoCredential(containerURL, nil)
+	_require.NoError(err)
+	_require.NotNil(client)
+
+	blobNames := []string{"foo%5Cbar", "hello? sausage/Hello.txt", "世界.txt"}
+	for _, blobName := range blobNames {
+		expected := containerURL + "/" + url.PathEscape(blobName)
+
+		abc := client.NewAppendBlobClient(blobName)
+		_require.Equal(expected, abc.URL())
+
+		bbc := client.NewBlockBlobClient(blobName)
+		_require.Equal(expected, bbc.URL())
+
+		pbc := client.NewPageBlobClient(blobName)
+		_require.Equal(expected, pbc.URL())
+
+		bc := client.NewBlobClient(blobName)
+		_require.Equal(expected, bc.URL())
+	}
 }

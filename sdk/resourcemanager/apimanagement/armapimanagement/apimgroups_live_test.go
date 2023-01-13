@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimgroupsTestSuite(t *testing.T) {
 func (testsuite *ApimgroupsTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimgroupsTestSuite) Prepare() {
 func (testsuite *ApimgroupsTestSuite) TestGroup() {
 	var err error
 	// From step Group_CreateOrUpdate
+	fmt.Println("Call operation: Group_CreateOrUpdate")
 	groupClient, err := armapimanagement.NewGroupClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = groupClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.groupId, armapimanagement.GroupCreateParameters{
@@ -98,10 +101,12 @@ func (testsuite *ApimgroupsTestSuite) TestGroup() {
 	testsuite.Require().NoError(err)
 
 	// From step Group_GetEntityTag
+	fmt.Println("Call operation: Group_GetEntityTag")
 	_, err = groupClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.groupId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Group_ListByService
+	fmt.Println("Call operation: Group_ListByService")
 	groupClientNewListByServicePager := groupClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.GroupClientListByServiceOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -113,10 +118,12 @@ func (testsuite *ApimgroupsTestSuite) TestGroup() {
 	}
 
 	// From step Group_Get
+	fmt.Println("Call operation: Group_Get")
 	_, err = groupClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.groupId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Group_Update
+	fmt.Println("Call operation: Group_Update")
 	_, err = groupClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.groupId, "*", armapimanagement.GroupUpdateParameters{
 		Properties: &armapimanagement.GroupUpdateParametersProperties{
 			DisplayName: to.Ptr("temp group"),
@@ -125,6 +132,7 @@ func (testsuite *ApimgroupsTestSuite) TestGroup() {
 	testsuite.Require().NoError(err)
 
 	// From step Group_Delete
+	fmt.Println("Call operation: Group_Delete")
 	_, err = groupClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.groupId, "*", nil)
 	testsuite.Require().NoError(err)
 }

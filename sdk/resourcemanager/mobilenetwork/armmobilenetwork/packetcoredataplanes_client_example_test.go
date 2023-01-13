@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreDataPlaneDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreDataPlaneDelete.json
 func ExamplePacketCoreDataPlanesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,11 +28,7 @@ func ExamplePacketCoreDataPlanesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"testPacketCoreCP",
-		"testPacketCoreDP",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "testPacketCoreCP", "testPacketCoreDP", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -42,7 +38,7 @@ func ExamplePacketCoreDataPlanesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreDataPlaneGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreDataPlaneGet.json
 func ExamplePacketCoreDataPlanesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,11 +49,7 @@ func ExamplePacketCoreDataPlanesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"testPacketCoreCP",
-		"testPacketCoreDP",
-		nil)
+	res, err := client.Get(ctx, "rg1", "testPacketCoreCP", "testPacketCoreDP", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -65,7 +57,7 @@ func ExamplePacketCoreDataPlanesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreDataPlaneCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreDataPlaneCreate.json
 func ExamplePacketCoreDataPlanesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,19 +68,14 @@ func ExamplePacketCoreDataPlanesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"testPacketCoreCP",
-		"testPacketCoreDP",
-		armmobilenetwork.PacketCoreDataPlane{
-			Location: to.Ptr("eastus"),
-			Properties: &armmobilenetwork.PacketCoreDataPlanePropertiesFormat{
-				UserPlaneAccessInterface: &armmobilenetwork.InterfaceProperties{
-					Name: to.Ptr("N3"),
-				},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testPacketCoreCP", "testPacketCoreDP", armmobilenetwork.PacketCoreDataPlane{
+		Location: to.Ptr("eastus"),
+		Properties: &armmobilenetwork.PacketCoreDataPlanePropertiesFormat{
+			UserPlaneAccessInterface: &armmobilenetwork.InterfaceProperties{
+				Name: to.Ptr("N3"),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -100,7 +87,7 @@ func ExamplePacketCoreDataPlanesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreDataPlaneUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreDataPlaneUpdateTags.json
 func ExamplePacketCoreDataPlanesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,17 +98,12 @@ func ExamplePacketCoreDataPlanesClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx,
-		"rg1",
-		"testPacketCoreCP",
-		"testPacketCoreDP",
-		armmobilenetwork.TagsObject{
-			Tags: map[string]*string{
-				"tag1": to.Ptr("value1"),
-				"tag2": to.Ptr("value2"),
-			},
+	res, err := client.UpdateTags(ctx, "rg1", "testPacketCoreCP", "testPacketCoreDP", armmobilenetwork.TagsObject{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -129,7 +111,7 @@ func ExamplePacketCoreDataPlanesClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
 func ExamplePacketCoreDataPlanesClient_NewListByPacketCoreControlPlanePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,9 +122,7 @@ func ExamplePacketCoreDataPlanesClient_NewListByPacketCoreControlPlanePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPacketCoreControlPlanePager("rg1",
-		"testPacketCoreCP",
-		nil)
+	pager := client.NewListByPacketCoreControlPlanePager("rg1", "testPacketCoreCP", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

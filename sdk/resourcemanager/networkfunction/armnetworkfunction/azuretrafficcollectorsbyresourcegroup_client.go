@@ -56,8 +56,7 @@ func NewAzureTrafficCollectorsByResourceGroupClient(subscriptionID string, crede
 }
 
 // NewListPager - Return list of Azure Traffic Collectors in a Resource Group
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group.
 // options - AzureTrafficCollectorsByResourceGroupClientListOptions contains the optional parameters for the AzureTrafficCollectorsByResourceGroupClient.List
 // method.
@@ -105,7 +104,7 @@ func (client *AzureTrafficCollectorsByResourceGroupClient) listCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

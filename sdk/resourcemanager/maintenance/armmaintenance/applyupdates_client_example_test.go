@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_GetParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_GetParent.json
 func ExampleApplyUpdatesClient_GetParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,15 +27,7 @@ func ExampleApplyUpdatesClient_GetParent() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetParent(ctx,
-		"examplerg",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"Microsoft.Compute",
-		"virtualMachines",
-		"smdvm1",
-		"e9b9685d-78e4-44c4-a81c-64a14f9b87b6",
-		nil)
+	res, err := client.GetParent(ctx, "examplerg", "virtualMachineScaleSets", "smdtest1", "Microsoft.Compute", "virtualMachines", "smdvm1", "e9b9685d-78e4-44c4-a81c-64a14f9b87b6", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -43,7 +35,7 @@ func ExampleApplyUpdatesClient_GetParent() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_Get.json
 func ExampleApplyUpdatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,13 +46,7 @@ func ExampleApplyUpdatesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"e9b9685d-78e4-44c4-a81c-64a14f9b87b6",
-		nil)
+	res, err := client.Get(ctx, "examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "e9b9685d-78e4-44c4-a81c-64a14f9b87b6", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -68,7 +54,7 @@ func ExampleApplyUpdatesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_CreateOrUpdateParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_CreateOrUpdateParent.json
 func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,14 +65,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateParent(ctx,
-		"examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"virtualMachines",
-		"smdvm1",
-		nil)
+	res, err := client.CreateOrUpdateParent(ctx, "examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "virtualMachines", "smdvm1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -94,7 +73,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_CreateOrUpdate.json
 func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,12 +84,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		nil)
+	res, err := client.CreateOrUpdate(ctx, "examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -118,7 +92,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ApplyUpdates_List.json
 func ExampleApplyUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/Updates_ListParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/Updates_ListParent.json
 func ExampleUpdatesClient_NewListParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,13 +27,7 @@ func ExampleUpdatesClient_NewListParentPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListParentPager("examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"virtualMachines",
-		"1",
-		nil)
+	pager := client.NewListParentPager("examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "virtualMachines", "1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -46,7 +40,7 @@ func ExampleUpdatesClient_NewListParentPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/Updates_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/Updates_List.json
 func ExampleUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,11 +51,7 @@ func ExampleUpdatesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		nil)
+	pager := client.NewListPager("examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

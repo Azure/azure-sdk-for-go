@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_GetParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ConfigurationAssignments_GetParent.json
 func ExampleConfigurationAssignmentsClient_GetParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,15 +28,7 @@ func ExampleConfigurationAssignmentsClient_GetParent() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetParent(ctx,
-		"examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"virtualMachines",
-		"smdvm1",
-		"workervmPolicy",
-		nil)
+	res, err := client.GetParent(ctx, "examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "virtualMachines", "smdvm1", "workervmPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -44,7 +36,7 @@ func ExampleConfigurationAssignmentsClient_GetParent() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_CreateOrUpdateParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ConfigurationAssignments_CreateOrUpdateParent.json
 func ExampleConfigurationAssignmentsClient_CreateOrUpdateParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,20 +47,11 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdateParent() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateParent(ctx,
-		"examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"virtualMachines",
-		"smdvm1",
-		"workervmPolicy",
-		armmaintenance.ConfigurationAssignment{
-			Properties: &armmaintenance.ConfigurationAssignmentProperties{
-				MaintenanceConfigurationID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/policy1"),
-			},
+	res, err := client.CreateOrUpdateParent(ctx, "examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "virtualMachines", "smdvm1", "workervmPolicy", armmaintenance.ConfigurationAssignment{
+		Properties: &armmaintenance.ConfigurationAssignmentProperties{
+			MaintenanceConfigurationID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/policy1"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,7 +59,7 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdateParent() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_DeleteParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ConfigurationAssignments_DeleteParent.json
 func ExampleConfigurationAssignmentsClient_DeleteParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,15 +70,7 @@ func ExampleConfigurationAssignmentsClient_DeleteParent() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.DeleteParent(ctx,
-		"examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"virtualMachines",
-		"smdvm1",
-		"workervmConfiguration",
-		nil)
+	res, err := client.DeleteParent(ctx, "examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "virtualMachines", "smdvm1", "workervmConfiguration", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -103,7 +78,7 @@ func ExampleConfigurationAssignmentsClient_DeleteParent() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ConfigurationAssignments_Get.json
 func ExampleConfigurationAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,13 +89,7 @@ func ExampleConfigurationAssignmentsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"workervmConfiguration",
-		nil)
+	res, err := client.Get(ctx, "examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "workervmConfiguration", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -128,7 +97,7 @@ func ExampleConfigurationAssignmentsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ConfigurationAssignments_CreateOrUpdate.json
 func ExampleConfigurationAssignmentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,18 +108,11 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"workervmConfiguration",
-		armmaintenance.ConfigurationAssignment{
-			Properties: &armmaintenance.ConfigurationAssignmentProperties{
-				MaintenanceConfigurationID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
-			},
+	res, err := client.CreateOrUpdate(ctx, "examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "workervmConfiguration", armmaintenance.ConfigurationAssignment{
+		Properties: &armmaintenance.ConfigurationAssignmentProperties{
+			MaintenanceConfigurationID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -158,7 +120,7 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ConfigurationAssignments_Delete.json
 func ExampleConfigurationAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,13 +131,7 @@ func ExampleConfigurationAssignmentsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Delete(ctx,
-		"examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"workervmConfiguration",
-		nil)
+	res, err := client.Delete(ctx, "examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "workervmConfiguration", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -183,7 +139,7 @@ func ExampleConfigurationAssignmentsClient_Delete() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_ListParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ConfigurationAssignments_ListParent.json
 func ExampleConfigurationAssignmentsClient_NewListParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,13 +150,7 @@ func ExampleConfigurationAssignmentsClient_NewListParentPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListParentPager("examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		"virtualMachines",
-		"smdtestvm1",
-		nil)
+	pager := client.NewListParentPager("examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", "virtualMachines", "smdtestvm1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -213,7 +163,7 @@ func ExampleConfigurationAssignmentsClient_NewListParentPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ConfigurationAssignments_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2022-07-01-preview/examples/ConfigurationAssignments_List.json
 func ExampleConfigurationAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,11 +174,7 @@ func ExampleConfigurationAssignmentsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("examplerg",
-		"Microsoft.Compute",
-		"virtualMachineScaleSets",
-		"smdtest1",
-		nil)
+	pager := client.NewListPager("examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

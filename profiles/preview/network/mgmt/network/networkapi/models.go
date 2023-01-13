@@ -9,7 +9,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-05-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-07-01/network/networkapi"
 
 type AdminRuleCollectionsClientAPI = original.AdminRuleCollectionsClientAPI
 type AdminRulesClientAPI = original.AdminRulesClientAPI

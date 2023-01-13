@@ -222,7 +222,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 }
 
 // NewListPager - List Media Services accounts in the resource group
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
@@ -286,7 +285,6 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 }
 
 // NewListBySubscriptionPager - List Media Services accounts in the subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-11-01
 // options - ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
 func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {

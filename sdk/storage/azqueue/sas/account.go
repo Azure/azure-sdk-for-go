@@ -88,13 +88,13 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 }
 
 // AccountPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignature value's Permissions field.
+// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues' Permissions field.
 type AccountPermissions struct {
-	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process, Tag, FilterByTags, PermanentDelete bool
+	Read, Write, Delete, DeletePreviousVersion, PermanentDelete, List, Add, Create, Update, Process, Tag, FilterByTags, SetImmutabilityPolicy bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
-// Call this method to set AccountSASSignatureValues' Permissions field.
+// Call this method to set AccountSASSignatureValues's Permissions field.
 func (p *AccountPermissions) String() string {
 	var buffer bytes.Buffer
 	if p.Read {
@@ -133,6 +133,9 @@ func (p *AccountPermissions) String() string {
 	if p.FilterByTags {
 		buffer.WriteRune('f')
 	}
+	if p.SetImmutabilityPolicy {
+		buffer.WriteRune('i')
+	}
 	return buffer.String()
 }
 
@@ -147,6 +150,8 @@ func parseAccountPermissions(s string) (AccountPermissions, error) {
 			p.Write = true
 		case 'd':
 			p.Delete = true
+		case 'x':
+			p.DeletePreviousVersion = true
 		case 'y':
 			p.PermanentDelete = true
 		case 'l':
@@ -159,12 +164,12 @@ func parseAccountPermissions(s string) (AccountPermissions, error) {
 			p.Update = true
 		case 'p':
 			p.Process = true
-		case 'x':
-			p.Process = true
 		case 't':
 			p.Tag = true
 		case 'f':
 			p.FilterByTags = true
+		case 'i':
+			p.SetImmutabilityPolicy = true
 		default:
 			return AccountPermissions{}, fmt.Errorf("invalid permission character: '%v'", r)
 		}

@@ -17,21 +17,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/DatabaseCreate.json
-func ExampleDatabasesClient_BeginCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/AdministratorAdd.json
+func ExampleAdministratorsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlflexibleservers.NewDatabasesClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	client, err := armpostgresqlflexibleservers.NewAdministratorsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "TestGroup", "testserver", "db1", armpostgresqlflexibleservers.Database{
-		Properties: &armpostgresqlflexibleservers.DatabaseProperties{
-			Charset:   to.Ptr("utf8"),
-			Collation: to.Ptr("en_US.utf8"),
+	poller, err := client.BeginCreate(ctx, "testrg", "testserver", "oooooooo-oooo-oooo-oooo-oooooooooooo", armpostgresqlflexibleservers.ActiveDirectoryAdministratorAdd{
+		Properties: &armpostgresqlflexibleservers.AdministratorPropertiesForAdd{
+			PrincipalName: to.Ptr("testuser1@microsoft.com"),
+			PrincipalType: to.Ptr(armpostgresqlflexibleservers.PrincipalTypeUser),
+			TenantID:      to.Ptr("tttttttt-tttt-tttt-tttt-tttttttttttt"),
 		},
 	}, nil)
 	if err != nil {
@@ -45,18 +46,18 @@ func ExampleDatabasesClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/DatabaseDelete.json
-func ExampleDatabasesClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/AdministratorDelete.json
+func ExampleAdministratorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlflexibleservers.NewDatabasesClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	client, err := armpostgresqlflexibleservers.NewAdministratorsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "TestGroup", "testserver", "db1", nil)
+	poller, err := client.BeginDelete(ctx, "testrg", "testserver", "oooooooo-oooo-oooo-oooo-oooooooooooo", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,18 +67,18 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/DatabaseGet.json
-func ExampleDatabasesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/AdministratorGet.json
+func ExampleAdministratorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlflexibleservers.NewDatabasesClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	client, err := armpostgresqlflexibleservers.NewAdministratorsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "TestGroup", "testserver", "db1", nil)
+	res, err := client.Get(ctx, "testrg", "pgtestsvc1", "oooooooo-oooo-oooo-oooo-oooooooooooo", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -85,18 +86,18 @@ func ExampleDatabasesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/DatabasesListByServer.json
-func ExampleDatabasesClient_NewListByServerPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/AdministratorsListByServer.json
+func ExampleAdministratorsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlflexibleservers.NewDatabasesClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	client, err := armpostgresqlflexibleservers.NewAdministratorsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerPager("TestGroup", "testserver", nil)
+	pager := client.NewListByServerPager("testrg", "pgtestsvc1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

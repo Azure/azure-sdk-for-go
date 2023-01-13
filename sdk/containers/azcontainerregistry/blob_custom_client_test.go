@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 	"io"
@@ -32,7 +31,7 @@ func TestBlobClient_CompleteUpload(t *testing.T) {
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), calculator, nil)
+	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, bytes.NewReader(blob), calculator, nil)
 	require.NoError(t, err)
 	completeResp, err := client.CompleteUpload(ctx, *uploadResp.Location, calculator, nil)
 	require.NoError(t, err)
@@ -52,7 +51,7 @@ func TestBlobClient_UploadChunk(t *testing.T) {
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), calculator, nil)
+	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, bytes.NewReader(blob), calculator, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, *uploadResp.Location)
 	_, err = client.CancelUpload(ctx, *uploadResp.Location, nil)
@@ -75,10 +74,10 @@ func TestBlobClient_CompleteUpload_uploadByChunk(t *testing.T) {
 	oriReader := bytes.NewReader(blob)
 	firstPart := io.NewSectionReader(oriReader, int64(0), int64(len(blob)/2))
 	secondPart := io.NewSectionReader(oriReader, int64(len(blob)/2), int64(len(blob)-len(blob)/2))
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, streaming.NopCloser(firstPart), calculator, &BlobClientUploadChunkOptions{ContentRange: to.Ptr(fmt.Sprintf("0-%d", len(blob)/2-1))})
+	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, firstPart, calculator, &BlobClientUploadChunkOptions{ContentRange: to.Ptr(fmt.Sprintf("0-%d", len(blob)/2-1))})
 	require.NoError(t, err)
 	require.NotEmpty(t, *uploadResp.Location)
-	uploadResp, err = client.UploadChunk(ctx, *uploadResp.Location, streaming.NopCloser(secondPart), calculator, &BlobClientUploadChunkOptions{ContentRange: to.Ptr(fmt.Sprintf("%d-%d", len(blob)/2, len(blob)-1))})
+	uploadResp, err = client.UploadChunk(ctx, *uploadResp.Location, secondPart, calculator, &BlobClientUploadChunkOptions{ContentRange: to.Ptr(fmt.Sprintf("%d-%d", len(blob)/2, len(blob)-1))})
 	require.NoError(t, err)
 	require.NotEmpty(t, *uploadResp.Location)
 	completeResp, err := client.CompleteUpload(ctx, *uploadResp.Location, calculator, nil)

@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"hash"
 	"io"
 	"reflect"
@@ -65,10 +66,9 @@ type BlobDigestCalculator struct {
 	h hash.Hash
 }
 
-type wrappedReadSeekCloser struct {
+type wrappedReadSeeker struct {
 	io.Reader
 	io.Seeker
-	io.Closer
 }
 
 // NewBlobDigestCalculator creates a new calculator to help to calculate blob digest when uploading blob.
@@ -84,9 +84,9 @@ func NewBlobDigestCalculator() *BlobDigestCalculator {
 //   - chunkData - Raw data of blob
 //   - blobDigestCalculator - Calculator that help to calculate blob digest
 //   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
-func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeekCloser, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
-	wrappedChunkData := &wrappedReadSeekCloser{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData, Closer: chunkData}
-	return client.uploadChunk(ctx, location, wrappedChunkData, options)
+func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeeker, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
+	wrappedChunkData := &wrappedReadSeeker{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData}
+	return client.uploadChunk(ctx, location, streaming.NopCloser(wrappedChunkData), options)
 }
 
 // CompleteUpload - Complete the upload with previously uploaded content.

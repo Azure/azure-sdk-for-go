@@ -36,7 +36,7 @@ func Example_uploadManifest() {
 		log.Fatalf("failed to start upload layer: %v", err)
 	}
 	calculator := azcontainerregistry.NewBlobDigestCalculator()
-	uploadResp, err := blobClient.UploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(layer)), calculator, nil)
+	uploadResp, err := blobClient.UploadChunk(ctx, *startRes.Location, bytes.NewReader(layer), calculator, nil)
 	if err != nil {
 		log.Fatalf("failed to upload layer: %v", err)
 	}
@@ -58,7 +58,7 @@ func Example_uploadManifest() {
 		log.Fatalf("failed to start upload config: %v", err)
 	}
 	calculator = azcontainerregistry.NewBlobDigestCalculator()
-	uploadResp, err = blobClient.UploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(config)), calculator, nil)
+	uploadResp, err = blobClient.UploadChunk(ctx, *startRes.Location, bytes.NewReader(config), calculator, nil)
 	if err != nil {
 		log.Fatalf("failed to upload config: %v", err)
 	}

@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry"
 	"io"
@@ -33,7 +32,7 @@ func Example_uploadAndDownloadBlob() {
 		log.Fatalf("failed to start upload blob: %v", err)
 	}
 	calculator := azcontainerregistry.NewBlobDigestCalculator()
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), calculator, nil)
+	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, bytes.NewReader(blob), calculator, nil)
 	if err != nil {
 		log.Fatalf("failed to upload blob: %v", err)
 	}

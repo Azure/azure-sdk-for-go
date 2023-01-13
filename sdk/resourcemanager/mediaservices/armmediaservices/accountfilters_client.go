@@ -232,7 +232,6 @@ func (client *AccountFiltersClient) getHandleResponse(resp *http.Response) (Acco
 }
 
 // NewListPager - List Account Filters in the Media Services account.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.

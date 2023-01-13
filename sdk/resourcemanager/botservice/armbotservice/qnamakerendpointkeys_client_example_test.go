@@ -17,26 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/DirectlineRegenerateKeys.json
-func ExampleDirectLineClient_RegenerateKeys() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/stable/2022-09-15/examples/ListQnAMakerEndpointKeys.json
+func ExampleQnAMakerEndpointKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewDirectLineClient("subscription-id", cred, nil)
+	client, err := armbotservice.NewQnAMakerEndpointKeysClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RegenerateKeys(ctx,
-		"OneResourceGroupName",
-		"samplebotname",
-		armbotservice.RegenerateKeysChannelNameDirectLineChannel,
-		armbotservice.SiteInfo{
-			Key:      to.Ptr(armbotservice.KeyKey1),
-			SiteName: to.Ptr("testSiteName"),
-		},
-		nil)
+	res, err := client.Get(ctx, armbotservice.QnAMakerEndpointKeysRequestBody{
+		Authkey:  to.Ptr("testAuthKey"),
+		Hostname: to.Ptr("https://xxx.cognitiveservices.azure.com/"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

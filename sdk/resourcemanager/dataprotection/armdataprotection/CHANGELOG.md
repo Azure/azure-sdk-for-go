@@ -4,7 +4,6 @@
 ### Breaking Changes
 
 - Type of `ResourceGuard.ProvisioningState` has been changed from `*ProvisioningState` to `*ResourceGuardProvisioningState`
-- Struct `CloudError` has been removed
 
 ### Features Added
 

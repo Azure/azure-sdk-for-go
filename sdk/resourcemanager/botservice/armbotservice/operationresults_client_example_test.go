@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/OperationResultsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/stable/2022-09-15/examples/OperationResultsGet.json
 func ExampleOperationResultsClient_BeginGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,9 +27,7 @@ func ExampleOperationResultsClient_BeginGet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGet(ctx,
-		"exampleid",
-		nil)
+	poller, err := client.BeginGet(ctx, "exampleid", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

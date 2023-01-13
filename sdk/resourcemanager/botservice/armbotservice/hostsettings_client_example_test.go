@@ -16,21 +16,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListPrivateLinkResources.json
-func ExamplePrivateLinkResourcesClient_ListByBotResource() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/stable/2022-09-15/examples/GetHostSettings.json
+func ExampleHostSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewPrivateLinkResourcesClient("{subscription-id}", cred, nil)
+	client, err := armbotservice.NewHostSettingsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListByBotResource(ctx,
-		"res6977",
-		"sto2527",
-		nil)
+	res, err := client.Get(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

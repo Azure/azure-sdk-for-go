@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListPrivateEndpointConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/stable/2022-09-15/examples/ListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("res6977",
-		"sto2527",
-		nil)
+	pager := client.NewListPager("res6977", "sto2527", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/stable/2022-09-15/examples/GetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"res6977",
-		"sto2527",
-		"{privateEndpointConnectionName}",
-		nil)
+	res, err := client.Get(ctx, "res6977", "sto2527", "{privateEndpointConnectionName}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/stable/2022-09-15/examples/PutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,19 +71,14 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx,
-		"res7687",
-		"sto9699",
-		"{privateEndpointConnectionName}",
-		armbotservice.PrivateEndpointConnection{
-			Properties: &armbotservice.PrivateEndpointConnectionProperties{
-				PrivateLinkServiceConnectionState: &armbotservice.PrivateLinkServiceConnectionState{
-					Description: to.Ptr("Auto-Approved"),
-					Status:      to.Ptr(armbotservice.PrivateEndpointServiceConnectionStatusApproved),
-				},
+	res, err := client.Create(ctx, "res7687", "sto9699", "{privateEndpointConnectionName}", armbotservice.PrivateEndpointConnection{
+		Properties: &armbotservice.PrivateEndpointConnectionProperties{
+			PrivateLinkServiceConnectionState: &armbotservice.PrivateLinkServiceConnectionState{
+				Description: to.Ptr("Auto-Approved"),
+				Status:      to.Ptr(armbotservice.PrivateEndpointServiceConnectionStatusApproved),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -97,7 +86,7 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/DeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/botservice/resource-manager/Microsoft.BotService/stable/2022-09-15/examples/DeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,11 +97,7 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"res6977",
-		"sto2527",
-		"{privateEndpointConnectionName}",
-		nil)
+	_, err = client.Delete(ctx, "res6977", "sto2527", "{privateEndpointConnectionName}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

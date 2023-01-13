@@ -64,7 +64,7 @@ func TestLinkedServicesTestSuite(t *testing.T) {
 func (testsuite *LinkedServicesTestSuite) Prepare() {
 	var err error
 	// From step Workspaces_Create
-	fmt.Println("Call operation: Workspaces_Create")
+	fmt.Println("Call operation: Workspaces_CreateOrUpdate")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{
@@ -81,7 +81,7 @@ func (testsuite *LinkedServicesTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Cluster_Create
-	fmt.Println("Call operation: Cluster_Create")
+	fmt.Println("Call operation: Clusters_CreateOrUpdate")
 	clustersClient, err := armoperationalinsights.NewClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	clustersClientCreateOrUpdateResponsePoller, err := clustersClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, armoperationalinsights.Cluster{

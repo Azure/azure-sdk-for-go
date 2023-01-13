@@ -61,7 +61,7 @@ func TestClustersTestSuite(t *testing.T) {
 func (testsuite *ClustersTestSuite) TestCluster() {
 	var err error
 	// From step Clusters_Create
-	fmt.Println("Call operation: Clusters_Create")
+	fmt.Println("Call operation: Clusters_CreateOrUpdate")
 	clustersClient, err := armoperationalinsights.NewClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	clustersClientCreateOrUpdateResponsePoller, err := clustersClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, armoperationalinsights.Cluster{

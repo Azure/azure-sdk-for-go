@@ -24,10 +24,12 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -3961,4 +3963,93 @@ func TestUploadBufferEvenBlockSize(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
+}
+
+func TestUploadLogEvent(t *testing.T) {
+	listnercalled := false
+	log.SetEvents(azblob.EventUpload, log.EventRequest, log.EventResponse)
+	log.SetListener(func(cls log.Event, msg string) {
+		t.Logf("%s: %s\n", cls, msg)
+		if cls == azblob.EventUpload {
+			listnercalled = true
+			require.Equal(t, msg, "blob name path1/path2 actual size 270000000 block-size 4194304 block-count 65")
+		}
+	})
+
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path1/path2", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+			Telemetry: policy.TelemetryOptions{ApplicationID: "testApp/1.0.0-preview.2"},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// create fake source that's evenly divisible by 50000 (max number of blocks)
+	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+
+	buffer := make([]byte, 270000000)
+	for i := 0; i < len(buffer); i++ {
+		buffer[i] = 1
+	}
+
+	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
+		Concurrency: 1,
+		Progress: func(bytesTransferred int64) {
+			t.Logf("%v percent job done", (bytesTransferred*100)/270000000)
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
+	require.Equal(t, listnercalled, true)
+}
+
+type trequestIDPolicy struct{}
+
+// NewRequestIDPolicy returns a policy that add the x-ms-client-request-id header
+func newTestRequestIDPolicy() policy.Policy {
+	return &trequestIDPolicy{}
+}
+
+func (r *trequestIDPolicy) Do(req *policy.Request) (*http.Response, error) {
+	const requestIdHeader = "x-ms-client-request-id"
+	req.Raw().Header.Set(requestIdHeader, "azblob-test-request-id")
+	return req.Next()
+}
+
+func TestRequestIDGeneration(t *testing.T) {
+	requestIdMatch := false
+	log.SetEvents(log.EventRequest)
+	log.SetListener(func(cls log.Event, msg string) {
+		t.Logf("%s: %s\n", cls, msg)
+		require.Contains(t, msg, "X-Ms-Client-Request-Id: azblob-test-request-id")
+		require.Contains(t, msg, "User-Agent: testApp/1.0.0-preview.2")
+		requestIdMatch = true
+	})
+
+	fbb := &fakeBlockBlob{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/testpath", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Telemetry:       policy.TelemetryOptions{ApplicationID: "testApp/1.0.0-preview.2"},
+			Transport:       fbb,
+			PerCallPolicies: []policy.Policy{newTestRequestIDPolicy()},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// create fake source that's evenly divisible by 50000 (max number of blocks)
+	// and greater than MaxUploadBlobBytes (256MB) so that it doesn't fit into a single upload.
+
+	buffer := make([]byte, 10)
+	for i := 0; i < len(buffer); i++ {
+		buffer[i] = 1
+	}
+
+	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
+		Concurrency: 1,
+	})
+	require.NoError(t, err)
+	require.Equal(t, requestIdMatch, true)
 }

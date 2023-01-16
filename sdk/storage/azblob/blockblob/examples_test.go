@@ -15,7 +15,9 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -170,5 +172,67 @@ func Example_blockblob_Client_UploadFile() {
 
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+// This example shows how to set an expiry time on an existing blob
+// This operation is only allowed on Hierarchical Namespace enabled accounts.
+func Example_blockblob_SetExpiry() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	blobName := "test_block_blob_set_expiry.txt"
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	blockBlobClient, err := blockblob.NewClient(blobURL, cred, nil)
+	handleError(err)
+
+	// set expiry on block blob 4 hours relative to now
+	_, err = blockBlobClient.SetExpiry(context.TODO(), blockblob.ExpiryTypeRelativeToNow(4*time.Hour), nil)
+	handleError(err)
+
+	// validate set expiry operation
+	resp, err := blockBlobClient.GetProperties(context.TODO(), nil)
+	handleError(err)
+	if resp.ExpiresOn == nil {
+		return
+	}
+}
+
+// This example shows how to set up log callback to dump SDK events
+func Example_blockblob_uploadLogs() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	blobName := "test_block_blob_set_expiry.txt"
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
+
+	azlog.SetEvents(azblob.EventUpload, azlog.EventRequest, azlog.EventResponse)
+	azlog.SetListener(func(cls azlog.Event, msg string) {
+		if cls == azblob.EventUpload {
+			fmt.Println(msg)
+		}
+	})
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	blockBlobClient, err := blockblob.NewClient(blobURL, cred, nil)
+	handleError(err)
+
+	// set expiry on block blob 4 hours relative to now
+	_, err = blockBlobClient.SetExpiry(context.TODO(), blockblob.ExpiryTypeRelativeToNow(4*time.Hour), nil)
+	handleError(err)
+
+	// validate set expiry operation
+	resp, err := blockBlobClient.GetProperties(context.TODO(), nil)
+	handleError(err)
+	if resp.ExpiresOn == nil {
+		return
 	}
 }

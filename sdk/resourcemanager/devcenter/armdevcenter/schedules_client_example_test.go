@@ -17,21 +17,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Schedules_ListByPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_ListByPool.json
 func ExampleSchedulesClient_NewListByPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewSchedulesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewSchedulesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPoolPager("rg1",
-		"TestProject",
-		"DevPool",
-		&armdevcenter.SchedulesClientListByPoolOptions{Top: nil})
+	pager := client.NewListByPoolPager("rg1", "TestProject", "DevPool", &armdevcenter.SchedulesClientListByPoolOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,23 +41,18 @@ func ExampleSchedulesClient_NewListByPoolPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Schedules_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_Get.json
 func ExampleSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewSchedulesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewSchedulesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"TestProject",
-		"DevPool",
-		"autoShutdown",
-		&armdevcenter.SchedulesClientGetOptions{Top: nil})
+	res, err := client.Get(ctx, "rg1", "TestProject", "DevPool", "autoShutdown", &armdevcenter.SchedulesClientGetOptions{Top: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -68,89 +60,76 @@ func ExampleSchedulesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Schedules_CreateDailyShutdownPoolSchedule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_CreateDailyShutdownPoolSchedule.json
 func ExampleSchedulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewSchedulesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewSchedulesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"DevProject",
-		"DevPool",
-		"autoShutdown",
-		armdevcenter.Schedule{
-			Properties: &armdevcenter.ScheduleProperties{
-				Type:      to.Ptr(armdevcenter.ScheduledTypeStopDevBox),
-				Frequency: to.Ptr(armdevcenter.ScheduledFrequencyDaily),
-				State:     to.Ptr(armdevcenter.EnableStatusEnabled),
-				Time:      to.Ptr("17:30"),
-				TimeZone:  to.Ptr("America/Los_Angeles"),
-			},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "DevProject", "DevPool", "autoShutdown", armdevcenter.Schedule{
+		Properties: &armdevcenter.ScheduleProperties{
+			Type:      to.Ptr(armdevcenter.ScheduledTypeStopDevBox),
+			Frequency: to.Ptr(armdevcenter.ScheduledFrequencyDaily),
+			State:     to.Ptr(armdevcenter.EnableStatusEnabled),
+			Time:      to.Ptr("17:30"),
+			TimeZone:  to.Ptr("America/Los_Angeles"),
 		},
-		&armdevcenter.SchedulesClientBeginCreateOrUpdateOptions{Top: nil})
+	}, &armdevcenter.SchedulesClientBeginCreateOrUpdateOptions{Top: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Schedules_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_Patch.json
 func ExampleSchedulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewSchedulesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewSchedulesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"rg1",
-		"TestProject",
-		"DevPool",
-		"autoShutdown",
-		armdevcenter.ScheduleUpdate{
-			Properties: &armdevcenter.ScheduleUpdateProperties{
-				Time: to.Ptr("18:00"),
-			},
+	poller, err := client.BeginUpdate(ctx, "rg1", "TestProject", "DevPool", "autoShutdown", armdevcenter.ScheduleUpdate{
+		Properties: &armdevcenter.ScheduleUpdateProperties{
+			Time: to.Ptr("18:00"),
 		},
-		&armdevcenter.SchedulesClientBeginUpdateOptions{Top: nil})
+	}, &armdevcenter.SchedulesClientBeginUpdateOptions{Top: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Schedules_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_Delete.json
 func ExampleSchedulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewSchedulesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewSchedulesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"TestProject",
-		"DevPool",
-		"autoShutdown",
-		&armdevcenter.SchedulesClientBeginDeleteOptions{Top: nil})
+	poller, err := client.BeginDelete(ctx, "rg1", "TestProject", "DevPool", "autoShutdown", &armdevcenter.SchedulesClientBeginDeleteOptions{Top: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

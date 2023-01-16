@@ -13,6 +13,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
@@ -59,8 +60,8 @@ func TransformError(err error) error {
 		return err
 	}
 
-	if isOwnershipLostError(err) {
-		return exported.NewError(exported.CodeOwnershipLost, err)
+	if IsOwnershipLostError(err) {
+		return exported.NewError(exported.ErrorCodeOwnershipLost, err)
 	}
 
 	rk := GetRecoveryKind(err)
@@ -70,16 +71,20 @@ func TransformError(err error) error {
 		// note that we could give back a more differentiated error code
 		// here but it's probably best to just give the customer the simplest
 		// recovery mechanism possible.
-		return exported.NewError(exported.CodeConnectionLost, err)
+		return exported.NewError(exported.ErrorCodeConnectionLost, err)
 	case RecoveryKindConn:
-		return exported.NewError(exported.CodeConnectionLost, err)
+		return exported.NewError(exported.ErrorCodeConnectionLost, err)
 	default:
 		// isn't one of our specifically called out cases so we'll just return it.
 		return err
 	}
 }
 
-func IsDetachError(err error) bool {
+func IsQuickRecoveryError(err error) bool {
+	if IsOwnershipLostError(err) {
+		return false
+	}
+
 	var de *amqp.DetachError
 	return errors.As(err, &de)
 }
@@ -152,6 +157,10 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
+	if errors.Is(err, errConnResetNeeded) {
+		return RecoveryKindConn
+	}
+
 	var netErr net.Error
 
 	// these are errors that can flow from the go-amqp connection to
@@ -167,9 +176,12 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
+	if IsOwnershipLostError(err) {
+		return RecoveryKindFatal
+	}
+
 	// check the "special" AMQP errors that aren't condition-based.
-	if errors.Is(err, amqp.ErrLinkClosed) ||
-		IsDetachError(err) {
+	if errors.Is(err, amqp.ErrLinkClosed) || IsQuickRecoveryError(err) {
 		return RecoveryKindLink
 	}
 
@@ -252,7 +264,7 @@ type (
 	}
 
 	// ErrAMQP indicates that the server communicated an AMQP error with a particular
-	ErrAMQP RPCResponse
+	ErrAMQP amqpwrap.RPCResponse
 
 	// ErrNoMessages is returned when an operation returned no messages. It is not indicative that there will not be
 	// more messages in the future.
@@ -335,7 +347,12 @@ func isLockLostError(err error) bool {
 	return false
 }
 
-func isOwnershipLostError(err error) bool {
-	var amqpError *amqp.Error
-	return errors.As(err, &amqpError) && amqpError.Condition == "amqp:link:stolen"
+func IsOwnershipLostError(err error) bool {
+	var de *amqp.DetachError
+
+	if errors.As(err, &de) {
+		return de.RemoteError != nil && de.RemoteError.Condition == "amqp:link:stolen"
+	}
+
+	return false
 }

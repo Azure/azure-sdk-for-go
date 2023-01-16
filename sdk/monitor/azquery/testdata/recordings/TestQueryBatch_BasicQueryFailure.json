@@ -1,0 +1,42 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://api.loganalytics.io/v1/$batch",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "2",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azquery/v0.4.0 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
+        "Connection": "keep-alive",
+        "Content-Length": "239",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 12 Jan 2023 21:31:11 GMT",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "Via": "1.1 draft-oms-8bd9c8fdc-v2lrh",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "error": {
+          "message": "The request had some invalid properties",
+          "code": "BadArgumentError",
+          "correlationId": "520b25dc-c4ab-45c0-a0fd-2c2ba0c8365d",
+          "innererror": {
+            "code": "QueryValidationError",
+            "message": "body must contain \u0027requests\u0027 property"
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

@@ -16,9 +16,10 @@ import (
 
 // SessionReceiver is a Receiver that handles sessions.
 type SessionReceiver struct {
-	inner       *Receiver
-	sessionID   *string
-	lockedUntil time.Time
+	inner             *Receiver
+	sessionID         *string
+	acceptNextTimeout time.Duration
+	lockedUntil       time.Time
 }
 
 // SessionReceiverOptions contains options for the `Client.AcceptSessionForQueue/Subscription` or `Client.AcceptNextSessionForQueue/Subscription`
@@ -50,11 +51,12 @@ func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
 }
 
 type newSessionReceiverArgs struct {
-	sessionID      *string
-	ns             internal.NamespaceWithNewAMQPLinks
-	entity         entity
-	cleanupOnClose func()
-	retryOptions   RetryOptions
+	sessionID         *string
+	ns                internal.NamespaceWithNewAMQPLinks
+	entity            entity
+	cleanupOnClose    func()
+	retryOptions      RetryOptions
+	acceptNextTimeout time.Duration
 }
 
 func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, options *ReceiverOptions) (*SessionReceiver, error) {
@@ -76,6 +78,7 @@ func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, option
 		return nil, err
 	}
 
+	sessionReceiver.acceptNextTimeout = args.acceptNextTimeout
 	sessionReceiver.inner = r
 
 	// temp workaround until we expose the session expiration time from the receiver in go-amqp
@@ -97,6 +100,16 @@ func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSess
 		linkOptions.Filters = append(linkOptions.Filters, amqp.LinkFilterSource(sessionFilterName, code, nil))
 	} else {
 		linkOptions.Filters = append(linkOptions.Filters, amqp.LinkFilterSource(sessionFilterName, code, r.sessionID))
+	}
+
+	if r.acceptNextTimeout > 0 {
+		if linkOptions.Properties == nil {
+			linkOptions.Properties = map[string]any{}
+		}
+
+		// the remote side of this seems _very_ picky that the type not be larger than 32-bits.
+		timeoutInMS := uint32(r.acceptNextTimeout / time.Millisecond)
+		linkOptions.Properties["com.microsoft:timeout"] = timeoutInMS
 	}
 
 	link, err := session.NewReceiver(ctx, r.inner.amqpLinks.EntityPath(), linkOptions)
@@ -218,6 +231,7 @@ type SetSessionStateOptions struct {
 }
 
 // SetSessionState sets the state associated with the session.
+// Pass nil for the state parameter to clear the stored session state.
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
@@ -236,7 +250,7 @@ type RenewSessionLockOptions struct {
 // using `LockedUntil`.
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewSessionLockOptions) error {
-	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "RenewSessionLock", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, lwv.Receiver.LinkName(), *sr.sessionID)
 
 		if err != nil {

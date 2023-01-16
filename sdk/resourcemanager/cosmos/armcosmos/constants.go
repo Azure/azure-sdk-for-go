@@ -11,7 +11,7 @@ package armcosmos
 
 const (
 	moduleName    = "armcosmos"
-	moduleVersion = "v2.1.0-beta.1"
+	moduleVersion = "v2.2.0-beta.1"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -534,6 +534,7 @@ type OperationType string
 const (
 	OperationTypeCreate          OperationType = "Create"
 	OperationTypeDelete          OperationType = "Delete"
+	OperationTypeRecreate        OperationType = "Recreate"
 	OperationTypeReplace         OperationType = "Replace"
 	OperationTypeSystemOperation OperationType = "SystemOperation"
 )
@@ -543,6 +544,7 @@ func PossibleOperationTypeValues() []OperationType {
 	return []OperationType{
 		OperationTypeCreate,
 		OperationTypeDelete,
+		OperationTypeRecreate,
 		OperationTypeReplace,
 		OperationTypeSystemOperation,
 	}

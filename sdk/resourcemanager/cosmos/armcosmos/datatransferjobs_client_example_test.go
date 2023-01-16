@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCreate.json
 func ExampleDataTransferJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,25 +28,20 @@ func ExampleDataTransferJobsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx,
-		"rg1",
-		"ddb1",
-		"j1",
-		armcosmos.CreateJobRequest{
-			Properties: &armcosmos.DataTransferJobProperties{
-				Destination: &armcosmos.AzureBlobDataTransferDataSourceSink{
-					Component:     to.Ptr(armcosmos.DataTransferComponentAzureBlobStorage),
-					ContainerName: to.Ptr("blob_container"),
-					EndpointURL:   to.Ptr("https://blob.windows.net"),
-				},
-				Source: &armcosmos.CassandraDataTransferDataSourceSink{
-					Component:    to.Ptr(armcosmos.DataTransferComponentCosmosDBCassandra),
-					KeyspaceName: to.Ptr("keyspace"),
-					TableName:    to.Ptr("table"),
-				},
+	res, err := client.Create(ctx, "rg1", "ddb1", "j1", armcosmos.CreateJobRequest{
+		Properties: &armcosmos.DataTransferJobProperties{
+			Destination: &armcosmos.AzureBlobDataTransferDataSourceSink{
+				Component:     to.Ptr(armcosmos.DataTransferComponentAzureBlobStorage),
+				ContainerName: to.Ptr("blob_container"),
+				EndpointURL:   to.Ptr("https://blob.windows.net"),
+			},
+			Source: &armcosmos.CassandraDataTransferDataSourceSink{
+				Component:    to.Ptr(armcosmos.DataTransferComponentCosmosDBCassandra),
+				KeyspaceName: to.Ptr("keyspace"),
+				TableName:    to.Ptr("table"),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -54,7 +49,7 @@ func ExampleDataTransferJobsClient_Create() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobGet.json
 func ExampleDataTransferJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,11 +60,7 @@ func ExampleDataTransferJobsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"ddb1",
-		"j1",
-		nil)
+	res, err := client.Get(ctx, "rg1", "ddb1", "j1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -77,7 +68,7 @@ func ExampleDataTransferJobsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobPause.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobPause.json
 func ExampleDataTransferJobsClient_Pause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,11 +79,7 @@ func ExampleDataTransferJobsClient_Pause() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Pause(ctx,
-		"rg1",
-		"ddb1",
-		"j1",
-		nil)
+	res, err := client.Pause(ctx, "rg1", "ddb1", "j1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -100,7 +87,7 @@ func ExampleDataTransferJobsClient_Pause() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobResume.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobResume.json
 func ExampleDataTransferJobsClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,11 +98,7 @@ func ExampleDataTransferJobsClient_Resume() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Resume(ctx,
-		"rg1",
-		"ddb1",
-		"j1",
-		nil)
+	res, err := client.Resume(ctx, "rg1", "ddb1", "j1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -123,7 +106,7 @@ func ExampleDataTransferJobsClient_Resume() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCancel.json
 func ExampleDataTransferJobsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,11 +117,7 @@ func ExampleDataTransferJobsClient_Cancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Cancel(ctx,
-		"rg1",
-		"ddb1",
-		"j1",
-		nil)
+	res, err := client.Cancel(ctx, "rg1", "ddb1", "j1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -146,7 +125,7 @@ func ExampleDataTransferJobsClient_Cancel() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobFeed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobFeed.json
 func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,9 +136,7 @@ func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabaseAccountPager("rg1",
-		"ddb1",
-		nil)
+	pager := client.NewListByDatabaseAccountPager("rg1", "ddb1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

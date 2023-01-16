@@ -25,15 +25,53 @@ import (
 )
 
 const (
-	azureAuthorityHost         = "AZURE_AUTHORITY_HOST"
-	azureClientID              = "AZURE_CLIENT_ID"
-	azureRegionalAuthorityName = "AZURE_REGIONAL_AUTHORITY_NAME"
+	azureAuthorityHost             = "AZURE_AUTHORITY_HOST"
+	azureClientCertificatePassword = "AZURE_CLIENT_CERTIFICATE_PASSWORD"
+	azureClientCertificatePath     = "AZURE_CLIENT_CERTIFICATE_PATH"
+	azureClientID                  = "AZURE_CLIENT_ID"
+	azureClientSecret              = "AZURE_CLIENT_SECRET"
+	azureFederatedTokenFile        = "AZURE_FEDERATED_TOKEN_FILE"
+	azurePassword                  = "AZURE_PASSWORD"
+	azureRegionalAuthorityName     = "AZURE_REGIONAL_AUTHORITY_NAME"
+	azureTenantID                  = "AZURE_TENANT_ID"
+	azureUsername                  = "AZURE_USERNAME"
 
 	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 	defaultSuffix           = "/.default"
 	tenantIDValidationErr   = "invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"
 )
+
+var getConfidentialClient = func(clientID, tenantID string, cred confidential.Credential, co *azcore.ClientOptions, additionalOpts ...confidential.Option) (confidentialClient, error) {
+	if !validTenantID(tenantID) {
+		return confidential.Client{}, errors.New(tenantIDValidationErr)
+	}
+	authorityHost, err := setAuthorityHost(co.Cloud)
+	if err != nil {
+		return confidential.Client{}, err
+	}
+	o := []confidential.Option{
+		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
+		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
+		confidential.WithHTTPClient(newPipelineAdapter(co)),
+	}
+	o = append(o, additionalOpts...)
+	return confidential.New(clientID, cred, o...)
+}
+
+var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions) (public.Client, error) {
+	if !validTenantID(tenantID) {
+		return public.Client{}, errors.New(tenantIDValidationErr)
+	}
+	authorityHost, err := setAuthorityHost(co.Cloud)
+	if err != nil {
+		return public.Client{}, err
+	}
+	return public.New(clientID,
+		public.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
+		public.WithHTTPClient(newPipelineAdapter(co)),
+	)
+}
 
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
 // 1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user
@@ -116,6 +154,7 @@ type confidentialClient interface {
 	AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireTokenSilentOption) (confidential.AuthResult, error)
 	AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireTokenByAuthCodeOption) (confidential.AuthResult, error)
 	AcquireTokenByCredential(ctx context.Context, scopes []string) (confidential.AuthResult, error)
+	AcquireTokenOnBehalfOf(ctx context.Context, userAssertion string, scopes []string) (confidential.AuthResult, error)
 }
 
 // enables fakes for test scenarios

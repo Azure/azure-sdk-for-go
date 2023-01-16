@@ -11,7 +11,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v3.0.1"
+	moduleVersion = "v4.1.0"
 )
 
 type AccessLevel string
@@ -48,6 +48,24 @@ func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 		AggregatedReplicationStateFailed,
 		AggregatedReplicationStateInProgress,
 		AggregatedReplicationStateUnknown,
+	}
+}
+
+// AlternativeType - Describes the type of the alternative option.
+type AlternativeType string
+
+const (
+	AlternativeTypeNone  AlternativeType = "None"
+	AlternativeTypeOffer AlternativeType = "Offer"
+	AlternativeTypePlan  AlternativeType = "Plan"
+)
+
+// PossibleAlternativeTypeValues returns the possible values for the AlternativeType const type.
+func PossibleAlternativeTypeValues() []AlternativeType {
+	return []AlternativeType{
+		AlternativeTypeNone,
+		AlternativeTypeOffer,
+		AlternativeTypePlan,
 	}
 }
 
@@ -340,6 +358,27 @@ func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
 	return []DiffDiskPlacement{
 		DiffDiskPlacementCacheDisk,
 		DiffDiskPlacementResourceDisk,
+	}
+}
+
+// DiskControllerTypes - Specifies the disk controller type configured for the VM and VirtualMachineScaleSet. This property
+// is only supported for virtual machines whose operating system disk and VM sku supports Generation 2
+// (https://docs.microsoft.com/en-us/azure/virtual-machines/generation-2), please check the HyperVGenerations capability returned
+// as part of VM sku capabilities in the response of Microsoft.Compute SKUs
+// api for the region contains V2 (https://docs.microsoft.com/rest/api/compute/resourceskus/list) .
+// For more information about Disk Controller Types supported please refer to https://aka.ms/azure-diskcontrollertypes.
+type DiskControllerTypes string
+
+const (
+	DiskControllerTypesNVMe DiskControllerTypes = "NVMe"
+	DiskControllerTypesSCSI DiskControllerTypes = "SCSI"
+)
+
+// PossibleDiskControllerTypesValues returns the possible values for the DiskControllerTypes const type.
+func PossibleDiskControllerTypesValues() []DiskControllerTypes {
+	return []DiskControllerTypes{
+		DiskControllerTypesNVMe,
+		DiskControllerTypesSCSI,
 	}
 }
 
@@ -710,6 +749,25 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
+// GalleryApplicationCustomActionParameterType - Specifies the type of the custom action parameter. Possible values are: String,
+// ConfigurationDataBlob or LogOutputBlob
+type GalleryApplicationCustomActionParameterType string
+
+const (
+	GalleryApplicationCustomActionParameterTypeString                GalleryApplicationCustomActionParameterType = "String"
+	GalleryApplicationCustomActionParameterTypeConfigurationDataBlob GalleryApplicationCustomActionParameterType = "ConfigurationDataBlob"
+	GalleryApplicationCustomActionParameterTypeLogOutputBlob         GalleryApplicationCustomActionParameterType = "LogOutputBlob"
+)
+
+// PossibleGalleryApplicationCustomActionParameterTypeValues returns the possible values for the GalleryApplicationCustomActionParameterType const type.
+func PossibleGalleryApplicationCustomActionParameterTypeValues() []GalleryApplicationCustomActionParameterType {
+	return []GalleryApplicationCustomActionParameterType{
+		GalleryApplicationCustomActionParameterTypeString,
+		GalleryApplicationCustomActionParameterTypeConfigurationDataBlob,
+		GalleryApplicationCustomActionParameterTypeLogOutputBlob,
+	}
+}
+
 type GalleryExpandParams string
 
 const (
@@ -882,6 +940,24 @@ func PossibleIPVersionsValues() []IPVersions {
 	return []IPVersions{
 		IPVersionsIPv4,
 		IPVersionsIPv6,
+	}
+}
+
+// ImageState - Describes the state of the image.
+type ImageState string
+
+const (
+	ImageStateActive                  ImageState = "Active"
+	ImageStateDeprecated              ImageState = "Deprecated"
+	ImageStateScheduledForDeprecation ImageState = "ScheduledForDeprecation"
+)
+
+// PossibleImageStateValues returns the possible values for the ImageState const type.
+func PossibleImageStateValues() []ImageState {
+	return []ImageState{
+		ImageStateActive,
+		ImageStateDeprecated,
+		ImageStateScheduledForDeprecation,
 	}
 }
 
@@ -1214,6 +1290,26 @@ func PossiblePatchOperationStatusValues() []PatchOperationStatus {
 		PatchOperationStatusInProgress,
 		PatchOperationStatusSucceeded,
 		PatchOperationStatusUnknown,
+	}
+}
+
+// PolicyViolationCategory - Describes the nature of the policy violation.
+type PolicyViolationCategory string
+
+const (
+	PolicyViolationCategoryCopyrightValidation PolicyViolationCategory = "CopyrightValidation"
+	PolicyViolationCategoryIPTheft             PolicyViolationCategory = "IpTheft"
+	PolicyViolationCategoryImageFlaggedUnsafe  PolicyViolationCategory = "ImageFlaggedUnsafe"
+	PolicyViolationCategoryOther               PolicyViolationCategory = "Other"
+)
+
+// PossiblePolicyViolationCategoryValues returns the possible values for the PolicyViolationCategory const type.
+func PossiblePolicyViolationCategoryValues() []PolicyViolationCategory {
+	return []PolicyViolationCategory{
+		PolicyViolationCategoryCopyrightValidation,
+		PolicyViolationCategoryIPTheft,
+		PolicyViolationCategoryImageFlaggedUnsafe,
+		PolicyViolationCategoryOther,
 	}
 }
 

@@ -36,11 +36,10 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 
 	return newRetryReader(ctx, r.Body, r.getInfo, func(ctx context.Context, getInfo httpGetterInfo) (io.ReadCloser, error) {
 		accessConditions := &AccessConditions{
-			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: getInfo.ETag},
 		}
 		options := DownloadStreamOptions{
-			Offset:           &getInfo.Offset,
-			Count:            &getInfo.Count,
+			Range:            getInfo.Range,
 			AccessConditions: accessConditions,
 			CpkInfo:          r.cpkInfo,
 			CpkScopeInfo:     r.cpkScope,
@@ -85,6 +84,15 @@ type SetTagsResponse = generated.BlobClientSetTagsResponse
 
 // GetTagsResponse contains the response from method BlobClient.GetTags.
 type GetTagsResponse = generated.BlobClientGetTagsResponse
+
+// SetImmutabilityPolicyResponse contains the response from method BlobClient.SetImmutabilityPolicy.
+type SetImmutabilityPolicyResponse = generated.BlobClientSetImmutabilityPolicyResponse
+
+// DeleteImmutabilityPolicyResponse contains the response from method BlobClient.DeleteImmutabilityPolicyResponse.
+type DeleteImmutabilityPolicyResponse = generated.BlobClientDeleteImmutabilityPolicyResponse
+
+// SetLegalHoldResponse contains the response from method BlobClient.SetLegalHold.
+type SetLegalHoldResponse = generated.BlobClientSetLegalHoldResponse
 
 // CopyFromURLResponse contains the response from method BlobClient.CopyFromURL.
 type CopyFromURLResponse = generated.BlobClientCopyFromURLResponse

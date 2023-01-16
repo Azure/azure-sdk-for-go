@@ -10,13 +10,13 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,6 +25,7 @@ var (
 )
 
 func init() {
+	addSwappableLogger()
 	rand.Seed(time.Now().Unix())
 }
 
@@ -78,8 +79,7 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 		qd = &atom.QueueDescription{}
 	}
 
-	deleteAfter := 5 * time.Minute
-	qd.AutoDeleteOnIdle = utils.DurationToStringPtr(&deleteAfter)
+	qd.AutoDeleteOnIdle = to.Ptr("PT5M")
 
 	env := atom.WrapWithQueueEnvelope(qd, em.TokenProvider())
 
@@ -92,6 +92,23 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 		_, err := em.Delete(context.Background(), queueName)
 		require.NoError(t, err)
 	}
+}
+
+var LoggingChannelValue atomic.Value
+
+func addSwappableLogger() {
+	azlog.SetListener(func(e azlog.Event, s string) {
+		ch, ok := LoggingChannelValue.Load().(*chan string)
+
+		if !ok || ch == nil {
+			return
+		}
+
+		select {
+		case *ch <- fmt.Sprintf("[%s] %s", e, s):
+		default:
+		}
+	})
 }
 
 // CaptureLogsForTest adds a logging listener which captures messages to an
@@ -107,14 +124,15 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 //	messages := endCapture()
 //	/* do inspection of log messages */
 func CaptureLogsForTest() func() []string {
-	messagesCh := make(chan string, 10000)
-	return CaptureLogsForTestWithChannel(messagesCh)
+	return CaptureLogsForTestWithChannel(nil)
 }
 
 func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
-	setAzLogListener(func(e azlog.Event, s string) {
-		messagesCh <- fmt.Sprintf("[%s] %s", e, s)
-	})
+	if messagesCh == nil {
+		messagesCh = make(chan string, 10000)
+	}
+
+	LoggingChannelValue.Store(&messagesCh)
 
 	return func() []string {
 		if messagesCh == nil {
@@ -122,7 +140,6 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 			return nil
 		}
 
-		setAzLogListener(nil)
 		close(messagesCh)
 
 		var messages []string
@@ -137,16 +154,22 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 }
 
 // EnableStdoutLogging turns on logging to stdout for diagnostics.
-func EnableStdoutLogging() {
-	setAzLogListener(func(e azlog.Event, s string) {
-		log.Printf("%s %s", e, s)
-	})
-}
+func EnableStdoutLogging() func() {
+	ch := make(chan string, 10000)
+	cleanupLogs := CaptureLogsForTestWithChannel(ch)
 
-var logMu sync.Mutex
+	doneCh := make(chan struct{})
 
-func setAzLogListener(listener func(e azlog.Event, s string)) {
-	logMu.Lock()
-	defer logMu.Unlock()
-	azlog.SetListener(listener)
+	go func() {
+		defer close(doneCh)
+
+		for msg := range ch {
+			log.Printf("%s", msg)
+		}
+	}()
+
+	return func() {
+		_ = cleanupLogs()
+		<-doneCh
+	}
 }

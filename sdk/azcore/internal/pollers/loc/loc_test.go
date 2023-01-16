@@ -14,7 +14,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -160,7 +159,7 @@ func TestUpdateFailedWithProvisioningState(t *testing.T) {
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
 	err = poller.Result(context.Background(), nil)
-	var respErr *azcore.ResponseError
+	var respErr *exported.ResponseError
 	require.ErrorAs(t, err, &respErr)
 }
 

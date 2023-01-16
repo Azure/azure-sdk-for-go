@@ -44,7 +44,7 @@ func ExampleNewProducerClientFromConnectionString() {
 	}
 }
 
-func ExampleProducerClient_SendEventBatch() {
+func ExampleProducerClient_SendEventDataBatch() {
 	batch, err := producerClient.NewEventDataBatch(context.TODO(), nil)
 
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleProducerClient_SendEventBatch() {
 		panic(err)
 	}
 
-	err = producerClient.SendEventBatch(context.TODO(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.TODO(), batch, nil)
 
 	if err != nil {
 		panic(err)
@@ -81,7 +81,7 @@ func ExampleEventDataBatch_AddEventData() {
 	if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
 		// Message was too large to fit into this batch.
 		//
-		// At this point you'd usually just send the batch (using ProducerClient.SendEventBatch),
+		// At this point you'd usually just send the batch (using ProducerClient.SendEventDataBatch),
 		// create a new one, and start filling up the batch again.
 		//
 		// If this is the _only_ message being added to the batch then it's too big in general, and
@@ -91,7 +91,65 @@ func ExampleEventDataBatch_AddEventData() {
 		panic(err)
 	}
 
-	err = producerClient.SendEventBatch(context.TODO(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.TODO(), batch, nil)
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func ExampleEventDataBatch_AddEventData_rawAMQPMessages() {
+	batch, err := producerClient.NewEventDataBatch(context.TODO(), nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// This is functionally equivalent to EventDataBatch.AddEventData(), just with a more
+	// advanced message format.
+	// See ExampleEventDataBatch_AddEventData for more details.
+
+	err = batch.AddAMQPAnnotatedMessage(&azeventhubs.AMQPAnnotatedMessage{
+		Body: azeventhubs.AMQPAnnotatedMessageBody{
+			Data: [][]byte{
+				[]byte("hello"),
+				[]byte("world"),
+			},
+		},
+	}, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = batch.AddAMQPAnnotatedMessage(&azeventhubs.AMQPAnnotatedMessage{
+		Body: azeventhubs.AMQPAnnotatedMessageBody{
+			Sequence: [][]any{
+				// let the AMQP stack encode your strings (or other primitives) for you, no need
+				// to convert them to bytes manually.
+				{"hello", "world"},
+				{"howdy", "world"},
+			},
+		},
+	}, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = batch.AddAMQPAnnotatedMessage(&azeventhubs.AMQPAnnotatedMessage{
+		Body: azeventhubs.AMQPAnnotatedMessageBody{
+			// let the AMQP stack encode your string (or other primitives) for you, no need
+			// to convert them to bytes manually.
+			Value: "hello world",
+		},
+	}, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = producerClient.SendEventDataBatch(context.TODO(), batch, nil)
 
 	if err != nil {
 		panic(err)

@@ -93,7 +93,7 @@ func Example() {
 	// List methods returns a pager object which can be used to iterate over the results of a paging operation.
 	// To iterate over a page use the NextPage(context.Context) to fetch the next page of results.
 	// PageResponse() can be used to iterate over the results of the specific page.
-	pager := client.NewListBlobsPager(containerName, nil)
+	pager := client.NewListBlobsFlatPager(containerName, nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		handleError(err)
@@ -112,12 +112,14 @@ func Example() {
 }
 
 func Example_client_NewClient() {
+	// this example uses Azure Active Directory (AAD) to authenticate with Azure Blob Storage
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
+	// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DefaultAzureCredential
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	handleError(err)
 
@@ -128,6 +130,7 @@ func Example_client_NewClient() {
 }
 
 func Example_client_NewClientWithSharedKeyCredential() {
+	// this example uses a shared key to authenticate with Azure Blob Storage
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
@@ -138,9 +141,29 @@ func Example_client_NewClientWithSharedKeyCredential() {
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
+	// shared key authentication requires the storage account name and access key
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
 	serviceClient, err := azblob.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	handleError(err)
+	fmt.Println(serviceClient.URL())
+}
+
+func Example_client_NewClientFromConnectionString() {
+	// this example uses a connection string to authenticate with Azure Blob Storage
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	serviceClient, err := azblob.NewClientFromConnectionString(connectionString, nil)
+	handleError(err)
+	fmt.Println(serviceClient.URL())
+}
+
+func Example_client_anonymous_NewClientWithNoCredential() {
+	// this example uses anonymous access to access a public blob
+	serviceClient, err := azblob.NewClientWithNoCredential("https://azurestoragesamples.blob.core.windows.net/samples/cloud.jpg", nil)
 	handleError(err)
 	fmt.Println(serviceClient.URL())
 }
@@ -197,7 +220,7 @@ func Example_client_NewListContainersPager() {
 	handleError(err)
 
 	pager := client.NewListContainersPager(&azblob.ListContainersOptions{
-		Include: azblob.ListContainersDetail{Metadata: true, Deleted: true},
+		Include: azblob.ListContainersInclude{Metadata: true, Deleted: true},
 	})
 
 	for pager.More() {
@@ -249,7 +272,7 @@ func Example_client_UploadFile() {
 	_, err = client.UploadFile(context.TODO(), "testcontainer", "virtual/dir/path/"+fileName, fileHandler,
 		&azblob.UploadFileOptions{
 			BlockSize:   int64(1024),
-			Parallelism: uint16(3),
+			Concurrency: uint16(3),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				fmt.Println(bytesTransferred)
@@ -307,8 +330,8 @@ func Example_client_NewListBlobsPager() {
 	client, err := azblob.NewClient(serviceURL, cred, nil)
 	handleError(err)
 
-	pager := client.NewListBlobsPager("testcontainer", &azblob.ListBlobsOptions{
-		Include: []azblob.ListBlobsIncludeItem{azblob.ListBlobsIncludeItemVersions, azblob.ListBlobsIncludeItemDeleted},
+	pager := client.NewListBlobsFlatPager("testcontainer", &azblob.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Deleted: true, Versions: true},
 	})
 
 	for pager.More() {
@@ -398,22 +421,6 @@ func ExampleResponseError() {
 	handleError(err)
 	_, err = contClient.Create(context.TODO(), nil)
 	handleError(err)
-}
-
-// This example demonstrates splitting a URL into its parts so you can examine and modify the URL in an Azure Storage fluent way.
-func ExampleParseURL() {
-	// Here is an example of a blob snapshot.
-	u := "https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
-		"snapshot=2011-03-09T01:42:34Z&" +
-		"sv=2015-02-21&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&" +
-		"spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=92836758923659283652983562=="
-
-	// Breaking the URL down into it's parts by conversion to URLParts
-	parts, _ := azblob.ParseURL(u)
-
-	// The URLParts allows access to individual portions of a Blob URL
-	fmt.Printf("Host: %s\nContainerName: %s\nBlobName: %s\nSnapshot: %s\n", parts.Host, parts.ContainerName, parts.BlobName, parts.Snapshot)
-	fmt.Printf("Version: %s\nResource: %s\nStartTime: %s\nExpiryTime: %s\nPermissions: %s\n", parts.SAS.Version(), parts.SAS.Resource(), parts.SAS.StartTime(), parts.SAS.ExpiryTime(), parts.SAS.Permissions())
 }
 
 // This example shows how to perform operations on blob conditionally.
@@ -507,7 +514,7 @@ func Example_blob_AccessConditions() {
 		streaming.NopCloser(strings.NewReader("Text-3")),
 		&blockblob.UploadOptions{
 			AccessConditions: &blob.AccessConditions{
-				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(string(azcore.ETagAny))},
+				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETagAny)},
 			},
 		}))
 }

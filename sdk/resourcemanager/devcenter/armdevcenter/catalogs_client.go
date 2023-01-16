@@ -33,7 +33,7 @@ type CatalogsClient struct {
 }
 
 // NewCatalogsClient creates a new instance of CatalogsClient with the specified values.
-// subscriptionID - Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewCatalogsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CatalogsClient, error) {
@@ -58,8 +58,8 @@ func NewCatalogsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Creates or updates a catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // catalogName - The name of the Catalog.
 // body - Represents a catalog.
@@ -81,7 +81,7 @@ func (client *CatalogsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Creates or updates a catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2022-11-11-preview
 func (client *CatalogsClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body Catalog, options *CatalogsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, body, options)
 	if err != nil {
@@ -121,7 +121,7 @@ func (client *CatalogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -129,8 +129,8 @@ func (client *CatalogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Deletes a catalog resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // catalogName - The name of the Catalog.
 // options - CatalogsClientBeginDeleteOptions contains the optional parameters for the CatalogsClient.BeginDelete method.
@@ -150,7 +150,7 @@ func (client *CatalogsClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Deletes a catalog resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2022-11-11-preview
 func (client *CatalogsClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
@@ -190,7 +190,7 @@ func (client *CatalogsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,8 +198,8 @@ func (client *CatalogsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets a catalog
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // catalogName - The name of the Catalog.
 // options - CatalogsClientGetOptions contains the optional parameters for the CatalogsClient.Get method.
@@ -242,7 +242,7 @@ func (client *CatalogsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,9 +258,8 @@ func (client *CatalogsClient) getHandleResponse(resp *http.Response) (CatalogsCl
 }
 
 // NewListByDevCenterPager - Lists catalogs for a devcenter.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // options - CatalogsClientListByDevCenterOptions contains the optional parameters for the CatalogsClient.ListByDevCenter
 // method.
@@ -312,7 +311,7 @@ func (client *CatalogsClient) listByDevCenterCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -332,8 +331,8 @@ func (client *CatalogsClient) listByDevCenterHandleResponse(resp *http.Response)
 
 // BeginSync - Syncs templates for a template source.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // catalogName - The name of the Catalog.
 // options - CatalogsClientBeginSyncOptions contains the optional parameters for the CatalogsClient.BeginSync method.
@@ -344,7 +343,7 @@ func (client *CatalogsClient) BeginSync(ctx context.Context, resourceGroupName s
 			return nil, err
 		}
 		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CatalogsClientSyncResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
 		return runtime.NewPollerFromResumeToken[CatalogsClientSyncResponse](options.ResumeToken, client.pl, nil)
@@ -353,7 +352,7 @@ func (client *CatalogsClient) BeginSync(ctx context.Context, resourceGroupName s
 
 // Sync - Syncs templates for a template source.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2022-11-11-preview
 func (client *CatalogsClient) syncOperation(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientBeginSyncOptions) (*http.Response, error) {
 	req, err := client.syncCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
@@ -393,7 +392,7 @@ func (client *CatalogsClient) syncCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -401,8 +400,8 @@ func (client *CatalogsClient) syncCreateRequest(ctx context.Context, resourceGro
 
 // BeginUpdate - Partially updates a catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // catalogName - The name of the Catalog.
 // body - Updatable catalog properties.
@@ -423,7 +422,7 @@ func (client *CatalogsClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - Partially updates a catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2022-11-11-preview
 func (client *CatalogsClient) update(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body CatalogUpdate, options *CatalogsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, body, options)
 	if err != nil {
@@ -463,7 +462,7 @@ func (client *CatalogsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

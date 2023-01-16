@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PrivateEndpointDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateEndpointDelete.json
 func ExamplePrivateEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,8 +38,8 @@ func ExamplePrivateEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PrivateEndpointGet.json
-func ExamplePrivateEndpointsClient_Get_privateEndpointGet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateEndpointGet.json
+func ExamplePrivateEndpointsClient_Get_getPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,8 +57,8 @@ func ExamplePrivateEndpointsClient_Get_privateEndpointGet() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PrivateEndpointGetWithASG.json
-func ExamplePrivateEndpointsClient_Get_privateEndpointGetWithASG() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateEndpointGetWithASG.json
+func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithApplicationSecurityGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -76,8 +76,8 @@ func ExamplePrivateEndpointsClient_Get_privateEndpointGetWithASG() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PrivateEndpointGetForManualApproval.json
-func ExamplePrivateEndpointsClient_Get_privateEndpointGetForManualApproval() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateEndpointGetForManualApproval.json
+func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithManualApprovalConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -95,8 +95,8 @@ func ExamplePrivateEndpointsClient_Get_privateEndpointGetForManualApproval() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PrivateEndpointCreate.json
-func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_privateEndpointCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateEndpointCreate.json
+func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -144,8 +144,8 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_privateEndpointCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PrivateEndpointCreateWithASG.json
-func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_privateEndpointCreateWithASG() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateEndpointCreateWithASG.json
+func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWithApplicationSecurityGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -187,8 +187,8 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_privateEndpointCreateWith
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PrivateEndpointCreateForManualApproval.json
-func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_privateEndpointCreateForManualApproval() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateEndpointCreateForManualApproval.json
+func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWithManualApprovalConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -236,7 +236,7 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_privateEndpointCreateForM
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PrivateEndpointList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateEndpointList.json
 func ExamplePrivateEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExamplePrivateEndpointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/PrivateEndpointListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateEndpointListAll.json
 func ExamplePrivateEndpointsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

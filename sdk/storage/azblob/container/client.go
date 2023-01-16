@@ -10,7 +10,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"strings"
+	"net/url"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -34,7 +35,10 @@ type ClientOptions struct {
 // Client represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type Client base.Client[generated.ContainerClient]
 
-// NewClient creates a Client object using the specified URL, Azure AD credential, and options.
+// NewClient creates an instance of Client with the specified values.
+//   - containerURL - the URL of the container e.g. https://<account>.blob.core.windows.net/container
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
 func NewClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
@@ -44,7 +48,10 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 	return (*Client)(base.NewContainerClient(containerURL, pl, nil)), nil
 }
 
-// NewClientWithNoCredential creates a Client object using the specified URL and options.
+// NewClientWithNoCredential creates an instance of Client with the specified values.
+// This is used to anonymously access a container or with a shared access signature (SAS) token.
+//   - containerURL - the URL of the container e.g. https://<account>.blob.core.windows.net/container?<sas token>
+//   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
@@ -52,7 +59,10 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 	return (*Client)(base.NewContainerClient(containerURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKeyCredential creates a Client object using the specified URL, shared key, and options.
+// NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
+//   - containerURL - the URL of the container e.g. https://<account>.blob.core.windows.net/container
+//   - cred - a SharedKeyCredential created with the matching container's storage account and access key
+//   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
@@ -62,7 +72,10 @@ func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCreden
 	return (*Client)(base.NewContainerClient(containerURL, pl, cred)), nil
 }
 
-// NewClientFromConnectionString creates a Client object using connection string of an account
+// NewClientFromConnectionString creates an instance of Client with the specified values.
+//   - connectionString - a connection string for the desired storage account
+//   - containerName - the name of the container within the storage account
+//   - options - client options; pass nil to accept the default values
 func NewClientFromConnectionString(connectionString string, containerName string, options *ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
@@ -94,41 +107,38 @@ func (c *Client) URL() string {
 	return c.generated().Endpoint()
 }
 
-// NewBlobClient creates a new BlobClient object by concatenating blobName to the end of
-// Client's URL. The new BlobClient uses the same request policy pipeline as the Client.
-// To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
-// desired pipeline object. Or, call this package's NewBlobClient instead of calling this object's
-// NewBlobClient method.
+// NewBlobClient creates a new blob.Client object by concatenating blobName to the end of
+// Client's URL. The blob name will be URL-encoded.
+// The new blob.Client uses the same request policy pipeline as this Client.
 func (c *Client) NewBlobClient(blobName string) *blob.Client {
+	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
 	return (*blob.Client)(base.NewBlobClient(blobURL, c.generated().Pipeline(), c.sharedKey()))
 }
 
-// NewAppendBlobClient creates a new AppendBlobURL object by concatenating blobName to the end of
-// Client's URL. The new AppendBlobURL uses the same request policy pipeline as the Client.
-// To change the pipeline, create the AppendBlobURL and then call its WithPipeline method passing in the
-// desired pipeline object. Or, call this package's NewAppendBlobClient instead of calling this object's
-// NewAppendBlobClient method.
+// NewAppendBlobClient creates a new appendblob.Client object by concatenating blobName to the end of
+// this Client's URL. The blob name will be URL-encoded.
+// The new appendblob.Client uses the same request policy pipeline as this Client.
 func (c *Client) NewAppendBlobClient(blobName string) *appendblob.Client {
+	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
 	return (*appendblob.Client)(base.NewAppendBlobClient(blobURL, c.generated().Pipeline(), c.sharedKey()))
 }
 
-// NewBlockBlobClient creates a new BlockBlobClient object by concatenating blobName to the end of
-// Client's URL. The new BlockBlobClient uses the same request policy pipeline as the Client.
-// To change the pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the
-// desired pipeline object. Or, call this package's NewBlockBlobClient instead of calling this object's
-// NewBlockBlobClient method.
+// NewBlockBlobClient creates a new blockblob.Client object by concatenating blobName to the end of
+// this Client's URL. The blob name will be URL-encoded.
+// The new blockblob.Client uses the same request policy pipeline as this Client.
 func (c *Client) NewBlockBlobClient(blobName string) *blockblob.Client {
+	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
 	return (*blockblob.Client)(base.NewBlockBlobClient(blobURL, c.generated().Pipeline(), c.sharedKey()))
 }
 
-// NewPageBlobClient creates a new PageBlobURL object by concatenating blobName to the end of Client's URL. The new PageBlobURL uses the same request policy pipeline as the Client.
-// To change the pipeline, create the PageBlobURL and then call its WithPipeline method passing in the
-// desired pipeline object. Or, call this package's NewPageBlobClient instead of calling this object's
-// NewPageBlobClient method.
+// NewPageBlobClient creates a new pageblob.Client object by concatenating blobName to the end of
+// this Client's URL. The blob name will be URL-encoded.
+// The new pageblob.Client uses the same request policy pipeline as this Client.
 func (c *Client) NewPageBlobClient(blobName string) *pageblob.Client {
+	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
 	return (*pageblob.Client)(base.NewPageBlobClient(blobURL, c.generated().Pipeline(), c.sharedKey()))
 }
@@ -155,6 +165,23 @@ func (c *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 func (c *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	opts, leaseAccessConditions, modifiedAccessConditions := options.format()
 	resp, err := c.generated().Delete(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
+
+	return resp, err
+}
+
+// Restore operation restore the contents and properties of a soft deleted container to a specified container.
+// For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/restore-container.
+func (c *Client) Restore(ctx context.Context, deletedContainerVersion string, options *RestoreOptions) (RestoreResponse, error) {
+	urlParts, err := blob.ParseURL(c.URL())
+	if err != nil {
+		return RestoreResponse{}, err
+	}
+
+	opts := &generated.ContainerClientRestoreOptions{
+		DeletedContainerName:    &urlParts.ContainerName,
+		DeletedContainerVersion: &deletedContainerVersion,
+	}
+	resp, err := c.generated().Restore(ctx, opts)
 
 	return resp, err
 }
@@ -192,6 +219,12 @@ func (c *Client) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions)
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
 func (c *Client) SetAccessPolicy(ctx context.Context, containerACL []*SignedIdentifier, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
 	accessPolicy, mac, lac := o.format()
+	for _, c := range containerACL {
+		err := formatTime(c)
+		if err != nil {
+			return SetAccessPolicyResponse{}, err
+		}
+	}
 	resp, err := c.generated().SetAccessPolicy(ctx, containerACL, accessPolicy, mac, lac)
 	return resp, err
 }
@@ -202,7 +235,7 @@ func (c *Client) SetAccessPolicy(ctx context.Context, containerACL []*SignedIden
 func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[ListBlobsFlatResponse] {
 	listOptions := generated.ContainerClientListBlobFlatSegmentOptions{}
 	if o != nil {
-		listOptions.Include = o.Include
+		listOptions.Include = o.Include.format()
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix
@@ -276,34 +309,30 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c *Client) GetSASURL(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time, expiry time.Time) (string, error) {
 	if c.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 
-	urlParts, err := exported.ParseURL(c.URL())
+	urlParts, err := blob.ParseURL(c.URL())
 	if err != nil {
 		return "", err
 	}
 
 	// Containers do not have snapshots, nor versions.
-	qps, err := SASSignatureValues{
-		Version:       exported.SASVersion,
-		Protocol:      exported.SASProtocolHTTPS,
+	qps, err := sas.BlobSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(c.sharedKey())
+	}.SignWithSharedKey(c.sharedKey())
 	if err != nil {
 		return "", err
 	}
 
-	endpoint := c.URL()
-	if !strings.HasSuffix(endpoint, "/") {
-		endpoint += "/"
-	}
-	endpoint += "?" + qps.Encode()
+	endpoint := c.URL() + "?" + qps.Encode()
 
 	return endpoint, nil
 }

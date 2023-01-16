@@ -7,6 +7,9 @@
 package container
 
 import (
+	"reflect"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
@@ -26,10 +29,16 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 type CpkScopeInfo = generated.ContainerCpkScopeInfo
 
 // BlobProperties - Properties of a blob
-type BlobProperties = generated.BlobPropertiesInternal
+type BlobProperties = generated.BlobProperties
 
 // BlobItem - An Azure Storage blob
-type BlobItem = generated.BlobItemInternal
+type BlobItem = generated.BlobItem
+
+// BlobPrefix is a blob's prefix when hierarchically listing blobs.
+type BlobPrefix = generated.BlobPrefix
+
+// BlobTag - a key/value pair on a blob
+type BlobTag = generated.BlobTag
 
 // AccessConditions identifies container-specific access conditions which you optionally set.
 type AccessConditions = exported.ContainerAccessConditions
@@ -49,21 +58,6 @@ type AccessPolicyPermission = exported.AccessPolicyPermission
 
 // SignedIdentifier - signed identifier
 type SignedIdentifier = generated.SignedIdentifier
-
-// SASProtocol indicates the http/https.
-type SASProtocol = exported.SASProtocol
-
-// IPRange represents a SAS IP range's start IP and (optionally) end IP.
-type IPRange = exported.IPRange
-
-// SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
-type SASSignatureValues = exported.BlobSASSignatureValues
-
-// SASPermissions type simplifies creating the permissions string for an Azure Storage container SAS.
-// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
-// All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
-type SASPermissions = exported.ContainerSASPermissions
 
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
@@ -97,6 +91,13 @@ func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *gene
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// RestoreOptions contains the optional parameters for the Client.Restore method.
+type RestoreOptions struct {
+	// placeholder for future options
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetPropertiesOptions contains the optional parameters for the ContainerClient.GetProperties method.
 type GetPropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
@@ -113,10 +114,56 @@ func (o *GetPropertiesOptions) format() (*generated.ContainerClientGetProperties
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// ListBlobsInclude indicates what additional information the service should return with each blob.
+type ListBlobsInclude struct {
+	Copy, Metadata, Snapshots, UncommittedBlobs, Deleted, Tags, Versions, LegalHold, ImmutabilityPolicy, DeletedWithVersions bool
+}
+
+func (l ListBlobsInclude) format() []generated.ListBlobsIncludeItem {
+	if reflect.ValueOf(l).IsZero() {
+		return nil
+	}
+
+	include := []generated.ListBlobsIncludeItem{}
+
+	if l.Copy {
+		include = append(include, generated.ListBlobsIncludeItemCopy)
+	}
+	if l.Deleted {
+		include = append(include, generated.ListBlobsIncludeItemDeleted)
+	}
+	if l.DeletedWithVersions {
+		include = append(include, generated.ListBlobsIncludeItemDeletedwithversions)
+	}
+	if l.ImmutabilityPolicy {
+		include = append(include, generated.ListBlobsIncludeItemImmutabilitypolicy)
+	}
+	if l.LegalHold {
+		include = append(include, generated.ListBlobsIncludeItemLegalhold)
+	}
+	if l.Metadata {
+		include = append(include, generated.ListBlobsIncludeItemMetadata)
+	}
+	if l.Snapshots {
+		include = append(include, generated.ListBlobsIncludeItemSnapshots)
+	}
+	if l.Tags {
+		include = append(include, generated.ListBlobsIncludeItemTags)
+	}
+	if l.UncommittedBlobs {
+		include = append(include, generated.ListBlobsIncludeItemUncommittedblobs)
+	}
+	if l.Versions {
+		include = append(include, generated.ListBlobsIncludeItemVersions)
+	}
+
+	return include
+}
+
 // ListBlobsFlatOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegment method.
 type ListBlobsFlatOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
-	Include []ListBlobsIncludeItem
+	Include ListBlobsInclude
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
 	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
@@ -138,7 +185,7 @@ type ListBlobsFlatOptions struct {
 // ListBlobsHierarchyOptions provides set of configurations for Client.NewListBlobsHierarchyPager
 type ListBlobsHierarchyOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
-	Include []ListBlobsIncludeItem
+	Include ListBlobsInclude
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
 	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
@@ -162,7 +209,7 @@ func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHi
 	}
 
 	return generated.ContainerClientListBlobHierarchySegmentOptions{
-		Include:    o.Include,
+		Include:    o.Include.format(),
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
 		Prefix:     o.Prefix,
@@ -220,4 +267,27 @@ func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPo
 	return &generated.ContainerClientSetAccessPolicyOptions{
 		Access: o.Access,
 	}, lac, mac
+}
+
+func formatTime(c *SignedIdentifier) error {
+	if c.AccessPolicy == nil {
+		return nil
+	}
+
+	if c.AccessPolicy.Start != nil {
+		st, err := time.Parse(time.RFC3339, c.AccessPolicy.Start.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		c.AccessPolicy.Start = &st
+	}
+	if c.AccessPolicy.Expiry != nil {
+		et, err := time.Parse(time.RFC3339, c.AccessPolicy.Expiry.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		c.AccessPolicy.Expiry = &et
+	}
+
+	return nil
 }

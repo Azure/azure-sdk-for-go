@@ -10,6 +10,7 @@ import (
 	"context"
 	"io"
 	"os"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -28,36 +29,57 @@ type ClientOptions struct {
 // Client represents a client to an Azure Storage append blob;
 type Client base.CompositeClient[generated.BlobClient, generated.AppendBlobClient]
 
-// NewClient creates an AppendBlobClient with the specified URL, Azure AD credential, and options.
-func NewClient(blobURL string, cred azcore.TokenCredential, o *ClientOptions) (*Client, error) {
+// NewClient creates an instance of Client with the specified values.
+//   - blobURL - the URL of the blob e.g. https://<account>.blob.core.windows.net/container/blob.txt
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
+func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
-	conOptions := shared.GetClientOptions(o)
+	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	pl := runtime.NewPipeline(exported.ModuleName,
+		exported.ModuleVersion, runtime.PipelineOptions{},
+		&conOptions.ClientOptions)
 
 	return (*Client)(base.NewAppendBlobClient(blobURL, pl, nil)), nil
 }
 
-// NewClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
-func NewClientWithNoCredential(blobURL string, o *ClientOptions) (*Client, error) {
-	conOptions := shared.GetClientOptions(o)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+// NewClientWithNoCredential creates an instance of Client with the specified values.
+// This is used to anonymously access a blob or with a shared access signature (SAS) token.
+//   - blobURL - the URL of the blob e.g. https://<account>.blob.core.windows.net/container/blob.txt?<sas token>
+//   - options - client options; pass nil to accept the default values
+func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
+	conOptions := shared.GetClientOptions(options)
+	pl := runtime.NewPipeline(exported.ModuleName,
+		exported.ModuleVersion,
+		runtime.PipelineOptions{},
+		&conOptions.ClientOptions)
 
 	return (*Client)(base.NewAppendBlobClient(blobURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKeyCredential creates an AppendBlobClient with the specified URL, shared key, and options.
-func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, o *ClientOptions) (*Client, error) {
+// NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
+//   - blobURL - the URL of the blob e.g. https://<account>.blob.core.windows.net/container/blob.txt
+//   - cred - a SharedKeyCredential created with the matching blob's storage account and access key
+//   - options - client options; pass nil to accept the default values
+func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
-	conOptions := shared.GetClientOptions(o)
+	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	pl := runtime.NewPipeline(exported.ModuleName,
+		exported.ModuleVersion,
+		runtime.PipelineOptions{},
+		&conOptions.ClientOptions)
 
 	return (*Client)(base.NewAppendBlobClient(blobURL, pl, cred)), nil
 }
 
-// NewClientFromConnectionString creates Client from a connection String
-func NewClientFromConnectionString(connectionString, containerName, blobName string, o *ClientOptions) (*Client, error) {
+// NewClientFromConnectionString creates an instance of Client with the specified values.
+//   - connectionString - a connection string for the desired storage account
+//   - containerName - the name of the container within the storage account
+//   - blobName - the name of the blob within the container
+//   - options - client options; pass nil to accept the default values
+func NewClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
@@ -69,10 +91,10 @@ func NewClientFromConnectionString(connectionString, containerName, blobName str
 		if err != nil {
 			return nil, err
 		}
-		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, o)
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
 	}
 
-	return NewClientWithNoCredential(parsed.ServiceURL, o)
+	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
 // BlobClient returns the embedded blob client for this AppendBlob client.
@@ -90,6 +112,11 @@ func (ab *Client) generated() *generated.AppendBlobClient {
 	return appendBlob
 }
 
+func (ab *Client) innerBlobGenerated() *generated.BlobClient {
+	b := ab.BlobClient()
+	return base.InnerClient((*base.Client[generated.BlobClient])(b))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (ab *Client) URL() string {
 	return ab.generated().Endpoint()
@@ -98,7 +125,7 @@ func (ab *Client) URL() string {
 // WithSnapshot creates a new AppendBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (ab *Client) WithSnapshot(snapshot string) (*Client, error) {
-	p, err := exported.ParseURL(ab.URL())
+	p, err := blob.ParseURL(ab.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +137,7 @@ func (ab *Client) WithSnapshot(snapshot string) (*Client, error) {
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (ab *Client) WithVersionID(versionID string) (*Client, error) {
-	p, err := exported.ParseURL(ab.URL())
+	p, err := blob.ParseURL(ab.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +167,22 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 
 	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
 
-	resp, err := ab.generated().AppendBlock(ctx, count, body, appendOptions, leaseAccessConditions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions)
+	if o != nil && o.TransactionalValidation != nil {
+		body, err = o.TransactionalValidation.Apply(body, appendOptions)
+		if err != nil {
+			return AppendBlockResponse{}, nil
+		}
+	}
+
+	resp, err := ab.generated().AppendBlock(ctx,
+		count,
+		body,
+		appendOptions,
+		leaseAccessConditions,
+		appendPositionAccessConditions,
+		cpkInfo,
+		cpkScope,
+		modifiedAccessConditions)
 
 	return resp, err
 }
@@ -148,11 +190,25 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 // AppendBlockFromURL copies a new block of data from source URL to the end of the existing append blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/append-block-from-url.
 func (ab *Client) AppendBlockFromURL(ctx context.Context, source string, o *AppendBlockFromURLOptions) (AppendBlockFromURLResponse, error) {
-	appendBlockFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, appendPositionAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions := o.format()
+	appendBlockFromURLOptions,
+		cpkInfo,
+		cpkScopeInfo,
+		leaseAccessConditions,
+		appendPositionAccessConditions,
+		modifiedAccessConditions,
+		sourceModifiedAccessConditions := o.format()
 
 	// content length should be 0 on * from URL. always. It's a 400 if it isn't.
-	resp, err := ab.generated().AppendBlockFromURL(ctx, source, 0, appendBlockFromURLOptions, cpkInfo, cpkScopeInfo,
-		leaseAccessConditions, appendPositionAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
+	resp, err := ab.generated().AppendBlockFromURL(ctx,
+		source,
+		0,
+		appendBlockFromURLOptions,
+		cpkInfo,
+		cpkScopeInfo,
+		leaseAccessConditions,
+		appendPositionAccessConditions,
+		modifiedAccessConditions,
+		sourceModifiedAccessConditions)
 	return resp, err
 }
 
@@ -160,7 +216,11 @@ func (ab *Client) AppendBlockFromURL(ctx context.Context, source string, o *Appe
 // https://docs.microsoft.com/en-us/rest/api/storageservices/append-blob-seal
 func (ab *Client) Seal(ctx context.Context, o *SealOptions) (SealResponse, error) {
 	leaseAccessConditions, modifiedAccessConditions, positionAccessConditions := o.format()
-	resp, err := ab.generated().Seal(ctx, nil, leaseAccessConditions, modifiedAccessConditions, positionAccessConditions)
+	resp, err := ab.generated().Seal(ctx,
+		nil,
+		leaseAccessConditions,
+		modifiedAccessConditions,
+		positionAccessConditions)
 	return resp, err
 }
 
@@ -177,6 +237,24 @@ func (ab *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 	return ab.BlobClient().Undelete(ctx, o)
 }
 
+// SetImmutabilityPolicy operation enables users to set the immutability policy on a blob.
+// https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
+func (ab *Client) SetImmutabilityPolicy(ctx context.Context, expiryTime time.Time, options *blob.SetImmutabilityPolicyOptions) (blob.SetImmutabilityPolicyResponse, error) {
+	return ab.BlobClient().SetImmutabilityPolicy(ctx, expiryTime, options)
+}
+
+// DeleteImmutabilityPolicy operation enables users to delete the immutability policy on a blob.
+// https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
+func (ab *Client) DeleteImmutabilityPolicy(ctx context.Context, options *blob.DeleteImmutabilityPolicyOptions) (blob.DeleteImmutabilityPolicyResponse, error) {
+	return ab.BlobClient().DeleteImmutabilityPolicy(ctx, options)
+}
+
+// SetLegalHold operation enables users to set legal hold on a blob.
+// https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
+func (ab *Client) SetLegalHold(ctx context.Context, legalHold bool, options *blob.SetLegalHoldOptions) (blob.SetLegalHoldResponse, error) {
+	return ab.BlobClient().SetLegalHold(ctx, legalHold, options)
+}
+
 // SetTier operation sets the tier on a blob. The operation is allowed on a page
 // blob in a premium storage account and on a block blob in a blob storage account (locally
 // redundant storage only). A premium page blob's tier determines the allowed size, IOPS, and
@@ -185,6 +263,17 @@ func (ab *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 // For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
 func (ab *Client) SetTier(ctx context.Context, tier blob.AccessTier, o *blob.SetTierOptions) (blob.SetTierResponse, error) {
 	return ab.BlobClient().SetTier(ctx, tier, o)
+}
+
+// SetExpiry operation sets an expiry time on an existing blob. This operation is only allowed on Hierarchical Namespace enabled accounts.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-expiry
+func (ab *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
+	if expiryType == nil {
+		expiryType = ExpiryTypeNever{}
+	}
+	et, opts := expiryType.Format(o)
+	resp, err := ab.innerBlobGenerated().SetExpiry(ctx, et, opts)
+	return resp, err
 }
 
 // GetProperties returns the blob's properties.

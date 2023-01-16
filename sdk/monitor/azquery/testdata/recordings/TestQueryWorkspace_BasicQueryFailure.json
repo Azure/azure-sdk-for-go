@@ -1,0 +1,52 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://api.loganalytics.io/v1/workspaces/32d1e136-gg81-4b0a-b647-260cdc471f68/query",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "47",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azquery/v0.4.0 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {
+        "query": "not a valid query",
+        "timespan": "PT2H"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
+        "Connection": "keep-alive",
+        "Content-Length": "355",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 12 Jan 2023 21:31:00 GMT",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "Via": "1.1 draft-oms-8bd9c8fdc-ltrcf",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "error": {
+          "message": "The request had some invalid properties",
+          "code": "BadArgumentError",
+          "correlationId": "1e1d63ad-8f90-473e-854a-55f9c0411e40",
+          "innererror": {
+            "code": "SyntaxError",
+            "message": "A recognition error occurred in the query.",
+            "innererror": {
+              "code": "SYN0002",
+              "message": "Query could not be parsed at \u0027a\u0027 on line [1,4]",
+              "line": 1,
+              "pos": 4,
+              "token": "a"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

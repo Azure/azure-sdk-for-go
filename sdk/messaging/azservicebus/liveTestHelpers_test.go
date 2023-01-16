@@ -18,7 +18,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createClientOptionsForTest(t *testing.T) (*ClientOptions, func()) {
+func enableDebugClientOptions(t *testing.T, baseClientOptions *ClientOptions) (*ClientOptions, func()) {
 	// Setting this variable will cause the SB client to dump out (in TESTS ONLY)
 	// the pre-master-key for your AMQP connection. This allows you decrypt a packet
 	// capture from wireshark.
@@ -27,7 +27,11 @@ func createClientOptionsForTest(t *testing.T) (*ClientOptions, func()) {
 	// Go will write out the key.
 	keyLogFile := os.Getenv("SSLKEYLOGFILE_TEST")
 
-	clientOptions := &ClientOptions{}
+	var clientOptions ClientOptions
+
+	if baseClientOptions != nil {
+		clientOptions = *baseClientOptions
+	}
 
 	if keyLogFile != "" {
 		writer, err := os.Create(keyLogFile)
@@ -40,20 +44,29 @@ func createClientOptionsForTest(t *testing.T) (*ClientOptions, func()) {
 			KeyLogWriter: writer,
 		}
 
-		return clientOptions, func() { _ = writer.Close() }
+		return &clientOptions, func() { _ = writer.Close() }
 	}
 
-	return clientOptions, func() {}
+	return &clientOptions, func() {}
 }
 
-func setupLiveTest(t *testing.T, props *admin.QueueProperties) (*Client, func(), string) {
+type liveTestOptions struct {
+	QueueProperties *admin.QueueProperties
+	ClientOptions   *ClientOptions
+}
+
+func setupLiveTest(t *testing.T, options *liveTestOptions) (*Client, func(), string) {
+	if options == nil {
+		options = &liveTestOptions{}
+	}
+
 	cs := test.GetConnectionString(t)
 
-	clientOptions, flushKeyFn := createClientOptionsForTest(t)
+	clientOptions, flushKeyFn := enableDebugClientOptions(t, options.ClientOptions)
 	serviceBusClient, err := NewClientFromConnectionString(cs, clientOptions)
 	require.NoError(t, err)
 
-	queueName, cleanupQueue := createQueue(t, cs, props)
+	queueName, cleanupQueue := createQueue(t, cs, options.QueueProperties)
 
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))
@@ -67,6 +80,39 @@ func setupLiveTest(t *testing.T, props *admin.QueueProperties) (*Client, func(),
 	}
 
 	return serviceBusClient, testCleanup, queueName
+}
+
+type liveTestOptionsWithSubscription struct {
+	SubscriptionProperties *admin.SubscriptionProperties
+	TopicProperties        *admin.TopicProperties
+	ClientOptions          *ClientOptions
+}
+
+func setupLiveTestWithSubscription(t *testing.T, options *liveTestOptionsWithSubscription) (client *Client, cleanup func(), topic string, subscription string) {
+	if options == nil {
+		options = &liveTestOptionsWithSubscription{}
+	}
+
+	cs := test.GetConnectionString(t)
+
+	clientOptions, flushKeyFn := enableDebugClientOptions(t, options.ClientOptions)
+	serviceBusClient, err := NewClientFromConnectionString(cs, clientOptions)
+	require.NoError(t, err)
+
+	topic, cleanupTopic := createSubscription(t, cs, options.TopicProperties, options.SubscriptionProperties)
+
+	testCleanup := func() {
+		require.NoError(t, serviceBusClient.Close(context.Background()))
+		flushKeyFn()
+		cleanupTopic()
+
+		// just a simple sanity check that closing twice doesn't cause errors.
+		// it's basically zero cost since all the links and connection are gone from the
+		// first Close().
+		require.NoError(t, serviceBusClient.Close(context.Background()))
+	}
+
+	return serviceBusClient, testCleanup, topic, "sub"
 }
 
 // createQueue creates a queue, automatically setting it to delete on idle in 5 minutes.
@@ -94,7 +140,8 @@ func createQueue(t *testing.T, connectionString string, queueProperties *admin.Q
 	}
 }
 
-// createSubscription creates a queue, automatically setting it to delete on idle in 5 minutes.
+// createSubscription creates a topic, automatically setting it to delete on idle in 5 minutes.
+// It also creates a subscription named 'sub'.
 func createSubscription(t *testing.T, connectionString string, topicProperties *admin.TopicProperties, subscriptionProperties *admin.SubscriptionProperties) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	topicName := fmt.Sprintf("topic-%X", nanoSeconds)

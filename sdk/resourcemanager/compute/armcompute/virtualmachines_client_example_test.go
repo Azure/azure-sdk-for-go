@@ -16,10 +16,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_ListBySubscription_ByLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ListBySubscription_ByLocation.json
 func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,8 +30,7 @@ func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLocationPager("eastus",
-		nil)
+	pager := client.NewListByLocationPager("eastus", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,8 +43,8 @@ func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Capture_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginCapture() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Capture_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginCapture_virtualMachinesCaptureMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -55,15 +54,11 @@ func ExampleVirtualMachinesClient_BeginCapture() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCapture(ctx,
-		"rgcompute",
-		"aaaaaaaaaaaaaaaaaaaa",
-		armcompute.VirtualMachineCaptureParameters{
-			DestinationContainerName: to.Ptr("aaaaaaa"),
-			OverwriteVhds:            to.Ptr(true),
-			VhdPrefix:                to.Ptr("aaaaaaaaa"),
-		},
-		nil)
+	poller, err := client.BeginCapture(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaa", armcompute.VirtualMachineCaptureParameters{
+		DestinationContainerName: to.Ptr("aaaaaaa"),
+		OverwriteVhds:            to.Ptr(true),
+		VhdPrefix:                to.Ptr("aaaaaaaaa"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -75,8 +70,8 @@ func ExampleVirtualMachinesClient_BeginCapture() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
-func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Capture_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginCapture_virtualMachinesCaptureMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -86,54 +81,77 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"myResourceGroup",
-		"myVM",
-		armcompute.VirtualMachine{
-			Location: to.Ptr("westus"),
-			Properties: &armcompute.VirtualMachineProperties{
-				HardwareProfile: &armcompute.HardwareProfile{
-					VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
-				},
-				NetworkProfile: &armcompute.NetworkProfile{
-					NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
-						{
-							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
-							Properties: &armcompute.NetworkInterfaceReferenceProperties{
-								Primary: to.Ptr(true),
-							},
-						}},
-				},
-				OSProfile: &armcompute.OSProfile{
-					AdminPassword: to.Ptr("{your-password}"),
-					AdminUsername: to.Ptr("{your-username}"),
-					ComputerName:  to.Ptr("myVM"),
-					LinuxConfiguration: &armcompute.LinuxConfiguration{
-						PatchSettings: &armcompute.LinuxPatchSettings{
-							AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeImageDefault),
+	poller, err := client.BeginCapture(ctx, "rgcompute", "aaaaaaaaaaaaa", armcompute.VirtualMachineCaptureParameters{
+		DestinationContainerName: to.Ptr("aaaaaaa"),
+		OverwriteVhds:            to.Ptr(true),
+		VhdPrefix:                to.Ptr("aaaaaaaaa"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSettingAssessmentModeOfImageDefault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
 						},
-						ProvisionVMAgent: to.Ptr(true),
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				LinuxConfiguration: &armcompute.LinuxConfiguration{
+					PatchSettings: &armcompute.LinuxPatchSettings{
+						AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeImageDefault),
 					},
+					ProvisionVMAgent: to.Ptr(true),
 				},
-				StorageProfile: &armcompute.StorageProfile{
-					ImageReference: &armcompute.ImageReference{
-						Offer:     to.Ptr("UbuntuServer"),
-						Publisher: to.Ptr("Canonical"),
-						SKU:       to.Ptr("16.04-LTS"),
-						Version:   to.Ptr("latest"),
-					},
-					OSDisk: &armcompute.OSDisk{
-						Name:         to.Ptr("myVMosdisk"),
-						Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
-						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-						ManagedDisk: &armcompute.ManagedDiskParameters{
-							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-						},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("UbuntuServer"),
+					Publisher: to.Ptr("Canonical"),
+					SKU:       to.Ptr("16.04-LTS"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
 					},
 				},
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -145,8 +163,8 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
-func ExampleVirtualMachinesClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -156,60 +174,1862 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"myResourceGroup",
-		"myVM",
-		armcompute.VirtualMachineUpdate{
-			Properties: &armcompute.VirtualMachineProperties{
-				HardwareProfile: &armcompute.HardwareProfile{
-					VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
-				},
-				NetworkProfile: &armcompute.NetworkProfile{
-					NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
-						{
-							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
-							Properties: &armcompute.NetworkInterfaceReferenceProperties{
-								Primary: to.Ptr(true),
-							},
-						}},
-				},
-				OSProfile: &armcompute.OSProfile{
-					AdminPassword: to.Ptr("{your-password}"),
-					AdminUsername: to.Ptr("{your-username}"),
-					ComputerName:  to.Ptr("myVM"),
-				},
-				StorageProfile: &armcompute.StorageProfile{
-					DataDisks: []*armcompute.DataDisk{
-						{
-							CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
-							DiskSizeGB:   to.Ptr[int32](1023),
-							Lun:          to.Ptr[int32](0),
-							ToBeDetached: to.Ptr(true),
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
 						},
-						{
-							CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
-							DiskSizeGB:   to.Ptr[int32](1023),
-							Lun:          to.Ptr[int32](1),
-							ToBeDetached: to.Ptr(false),
-						}},
-					ImageReference: &armcompute.ImageReference{
-						Offer:     to.Ptr("WindowsServer"),
-						Publisher: to.Ptr("MicrosoftWindowsServer"),
-						SKU:       to.Ptr("2016-Datacenter"),
-						Version:   to.Ptr("latest"),
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				LinuxConfiguration: &armcompute.LinuxConfiguration{
+					PatchSettings: &armcompute.LinuxPatchSettings{
+						AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeAutomaticByPlatform),
+						AutomaticByPlatformSettings: &armcompute.LinuxVMGuestPatchAutomaticByPlatformSettings{
+							RebootSetting: to.Ptr(armcompute.LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever),
+						},
+						PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeAutomaticByPlatform),
 					},
-					OSDisk: &armcompute.OSDisk{
-						Name:         to.Ptr("myVMosdisk"),
+					ProvisionVMAgent: to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("UbuntuServer"),
+					Publisher: to.Ptr("Canonical"),
+					SKU:       to.Ptr("16.04-LTS"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSettingPatchModeOfImageDefault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				LinuxConfiguration: &armcompute.LinuxConfiguration{
+					PatchSettings: &armcompute.LinuxPatchSettings{
+						PatchMode: to.Ptr(armcompute.LinuxVMGuestPatchModeImageDefault),
+					},
+					ProvisionVMAgent: to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("UbuntuServer"),
+					Publisher: to.Ptr("Canonical"),
+					SKU:       to.Ptr("16.04-LTS"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVmWithAPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				LinuxConfiguration: &armcompute.LinuxConfiguration{
+					PatchSettings: &armcompute.LinuxPatchSettings{
+						AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeAutomaticByPlatform),
+						PatchMode:      to.Ptr(armcompute.LinuxVMGuestPatchModeAutomaticByPlatform),
+					},
+					ProvisionVMAgent: to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("UbuntuServer"),
+					Publisher: to.Ptr("Canonical"),
+					SKU:       to.Ptr("16.04-LTS"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromACommunityGalleryImage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					CommunityGalleryImageID: to.Ptr("/CommunityGalleries/galleryPublicName/Images/communityGalleryImageName/Versions/communityGalleryImageVersionName"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromASharedGalleryImage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					SharedGalleryImageID: to.Ptr("/SharedGalleries/sharedGalleryName/Images/sharedGalleryImageName/Versions/sharedGalleryImageVersionName"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithDiskControllerType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+				BootDiagnostics: &armcompute.BootDiagnostics{
+					Enabled:    to.Ptr(true),
+					StorageURI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net"),
+				},
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD4V3),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				DiskControllerType: to.Ptr(armcompute.DiskControllerTypesNVMe),
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+			UserData: to.Ptr("U29tZSBDdXN0b20gRGF0YQ=="),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithHibernationEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "{vm-name}", armcompute.VirtualMachine{
+		Location: to.Ptr("eastus2euap"),
+		Properties: &armcompute.VirtualMachineProperties{
+			AdditionalCapabilities: &armcompute.AdditionalCapabilities{
+				HibernationEnabled: to.Ptr(true),
+			},
+			DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+				BootDiagnostics: &armcompute.BootDiagnostics{
+					Enabled:    to.Ptr(true),
+					StorageURI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net"),
+				},
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("{vm-name}"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2019-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("vmOSdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithUefiSettingsOfSecureBootAndVTpm() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			SecurityProfile: &armcompute.SecurityProfile{
+				SecurityType: to.Ptr(armcompute.SecurityTypesTrustedLaunch),
+				UefiSettings: &armcompute.UefiSettings{
+					SecureBootEnabled: to.Ptr(true),
+					VTpmEnabled:       to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("windowsserver-gen2preview-preview"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("windows10-tvm"),
+					Version:   to.Ptr("18363.592.2001092016"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadOnly),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardSSDLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithUserData() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "{vm-name}", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+				BootDiagnostics: &armcompute.BootDiagnostics{
+					Enabled:    to.Ptr(true),
+					StorageURI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net"),
+				},
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("{vm-name}"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("vmOSdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+			UserData: to.Ptr("RXhhbXBsZSBVc2VyRGF0YQ=="),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_CreateWithVMSizeProperties.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithVmSizeProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+				BootDiagnostics: &armcompute.BootDiagnostics{
+					Enabled:    to.Ptr(true),
+					StorageURI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net"),
+				},
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD4V3),
+				VMSizeProperties: &armcompute.VMSizeProperties{
+					VCPUsAvailable: to.Ptr[int32](1),
+					VCPUsPerCore:   to.Ptr[int32](1),
+				},
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+			UserData: to.Ptr("U29tZSBDdXN0b20gRGF0YQ=="),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithNetworkInterfaceConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
+				NetworkInterfaceConfigurations: []*armcompute.VirtualMachineNetworkInterfaceConfiguration{
+					{
+						Name: to.Ptr("{nic-config-name}"),
+						Properties: &armcompute.VirtualMachineNetworkInterfaceConfigurationProperties{
+							DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
+							IPConfigurations: []*armcompute.VirtualMachineNetworkInterfaceIPConfiguration{
+								{
+									Name: to.Ptr("{ip-config-name}"),
+									Properties: &armcompute.VirtualMachineNetworkInterfaceIPConfigurationProperties{
+										Primary: to.Ptr(true),
+										PublicIPAddressConfiguration: &armcompute.VirtualMachinePublicIPAddressConfiguration{
+											Name: to.Ptr("{publicIP-config-name}"),
+											Properties: &armcompute.VirtualMachinePublicIPAddressConfigurationProperties{
+												DeleteOption:             to.Ptr(armcompute.DeleteOptionsDetach),
+												PublicIPAllocationMethod: to.Ptr(armcompute.PublicIPAllocationMethodStatic),
+											},
+											SKU: &armcompute.PublicIPAddressSKU{
+												Name: to.Ptr(armcompute.PublicIPAddressSKUNameBasic),
+												Tier: to.Ptr(armcompute.PublicIPAddressSKUTierGlobal),
+											},
+										},
+									},
+								}},
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithSecurityTypeConfidentialVmWithCustomerManagedKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_DC2as_v5")),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			SecurityProfile: &armcompute.SecurityProfile{
+				SecurityType: to.Ptr(armcompute.SecurityTypesConfidentialVM),
+				UefiSettings: &armcompute.UefiSettings{
+					SecureBootEnabled: to.Ptr(true),
+					VTpmEnabled:       to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("2019-datacenter-cvm"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("windows-cvm"),
+					Version:   to.Ptr("17763.2183.2109130127"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadOnly),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						SecurityProfile: &armcompute.VMDiskSecurityProfile{
+							DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"),
+							},
+							SecurityEncryptionType: to.Ptr(armcompute.SecurityEncryptionTypesDiskWithVMGuestState),
+						},
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardSSDLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithSecurityTypeConfidentialVmWithPlatformManagedKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_DC2as_v5")),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			SecurityProfile: &armcompute.SecurityProfile{
+				SecurityType: to.Ptr(armcompute.SecurityTypesConfidentialVM),
+				UefiSettings: &armcompute.UefiSettings{
+					SecureBootEnabled: to.Ptr(true),
+					VTpmEnabled:       to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("2019-datacenter-cvm"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("windows-cvm"),
+					Version:   to.Ptr("17763.2183.2109130127"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadOnly),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						SecurityProfile: &armcompute.VMDiskSecurityProfile{
+							SecurityEncryptionType: to.Ptr(armcompute.SecurityEncryptionTypesDiskWithVMGuestState),
+						},
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardSSDLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingAssessmentModeOfImageDefault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				WindowsConfiguration: &armcompute.WindowsConfiguration{
+					EnableAutomaticUpdates: to.Ptr(true),
+					PatchSettings: &armcompute.PatchSettings{
+						AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeImageDefault),
+					},
+					ProvisionVMAgent: to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByOs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/nsgExistingNic"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				WindowsConfiguration: &armcompute.WindowsConfiguration{
+					EnableAutomaticUpdates: to.Ptr(true),
+					PatchSettings: &armcompute.PatchSettings{
+						PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeAutomaticByOS),
+					},
+					ProvisionVMAgent: to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				WindowsConfiguration: &armcompute.WindowsConfiguration{
+					EnableAutomaticUpdates: to.Ptr(true),
+					PatchSettings: &armcompute.PatchSettings{
+						AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeAutomaticByPlatform),
+						AutomaticByPlatformSettings: &armcompute.WindowsVMGuestPatchAutomaticByPlatformSettings{
+							RebootSetting: to.Ptr(armcompute.WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever),
+						},
+						PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeAutomaticByPlatform),
+					},
+					ProvisionVMAgent: to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndEnableHotpatchingSetToTrue() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				WindowsConfiguration: &armcompute.WindowsConfiguration{
+					EnableAutomaticUpdates: to.Ptr(true),
+					PatchSettings: &armcompute.PatchSettings{
+						EnableHotpatching: to.Ptr(true),
+						PatchMode:         to.Ptr(armcompute.WindowsVMGuestPatchModeAutomaticByPlatform),
+					},
+					ProvisionVMAgent: to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithAPatchSettingPatchModeOfManual() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				WindowsConfiguration: &armcompute.WindowsConfiguration{
+					EnableAutomaticUpdates: to.Ptr(true),
+					PatchSettings: &armcompute.PatchSettings{
+						PatchMode: to.Ptr(armcompute.WindowsVMGuestPatchModeManual),
+					},
+					ProvisionVMAgent: to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVmWithPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				WindowsConfiguration: &armcompute.WindowsConfiguration{
+					EnableAutomaticUpdates: to.Ptr(true),
+					PatchSettings: &armcompute.PatchSettings{
+						AssessmentMode: to.Ptr(armcompute.WindowsPatchAssessmentModeAutomaticByPlatform),
+						PatchMode:      to.Ptr(armcompute.WindowsVMGuestPatchModeAutomaticByPlatform),
+					},
+					ProvisionVMAgent: to.Ptr(true),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createACustomImageVmFromAnUnmanagedGeneralizedOsImage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "{vm-name}", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					Image: &armcompute.VirtualHardDisk{
+						URI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/{existing-generalized-os-image-blob-name}.vhd"),
+					},
+					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+					Vhd: &armcompute.VirtualHardDisk{
+						URI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk.vhd"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAPlatformImageVmWithUnmanagedOsAndDataDisks() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "{vm-name}", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				DataDisks: []*armcompute.DataDisk{
+					{
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](0),
+						Vhd: &armcompute.VirtualHardDisk{
+							URI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk0.vhd"),
+						},
+					},
+					{
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](1),
+						Vhd: &armcompute.VirtualHardDisk{
+							URI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk1.vhd"),
+						},
+					}},
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					Vhd: &armcompute.VirtualHardDisk{
+						URI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk.vhd"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromACustomImage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/{existing-custom-image-name}"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromAGeneralizedSharedImage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/mySharedGallery/images/mySharedImage"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmFromASpecializedSharedImage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/mySharedGallery/images/mySharedImage"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmInAVirtualMachineScaleSetWithCustomerAssignedPlatformFaultDomain() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			PlatformFaultDomain: to.Ptr[int32](1),
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+			VirtualMachineScaleSet: &armcompute.SubResource{
+				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{existing-flex-vmss-name-with-platformFaultDomainCount-greater-than-1}"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmInAnAvailabilitySet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			AvailabilitySet: &armcompute.SubResource{
+				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/{existing-availability-set-name}"),
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithApplicationProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			ApplicationProfile: &armcompute.ApplicationProfile{
+				GalleryApplications: []*armcompute.VMGalleryApplication{
+					{
+						ConfigurationReference:          to.Ptr("https://mystorageaccount.blob.core.windows.net/configurations/settings.config"),
+						EnableAutomaticUpgrade:          to.Ptr(false),
+						Order:                           to.Ptr[int32](1),
+						PackageReferenceID:              to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0"),
+						Tags:                            to.Ptr("myTag1"),
+						TreatFailureAsDeploymentFailure: to.Ptr(false),
+					},
+					{
+						PackageReferenceID: to.Ptr("/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1"),
+					}},
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("{image_offer}"),
+					Publisher: to.Ptr("{image_publisher}"),
+					SKU:       to.Ptr("{image_sku}"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithDiskEncryptionSetResourceIdInTheOsDiskAndDataDisk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				DataDisks: []*armcompute.DataDisk{
+					{
 						Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
-						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](0),
 						ManagedDisk: &armcompute.ManagedDiskParameters{
+							DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"),
+							},
 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
 						},
 					},
+					{
+						Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesAttach),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](1),
+						ManagedDisk: &armcompute.ManagedDiskParameters{
+							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/{existing-managed-disk-name}"),
+							DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"),
+							},
+							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+						},
+					}},
+				ImageReference: &armcompute.ImageReference{
+					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/{existing-custom-image-name}"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"),
+						},
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
 				},
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -221,7 +2041,1095 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Delete_Force.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithHostEncryptionUsingEncryptionAtHostProperty() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Plan: &armcompute.Plan{
+			Name:      to.Ptr("windows2016"),
+			Product:   to.Ptr("windows-data-science-vm"),
+			Publisher: to.Ptr("microsoft-ads"),
+		},
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			SecurityProfile: &armcompute.SecurityProfile{
+				EncryptionAtHost: to.Ptr(true),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("windows-data-science-vm"),
+					Publisher: to.Ptr("microsoft-ads"),
+					SKU:       to.Ptr("windows2016"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadOnly),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithScheduledEventsProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+				BootDiagnostics: &armcompute.BootDiagnostics{
+					Enabled:    to.Ptr(true),
+					StorageURI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net"),
+				},
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			ScheduledEventsProfile: &armcompute.ScheduledEventsProfile{
+				OSImageNotificationProfile: &armcompute.OSImageNotificationProfile{
+					Enable:           to.Ptr(true),
+					NotBeforeTimeout: to.Ptr("PT15M"),
+				},
+				TerminateNotificationProfile: &armcompute.TerminateNotificationProfile{
+					Enable:           to.Ptr(true),
+					NotBeforeTimeout: to.Ptr("PT10M"),
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithAMarketplaceImagePlan() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Plan: &armcompute.Plan{
+			Name:      to.Ptr("windows2016"),
+			Product:   to.Ptr("windows-data-science-vm"),
+			Publisher: to.Ptr("microsoft-ads"),
+		},
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("windows-data-science-vm"),
+					Publisher: to.Ptr("microsoft-ads"),
+					SKU:       to.Ptr("windows2016"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithAnExtensionsTimeBudget() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+				BootDiagnostics: &armcompute.BootDiagnostics{
+					Enabled:    to.Ptr(true),
+					StorageURI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net"),
+				},
+			},
+			ExtensionsTimeBudget: to.Ptr("PT30M"),
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithBootDiagnostics() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+				BootDiagnostics: &armcompute.BootDiagnostics{
+					Enabled:    to.Ptr(true),
+					StorageURI: to.Ptr("http://{existing-storage-account-name}.blob.core.windows.net"),
+				},
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEmptyDataDisks() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				DataDisks: []*armcompute.DataDisk{
+					{
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](0),
+					},
+					{
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](1),
+					}},
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEphemeralOsDiskProvisioningInCacheDiskUsingPlacementProperty() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Plan: &armcompute.Plan{
+			Name:      to.Ptr("windows2016"),
+			Product:   to.Ptr("windows-data-science-vm"),
+			Publisher: to.Ptr("microsoft-ads"),
+		},
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("windows-data-science-vm"),
+					Publisher: to.Ptr("microsoft-ads"),
+					SKU:       to.Ptr("windows2016"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadOnly),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					DiffDiskSettings: &armcompute.DiffDiskSettings{
+						Option:    to.Ptr(armcompute.DiffDiskOptionsLocal),
+						Placement: to.Ptr(armcompute.DiffDiskPlacementCacheDisk),
+					},
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEphemeralOsDiskProvisioningInResourceDiskUsingPlacementProperty() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Plan: &armcompute.Plan{
+			Name:      to.Ptr("windows2016"),
+			Product:   to.Ptr("windows-data-science-vm"),
+			Publisher: to.Ptr("microsoft-ads"),
+		},
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("windows-data-science-vm"),
+					Publisher: to.Ptr("microsoft-ads"),
+					SKU:       to.Ptr("windows2016"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadOnly),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					DiffDiskSettings: &armcompute.DiffDiskSettings{
+						Option:    to.Ptr(armcompute.DiffDiskOptionsLocal),
+						Placement: to.Ptr(armcompute.DiffDiskPlacementResourceDisk),
+					},
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithEphemeralOsDisk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Plan: &armcompute.Plan{
+			Name:      to.Ptr("windows2016"),
+			Product:   to.Ptr("windows-data-science-vm"),
+			Publisher: to.Ptr("microsoft-ads"),
+		},
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("windows-data-science-vm"),
+					Publisher: to.Ptr("microsoft-ads"),
+					SKU:       to.Ptr("windows2016"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadOnly),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					DiffDiskSettings: &armcompute.DiffDiskSettings{
+						Option: to.Ptr(armcompute.DiffDiskOptionsLocal),
+					},
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithManagedBootDiagnostics() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			DiagnosticsProfile: &armcompute.DiagnosticsProfile{
+				BootDiagnostics: &armcompute.BootDiagnostics{
+					Enabled: to.Ptr(true),
+				},
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithPasswordAuthentication() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithPremiumStorage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVmWithSshAuthentication() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				LinuxConfiguration: &armcompute.LinuxConfiguration{
+					DisablePasswordAuthentication: to.Ptr(true),
+					SSH: &armcompute.SSHConfiguration{
+						PublicKeys: []*armcompute.SSHPublicKey{
+							{
+								Path:    to.Ptr("/home/{your-username}/.ssh/authorized_keys"),
+								KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1"),
+							}},
+					},
+				},
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("{image_offer}"),
+					Publisher: to.Ptr("{image_publisher}"),
+					SKU:       to.Ptr("{image_sku}"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVmWithCapacityReservation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Plan: &armcompute.Plan{
+			Name:      to.Ptr("windows2016"),
+			Product:   to.Ptr("windows-data-science-vm"),
+			Publisher: to.Ptr("microsoft-ads"),
+		},
+		Properties: &armcompute.VirtualMachineProperties{
+			CapacityReservation: &armcompute.CapacityReservationProfile{
+				CapacityReservationGroup: &armcompute.SubResource{
+					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/{crgName}"),
+				},
+			},
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("windows-data-science-vm"),
+					Publisher: to.Ptr("microsoft-ads"),
+					SKU:       to.Ptr("windows2016"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadOnly),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
+func ExampleVirtualMachinesClient_BeginUpdate_updateAVmByDetachingDataDisk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachineUpdate{
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				DataDisks: []*armcompute.DataDisk{
+					{
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](0),
+						ToBeDetached: to.Ptr(true),
+					},
+					{
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](1),
+						ToBeDetached: to.Ptr(false),
+					}},
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
+func ExampleVirtualMachinesClient_BeginUpdate_updateAVmByForceDetachingDataDisk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachineUpdate{
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					}},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminPassword: to.Ptr("{your-password}"),
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				DataDisks: []*armcompute.DataDisk{
+					{
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DetachOption: to.Ptr(armcompute.DiskDetachOptionTypesForceDetach),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](0),
+						ToBeDetached: to.Ptr(true),
+					},
+					{
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DiskSizeGB:   to.Ptr[int32](1023),
+						Lun:          to.Ptr[int32](1),
+						ToBeDetached: to.Ptr(false),
+					}},
+				ImageReference: &armcompute.ImageReference{
+					Offer:     to.Ptr("WindowsServer"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					SKU:       to.Ptr("2016-Datacenter"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Name:         to.Ptr("myVMosdisk"),
+					Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Delete_Force.json
 func ExampleVirtualMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,10 +3140,7 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"myResourceGroup",
-		"myVM",
-		&armcompute.VirtualMachinesClientBeginDeleteOptions{ForceDeletion: to.Ptr(true)})
+	poller, err := client.BeginDelete(ctx, "myResourceGroup", "myVM", &armcompute.VirtualMachinesClientBeginDeleteOptions{ForceDeletion: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -245,8 +3150,8 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Get.json
-func ExampleVirtualMachinesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get.json
+func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -256,10 +3161,7 @@ func ExampleVirtualMachinesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myResourceGroup",
-		"myVM",
-		&armcompute.VirtualMachinesClientGetOptions{Expand: nil})
+	res, err := client.Get(ctx, "myResourceGroup", "myVM", &armcompute.VirtualMachinesClientGetOptions{Expand: to.Ptr(armcompute.InstanceViewTypesUserData)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -267,8 +3169,8 @@ func ExampleVirtualMachinesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
-func ExampleVirtualMachinesClient_InstanceView() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
+func ExampleVirtualMachinesClient_Get_getAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -278,10 +3180,7 @@ func ExampleVirtualMachinesClient_InstanceView() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.InstanceView(ctx,
-		"myResourceGroup",
-		"myVM",
-		nil)
+	res, err := client.Get(ctx, "myResourceGroup", "myVM", &armcompute.VirtualMachinesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -289,8 +3188,8 @@ func ExampleVirtualMachinesClient_InstanceView() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginConvertToManagedDisks() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
+func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDiskControllerTypeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -300,21 +3199,16 @@ func ExampleVirtualMachinesClient_BeginConvertToManagedDisks() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginConvertToManagedDisks(ctx,
-		"rgcompute",
-		"aaaaaaa",
-		nil)
+	res, err := client.Get(ctx, "myResourceGroup", "myVM", &armcompute.VirtualMachinesClientGetOptions{Expand: to.Ptr(armcompute.InstanceViewTypesUserData)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
+	// TODO: use response item
+	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Deallocate_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginDeallocate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
+func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithVmSizeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -324,10 +3218,64 @@ func ExampleVirtualMachinesClient_BeginDeallocate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeallocate(ctx,
-		"rgcompute",
-		"aaaaaaaaaa",
-		&armcompute.VirtualMachinesClientBeginDeallocateOptions{Hibernate: to.Ptr(true)})
+	res, err := client.Get(ctx, "myResourceGroup", "myVM", &armcompute.VirtualMachinesClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
+func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.InstanceView(ctx, "myResourceGroup", "myVM", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
+func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.InstanceView(ctx, "myResourceGroup", "myVM", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachinesConvertToManagedDisksMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginConvertToManagedDisks(ctx, "rgcompute", "aaaaaaa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -337,7 +3285,70 @@ func ExampleVirtualMachinesClient_BeginDeallocate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Generalize.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachinesConvertToManagedDisksMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginConvertToManagedDisks(ctx, "rgcompute", "aaaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Deallocate_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachinesDeallocateMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginDeallocate(ctx, "rgcompute", "aaaaaaaaaa", &armcompute.VirtualMachinesClientBeginDeallocateOptions{Hibernate: to.Ptr(true)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Deallocate_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachinesDeallocateMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginDeallocate(ctx, "rgcompute", "aaaaaaaaaaaaaaaa", &armcompute.VirtualMachinesClientBeginDeallocateOptions{Hibernate: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Generalize.json
 func ExampleVirtualMachinesClient_Generalize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,17 +3359,14 @@ func ExampleVirtualMachinesClient_Generalize() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Generalize(ctx,
-		"myResourceGroup",
-		"myVMName",
-		nil)
+	_, err = client.Generalize(ctx, "myResourceGroup", "myVMName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_List_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_List_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_NewListPager_virtualMachinesListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -368,8 +3376,7 @@ func ExampleVirtualMachinesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rgcompute",
-		&armcompute.VirtualMachinesClientListOptions{Filter: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa")})
+	pager := client.NewListPager("rgcompute", &armcompute.VirtualMachinesClientListOptions{Filter: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -382,8 +3389,32 @@ func ExampleVirtualMachinesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_ListAll_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_NewListAllPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_List_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_NewListPager_virtualMachinesListMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("rgcompute", &armcompute.VirtualMachinesClientListOptions{Filter: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ListAll_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -408,8 +3439,8 @@ func ExampleVirtualMachinesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_ListAvailableVmSizes.json
-func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ListAll_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_NewListAllPager_virtualMachinesListAllMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -419,9 +3450,9 @@ func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAvailableSizesPager("myResourceGroup",
-		"myVmName",
-		nil)
+	pager := client.NewListAllPager(&armcompute.VirtualMachinesClientListAllOptions{StatusOnly: nil,
+		Filter: nil,
+	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -434,8 +3465,8 @@ func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_PowerOff_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginPowerOff() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_ListAvailableVmSizes.json
+func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -445,10 +3476,31 @@ func ExampleVirtualMachinesClient_BeginPowerOff() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPowerOff(ctx,
-		"rgcompute",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		&armcompute.VirtualMachinesClientBeginPowerOffOptions{SkipShutdown: to.Ptr(true)})
+	pager := client.NewListAvailableSizesPager("myResourceGroup", "myVmName", nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinesPowerOffMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginPowerOff(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", &armcompute.VirtualMachinesClientBeginPowerOffOptions{SkipShutdown: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -458,7 +3510,28 @@ func ExampleVirtualMachinesClient_BeginPowerOff() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Reapply.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinesPowerOffMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginPowerOff(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaa", &armcompute.VirtualMachinesClientBeginPowerOffOptions{SkipShutdown: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Reapply.json
 func ExampleVirtualMachinesClient_BeginReapply() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,10 +3542,7 @@ func ExampleVirtualMachinesClient_BeginReapply() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginReapply(ctx,
-		"ResourceGroup",
-		"VMName",
-		nil)
+	poller, err := client.BeginReapply(ctx, "ResourceGroup", "VMName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -482,8 +3552,8 @@ func ExampleVirtualMachinesClient_BeginReapply() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Restart_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginRestart() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Restart_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRestart_virtualMachinesRestartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -493,10 +3563,7 @@ func ExampleVirtualMachinesClient_BeginRestart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRestart(ctx,
-		"rgcompute",
-		"aaaaaaaaaaaaaaaaaaaa",
-		nil)
+	poller, err := client.BeginRestart(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -506,8 +3573,8 @@ func ExampleVirtualMachinesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Start_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginStart() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Restart_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRestart_virtualMachinesRestartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -517,10 +3584,7 @@ func ExampleVirtualMachinesClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx,
-		"rgcompute",
-		"aaaaaaaaaaaaaaaaaaaa",
-		nil)
+	poller, err := client.BeginRestart(ctx, "rgcompute", "aaa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -530,8 +3594,8 @@ func ExampleVirtualMachinesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Redeploy_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginRedeploy() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Start_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginStart_virtualMachinesStartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -541,10 +3605,7 @@ func ExampleVirtualMachinesClient_BeginRedeploy() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRedeploy(ctx,
-		"rgcompute",
-		"a",
-		nil)
+	poller, err := client.BeginStart(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -554,8 +3615,8 @@ func ExampleVirtualMachinesClient_BeginRedeploy() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Reimage.json
-func ExampleVirtualMachinesClient_BeginReimage() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Start_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginStart_virtualMachinesStartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -565,13 +3626,78 @@ func ExampleVirtualMachinesClient_BeginReimage() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginReimage(ctx,
-		"myResourceGroup",
-		"myVMName",
-		&armcompute.VirtualMachinesClientBeginReimageOptions{Parameters: &armcompute.VirtualMachineReimageParameters{
-			TempDisk: to.Ptr(true),
+	poller, err := client.BeginStart(ctx, "rgcompute", "aaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachinesRedeployMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginRedeploy(ctx, "rgcompute", "a", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachinesRedeployMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginRedeploy(ctx, "rgcompute", "aaaaaaaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
+func ExampleVirtualMachinesClient_BeginReimage_reimageANonEphemeralVirtualMachine() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginReimage(ctx, "myResourceGroup", "myVMName", &armcompute.VirtualMachinesClientBeginReimageOptions{Parameters: &armcompute.VirtualMachineReimageParameters{
+		ExactVersion: to.Ptr("aaaaaa"),
+		OSProfile: &armcompute.OSProfileProvisioningData{
+			AdminPassword: to.Ptr("{your-password}"),
+			CustomData:    to.Ptr("{your-custom-data}"),
 		},
-		})
+		TempDisk: to.Ptr(true),
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -581,7 +3707,31 @@ func ExampleVirtualMachinesClient_BeginReimage() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_Reimage.json
+func ExampleVirtualMachinesClient_BeginReimage_reimageAVirtualMachine() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginReimage(ctx, "myResourceGroup", "myVMName", &armcompute.VirtualMachinesClientBeginReimageOptions{Parameters: &armcompute.VirtualMachineReimageParameters{
+		TempDisk: to.Ptr(true),
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
 func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -592,10 +3742,7 @@ func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RetrieveBootDiagnosticsData(ctx,
-		"ResourceGroup",
-		"VMName",
-		&armcompute.VirtualMachinesClientRetrieveBootDiagnosticsDataOptions{SasURIExpirationTimeInMinutes: to.Ptr[int32](60)})
+	res, err := client.RetrieveBootDiagnosticsData(ctx, "ResourceGroup", "VMName", &armcompute.VirtualMachinesClientRetrieveBootDiagnosticsDataOptions{SasURIExpirationTimeInMinutes: to.Ptr[int32](60)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -603,8 +3750,8 @@ func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MaximumSet_Gen.json
-func ExampleVirtualMachinesClient_BeginPerformMaintenance() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinesPerformMaintenanceMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -614,10 +3761,7 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPerformMaintenance(ctx,
-		"rgcompute",
-		"aaaaaaa",
-		nil)
+	poller, err := client.BeginPerformMaintenance(ctx, "rgcompute", "aaaaaaa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -627,7 +3771,28 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_SimulateEviction.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MinimumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinesPerformMaintenanceMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginPerformMaintenance(ctx, "rgcompute", "aaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_SimulateEviction.json
 func ExampleVirtualMachinesClient_SimulateEviction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -638,16 +3803,13 @@ func ExampleVirtualMachinesClient_SimulateEviction() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.SimulateEviction(ctx,
-		"ResourceGroup",
-		"VMName",
-		nil)
+	_, err = client.SimulateEviction(ctx, "ResourceGroup", "VMName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_AssessPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_AssessPatches.json
 func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -658,10 +3820,7 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginAssessPatches(ctx,
-		"myResourceGroupName",
-		"myVMName",
-		nil)
+	poller, err := client.BeginAssessPatches(ctx, "myResourceGroupName", "myVMName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -673,7 +3832,7 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_InstallPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachine_InstallPatches.json
 func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -684,20 +3843,16 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginInstallPatches(ctx,
-		"myResourceGroupName",
-		"myVMName",
-		armcompute.VirtualMachineInstallPatchesParameters{
-			MaximumDuration: to.Ptr("PT4H"),
-			RebootSetting:   to.Ptr(armcompute.VMGuestPatchRebootSettingIfRequired),
-			WindowsParameters: &armcompute.WindowsParameters{
-				ClassificationsToInclude: []*armcompute.VMGuestPatchClassificationWindows{
-					to.Ptr(armcompute.VMGuestPatchClassificationWindowsCritical),
-					to.Ptr(armcompute.VMGuestPatchClassificationWindowsSecurity)},
-				MaxPatchPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-19T02:36:43.0539904+00:00"); return t }()),
-			},
+	poller, err := client.BeginInstallPatches(ctx, "myResourceGroupName", "myVMName", armcompute.VirtualMachineInstallPatchesParameters{
+		MaximumDuration: to.Ptr("PT4H"),
+		RebootSetting:   to.Ptr(armcompute.VMGuestPatchRebootSettingIfRequired),
+		WindowsParameters: &armcompute.WindowsParameters{
+			ClassificationsToInclude: []*armcompute.VMGuestPatchClassificationWindows{
+				to.Ptr(armcompute.VMGuestPatchClassificationWindowsCritical),
+				to.Ptr(armcompute.VMGuestPatchClassificationWindowsSecurity)},
+			MaxPatchPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-19T02:36:43.0539904+00:00"); return t }()),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -709,7 +3864,7 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/runCommandExamples/VirtualMachineRunCommand.json
 func ExampleVirtualMachinesClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -720,13 +3875,9 @@ func ExampleVirtualMachinesClient_BeginRunCommand() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRunCommand(ctx,
-		"crptestar98131",
-		"vm3036",
-		armcompute.RunCommandInput{
-			CommandID: to.Ptr("RunPowerShellScript"),
-		},
-		nil)
+	poller, err := client.BeginRunCommand(ctx, "crptestar98131", "vm3036", armcompute.RunCommandInput{
+		CommandID: to.Ptr("RunPowerShellScript"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

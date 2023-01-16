@@ -17,20 +17,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/AttachedNetworks_ListByProject.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/AttachedNetworks_ListByProject.json
 func ExampleAttachedNetworksClient_NewListByProjectPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewAttachedNetworksClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewAttachedNetworksClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProjectPager("rg1",
-		"{projectName}",
-		&armdevcenter.AttachedNetworksClientListByProjectOptions{Top: nil})
+	pager := client.NewListByProjectPager("rg1", "DevProject", &armdevcenter.AttachedNetworksClientListByProjectOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,22 +41,18 @@ func ExampleAttachedNetworksClient_NewListByProjectPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/AttachedNetworks_GetByProject.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/AttachedNetworks_GetByProject.json
 func ExampleAttachedNetworksClient_GetByProject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewAttachedNetworksClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewAttachedNetworksClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetByProject(ctx,
-		"rg1",
-		"{projectName}",
-		"network-uswest3",
-		nil)
+	res, err := client.GetByProject(ctx, "rg1", "DevProject", "network-uswest3", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,20 +60,18 @@ func ExampleAttachedNetworksClient_GetByProject() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/AttachedNetworks_ListByDevCenter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/AttachedNetworks_ListByDevCenter.json
 func ExampleAttachedNetworksClient_NewListByDevCenterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewAttachedNetworksClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewAttachedNetworksClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDevCenterPager("rg1",
-		"Contoso",
-		&armdevcenter.AttachedNetworksClientListByDevCenterOptions{Top: nil})
+	pager := client.NewListByDevCenterPager("rg1", "Contoso", &armdevcenter.AttachedNetworksClientListByDevCenterOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -92,22 +84,18 @@ func ExampleAttachedNetworksClient_NewListByDevCenterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/AttachedNetworks_GetByDevCenter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/AttachedNetworks_GetByDevCenter.json
 func ExampleAttachedNetworksClient_GetByDevCenter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewAttachedNetworksClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewAttachedNetworksClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetByDevCenter(ctx,
-		"rg1",
-		"Contoso",
-		"network-uswest3",
-		nil)
+	res, err := client.GetByDevCenter(ctx, "rg1", "Contoso", "network-uswest3", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -115,27 +103,22 @@ func ExampleAttachedNetworksClient_GetByDevCenter() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/AttachedNetworks_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/AttachedNetworks_Create.json
 func ExampleAttachedNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewAttachedNetworksClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewAttachedNetworksClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"Contoso",
-		"{attachedNetworkConnectionName}",
-		armdevcenter.AttachedNetworkConnection{
-			Properties: &armdevcenter.AttachedNetworkConnectionProperties{
-				NetworkConnectionID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/rg1/providers/Microsoft.DevCenter/NetworkConnections/network-uswest3"),
-			},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "Contoso", "network-uswest3", armdevcenter.AttachedNetworkConnection{
+		Properties: &armdevcenter.AttachedNetworkConnectionProperties{
+			NetworkConnectionID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/NetworkConnections/network-uswest3"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -145,22 +128,18 @@ func ExampleAttachedNetworksClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/AttachedNetworks_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/AttachedNetworks_Delete.json
 func ExampleAttachedNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewAttachedNetworksClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewAttachedNetworksClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"Contoso",
-		"{attachedNetworkConnectionName}",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "Contoso", "network-uswest3", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

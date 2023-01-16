@@ -9,7 +9,10 @@
 
 package generated
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
+)
 
 // AccessPolicy - An Access policy
 type AccessPolicy struct {
@@ -500,7 +503,7 @@ type BlobClientUndeleteOptions struct {
 
 type BlobFlatListSegment struct {
 	// REQUIRED
-	BlobItems []*BlobItemInternal `xml:"Blob"`
+	BlobItems []*BlobItem `xml:"Blob"`
 }
 
 // BlobHTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
@@ -524,12 +527,12 @@ type BlobHTTPHeaders struct {
 
 type BlobHierarchyListSegment struct {
 	// REQUIRED
-	BlobItems    []*BlobItemInternal `xml:"Blob"`
-	BlobPrefixes []*BlobPrefix       `xml:"BlobPrefix"`
+	BlobItems    []*BlobItem   `xml:"Blob"`
+	BlobPrefixes []*BlobPrefix `xml:"BlobPrefix"`
 }
 
-// BlobItemInternal - An Azure Storage blob
-type BlobItemInternal struct {
+// BlobItem - An Azure Storage blob
+type BlobItem struct {
 	// REQUIRED
 	Deleted *bool `xml:"Deleted"`
 
@@ -537,7 +540,7 @@ type BlobItemInternal struct {
 	Name *string `xml:"Name"`
 
 	// REQUIRED; Properties of a blob
-	Properties *BlobPropertiesInternal `xml:"Properties"`
+	Properties *BlobProperties `xml:"Properties"`
 
 	// REQUIRED
 	Snapshot *string `xml:"Snapshot"`
@@ -560,10 +563,10 @@ type BlobPrefix struct {
 	Name *string `xml:"Name"`
 }
 
-// BlobPropertiesInternal - Properties of a blob
-type BlobPropertiesInternal struct {
+// BlobProperties - Properties of a blob
+type BlobProperties struct {
 	// REQUIRED
-	Etag *string `xml:"Etag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED
 	LastModified         *time.Time     `xml:"Last-Modified"`
@@ -1056,7 +1059,7 @@ type ContainerItem struct {
 // ContainerProperties - Properties of a container
 type ContainerProperties struct {
 	// REQUIRED
-	Etag *string `xml:"Etag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED
 	LastModified           *time.Time `xml:"Last-Modified"`
@@ -1278,11 +1281,11 @@ type Metrics struct {
 // ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
 type ModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
+	IfMatch *azcore.ETag
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	IfModifiedSince *time.Time
 	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 	// Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
 	IfTags *string
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
@@ -1653,11 +1656,11 @@ type SignedIdentifier struct {
 // SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
 type SourceModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
+	SourceIfMatch *azcore.ETag
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	SourceIfModifiedSince *time.Time
 	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
+	SourceIfNoneMatch *azcore.ETag
 	// Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
 	SourceIfTags *string
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.

@@ -6,11 +6,13 @@ package internal
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/telemetry"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -28,6 +30,26 @@ func (ftc *fakeTokenCredential) GetToken(ctx context.Context, options policy.Tok
 	return azcore.AccessToken{
 		ExpiresOn: ftc.expires,
 	}, nil
+}
+
+func TestNamespaceUserAgent(t *testing.T) {
+	ns := &Namespace{}
+
+	// Examples:
+	// User agent, no application ID  : 'azsdk-go-azservicebus/v1.1.4 (go1.19.3; linux)'
+	// User agent, with application ID: 'userApplicationID azsdk-go-azservicebus/v1.1.4 (go1.19.3; linux)'
+
+	baseUserAgent := telemetry.Format("azservicebus", Version)
+	require.NotEmpty(t, baseUserAgent)
+
+	t.Logf("User agent, no application ID  : '%s'", ns.getUserAgent())
+	require.Equal(t, baseUserAgent, ns.getUserAgent())
+
+	opt := NamespaceWithUserAgent("userApplicationID")
+	require.NoError(t, opt(ns))
+
+	t.Logf("User agent, with application ID: '%s'", ns.getUserAgent())
+	require.Equal(t, fmt.Sprintf("userApplicationID %s", baseUserAgent), ns.getUserAgent())
 }
 
 func TestNamespaceNegotiateClaim(t *testing.T) {

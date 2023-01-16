@@ -58,7 +58,7 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CheckFilePathAvailability - Check if a file path is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // location - The location
 // body - File path availability request.
 // options - ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
@@ -94,7 +94,7 @@ func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -111,7 +111,7 @@ func (client *ResourceClient) checkFilePathAvailabilityHandleResponse(resp *http
 
 // CheckNameAvailability - Check if a resource name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // location - The location
 // body - Name availability request.
 // options - ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
@@ -147,7 +147,7 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -164,7 +164,7 @@ func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Res
 
 // CheckQuotaAvailability - Check if a quota is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // location - The location
 // body - Quota availability request.
 // options - ResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the ResourceClient.CheckQuotaAvailability
@@ -200,7 +200,7 @@ func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -211,6 +211,58 @@ func (client *ResourceClient) checkQuotaAvailabilityHandleResponse(resp *http.Re
 	result := ResourceClientCheckQuotaAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResponse); err != nil {
 		return ResourceClientCheckQuotaAvailabilityResponse{}, err
+	}
+	return result, nil
+}
+
+// QueryRegionInfo - Provides storage to network proximity and logical zone mapping information.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
+// location - The location
+// options - ResourceClientQueryRegionInfoOptions contains the optional parameters for the ResourceClient.QueryRegionInfo
+// method.
+func (client *ResourceClient) QueryRegionInfo(ctx context.Context, location string, options *ResourceClientQueryRegionInfoOptions) (ResourceClientQueryRegionInfoResponse, error) {
+	req, err := client.queryRegionInfoCreateRequest(ctx, location, options)
+	if err != nil {
+		return ResourceClientQueryRegionInfoResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return ResourceClientQueryRegionInfoResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ResourceClientQueryRegionInfoResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.queryRegionInfoHandleResponse(resp)
+}
+
+// queryRegionInfoCreateRequest creates the QueryRegionInfo request.
+func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, location string, options *ResourceClientQueryRegionInfoOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfo"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// queryRegionInfoHandleResponse handles the QueryRegionInfo response.
+func (client *ResourceClient) queryRegionInfoHandleResponse(resp *http.Response) (ResourceClientQueryRegionInfoResponse, error) {
+	result := ResourceClientQueryRegionInfoResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegionInfo); err != nil {
+		return ResourceClientQueryRegionInfoResponse{}, err
 	}
 	return result, nil
 }

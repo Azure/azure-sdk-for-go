@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/VolumeQuotaRules_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/VolumeQuotaRules_List.json
 func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,11 +28,7 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVolumePager("myRG",
-		"account-9957",
-		"pool-5210",
-		"volume-6387",
-		nil)
+	pager := client.NewListByVolumePager("myRG", "account-9957", "pool-5210", "volume-6387", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -45,7 +41,7 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/VolumeQuotaRules_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/VolumeQuotaRules_Get.json
 func ExampleVolumeQuotaRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,13 +52,7 @@ func ExampleVolumeQuotaRulesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myRG",
-		"account-9957",
-		"pool-5210",
-		"volume-6387",
-		"rule-0004",
-		nil)
+	res, err := client.Get(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -70,7 +60,7 @@ func ExampleVolumeQuotaRulesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/VolumeQuotaRules_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/VolumeQuotaRules_Create.json
 func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,21 +71,14 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx,
-		"myRG",
-		"account-9957",
-		"pool-5210",
-		"volume-6387",
-		"rule-0004",
-		armnetapp.VolumeQuotaRule{
-			Location: to.Ptr("westus"),
-			Properties: &armnetapp.VolumeQuotaRulesProperties{
-				QuotaSizeInKiBs: to.Ptr[int64](100005),
-				QuotaTarget:     to.Ptr("1821"),
-				QuotaType:       to.Ptr(armnetapp.TypeIndividualUserQuota),
-			},
+	poller, err := client.BeginCreate(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", armnetapp.VolumeQuotaRule{
+		Location: to.Ptr("westus"),
+		Properties: &armnetapp.VolumeQuotaRulesProperties{
+			QuotaSizeInKiBs: to.Ptr[int64](100005),
+			QuotaTarget:     to.Ptr("1821"),
+			QuotaType:       to.Ptr(armnetapp.TypeIndividualUserQuota),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -107,7 +90,7 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/VolumeQuotaRules_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/VolumeQuotaRules_Update.json
 func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,18 +101,11 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"myRG",
-		"account-9957",
-		"pool-5210",
-		"volume-6387",
-		"rule-0004",
-		armnetapp.VolumeQuotaRulePatch{
-			Properties: &armnetapp.VolumeQuotaRulesProperties{
-				QuotaSizeInKiBs: to.Ptr[int64](100009),
-			},
+	poller, err := client.BeginUpdate(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", armnetapp.VolumeQuotaRulePatch{
+		Properties: &armnetapp.VolumeQuotaRulesProperties{
+			QuotaSizeInKiBs: to.Ptr[int64](100009),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -141,7 +117,7 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/VolumeQuotaRules_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/VolumeQuotaRules_Delete.json
 func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,13 +128,7 @@ func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"myRG",
-		"account-9957",
-		"pool-5210",
-		"volume-6387",
-		"rule-0004",
-		nil)
+	poller, err := client.BeginDelete(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

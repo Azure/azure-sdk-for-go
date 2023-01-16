@@ -11,7 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 )
 
@@ -27,8 +26,11 @@ type DeleteBlobOptions = blob.DeleteOptions
 // DownloadStreamOptions contains the optional parameters for the Client.DownloadStream method.
 type DownloadStreamOptions = blob.DownloadStreamOptions
 
-// ListBlobsOptions contains the optional parameters for the container.Client.ListBlobFlatSegment method.
-type ListBlobsOptions = container.ListBlobsFlatOptions
+// ListBlobsFlatOptions contains the optional parameters for the container.Client.ListBlobFlatSegment method.
+type ListBlobsFlatOptions = container.ListBlobsFlatOptions
+
+// ListBlobsInclude indicates what additional information the service should return with each blob.
+type ListBlobsInclude = container.ListBlobsInclude
 
 // ListContainersOptions contains the optional parameters for the container.Client.ListContainers operation
 type ListContainersOptions = service.ListContainersOptions
@@ -49,19 +51,16 @@ type DownloadBufferOptions = blob.DownloadBufferOptions
 type DownloadFileOptions = blob.DownloadFileOptions
 
 // CpkInfo contains a group of parameters for client provided encryption key.
-type CpkInfo = generated.CpkInfo
+type CpkInfo = blob.CpkInfo
 
 // CpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
-type CpkScopeInfo = generated.ContainerCpkScopeInfo
+type CpkScopeInfo = container.CpkScopeInfo
 
 // AccessConditions identifies blob-specific access conditions which you optionally set.
 type AccessConditions = exported.BlobAccessConditions
 
-// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
-type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
-
-// ListContainersDetail indicates what additional information the service should return with each container.
-type ListContainersDetail = service.ListContainersDetail
+// ListContainersInclude indicates what additional information the service should return with each container.
+type ListContainersInclude = service.ListContainersInclude
 
 // ObjectReplicationPolicy are deserialized attributes
 type ObjectReplicationPolicy = blob.ObjectReplicationPolicy

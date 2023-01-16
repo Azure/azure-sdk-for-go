@@ -69,6 +69,11 @@ type CatalogsClientUpdateResponse struct {
 	Catalog
 }
 
+// CheckNameAvailabilityClientExecuteResponse contains the response from method CheckNameAvailabilityClient.Execute.
+type CheckNameAvailabilityClientExecuteResponse struct {
+	CheckNameAvailabilityResponse
+}
+
 // DevBoxDefinitionsClientCreateOrUpdateResponse contains the response from method DevBoxDefinitionsClient.CreateOrUpdate.
 type DevBoxDefinitionsClientCreateOrUpdateResponse struct {
 	DevBoxDefinition
@@ -284,6 +289,16 @@ type PoolsClientUpdateResponse struct {
 	Pool
 }
 
+// ProjectAllowedEnvironmentTypesClientGetResponse contains the response from method ProjectAllowedEnvironmentTypesClient.Get.
+type ProjectAllowedEnvironmentTypesClientGetResponse struct {
+	AllowedEnvironmentType
+}
+
+// ProjectAllowedEnvironmentTypesClientListResponse contains the response from method ProjectAllowedEnvironmentTypesClient.List.
+type ProjectAllowedEnvironmentTypesClientListResponse struct {
+	AllowedEnvironmentTypeListResult
+}
+
 // ProjectEnvironmentTypesClientCreateOrUpdateResponse contains the response from method ProjectEnvironmentTypesClient.CreateOrUpdate.
 type ProjectEnvironmentTypesClientCreateOrUpdateResponse struct {
 	ProjectEnvironmentType
@@ -366,7 +381,7 @@ type SchedulesClientListByPoolResponse struct {
 
 // SchedulesClientUpdateResponse contains the response from method SchedulesClient.Update.
 type SchedulesClientUpdateResponse struct {
-	// placeholder for future response values
+	Schedule
 }
 
 // UsagesClientListByLocationResponse contains the response from method UsagesClient.ListByLocation.

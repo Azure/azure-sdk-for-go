@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupDelete.json
 func ExampleSimGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,10 +28,7 @@ func ExampleSimGroupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"testResourceGroupName",
-		"testSimGroup",
-		nil)
+	poller, err := client.BeginDelete(ctx, "testResourceGroupName", "testSimGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -41,7 +38,7 @@ func ExampleSimGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupGet.json
 func ExampleSimGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,10 +49,7 @@ func ExampleSimGroupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"testResourceGroupName",
-		"testSimGroupName",
-		nil)
+	res, err := client.Get(ctx, "testResourceGroupName", "testSimGroupName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -63,7 +57,7 @@ func ExampleSimGroupsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupCreate.json
 func ExampleSimGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,21 +68,23 @@ func ExampleSimGroupsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"testSimGroup",
-		armmobilenetwork.SimGroup{
-			Location: to.Ptr("eastus"),
-			Properties: &armmobilenetwork.SimGroupPropertiesFormat{
-				EncryptionKey: &armmobilenetwork.KeyVaultKey{
-					KeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/azureKey"),
-				},
-				MobileNetwork: &armmobilenetwork.ResourceID{
-					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
-				},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testSimGroup", armmobilenetwork.SimGroup{
+		Location: to.Ptr("eastus"),
+		Identity: &armmobilenetwork.ManagedServiceIdentity{
+			Type: to.Ptr(armmobilenetwork.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmobilenetwork.UserAssignedIdentity{
+				"/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity": {},
 			},
 		},
-		nil)
+		Properties: &armmobilenetwork.SimGroupPropertiesFormat{
+			EncryptionKey: &armmobilenetwork.KeyVaultKey{
+				KeyURL: to.Ptr("https://contosovault.vault.azure.net/keys/azureKey"),
+			},
+			MobileNetwork: &armmobilenetwork.ResourceID{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"),
+			},
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -100,7 +96,7 @@ func ExampleSimGroupsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupUpdateTags.json
 func ExampleSimGroupsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,16 +107,12 @@ func ExampleSimGroupsClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx,
-		"rg1",
-		"testSimGroup",
-		armmobilenetwork.TagsObject{
-			Tags: map[string]*string{
-				"tag1": to.Ptr("value1"),
-				"tag2": to.Ptr("value2"),
-			},
+	res, err := client.UpdateTags(ctx, "rg1", "testSimGroup", armmobilenetwork.TagsObject{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -128,7 +120,7 @@ func ExampleSimGroupsClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupListBySubscription.json
 func ExampleSimGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +144,7 @@ func ExampleSimGroupsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupListByResourceGroup.json
 func ExampleSimGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,8 +155,7 @@ func ExampleSimGroupsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1",
-		nil)
+	pager := client.NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

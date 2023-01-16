@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package azeventhubs
 
 import (
@@ -21,19 +22,19 @@ import (
 // are subject to change.
 type Error = exported.Error
 
-// Code is an error code, usable by consuming code to work with
+// ErrorCode is an error code, usable by consuming code to work with
 // programatically.
-type Code = exported.Code
+type ErrorCode = exported.ErrorCode
 
 const (
-	// CodeConnectionLost means our connection was lost and all retry attempts failed.
+	// ErrorCodeConnectionLost means our connection was lost and all retry attempts failed.
 	// This typically reflects an extended outage or connection disruption and may
 	// require manual intervention.
-	CodeConnectionLost = exported.CodeConnectionLost
+	ErrorCodeConnectionLost ErrorCode = exported.ErrorCodeConnectionLost
 
-	// CodeOwnershipLost means that a partition that you were reading from was opened
+	// ErrorCodeOwnershipLost means that a partition that you were reading from was opened
 	// by another link with a higher epoch/owner level.
-	CodeOwnershipLost = exported.CodeOwnershipLost
+	ErrorCodeOwnershipLost ErrorCode = exported.ErrorCodeOwnershipLost
 )
 
 // ConsumerClientOptions configures optional parameters for a ConsumerClient.
@@ -46,22 +47,11 @@ type ConsumerClientOptions struct {
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
-	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
+	NewWebSocketConn func(ctx context.Context, args WebSocketConnParams) (net.Conn, error)
 
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
 	RetryOptions RetryOptions
-
-	// StartPosition is the position we will start receiving events from,
-	// either an offset (inclusive) with Offset, or receiving events received
-	// after a specific time using EnqueuedTime.
-	StartPosition StartPosition
-
-	// OwnerLevel is the priority for this consumer, also known as the 'epoch' level.
-	// When used, a consumer with a higher OwnerLevel will take ownership of a partition
-	// from consumers with a lower OwnerLevel.
-	// Default is off.
-	OwnerLevel *uint64
 }
 
 // ConsumerClient can create PartitionClient instances, which can read events from
@@ -76,9 +66,13 @@ type ConsumerClient struct {
 	clientID string
 }
 
-// NewConsumerClient creates a ConsumerClient which uses an azcore.TokenCredential for authentication.
+// NewConsumerClient creates a ConsumerClient which uses an azcore.TokenCredential for authentication. You
+// MUST call [azeventhubs.ConsumerClient.Close] on this client to avoid leaking resources.
+//
 // The fullyQualifiedNamespace is the Event Hubs namespace name (ex: myeventhub.servicebus.windows.net)
-// The credential is one of the credentials in the `github.com/Azure/azure-sdk-for-go/sdk/azidentity` package.
+// The credential is one of the credentials in the [azidentity] package.
+//
+// [azidentity]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity
 func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, consumerGroup string, credential azcore.TokenCredential, options *ConsumerClientOptions) (*ConsumerClient, error) {
 	return newConsumerClient(consumerClientArgs{
 		consumerGroup:           consumerGroup,
@@ -88,15 +82,19 @@ func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, consumer
 	}, options)
 }
 
-// NewConsumerClientFromConnectionString creates a ConsumerClient from a connection string.
+// NewConsumerClientFromConnectionString creates a ConsumerClient from a connection string. You
+// MUST call [azeventhubs.ConsumerClient.Close] on this client to avoid leaking resources.
 //
-// connectionString can be one of the following formats:
+// connectionString can be one of two formats - with or without an EntityPath key.
 //
-// Connection string, no EntityPath. In this case eventHub cannot be empty.
-// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
+// When the connection string does not have an entity path, as shown below, the eventHub parameter cannot
+// be empty and should contain the name of your event hub.
 //
-// Connection string, has EntityPath. In this case eventHub must be empty.
-// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
+//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
+//
+// When the connection string DOES have an entity path, as shown below, the eventHub parameter must be empty.
+//
+//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>;
 func NewConsumerClientFromConnectionString(connectionString string, eventHub string, consumerGroup string, options *ConsumerClientOptions) (*ConsumerClient, error) {
 	parsedConn, err := parseConn(connectionString, eventHub)
 
@@ -111,8 +109,8 @@ func NewConsumerClientFromConnectionString(connectionString string, eventHub str
 	}, options)
 }
 
-// NewPartitionClientOptions provides options for the Subscribe function.
-type NewPartitionClientOptions struct {
+// PartitionClientOptions provides options for the NewPartitionClient function.
+type PartitionClientOptions struct {
 	// StartPosition is the position we will start receiving events from,
 	// either an offset (inclusive) with Offset, or receiving events received
 	// after a specific time using EnqueuedTime.
@@ -123,10 +121,22 @@ type NewPartitionClientOptions struct {
 	// from partition clients with a lower OwnerLevel.
 	// Default is off.
 	OwnerLevel *int64
+
+	// Prefetch represents the size of the internal prefetch buffer. When set,
+	// this client will attempt to always maintain an internal cache of events of
+	// this size, asynchronously, increasing the odds that ReceiveEvents() will use
+	// a locally stored cache of events, rather than having to wait for events to
+	// arrive from the network.
+	//
+	// Defaults to 300 events if Prefetch == 0.
+	// Disabled if Prefetch < 0.
+	Prefetch int32
 }
 
-// NewPartitionClient creates a client that can receive events from a partition.
-func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *NewPartitionClientOptions) (*PartitionClient, error) {
+// NewPartitionClient creates a client that can receive events from a partition. By default it starts
+// at the latest point in the partition. This can be changed using the options parameter.
+// You MUST call [azeventhubs.PartitionClient.Close] on the returned client to avoid leaking resources.
+func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
 	return newPartitionClient(partitionClientArgs{
 		namespace:     cc.namespace,
 		eventHub:      cc.eventHub,
@@ -147,8 +157,9 @@ func (cc *ConsumerClient) GetEventHubProperties(ctx context.Context, options *Ge
 	return getEventHubProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, options)
 }
 
-// GetPartitionProperties gets properties for a specific partition. This includes data like the last enqueued sequence number, the first sequence
-// number and when an event was last enqueued to the partition.
+// GetPartitionProperties gets properties for a specific partition. This includes data like the
+// last enqueued sequence number, the first sequence number and when an event was last enqueued
+// to the partition.
 func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
 	rpcLink, err := cc.links.GetManagementLink(ctx)
 
@@ -157,6 +168,11 @@ func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionI
 	}
 
 	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, partitionID, options)
+}
+
+// ID is the identifier for this ConsumerClient.
+func (cc *ConsumerClient) ID() string {
+	return cc.clientID
 }
 
 type consumerClientDetails struct {
@@ -175,7 +191,7 @@ func (cc *ConsumerClient) getDetails() consumerClientDetails {
 	}
 }
 
-// Close closes the connection for this client.
+// Close releases resources for this client.
 func (cc *ConsumerClient) Close(ctx context.Context) error {
 	return cc.namespace.Close(ctx, true)
 }

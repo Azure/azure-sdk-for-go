@@ -14,9 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 )
 
-// EventRetry is the name for retry events
-const EventRetry = "azsb.Retry"
-
 type RetryFnArgs struct {
 	// I is the iteration of the retry "loop" and starts at 0.
 	// The 0th iteration is the first call, and doesn't count as a retry.
@@ -37,7 +34,7 @@ func (rf *RetryFnArgs) ResetAttempts() {
 
 // Retry runs a standard retry loop. It executes your passed in fn as the body of the loop.
 // It returns if it exceeds the number of configured retry options or if 'isFatal' returns true.
-func Retry(ctx context.Context, eventName log.Event, operation string, o exported.RetryOptions, fn func(ctx context.Context, callbackArgs *RetryFnArgs) error, isFatalFn func(err error) bool) error {
+func Retry(ctx context.Context, eventName log.Event, prefix func() string, o exported.RetryOptions, fn func(ctx context.Context, callbackArgs *RetryFnArgs) error, isFatalFn func(err error) bool) error {
 	if isFatalFn == nil {
 		panic("isFatalFn is nil, errors would panic")
 	}
@@ -50,8 +47,13 @@ func Retry(ctx context.Context, eventName log.Event, operation string, o exporte
 	for i := int32(0); i <= ro.MaxRetries; i++ {
 		if i > 0 {
 			sleep := calcDelay(ro, i)
-			log.Writef(eventName, "(%s) Retry attempt %d sleeping for %s", operation, i, sleep)
-			time.Sleep(sleep)
+			log.Writef(eventName, "(%s) Retry attempt %d sleeping for %s", prefix(), i, sleep)
+
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-time.After(sleep):
+			}
 		}
 
 		args := RetryFnArgs{
@@ -61,7 +63,7 @@ func Retry(ctx context.Context, eventName log.Event, operation string, o exporte
 		err = fn(ctx, &args)
 
 		if args.resetAttempts {
-			log.Writef(eventName, "(%s) Resetting retry attempts", operation)
+			log.Writef(eventName, "(%s) Resetting retry attempts", prefix())
 
 			// it looks weird, but we're doing -1 here because the post-increment
 			// will set it back to 0, which is what we want - go back to the 0th
@@ -74,13 +76,13 @@ func Retry(ctx context.Context, eventName log.Event, operation string, o exporte
 		if err != nil {
 			if isFatalFn(err) {
 				if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
-					log.Writef(eventName, "(%s) Retry attempt %d was cancelled, stopping: %s", operation, i, err.Error())
+					log.Writef(eventName, "(%s) Retry attempt %d was cancelled, stopping: %s", prefix(), i, err.Error())
 				} else {
-					log.Writef(eventName, "(%s) Retry attempt %d returned non-retryable error: %s", operation, i, err.Error())
+					log.Writef(eventName, "(%s) Retry attempt %d returned non-retryable error: %s", prefix(), i, err.Error())
 				}
 				return err
 			} else {
-				log.Writef(eventName, "(%s) Retry attempt %d returned retryable error: %s", operation, i, err.Error())
+				log.Writef(eventName, "(%s) Retry attempt %d returned retryable error: %s", prefix(), i, err.Error())
 			}
 
 			continue

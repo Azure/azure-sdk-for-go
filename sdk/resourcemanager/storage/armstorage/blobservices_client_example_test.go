@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/BlobServicesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobServicesList.json
 func ExampleBlobServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleBlobServicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/BlobServicesPutAllowPermanentDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobServicesPutAllowPermanentDelete.json
 func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutAllowPermanentDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutAllowPermanen
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/BlobServicesPutLastAccessTimeBasedTracking.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobServicesPutLastAccessTimeBasedTracking.json
 func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutLastAccessTimeBasedTracking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,8 +98,8 @@ func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutLastAccessTim
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/BlobServicesPut.json
-func ExampleBlobServicesClient_SetServiceProperties_blobServicesPut() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobServicesPut.json
+func ExampleBlobServicesClient_SetServiceProperties_putBlobServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -178,7 +178,7 @@ func ExampleBlobServicesClient_SetServiceProperties_blobServicesPut() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/BlobServicesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobServicesGet.json
 func ExampleBlobServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

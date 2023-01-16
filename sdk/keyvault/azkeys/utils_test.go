@@ -30,8 +30,8 @@ import (
 
 const (
 	fakeAttestationUrl = "https://fakeattestation"
-	fakeMHSMURL        = "https://fakemhsm"
-	fakeVaultURL       = "https://fakevault"
+	fakeMHSMURL        = "https://fakemhsm.local"
+	fakeVaultURL       = "https://fakevault.local"
 )
 
 var (
@@ -89,6 +89,10 @@ func TestMain(m *testing.M) {
 			if err != nil {
 				panic(err)
 			}
+			err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, &recording.RecordingOptions{GroupForReplace: "1"})
+			if err != nil {
+				panic(err)
+			}
 			err = recording.AddBodyRegexSanitizer(URI.fake, URI.real, nil)
 			if err != nil {
 				panic(err)
@@ -114,9 +118,8 @@ func TestMain(m *testing.M) {
 		}
 		// we need to replace release policy data because it has the attestation service URL encoded
 		// into it and therefore won't match in playback, when we don't have the URL used while recording
-		realPolicyData := base64.StdEncoding.EncodeToString(getMarshalledReleasePolicy(attestationURL))
 		fakePolicyData := base64.RawStdEncoding.EncodeToString(getMarshalledReleasePolicy(fakeAttestationUrl))
-		err = recording.AddBodyKeySanitizer("$.release_policy.data", fakePolicyData, realPolicyData, nil)
+		err = recording.AddBodyKeySanitizer("$.release_policy.data", fakePolicyData, "", nil)
 		if err != nil {
 			panic(err)
 		}
@@ -132,7 +135,10 @@ func TestMain(m *testing.M) {
 		// deletion. Now, at the end of the run, Key Vault will have finished deleting
 		// most of them...
 		for URL, names := range keysToPurge.names {
-			client := azkeys.NewClient(URL, credential, nil)
+			client, err := azkeys.NewClient(URL, credential, nil)
+			if err != nil {
+				panic(err)
+			}
 			for _, name := range names {
 				// ...but we need a retry loop for the others. Note this wouldn't benefit
 				// from client-side parallelization because Key Vault's delete operations
@@ -170,7 +176,9 @@ func startTest(t *testing.T, MHSMtest bool) *azkeys.Client {
 		URL = mhsmURL
 	}
 	opts := &azkeys.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
-	return azkeys.NewClient(URL, credential, opts)
+	client, err := azkeys.NewClient(URL, credential, opts)
+	require.NoError(t, err)
+	return client
 }
 
 func createRandomName(t *testing.T, prefix string) string {

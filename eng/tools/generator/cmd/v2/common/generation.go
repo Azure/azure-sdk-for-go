@@ -20,11 +20,13 @@ import (
 )
 
 type GenerateContext struct {
-	SDKPath        string
-	SDKRepo        *repo.SDKRepository
-	SpecPath       string
-	SpecCommitHash string
-	SpecRepoURL    string
+	SDKPath          string
+	SDKRepo          *repo.SDKRepository
+	SpecPath         string
+	SpecCommitHash   string
+	SpecReadmeFile   string
+	SpecReadmeGoFile string
+	SpecRepoURL      string
 }
 
 type GenerateResult struct {
@@ -49,9 +51,16 @@ type GenerateParam struct {
 	RemoveTagSet        bool
 }
 
-func (ctx GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
-	absReadme := filepath.Join(ctx.SpecPath, readme)
+func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
+	absReadme, err := filepath.Abs(filepath.Join(ctx.SpecPath, readme))
+	if err != nil {
+		return nil, []error{
+			fmt.Errorf("cannot get absolute path for spec path '%s': %+v", ctx.SpecPath, err),
+		}
+	}
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
+	ctx.SpecReadmeFile = absReadme
+	ctx.SpecReadmeGoFile = absReadmeGo
 	specRPName := strings.Split(readme, "/")[0]
 
 	var result []GenerateResult
@@ -87,7 +96,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo, goVersion string)
 	return result, errors
 }
 
-func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {
+func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 
@@ -122,6 +131,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			PackageConfig:  generateParam.NamespaceConfig,
 			GoVersion:      generateParam.GoVersion,
 			PackageVersion: version.String(),
+			ReleaseDate:    generateParam.ReleaseDate,
 		}); err != nil {
 			return nil, err
 		}
@@ -138,7 +148,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	if ctx.SpecCommitHash == "" {
 		log.Printf("Change swagger config in `autorest.md` according to local path...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if err := ChangeConfigWithLocalPath(autorestMdPath, ctx.SpecPath, generateParam.SpecRPName); err != nil {
+		if err := ChangeConfigWithLocalPath(autorestMdPath, ctx.SpecReadmeFile, ctx.SpecReadmeGoFile); err != nil {
 			return nil, err
 		}
 	} else {
@@ -199,7 +209,9 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	if err != nil {
 		return nil, err
 	}
-	FilterChangelog(changelog)
+
+	log.Printf("filter changelog...")
+	FilterChangelog(changelog, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter)
 
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
@@ -209,7 +221,11 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")
-			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+			flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
+			if err != nil {
+				return nil, err
+			}
+			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
 				return nil, err
 			}
 		}
@@ -268,7 +284,11 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		// Example generation should be the last step because the package import relay on the new calculated version
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")
-			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+			flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
+			if err != nil {
+				return nil, err
+			}
+			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
 				return nil, err
 			}
 		}

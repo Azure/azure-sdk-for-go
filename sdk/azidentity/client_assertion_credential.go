@@ -9,24 +9,24 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
 
 const credNameAssertion = "ClientAssertionCredential"
 
 // ClientAssertionCredential authenticates an application with assertions provided by a callback function.
-// This credential is for advanced scenarios. ClientCertificateCredential has a more convenient API for
+// This credential is for advanced scenarios. [ClientCertificateCredential] has a more convenient API for
 // the most common assertion scenario, authenticating a service principal with a certificate. See
 // [Azure AD documentation] for details of the assertion format.
 //
 // [Azure AD documentation]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials#assertion-format
 type ClientAssertionCredential struct {
 	client confidentialClient
+	// name enables replacing "ClientAssertionCredential" with "WorkloadIdentityCredential" in log messages
+	name string
 }
 
 // ClientAssertionCredentialOptions contains optional parameters for ClientAssertionCredential.
@@ -39,30 +39,19 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 	if getAssertion == nil {
 		return nil, errors.New("getAssertion must be a function that returns assertions")
 	}
-	if !validTenantID(tenantID) {
-		return nil, errors.New(tenantIDValidationErr)
-	}
 	if options == nil {
 		options = &ClientAssertionCredentialOptions{}
-	}
-	authorityHost, err := setAuthorityHost(options.Cloud)
-	if err != nil {
-		return nil, err
 	}
 	cred := confidential.NewCredFromAssertionCallback(
 		func(ctx context.Context, _ confidential.AssertionRequestOptions) (string, error) {
 			return getAssertion(ctx)
 		},
 	)
-	c, err := confidential.New(clientID, cred,
-		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
-		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
-		confidential.WithHTTPClient(newPipelineAdapter(&options.ClientOptions)),
-	)
+	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
-	return &ClientAssertionCredential{client: c}, nil
+	return &ClientAssertionCredential{client: c, name: credNameAssertion}, nil
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
@@ -72,15 +61,15 @@ func (c *ClientAssertionCredential) GetToken(ctx context.Context, opts policy.To
 	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	if err == nil {
-		logGetTokenSuccess(c, opts)
+		logGetTokenSuccessImpl(c.name, opts)
 		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameAssertion, err)
+		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(c.name, err)
 	}
-	logGetTokenSuccess(c, opts)
+	logGetTokenSuccessImpl(c.name, opts)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

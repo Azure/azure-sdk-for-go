@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/WafListPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/WafListPolicies.json
 func ExampleWebApplicationFirewallPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleWebApplicationFirewallPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/WafListAllPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/WafListAllPolicies.json
 func ExampleWebApplicationFirewallPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleWebApplicationFirewallPoliciesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/WafPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/WafPolicyGet.json
 func ExampleWebApplicationFirewallPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleWebApplicationFirewallPoliciesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/WafPolicyCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/WafPolicyCreateOrUpdate.json
 func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,6 +188,21 @@ func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 					}},
 				ManagedRuleSets: []*armnetwork.ManagedRuleSet{
 					{
+						RuleGroupOverrides: []*armnetwork.ManagedRuleGroupOverride{
+							{
+								RuleGroupName: to.Ptr("REQUEST-931-APPLICATION-ATTACK-RFI"),
+								Rules: []*armnetwork.ManagedRuleOverride{
+									{
+										Action: to.Ptr(armnetwork.ActionTypeLog),
+										RuleID: to.Ptr("931120"),
+										State:  to.Ptr(armnetwork.ManagedRuleEnabledStateEnabled),
+									},
+									{
+										Action: to.Ptr(armnetwork.ActionTypeAnomalyScoring),
+										RuleID: to.Ptr("931130"),
+										State:  to.Ptr(armnetwork.ManagedRuleEnabledStateDisabled),
+									}},
+							}},
 						RuleSetType:    to.Ptr("OWASP"),
 						RuleSetVersion: to.Ptr("3.2"),
 					}},
@@ -201,7 +216,7 @@ func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/WafPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/WafPolicyDelete.json
 func ExampleWebApplicationFirewallPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,0 +1,37 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/123/providers/Microsoft.Insights/metrics?api-version=2018-01-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azquery/v0.4.0 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "135",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 12 Jan 2023 21:31:21 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "3350e637-2e0e-418d-8853-b4c8097da87e",
+        "x-ms-failure-cause": "gateway",
+        "x-ms-request-id": "3350e637-2e0e-418d-8853-b4c8097da87e",
+        "x-ms-routing-request-id": "WESTUS2:20230112T213122Z:3350e637-2e0e-418d-8853-b4c8097da87e"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "MissingSubscription",
+          "message": "The request did not have a subscription or a valid tenant level resource provider."
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

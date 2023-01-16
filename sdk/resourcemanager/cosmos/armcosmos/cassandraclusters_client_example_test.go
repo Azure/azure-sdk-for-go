@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraClusterListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraClusterListBySubscription.json
 func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraClusterListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraClusterListByResourceGroup.json
 func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,8 +52,7 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("cassandra-prod-rg",
-		nil)
+	pager := client.NewListByResourceGroupPager("cassandra-prod-rg", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,7 +65,7 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraClusterGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraClusterGet.json
 func ExampleCassandraClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,10 +76,7 @@ func ExampleCassandraClustersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"cassandra-prod-rg",
-		"cassandra-prod",
-		nil)
+	res, err := client.Get(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,7 +84,7 @@ func ExampleCassandraClustersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraClusterDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraClusterDelete.json
 func ExampleCassandraClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,10 +95,7 @@ func ExampleCassandraClustersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"cassandra-prod-rg",
-		"cassandra-prod",
-		nil)
+	poller, err := client.BeginDelete(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -112,7 +105,7 @@ func ExampleCassandraClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraClusterCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraClusterCreate.json
 func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,40 +116,36 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdate(ctx,
-		"cassandra-prod-rg",
-		"cassandra-prod",
-		armcosmos.ClusterResource{
-			Location: to.Ptr("West US"),
-			Tags:     map[string]*string{},
-			Properties: &armcosmos.ClusterResourceProperties{
-				AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
-				CassandraVersion:     to.Ptr("3.11"),
-				ClientCertificates: []*armcosmos.Certificate{
-					{
-						Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-					}},
-				ClusterNameOverride:         to.Ptr("ClusterNameIllegalForAzureResource"),
-				DelegatedManagementSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
-				ExternalGossipCertificates: []*armcosmos.Certificate{
-					{
-						Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-					}},
-				ExternalSeedNodes: []*armcosmos.SeedNode{
-					{
-						IPAddress: to.Ptr("10.52.221.2"),
-					},
-					{
-						IPAddress: to.Ptr("10.52.221.3"),
-					},
-					{
-						IPAddress: to.Ptr("10.52.221.4"),
-					}},
-				HoursBetweenBackups:           to.Ptr[int32](24),
-				InitialCassandraAdminPassword: to.Ptr("mypassword"),
-			},
+	poller, err := client.BeginCreateUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.ClusterResource{
+		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmos.ClusterResourceProperties{
+			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
+			CassandraVersion:     to.Ptr("3.11"),
+			ClientCertificates: []*armcosmos.Certificate{
+				{
+					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+				}},
+			ClusterNameOverride:         to.Ptr("ClusterNameIllegalForAzureResource"),
+			DelegatedManagementSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+			ExternalGossipCertificates: []*armcosmos.Certificate{
+				{
+					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+				}},
+			ExternalSeedNodes: []*armcosmos.SeedNode{
+				{
+					IPAddress: to.Ptr("10.52.221.2"),
+				},
+				{
+					IPAddress: to.Ptr("10.52.221.3"),
+				},
+				{
+					IPAddress: to.Ptr("10.52.221.4"),
+				}},
+			HoursBetweenBackups:           to.Ptr[int32](24),
+			InitialCassandraAdminPassword: to.Ptr("mypassword"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -168,7 +157,7 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraClusterPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraClusterPatch.json
 func ExampleCassandraClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,33 +168,29 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"cassandra-prod-rg",
-		"cassandra-prod",
-		armcosmos.ClusterResource{
-			Tags: map[string]*string{
-				"owner": to.Ptr("mike"),
-			},
-			Properties: &armcosmos.ClusterResourceProperties{
-				AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodNone),
-				ExternalGossipCertificates: []*armcosmos.Certificate{
-					{
-						Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-					}},
-				ExternalSeedNodes: []*armcosmos.SeedNode{
-					{
-						IPAddress: to.Ptr("10.52.221.2"),
-					},
-					{
-						IPAddress: to.Ptr("10.52.221.3"),
-					},
-					{
-						IPAddress: to.Ptr("10.52.221.4"),
-					}},
-				HoursBetweenBackups: to.Ptr[int32](12),
-			},
+	poller, err := client.BeginUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.ClusterResource{
+		Tags: map[string]*string{
+			"owner": to.Ptr("mike"),
 		},
-		nil)
+		Properties: &armcosmos.ClusterResourceProperties{
+			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodNone),
+			ExternalGossipCertificates: []*armcosmos.Certificate{
+				{
+					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+				}},
+			ExternalSeedNodes: []*armcosmos.SeedNode{
+				{
+					IPAddress: to.Ptr("10.52.221.2"),
+				},
+				{
+					IPAddress: to.Ptr("10.52.221.3"),
+				},
+				{
+					IPAddress: to.Ptr("10.52.221.4"),
+				}},
+			HoursBetweenBackups: to.Ptr[int32](12),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -217,7 +202,7 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraCommand.json
 func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,17 +213,13 @@ func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginInvokeCommand(ctx,
-		"cassandra-prod-rg",
-		"cassandra-prod",
-		armcosmos.CommandPostBody{
-			Arguments: map[string]*string{
-				"status": to.Ptr(""),
-			},
-			Command: to.Ptr("nodetool"),
-			Host:    to.Ptr("10.0.1.12"),
+	poller, err := client.BeginInvokeCommand(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.CommandPostBody{
+		Arguments: map[string]*string{
+			"status": to.Ptr(""),
 		},
-		nil)
+		Command: to.Ptr("nodetool"),
+		Host:    to.Ptr("10.0.1.12"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -248,7 +229,7 @@ func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraBackupsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraBackupsList.json
 func ExampleCassandraClustersClient_NewListBackupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,9 +240,7 @@ func ExampleCassandraClustersClient_NewListBackupsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBackupsPager("cassandra-prod-rg",
-		"cassandra-prod",
-		nil)
+	pager := client.NewListBackupsPager("cassandra-prod-rg", "cassandra-prod", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -274,7 +253,7 @@ func ExampleCassandraClustersClient_NewListBackupsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraBackup.json
 func ExampleCassandraClustersClient_GetBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,11 +264,7 @@ func ExampleCassandraClustersClient_GetBackup() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetBackup(ctx,
-		"cassandra-prod-rg",
-		"cassandra-prod",
-		"1611250348",
-		nil)
+	res, err := client.GetBackup(ctx, "cassandra-prod-rg", "cassandra-prod", "1611250348", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -297,7 +272,7 @@ func ExampleCassandraClustersClient_GetBackup() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraClusterDeallocate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraClusterDeallocate.json
 func ExampleCassandraClustersClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,10 +283,7 @@ func ExampleCassandraClustersClient_BeginDeallocate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeallocate(ctx,
-		"cassandra-prod-rg",
-		"cassandra-prod",
-		nil)
+	poller, err := client.BeginDeallocate(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -321,7 +293,7 @@ func ExampleCassandraClustersClient_BeginDeallocate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraClusterStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraClusterStart.json
 func ExampleCassandraClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,10 +304,7 @@ func ExampleCassandraClustersClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx,
-		"cassandra-prod-rg",
-		"cassandra-prod",
-		nil)
+	poller, err := client.BeginStart(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -345,7 +314,7 @@ func ExampleCassandraClustersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBManagedCassandraStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBManagedCassandraStatus.json
 func ExampleCassandraClustersClient_Status() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,10 +325,7 @@ func ExampleCassandraClustersClient_Status() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Status(ctx,
-		"cassandra-prod-rg",
-		"cassandra-prod",
-		nil)
+	res, err := client.Status(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

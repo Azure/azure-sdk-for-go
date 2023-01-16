@@ -16,7 +16,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 	"github.com/stretchr/testify/require"
@@ -171,6 +173,57 @@ func TestCRUD(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestDisableChallengeResourceVerification(t *testing.T) {
+	authResource := `"Bearer authorization="https://login.microsoftonline.com/tenant", resource="%s""`
+	authScope := `"Bearer authorization="https://login.microsoftonline.com/tenant", scope="%s""`
+	vaultURL := "https://fakevault.vault.azure.net"
+	for _, test := range []struct {
+		challenge, resource string
+		disableVerify, err  bool
+	}{
+		// happy path: resource matches requested vault's host (vault.azure.net)
+		{challenge: authResource, resource: "https://vault.azure.net"},
+		{challenge: authScope, resource: "https://vault.azure.net/.default"},
+		{challenge: authResource, resource: "https://vault.azure.net", disableVerify: true},
+		{challenge: authScope, resource: "https://vault.azure.net/.default", disableVerify: true},
+
+		// error cases: resource/scope doesn't match the requested vault's host (vault.azure.net)
+		{challenge: authResource, resource: "https://vault.azure.cn", err: true},
+		{challenge: authResource, resource: "https://myvault.azure.net", err: true},
+		{challenge: authScope, resource: "https://vault.azure.cn/.default", err: true},
+		{challenge: authScope, resource: "https://myvault.azure.net/.default", err: true},
+
+		// the policy shouldn't return errors for the above error cases when verification is disabled
+		{challenge: authResource, resource: "https://vault.azure.cn", disableVerify: true},
+		{challenge: authResource, resource: "https://myvault.azure.net", disableVerify: true},
+		{challenge: authScope, resource: "https://vault.azure.cn/.default", disableVerify: true},
+		{challenge: authScope, resource: "https://myvault.azure.net/.default", disableVerify: true},
+	} {
+		t.Run("", func(t *testing.T) {
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(mock.WithStatusCode(401), mock.WithHeader("WWW-Authenticate", fmt.Sprintf(test.challenge, test.resource)))
+			srv.AppendResponse(mock.WithStatusCode(200), mock.WithBody([]byte(`{"value":[]}`)))
+			options := &azsecrets.ClientOptions{
+				ClientOptions: policy.ClientOptions{
+					Transport: srv,
+				},
+				DisableChallengeResourceVerification: test.disableVerify,
+			}
+			client, err := azsecrets.NewClient(vaultURL, &FakeCredential{}, options)
+			require.NoError(t, err)
+			pager := client.NewListSecretsPager(nil)
+			_, err = pager.NextPage(context.Background())
+			if test.err {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "challenge resource")
+			} else {
+				require.NoError(t, err)
+			}
+		})
+	}
+}
+
 func TestID(t *testing.T) {
 	for _, test := range []struct{ ID, name, version string }{
 		{"https://foo.vault.azure.net/secrets/name/version", "name", "version"},
@@ -307,9 +360,10 @@ func TestListSecretVersions(t *testing.T) {
 }
 
 func TestNameRequired(t *testing.T) {
-	client := azsecrets.NewClient(fakeVaultURL, &FakeCredential{}, nil)
+	client, err := azsecrets.NewClient(fakeVaultURL, &FakeCredential{}, nil)
+	require.NoError(t, err)
 	expected := "parameter name cannot be empty"
-	_, err := client.BackupSecret(context.Background(), "", nil)
+	_, err = client.BackupSecret(context.Background(), "", nil)
 	require.EqualError(t, err, expected)
 	_, err = client.DeleteSecret(context.Background(), "", nil)
 	require.EqualError(t, err, expected)

@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"encoding/base64"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
@@ -136,10 +137,10 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
@@ -168,7 +169,7 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 func (client *BlockBlobClient) commitBlockListHandleResponse(resp *http.Response) (BlockBlobClientCommitBlockListResponse, error) {
 	result := BlockBlobClientCommitBlockListResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -185,11 +186,11 @@ func (client *BlockBlobClient) commitBlockListHandleResponse(resp *http.Response
 		result.ContentMD5 = contentMD5
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
-		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return BlockBlobClientCommitBlockListResponse{}, err
 		}
-		result.XMSContentCRC64 = xMSContentCRC64
+		result.ContentCRC64 = contentCRC64
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -289,7 +290,7 @@ func (client *BlockBlobClient) getBlockListHandleResponse(resp *http.Response) (
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -422,10 +423,10 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
@@ -437,10 +438,10 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{sourceModifiedAccessConditions.SourceIfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfMatch != nil {
-		req.Raw().Header["x-ms-source-if-match"] = []string{*sourceModifiedAccessConditions.SourceIfMatch}
+		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
-		req.Raw().Header["x-ms-source-if-none-match"] = []string{*sourceModifiedAccessConditions.SourceIfNoneMatch}
+		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfTags != nil {
 		req.Raw().Header["x-ms-source-if-tags"] = []string{*sourceModifiedAccessConditions.SourceIfTags}
@@ -470,7 +471,7 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 func (client *BlockBlobClient) putBlobFromURLHandleResponse(resp *http.Response) (BlockBlobClientPutBlobFromURLResponse, error) {
 	result := BlockBlobClientPutBlobFromURLResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -618,11 +619,11 @@ func (client *BlockBlobClient) stageBlockHandleResponse(resp *http.Response) (Bl
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
-		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return BlockBlobClientStageBlockResponse{}, err
 		}
-		result.XMSContentCRC64 = xMSContentCRC64
+		result.ContentCRC64 = contentCRC64
 	}
 	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
@@ -717,10 +718,10 @@ func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{sourceModifiedAccessConditions.SourceIfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfMatch != nil {
-		req.Raw().Header["x-ms-source-if-match"] = []string{*sourceModifiedAccessConditions.SourceIfMatch}
+		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
-		req.Raw().Header["x-ms-source-if-none-match"] = []string{*sourceModifiedAccessConditions.SourceIfNoneMatch}
+		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	if options != nil && options.RequestID != nil {
@@ -744,11 +745,11 @@ func (client *BlockBlobClient) stageBlockFromURLHandleResponse(resp *http.Respon
 		result.ContentMD5 = contentMD5
 	}
 	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
-		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return BlockBlobClientStageBlockFromURLResponse{}, err
 		}
-		result.XMSContentCRC64 = xMSContentCRC64
+		result.ContentCRC64 = contentCRC64
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -875,10 +876,10 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
@@ -907,7 +908,7 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 func (client *BlockBlobClient) uploadHandleResponse(resp *http.Response) (BlockBlobClientUploadResponse, error) {
 	result := BlockBlobClientUploadResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

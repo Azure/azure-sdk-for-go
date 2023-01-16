@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.4.0-beta.1"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -49,6 +49,24 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 	return []AgentPoolType{
 		AgentPoolTypeAvailabilitySet,
 		AgentPoolTypeVirtualMachineScaleSets,
+	}
+}
+
+// BackendPoolType - The type of the managed inbound Load Balancer BackendPool.
+type BackendPoolType string
+
+const (
+	// BackendPoolTypeNodeIP - The type of the managed inbound Load Balancer BackendPool. https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#configure-load-balancer-backend.
+	BackendPoolTypeNodeIP BackendPoolType = "NodeIP"
+	// BackendPoolTypeNodeIPConfiguration - The type of the managed inbound Load Balancer BackendPool. https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#configure-load-balancer-backend.
+	BackendPoolTypeNodeIPConfiguration BackendPoolType = "NodeIPConfiguration"
+)
+
+// PossibleBackendPoolTypeValues returns the possible values for the BackendPoolType const type.
+func PossibleBackendPoolTypeValues() []BackendPoolType {
+	return []BackendPoolType{
+		BackendPoolTypeNodeIP,
+		BackendPoolTypeNodeIPConfiguration,
 	}
 }
 
@@ -90,399 +108,21 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
-// ContainerServiceStorageProfileTypes - Specifies what kind of storage to use. If omitted, the default will be chosen on
-// your behalf based on the choice of orchestrator.
-type ContainerServiceStorageProfileTypes string
+// ControlledValues - Controls which resource value autoscaler will change. Default value is RequestsAndLimits.
+type ControlledValues string
 
 const (
-	ContainerServiceStorageProfileTypesManagedDisks   ContainerServiceStorageProfileTypes = "ManagedDisks"
-	ContainerServiceStorageProfileTypesStorageAccount ContainerServiceStorageProfileTypes = "StorageAccount"
+	// ControlledValuesRequestsAndLimits - Autoscaler will control resource requests and limits.
+	ControlledValuesRequestsAndLimits ControlledValues = "RequestsAndLimits"
+	// ControlledValuesRequestsOnly - Autoscaler will control resource requests only.
+	ControlledValuesRequestsOnly ControlledValues = "RequestsOnly"
 )
 
-// PossibleContainerServiceStorageProfileTypesValues returns the possible values for the ContainerServiceStorageProfileTypes const type.
-func PossibleContainerServiceStorageProfileTypesValues() []ContainerServiceStorageProfileTypes {
-	return []ContainerServiceStorageProfileTypes{
-		ContainerServiceStorageProfileTypesManagedDisks,
-		ContainerServiceStorageProfileTypesStorageAccount,
-	}
-}
-
-// ContainerServiceVMSizeTypes - Size of agent VMs. Note: This is no longer maintained.
-type ContainerServiceVMSizeTypes string
-
-const (
-	ContainerServiceVMSizeTypesStandardA1          ContainerServiceVMSizeTypes = "Standard_A1"
-	ContainerServiceVMSizeTypesStandardA10         ContainerServiceVMSizeTypes = "Standard_A10"
-	ContainerServiceVMSizeTypesStandardA11         ContainerServiceVMSizeTypes = "Standard_A11"
-	ContainerServiceVMSizeTypesStandardA1V2        ContainerServiceVMSizeTypes = "Standard_A1_v2"
-	ContainerServiceVMSizeTypesStandardA2          ContainerServiceVMSizeTypes = "Standard_A2"
-	ContainerServiceVMSizeTypesStandardA2MV2       ContainerServiceVMSizeTypes = "Standard_A2m_v2"
-	ContainerServiceVMSizeTypesStandardA2V2        ContainerServiceVMSizeTypes = "Standard_A2_v2"
-	ContainerServiceVMSizeTypesStandardA3          ContainerServiceVMSizeTypes = "Standard_A3"
-	ContainerServiceVMSizeTypesStandardA4          ContainerServiceVMSizeTypes = "Standard_A4"
-	ContainerServiceVMSizeTypesStandardA4MV2       ContainerServiceVMSizeTypes = "Standard_A4m_v2"
-	ContainerServiceVMSizeTypesStandardA4V2        ContainerServiceVMSizeTypes = "Standard_A4_v2"
-	ContainerServiceVMSizeTypesStandardA5          ContainerServiceVMSizeTypes = "Standard_A5"
-	ContainerServiceVMSizeTypesStandardA6          ContainerServiceVMSizeTypes = "Standard_A6"
-	ContainerServiceVMSizeTypesStandardA7          ContainerServiceVMSizeTypes = "Standard_A7"
-	ContainerServiceVMSizeTypesStandardA8          ContainerServiceVMSizeTypes = "Standard_A8"
-	ContainerServiceVMSizeTypesStandardA8MV2       ContainerServiceVMSizeTypes = "Standard_A8m_v2"
-	ContainerServiceVMSizeTypesStandardA8V2        ContainerServiceVMSizeTypes = "Standard_A8_v2"
-	ContainerServiceVMSizeTypesStandardA9          ContainerServiceVMSizeTypes = "Standard_A9"
-	ContainerServiceVMSizeTypesStandardB2Ms        ContainerServiceVMSizeTypes = "Standard_B2ms"
-	ContainerServiceVMSizeTypesStandardB2S         ContainerServiceVMSizeTypes = "Standard_B2s"
-	ContainerServiceVMSizeTypesStandardB4Ms        ContainerServiceVMSizeTypes = "Standard_B4ms"
-	ContainerServiceVMSizeTypesStandardB8Ms        ContainerServiceVMSizeTypes = "Standard_B8ms"
-	ContainerServiceVMSizeTypesStandardD1          ContainerServiceVMSizeTypes = "Standard_D1"
-	ContainerServiceVMSizeTypesStandardD11         ContainerServiceVMSizeTypes = "Standard_D11"
-	ContainerServiceVMSizeTypesStandardD11V2       ContainerServiceVMSizeTypes = "Standard_D11_v2"
-	ContainerServiceVMSizeTypesStandardD11V2Promo  ContainerServiceVMSizeTypes = "Standard_D11_v2_Promo"
-	ContainerServiceVMSizeTypesStandardD12         ContainerServiceVMSizeTypes = "Standard_D12"
-	ContainerServiceVMSizeTypesStandardD12V2       ContainerServiceVMSizeTypes = "Standard_D12_v2"
-	ContainerServiceVMSizeTypesStandardD12V2Promo  ContainerServiceVMSizeTypes = "Standard_D12_v2_Promo"
-	ContainerServiceVMSizeTypesStandardD13         ContainerServiceVMSizeTypes = "Standard_D13"
-	ContainerServiceVMSizeTypesStandardD13V2       ContainerServiceVMSizeTypes = "Standard_D13_v2"
-	ContainerServiceVMSizeTypesStandardD13V2Promo  ContainerServiceVMSizeTypes = "Standard_D13_v2_Promo"
-	ContainerServiceVMSizeTypesStandardD14         ContainerServiceVMSizeTypes = "Standard_D14"
-	ContainerServiceVMSizeTypesStandardD14V2       ContainerServiceVMSizeTypes = "Standard_D14_v2"
-	ContainerServiceVMSizeTypesStandardD14V2Promo  ContainerServiceVMSizeTypes = "Standard_D14_v2_Promo"
-	ContainerServiceVMSizeTypesStandardD15V2       ContainerServiceVMSizeTypes = "Standard_D15_v2"
-	ContainerServiceVMSizeTypesStandardD16SV3      ContainerServiceVMSizeTypes = "Standard_D16s_v3"
-	ContainerServiceVMSizeTypesStandardD16V3       ContainerServiceVMSizeTypes = "Standard_D16_v3"
-	ContainerServiceVMSizeTypesStandardD1V2        ContainerServiceVMSizeTypes = "Standard_D1_v2"
-	ContainerServiceVMSizeTypesStandardD2          ContainerServiceVMSizeTypes = "Standard_D2"
-	ContainerServiceVMSizeTypesStandardD2SV3       ContainerServiceVMSizeTypes = "Standard_D2s_v3"
-	ContainerServiceVMSizeTypesStandardD2V2        ContainerServiceVMSizeTypes = "Standard_D2_v2"
-	ContainerServiceVMSizeTypesStandardD2V2Promo   ContainerServiceVMSizeTypes = "Standard_D2_v2_Promo"
-	ContainerServiceVMSizeTypesStandardD2V3        ContainerServiceVMSizeTypes = "Standard_D2_v3"
-	ContainerServiceVMSizeTypesStandardD3          ContainerServiceVMSizeTypes = "Standard_D3"
-	ContainerServiceVMSizeTypesStandardD32SV3      ContainerServiceVMSizeTypes = "Standard_D32s_v3"
-	ContainerServiceVMSizeTypesStandardD32V3       ContainerServiceVMSizeTypes = "Standard_D32_v3"
-	ContainerServiceVMSizeTypesStandardD3V2        ContainerServiceVMSizeTypes = "Standard_D3_v2"
-	ContainerServiceVMSizeTypesStandardD3V2Promo   ContainerServiceVMSizeTypes = "Standard_D3_v2_Promo"
-	ContainerServiceVMSizeTypesStandardD4          ContainerServiceVMSizeTypes = "Standard_D4"
-	ContainerServiceVMSizeTypesStandardD4SV3       ContainerServiceVMSizeTypes = "Standard_D4s_v3"
-	ContainerServiceVMSizeTypesStandardD4V2        ContainerServiceVMSizeTypes = "Standard_D4_v2"
-	ContainerServiceVMSizeTypesStandardD4V2Promo   ContainerServiceVMSizeTypes = "Standard_D4_v2_Promo"
-	ContainerServiceVMSizeTypesStandardD4V3        ContainerServiceVMSizeTypes = "Standard_D4_v3"
-	ContainerServiceVMSizeTypesStandardD5V2        ContainerServiceVMSizeTypes = "Standard_D5_v2"
-	ContainerServiceVMSizeTypesStandardD5V2Promo   ContainerServiceVMSizeTypes = "Standard_D5_v2_Promo"
-	ContainerServiceVMSizeTypesStandardD64SV3      ContainerServiceVMSizeTypes = "Standard_D64s_v3"
-	ContainerServiceVMSizeTypesStandardD64V3       ContainerServiceVMSizeTypes = "Standard_D64_v3"
-	ContainerServiceVMSizeTypesStandardD8SV3       ContainerServiceVMSizeTypes = "Standard_D8s_v3"
-	ContainerServiceVMSizeTypesStandardD8V3        ContainerServiceVMSizeTypes = "Standard_D8_v3"
-	ContainerServiceVMSizeTypesStandardDS1         ContainerServiceVMSizeTypes = "Standard_DS1"
-	ContainerServiceVMSizeTypesStandardDS11        ContainerServiceVMSizeTypes = "Standard_DS11"
-	ContainerServiceVMSizeTypesStandardDS11V2      ContainerServiceVMSizeTypes = "Standard_DS11_v2"
-	ContainerServiceVMSizeTypesStandardDS11V2Promo ContainerServiceVMSizeTypes = "Standard_DS11_v2_Promo"
-	ContainerServiceVMSizeTypesStandardDS12        ContainerServiceVMSizeTypes = "Standard_DS12"
-	ContainerServiceVMSizeTypesStandardDS12V2      ContainerServiceVMSizeTypes = "Standard_DS12_v2"
-	ContainerServiceVMSizeTypesStandardDS12V2Promo ContainerServiceVMSizeTypes = "Standard_DS12_v2_Promo"
-	ContainerServiceVMSizeTypesStandardDS13        ContainerServiceVMSizeTypes = "Standard_DS13"
-	ContainerServiceVMSizeTypesStandardDS132V2     ContainerServiceVMSizeTypes = "Standard_DS13-2_v2"
-	ContainerServiceVMSizeTypesStandardDS134V2     ContainerServiceVMSizeTypes = "Standard_DS13-4_v2"
-	ContainerServiceVMSizeTypesStandardDS13V2      ContainerServiceVMSizeTypes = "Standard_DS13_v2"
-	ContainerServiceVMSizeTypesStandardDS13V2Promo ContainerServiceVMSizeTypes = "Standard_DS13_v2_Promo"
-	ContainerServiceVMSizeTypesStandardDS14        ContainerServiceVMSizeTypes = "Standard_DS14"
-	ContainerServiceVMSizeTypesStandardDS144V2     ContainerServiceVMSizeTypes = "Standard_DS14-4_v2"
-	ContainerServiceVMSizeTypesStandardDS148V2     ContainerServiceVMSizeTypes = "Standard_DS14-8_v2"
-	ContainerServiceVMSizeTypesStandardDS14V2      ContainerServiceVMSizeTypes = "Standard_DS14_v2"
-	ContainerServiceVMSizeTypesStandardDS14V2Promo ContainerServiceVMSizeTypes = "Standard_DS14_v2_Promo"
-	ContainerServiceVMSizeTypesStandardDS15V2      ContainerServiceVMSizeTypes = "Standard_DS15_v2"
-	ContainerServiceVMSizeTypesStandardDS1V2       ContainerServiceVMSizeTypes = "Standard_DS1_v2"
-	ContainerServiceVMSizeTypesStandardDS2         ContainerServiceVMSizeTypes = "Standard_DS2"
-	ContainerServiceVMSizeTypesStandardDS2V2       ContainerServiceVMSizeTypes = "Standard_DS2_v2"
-	ContainerServiceVMSizeTypesStandardDS2V2Promo  ContainerServiceVMSizeTypes = "Standard_DS2_v2_Promo"
-	ContainerServiceVMSizeTypesStandardDS3         ContainerServiceVMSizeTypes = "Standard_DS3"
-	ContainerServiceVMSizeTypesStandardDS3V2       ContainerServiceVMSizeTypes = "Standard_DS3_v2"
-	ContainerServiceVMSizeTypesStandardDS3V2Promo  ContainerServiceVMSizeTypes = "Standard_DS3_v2_Promo"
-	ContainerServiceVMSizeTypesStandardDS4         ContainerServiceVMSizeTypes = "Standard_DS4"
-	ContainerServiceVMSizeTypesStandardDS4V2       ContainerServiceVMSizeTypes = "Standard_DS4_v2"
-	ContainerServiceVMSizeTypesStandardDS4V2Promo  ContainerServiceVMSizeTypes = "Standard_DS4_v2_Promo"
-	ContainerServiceVMSizeTypesStandardDS5V2       ContainerServiceVMSizeTypes = "Standard_DS5_v2"
-	ContainerServiceVMSizeTypesStandardDS5V2Promo  ContainerServiceVMSizeTypes = "Standard_DS5_v2_Promo"
-	ContainerServiceVMSizeTypesStandardE16SV3      ContainerServiceVMSizeTypes = "Standard_E16s_v3"
-	ContainerServiceVMSizeTypesStandardE16V3       ContainerServiceVMSizeTypes = "Standard_E16_v3"
-	ContainerServiceVMSizeTypesStandardE2SV3       ContainerServiceVMSizeTypes = "Standard_E2s_v3"
-	ContainerServiceVMSizeTypesStandardE2V3        ContainerServiceVMSizeTypes = "Standard_E2_v3"
-	ContainerServiceVMSizeTypesStandardE3216SV3    ContainerServiceVMSizeTypes = "Standard_E32-16s_v3"
-	ContainerServiceVMSizeTypesStandardE328SV3     ContainerServiceVMSizeTypes = "Standard_E32-8s_v3"
-	ContainerServiceVMSizeTypesStandardE32SV3      ContainerServiceVMSizeTypes = "Standard_E32s_v3"
-	ContainerServiceVMSizeTypesStandardE32V3       ContainerServiceVMSizeTypes = "Standard_E32_v3"
-	ContainerServiceVMSizeTypesStandardE4SV3       ContainerServiceVMSizeTypes = "Standard_E4s_v3"
-	ContainerServiceVMSizeTypesStandardE4V3        ContainerServiceVMSizeTypes = "Standard_E4_v3"
-	ContainerServiceVMSizeTypesStandardE6416SV3    ContainerServiceVMSizeTypes = "Standard_E64-16s_v3"
-	ContainerServiceVMSizeTypesStandardE6432SV3    ContainerServiceVMSizeTypes = "Standard_E64-32s_v3"
-	ContainerServiceVMSizeTypesStandardE64SV3      ContainerServiceVMSizeTypes = "Standard_E64s_v3"
-	ContainerServiceVMSizeTypesStandardE64V3       ContainerServiceVMSizeTypes = "Standard_E64_v3"
-	ContainerServiceVMSizeTypesStandardE8SV3       ContainerServiceVMSizeTypes = "Standard_E8s_v3"
-	ContainerServiceVMSizeTypesStandardE8V3        ContainerServiceVMSizeTypes = "Standard_E8_v3"
-	ContainerServiceVMSizeTypesStandardF1          ContainerServiceVMSizeTypes = "Standard_F1"
-	ContainerServiceVMSizeTypesStandardF16         ContainerServiceVMSizeTypes = "Standard_F16"
-	ContainerServiceVMSizeTypesStandardF16S        ContainerServiceVMSizeTypes = "Standard_F16s"
-	ContainerServiceVMSizeTypesStandardF16SV2      ContainerServiceVMSizeTypes = "Standard_F16s_v2"
-	ContainerServiceVMSizeTypesStandardF1S         ContainerServiceVMSizeTypes = "Standard_F1s"
-	ContainerServiceVMSizeTypesStandardF2          ContainerServiceVMSizeTypes = "Standard_F2"
-	ContainerServiceVMSizeTypesStandardF2S         ContainerServiceVMSizeTypes = "Standard_F2s"
-	ContainerServiceVMSizeTypesStandardF2SV2       ContainerServiceVMSizeTypes = "Standard_F2s_v2"
-	ContainerServiceVMSizeTypesStandardF32SV2      ContainerServiceVMSizeTypes = "Standard_F32s_v2"
-	ContainerServiceVMSizeTypesStandardF4          ContainerServiceVMSizeTypes = "Standard_F4"
-	ContainerServiceVMSizeTypesStandardF4S         ContainerServiceVMSizeTypes = "Standard_F4s"
-	ContainerServiceVMSizeTypesStandardF4SV2       ContainerServiceVMSizeTypes = "Standard_F4s_v2"
-	ContainerServiceVMSizeTypesStandardF64SV2      ContainerServiceVMSizeTypes = "Standard_F64s_v2"
-	ContainerServiceVMSizeTypesStandardF72SV2      ContainerServiceVMSizeTypes = "Standard_F72s_v2"
-	ContainerServiceVMSizeTypesStandardF8          ContainerServiceVMSizeTypes = "Standard_F8"
-	ContainerServiceVMSizeTypesStandardF8S         ContainerServiceVMSizeTypes = "Standard_F8s"
-	ContainerServiceVMSizeTypesStandardF8SV2       ContainerServiceVMSizeTypes = "Standard_F8s_v2"
-	ContainerServiceVMSizeTypesStandardG1          ContainerServiceVMSizeTypes = "Standard_G1"
-	ContainerServiceVMSizeTypesStandardG2          ContainerServiceVMSizeTypes = "Standard_G2"
-	ContainerServiceVMSizeTypesStandardG3          ContainerServiceVMSizeTypes = "Standard_G3"
-	ContainerServiceVMSizeTypesStandardG4          ContainerServiceVMSizeTypes = "Standard_G4"
-	ContainerServiceVMSizeTypesStandardG5          ContainerServiceVMSizeTypes = "Standard_G5"
-	ContainerServiceVMSizeTypesStandardGS1         ContainerServiceVMSizeTypes = "Standard_GS1"
-	ContainerServiceVMSizeTypesStandardGS2         ContainerServiceVMSizeTypes = "Standard_GS2"
-	ContainerServiceVMSizeTypesStandardGS3         ContainerServiceVMSizeTypes = "Standard_GS3"
-	ContainerServiceVMSizeTypesStandardGS4         ContainerServiceVMSizeTypes = "Standard_GS4"
-	ContainerServiceVMSizeTypesStandardGS44        ContainerServiceVMSizeTypes = "Standard_GS4-4"
-	ContainerServiceVMSizeTypesStandardGS48        ContainerServiceVMSizeTypes = "Standard_GS4-8"
-	ContainerServiceVMSizeTypesStandardGS5         ContainerServiceVMSizeTypes = "Standard_GS5"
-	ContainerServiceVMSizeTypesStandardGS516       ContainerServiceVMSizeTypes = "Standard_GS5-16"
-	ContainerServiceVMSizeTypesStandardGS58        ContainerServiceVMSizeTypes = "Standard_GS5-8"
-	ContainerServiceVMSizeTypesStandardH16         ContainerServiceVMSizeTypes = "Standard_H16"
-	ContainerServiceVMSizeTypesStandardH16M        ContainerServiceVMSizeTypes = "Standard_H16m"
-	ContainerServiceVMSizeTypesStandardH16Mr       ContainerServiceVMSizeTypes = "Standard_H16mr"
-	ContainerServiceVMSizeTypesStandardH16R        ContainerServiceVMSizeTypes = "Standard_H16r"
-	ContainerServiceVMSizeTypesStandardH8          ContainerServiceVMSizeTypes = "Standard_H8"
-	ContainerServiceVMSizeTypesStandardH8M         ContainerServiceVMSizeTypes = "Standard_H8m"
-	ContainerServiceVMSizeTypesStandardL16S        ContainerServiceVMSizeTypes = "Standard_L16s"
-	ContainerServiceVMSizeTypesStandardL32S        ContainerServiceVMSizeTypes = "Standard_L32s"
-	ContainerServiceVMSizeTypesStandardL4S         ContainerServiceVMSizeTypes = "Standard_L4s"
-	ContainerServiceVMSizeTypesStandardL8S         ContainerServiceVMSizeTypes = "Standard_L8s"
-	ContainerServiceVMSizeTypesStandardM12832Ms    ContainerServiceVMSizeTypes = "Standard_M128-32ms"
-	ContainerServiceVMSizeTypesStandardM12864Ms    ContainerServiceVMSizeTypes = "Standard_M128-64ms"
-	ContainerServiceVMSizeTypesStandardM128Ms      ContainerServiceVMSizeTypes = "Standard_M128ms"
-	ContainerServiceVMSizeTypesStandardM128S       ContainerServiceVMSizeTypes = "Standard_M128s"
-	ContainerServiceVMSizeTypesStandardM6416Ms     ContainerServiceVMSizeTypes = "Standard_M64-16ms"
-	ContainerServiceVMSizeTypesStandardM6432Ms     ContainerServiceVMSizeTypes = "Standard_M64-32ms"
-	ContainerServiceVMSizeTypesStandardM64Ms       ContainerServiceVMSizeTypes = "Standard_M64ms"
-	ContainerServiceVMSizeTypesStandardM64S        ContainerServiceVMSizeTypes = "Standard_M64s"
-	ContainerServiceVMSizeTypesStandardNC12        ContainerServiceVMSizeTypes = "Standard_NC12"
-	ContainerServiceVMSizeTypesStandardNC12SV2     ContainerServiceVMSizeTypes = "Standard_NC12s_v2"
-	ContainerServiceVMSizeTypesStandardNC12SV3     ContainerServiceVMSizeTypes = "Standard_NC12s_v3"
-	ContainerServiceVMSizeTypesStandardNC24        ContainerServiceVMSizeTypes = "Standard_NC24"
-	ContainerServiceVMSizeTypesStandardNC24R       ContainerServiceVMSizeTypes = "Standard_NC24r"
-	ContainerServiceVMSizeTypesStandardNC24RsV2    ContainerServiceVMSizeTypes = "Standard_NC24rs_v2"
-	ContainerServiceVMSizeTypesStandardNC24RsV3    ContainerServiceVMSizeTypes = "Standard_NC24rs_v3"
-	ContainerServiceVMSizeTypesStandardNC24SV2     ContainerServiceVMSizeTypes = "Standard_NC24s_v2"
-	ContainerServiceVMSizeTypesStandardNC24SV3     ContainerServiceVMSizeTypes = "Standard_NC24s_v3"
-	ContainerServiceVMSizeTypesStandardNC6         ContainerServiceVMSizeTypes = "Standard_NC6"
-	ContainerServiceVMSizeTypesStandardNC6SV2      ContainerServiceVMSizeTypes = "Standard_NC6s_v2"
-	ContainerServiceVMSizeTypesStandardNC6SV3      ContainerServiceVMSizeTypes = "Standard_NC6s_v3"
-	ContainerServiceVMSizeTypesStandardND12S       ContainerServiceVMSizeTypes = "Standard_ND12s"
-	ContainerServiceVMSizeTypesStandardND24Rs      ContainerServiceVMSizeTypes = "Standard_ND24rs"
-	ContainerServiceVMSizeTypesStandardND24S       ContainerServiceVMSizeTypes = "Standard_ND24s"
-	ContainerServiceVMSizeTypesStandardND6S        ContainerServiceVMSizeTypes = "Standard_ND6s"
-	ContainerServiceVMSizeTypesStandardNV12        ContainerServiceVMSizeTypes = "Standard_NV12"
-	ContainerServiceVMSizeTypesStandardNV24        ContainerServiceVMSizeTypes = "Standard_NV24"
-	ContainerServiceVMSizeTypesStandardNV6         ContainerServiceVMSizeTypes = "Standard_NV6"
-)
-
-// PossibleContainerServiceVMSizeTypesValues returns the possible values for the ContainerServiceVMSizeTypes const type.
-func PossibleContainerServiceVMSizeTypesValues() []ContainerServiceVMSizeTypes {
-	return []ContainerServiceVMSizeTypes{
-		ContainerServiceVMSizeTypesStandardA1,
-		ContainerServiceVMSizeTypesStandardA10,
-		ContainerServiceVMSizeTypesStandardA11,
-		ContainerServiceVMSizeTypesStandardA1V2,
-		ContainerServiceVMSizeTypesStandardA2,
-		ContainerServiceVMSizeTypesStandardA2MV2,
-		ContainerServiceVMSizeTypesStandardA2V2,
-		ContainerServiceVMSizeTypesStandardA3,
-		ContainerServiceVMSizeTypesStandardA4,
-		ContainerServiceVMSizeTypesStandardA4MV2,
-		ContainerServiceVMSizeTypesStandardA4V2,
-		ContainerServiceVMSizeTypesStandardA5,
-		ContainerServiceVMSizeTypesStandardA6,
-		ContainerServiceVMSizeTypesStandardA7,
-		ContainerServiceVMSizeTypesStandardA8,
-		ContainerServiceVMSizeTypesStandardA8MV2,
-		ContainerServiceVMSizeTypesStandardA8V2,
-		ContainerServiceVMSizeTypesStandardA9,
-		ContainerServiceVMSizeTypesStandardB2Ms,
-		ContainerServiceVMSizeTypesStandardB2S,
-		ContainerServiceVMSizeTypesStandardB4Ms,
-		ContainerServiceVMSizeTypesStandardB8Ms,
-		ContainerServiceVMSizeTypesStandardD1,
-		ContainerServiceVMSizeTypesStandardD11,
-		ContainerServiceVMSizeTypesStandardD11V2,
-		ContainerServiceVMSizeTypesStandardD11V2Promo,
-		ContainerServiceVMSizeTypesStandardD12,
-		ContainerServiceVMSizeTypesStandardD12V2,
-		ContainerServiceVMSizeTypesStandardD12V2Promo,
-		ContainerServiceVMSizeTypesStandardD13,
-		ContainerServiceVMSizeTypesStandardD13V2,
-		ContainerServiceVMSizeTypesStandardD13V2Promo,
-		ContainerServiceVMSizeTypesStandardD14,
-		ContainerServiceVMSizeTypesStandardD14V2,
-		ContainerServiceVMSizeTypesStandardD14V2Promo,
-		ContainerServiceVMSizeTypesStandardD15V2,
-		ContainerServiceVMSizeTypesStandardD16SV3,
-		ContainerServiceVMSizeTypesStandardD16V3,
-		ContainerServiceVMSizeTypesStandardD1V2,
-		ContainerServiceVMSizeTypesStandardD2,
-		ContainerServiceVMSizeTypesStandardD2SV3,
-		ContainerServiceVMSizeTypesStandardD2V2,
-		ContainerServiceVMSizeTypesStandardD2V2Promo,
-		ContainerServiceVMSizeTypesStandardD2V3,
-		ContainerServiceVMSizeTypesStandardD3,
-		ContainerServiceVMSizeTypesStandardD32SV3,
-		ContainerServiceVMSizeTypesStandardD32V3,
-		ContainerServiceVMSizeTypesStandardD3V2,
-		ContainerServiceVMSizeTypesStandardD3V2Promo,
-		ContainerServiceVMSizeTypesStandardD4,
-		ContainerServiceVMSizeTypesStandardD4SV3,
-		ContainerServiceVMSizeTypesStandardD4V2,
-		ContainerServiceVMSizeTypesStandardD4V2Promo,
-		ContainerServiceVMSizeTypesStandardD4V3,
-		ContainerServiceVMSizeTypesStandardD5V2,
-		ContainerServiceVMSizeTypesStandardD5V2Promo,
-		ContainerServiceVMSizeTypesStandardD64SV3,
-		ContainerServiceVMSizeTypesStandardD64V3,
-		ContainerServiceVMSizeTypesStandardD8SV3,
-		ContainerServiceVMSizeTypesStandardD8V3,
-		ContainerServiceVMSizeTypesStandardDS1,
-		ContainerServiceVMSizeTypesStandardDS11,
-		ContainerServiceVMSizeTypesStandardDS11V2,
-		ContainerServiceVMSizeTypesStandardDS11V2Promo,
-		ContainerServiceVMSizeTypesStandardDS12,
-		ContainerServiceVMSizeTypesStandardDS12V2,
-		ContainerServiceVMSizeTypesStandardDS12V2Promo,
-		ContainerServiceVMSizeTypesStandardDS13,
-		ContainerServiceVMSizeTypesStandardDS132V2,
-		ContainerServiceVMSizeTypesStandardDS134V2,
-		ContainerServiceVMSizeTypesStandardDS13V2,
-		ContainerServiceVMSizeTypesStandardDS13V2Promo,
-		ContainerServiceVMSizeTypesStandardDS14,
-		ContainerServiceVMSizeTypesStandardDS144V2,
-		ContainerServiceVMSizeTypesStandardDS148V2,
-		ContainerServiceVMSizeTypesStandardDS14V2,
-		ContainerServiceVMSizeTypesStandardDS14V2Promo,
-		ContainerServiceVMSizeTypesStandardDS15V2,
-		ContainerServiceVMSizeTypesStandardDS1V2,
-		ContainerServiceVMSizeTypesStandardDS2,
-		ContainerServiceVMSizeTypesStandardDS2V2,
-		ContainerServiceVMSizeTypesStandardDS2V2Promo,
-		ContainerServiceVMSizeTypesStandardDS3,
-		ContainerServiceVMSizeTypesStandardDS3V2,
-		ContainerServiceVMSizeTypesStandardDS3V2Promo,
-		ContainerServiceVMSizeTypesStandardDS4,
-		ContainerServiceVMSizeTypesStandardDS4V2,
-		ContainerServiceVMSizeTypesStandardDS4V2Promo,
-		ContainerServiceVMSizeTypesStandardDS5V2,
-		ContainerServiceVMSizeTypesStandardDS5V2Promo,
-		ContainerServiceVMSizeTypesStandardE16SV3,
-		ContainerServiceVMSizeTypesStandardE16V3,
-		ContainerServiceVMSizeTypesStandardE2SV3,
-		ContainerServiceVMSizeTypesStandardE2V3,
-		ContainerServiceVMSizeTypesStandardE3216SV3,
-		ContainerServiceVMSizeTypesStandardE328SV3,
-		ContainerServiceVMSizeTypesStandardE32SV3,
-		ContainerServiceVMSizeTypesStandardE32V3,
-		ContainerServiceVMSizeTypesStandardE4SV3,
-		ContainerServiceVMSizeTypesStandardE4V3,
-		ContainerServiceVMSizeTypesStandardE6416SV3,
-		ContainerServiceVMSizeTypesStandardE6432SV3,
-		ContainerServiceVMSizeTypesStandardE64SV3,
-		ContainerServiceVMSizeTypesStandardE64V3,
-		ContainerServiceVMSizeTypesStandardE8SV3,
-		ContainerServiceVMSizeTypesStandardE8V3,
-		ContainerServiceVMSizeTypesStandardF1,
-		ContainerServiceVMSizeTypesStandardF16,
-		ContainerServiceVMSizeTypesStandardF16S,
-		ContainerServiceVMSizeTypesStandardF16SV2,
-		ContainerServiceVMSizeTypesStandardF1S,
-		ContainerServiceVMSizeTypesStandardF2,
-		ContainerServiceVMSizeTypesStandardF2S,
-		ContainerServiceVMSizeTypesStandardF2SV2,
-		ContainerServiceVMSizeTypesStandardF32SV2,
-		ContainerServiceVMSizeTypesStandardF4,
-		ContainerServiceVMSizeTypesStandardF4S,
-		ContainerServiceVMSizeTypesStandardF4SV2,
-		ContainerServiceVMSizeTypesStandardF64SV2,
-		ContainerServiceVMSizeTypesStandardF72SV2,
-		ContainerServiceVMSizeTypesStandardF8,
-		ContainerServiceVMSizeTypesStandardF8S,
-		ContainerServiceVMSizeTypesStandardF8SV2,
-		ContainerServiceVMSizeTypesStandardG1,
-		ContainerServiceVMSizeTypesStandardG2,
-		ContainerServiceVMSizeTypesStandardG3,
-		ContainerServiceVMSizeTypesStandardG4,
-		ContainerServiceVMSizeTypesStandardG5,
-		ContainerServiceVMSizeTypesStandardGS1,
-		ContainerServiceVMSizeTypesStandardGS2,
-		ContainerServiceVMSizeTypesStandardGS3,
-		ContainerServiceVMSizeTypesStandardGS4,
-		ContainerServiceVMSizeTypesStandardGS44,
-		ContainerServiceVMSizeTypesStandardGS48,
-		ContainerServiceVMSizeTypesStandardGS5,
-		ContainerServiceVMSizeTypesStandardGS516,
-		ContainerServiceVMSizeTypesStandardGS58,
-		ContainerServiceVMSizeTypesStandardH16,
-		ContainerServiceVMSizeTypesStandardH16M,
-		ContainerServiceVMSizeTypesStandardH16Mr,
-		ContainerServiceVMSizeTypesStandardH16R,
-		ContainerServiceVMSizeTypesStandardH8,
-		ContainerServiceVMSizeTypesStandardH8M,
-		ContainerServiceVMSizeTypesStandardL16S,
-		ContainerServiceVMSizeTypesStandardL32S,
-		ContainerServiceVMSizeTypesStandardL4S,
-		ContainerServiceVMSizeTypesStandardL8S,
-		ContainerServiceVMSizeTypesStandardM12832Ms,
-		ContainerServiceVMSizeTypesStandardM12864Ms,
-		ContainerServiceVMSizeTypesStandardM128Ms,
-		ContainerServiceVMSizeTypesStandardM128S,
-		ContainerServiceVMSizeTypesStandardM6416Ms,
-		ContainerServiceVMSizeTypesStandardM6432Ms,
-		ContainerServiceVMSizeTypesStandardM64Ms,
-		ContainerServiceVMSizeTypesStandardM64S,
-		ContainerServiceVMSizeTypesStandardNC12,
-		ContainerServiceVMSizeTypesStandardNC12SV2,
-		ContainerServiceVMSizeTypesStandardNC12SV3,
-		ContainerServiceVMSizeTypesStandardNC24,
-		ContainerServiceVMSizeTypesStandardNC24R,
-		ContainerServiceVMSizeTypesStandardNC24RsV2,
-		ContainerServiceVMSizeTypesStandardNC24RsV3,
-		ContainerServiceVMSizeTypesStandardNC24SV2,
-		ContainerServiceVMSizeTypesStandardNC24SV3,
-		ContainerServiceVMSizeTypesStandardNC6,
-		ContainerServiceVMSizeTypesStandardNC6SV2,
-		ContainerServiceVMSizeTypesStandardNC6SV3,
-		ContainerServiceVMSizeTypesStandardND12S,
-		ContainerServiceVMSizeTypesStandardND24Rs,
-		ContainerServiceVMSizeTypesStandardND24S,
-		ContainerServiceVMSizeTypesStandardND6S,
-		ContainerServiceVMSizeTypesStandardNV12,
-		ContainerServiceVMSizeTypesStandardNV24,
-		ContainerServiceVMSizeTypesStandardNV6,
-	}
-}
-
-// Count - Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5. The default value is
-// 1.
-type Count int32
-
-const (
-	CountOne   Count = 1
-	CountThree Count = 3
-	CountFive  Count = 5
-)
-
-// PossibleCountValues returns the possible values for the Count const type.
-func PossibleCountValues() []Count {
-	return []Count{
-		CountOne,
-		CountThree,
-		CountFive,
+// PossibleControlledValuesValues returns the possible values for the ControlledValues const type.
+func PossibleControlledValuesValues() []ControlledValues {
+	return []ControlledValues{
+		ControlledValuesRequestsAndLimits,
+		ControlledValuesRequestsOnly,
 	}
 }
 
@@ -503,6 +143,21 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// EbpfDataplane - The eBPF dataplane used for building the Kubernetes network.
+type EbpfDataplane string
+
+const (
+	// EbpfDataplaneCilium - Use Cilium for networking in the Kubernetes cluster.
+	EbpfDataplaneCilium EbpfDataplane = "cilium"
+)
+
+// PossibleEbpfDataplaneValues returns the possible values for the EbpfDataplane const type.
+func PossibleEbpfDataplaneValues() []EbpfDataplane {
+	return []EbpfDataplane{
+		EbpfDataplaneCilium,
 	}
 }
 
@@ -550,10 +205,59 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
+// FleetMemberProvisioningState - The provisioning state of the last accepted operation.
+type FleetMemberProvisioningState string
+
+const (
+	FleetMemberProvisioningStateCanceled  FleetMemberProvisioningState = "Canceled"
+	FleetMemberProvisioningStateFailed    FleetMemberProvisioningState = "Failed"
+	FleetMemberProvisioningStateJoining   FleetMemberProvisioningState = "Joining"
+	FleetMemberProvisioningStateLeaving   FleetMemberProvisioningState = "Leaving"
+	FleetMemberProvisioningStateSucceeded FleetMemberProvisioningState = "Succeeded"
+	FleetMemberProvisioningStateUpdating  FleetMemberProvisioningState = "Updating"
+)
+
+// PossibleFleetMemberProvisioningStateValues returns the possible values for the FleetMemberProvisioningState const type.
+func PossibleFleetMemberProvisioningStateValues() []FleetMemberProvisioningState {
+	return []FleetMemberProvisioningState{
+		FleetMemberProvisioningStateCanceled,
+		FleetMemberProvisioningStateFailed,
+		FleetMemberProvisioningStateJoining,
+		FleetMemberProvisioningStateLeaving,
+		FleetMemberProvisioningStateSucceeded,
+		FleetMemberProvisioningStateUpdating,
+	}
+}
+
+// FleetProvisioningState - The provisioning state of the last accepted operation.
+type FleetProvisioningState string
+
+const (
+	FleetProvisioningStateCanceled  FleetProvisioningState = "Canceled"
+	FleetProvisioningStateCreating  FleetProvisioningState = "Creating"
+	FleetProvisioningStateDeleting  FleetProvisioningState = "Deleting"
+	FleetProvisioningStateFailed    FleetProvisioningState = "Failed"
+	FleetProvisioningStateSucceeded FleetProvisioningState = "Succeeded"
+	FleetProvisioningStateUpdating  FleetProvisioningState = "Updating"
+)
+
+// PossibleFleetProvisioningStateValues returns the possible values for the FleetProvisioningState const type.
+func PossibleFleetProvisioningStateValues() []FleetProvisioningState {
+	return []FleetProvisioningState{
+		FleetProvisioningStateCanceled,
+		FleetProvisioningStateCreating,
+		FleetProvisioningStateDeleting,
+		FleetProvisioningStateFailed,
+		FleetProvisioningStateSucceeded,
+		FleetProvisioningStateUpdating,
+	}
+}
+
 type Format string
 
 const (
-	// FormatAzure - Return azure auth-provider kubeconfig. This format is deprecated in 1.22 and will be fully removed in 1.25.
+	// FormatAzure - Return azure auth-provider kubeconfig. This format is deprecated in v1.22 and will be fully removed in v1.26.
+	// See: https://aka.ms/k8s/changes-1-26.
 	FormatAzure Format = "azure"
 	// FormatExec - Return exec format kubeconfig. This format requires kubelogin binary in the path.
 	FormatExec Format = "exec"
@@ -605,6 +309,24 @@ func PossibleIPFamilyValues() []IPFamily {
 	}
 }
 
+// IpvsScheduler - IPVS scheduler, for more information please see http://www.linuxvirtualserver.org/docs/scheduling.html.
+type IpvsScheduler string
+
+const (
+	// IpvsSchedulerLeastConnection - Least Connection
+	IpvsSchedulerLeastConnection IpvsScheduler = "LeastConnection"
+	// IpvsSchedulerRoundRobin - Round Robin
+	IpvsSchedulerRoundRobin IpvsScheduler = "RoundRobin"
+)
+
+// PossibleIpvsSchedulerValues returns the possible values for the IpvsScheduler const type.
+func PossibleIpvsSchedulerValues() []IpvsScheduler {
+	return []IpvsScheduler{
+		IpvsSchedulerLeastConnection,
+		IpvsSchedulerRoundRobin,
+	}
+}
+
 // KeyVaultNetworkAccessTypes - Network access of key vault. The possible values are Public and Private. Public means the
 // key vault allows public access from all networks. Private means the key vault disables public access and
 // enables private link. The default value is Public.
@@ -638,6 +360,25 @@ func PossibleKubeletDiskTypeValues() []KubeletDiskType {
 	return []KubeletDiskType{
 		KubeletDiskTypeOS,
 		KubeletDiskTypeTemporary,
+	}
+}
+
+// Level - The guardrails level to be used. By default, Guardrails is enabled for all namespaces except those that AKS excludes
+// via systemExcludedNamespaces
+type Level string
+
+const (
+	LevelEnforcement Level = "Enforcement"
+	LevelOff         Level = "Off"
+	LevelWarning     Level = "Warning"
+)
+
+// PossibleLevelValues returns the possible values for the Level const type.
+func PossibleLevelValues() []Level {
+	return []Level{
+		LevelEnforcement,
+		LevelOff,
+		LevelWarning,
 	}
 }
 
@@ -685,18 +426,22 @@ func PossibleLoadBalancerSKUValues() []LoadBalancerSKU {
 type ManagedClusterPodIdentityProvisioningState string
 
 const (
-	ManagedClusterPodIdentityProvisioningStateAssigned ManagedClusterPodIdentityProvisioningState = "Assigned"
-	ManagedClusterPodIdentityProvisioningStateDeleting ManagedClusterPodIdentityProvisioningState = "Deleting"
-	ManagedClusterPodIdentityProvisioningStateFailed   ManagedClusterPodIdentityProvisioningState = "Failed"
-	ManagedClusterPodIdentityProvisioningStateUpdating ManagedClusterPodIdentityProvisioningState = "Updating"
+	ManagedClusterPodIdentityProvisioningStateAssigned  ManagedClusterPodIdentityProvisioningState = "Assigned"
+	ManagedClusterPodIdentityProvisioningStateCanceled  ManagedClusterPodIdentityProvisioningState = "Canceled"
+	ManagedClusterPodIdentityProvisioningStateDeleting  ManagedClusterPodIdentityProvisioningState = "Deleting"
+	ManagedClusterPodIdentityProvisioningStateFailed    ManagedClusterPodIdentityProvisioningState = "Failed"
+	ManagedClusterPodIdentityProvisioningStateSucceeded ManagedClusterPodIdentityProvisioningState = "Succeeded"
+	ManagedClusterPodIdentityProvisioningStateUpdating  ManagedClusterPodIdentityProvisioningState = "Updating"
 )
 
 // PossibleManagedClusterPodIdentityProvisioningStateValues returns the possible values for the ManagedClusterPodIdentityProvisioningState const type.
 func PossibleManagedClusterPodIdentityProvisioningStateValues() []ManagedClusterPodIdentityProvisioningState {
 	return []ManagedClusterPodIdentityProvisioningState{
 		ManagedClusterPodIdentityProvisioningStateAssigned,
+		ManagedClusterPodIdentityProvisioningStateCanceled,
 		ManagedClusterPodIdentityProvisioningStateDeleting,
 		ManagedClusterPodIdentityProvisioningStateFailed,
+		ManagedClusterPodIdentityProvisioningStateSucceeded,
 		ManagedClusterPodIdentityProvisioningStateUpdating,
 	}
 }
@@ -735,6 +480,24 @@ func PossibleManagedClusterSKUTierValues() []ManagedClusterSKUTier {
 	}
 }
 
+// Mode - Specify which proxy mode to use ('IPTABLES' or 'IPVS')
+type Mode string
+
+const (
+	// ModeIPTABLES - IPTables proxy mode
+	ModeIPTABLES Mode = "IPTABLES"
+	// ModeIPVS - IPVS proxy mode. Must be using Kubernetes version >= 1.22.
+	ModeIPVS Mode = "IPVS"
+)
+
+// PossibleModeValues returns the possible values for the Mode const type.
+func PossibleModeValues() []Mode {
+	return []Mode{
+		ModeIPTABLES,
+		ModeIPVS,
+	}
+}
+
 // NetworkMode - This cannot be specified if networkPlugin is anything other than 'azure'.
 type NetworkMode string
 
@@ -764,8 +527,8 @@ const (
 	// NetworkPluginKubenet - Use the Kubenet network plugin. See [Kubenet (basic) networking](https://docs.microsoft.com/azure/aks/concepts-network#kubenet-basic-networking)
 	// for more information.
 	NetworkPluginKubenet NetworkPlugin = "kubenet"
-	// NetworkPluginNone - No CNI plugin is pre-installed. See [BYO CNI](https://docs.microsoft.com/en-us/azure/aks/use-byo-cni)
-	// for more information.
+	// NetworkPluginNone - Do not use a network plugin. A custom CNI will need to be installed after cluster creation for networking
+	// functionality.
 	NetworkPluginNone NetworkPlugin = "none"
 )
 
@@ -775,6 +538,22 @@ func PossibleNetworkPluginValues() []NetworkPlugin {
 		NetworkPluginAzure,
 		NetworkPluginKubenet,
 		NetworkPluginNone,
+	}
+}
+
+// NetworkPluginMode - The mode the network plugin should use.
+type NetworkPluginMode string
+
+const (
+	// NetworkPluginModeOverlay - Pods are given IPs from the PodCIDR address space but use Azure Routing Domains rather than
+	// Kubenet reference plugins host-local and bridge.
+	NetworkPluginModeOverlay NetworkPluginMode = "Overlay"
+)
+
+// PossibleNetworkPluginModeValues returns the possible values for the NetworkPluginMode const type.
+func PossibleNetworkPluginModeValues() []NetworkPluginMode {
+	return []NetworkPluginMode{
+		NetworkPluginModeOverlay,
 	}
 }
 
@@ -795,6 +574,41 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 	return []NetworkPolicy{
 		NetworkPolicyAzure,
 		NetworkPolicyCalico,
+	}
+}
+
+// NodeOSUpgradeChannel - The default is Unmanaged, but may change to either NodeImage or SecurityPatch at GA.
+type NodeOSUpgradeChannel string
+
+const (
+	// NodeOSUpgradeChannelNodeImage - AKS will update the nodes with a newly patched VHD containing security fixes and bugfixes
+	// on a weekly cadence. With the VHD update machines will be rolling reimaged to that VHD following maintenance windows and
+	// surge settings. No extra VHD cost is incurred when choosing this option as AKS hosts the images.
+	NodeOSUpgradeChannelNodeImage NodeOSUpgradeChannel = "NodeImage"
+	// NodeOSUpgradeChannelNone - No attempt to update your machines OS will be made either by OS or by rolling VHDs. This means
+	// you are responsible for your security updates
+	NodeOSUpgradeChannelNone NodeOSUpgradeChannel = "None"
+	// NodeOSUpgradeChannelSecurityPatch - AKS will update the nodes VHD with patches from the image maintainer labelled "security
+	// only" on a regular basis. Where possible, patches will also be applied without reimaging to existing nodes. Some patches,
+	// such as kernel patches, cannot be applied to existing nodes without disruption. For such patches, the VHD will be updated,
+	// and machines will be rolling reimaged to that VHD following maintenance windows and surge settings. This option incurs
+	// the extra cost of hosting the VHDs in your node resource group.
+	NodeOSUpgradeChannelSecurityPatch NodeOSUpgradeChannel = "SecurityPatch"
+	// NodeOSUpgradeChannelUnmanaged - OS updates will be applied automatically through the OS built-in patching infrastructure.
+	// Newly scaled in machines will be unpatched initially, and will be patched at some later time by the OS's infrastructure.
+	// Behavior of this option depends on the OS in question. Ubuntu and Mariner apply security patches through unattended upgrade
+	// roughly once a day around 06:00 UTC. Windows does not apply security patches automatically and so for them this option
+	// is equivalent to None till further notice
+	NodeOSUpgradeChannelUnmanaged NodeOSUpgradeChannel = "Unmanaged"
+)
+
+// PossibleNodeOSUpgradeChannelValues returns the possible values for the NodeOSUpgradeChannel const type.
+func PossibleNodeOSUpgradeChannelValues() []NodeOSUpgradeChannel {
+	return []NodeOSUpgradeChannel{
+		NodeOSUpgradeChannelNodeImage,
+		NodeOSUpgradeChannelNone,
+		NodeOSUpgradeChannelSecurityPatch,
+		NodeOSUpgradeChannelUnmanaged,
 	}
 }
 
@@ -822,12 +636,14 @@ func PossibleOSDiskTypeValues() []OSDiskType {
 	}
 }
 
-// OSSKU - Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
-// when Kubernetes = 1.25 if OSType is Windows.
+// OSSKU - Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if OSType=Linux or Windows2019
+// if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022
+// after Windows2019 is deprecated.
 type OSSKU string
 
 const (
 	OSSKUCBLMariner  OSSKU = "CBLMariner"
+	OSSKUMariner     OSSKU = "Mariner"
 	OSSKUUbuntu      OSSKU = "Ubuntu"
 	OSSKUWindows2019 OSSKU = "Windows2019"
 	OSSKUWindows2022 OSSKU = "Windows2022"
@@ -837,6 +653,7 @@ const (
 func PossibleOSSKUValues() []OSSKU {
 	return []OSSKU{
 		OSSKUCBLMariner,
+		OSSKUMariner,
 		OSSKUUbuntu,
 		OSSKUWindows2019,
 		OSSKUWindows2022,
@@ -893,6 +710,7 @@ func PossibleOutboundTypeValues() []OutboundType {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
+	PrivateEndpointConnectionProvisioningStateCanceled  PrivateEndpointConnectionProvisioningState = "Canceled"
 	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
 	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
 	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
@@ -902,6 +720,7 @@ const (
 // PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCanceled,
 		PrivateEndpointConnectionProvisioningStateCreating,
 		PrivateEndpointConnectionProvisioningStateDeleting,
 		PrivateEndpointConnectionProvisioningStateFailed,
@@ -909,12 +728,34 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
+// Protocol - The network protocol of the port.
+type Protocol string
+
+const (
+	// ProtocolTCP - TCP protocol.
+	ProtocolTCP Protocol = "TCP"
+	// ProtocolUDP - UDP protocol.
+	ProtocolUDP Protocol = "UDP"
+)
+
+// PossibleProtocolValues returns the possible values for the Protocol const type.
+func PossibleProtocolValues() []Protocol {
+	return []Protocol{
+		ProtocolTCP,
+		ProtocolUDP,
+	}
+}
+
 // PublicNetworkAccess - Allow or deny public network access for AKS
 type PublicNetworkAccess string
 
 const (
+	// PublicNetworkAccessDisabled - Inbound traffic to managedCluster is disabled, traffic from managedCluster is allowed.
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	// PublicNetworkAccessEnabled - Inbound/Outbound to the managedCluster is allowed.
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
+	// PublicNetworkAccessSecuredByPerimeter - Inbound/Outbound traffic is managed by Microsoft.Network/NetworkSecurityPerimeters.
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -922,6 +763,7 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+		PublicNetworkAccessSecuredByPerimeter,
 	}
 }
 
@@ -947,6 +789,24 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeUserAssigned,
 		ResourceIdentityTypeNone,
+	}
+}
+
+// RestrictionLevel - The restriction level applied to the cluster's node resource group
+type RestrictionLevel string
+
+const (
+	// RestrictionLevelReadOnly - Only */read RBAC permissions allowed on the managed node resource group
+	RestrictionLevelReadOnly RestrictionLevel = "ReadOnly"
+	// RestrictionLevelUnrestricted - All RBAC permissions are allowed on the managed node resource group
+	RestrictionLevelUnrestricted RestrictionLevel = "Unrestricted"
+)
+
+// PossibleRestrictionLevelValues returns the possible values for the RestrictionLevel const type.
+func PossibleRestrictionLevelValues() []RestrictionLevel {
+	return []RestrictionLevel{
+		RestrictionLevelReadOnly,
+		RestrictionLevelUnrestricted,
 	}
 }
 
@@ -1014,6 +874,8 @@ func PossibleScaleSetPriorityValues() []ScaleSetPriority {
 type SnapshotType string
 
 const (
+	// SnapshotTypeManagedCluster - The snapshot is a snapshot of a managed cluster.
+	SnapshotTypeManagedCluster SnapshotType = "ManagedCluster"
 	// SnapshotTypeNodePool - The snapshot is a snapshot of a node pool.
 	SnapshotTypeNodePool SnapshotType = "NodePool"
 )
@@ -1021,7 +883,86 @@ const (
 // PossibleSnapshotTypeValues returns the possible values for the SnapshotType const type.
 func PossibleSnapshotTypeValues() []SnapshotType {
 	return []SnapshotType{
+		SnapshotTypeManagedCluster,
 		SnapshotTypeNodePool,
+	}
+}
+
+// TrustedAccessRoleBindingProvisioningState - The current provisioning state of trusted access role binding.
+type TrustedAccessRoleBindingProvisioningState string
+
+const (
+	TrustedAccessRoleBindingProvisioningStateCanceled  TrustedAccessRoleBindingProvisioningState = "Canceled"
+	TrustedAccessRoleBindingProvisioningStateDeleting  TrustedAccessRoleBindingProvisioningState = "Deleting"
+	TrustedAccessRoleBindingProvisioningStateFailed    TrustedAccessRoleBindingProvisioningState = "Failed"
+	TrustedAccessRoleBindingProvisioningStateSucceeded TrustedAccessRoleBindingProvisioningState = "Succeeded"
+	TrustedAccessRoleBindingProvisioningStateUpdating  TrustedAccessRoleBindingProvisioningState = "Updating"
+)
+
+// PossibleTrustedAccessRoleBindingProvisioningStateValues returns the possible values for the TrustedAccessRoleBindingProvisioningState const type.
+func PossibleTrustedAccessRoleBindingProvisioningStateValues() []TrustedAccessRoleBindingProvisioningState {
+	return []TrustedAccessRoleBindingProvisioningState{
+		TrustedAccessRoleBindingProvisioningStateCanceled,
+		TrustedAccessRoleBindingProvisioningStateDeleting,
+		TrustedAccessRoleBindingProvisioningStateFailed,
+		TrustedAccessRoleBindingProvisioningStateSucceeded,
+		TrustedAccessRoleBindingProvisioningStateUpdating,
+	}
+}
+
+// Type - Specifies on which instance of the allowed days specified in daysOfWeek the maintenance occurs.
+type Type string
+
+const (
+	// TypeFirst - First.
+	TypeFirst Type = "First"
+	// TypeFourth - Fourth.
+	TypeFourth Type = "Fourth"
+	// TypeLast - Last.
+	TypeLast Type = "Last"
+	// TypeSecond - Second.
+	TypeSecond Type = "Second"
+	// TypeThird - Third.
+	TypeThird Type = "Third"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeFirst,
+		TypeFourth,
+		TypeLast,
+		TypeSecond,
+		TypeThird,
+	}
+}
+
+// UpdateMode - Each update mode level is a superset of the lower levels. Off<Initial<Recreate<=Auto. For example: if UpdateMode
+// is Initial, it means VPA sets the recommended resources in the VerticalPodAutoscaler
+// Custom Resource (from UpdateMode Off) and also assigns resources on pod creation (from Initial). The default value is Off.
+type UpdateMode string
+
+const (
+	// UpdateModeAuto - Autoscaler chooses the update mode. Autoscaler currently does the same as Recreate. In the future, it
+	// may take advantage of restart-free mechanisms once they are available.
+	UpdateModeAuto UpdateMode = "Auto"
+	// UpdateModeInitial - Autoscaler only assigns resources on pod creation and doesn't change them during the lifetime of the
+	// pod.
+	UpdateModeInitial UpdateMode = "Initial"
+	// UpdateModeOff - Autoscaler never changes pod resources but provides recommendations.
+	UpdateModeOff UpdateMode = "Off"
+	// UpdateModeRecreate - Autoscaler assigns resources on pod creation and updates pods that need further scaling during their
+	// lifetime by deleting and recreating.
+	UpdateModeRecreate UpdateMode = "Recreate"
+)
+
+// PossibleUpdateModeValues returns the possible values for the UpdateMode const type.
+func PossibleUpdateModeValues() []UpdateMode {
+	return []UpdateMode{
+		UpdateModeAuto,
+		UpdateModeInitial,
+		UpdateModeOff,
+		UpdateModeRecreate,
 	}
 }
 
@@ -1029,10 +970,8 @@ func PossibleSnapshotTypeValues() []SnapshotType {
 type UpgradeChannel string
 
 const (
-	// UpgradeChannelNodeImage - Automatically upgrade the node image to the latest version available. Microsoft provides patches
-	// and new images for image nodes frequently (usually weekly), but your running nodes won't get the new images unless you
-	// do a node image upgrade. Turning on the node-image channel will automatically update your node images whenever a new version
-	// is available.
+	// UpgradeChannelNodeImage - Automatically upgrade the node image to the latest version available. Consider using nodeOSUpgradeChannel
+	// instead as that allows you to configure node OS patching separate from Kubernetes version patching
 	UpgradeChannelNodeImage UpgradeChannel = "node-image"
 	// UpgradeChannelNone - Disables auto-upgrades and keeps the cluster at its current version of Kubernetes.
 	UpgradeChannelNone UpgradeChannel = "none"
@@ -1093,6 +1032,10 @@ func PossibleWeekDayValues() []WeekDay {
 type WorkloadRuntime string
 
 const (
+	// WorkloadRuntimeKataMshvVMIsolation - Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods (Preview).
+	// Due to the use Hyper-V, AKS node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series
+	// that support Nested Virtualization such as Dv3 series.
+	WorkloadRuntimeKataMshvVMIsolation WorkloadRuntime = "KataMshvVmIsolation"
 	// WorkloadRuntimeOCIContainer - Nodes will use Kubelet to run standard OCI container workloads.
 	WorkloadRuntimeOCIContainer WorkloadRuntime = "OCIContainer"
 	// WorkloadRuntimeWasmWasi - Nodes will use Krustlet to run WASM workloads using the WASI provider (Preview).
@@ -1102,6 +1045,7 @@ const (
 // PossibleWorkloadRuntimeValues returns the possible values for the WorkloadRuntime const type.
 func PossibleWorkloadRuntimeValues() []WorkloadRuntime {
 	return []WorkloadRuntime{
+		WorkloadRuntimeKataMshvVMIsolation,
 		WorkloadRuntimeOCIContainer,
 		WorkloadRuntimeWasmWasi,
 	}

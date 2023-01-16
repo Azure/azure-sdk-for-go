@@ -21,8 +21,8 @@ func TestClientAssertionCredential(t *testing.T) {
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
 	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
+	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
 
 	key := struct{}{}
 	calls := 0
@@ -61,8 +61,8 @@ func TestClientAssertionCredentialCallbackError(t *testing.T) {
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
 	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
+	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
 
 	expectedError := errors.New("it didn't work")
 	getAssertion := func(c context.Context) (string, error) { return "", expectedError }

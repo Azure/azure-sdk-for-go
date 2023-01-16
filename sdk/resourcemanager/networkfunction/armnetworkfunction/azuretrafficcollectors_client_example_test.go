@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/AzureTrafficCollectorGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorGet.json
 func ExampleAzureTrafficCollectorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,10 +28,7 @@ func ExampleAzureTrafficCollectorsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"atc",
-		nil)
+	res, err := client.Get(ctx, "rg1", "atc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -39,7 +36,7 @@ func ExampleAzureTrafficCollectorsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/AzureTrafficCollectorCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorCreate.json
 func ExampleAzureTrafficCollectorsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,19 +47,13 @@ func ExampleAzureTrafficCollectorsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"atc",
-		armnetworkfunction.AzureTrafficCollector{
-			Location: to.Ptr("West US"),
-			Tags: map[string]*string{
-				"key1": to.Ptr("value1"),
-			},
-			Properties: &armnetworkfunction.AzureTrafficCollectorPropertiesFormat{
-				CollectorPolicies: []*armnetworkfunction.CollectorPolicy{},
-			},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "atc", armnetworkfunction.AzureTrafficCollector{
+		Location: to.Ptr("West US"),
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
 		},
-		nil)
+		Properties: &armnetworkfunction.AzureTrafficCollectorPropertiesFormat{},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -74,7 +65,7 @@ func ExampleAzureTrafficCollectorsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/AzureTrafficCollectorDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorDelete.json
 func ExampleAzureTrafficCollectorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,10 +76,7 @@ func ExampleAzureTrafficCollectorsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"atc",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "atc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -98,7 +86,7 @@ func ExampleAzureTrafficCollectorsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/AzureTrafficCollectorUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorUpdateTags.json
 func ExampleAzureTrafficCollectorsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,16 +97,12 @@ func ExampleAzureTrafficCollectorsClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx,
-		"rg1",
-		"atc",
-		armnetworkfunction.TagsObject{
-			Tags: map[string]*string{
-				"key1": to.Ptr("value1"),
-				"key2": to.Ptr("value2"),
-			},
+	res, err := client.UpdateTags(ctx, "rg1", "atc", armnetworkfunction.TagsObject{
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+			"key2": to.Ptr("value2"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

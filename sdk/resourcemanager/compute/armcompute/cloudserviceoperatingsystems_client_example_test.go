@@ -13,10 +13,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceOSVersion_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceOSVersion_Get.json
 func ExampleCloudServiceOperatingSystemsClient_GetOSVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,10 +27,7 @@ func ExampleCloudServiceOperatingSystemsClient_GetOSVersion() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetOSVersion(ctx,
-		"westus2",
-		"WA-GUEST-OS-3.90_202010-02",
-		nil)
+	res, err := client.GetOSVersion(ctx, "westus2", "WA-GUEST-OS-3.90_202010-02", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -38,7 +35,7 @@ func ExampleCloudServiceOperatingSystemsClient_GetOSVersion() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceOSVersion_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceOSVersion_List.json
 func ExampleCloudServiceOperatingSystemsClient_NewListOSVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,8 +46,7 @@ func ExampleCloudServiceOperatingSystemsClient_NewListOSVersionsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOSVersionsPager("westus2",
-		nil)
+	pager := client.NewListOSVersionsPager("westus2", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -63,7 +59,7 @@ func ExampleCloudServiceOperatingSystemsClient_NewListOSVersionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceOSFamily_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceOSFamily_Get.json
 func ExampleCloudServiceOperatingSystemsClient_GetOSFamily() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,10 +70,7 @@ func ExampleCloudServiceOperatingSystemsClient_GetOSFamily() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetOSFamily(ctx,
-		"westus2",
-		"3",
-		nil)
+	res, err := client.GetOSFamily(ctx, "westus2", "3", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -85,7 +78,7 @@ func ExampleCloudServiceOperatingSystemsClient_GetOSFamily() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceOSFamilies_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceOSFamilies_List.json
 func ExampleCloudServiceOperatingSystemsClient_NewListOSFamiliesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,8 +89,7 @@ func ExampleCloudServiceOperatingSystemsClient_NewListOSFamiliesPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOSFamiliesPager("westus2",
-		nil)
+	pager := client.NewListOSFamiliesPager("westus2", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

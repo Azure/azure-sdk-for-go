@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakemhsm/keys/key474808603/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key474808603/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -17,7 +17,7 @@
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-request-id": "8f40c88c-f64b-11ec-b395-6045bd86d5ca",
@@ -26,7 +26,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key474808603/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key474808603/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -73,7 +73,7 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/key474808603/89c74a23500d4b12162e5cbb4e84aa85",
+          "kid": "https://fakemhsm.local/keys/key474808603/89c74a23500d4b12162e5cbb4e84aa85",
           "kty": "EC-HSM",
           "x": "nhztCI5c11jWxSP4OCurIh-G0C9BTWqFnyggGMF5lJs",
           "y": "3Q49HTd5c8fm9nkrtsrzgV5M1f1iGITOGCXJviwAU5Y"
@@ -81,7 +81,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key474808603//sign?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key474808603//sign?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -111,12 +111,12 @@
       },
       "ResponseBody": {
         "alg": "ES256K",
-        "kid": "https://fakemhsm/keys/key474808603/89c74a23500d4b12162e5cbb4e84aa85",
+        "kid": "https://fakemhsm.local/keys/key474808603/89c74a23500d4b12162e5cbb4e84aa85",
         "value": "ZyGgv7Y55L4HH5P1XNiihVP0xBHRqxBJIyejNoNp03XF5b_Vbrh6hupgkwGlk7KDGySwgRew-bDssK7GW3Z7JA"
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key474808603//verify?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key474808603//verify?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -147,7 +147,7 @@
       },
       "ResponseBody": {
         "alg": "ES256K",
-        "kid": "https://fakemhsm/keys/key474808603/89c74a23500d4b12162e5cbb4e84aa85",
+        "kid": "https://fakemhsm.local/keys/key474808603/89c74a23500d4b12162e5cbb4e84aa85",
         "value": true
       }
     }

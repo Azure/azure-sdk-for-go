@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGraphResourceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBGraphResourceList.json
 func ExampleGraphResourcesClient_NewListGraphsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleGraphResourcesClient_NewListGraphsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListGraphsPager("rgName",
-		"ddb1",
-		nil)
+	pager := client.NewListGraphsPager("rgName", "ddb1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleGraphResourcesClient_NewListGraphsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGraphResourceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBGraphResourceGet.json
 func ExampleGraphResourcesClient_GetGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleGraphResourcesClient_GetGraph() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetGraph(ctx,
-		"rg1",
-		"ddb1",
-		"graphName",
-		nil)
+	res, err := client.GetGraph(ctx, "rg1", "ddb1", "graphName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleGraphResourcesClient_GetGraph() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGraphResourceCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBGraphResourceCreateUpdate.json
 func ExampleGraphResourcesClient_BeginCreateUpdateGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,21 +71,16 @@ func ExampleGraphResourcesClient_BeginCreateUpdateGraph() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateGraph(ctx,
-		"rg1",
-		"ddb1",
-		"graphName",
-		armcosmos.GraphResourceCreateUpdateParameters{
-			Location: to.Ptr("West US"),
-			Tags:     map[string]*string{},
-			Properties: &armcosmos.GraphResourceCreateUpdateProperties{
-				Options: &armcosmos.CreateUpdateOptions{},
-				Resource: &armcosmos.GraphResource{
-					ID: to.Ptr("graphName"),
-				},
+	poller, err := client.BeginCreateUpdateGraph(ctx, "rg1", "ddb1", "graphName", armcosmos.GraphResourceCreateUpdateParameters{
+		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmos.GraphResourceCreateUpdateProperties{
+			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.GraphResource{
+				ID: to.Ptr("graphName"),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -103,7 +92,7 @@ func ExampleGraphResourcesClient_BeginCreateUpdateGraph() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGraphResourceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBGraphResourceDelete.json
 func ExampleGraphResourcesClient_BeginDeleteGraphResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,11 +103,7 @@ func ExampleGraphResourcesClient_BeginDeleteGraphResource() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteGraphResource(ctx,
-		"rg1",
-		"ddb1",
-		"graphName",
-		nil)
+	poller, err := client.BeginDeleteGraphResource(ctx, "rg1", "ddb1", "graphName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

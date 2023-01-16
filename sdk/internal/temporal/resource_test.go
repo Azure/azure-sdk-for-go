@@ -8,6 +8,7 @@ package temporal
 
 import (
 	"errors"
+	"sync"
 	"testing"
 	"time"
 
@@ -68,4 +69,22 @@ func TestExpiringResourceError(t *testing.T) {
 	_, err = er.Get(res)
 	require.Error(t, err, expectedError)
 	require.Equal(t, 3, calls)
+}
+
+func TestNewExpiringResourceConcurrent(t *testing.T) {
+	er := NewResource(func(i int) (newResource int, newExpiration time.Time, err error) {
+		return i + 1, time.Now().Add(time.Millisecond), nil
+	})
+
+	wg := &sync.WaitGroup{}
+
+	for i := 0; i < 1000; i++ {
+		wg.Add(1)
+		go func() {
+			_, _ = er.Get(0)
+			wg.Done()
+		}()
+	}
+
+	wg.Wait()
 }

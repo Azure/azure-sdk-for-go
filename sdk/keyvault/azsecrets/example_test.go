@@ -25,13 +25,19 @@ func ExampleNewClient() {
 		// TODO: handle error
 	}
 
-	client := azsecrets.NewClient(vaultURL, cred, nil)
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
 	_ = client
 }
 
 func ExampleClient_SetSecret() {
 	name := "mySecret"
 	value := "mySecretValue"
+	// If no secret with the given name exists, Key Vault creates a new secret with that name and the given value.
+	// If the given name is in use, Key Vault creates a new version of that secret, with the given value.
 	resp, err := client.SetSecret(context.TODO(), name, azsecrets.SetSecretParameters{Value: &value}, nil)
 	if err != nil {
 		// TODO: handle error
@@ -63,6 +69,7 @@ func ExampleClient_DeleteSecret() {
 	fmt.Println("deleted secret", resp.ID.Name())
 }
 
+// List pages don't include secret values. Use [Client.GetSecret] to retrieve secret values.
 func ExampleClient_NewListSecretsPager() {
 	pager := client.NewListSecretsPager(nil)
 	for pager.More() {
@@ -129,6 +136,7 @@ func ExampleClient_RecoverDeletedSecret() {
 	fmt.Println("recovered deleted secret", resp.ID.Name())
 }
 
+// UpdateSecret updates a secret's metadata. It can't change the secret's value; use [Client.SetSecret] to set a secret's value.
 func ExampleClient_UpdateSecret() {
 	updateParams := azsecrets.UpdateSecretParameters{
 		SecretAttributes: &azsecrets.SecretAttributes{

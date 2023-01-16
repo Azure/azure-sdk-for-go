@@ -37,14 +37,17 @@ type CertificateListResponse struct {
 }
 
 type CertificateProperties struct {
-	CertificateVirtualPath *string            `json:"certificateVirtualPath,omitempty"`
-	KeyVaultSecretID       *string            `json:"keyVaultSecretId,omitempty"`
-	KeyVirtualPath         *string            `json:"keyVirtualPath,omitempty"`
-	ProvisioningState      *ProvisioningState `json:"provisioningState,omitempty"`
+	CertificateVirtualPath *string `json:"certificateVirtualPath,omitempty"`
+	KeyVaultSecretID       *string `json:"keyVaultSecretId,omitempty"`
+	KeyVirtualPath         *string `json:"keyVirtualPath,omitempty"`
+
+	// READ-ONLY
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// CertificatesClientBeginCreateOptions contains the optional parameters for the CertificatesClient.BeginCreate method.
-type CertificatesClientBeginCreateOptions struct {
+// CertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.BeginCreateOrUpdate
+// method.
+type CertificatesClientBeginCreateOrUpdateOptions struct {
 	// The certificate
 	Body *Certificate
 	// Resumes the LRO from the provided token.
@@ -106,10 +109,13 @@ type ConfigurationPackage struct {
 }
 
 type ConfigurationProperties struct {
-	Files             []*ConfigurationFile  `json:"files,omitempty"`
-	Package           *ConfigurationPackage `json:"package,omitempty"`
-	ProvisioningState *ProvisioningState    `json:"provisioningState,omitempty"`
-	RootFile          *string               `json:"rootFile,omitempty"`
+	Files          []*ConfigurationFile  `json:"files,omitempty"`
+	Package        *ConfigurationPackage `json:"package,omitempty"`
+	ProtectedFiles []*ConfigurationFile  `json:"protectedFiles,omitempty"`
+	RootFile       *string               `json:"rootFile,omitempty"`
+
+	// READ-ONLY
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // ConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginCreateOrUpdate
@@ -169,15 +175,17 @@ type DeploymentProperties struct {
 	Logging                  *Logging `json:"logging,omitempty"`
 
 	// The managed resource group to deploy VNet injection related network resources.
-	ManagedResourceGroup *string            `json:"managedResourceGroup,omitempty"`
-	NetworkProfile       *NetworkProfile    `json:"networkProfile,omitempty"`
-	ProvisioningState    *ProvisioningState `json:"provisioningState,omitempty"`
+	ManagedResourceGroup *string         `json:"managedResourceGroup,omitempty"`
+	NetworkProfile       *NetworkProfile `json:"networkProfile,omitempty"`
 
 	// READ-ONLY; The IP address of the deployment.
 	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
 
 	// READ-ONLY
 	NginxVersion *string `json:"nginxVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 type DeploymentUpdateParameters struct {
@@ -195,8 +203,9 @@ type DeploymentUpdateProperties struct {
 	Logging                  *Logging `json:"logging,omitempty"`
 }
 
-// DeploymentsClientBeginCreateOptions contains the optional parameters for the DeploymentsClient.BeginCreate method.
-type DeploymentsClientBeginCreateOptions struct {
+// DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
+// method.
+type DeploymentsClientBeginCreateOrUpdateOptions struct {
 	Body *Deployment
 	// Resumes the LRO from the provided token.
 	ResumeToken string

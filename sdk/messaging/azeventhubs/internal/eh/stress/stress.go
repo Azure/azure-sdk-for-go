@@ -3,9 +3,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"math/rand"
 	"os"
 	"sort"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh/stress/tests"
 )
@@ -13,16 +16,17 @@ import (
 func main() {
 	tests := []struct {
 		name string
-		fn   func() error
+		fn   func(ctx context.Context) error
 	}{
-		{name: "finite", fn: tests.FiniteSendAndReceiveTest},
+		{name: "batch", fn: tests.BatchStressTester},
+		{name: "processor", fn: tests.ProcessorStressTester},
 	}
 
 	sort.Slice(tests, func(i, j int) bool {
 		return tests[i].name < tests[j].name
 	})
 
-	if len(os.Args) != 2 {
+	if len(os.Args) < 2 {
 		fmt.Printf("Usage: stress <scenario-name>\n")
 
 		fmt.Printf("Scenarios:\n")
@@ -38,7 +42,9 @@ func main() {
 
 	for _, test := range tests {
 		if test.name == testName {
-			if err := test.fn(); err != nil {
+			rand.Seed(time.Now().UnixNano())
+
+			if err := test.fn(context.Background()); err != nil {
 				fmt.Printf("ERROR: %s\n", err)
 				os.Exit(1)
 			}
@@ -47,5 +53,6 @@ func main() {
 		}
 	}
 
+	fmt.Printf("No test with name %s", testName)
 	os.Exit(1)
 }

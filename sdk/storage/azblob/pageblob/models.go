@@ -86,13 +86,12 @@ func (o *CreateOptions) format() (*generated.PageBlobClientCreateOptions, *gener
 
 // UploadPagesOptions contains the optional parameters for the Client.UploadPages method.
 type UploadPagesOptions struct {
-	// Specify the transactional crc64 for the body, to be validated by the service.
-	Offset *int64
-	Count  *int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range blob.HTTPRange
 
-	TransactionalContentCRC64 []byte
-	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 []byte
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation blob.TransferValidationType
 
 	CpkInfo                        *blob.CpkInfo
 	CpkScopeInfo                   *blob.CpkScopeInfo
@@ -107,9 +106,7 @@ func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptio
 	}
 
 	options := &generated.PageBlobClientUploadPagesOptions{
-		TransactionalContentCRC64: o.TransactionalContentCRC64,
-		TransactionalContentMD5:   o.TransactionalContentMD5,
-		Range:                     shared.GetSourceRange(o.Offset, o.Count),
+		Range: exported.FormatHTTPRange(o.Range),
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
@@ -122,10 +119,9 @@ func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptio
 type UploadPagesFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
-	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMD5 []byte
-	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64 []byte
+
+	// SourceContentValidation contains the validation mechanism used on the range of bytes read from the source.
+	SourceContentValidation blob.SourceContentValidationType
 
 	CpkInfo *blob.CpkInfo
 
@@ -145,9 +141,11 @@ func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPag
 	}
 
 	options := &generated.PageBlobClientUploadPagesFromURLOptions{
-		SourceContentMD5:        o.SourceContentMD5,
-		SourceContentcrc64:      o.SourceContentCRC64,
 		CopySourceAuthorization: o.CopySourceAuthorization,
+	}
+
+	if o.SourceContentValidation != nil {
+		o.SourceContentValidation.Apply(options)
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
@@ -195,9 +193,8 @@ type GetPageRangesOptions struct {
 	// specified by prevsnapshot is the older of the two. Note that incremental
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
-	// Optional, you can specify whether a particular range of the blob is read
-	Offset *int64
-	Count  *int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range blob.HTTPRange
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
 	// information on working with blob snapshots, see Creating a Snapshot of a Blob.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob]
@@ -215,7 +212,7 @@ func (o *GetPageRangesOptions) format() (*generated.PageBlobClientGetPageRangesO
 	return &generated.PageBlobClientGetPageRangesOptions{
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
-		Range:      shared.GetSourceRange(o.Offset, o.Count),
+		Range:      exported.FormatHTTPRange(o.Range),
 		Snapshot:   o.Snapshot,
 	}, leaseAccessConditions, modifiedAccessConditions
 }
@@ -246,9 +243,8 @@ type GetPageRangesDiffOptions struct {
 	// specified by prevsnapshot is the older of the two. Note that incremental
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
-	// Optional, you can specify whether a particular range of the blob is read
-	Offset *int64
-	Count  *int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range blob.HTTPRange
 
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
 	// information on working with blob snapshots, see Creating a Snapshot of a Blob.
@@ -269,7 +265,7 @@ func (o *GetPageRangesDiffOptions) format() (*generated.PageBlobClientGetPageRan
 		Maxresults:      o.MaxResults,
 		PrevSnapshotURL: o.PrevSnapshotURL,
 		Prevsnapshot:    o.PrevSnapshot,
-		Range:           shared.GetSourceRange(o.Offset, o.Count),
+		Range:           exported.FormatHTTPRange(o.Range),
 		Snapshot:        o.Snapshot,
 	}, leaseAccessConditions, modifiedAccessConditions
 

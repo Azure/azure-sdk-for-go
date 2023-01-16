@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
 func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,23 +28,19 @@ func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"myResourceGroup",
-		"myProximityPlacementGroup",
-		armcompute.ProximityPlacementGroup{
-			Location: to.Ptr("westus"),
-			Properties: &armcompute.ProximityPlacementGroupProperties{
-				Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
-					VMSizes: []*string{
-						to.Ptr("Basic_A0"),
-						to.Ptr("Basic_A2")},
-				},
-				ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
+	res, err := client.CreateOrUpdate(ctx, "myResourceGroup", "myProximityPlacementGroup", armcompute.ProximityPlacementGroup{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.ProximityPlacementGroupProperties{
+			Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
+				VMSizes: []*string{
+					to.Ptr("Basic_A0"),
+					to.Ptr("Basic_A2")},
 			},
-			Zones: []*string{
-				to.Ptr("1")},
+			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
 		},
-		nil)
+		Zones: []*string{
+			to.Ptr("1")},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -52,7 +48,7 @@ func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
 func ExampleProximityPlacementGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,15 +59,11 @@ func ExampleProximityPlacementGroupsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"myResourceGroup",
-		"myProximityPlacementGroup",
-		armcompute.ProximityPlacementGroupUpdate{
-			Tags: map[string]*string{
-				"additionalProp1": to.Ptr("string"),
-			},
+	res, err := client.Update(ctx, "myResourceGroup", "myProximityPlacementGroup", armcompute.ProximityPlacementGroupUpdate{
+		Tags: map[string]*string{
+			"additionalProp1": to.Ptr("string"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -79,7 +71,7 @@ func ExampleProximityPlacementGroupsClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
 func ExampleProximityPlacementGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,16 +82,13 @@ func ExampleProximityPlacementGroupsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"myResourceGroup",
-		"myProximityPlacementGroup",
-		nil)
+	_, err = client.Delete(ctx, "myResourceGroup", "myProximityPlacementGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Get.json
 func ExampleProximityPlacementGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,10 +99,7 @@ func ExampleProximityPlacementGroupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myResourceGroup",
-		"myProximityPlacementGroup",
-		&armcompute.ProximityPlacementGroupsClientGetOptions{IncludeColocationStatus: nil})
+	res, err := client.Get(ctx, "myResourceGroup", "myProximityPlacementGroup", &armcompute.ProximityPlacementGroupsClientGetOptions{IncludeColocationStatus: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -121,7 +107,7 @@ func ExampleProximityPlacementGroupsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
 func ExampleProximityPlacementGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +131,7 @@ func ExampleProximityPlacementGroupsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListByResourceGroup.json
 func ExampleProximityPlacementGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,8 +142,7 @@ func ExampleProximityPlacementGroupsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("myResourceGroup",
-		nil)
+	pager := client.NewListByResourceGroupPager("myResourceGroup", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

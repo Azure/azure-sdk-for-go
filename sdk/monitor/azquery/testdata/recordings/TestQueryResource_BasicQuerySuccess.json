@@ -1,0 +1,3665 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/Microsoft.Insights/metrics?aggregation=Average%2Ccount\u0026api-version=2018-01-01\u0026interval=PT1M\u0026metricnamespace=Microsoft.AppConfiguration%2FconfigurationStores\u0026orderby=Average\u002Basc\u0026timespan=PT12H",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azquery/v0.4.0 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 12 Jan 2023 21:31:18 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": [
+          "Accept-Encoding",
+          "Accept-Encoding"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "bfd99020-0604-43ef-8fe7-d2d5e0128c9d",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "{bfd99020-0604-43ef-8fe7-d2d5e0128c9d}",
+        "x-ms-routing-request-id": "WESTUS2:20230112T213119Z:bfd99020-0604-43ef-8fe7-d2d5e0128c9d"
+      },
+      "ResponseBody": {
+        "cost": 1438,
+        "timespan": "2023-01-12T09:30:19Z/2023-01-12T21:30:19Z",
+        "interval": "PT1M",
+        "value": [
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/Microsoft.Insights/metrics/HttpIncomingRequestCount",
+            "type": "Microsoft.Insights/metrics",
+            "name": {
+              "value": "HttpIncomingRequestCount",
+              "localizedValue": "HttpIncomingRequestCount"
+            },
+            "displayDescription": "Total number of incoming http requests.",
+            "unit": "Count",
+            "timeseries": [
+              {
+                "metadatavalues": [],
+                "data": [
+                  {
+                    "timeStamp": "2023-01-12T09:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T09:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T10:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T11:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T12:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T13:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T14:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T15:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T16:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T17:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T18:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T19:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:30:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:31:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:32:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:33:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:34:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:35:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:36:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:37:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:38:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:39:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:40:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:41:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:42:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:43:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:44:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:45:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:46:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:47:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:48:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:49:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:50:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:51:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:52:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:53:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:54:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:55:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:56:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:57:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:58:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T20:59:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:00:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:01:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:02:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:03:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:04:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:05:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:06:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:07:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:08:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:09:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:10:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:11:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:12:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:13:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:14:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:15:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:16:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:17:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:18:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:19:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:20:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:21:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:22:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:23:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:24:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:25:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:26:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:27:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:28:00Z",
+                    "count": 0,
+                    "average": 0
+                  },
+                  {
+                    "timeStamp": "2023-01-12T21:29:00Z",
+                    "count": 0,
+                    "average": 0
+                  }
+                ]
+              }
+            ],
+            "errorCode": "Success"
+          }
+        ],
+        "namespace": "Microsoft.AppConfiguration/configurationStores",
+        "resourceregion": "eastus"
+      }
+    }
+  ],
+  "Variables": {}
+}

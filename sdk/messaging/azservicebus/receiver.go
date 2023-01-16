@@ -58,7 +58,6 @@ type Receiver struct {
 	mu        sync.Mutex
 	receiving bool
 
-	defaultDrainTimeout      time.Duration
 	defaultTimeAfterFirstMsg time.Duration
 
 	cancelReleaser *atomic.Value
@@ -134,7 +133,6 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 	receiver := &Receiver{
 		lastPeekedSequenceNumber: 0,
 		cleanupOnClose:           args.cleanupOnClose,
-		defaultDrainTimeout:      time.Second,
 		defaultTimeAfterFirstMsg: 20 * time.Millisecond,
 		retryOptions:             args.retryOptions,
 		cancelReleaser:           &atomic.Value{},

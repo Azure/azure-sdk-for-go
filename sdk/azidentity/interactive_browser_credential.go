@@ -12,7 +12,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
@@ -28,8 +27,9 @@ type InteractiveBrowserCredentialOptions struct {
 	// ClientID is the ID of the application users will authenticate to.
 	// Defaults to the ID of an Azure development application.
 	ClientID string
-	// RedirectURL will be supported in a future version but presently doesn't work: https://github.com/Azure/azure-sdk-for-go/issues/15632.
-	// Applications which have "http://localhost" registered as a redirect URL need not set this option.
+	// RedirectURL is the URL Azure Active Directory will redirect to with the access token. This is required
+	// only when setting ClientID, and must match a redirect URI in the application's registration.
+	// Applications which have registered "http://localhost" as a redirect URI need not set this option.
 	RedirectURL string
 }
 
@@ -56,17 +56,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		cp = *options
 	}
 	cp.init()
-	if !validTenantID(cp.TenantID) {
-		return nil, errors.New(tenantIDValidationErr)
-	}
-	authorityHost, err := setAuthorityHost(cp.Cloud)
-	if err != nil {
-		return nil, err
-	}
-	c, err := public.New(cp.ClientID,
-		public.WithAuthority(runtime.JoinPaths(authorityHost, cp.TenantID)),
-		public.WithHTTPClient(newPipelineAdapter(&cp.ClientOptions)),
-	)
+	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

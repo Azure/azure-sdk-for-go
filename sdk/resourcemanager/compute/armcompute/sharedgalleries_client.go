@@ -58,7 +58,7 @@ func NewSharedGalleriesClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Get a shared gallery by subscription id or tenant id.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-03
+// Generated from API version 2022-03-03
 // location - Resource location.
 // galleryUniqueName - The unique name of the Shared Gallery.
 // options - SharedGalleriesClientGetOptions contains the optional parameters for the SharedGalleriesClient.Get method.
@@ -97,7 +97,7 @@ func (client *SharedGalleriesClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-03")
+	reqQP.Set("api-version", "2022-03-03")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,8 +113,7 @@ func (client *SharedGalleriesClient) getHandleResponse(resp *http.Response) (Sha
 }
 
 // NewListPager - List shared galleries by subscription id or tenant id.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-03
+// Generated from API version 2022-03-03
 // location - Resource location.
 // options - SharedGalleriesClientListOptions contains the optional parameters for the SharedGalleriesClient.List method.
 func (client *SharedGalleriesClient) NewListPager(location string, options *SharedGalleriesClientListOptions) *runtime.Pager[SharedGalleriesClientListResponse] {
@@ -161,7 +160,7 @@ func (client *SharedGalleriesClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-03")
+	reqQP.Set("api-version", "2022-03-03")
 	if options != nil && options.SharedTo != nil {
 		reqQP.Set("sharedTo", string(*options.SharedTo))
 	}

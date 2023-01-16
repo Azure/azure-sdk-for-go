@@ -13,10 +13,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerNetworkInterfaceListSimple.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerNetworkInterfaceListSimple.json
 func ExampleLoadBalancerNetworkInterfacesClient_NewListPager_loadBalancerNetworkInterfaceListSimple() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleLoadBalancerNetworkInterfacesClient_NewListPager_loadBalancerNetwork
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerNetworkInterfaceListVmss.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerNetworkInterfaceListVmss.json
 func ExampleLoadBalancerNetworkInterfacesClient_NewListPager_loadBalancerNetworkInterfaceListVmss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

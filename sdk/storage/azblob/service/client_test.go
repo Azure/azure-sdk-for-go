@@ -9,25 +9,37 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &ServiceRecordedTestsSuite{})
-	//suite.Run(t, &ServiceUnrecordedTestsSuite{})
+	recordMode := recording.GetRecordMode()
+	t.Logf("Running service Tests in %s mode\n", recordMode)
+	if recordMode == recording.LiveMode {
+		suite.Run(t, &ServiceRecordedTestsSuite{})
+		suite.Run(t, &ServiceUnrecordedTestsSuite{})
+	} else if recordMode == recording.PlaybackMode {
+		suite.Run(t, &ServiceRecordedTestsSuite{})
+	} else if recordMode == recording.RecordingMode {
+		suite.Run(t, &ServiceRecordedTestsSuite{})
+	}
 }
 
 func (s *ServiceRecordedTestsSuite) BeforeTest(suite string, test string) {
@@ -65,7 +77,6 @@ func (s *ServiceRecordedTestsSuite) TestGetAccountInfo() {
 	_require.NotZero(sAccInfo)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -86,11 +97,10 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
 	md := map[string]string{
 		"foo": "foovalue",
@@ -108,7 +118,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	}(containerClient, context.Background(), nil)
 	_require.Nil(err)
 	prefix := testcommon.ContainerPrefix
-	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersDetail{Metadata: true}}
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
 
 	count := 0
@@ -121,9 +131,9 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 			if *ctnr.Name == containerName {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
-				_require.NotNil(ctnr.Properties.Etag)
-				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
-				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
+				_require.NotNil(ctnr.Properties.ETag)
+				_require.Equal(*ctnr.Properties.LeaseStatus, lease.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, lease.StateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
@@ -147,11 +157,10 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClientFromConnectionString(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
 	md := map[string]string{
 		"foo": "foovalue",
@@ -169,7 +178,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 	}(containerClient, context.Background(), nil)
 	_require.Nil(err)
 	prefix := testcommon.ContainerPrefix
-	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersDetail{Metadata: true}}
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
 
 	count := 0
@@ -183,9 +192,9 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 			if *ctnr.Name == containerName {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
-				_require.NotNil(ctnr.Properties.Etag)
-				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
-				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
+				_require.NotNil(ctnr.Properties.ETag)
+				_require.Equal(*ctnr.Properties.LeaseStatus, lease.StatusTypeUnlocked)
+				_require.Equal(*ctnr.Properties.LeaseState, lease.StateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
@@ -207,6 +216,63 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 
 	_require.Nil(err)
 	_require.GreaterOrEqual(count, 0)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestListContainersPaged() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+	const numContainers = 6
+	maxResults := int32(2)
+	const pagedContainersPrefix = "azcontainerpaged"
+
+	containers := make([]*container.Client, numContainers)
+	expectedResults := make(map[string]bool)
+	for i := 0; i < numContainers; i++ {
+		containerName := pagedContainersPrefix + testcommon.GenerateContainerName(testName) + fmt.Sprintf("%d", i)
+		containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+		containers[i] = containerClient
+		expectedResults[containerName] = false
+	}
+
+	defer func() {
+		for i := range containers {
+			testcommon.DeleteContainer(context.Background(), _require, containers[i])
+		}
+	}()
+
+	prefix := pagedContainersPrefix + testcommon.ContainerPrefix
+	listOptions := service.ListContainersOptions{MaxResults: &maxResults, Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
+	count := 0
+	results := make([]service.ContainerItem, 0)
+	pager := svcClient.NewListContainersPager(&listOptions)
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, ctnr := range resp.ContainerItems {
+			_require.NotNil(ctnr.Name)
+			results = append(results, *ctnr)
+			count += 1
+		}
+	}
+
+	_require.Equal(count, numContainers)
+	_require.Equal(len(results), numContainers)
+
+	// make sure each container we see is expected
+	for _, ctnr := range results {
+		_, ok := expectedResults[*ctnr.Name]
+		_require.Equal(ok, true)
+		expectedResults[*ctnr.Name] = true
+	}
+
+	// make sure every expected container was seen
+	for _, seen := range expectedResults {
+		_require.Equal(seen, true)
+	}
+
 }
 
 //func (s *ServiceRecordedTestsSuite) TestListContainersPaged() {
@@ -449,16 +515,15 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall
 	_require.NotNil(err)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 	_require := require.New(s.T())
 	var svcClient *service.Client
 	var err error
 	for i := 1; i <= 2; i++ {
 		if i == 1 {
-			svcClient, err = testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+			svcClient, err = testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 		} else {
-			svcClient, err = testcommon.GetServiceClientFromConnectionString(nil, testcommon.TestAccountDefault, nil)
+			svcClient, err = testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
 		}
 		_require.Nil(err)
 
@@ -497,12 +562,12 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 
-	resources := service.SASResourceTypes{
+	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,
 		Container: true,
 	}
-	permissions := service.SASPermissions{
+	permissions := sas.AccountPermissions{
 		Read:   true,
 		Add:    true,
 		Write:  true,
@@ -510,7 +575,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 		Update: true,
 		Delete: true,
 	}
-	services := service.SASServices{
+	services := sas.AccountServices{
 		Blob: true,
 	}
 	start := time.Now().Add(-time.Hour)
@@ -522,11 +587,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
 	_require.Nil(err)
 
+	// mismatched container name
 	_, err = svcClient.CreateContainer(context.Background(), containerName+"002", nil)
-	_require.Nil(err)
-
-	_, err = svcClient.DeleteContainer(context.Background(), containerName+"002", nil)
-	_require.Nil(err)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
@@ -543,7 +607,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := serviceClient.NewContainerClient(containerName)
 
-	permissions := container.SASPermissions{
+	permissions := sas.ContainerPermissions{
 		Read: true,
 		Add:  true,
 	}
@@ -575,26 +639,163 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := serviceClient.NewContainerClient(containerName)
 
-	sasUrlReadAdd, err := containerClient.GetSASURL(container.SASPermissions{Read: true, Add: true},
+	sasUrlReadAdd, err := containerClient.GetSASURL(sas.ContainerPermissions{Read: true, Add: true},
 		time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
 	_require.Nil(err)
 	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})
 	_require.Nil(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	containerClient1, err := container.NewClientWithNoCredential(sasUrlReadAdd, nil)
 	_require.Nil(err)
 
+	// container metadata and properties can't be read or written with SAS auth
 	_, err = containerClient1.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
+
+	sasUrlRCWL, err := containerClient.GetSASURL(sas.ContainerPermissions{Add: true, Create: true, Delete: true, List: true},
+		time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
 	_require.Nil(err)
-	//validateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
-	//
-	//sasUrlRCWL, err := containerClient.GetSASURL(container.SASPermissions{Add: true, Create: true, Delete: true, List: true},
-	//	time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
-	//_require.Nil(err)
-	//
-	//containerClient2, err := container.NewClientWithNoCredential(sasUrlRCWL, nil)
-	//_require.Nil(err)
-	//
-	//_, err = containerClient2.Create(ctx, nil)
-	//_require.Nil(err)
+
+	containerClient2, err := container.NewClientWithNoCredential(sasUrlRCWL, nil)
+	_require.Nil(err)
+
+	// containers can't be created, deleted, or listed with SAS auth
+	_, err = containerClient2.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
+}
+
+// make sure that container soft delete is enabled
+func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+
+	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	// it appears that deleting the container involves acquiring a lease.
+	// since leases can only be 15-60s or infinite, we just wait for 60 seconds.
+	time.Sleep(60 * time.Second)
+	prefix := testcommon.ContainerPrefix
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true, Deleted: true}}
+	pager := svcClient.NewListContainersPager(&listOptions)
+
+	contRestored := false
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, cont := range resp.ContainerItems {
+			_require.NotNil(cont.Name)
+
+			if *cont.Deleted && *cont.Name == containerName {
+				_, err = svcClient.RestoreContainer(context.Background(), containerName, *cont.Version, nil)
+				_require.NoError(err)
+				contRestored = true
+				break
+			}
+		}
+		if contRestored {
+			break
+		}
+	}
+
+	_require.Equal(contRestored, true)
+
+	for i := 0; i < 5; i++ {
+		_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+		if err == nil {
+			// container was deleted
+			break
+		} else if bloberror.HasCode(err, bloberror.Code("ConcurrentContainerOperationInProgress")) {
+			// the container is still being restored, sleep a bit then try again
+			time.Sleep(10 * time.Second)
+		} else {
+			// some other error
+			break
+		}
+	}
+	_require.NoError(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestContainerRestoreFailures() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+
+	_, err = svcClient.RestoreContainer(context.Background(), containerName, "", nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
+
+	_, err = svcClient.RestoreContainer(context.Background(), "", "", &service.RestoreContainerOptions{})
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+
+	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC(),
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.BlobPermissions{Read: true, Create: true, Write: true, Tag: true}).String(),
+		ContainerName: containerName,
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	sasURL := svcClient.URL()
+	if len(sasURL) > 0 && sasURL[len(sasURL)-1:] != "/" {
+		sasURL += "/"
+	}
+	sasURL += "?" + sasQueryParams.Encode()
+
+	azClient, err := azblob.NewClientWithNoCredential(sasURL, nil)
+	_require.Nil(err)
+
+	const blobData = "test data"
+	blobName := testcommon.GenerateBlobName(testName)
+	_, err = azClient.UploadStream(context.TODO(),
+		containerName,
+		blobName,
+		strings.NewReader(blobData),
+		&azblob.UploadStreamOptions{
+			Metadata: map[string]string{"Foo": "Bar"},
+			Tags:     map[string]string{"Year": "2022"},
+		})
+	_require.Nil(err)
+
+	blobDownloadResponse, err := azClient.DownloadStream(context.TODO(), containerName, blobName, nil)
+	_require.Nil(err)
+
+	reader := blobDownloadResponse.Body
+	downloadData, err := io.ReadAll(reader)
+	_require.Nil(err)
+	_require.Equal(string(downloadData), blobData)
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	err = reader.Close()
+	_require.Nil(err)
 }

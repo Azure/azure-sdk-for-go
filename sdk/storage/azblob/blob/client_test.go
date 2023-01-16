@@ -18,41 +18,46 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &BlobRecordedTestsSuite{})
-	//suite.Run(t, &BlobUnrecordedTestsSuite{})
+	recordMode := recording.GetRecordMode()
+	t.Logf("Running blob Tests in %s mode\n", recordMode)
+	if recordMode == recording.LiveMode {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+		suite.Run(t, &BlobUnrecordedTestsSuite{})
+	} else if recordMode == recording.PlaybackMode {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+	} else if recordMode == recording.RecordingMode {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+	}
 }
 
-// nolint
 func (s *BlobRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *BlobRecordedTestsSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
@@ -65,7 +70,6 @@ type BlobUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestCreateBlobClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -78,7 +82,7 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClient() {
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 
-	blobURLParts, err := azblob.ParseURL(bbClient.URL())
+	blobURLParts, err := blob.ParseURL(bbClient.URL())
 	_require.Nil(err)
 	_require.Equal(blobURLParts.BlobName, blobName)
 	_require.Equal(blobURLParts.ContainerName, containerName)
@@ -89,7 +93,6 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClient() {
 	_require.Equal(bbClient.URL(), correctURL)
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -108,19 +111,19 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
-	sasQueryParams, err := service.SASSignatureValues{
-		Protocol:      service.SASProtocolHTTPS,
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    currentTime,
-		Permissions:   to.Ptr(service.SASPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
-		ResourceTypes: to.Ptr(service.SASResourceTypes{Container: true, Object: true}).String(),
-	}.Sign(credential)
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
 	_require.Nil(err)
 
-	parts, err := exported.ParseURL(bbClient.URL())
+	parts, err := blob.ParseURL(bbClient.URL())
 	_require.Nil(err)
 	parts.SAS = sasQueryParams
-	parts.Snapshot = currentTime.Format(service.SnapshotTimeFormat)
+	parts.Snapshot = currentTime.Format(blob.SnapshotTimeFormat)
 	blobURLParts := parts.String()
 
 	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
@@ -132,7 +135,6 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_require.Equal(blobURLParts, correctURL)
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSASUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -150,19 +152,19 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSASUsingCo
 
 	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
-	sasQueryParams, err := service.SASSignatureValues{
-		Protocol:      service.SASProtocolHTTPS,
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    currentTime,
-		Permissions:   to.Ptr(service.SASPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
-		ResourceTypes: to.Ptr(service.SASResourceTypes{Container: true, Object: true}).String(),
-	}.Sign(credential)
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
 	_require.Nil(err)
 
-	parts, err := exported.ParseURL(bbClient.URL())
+	parts, err := blob.ParseURL(bbClient.URL())
 	_require.Nil(err)
 	parts.SAS = sasQueryParams
-	parts.Snapshot = currentTime.Format(service.SnapshotTimeFormat)
+	parts.Snapshot = currentTime.Format(blob.SnapshotTimeFormat)
 	blobURLParts := parts.String()
 
 	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
@@ -397,7 +399,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
 }
 
-////nolint
 //func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASSrc() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -473,7 +474,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 //	_ = resp2.Body(nil).Close()
 //}
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASDest() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -659,7 +659,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfMatchFalse() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	randomEtag := "a"
+	randomEtag := azcore.ETag("a")
 	accessConditions := blob.SourceModifiedAccessConditions{
 		SourceIfMatch: &randomEtag,
 	}
@@ -692,7 +692,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 
 	options := blob.StartCopyFromURLOptions{
 		SourceModifiedAccessConditions: &blob.SourceModifiedAccessConditions{
-			SourceIfNoneMatch: to.Ptr("a"),
+			SourceIfNoneMatch: to.Ptr(azcore.ETag("a")),
 		},
 	}
 
@@ -1001,7 +1001,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1376,7 +1375,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSnapshotIfMatchFalse() {
 	options := blob.CreateSnapshotOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-				IfMatch: to.Ptr("garbage"),
+				IfMatch: to.Ptr(azcore.ETag("garbage")),
 			},
 		},
 	}
@@ -1397,7 +1396,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSnapshotIfNoneMatchTrue() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	randomEtag := "garbage"
+	randomEtag := azcore.ETag("garbage")
 	access := blob.ModifiedAccessConditions{
 		IfNoneMatch: &randomEtag,
 	}
@@ -1467,7 +1466,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataNegativeOffset() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Offset: to.Ptr[int64](-1),
+		Range: blob.HTTPRange{
+			Offset: -1,
+		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1487,7 +1488,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataOffsetOutOfRange() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Offset: to.Ptr(int64(len(testcommon.BlockBlobDefaultData))),
+		Range: blob.HTTPRange{
+			Offset: int64(len(testcommon.BlockBlobDefaultData)),
+		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)
 	_require.NotNil(err)
@@ -1508,7 +1511,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountNegative() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Count: to.Ptr[int64](-2),
+		Range: blob.HTTPRange{
+			Count: -2,
+		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1527,9 +1532,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountZero() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	options := blob.DownloadStreamOptions{
-		Count: to.Ptr[int64](0),
-	}
+	options := blob.DownloadStreamOptions{}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
 
@@ -1552,9 +1555,10 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountExact() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	count := int64(len(testcommon.BlockBlobDefaultData))
 	options := blob.DownloadStreamOptions{
-		Count: &count,
+		Range: blob.HTTPRange{
+			Count: int64(len(testcommon.BlockBlobDefaultData)),
+		},
 	}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1578,7 +1582,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountOutOfRange() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Count: to.Ptr(int64((len(testcommon.BlockBlobDefaultData)) * 2)),
+		Range: blob.HTTPRange{
+			Count: int64((len(testcommon.BlockBlobDefaultData)) * 2),
+		},
 	}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1601,10 +1607,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	options := blob.DownloadStreamOptions{
-		Count:  to.Ptr[int64](0),
-		Offset: to.Ptr[int64](0),
-	}
+	options := blob.DownloadStreamOptions{}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
 
@@ -1627,8 +1630,10 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataContentMD5() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Count:              to.Ptr[int64](3),
-		Offset:             to.Ptr[int64](10),
+		Range: blob.HTTPRange{
+			Count:  3,
+			Offset: 10,
+		},
 		RangeGetContentMD5: to.Ptr(true),
 	}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
@@ -2388,7 +2393,7 @@ func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	getBlobPropertiesOptions := blob.GetPropertiesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: &eTag},
@@ -2416,7 +2421,7 @@ func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
 	_require.Nil(err)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	getBlobPropertiesOptions := blob.GetPropertiesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: &eTag},
@@ -2661,7 +2666,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetPropertiesIfMatchFalse() {
 
 	_, err = bbClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr(azcore.ETag("garbage"))},
 		}})
 	_require.NotNil(err)
 }
@@ -2681,7 +2686,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 
 	_, err = bbClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETag("garbage"))},
 		}})
 	_require.Nil(err)
 
@@ -2941,7 +2946,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataIfMatchFalse() {
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr(azcore.ETag("garbage"))},
 		},
 	}
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
@@ -2963,7 +2968,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataIfNoneMatchTrue() {
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETag("garbage"))},
 		},
 	}
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
@@ -2995,6 +3000,198 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 	}
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.Nil(err)
+
+	// Create container and blob, upload blob to container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	parts, err := sas.ParseURL(bbClient.URL()) // Get parts for BlobURL
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	// Set Account SAS and set Permanent Delete to true
+	parts.SAS, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := bbClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
+	_require.Nil(err)
+	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
+
+	// Check that there are two items in the container: one snapshot, one blob
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Include: container.ListBlobsInclude{Snapshots: true}})
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Delete snapshot (snapshot will be soft deleted)
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = bbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+
+	// Check that only blob exists (snapshot is soft-deleted)
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+	// Check that soft-deleted snapshot exists by including deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Deleted: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: &perm,
+	}
+	// Execute Delete with DeleteTypePermanent
+	pdResp, err := snapshotURL.Delete(context.Background(), &deleteBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(pdResp)
+
+	// Check that only blob exists even after including snapshots and deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Deleted: true}})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+}
+
+func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+
+	// Create container and blob, upload blob to container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	parts, err := sas.ParseURL(bbClient.URL()) // Get parts for BlobURL
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	// Set Account SAS
+	parts.SAS, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := bbClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
+	_require.Nil(err)
+	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
+
+	// Check that there are two items in the container: one snapshot, one blob
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Include: container.ListBlobsInclude{Snapshots: true}})
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Delete snapshot
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = bbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+
+	// Check that only blob exists
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: &perm,
+	}
+	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set and snapshot is not soft-deleted
+	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)
+	_require.NotNil(err)
 }
 
 /*func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *service.Client) error {
@@ -3146,7 +3343,7 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 				"st=" + url.QueryEscape(StartTimesInputs[i]) + "&" +
 				"sv=2019-10-10"
 
-		parts, _ := azblob.ParseURL(urlString)
+		parts, _ := blob.ParseURL(urlString)
 		_require.Equal(parts.Scheme, "https")
 		_require.Equal(parts.Host, "myaccount.blob.core.windows.net")
 		_require.Equal(parts.ContainerName, "mycontainer")
@@ -3160,7 +3357,6 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 	}
 }
 
-////nolint
 //func (s *BlobUnrecordedTestsSuite) TestDownloadBlockBlobUnexpectedEOF() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -3194,7 +3390,6 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 //	_require.EqualValues(buf, []byte(testcommon.BlockBlobDefaultData))
 //}
 
-////nolint
 //func InjectErrorInRetryReaderOptions(err error) *blob.RetryReaderOptions {
 //	return &blob.RetryReaderOptions{
 //		MaxRetryRequests:       1,
@@ -3207,3 +3402,132 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 //		CpkScopeInfo:           nil,
 //	}
 //}
+
+func (s *BlobRecordedTestsSuite) TestBlobSetExpiry() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeRelativeToNow(8*time.Second), nil)
+	_require.Nil(err)
+
+	resp, err = bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp.ExpiresOn)
+
+	time.Sleep(time.Second * 10)
+
+	_, err = bbClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
+}
+
+func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestSetLegalHold() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	_, err = bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.SetLegalHold(context.Background(), true, nil)
+	_require.Nil(err)
+
+	// should fail since time has not passed yet
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+}

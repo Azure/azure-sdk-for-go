@@ -55,33 +55,33 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// BeginCreate - Create or update the Nginx certificates for given Nginx deployment
+// BeginCreateOrUpdate - Create or update the Nginx certificates for given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deploymentName - The name of targeted Nginx deployment
 // certificateName - The name of certificate
-// options - CertificatesClientBeginCreateOptions contains the optional parameters for the CertificatesClient.BeginCreate
+// options - CertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.BeginCreateOrUpdate
 // method.
-func (client *CertificatesClient) BeginCreate(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOptions) (*runtime.Poller[CertificatesClientCreateResponse], error) {
+func (client *CertificatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CertificatesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, deploymentName, certificateName, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, deploymentName, certificateName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CertificatesClientCreateResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CertificatesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CertificatesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CertificatesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// Create - Create or update the Nginx certificates for given Nginx deployment
+// CreateOrUpdate - Create or update the Nginx certificates for given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
-func (client *CertificatesClient) create(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOptions) (*http.Response, error) {
-	req, err := client.createCreateRequest(ctx, resourceGroupName, deploymentName, certificateName, options)
+func (client *CertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, deploymentName, certificateName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,8 +95,8 @@ func (client *CertificatesClient) create(ctx context.Context, resourceGroupName 
 	return resp, nil
 }
 
-// createCreateRequest creates the Create request.
-func (client *CertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOptions) (*policy.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -118,6 +118,9 @@ func (client *CertificatesClient) createCreateRequest(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
@@ -186,6 +189,9 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -235,6 +241,9 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -249,7 +258,6 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 }
 
 // NewListPager - List all certificates of given Nginx deployment
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deploymentName - The name of targeted Nginx deployment

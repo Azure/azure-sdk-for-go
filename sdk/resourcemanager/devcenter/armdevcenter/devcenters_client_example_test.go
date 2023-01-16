@@ -17,14 +17,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/DevCenters_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_ListBySubscription.json
 func ExampleDevCentersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewDevCentersClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewDevCentersClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -41,19 +41,18 @@ func ExampleDevCentersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/DevCenters_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_ListByResourceGroup.json
 func ExampleDevCentersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewDevCentersClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewDevCentersClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1",
-		&armdevcenter.DevCentersClientListByResourceGroupOptions{Top: nil})
+	pager := client.NewListByResourceGroupPager("rg1", &armdevcenter.DevCentersClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -66,21 +65,18 @@ func ExampleDevCentersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/DevCenters_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_Get.json
 func ExampleDevCentersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewDevCentersClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewDevCentersClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"Contoso",
-		nil)
+	res, err := client.Get(ctx, "rg1", "Contoso", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,28 +84,24 @@ func ExampleDevCentersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/DevCenters_Create.json
-func ExampleDevCentersClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_Create.json
+func ExampleDevCentersClient_BeginCreateOrUpdate_devCentersCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewDevCentersClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewDevCentersClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"Contoso",
-		armdevcenter.DevCenter{
-			Location: to.Ptr("centralus"),
-			Tags: map[string]*string{
-				"CostCode": to.Ptr("12345"),
-			},
-			Properties: &armdevcenter.Properties{},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "Contoso", armdevcenter.DevCenter{
+		Location: to.Ptr("centralus"),
+		Tags: map[string]*string{
+			"CostCode": to.Ptr("12345"),
 		},
-		nil)
+		Properties: &armdevcenter.Properties{},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -121,26 +113,57 @@ func ExampleDevCentersClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/DevCenters_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_CreateWithUserIdentity.json
+func ExampleDevCentersClient_BeginCreateOrUpdate_devCentersCreateWithUserIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armdevcenter.NewDevCentersClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "Contoso", armdevcenter.DevCenter{
+		Location: to.Ptr("centralus"),
+		Tags: map[string]*string{
+			"CostCode": to.Ptr("12345"),
+		},
+		Identity: &armdevcenter.ManagedServiceIdentity{
+			Type: to.Ptr(armdevcenter.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armdevcenter.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1": {},
+			},
+		},
+		Properties: &armdevcenter.Properties{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_Patch.json
 func ExampleDevCentersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewDevCentersClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewDevCentersClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"rg1",
-		"Contoso",
-		armdevcenter.Update{
-			Tags: map[string]*string{
-				"CostCode": to.Ptr("12345"),
-			},
+	poller, err := client.BeginUpdate(ctx, "rg1", "Contoso", armdevcenter.Update{
+		Tags: map[string]*string{
+			"CostCode": to.Ptr("12345"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -152,21 +175,18 @@ func ExampleDevCentersClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/DevCenters_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_Delete.json
 func ExampleDevCentersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewDevCentersClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewDevCentersClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"Contoso",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "Contoso", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

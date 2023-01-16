@@ -75,7 +75,7 @@ func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientO
 		syncTokenPolicy,
 	)
 
-	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpointUrl, nil, pl),
 		syncTokenPolicy: syncTokenPolicy,
@@ -102,7 +102,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 		syncTokenPolicy,
 	)
 
-	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, nil, pl),
 		syncTokenPolicy: syncTokenPolicy,
@@ -114,11 +114,19 @@ func (c *Client) UpdateSyncToken(token string) {
 	c.syncTokenPolicy.addToken(token)
 }
 
-func (cs Setting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutKeyValueOptions {
-	return &generated.AzureAppConfigurationClientPutKeyValueOptions{
-		Entity:      cs.toGenerated(),
-		IfMatch:     (*string)(ifMatch),
-		IfNoneMatch: (*string)(ifNoneMatch),
+func toGeneratedETagString(etag *azcore.ETag) *string {
+	if etag == nil || *etag == azcore.ETagAny {
+		return (*string)(etag)
+	}
+
+	str := "\"" + (string)(*etag) + "\""
+	return &str
+}
+
+func (cs Setting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcore.ETag) (generated.KeyValue, generated.AzureAppConfigurationClientPutKeyValueOptions) {
+	return cs.toGenerated(), generated.AzureAppConfigurationClientPutKeyValueOptions{
+		IfMatch:     toGeneratedETagString(ifMatch),
+		IfNoneMatch: toGeneratedETagString(ifNoneMatch),
 		Label:       cs.Label,
 	}
 }
@@ -142,19 +150,24 @@ func fromGeneratedAdd(g generated.AzureAppConfigurationClientPutKeyValueResponse
 type AddSettingOptions struct {
 	// Configuration setting label.
 	Label *string
+	// Configuration setting content type.
+	ContentType *string
 }
 
 // AddSetting creates a configuration setting only if the setting does not already exist in the configuration store.
 func (c *Client) AddSetting(ctx context.Context, key string, value *string, options *AddSettingOptions) (AddSettingResponse, error) {
 	var label *string
+	var contentType *string
 	if options != nil {
 		label = options.Label
+		contentType = options.ContentType
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: label}
+	setting := Setting{Key: &key, Value: value, Label: label, ContentType: contentType}
 
 	etagAny := azcore.ETagAny
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(nil, &etagAny))
+	kv, opts := setting.toGeneratedPutOptions(nil, &etagAny)
+	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)
 	if err != nil {
 		return AddSettingResponse{}, err
 	}
@@ -182,15 +195,14 @@ type DeleteSettingOptions struct {
 	// Configuration setting label.
 	Label *string
 
-	// If set to true and the configuration setting exists in the configuration store,
-	// delete the setting if the passed-in configuration setting is the same version as the one in the configuration store.
-	// The setting versions are the same if their ETag fields match.
-	OnlyIfUnchanged bool
+	// If set, and the configuration setting exists in the configuration store,
+	// delete the setting if the passed-in ETag is the same as the setting's ETag in the configuration store.
+	OnlyIfUnchanged *azcore.ETag
 }
 
 func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
 	return &generated.AzureAppConfigurationClientDeleteKeyValueOptions{
-		IfMatch: (*string)(ifMatch),
+		IfMatch: toGeneratedETagString(ifMatch),
 		Label:   cs.Label,
 	}
 }
@@ -198,16 +210,14 @@ func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.Azur
 // DeleteSetting deletes a configuration setting from the configuration store.
 func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteSettingOptions) (DeleteSettingResponse, error) {
 	var label *string
+	var ifMatch *azcore.ETag
+
 	if options != nil {
 		label = options.Label
+		ifMatch = options.OnlyIfUnchanged
 	}
 
 	setting := Setting{Key: &key, Label: label}
-
-	var ifMatch *azcore.ETag
-	if options != nil && options.OnlyIfUnchanged {
-		ifMatch = setting.ETag
-	}
 
 	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.Key, setting.toGeneratedDeleteOptions(ifMatch))
 	if err != nil {
@@ -248,10 +258,9 @@ type GetSettingOptions struct {
 	// Configuration setting label.
 	Label *string
 
-	// If set to true, only retrieve the setting from the configuration store if it has changed since the client last retrieved it.
-	// It is determined to have changed if the ETag field on the passed-in configuration setting is different from the ETag
-	// of the setting in the configuration store.
-	OnlyIfChanged bool
+	// If set, only retrieve the setting from the configuration store if setting has changed
+	// since the client last retrieved it with the ETag provided.
+	OnlyIfChanged *azcore.ETag
 
 	// The setting will be retrieved exactly as it existed at the provided time.
 	AcceptDateTime *time.Time
@@ -266,7 +275,7 @@ func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime
 
 	return &generated.AzureAppConfigurationClientGetKeyValueOptions{
 		AcceptDatetime: dt,
-		IfNoneMatch:    (*string)(ifNoneMatch),
+		IfNoneMatch:    toGeneratedETagString(ifNoneMatch),
 		Label:          cs.Label,
 	}
 }
@@ -274,21 +283,16 @@ func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime
 // GetSetting retrieves an existing configuration setting from the configuration store.
 func (c *Client) GetSetting(ctx context.Context, key string, options *GetSettingOptions) (GetSettingResponse, error) {
 	var label *string
+	var ifNoneMatch *azcore.ETag
+	var acceptDateTime *time.Time
+
 	if options != nil {
 		label = options.Label
+		ifNoneMatch = options.OnlyIfChanged
+		acceptDateTime = options.AcceptDateTime
 	}
 
 	setting := Setting{Key: &key, Label: label}
-
-	var ifNoneMatch *azcore.ETag
-	var acceptDateTime *time.Time
-	if options != nil {
-		if options.OnlyIfChanged {
-			ifNoneMatch = setting.ETag
-		}
-
-		acceptDateTime = options.AcceptDateTime
-	}
 
 	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.Key, setting.toGeneratedGetOptions(ifNoneMatch, acceptDateTime))
 	if err != nil {
@@ -325,22 +329,21 @@ type SetReadOnlyOptions struct {
 	// Configuration setting label.
 	Label *string
 
-	// If set to true and the configuration setting exists in the configuration store, update the setting
-	// if the passed-in configuration setting is the same version as the one in the configuration store.
-	// The setting versions are the same if their ETag fields match.
-	OnlyIfUnchanged bool
+	// If set, and the configuration setting exists in the configuration store, update the setting
+	// if the passed-in configuration setting ETag is the same version as the one in the configuration store.
+	OnlyIfUnchanged *azcore.ETag
 }
 
 func (cs Setting) toGeneratedPutLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutLockOptions {
 	return &generated.AzureAppConfigurationClientPutLockOptions{
-		IfMatch: (*string)(ifMatch),
+		IfMatch: toGeneratedETagString(ifMatch),
 		Label:   cs.Label,
 	}
 }
 
 func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteLockOptions {
 	return &generated.AzureAppConfigurationClientDeleteLockOptions{
-		IfMatch: (*string)(ifMatch),
+		IfMatch: toGeneratedETagString(ifMatch),
 		Label:   cs.Label,
 	}
 }
@@ -348,16 +351,14 @@ func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.
 // SetReadOnly sets an existing configuration setting to read only or read write state in the configuration store.
 func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
 	var label *string
+	var ifMatch *azcore.ETag
+
 	if options != nil {
 		label = options.Label
+		ifMatch = options.OnlyIfUnchanged
 	}
 
 	setting := Setting{Key: &key, Label: label}
-
-	var ifMatch *azcore.ETag
-	if options != nil && options.OnlyIfUnchanged {
-		ifMatch = setting.ETag
-	}
 
 	var err error
 	if isReadOnly {
@@ -396,28 +397,30 @@ func fromGeneratedSet(g generated.AzureAppConfigurationClientPutKeyValueResponse
 type SetSettingOptions struct {
 	// Configuration setting label.
 	Label *string
+	// Configuration setting content type.
+	ContentType *string
 
-	// If set to true and the configuration setting exists in the configuration store, overwrite the setting
-	// if the passed-in configuration setting is the same version as the one in the configuration store.
-	// The setting versions are the same if their ETag fields match.
-	OnlyIfUnchanged bool
+	// If set, and the configuration setting exists in the configuration store, overwrite the setting
+	// if the passed-in ETag is the same version as the one in the configuration store.
+	OnlyIfUnchanged *azcore.ETag
 }
 
 // SetSetting creates a configuration setting if it doesn't exist or overwrites the existing setting in the configuration store.
 func (c *Client) SetSetting(ctx context.Context, key string, value *string, options *SetSettingOptions) (SetSettingResponse, error) {
 	var label *string
+	var contentType *string
+	var ifMatch *azcore.ETag
+
 	if options != nil {
 		label = options.Label
+		contentType = options.ContentType
+		ifMatch = options.OnlyIfUnchanged
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: label}
+	setting := Setting{Key: &key, Value: value, Label: label, ContentType: contentType}
 
-	var ifMatch *azcore.ETag
-	if options != nil && options.OnlyIfUnchanged {
-		ifMatch = setting.ETag
-	}
-
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(ifMatch, nil))
+	kv, opts := setting.toGeneratedPutOptions(ifMatch, nil)
+	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)
 	if err != nil {
 		return SetSettingResponse{}, err
 	}
@@ -448,7 +451,7 @@ func fromGeneratedGetRevisionsPage(g generated.AzureAppConfigurationClientGetRev
 	}
 }
 
-// ListRevisionsOptions contains the optional parameters for the ListRevisions method.
+// ListRevisionsOptions contains the optional parameters for the NewListRevisionsPager method.
 type ListRevisionsOptions struct {
 	// placeholder for future options
 }
@@ -456,7 +459,7 @@ type ListRevisionsOptions struct {
 // NewListRevisionsPager creates a pager that retrieves the revisions of one or more
 // configuration setting entities that match the specified setting selector.
 func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRevisionsOptions) *runtime.Pager[ListRevisionsPage] {
-	pagerInternal := c.appConfigClient.NewGetRevisionsPager(selector.toGenerated())
+	pagerInternal := c.appConfigClient.NewGetRevisionsPager(selector.toGeneratedGetRevisions())
 	return runtime.NewPager(runtime.PagingHandler[ListRevisionsPage]{
 		More: func(ListRevisionsPage) bool {
 			return pagerInternal.More()
@@ -467,6 +470,51 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 				return ListRevisionsPage{}, err
 			}
 			return fromGeneratedGetRevisionsPage(page), nil
+		},
+	})
+}
+
+// ListSettingsPage contains the configuration settings returned by ListRevisionsPager.
+type ListSettingsPage struct {
+	// Contains the configuration settings returned that match the setting selector provided.
+	Settings []Setting
+
+	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
+	SyncToken *string
+}
+
+func fromGeneratedGetSettingsPage(g generated.AzureAppConfigurationClientGetKeyValuesResponse) ListSettingsPage {
+	var css []Setting
+	for _, cs := range g.Items {
+		if cs != nil {
+			css = append(css, settingFromGenerated(*cs))
+		}
+	}
+
+	return ListSettingsPage{
+		Settings:  css,
+		SyncToken: g.SyncToken,
+	}
+}
+
+// ListSettingsOptions contains the optional parameters for the NewListSettingsPager method.
+type ListSettingsOptions struct {
+	// placeholder for future options
+}
+
+// NewListSettingsPager creates a pager that retrieves setting entities that match the specified setting selector.
+func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSettingsOptions) *runtime.Pager[ListSettingsPage] {
+	pagerInternal := c.appConfigClient.NewGetKeyValuesPager(selector.toGeneratedGetKeyValues())
+	return runtime.NewPager(runtime.PagingHandler[ListSettingsPage]{
+		More: func(ListSettingsPage) bool {
+			return pagerInternal.More()
+		},
+		Fetcher: func(ctx context.Context, cur *ListSettingsPage) (ListSettingsPage, error) {
+			page, err := pagerInternal.NextPage(ctx)
+			if err != nil {
+				return ListSettingsPage{}, err
+			}
+			return fromGeneratedGetSettingsPage(page), nil
 		},
 	})
 }

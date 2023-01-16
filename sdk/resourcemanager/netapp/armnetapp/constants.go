@@ -11,7 +11,7 @@ package armnetapp
 
 const (
 	moduleName    = "armnetapp"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v3.0.0"
 )
 
 // ActiveDirectoryStatus - Status of the Active Directory
@@ -242,6 +242,26 @@ func PossibleEndpointTypeValues() []EndpointType {
 	}
 }
 
+// IdentityType - The identity type.
+type IdentityType string
+
+const (
+	IdentityTypeNone                       IdentityType = "None"
+	IdentityTypeSystemAssigned             IdentityType = "SystemAssigned"
+	IdentityTypeSystemAssignedUserAssigned IdentityType = "SystemAssigned,UserAssigned"
+	IdentityTypeUserAssigned               IdentityType = "UserAssigned"
+)
+
+// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{
+		IdentityTypeNone,
+		IdentityTypeSystemAssigned,
+		IdentityTypeSystemAssignedUserAssigned,
+		IdentityTypeUserAssigned,
+	}
+}
+
 // InAvailabilityReasonType - Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists
 // indicates that the name is already in use and is therefore unavailable.
 type InAvailabilityReasonType string
@@ -256,6 +276,51 @@ func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return []InAvailabilityReasonType{
 		InAvailabilityReasonTypeAlreadyExists,
 		InAvailabilityReasonTypeInvalid,
+	}
+}
+
+// KeySource - The encryption keySource (provider). Possible values (case-insensitive): Microsoft.NetApp, Microsoft.KeyVault
+type KeySource string
+
+const (
+	// KeySourceMicrosoftKeyVault - Customer-managed key encryption
+	KeySourceMicrosoftKeyVault KeySource = "Microsoft.KeyVault"
+	// KeySourceMicrosoftNetApp - Microsoft-managed key encryption
+	KeySourceMicrosoftNetApp KeySource = "Microsoft.NetApp"
+)
+
+// PossibleKeySourceValues returns the possible values for the KeySource const type.
+func PossibleKeySourceValues() []KeySource {
+	return []KeySource{
+		KeySourceMicrosoftKeyVault,
+		KeySourceMicrosoftNetApp,
+	}
+}
+
+// KeyVaultStatus - Status of the KeyVault connection.
+type KeyVaultStatus string
+
+const (
+	// KeyVaultStatusCreated - KeyVault connection created but not in use
+	KeyVaultStatusCreated KeyVaultStatus = "Created"
+	// KeyVaultStatusDeleted - KeyVault connection Deleted
+	KeyVaultStatusDeleted KeyVaultStatus = "Deleted"
+	// KeyVaultStatusError - Error with the KeyVault connection
+	KeyVaultStatusError KeyVaultStatus = "Error"
+	// KeyVaultStatusInUse - KeyVault connection in use by SMB Volume
+	KeyVaultStatusInUse KeyVaultStatus = "InUse"
+	// KeyVaultStatusUpdating - KeyVault connection Updating
+	KeyVaultStatusUpdating KeyVaultStatus = "Updating"
+)
+
+// PossibleKeyVaultStatusValues returns the possible values for the KeyVaultStatus const type.
+func PossibleKeyVaultStatusValues() []KeyVaultStatus {
+	return []KeyVaultStatus{
+		KeyVaultStatusCreated,
+		KeyVaultStatusDeleted,
+		KeyVaultStatusError,
+		KeyVaultStatusInUse,
+		KeyVaultStatusUpdating,
 	}
 }
 
@@ -352,6 +417,30 @@ func PossibleQosTypeValues() []QosType {
 	}
 }
 
+// RegionStorageToNetworkProximity - Provides storage to network proximity information in the region.
+type RegionStorageToNetworkProximity string
+
+const (
+	// RegionStorageToNetworkProximityDefault - Basic network connectivity.
+	RegionStorageToNetworkProximityDefault RegionStorageToNetworkProximity = "Default"
+	// RegionStorageToNetworkProximityT1 - Standard T1 network connectivity.
+	RegionStorageToNetworkProximityT1 RegionStorageToNetworkProximity = "T1"
+	// RegionStorageToNetworkProximityT1AndT2 - Standard T1 and T2 network connectivity.
+	RegionStorageToNetworkProximityT1AndT2 RegionStorageToNetworkProximity = "T1AndT2"
+	// RegionStorageToNetworkProximityT2 - Standard T2 network connectivity.
+	RegionStorageToNetworkProximityT2 RegionStorageToNetworkProximity = "T2"
+)
+
+// PossibleRegionStorageToNetworkProximityValues returns the possible values for the RegionStorageToNetworkProximity const type.
+func PossibleRegionStorageToNetworkProximityValues() []RegionStorageToNetworkProximity {
+	return []RegionStorageToNetworkProximity{
+		RegionStorageToNetworkProximityDefault,
+		RegionStorageToNetworkProximityT1,
+		RegionStorageToNetworkProximityT1AndT2,
+		RegionStorageToNetworkProximityT2,
+	}
+}
+
 // RelationshipStatus - Status of the mirror relationship
 type RelationshipStatus string
 
@@ -423,6 +512,43 @@ func PossibleServiceLevelValues() []ServiceLevel {
 		ServiceLevelStandard,
 		ServiceLevelStandardZRS,
 		ServiceLevelUltra,
+	}
+}
+
+// SmbAccessBasedEnumeration - Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol
+// volume
+type SmbAccessBasedEnumeration string
+
+const (
+	// SmbAccessBasedEnumerationDisabled - smbAccessBasedEnumeration share setting is disabled
+	SmbAccessBasedEnumerationDisabled SmbAccessBasedEnumeration = "Disabled"
+	// SmbAccessBasedEnumerationEnabled - smbAccessBasedEnumeration share setting is enabled
+	SmbAccessBasedEnumerationEnabled SmbAccessBasedEnumeration = "Enabled"
+)
+
+// PossibleSmbAccessBasedEnumerationValues returns the possible values for the SmbAccessBasedEnumeration const type.
+func PossibleSmbAccessBasedEnumerationValues() []SmbAccessBasedEnumeration {
+	return []SmbAccessBasedEnumeration{
+		SmbAccessBasedEnumerationDisabled,
+		SmbAccessBasedEnumerationEnabled,
+	}
+}
+
+// SmbNonBrowsable - Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
+type SmbNonBrowsable string
+
+const (
+	// SmbNonBrowsableDisabled - smbNonBrowsable share setting is disabled
+	SmbNonBrowsableDisabled SmbNonBrowsable = "Disabled"
+	// SmbNonBrowsableEnabled - smbNonBrowsable share setting is enabled
+	SmbNonBrowsableEnabled SmbNonBrowsable = "Enabled"
+)
+
+// PossibleSmbNonBrowsableValues returns the possible values for the SmbNonBrowsable const type.
+func PossibleSmbNonBrowsableValues() []SmbNonBrowsable {
+	return []SmbNonBrowsable{
+		SmbNonBrowsableDisabled,
+		SmbNonBrowsableEnabled,
 	}
 }
 

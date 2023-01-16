@@ -55,9 +55,205 @@ func NewSimsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	return client, nil
 }
 
+// BeginBulkDelete - Bulk delete SIMs from a SIM group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// simGroupName - The name of the SIM Group.
+// parameters - Parameters supplied to the bulk SIM delete operation.
+// options - SimsClientBeginBulkDeleteOptions contains the optional parameters for the SimsClient.BeginBulkDelete method.
+func (client *SimsClient) BeginBulkDelete(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimDeleteList, options *SimsClientBeginBulkDeleteOptions) (*runtime.Poller[SimsClientBulkDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.bulkDelete(ctx, resourceGroupName, simGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SimsClientBulkDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[SimsClientBulkDeleteResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// BulkDelete - Bulk delete SIMs from a SIM group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+func (client *SimsClient) bulkDelete(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimDeleteList, options *SimsClientBeginBulkDeleteOptions) (*http.Response, error) {
+	req, err := client.bulkDeleteCreateRequest(ctx, resourceGroupName, simGroupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// bulkDeleteCreateRequest creates the BulkDelete request.
+func (client *SimsClient) bulkDeleteCreateRequest(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimDeleteList, options *SimsClientBeginBulkDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}/deleteSims"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if simGroupName == "" {
+		return nil, errors.New("parameter simGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{simGroupName}", url.PathEscape(simGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
+// BeginBulkUpload - Bulk upload SIMs to a SIM group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// simGroupName - The name of the SIM Group.
+// parameters - Parameters supplied to the bulk SIM upload operation.
+// options - SimsClientBeginBulkUploadOptions contains the optional parameters for the SimsClient.BeginBulkUpload method.
+func (client *SimsClient) BeginBulkUpload(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimUploadList, options *SimsClientBeginBulkUploadOptions) (*runtime.Poller[SimsClientBulkUploadResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.bulkUpload(ctx, resourceGroupName, simGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SimsClientBulkUploadResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[SimsClientBulkUploadResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// BulkUpload - Bulk upload SIMs to a SIM group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+func (client *SimsClient) bulkUpload(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimUploadList, options *SimsClientBeginBulkUploadOptions) (*http.Response, error) {
+	req, err := client.bulkUploadCreateRequest(ctx, resourceGroupName, simGroupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// bulkUploadCreateRequest creates the BulkUpload request.
+func (client *SimsClient) bulkUploadCreateRequest(ctx context.Context, resourceGroupName string, simGroupName string, parameters SimUploadList, options *SimsClientBeginBulkUploadOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}/uploadSims"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if simGroupName == "" {
+		return nil, errors.New("parameter simGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{simGroupName}", url.PathEscape(simGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
+// BeginBulkUploadEncrypted - Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// simGroupName - The name of the SIM Group.
+// parameters - Parameters supplied to the encrypted SIMs upload operation.
+// options - SimsClientBeginBulkUploadEncryptedOptions contains the optional parameters for the SimsClient.BeginBulkUploadEncrypted
+// method.
+func (client *SimsClient) BeginBulkUploadEncrypted(ctx context.Context, resourceGroupName string, simGroupName string, parameters EncryptedSimUploadList, options *SimsClientBeginBulkUploadEncryptedOptions) (*runtime.Poller[SimsClientBulkUploadEncryptedResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.bulkUploadEncrypted(ctx, resourceGroupName, simGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SimsClientBulkUploadEncryptedResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[SimsClientBulkUploadEncryptedResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// BulkUploadEncrypted - Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+func (client *SimsClient) bulkUploadEncrypted(ctx context.Context, resourceGroupName string, simGroupName string, parameters EncryptedSimUploadList, options *SimsClientBeginBulkUploadEncryptedOptions) (*http.Response, error) {
+	req, err := client.bulkUploadEncryptedCreateRequest(ctx, resourceGroupName, simGroupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// bulkUploadEncryptedCreateRequest creates the BulkUploadEncrypted request.
+func (client *SimsClient) bulkUploadEncryptedCreateRequest(ctx context.Context, resourceGroupName string, simGroupName string, parameters EncryptedSimUploadList, options *SimsClientBeginBulkUploadEncryptedOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}/uploadEncryptedSims"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if simGroupName == "" {
+		return nil, errors.New("parameter simGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{simGroupName}", url.PathEscape(simGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
 // BeginCreateOrUpdate - Creates or updates a SIM.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // simGroupName - The name of the SIM Group.
 // simName - The name of the SIM.
@@ -80,7 +276,7 @@ func (client *SimsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup
 
 // CreateOrUpdate - Creates or updates a SIM.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 func (client *SimsClient) createOrUpdate(ctx context.Context, resourceGroupName string, simGroupName string, simName string, parameters Sim, options *SimsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, simGroupName, simName, parameters, options)
 	if err != nil {
@@ -120,7 +316,7 @@ func (client *SimsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -128,7 +324,7 @@ func (client *SimsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Deletes the specified SIM.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // simGroupName - The name of the SIM Group.
 // simName - The name of the SIM.
@@ -149,7 +345,7 @@ func (client *SimsClient) BeginDelete(ctx context.Context, resourceGroupName str
 
 // Delete - Deletes the specified SIM.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 func (client *SimsClient) deleteOperation(ctx context.Context, resourceGroupName string, simGroupName string, simName string, options *SimsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, simGroupName, simName, options)
 	if err != nil {
@@ -189,7 +385,7 @@ func (client *SimsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +393,7 @@ func (client *SimsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 
 // Get - Gets information about the specified SIM.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // simGroupName - The name of the SIM Group.
 // simName - The name of the SIM.
@@ -241,7 +437,7 @@ func (client *SimsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,42 +452,41 @@ func (client *SimsClient) getHandleResponse(resp *http.Response) (SimsClientGetR
 	return result, nil
 }
 
-// NewListBySimGroupPager - Gets all the SIMs in a SIM group.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// NewListByGroupPager - Gets all the SIMs in a SIM group.
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // simGroupName - The name of the SIM Group.
-// options - SimsClientListBySimGroupOptions contains the optional parameters for the SimsClient.ListBySimGroup method.
-func (client *SimsClient) NewListBySimGroupPager(resourceGroupName string, simGroupName string, options *SimsClientListBySimGroupOptions) *runtime.Pager[SimsClientListBySimGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SimsClientListBySimGroupResponse]{
-		More: func(page SimsClientListBySimGroupResponse) bool {
+// options - SimsClientListByGroupOptions contains the optional parameters for the SimsClient.ListByGroup method.
+func (client *SimsClient) NewListByGroupPager(resourceGroupName string, simGroupName string, options *SimsClientListByGroupOptions) *runtime.Pager[SimsClientListByGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SimsClientListByGroupResponse]{
+		More: func(page SimsClientListByGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SimsClientListBySimGroupResponse) (SimsClientListBySimGroupResponse, error) {
+		Fetcher: func(ctx context.Context, page *SimsClientListByGroupResponse) (SimsClientListByGroupResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listBySimGroupCreateRequest(ctx, resourceGroupName, simGroupName, options)
+				req, err = client.listByGroupCreateRequest(ctx, resourceGroupName, simGroupName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return SimsClientListBySimGroupResponse{}, err
+				return SimsClientListByGroupResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return SimsClientListBySimGroupResponse{}, err
+				return SimsClientListByGroupResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SimsClientListBySimGroupResponse{}, runtime.NewResponseError(resp)
+				return SimsClientListByGroupResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.listBySimGroupHandleResponse(resp)
+			return client.listByGroupHandleResponse(resp)
 		},
 	})
 }
 
-// listBySimGroupCreateRequest creates the ListBySimGroup request.
-func (client *SimsClient) listBySimGroupCreateRequest(ctx context.Context, resourceGroupName string, simGroupName string, options *SimsClientListBySimGroupOptions) (*policy.Request, error) {
+// listByGroupCreateRequest creates the ListByGroup request.
+func (client *SimsClient) listByGroupCreateRequest(ctx context.Context, resourceGroupName string, simGroupName string, options *SimsClientListByGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}/sims"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -310,17 +505,17 @@ func (client *SimsClient) listBySimGroupCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listBySimGroupHandleResponse handles the ListBySimGroup response.
-func (client *SimsClient) listBySimGroupHandleResponse(resp *http.Response) (SimsClientListBySimGroupResponse, error) {
-	result := SimsClientListBySimGroupResponse{}
+// listByGroupHandleResponse handles the ListByGroup response.
+func (client *SimsClient) listByGroupHandleResponse(resp *http.Response) (SimsClientListByGroupResponse, error) {
+	result := SimsClientListByGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SimListResult); err != nil {
-		return SimsClientListBySimGroupResponse{}, err
+		return SimsClientListByGroupResponse{}, err
 	}
 	return result, nil
 }

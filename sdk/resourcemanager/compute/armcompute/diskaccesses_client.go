@@ -58,7 +58,7 @@ func NewDiskAccessesClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdate - Creates or updates a disk access resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 // set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
@@ -80,7 +80,7 @@ func (client *DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resou
 
 // CreateOrUpdate - Creates or updates a disk access resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *DiskAccessesClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
@@ -116,7 +116,7 @@ func (client *DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, diskAccess)
@@ -124,7 +124,7 @@ func (client *DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // BeginDelete - Deletes a disk access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 // set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
@@ -145,7 +145,7 @@ func (client *DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Deletes a disk access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *DiskAccessesClient) deleteOperation(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, diskAccessName, options)
 	if err != nil {
@@ -181,7 +181,7 @@ func (client *DiskAccessesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,7 +189,7 @@ func (client *DiskAccessesClient) deleteCreateRequest(ctx context.Context, resou
 
 // BeginDeleteAPrivateEndpointConnection - Deletes a private endpoint connection under a disk access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 // set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
@@ -211,7 +211,7 @@ func (client *DiskAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx cont
 
 // DeleteAPrivateEndpointConnection - Deletes a private endpoint connection under a disk access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *DiskAccessesClient) deleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deleteAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -251,7 +251,7 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,7 +259,7 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(
 
 // Get - Gets information about a disk access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 // set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
@@ -300,7 +300,7 @@ func (client *DiskAccessesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -317,7 +317,7 @@ func (client *DiskAccessesClient) getHandleResponse(resp *http.Response) (DiskAc
 
 // GetAPrivateEndpointConnection - Gets information about a private endpoint connection under a disk access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 // set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
@@ -364,7 +364,7 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -381,7 +381,7 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleResponse(re
 
 // GetPrivateLinkResources - Gets the private link resources possible under disk access resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 // set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
@@ -423,7 +423,7 @@ func (client *DiskAccessesClient) getPrivateLinkResourcesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -439,8 +439,7 @@ func (client *DiskAccessesClient) getPrivateLinkResourcesHandleResponse(resp *ht
 }
 
 // NewListPager - Lists all the disk access resources under a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // options - DiskAccessesClientListOptions contains the optional parameters for the DiskAccessesClient.List method.
 func (client *DiskAccessesClient) NewListPager(options *DiskAccessesClientListOptions) *runtime.Pager[DiskAccessesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiskAccessesClientListResponse]{
@@ -482,7 +481,7 @@ func (client *DiskAccessesClient) listCreateRequest(ctx context.Context, options
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -498,8 +497,7 @@ func (client *DiskAccessesClient) listHandleResponse(resp *http.Response) (DiskA
 }
 
 // NewListByResourceGroupPager - Lists all the disk access resources under a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // options - DiskAccessesClientListByResourceGroupOptions contains the optional parameters for the DiskAccessesClient.ListByResourceGroup
 // method.
@@ -547,7 +545,7 @@ func (client *DiskAccessesClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -563,8 +561,7 @@ func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListPrivateEndpointConnectionsPager - List information about private endpoint connections under a disk access resource
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 // set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
@@ -619,7 +616,7 @@ func (client *DiskAccessesClient) listPrivateEndpointConnectionsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -636,7 +633,7 @@ func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleResponse(r
 
 // BeginUpdate - Updates (patches) a disk access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 // set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
@@ -658,7 +655,7 @@ func (client *DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Updates (patches) a disk access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *DiskAccessesClient) update(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, diskAccessName, diskAccess, options)
 	if err != nil {
@@ -694,7 +691,7 @@ func (client *DiskAccessesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, diskAccess)
@@ -703,7 +700,7 @@ func (client *DiskAccessesClient) updateCreateRequest(ctx context.Context, resou
 // BeginUpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this
 // can't be used to create a new private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 // set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
@@ -728,7 +725,7 @@ func (client *DiskAccessesClient) BeginUpdateAPrivateEndpointConnection(ctx cont
 // UpdateAPrivateEndpointConnection - Approve or reject a private endpoint connection under disk access resource, this can't
 // be used to create a new private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *DiskAccessesClient) updateAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.updateAPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
@@ -768,7 +765,7 @@ func (client *DiskAccessesClient) updateAPrivateEndpointConnectionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnection)

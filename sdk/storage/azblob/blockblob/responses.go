@@ -7,8 +7,10 @@
 package blockblob
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
 // UploadResponse contains the response from method Client.Upload.
@@ -38,7 +40,7 @@ type uploadFromReaderResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string
@@ -61,9 +63,9 @@ type uploadFromReaderResponse struct {
 	// VersionID contains the information returned from the x-ms-version-id header response.
 	VersionID *string
 
-	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	// ContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
 	// Will be a part of response only if uploading data >= internal.MaxUploadBlobBytes (= 256 * 1024 * 1024 // 256MB)
-	XMSContentCRC64 []byte
+	ContentCRC64 []byte
 }
 
 func toUploadReaderAtResponseFromUploadResponse(resp UploadResponse) uploadFromReaderResponse {
@@ -95,7 +97,7 @@ func toUploadReaderAtResponseFromCommitBlockListResponse(resp CommitBlockListRes
 		RequestID:           resp.RequestID,
 		Version:             resp.Version,
 		VersionID:           resp.VersionID,
-		XMSContentCRC64:     resp.XMSContentCRC64,
+		ContentCRC64:        resp.ContentCRC64,
 	}
 }
 
@@ -107,3 +109,6 @@ type UploadBufferResponse = uploadFromReaderResponse
 
 // UploadStreamResponse contains the response from method Client.CommitBlockList.
 type UploadStreamResponse = CommitBlockListResponse
+
+// SetExpiryResponse contains the response from method BlobClient.SetExpiry.
+type SetExpiryResponse = generated.BlobClientSetExpiryResponse

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package azeventhubs
 
 import (
@@ -26,9 +27,9 @@ const (
 	ProcessorStrategyGreedy ProcessorStrategy = "greedy"
 )
 
-// NewProcessorOptions are the options for the NewProcessor
+// ProcessorOptions are the options for the NewProcessor
 // function.
-type NewProcessorOptions struct {
+type ProcessorOptions struct {
 	// LoadBalancingStrategy dictates how concurrent Processor instances distribute
 	// ownership of partitions between them.
 	// The default strategy is ProcessorStrategyBalanced.
@@ -47,6 +48,23 @@ type NewProcessorOptions struct {
 	// default value) if a checkpoint is not found in the CheckpointStore.
 	// The default position is Latest.
 	StartPositions StartPositions
+
+	// OwnerLevel is the priority for partition clients created by this Processor, also known as
+	// the 'epoch' level.
+	// When used, a partition client with a higher OwnerLevel will take ownership of a partition
+	// from partition clients with a lower OwnerLevel.
+	// Default is 0.
+	OwnerLevel int64
+
+	// Prefetch represents the size of the internal prefetch buffer for each ProcessorPartitionClient
+	// created by this Processor. When set, this client will attempt to always maintain
+	// an internal cache of events of this size, asynchronously, increasing the odds that
+	// ReceiveEvents() will use a locally stored cache of events, rather than having to
+	// wait for events to arrive from the network.
+	//
+	// Defaults to 300 events if Prefetch == 0.
+	// Disabled if Prefetch < 0.
+	Prefetch int32
 }
 
 // StartPositions are used if there is no checkpoint for a partition in
@@ -61,12 +79,20 @@ type StartPositions struct {
 	Default StartPosition
 }
 
-// Processor uses a CheckpointStore, combined with a ConsumerClient, to provide
-// automatic load balancing betweeen multiple consumers.
+// Processor uses a ConsumerClient and CheckpointStore to provide automatic
+// load balancing between multiple Processor instances, even in separate
+// processes or on separate machines.
+//
+// See [example_processor_test.go] for an example, and the function documentation
+// for [Run] for a more detailed description of how load balancing works.
+//
+// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
 type Processor struct {
 	ownershipUpdateInterval time.Duration
 	defaultStartPositions   StartPositions
 	checkpointStore         CheckpointStore
+	ownerLevel              int64
+	prefetch                int32
 
 	// consumerClient is actually a *azeventhubs.ConsumerClient
 	// it's an interface here to make testing easier.
@@ -81,18 +107,23 @@ type Processor struct {
 
 type consumerClientForProcessor interface {
 	GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error)
-	NewPartitionClient(partitionID string, options *NewPartitionClientOptions) (*PartitionClient, error)
+	NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error)
 	getDetails() consumerClientDetails
 }
 
 // NewProcessor creates a Processor.
-func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *NewProcessorOptions) (*Processor, error) {
+//
+// More information can be found in the documentation for the [azeventhubs.Processor]
+// type or the [example_processor_test.go] for an example.
+//
+// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
+func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	return newProcessorImpl(consumerClient, checkpointStore, options)
 }
 
-func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore CheckpointStore, options *NewProcessorOptions) (*Processor, error) {
+func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	if options == nil {
-		options = &NewProcessorOptions{}
+		options = &ProcessorOptions{}
 	}
 
 	updateInterval := 10 * time.Second
@@ -127,6 +158,7 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 	}
 
 	return &Processor{
+		ownerLevel:              options.OwnerLevel,
 		ownershipUpdateInterval: updateInterval,
 		consumerClient:          consumerClient,
 		checkpointStore:         checkpointStore,
@@ -135,6 +167,7 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 			PerPartition: startPosPerPartition,
 			Default:      options.StartPositions.Default,
 		},
+		prefetch:              options.Prefetch,
 		consumerClientDetails: consumerClient.getDetails(),
 		runCalled:             make(chan struct{}),
 		lb:                    newProcessorLoadBalancer(checkpointStore, consumerClient.getDetails(), strategy, partitionDurationExpiration),
@@ -143,13 +176,15 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 	}, nil
 }
 
-// NextPartitionClient will get the next available azeventhubs.PartitionProcessorClient if
-// a partition is available or will block until a new one arrives or processor.Run() is
-// cancelled.
+// NextPartitionClient will get the next owned [PartitionProcessorClient] if one is acquired
+// or will block until a new one arrives or [processor.Run] is cancelled. You MUST call [azeventhubs.ProcessorPartitionClient.Close] on the returned client to avoid leaking resources.
 //
-// NOTE: this function will not return any values until processor.Run() is executing. If the
-// Run() function is cancelled (or if this function is cancelled) the returned
-// ProcessorPartitionClient will be nil.
+// This function is safe to call before [processor.Run] has been called and will typically
+// be executed in a goroutine in a loop.
+//
+// See [example_processor_test.go] for an example of typical usage.
+//
+// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
 func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartitionClient {
 	<-p.runCalled
 
@@ -161,11 +196,23 @@ func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartition
 	}
 }
 
-// Run runs the load balancing loop. Partitions that are claimed can be read using the
-// DistributedPartitionClient returned from processor.Next().
+// Run handles the load balancing loop, blocking until the passed in context is cancelled
+// or it encounters an unrecoverable error. On cancellation, it will return a nil error.
 //
-// NOTE: If this function is cancelled the load balancing loop is cancelled and a nil error
-// is returned. processor.NextPartitionClient() will return nil.
+// This function should run for the lifetime of your application, or for as long as you want
+// to continue to claim partitions.
+//
+// As partitions are claimed new [ProcessorPartitionClient] instances will be returned from
+// [Processor.NextPartitionClient]. This can happen at any time, based on new Processor instances
+// coming online, as well as other Processors exiting.
+//
+// [ProcessorPartitionClient] are used like a [PartitionClient] but provide an [ProcessorPartitionClient.UpdateCheckpoint]
+// function that will store a checkpoint into the CheckpointStore. If the client were to crash, or be restarted
+// it will pick up from that point.
+//
+// See [example_processor_test.go] for an example of typical usage.
+//
+// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
 func (p *Processor) Run(ctx context.Context) error {
 	err := p.runImpl(ctx)
 
@@ -283,8 +330,16 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 		return nil
 	}
 
-	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &NewPartitionClientOptions{
-		StartPosition: p.getStartPosition(checkpoints, ownership),
+	sp, err := p.getStartPosition(checkpoints, ownership)
+
+	if err != nil {
+		return err
+	}
+
+	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &PartitionClientOptions{
+		StartPosition: sp,
+		OwnerLevel:    &p.ownerLevel,
+		Prefetch:      p.prefetch,
 	})
 
 	if err != nil {
@@ -311,13 +366,21 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 	}
 }
 
-func (p *Processor) getStartPosition(checkpoints map[string]Checkpoint, ownership Ownership) StartPosition {
+func (p *Processor) getStartPosition(checkpoints map[string]Checkpoint, ownership Ownership) (StartPosition, error) {
 	startPosition := p.defaultStartPositions.Default
 	cp, hasCheckpoint := checkpoints[ownership.PartitionID]
 
 	if hasCheckpoint {
-		startPosition = StartPosition{
-			SequenceNumber: &cp.SequenceNumber,
+		if cp.Offset != nil {
+			startPosition = StartPosition{
+				Offset: cp.Offset,
+			}
+		} else if cp.SequenceNumber != nil {
+			startPosition = StartPosition{
+				SequenceNumber: cp.SequenceNumber,
+			}
+		} else {
+			return StartPosition{}, fmt.Errorf("invalid checkpoint for %s, no offset or sequence number", ownership.PartitionID)
 		}
 	} else if p.defaultStartPositions.PerPartition != nil {
 		defaultStartPosition, exists := p.defaultStartPositions.PerPartition[ownership.PartitionID]
@@ -327,7 +390,7 @@ func (p *Processor) getStartPosition(checkpoints map[string]Checkpoint, ownershi
 		}
 	}
 
-	return startPosition
+	return startPosition, nil
 }
 
 func (p *Processor) getCheckpointsMap(ctx context.Context) (map[string]Checkpoint, error) {

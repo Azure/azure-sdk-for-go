@@ -16,22 +16,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/ImageVersions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ImageVersions_List.json
 func ExampleImageVersionsClient_NewListByImagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewImageVersionsClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewImageVersionsClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByImagePager("rg1",
-		"Contoso",
-		"DefaultDevGallery",
-		"Win11",
-		nil)
+	pager := client.NewListByImagePager("rg1", "Contoso", "DefaultDevGallery", "Win11", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,24 +40,18 @@ func ExampleImageVersionsClient_NewListByImagePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/ImageVersions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ImageVersions_Get.json
 func ExampleImageVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewImageVersionsClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewImageVersionsClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"Contoso",
-		"DefaultDevGallery",
-		"Win11",
-		"{versionName}",
-		nil)
+	res, err := client.Get(ctx, "rg1", "Contoso", "DefaultDevGallery", "Win11", "1.0.0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

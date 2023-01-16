@@ -6,12 +6,15 @@
 
 package blob
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+)
 
 const (
 	CountToEnd = 0
 
-	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
+	SnapshotTimeFormat = exported.SnapshotTimeFormat
 
 	// DefaultDownloadBlockSize is default block size
 	DefaultDownloadBlockSize = int64(4 * 1024 * 1024) // 4MB
@@ -165,21 +168,6 @@ func PossibleDeleteTypeValues() []DeleteType {
 	return generated.PossibleDeleteTypeValues()
 }
 
-// ExpiryOptions defines values for ExpiryOptions
-type ExpiryOptions = generated.ExpiryOptions
-
-const (
-	ExpiryOptionsAbsolute           ExpiryOptions = generated.ExpiryOptionsAbsolute
-	ExpiryOptionsNeverExpire        ExpiryOptions = generated.ExpiryOptionsNeverExpire
-	ExpiryOptionsRelativeToCreation ExpiryOptions = generated.ExpiryOptionsRelativeToCreation
-	ExpiryOptionsRelativeToNow      ExpiryOptions = generated.ExpiryOptionsRelativeToNow
-)
-
-// PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
-func PossibleExpiryOptionsValues() []ExpiryOptions {
-	return generated.PossibleExpiryOptionsValues()
-}
-
 // QueryFormatType - The quick query format type.
 type QueryFormatType = generated.QueryFormatType
 
@@ -195,44 +183,47 @@ func PossibleQueryFormatTypeValues() []QueryFormatType {
 	return generated.PossibleQueryFormatTypeValues()
 }
 
-// LeaseDurationType defines values for LeaseDurationType
-type LeaseDurationType = generated.LeaseDurationType
+// TransferValidationType abstracts the various mechanisms used to verify a transfer.
+type TransferValidationType = exported.TransferValidationType
 
-const (
-	LeaseDurationTypeInfinite LeaseDurationType = generated.LeaseDurationTypeInfinite
-	LeaseDurationTypeFixed    LeaseDurationType = generated.LeaseDurationTypeFixed
-)
+// TransferValidationTypeCRC64 is a TransferValidationType used to provide a precomputed CRC64.
+type TransferValidationTypeCRC64 = exported.TransferValidationTypeCRC64
 
-// PossibleLeaseDurationTypeValues returns the possible values for the LeaseDurationType const type.
-func PossibleLeaseDurationTypeValues() []LeaseDurationType {
-	return generated.PossibleLeaseDurationTypeValues()
+// TransferValidationTypeComputeCRC64 is a TransferValidationType that indicates a CRC64 should be computed during transfer.
+func TransferValidationTypeComputeCRC64() TransferValidationType {
+	return exported.TransferValidationTypeComputeCRC64()
 }
 
-// LeaseStateType defines values for LeaseStateType
-type LeaseStateType = generated.LeaseStateType
+// TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
+type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
 
-const (
-	LeaseStateTypeAvailable LeaseStateType = generated.LeaseStateTypeAvailable
-	LeaseStateTypeLeased    LeaseStateType = generated.LeaseStateTypeLeased
-	LeaseStateTypeExpired   LeaseStateType = generated.LeaseStateTypeExpired
-	LeaseStateTypeBreaking  LeaseStateType = generated.LeaseStateTypeBreaking
-	LeaseStateTypeBroken    LeaseStateType = generated.LeaseStateTypeBroken
-)
-
-// PossibleLeaseStateTypeValues returns the possible values for the LeaseStateType const type.
-func PossibleLeaseStateTypeValues() []LeaseStateType {
-	return generated.PossibleLeaseStateTypeValues()
+// SourceContentValidationType abstracts the various mechanisms used to validate source content.
+// This interface is not publicly implementable.
+type SourceContentValidationType interface {
+	Apply(generated.SourceContentSetter)
+	notPubliclyImplementable()
 }
 
-// LeaseStatusType defines values for LeaseStatusType
-type LeaseStatusType = generated.LeaseStatusType
+// SourceContentValidationTypeCRC64 is a SourceContentValidationType used to provided a precomputed CRC64.
+type SourceContentValidationTypeCRC64 []byte
 
-const (
-	LeaseStatusTypeLocked   LeaseStatusType = generated.LeaseStatusTypeLocked
-	LeaseStatusTypeUnlocked LeaseStatusType = generated.LeaseStatusTypeUnlocked
-)
-
-// PossibleLeaseStatusTypeValues returns the possible values for the LeaseStatusType const type.
-func PossibleLeaseStatusTypeValues() []LeaseStatusType {
-	return generated.PossibleLeaseStatusTypeValues()
+// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeCRC64.
+func (s SourceContentValidationTypeCRC64) Apply(src generated.SourceContentSetter) {
+	src.SetSourceContentCRC64(s)
 }
+
+func (SourceContentValidationTypeCRC64) notPubliclyImplementable() {}
+
+var _ SourceContentValidationType = (SourceContentValidationTypeCRC64)(nil)
+
+// SourceContentValidationTypeMD5 is a SourceContentValidationType used to provided a precomputed MD5.
+type SourceContentValidationTypeMD5 []byte
+
+// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeMD5.
+func (s SourceContentValidationTypeMD5) Apply(src generated.SourceContentSetter) {
+	src.SetSourceContentMD5(s)
+}
+
+func (SourceContentValidationTypeMD5) notPubliclyImplementable() {}
+
+var _ SourceContentValidationType = (SourceContentValidationTypeMD5)(nil)

@@ -14,11 +14,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/ServiceTagInformationListResult.json
-func ExampleServiceTagInformationClient_NewListPager_serviceTagInformationListResult() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ServiceTagInformationListResult.json
+func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -43,8 +43,8 @@ func ExampleServiceTagInformationClient_NewListPager_serviceTagInformationListRe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/ServiceTagInformationListResultWithNoAddressPrefixes.json
-func ExampleServiceTagInformationClient_NewListPager_serviceTagInformationListResultWithNoAddressPrefixes() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ServiceTagInformationListResultWithNoAddressPrefixes.json
+func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithNoAddressPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -69,8 +69,8 @@ func ExampleServiceTagInformationClient_NewListPager_serviceTagInformationListRe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/ServiceTagInformationListResultWithTagname.json
-func ExampleServiceTagInformationClient_NewListPager_serviceTagInformationListResultWithTagname() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ServiceTagInformationListResultWithTagname.json
+func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithTagName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

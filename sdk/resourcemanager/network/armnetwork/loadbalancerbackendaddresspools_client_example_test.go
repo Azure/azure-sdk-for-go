@@ -14,11 +14,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LBBackendAddressPoolListWithBackendAddressesPoolType.json
-func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_lBBackendAddressPoolListWithBackendAddressesPoolType() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LBBackendAddressPoolListWithBackendAddressesPoolType.json
+func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_loadBalancerWithBackendAddressPoolContainingBackendAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -41,7 +41,7 @@ func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_lBBackendAddressP
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerBackendAddressPoolList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerBackendAddressPoolList.json
 func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_loadBalancerBackendAddressPoolList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,8 +65,8 @@ func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_loadBalancerBacke
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LBBackendAddressPoolWithBackendAddressesGet.json
-func ExampleLoadBalancerBackendAddressPoolsClient_Get_lBBackendAddressPoolWithBackendAddressesGet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LBBackendAddressPoolWithBackendAddressesGet.json
+func ExampleLoadBalancerBackendAddressPoolsClient_Get_loadBalancerWithBackendAddressPoolWithBackendAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -84,7 +84,7 @@ func ExampleLoadBalancerBackendAddressPoolsClient_Get_lBBackendAddressPoolWithBa
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerBackendAddressPoolGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerBackendAddressPoolGet.json
 func ExampleLoadBalancerBackendAddressPoolsClient_Get_loadBalancerBackendAddressPoolGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleLoadBalancerBackendAddressPoolsClient_Get_loadBalancerBackendAddress
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LBBackendAddressPoolWithBackendAddressesPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LBBackendAddressPoolWithBackendAddressesPut.json
 func ExampleLoadBalancerBackendAddressPoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleLoadBalancerBackendAddressPoolsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/LoadBalancerBackendAddressPoolDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerBackendAddressPoolDelete.json
 func ExampleLoadBalancerBackendAddressPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

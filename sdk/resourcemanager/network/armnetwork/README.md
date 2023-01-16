@@ -1,6 +1,6 @@
 # Azure Network Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2)
 
 The `armnetwork` module provides operations for working with Azure Network.
 
@@ -11,7 +11,7 @@ The `armnetwork` module provides operations for working with Azure Network.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.18 or above
+- Go 1.18 or above (You could download and install the latest version of Go from [here](https://go.dev/doc/install). It will replace the existing Go on your machine. If you want to install multiple Go versions on the same machine, you could refer this [doc](https://go.dev/doc/manage-install).)
 
 ## Install the package
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Network module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2
 ```
 
 ## Authorization

@@ -8,9 +8,8 @@ package blob
 
 import (
 	"strings"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 // ObjectReplicationRules struct
@@ -69,7 +68,12 @@ func ParseHTTPHeaders(resp GetPropertiesResponse) HTTPHeaders {
 	}
 }
 
-// ParseSASTimeString try to parse sas time string.
-func ParseSASTimeString(val string) (t time.Time, timeFormat string, err error) {
-	return exported.ParseSASTimeString(val)
+// URLParts object represents the components that make up an Azure Storage Container/Blob URL.
+// NOTE: Changing any SAS-related field requires computing a new SAS signature.
+type URLParts = sas.URLParts
+
+// ParseURL parses a URL initializing URLParts' fields including any SAS-related & snapshot query parameters. Any other
+// query parameters remain in the UnparsedParams field. This method overwrites all fields in the URLParts object.
+func ParseURL(u string) (URLParts, error) {
+	return sas.ParseURL(u)
 }

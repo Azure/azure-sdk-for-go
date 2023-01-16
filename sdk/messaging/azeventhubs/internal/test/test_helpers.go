@@ -4,6 +4,7 @@
 package test
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
@@ -12,9 +13,11 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
 )
@@ -63,6 +66,7 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 
 // EnableStdoutLogging turns on logging to stdout for diagnostics.
 func EnableStdoutLogging() {
+	azlog.SetEvents(exported.EventAuth, exported.EventConn, exported.EventConsumer, exported.EventProducer)
 	setAzLogListener(func(e azlog.Event, s string) {
 		log.Printf("%s %s", e, s)
 	})
@@ -89,20 +93,23 @@ func RandomString(prefix string, length int) string {
 }
 
 type ConnectionParamsForTest struct {
-	ConnectionString  string
-	EventHubName      string
-	EventHubNamespace string
-
+	ConnectionString        string
+	EventHubName            string
+	EventHubNamespace       string
+	ResourceGroup           string
 	StorageConnectionString string
+	SubscriptionID          string
 }
 
 func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 	_ = godotenv.Load()
 
 	envVars := mustGetEnvironmentVars(t, []string{
+		"AZURE_SUBSCRIPTION_ID",
+		"CHECKPOINTSTORE_STORAGE_CONNECTION_STRING",
 		"EVENTHUB_CONNECTION_STRING",
 		"EVENTHUB_NAME",
-		"CHECKPOINTSTORE_STORAGE_CONNECTION_STRING",
+		"RESOURCE_GROUP",
 	})
 
 	parsedConn, err := conn.ParsedConnectionFromStr(envVars["EVENTHUB_CONNECTION_STRING"])
@@ -112,7 +119,9 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		ConnectionString:        envVars["EVENTHUB_CONNECTION_STRING"],
 		EventHubName:            envVars["EVENTHUB_NAME"],
 		EventHubNamespace:       parsedConn.Namespace,
+		ResourceGroup:           envVars["RESOURCE_GROUP"],
 		StorageConnectionString: envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],
+		SubscriptionID:          envVars["AZURE_SUBSCRIPTION_ID"],
 	}
 }
 
@@ -137,4 +146,23 @@ func mustGetEnvironmentVars(t *testing.T, names []string) map[string]string {
 	}
 
 	return envVars
+}
+
+func RequireClose(t *testing.T, closeable interface {
+	Close(ctx context.Context) error
+}) {
+	require.NoError(t, closeable.Close(context.Background()))
+}
+
+// RequireContextHasDefaultTimeout checks that the context has a deadline set, and that it's
+// using the right timeout.
+// NOTE: There's some wiggle room since some time will expire before this is called.
+func RequireContextHasDefaultTimeout(t *testing.T, ctx context.Context, timeout time.Duration) {
+	tm, hasDeadline := ctx.Deadline()
+
+	require.True(t, hasDeadline, "deadline must exist, we always set an operation timeout")
+	duration := time.Until(tm)
+
+	require.Greater(t, duration, time.Duration(0))
+	require.LessOrEqual(t, duration, timeout)
 }

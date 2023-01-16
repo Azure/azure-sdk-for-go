@@ -16,10 +16,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
 func ExampleDedicatedHostsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,23 +30,18 @@ func ExampleDedicatedHostsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"myResourceGroup",
-		"myDedicatedHostGroup",
-		"myDedicatedHost",
-		armcompute.DedicatedHost{
-			Location: to.Ptr("westus"),
-			Tags: map[string]*string{
-				"department": to.Ptr("HR"),
-			},
-			Properties: &armcompute.DedicatedHostProperties{
-				PlatformFaultDomain: to.Ptr[int32](1),
-			},
-			SKU: &armcompute.SKU{
-				Name: to.Ptr("DSv3-Type1"),
-			},
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myDedicatedHostGroup", "myDedicatedHost", armcompute.DedicatedHost{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"department": to.Ptr("HR"),
 		},
-		nil)
+		Properties: &armcompute.DedicatedHostProperties{
+			PlatformFaultDomain: to.Ptr[int32](1),
+		},
+		SKU: &armcompute.SKU{
+			Name: to.Ptr("DSv3-Type1"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -58,8 +53,8 @@ func ExampleDedicatedHostsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHosts_Update_MaximumSet_Gen.json
-func ExampleDedicatedHostsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Update_MaximumSet_Gen.json
+func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostsUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -69,38 +64,33 @@ func ExampleDedicatedHostsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"rgcompute",
-		"aaaaaaaaa",
-		"aaaaaaaaaaaaaaaaaaaaa",
-		armcompute.DedicatedHostUpdate{
-			Tags: map[string]*string{
-				"key8813": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-			},
-			Properties: &armcompute.DedicatedHostProperties{
-				AutoReplaceOnFailure: to.Ptr(true),
-				InstanceView: &armcompute.DedicatedHostInstanceView{
-					AvailableCapacity: &armcompute.DedicatedHostAvailableCapacity{
-						AllocatableVMs: []*armcompute.DedicatedHostAllocatableVM{
-							{
-								Count:  to.Ptr[float64](26),
-								VMSize: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-							}},
-					},
-					Statuses: []*armcompute.InstanceViewStatus{
+	poller, err := client.BeginUpdate(ctx, "rgcompute", "aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaa", armcompute.DedicatedHostUpdate{
+		Tags: map[string]*string{
+			"key8813": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		},
+		Properties: &armcompute.DedicatedHostProperties{
+			AutoReplaceOnFailure: to.Ptr(true),
+			InstanceView: &armcompute.DedicatedHostInstanceView{
+				AvailableCapacity: &armcompute.DedicatedHostAvailableCapacity{
+					AllocatableVMs: []*armcompute.DedicatedHostAllocatableVM{
 						{
-							Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-							DisplayStatus: to.Ptr("aaaaaa"),
-							Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-							Message:       to.Ptr("a"),
-							Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
+							Count:  to.Ptr[float64](26),
+							VMSize: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
 						}},
 				},
-				LicenseType:         to.Ptr(armcompute.DedicatedHostLicenseTypesWindowsServerHybrid),
-				PlatformFaultDomain: to.Ptr[int32](1),
+				Statuses: []*armcompute.InstanceViewStatus{
+					{
+						Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+						DisplayStatus: to.Ptr("aaaaaa"),
+						Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
+						Message:       to.Ptr("a"),
+						Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
+					}},
 			},
+			LicenseType:         to.Ptr(armcompute.DedicatedHostLicenseTypesWindowsServerHybrid),
+			PlatformFaultDomain: to.Ptr[int32](1),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -112,8 +102,8 @@ func ExampleDedicatedHostsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHosts_Delete_MaximumSet_Gen.json
-func ExampleDedicatedHostsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Update_MinimumSet_Gen.json
+func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostsUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -123,11 +113,30 @@ func ExampleDedicatedHostsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rgcompute",
-		"aaaaaa",
-		"aaaaaaaaaaaaaaa",
-		nil)
+	poller, err := client.BeginUpdate(ctx, "rgcompute", "aa", "aaaaaaaaaaaaaaaaaaaaaaaaaa", armcompute.DedicatedHostUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Delete_MaximumSet_Gen.json
+func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostsDeleteMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewDedicatedHostsClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginDelete(ctx, "rgcompute", "aaaaaa", "aaaaaaaaaaaaaaa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -137,7 +146,28 @@ func ExampleDedicatedHostsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHost_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Delete_MinimumSet_Gen.json
+func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostsDeleteMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewDedicatedHostsClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginDelete(ctx, "rgcompute", "aaaaaaaaaaaaaaa", "aaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHost_Get.json
 func ExampleDedicatedHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,11 +178,7 @@ func ExampleDedicatedHostsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myResourceGroup",
-		"myDedicatedHostGroup",
-		"myHost",
-		&armcompute.DedicatedHostsClientGetOptions{Expand: nil})
+	res, err := client.Get(ctx, "myResourceGroup", "myDedicatedHostGroup", "myHost", &armcompute.DedicatedHostsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -160,8 +186,8 @@ func ExampleDedicatedHostsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHosts_ListByHostGroup_MaximumSet_Gen.json
-func ExampleDedicatedHostsClient_NewListByHostGroupPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_ListByHostGroup_MaximumSet_Gen.json
+func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostsListByHostGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -171,9 +197,7 @@ func ExampleDedicatedHostsClient_NewListByHostGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByHostGroupPager("rgcompute",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		nil)
+	pager := client.NewListByHostGroupPager("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -186,7 +210,31 @@ func ExampleDedicatedHostsClient_NewListByHostGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHost_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_ListByHostGroup_MinimumSet_Gen.json
+func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostsListByHostGroupMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewDedicatedHostsClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByHostGroupPager("rgcompute", "aaaa", nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHost_Restart.json
 func ExampleDedicatedHostsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,11 +245,7 @@ func ExampleDedicatedHostsClient_BeginRestart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRestart(ctx,
-		"myResourceGroup",
-		"myDedicatedHostGroup",
-		"myHost",
-		nil)
+	poller, err := client.BeginRestart(ctx, "myResourceGroup", "myDedicatedHostGroup", "myHost", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

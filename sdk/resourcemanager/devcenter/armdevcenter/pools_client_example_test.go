@@ -17,20 +17,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Pools_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_List.json
 func ExamplePoolsClient_NewListByProjectPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewPoolsClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewPoolsClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProjectPager("rg1",
-		"{projectName}",
-		&armdevcenter.PoolsClientListByProjectOptions{Top: nil})
+	pager := client.NewListByProjectPager("rg1", "DevProject", &armdevcenter.PoolsClientListByProjectOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,22 +41,18 @@ func ExamplePoolsClient_NewListByProjectPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Pools_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Get.json
 func ExamplePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewPoolsClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewPoolsClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"{projectName}",
-		"{poolName}",
-		nil)
+	res, err := client.Get(ctx, "rg1", "DevProject", "DevPool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,31 +60,26 @@ func ExamplePoolsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Pools_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Put.json
 func ExamplePoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewPoolsClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewPoolsClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"{projectName}",
-		"{poolName}",
-		armdevcenter.Pool{
-			Location: to.Ptr("centralus"),
-			Properties: &armdevcenter.PoolProperties{
-				DevBoxDefinitionName:  to.Ptr("WebDevBox"),
-				LicenseType:           to.Ptr(armdevcenter.LicenseTypeWindowsClient),
-				LocalAdministrator:    to.Ptr(armdevcenter.LocalAdminStatusEnabled),
-				NetworkConnectionName: to.Ptr("Network1-westus2"),
-			},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "DevProject", "DevPool", armdevcenter.Pool{
+		Location: to.Ptr("centralus"),
+		Properties: &armdevcenter.PoolProperties{
+			DevBoxDefinitionName:  to.Ptr("WebDevBox"),
+			LicenseType:           to.Ptr(armdevcenter.LicenseTypeWindowsClient),
+			LocalAdministrator:    to.Ptr(armdevcenter.LocalAdminStatusEnabled),
+			NetworkConnectionName: to.Ptr("Network1-westus2"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,27 +91,22 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Pools_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Patch.json
 func ExamplePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewPoolsClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewPoolsClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"rg1",
-		"{projectName}",
-		"{poolName}",
-		armdevcenter.PoolUpdate{
-			Properties: &armdevcenter.PoolUpdateProperties{
-				DevBoxDefinitionName: to.Ptr("WebDevBox2"),
-			},
+	poller, err := client.BeginUpdate(ctx, "rg1", "DevProject", "DevPool", armdevcenter.PoolUpdate{
+		Properties: &armdevcenter.PoolUpdateProperties{
+			DevBoxDefinitionName: to.Ptr("WebDevBox2"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -134,22 +118,18 @@ func ExamplePoolsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Pools_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Delete.json
 func ExamplePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewPoolsClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewPoolsClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"{projectName}",
-		"poolName",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "DevProject", "poolName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

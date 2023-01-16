@@ -95,7 +95,7 @@ func TestProcessor_Contention(t *testing.T) {
 
 		ctx, cancel := context.WithCancel(context.Background())
 
-		processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.NewProcessorOptions{
+		processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.ProcessorOptions{
 			UpdateInterval: 10 * time.Second,
 		})
 		require.NoError(t, err)
@@ -219,7 +219,7 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 	require.NoError(t, err)
 
 	t.Logf("Processor created")
-	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.NewProcessorOptions{
+	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.ProcessorOptions{
 		UpdateInterval:        time.Millisecond,
 		LoadBalancingStrategy: loadBalancerStrategy,
 	})
@@ -288,7 +288,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	require.NoError(t, err)
 
 	t.Logf("Processor created")
-	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.NewProcessorOptions{
+	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.ProcessorOptions{
 		UpdateInterval:        time.Millisecond,
 		LoadBalancingStrategy: loadBalancerStrategy,
 	})
@@ -360,7 +360,7 @@ func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClie
 
 		for i := 0; i < expectedEventsCount/batchSize; i++ {
 			pid := partitionClient.PartitionID()
-			batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+			batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
 				PartitionID: &pid,
 			})
 			require.NoError(t, err)
@@ -373,7 +373,7 @@ func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClie
 				ctr++
 			}
 
-			err = producerClient.SendEventBatch(context.Background(), batch, nil)
+			err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
 		}
 	}()
@@ -386,7 +386,7 @@ func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClie
 		receiveCtxCancel()
 
 		if err != nil && !errors.Is(err, context.DeadlineExceeded) {
-			if eventHubError := (*azeventhubs.Error)(nil); errors.As(err, &eventHubError) && eventHubError.Code == exported.CodeOwnershipLost {
+			if eventHubError := (*azeventhubs.Error)(nil); errors.As(err, &eventHubError) && eventHubError.Code == exported.ErrorCodeOwnershipLost {
 				fmt.Printf("Partition %s was stolen\n", partitionClient.PartitionID())
 			}
 

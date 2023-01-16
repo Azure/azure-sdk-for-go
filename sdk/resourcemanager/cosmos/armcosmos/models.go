@@ -971,12 +971,6 @@ type ClientEncryptionPolicy struct {
 	PolicyFormatVersion *int32 `json:"policyFormatVersion,omitempty"`
 }
 
-// CloudError - An error response from the service.
-type CloudError struct {
-	// Error Response.
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
 // ClusterKey - Cosmos DB Cassandra table cluster key
 type ClusterKey struct {
 	// Name of the Cosmos DB Cassandra table cluster key
@@ -1707,6 +1701,9 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool `json:"enableMultipleWriteLocations,omitempty"`
 
+	// Flag to indicate enabling/disabling of Partition Merge feature on the account
+	EnablePartitionMerge *bool `json:"enablePartitionMerge,omitempty"`
+
 	// List of IpRules.
 	IPRules []*IPAddressOrRange `json:"ipRules,omitempty"`
 
@@ -1715,10 +1712,6 @@ type DatabaseAccountCreateUpdateProperties struct {
 
 	// The URI of the key vault
 	KeyVaultKeyURI *string `json:"keyVaultKeyUri,omitempty"`
-
-	// This property is ignored during the update/create operation, as the metadata is read-only. The object represents the metadata
-	// for the Account Keys of the Cosmos DB account.
-	KeysMetadata *DatabaseAccountKeysMetadata `json:"keysMetadata,omitempty"`
 
 	// Indicates what services are allowed to bypass firewall checks.
 	NetworkACLBypass *NetworkACLBypass `json:"networkAclBypass,omitempty"`
@@ -1734,6 +1727,10 @@ type DatabaseAccountCreateUpdateProperties struct {
 
 	// List of Virtual Network ACL rules configured for the Cosmos DB account.
 	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
+
+	// READ-ONLY; This property is ignored during the update/create operation, as the metadata is read-only. The object represents
+	// the metadata for the Account Keys of the Cosmos DB account.
+	KeysMetadata *DatabaseAccountKeysMetadata `json:"keysMetadata,omitempty" azure:"ro"`
 }
 
 // DatabaseAccountGetProperties - Properties for the database account.
@@ -1799,6 +1796,9 @@ type DatabaseAccountGetProperties struct {
 	// Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool `json:"enableMultipleWriteLocations,omitempty"`
 
+	// Flag to indicate enabling/disabling of Partition Merge feature on the account
+	EnablePartitionMerge *bool `json:"enablePartitionMerge,omitempty"`
+
 	// List of IpRules.
 	IPRules []*IPAddressOrRange `json:"ipRules,omitempty"`
 
@@ -1807,9 +1807,6 @@ type DatabaseAccountGetProperties struct {
 
 	// The URI of the key vault
 	KeyVaultKeyURI *string `json:"keyVaultKeyUri,omitempty"`
-
-	// The object that represents the metadata for the Account Keys of the Cosmos DB account.
-	KeysMetadata *DatabaseAccountKeysMetadata `json:"keysMetadata,omitempty"`
 
 	// Indicates what services are allowed to bypass firewall checks.
 	NetworkACLBypass *NetworkACLBypass `json:"networkAclBypass,omitempty"`
@@ -1837,6 +1834,9 @@ type DatabaseAccountGetProperties struct {
 
 	// READ-ONLY; A unique identifier assigned to the database account
 	InstanceID *string `json:"instanceId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The object that represents the metadata for the Account Keys of the Cosmos DB account.
+	KeysMetadata *DatabaseAccountKeysMetadata `json:"keysMetadata,omitempty" azure:"ro"`
 
 	// READ-ONLY; An array that contains all of the locations enabled for the Cosmos DB account.
 	Locations []*Location `json:"locations,omitempty" azure:"ro"`
@@ -1895,17 +1895,17 @@ type DatabaseAccountGetResults struct {
 
 // DatabaseAccountKeysMetadata - The metadata related to each access key for the given Cosmos DB database account.
 type DatabaseAccountKeysMetadata struct {
-	// The metadata related to the Primary Read-Write Key for the given Cosmos DB database account.
-	PrimaryMasterKey *AccountKeyMetadata `json:"primaryMasterKey,omitempty"`
+	// READ-ONLY; The metadata related to the Primary Read-Write Key for the given Cosmos DB database account.
+	PrimaryMasterKey *AccountKeyMetadata `json:"primaryMasterKey,omitempty" azure:"ro"`
 
-	// The metadata related to the Primary Read-Only Key for the given Cosmos DB database account.
-	PrimaryReadonlyMasterKey *AccountKeyMetadata `json:"primaryReadonlyMasterKey,omitempty"`
+	// READ-ONLY; The metadata related to the Primary Read-Only Key for the given Cosmos DB database account.
+	PrimaryReadonlyMasterKey *AccountKeyMetadata `json:"primaryReadonlyMasterKey,omitempty" azure:"ro"`
 
-	// The metadata related to the Secondary Read-Write Key for the given Cosmos DB database account.
-	SecondaryMasterKey *AccountKeyMetadata `json:"secondaryMasterKey,omitempty"`
+	// READ-ONLY; The metadata related to the Secondary Read-Write Key for the given Cosmos DB database account.
+	SecondaryMasterKey *AccountKeyMetadata `json:"secondaryMasterKey,omitempty" azure:"ro"`
 
-	// The metadata related to the Secondary Read-Only Key for the given Cosmos DB database account.
-	SecondaryReadonlyMasterKey *AccountKeyMetadata `json:"secondaryReadonlyMasterKey,omitempty"`
+	// READ-ONLY; The metadata related to the Secondary Read-Only Key for the given Cosmos DB database account.
+	SecondaryReadonlyMasterKey *AccountKeyMetadata `json:"secondaryReadonlyMasterKey,omitempty" azure:"ro"`
 }
 
 // DatabaseAccountListConnectionStringsResult - The connection strings for the given database account.
@@ -2029,6 +2029,9 @@ type DatabaseAccountUpdateProperties struct {
 	// Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool `json:"enableMultipleWriteLocations,omitempty"`
 
+	// Flag to indicate enabling/disabling of Partition Merge feature on the account
+	EnablePartitionMerge *bool `json:"enablePartitionMerge,omitempty"`
+
 	// List of IpRules.
 	IPRules []*IPAddressOrRange `json:"ipRules,omitempty"`
 
@@ -2037,10 +2040,6 @@ type DatabaseAccountUpdateProperties struct {
 
 	// The URI of the key vault
 	KeyVaultKeyURI *string `json:"keyVaultKeyUri,omitempty"`
-
-	// This property is ignored during the update operation, as the metadata is read-only. The object represents the metadata
-	// for the Account Keys of the Cosmos DB account.
-	KeysMetadata *DatabaseAccountKeysMetadata `json:"keysMetadata,omitempty"`
 
 	// An array that contains the georeplication locations enabled for the Cosmos DB account.
 	Locations []*Location `json:"locations,omitempty"`
@@ -2056,6 +2055,10 @@ type DatabaseAccountUpdateProperties struct {
 
 	// List of Virtual Network ACL rules configured for the Cosmos DB account.
 	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
+
+	// READ-ONLY; This property is ignored during the update operation, as the metadata is read-only. The object represents the
+	// metadata for the Account Keys of the Cosmos DB account.
+	KeysMetadata *DatabaseAccountKeysMetadata `json:"keysMetadata,omitempty" azure:"ro"`
 }
 
 // DatabaseAccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the DatabaseAccountsClient.BeginCreateOrUpdate
@@ -3242,8 +3245,14 @@ type MongoDBCollectionGetPropertiesResource struct {
 	// Analytical TTL.
 	AnalyticalStorageTTL *int32 `json:"analyticalStorageTtl,omitempty"`
 
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
 	// List of index keys
 	Indexes []*MongoIndex `json:"indexes,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
 
 	// A key-value pair of shard keys to be applied for the request.
 	ShardKey map[string]*string `json:"shardKey,omitempty"`
@@ -3300,8 +3309,14 @@ type MongoDBCollectionResource struct {
 	// Analytical TTL.
 	AnalyticalStorageTTL *int32 `json:"analyticalStorageTtl,omitempty"`
 
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
 	// List of index keys
 	Indexes []*MongoIndex `json:"indexes,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
 
 	// A key-value pair of shard keys to be applied for the request.
 	ShardKey map[string]*string `json:"shardKey,omitempty"`
@@ -3363,6 +3378,12 @@ type MongoDBDatabaseGetPropertiesResource struct {
 	// REQUIRED; Name of the Cosmos DB MongoDB database
 	ID *string `json:"id,omitempty"`
 
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
+
 	// READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string `json:"_etag,omitempty" azure:"ro"`
 
@@ -3411,6 +3432,12 @@ type MongoDBDatabaseListResult struct {
 type MongoDBDatabaseResource struct {
 	// REQUIRED; Name of the Cosmos DB MongoDB database
 	ID *string `json:"id,omitempty"`
+
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
 }
 
 // MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions contains the optional parameters for the MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection
@@ -3514,6 +3541,20 @@ type MongoDBResourcesClientBeginMongoDBContainerRedistributeThroughputOptions st
 // MongoDBResourcesClientBeginMongoDBContainerRetrieveThroughputDistributionOptions contains the optional parameters for the
 // MongoDBResourcesClient.BeginMongoDBContainerRetrieveThroughputDistribution method.
 type MongoDBResourcesClientBeginMongoDBContainerRetrieveThroughputDistributionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MongoDBResourcesClientBeginMongoDBDatabaseRedistributeThroughputOptions contains the optional parameters for the MongoDBResourcesClient.BeginMongoDBDatabaseRedistributeThroughput
+// method.
+type MongoDBResourcesClientBeginMongoDBDatabaseRedistributeThroughputOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MongoDBResourcesClientBeginMongoDBDatabaseRetrieveThroughputDistributionOptions contains the optional parameters for the
+// MongoDBResourcesClient.BeginMongoDBDatabaseRetrieveThroughputDistribution method.
+type MongoDBResourcesClientBeginMongoDBDatabaseRetrieveThroughputDistributionOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -4373,6 +4414,16 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// ResourceRestoreParameters - Parameters to indicate the information about the restore.
+type ResourceRestoreParameters struct {
+	// The id of the restorable database account from which the restore has to be initiated. For example:
+	// /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
+	RestoreSource *string `json:"restoreSource,omitempty"`
+
+	// Time to which the account has to be restored (ISO-8601 format).
+	RestoreTimestampInUTC *time.Time `json:"restoreTimestampInUtc,omitempty"`
+}
+
 // RestorableDatabaseAccountGetResult - A Azure Cosmos DB restorable database account.
 type RestorableDatabaseAccountGetResult struct {
 	// The location of the resource group to which the resource belongs.
@@ -4790,6 +4841,9 @@ type RestorableSQLContainerPropertiesResourceContainer struct {
 	// The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
 	// Default time to live
 	DefaultTTL *int32 `json:"defaultTtl,omitempty"`
 
@@ -4798,6 +4852,9 @@ type RestorableSQLContainerPropertiesResourceContainer struct {
 
 	// The configuration of the partition key to be used for partitioning data into multiple partitions
 	PartitionKey *ContainerPartitionKey `json:"partitionKey,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
 
 	// The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos
 	// DB service.
@@ -4878,6 +4935,12 @@ type RestorableSQLDatabasePropertiesResource struct {
 type RestorableSQLDatabasePropertiesResourceDatabase struct {
 	// REQUIRED; Name of the Cosmos DB SQL database
 	ID *string `json:"id,omitempty"`
+
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
 
 	// READ-ONLY; A system generated property that specified the addressable path of the collections resource.
 	Colls *string `json:"_colls,omitempty" azure:"ro"`
@@ -5043,6 +5106,16 @@ type RestoreParameters struct {
 	TablesToRestore []*string `json:"tablesToRestore,omitempty"`
 }
 
+// RestoreParametersBase - Parameters to indicate the information about the restore.
+type RestoreParametersBase struct {
+	// The id of the restorable database account from which the restore has to be initiated. For example:
+	// /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
+	RestoreSource *string `json:"restoreSource,omitempty"`
+
+	// Time to which the account has to be restored (ISO-8601 format).
+	RestoreTimestampInUTC *time.Time `json:"restoreTimestampInUtc,omitempty"`
+}
+
 // RetrieveThroughputParameters - Cosmos DB retrieve throughput parameters object
 type RetrieveThroughputParameters struct {
 	// REQUIRED; Properties to retrieve throughput parameters object
@@ -5157,6 +5230,9 @@ type SQLContainerGetPropertiesResource struct {
 	// The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
 	// Default time to live
 	DefaultTTL *int32 `json:"defaultTtl,omitempty"`
 
@@ -5165,6 +5241,9 @@ type SQLContainerGetPropertiesResource struct {
 
 	// The configuration of the partition key to be used for partitioning data into multiple partitions
 	PartitionKey *ContainerPartitionKey `json:"partitionKey,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
 
 	// The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos
 	// DB service.
@@ -5228,6 +5307,9 @@ type SQLContainerResource struct {
 	// The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
 	// Default time to live
 	DefaultTTL *int32 `json:"defaultTtl,omitempty"`
 
@@ -5236,6 +5318,9 @@ type SQLContainerResource struct {
 
 	// The configuration of the partition key to be used for partitioning data into multiple partitions
 	PartitionKey *ContainerPartitionKey `json:"partitionKey,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
 
 	// The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos
 	// DB service.
@@ -5320,6 +5405,12 @@ type SQLDatabaseGetPropertiesResource struct {
 	// A system generated property that specified the addressable path of the collections resource.
 	Colls *string `json:"_colls,omitempty"`
 
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
+
 	// A system generated property that specifies the addressable path of the users resource.
 	Users *string `json:"_users,omitempty"`
 
@@ -5371,6 +5462,12 @@ type SQLDatabaseListResult struct {
 type SQLDatabaseResource struct {
 	// REQUIRED; Name of the Cosmos DB SQL database
 	ID *string `json:"id,omitempty"`
+
+	// Enum to indicate the mode of resource creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Parameters to indicate the information about the restore
+	RestoreParameters *ResourceRestoreParameters `json:"restoreParameters,omitempty"`
 }
 
 // SQLDedicatedGatewayRegionalServiceResource - Resource for a regional service location.
@@ -5590,6 +5687,20 @@ type SQLResourcesClientBeginSQLContainerRedistributeThroughputOptions struct {
 // SQLResourcesClientBeginSQLContainerRetrieveThroughputDistributionOptions contains the optional parameters for the SQLResourcesClient.BeginSQLContainerRetrieveThroughputDistribution
 // method.
 type SQLResourcesClientBeginSQLContainerRetrieveThroughputDistributionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SQLResourcesClientBeginSQLDatabaseRedistributeThroughputOptions contains the optional parameters for the SQLResourcesClient.BeginSQLDatabaseRedistributeThroughput
+// method.
+type SQLResourcesClientBeginSQLDatabaseRedistributeThroughputOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SQLResourcesClientBeginSQLDatabaseRetrieveThroughputDistributionOptions contains the optional parameters for the SQLResourcesClient.BeginSQLDatabaseRetrieveThroughputDistribution
+// method.
+type SQLResourcesClientBeginSQLDatabaseRetrieveThroughputDistributionOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

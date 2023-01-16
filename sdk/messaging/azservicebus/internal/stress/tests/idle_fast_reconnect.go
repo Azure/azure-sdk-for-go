@@ -24,7 +24,7 @@ func IdleFastReconnect(remainingArgs []string) {
 	sc.Track(startEvent)
 	defer sc.End()
 
-	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"subscriptionA"})
+	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"subscriptionA"}, nil)
 	defer cleanup()
 
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, &azservicebus.ClientOptions{

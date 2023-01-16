@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package azeventhubs
 
 import (
@@ -12,14 +13,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
 // DefaultConsumerGroup is the name of the default consumer group in the Event Hubs service.
 const DefaultConsumerGroup = "$Default"
 
+const defaultPrefetchSize = uint32(300)
+const defaultMaxCreditSize = uint32(2048)
+
 // StartPosition indicates the position to start receiving events within a partition.
 // The default position is Latest.
+//
+// You can set this in the options for ConsumerClient.
 type StartPosition struct {
 	// Offset will start the consumer after the specified offset. Can be exclusive
 	// or inclusive, based on the Inclusive property.
@@ -47,12 +54,15 @@ type StartPosition struct {
 }
 
 // PartitionClient is used to receive events from an Event Hub partition.
+//
+// This type is instantiated from the [ConsumerClient] type, using [ConsumerClient.NewPartitionClient].
 type PartitionClient struct {
 	retryOptions  RetryOptions
 	eventHub      string
 	consumerGroup string
 	partitionID   string
 	ownerLevel    *int64
+	prefetch      int32
 
 	offsetExpression string
 
@@ -66,39 +76,86 @@ type ReceiveEventsOptions struct {
 
 // ReceiveEvents receives events until 'count' events have been received or the context has
 // expired or been cancelled.
-func (cc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) ([]*ReceivedEventData, error) {
+//
+// If your ReceiveEvents call appears to be stuck there are some common causes:
+//
+//  1. The PartitionClientOptions.StartPosition defaults to "Latest" when the client is created. The connection
+//     is lazily initialized, so it's possible the link was initialized to a position after events you've sent.
+//     To make this deterministic, you can choose an explicit start point using sequence number, offset or a
+//     timestamp. See the [PartitionClientOptions.StartPosition] field for more details.
+//
+//  2. You might have sent the events to a different partition than intended. By default, batches that are
+//     created using [ProducerClient.NewEventDataBatch] do not target a specific partition. When a partition
+//     is not specified, Azure Event Hubs service will choose the partition the events will be sent to.
+//
+//     To fix this, you can specify a PartitionID as part of your [EventDataBatchOptions.PartitionID] options or
+//     open multiple [PartitionClient] instances, one for each partition. You can get the full list of partitions
+//     at runtime using [ConsumerClient.GetEventHubProperties]. See the "example_consuming_events_test.go" for
+//     an example of this pattern.
+//
+//  3. Network issues can cause internal retries. To see log messages related to this use the instructions in
+//     the example function "Example_enableLogging".
+func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) ([]*ReceivedEventData, error) {
 	var events []*ReceivedEventData
 
-	err := cc.links.Retry(ctx, EventConsumer, "ReceiveEvents", cc.partitionID, cc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) error {
+	prefetchDisabled := pc.prefetch < 0
+
+	err := pc.links.Retry(ctx, EventConsumer, "ReceiveEvents", pc.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) error {
 		events = nil
 
-		outstandingCredits := lwid.Link.Credits()
+		if prefetchDisabled {
+			remainingCredits := lwid.Link.Credits()
 
-		if count > int(outstandingCredits) {
-			newCredits := uint32(count) - outstandingCredits
+			if count > int(remainingCredits) {
+				newCredits := uint32(count) - remainingCredits
 
-			log.Writef(EventConsumer, "Have %d outstanding credit, only issuing %d credits", outstandingCredits, newCredits)
+				log.Writef(EventConsumer, "(%s) Have %d outstanding credit, only issuing %d credits", lwid.String(), remainingCredits, newCredits)
 
-			if err := lwid.Link.IssueCredit(newCredits); err != nil {
-				return err
+				if err := lwid.Link.IssueCredit(newCredits); err != nil {
+					log.Writef(EventConsumer, "(%s) Error when issuing credits: %s", lwid.String(), err)
+					return err
+				}
 			}
 		}
 
 		for {
 			amqpMessage, err := lwid.Link.Receive(ctx)
 
+			if internal.IsOwnershipLostError(err) {
+				log.Writef(EventConsumer, "(%s) Error, link ownership lost: %s", lwid.String(), err)
+				events = nil
+				return err
+			}
+
 			if err != nil {
 				prefetched := getAllPrefetched(lwid.Link, count-len(events))
 
 				for _, amqpMsg := range prefetched {
-					events = append(events, newReceivedEventData(amqpMsg))
+					re, err := newReceivedEventData(amqpMsg)
+
+					if err != nil {
+						log.Writef(EventConsumer, "(%s) Failed converting AMQP message to EventData: %s", lwid.String(), err)
+						return err
+					}
+
+					events = append(events, re)
+
+					if len(events) == count {
+						return nil
+					}
 				}
 
 				// this lets cancel errors just return
 				return err
 			}
 
-			receivedEvent := newReceivedEventData(amqpMessage)
+			receivedEvent, err := newReceivedEventData(amqpMessage)
+
+			if err != nil {
+				log.Writef(EventConsumer, "(%s) Failed converting AMQP message to EventData: %s", lwid.String(), err)
+				return err
+			}
+
 			events = append(events, receivedEvent)
 
 			if len(events) == count {
@@ -108,47 +165,64 @@ func (cc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 	})
 
 	if err != nil && len(events) == 0 {
-		// TODO: if we get a "partition ownership lost" we need to think about whether that's retryable.
-		return nil, internal.TransformError(err)
+		transformedErr := internal.TransformError(err)
+		log.Writef(EventConsumer, "No events received, returning error %s", transformedErr.Error())
+		return nil, transformedErr
 	}
 
-	cc.offsetExpression = formatOffsetExpressionForSequence(">", events[len(events)-1].SequenceNumber)
+	numEvents := len(events)
+	lastSequenceNumber := events[numEvents-1].SequenceNumber
+
+	pc.offsetExpression = formatOffsetExpressionForSequence(">", lastSequenceNumber)
+	log.Writef(EventConsumer, "%d Events received, moving sequence to %d", numEvents, lastSequenceNumber)
 	return events, nil
 }
 
-// Close closes the consumer's link and the underlying AMQP connection.
-func (cc *PartitionClient) Close(ctx context.Context) error {
-	if cc.links != nil {
-		return cc.links.Close(ctx)
+// Close releases resources for this client.
+func (pc *PartitionClient) Close(ctx context.Context) error {
+	if pc.links != nil {
+		return pc.links.Close(ctx)
 	}
 
 	return nil
 }
 
-func (s *PartitionClient) getEntityPath(partitionID string) string {
-	return fmt.Sprintf("%s/ConsumerGroups/%s/Partitions/%s", s.eventHub, s.consumerGroup, partitionID)
+func (pc *PartitionClient) getEntityPath(partitionID string) string {
+	return fmt.Sprintf("%s/ConsumerGroups/%s/Partitions/%s", pc.eventHub, pc.consumerGroup, partitionID)
 }
 
-const defaultLinkRxBuffer = 2048
-
-func (s *PartitionClient) newEventHubConsumerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (internal.AMQPReceiverCloser, error) {
+func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (internal.AMQPReceiverCloser, error) {
 	var props map[string]interface{}
 
-	if s.ownerLevel != nil {
+	if pc.ownerLevel != nil {
 		props = map[string]interface{}{
-			"com.microsoft:epoch": *s.ownerLevel,
+			"com.microsoft:epoch": *pc.ownerLevel,
 		}
 	}
 
-	receiver, err := session.NewReceiver(ctx, entityPath, &amqp.ReceiverOptions{
+	receiverOptions := &amqp.ReceiverOptions{
 		SettlementMode: to.Ptr(amqp.ModeFirst),
-		ManualCredits:  true,
-		Credit:         defaultLinkRxBuffer,
 		Filters: []amqp.LinkFilter{
-			amqp.LinkFilterSelector(s.offsetExpression),
+			amqp.LinkFilterSelector(pc.offsetExpression),
 		},
 		Properties: props,
-	})
+	}
+
+	if pc.prefetch > 0 {
+		log.Writef(EventConsumer, "Enabling prefetch with %d credits", pc.prefetch)
+		receiverOptions.Credit = uint32(pc.prefetch)
+	} else if pc.prefetch == 0 {
+		log.Writef(EventConsumer, "Enabling prefetch with %d credits", defaultPrefetchSize)
+		receiverOptions.Credit = defaultPrefetchSize
+	} else {
+		// prefetch is disabled, enable manual credits and enable
+		// a reasonable default max for the buffer.
+		log.Writef(EventConsumer, "Disabling prefetch")
+		receiverOptions.ManualCredits = true
+		receiverOptions.Credit = defaultMaxCreditSize
+	}
+
+	receiver, err := session.NewReceiver(ctx, entityPath, receiverOptions)
 
 	if err != nil {
 		return nil, err
@@ -164,7 +238,7 @@ func (pc *PartitionClient) init(ctx context.Context) error {
 }
 
 type partitionClientArgs struct {
-	namespace *internal.Namespace
+	namespace internal.NamespaceForAMQPLinks
 
 	eventHub    string
 	partitionID string
@@ -174,9 +248,9 @@ type partitionClientArgs struct {
 	retryOptions RetryOptions
 }
 
-func newPartitionClient(args partitionClientArgs, options *NewPartitionClientOptions) (*PartitionClient, error) {
+func newPartitionClient(args partitionClientArgs, options *PartitionClientOptions) (*PartitionClient, error) {
 	if options == nil {
-		options = &NewPartitionClientOptions{}
+		options = &PartitionClientOptions{}
 	}
 
 	offsetExpr, err := getOffsetExpression(options.StartPosition)
@@ -191,6 +265,7 @@ func newPartitionClient(args partitionClientArgs, options *NewPartitionClientOpt
 		ownerLevel:       options.OwnerLevel,
 		consumerGroup:    args.consumerGroup,
 		offsetExpression: offsetExpr,
+		prefetch:         options.Prefetch,
 		retryOptions:     args.retryOptions,
 	}
 

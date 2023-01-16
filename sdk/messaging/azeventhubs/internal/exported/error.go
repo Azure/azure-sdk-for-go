@@ -5,19 +5,19 @@ package exported
 
 import "fmt"
 
-// Code is an error code, usable by consuming code to work with
+// ErrorCode is an error code, usable by consuming code to work with
 // programatically.
-type Code string
+type ErrorCode string
 
 const (
-	// CodeConnectionLost means our connection was lost and all retry attempts failed.
+	// ErrorCodeConnectionLost means our connection was lost and all retry attempts failed.
 	// This typically reflects an extended outage or connection disruption and may
 	// require manual intervention.
-	CodeConnectionLost Code = "connlost"
+	ErrorCodeConnectionLost ErrorCode = "connlost"
 
-	// CodeOwnershipLost means that a partition that you were reading from was opened
+	// ErrorCodeOwnershipLost means that a partition that you were reading from was opened
 	// by another link with a higher epoch/owner level.
-	CodeOwnershipLost = "ownershiplost"
+	ErrorCodeOwnershipLost ErrorCode = "ownershiplost"
 )
 
 // Error represents an Event Hub specific error.
@@ -27,7 +27,7 @@ const (
 type Error struct {
 	// Code is a stable error code which can be used as part of programatic error handling.
 	// The codes can expand in the future, but the values (and their meaning) will remain the same.
-	Code     Code
+	Code     ErrorCode
 	innerErr error
 }
 
@@ -43,7 +43,7 @@ func (e *Error) Error() string {
 // NewError creates a new `Error` instance.
 // NOTE: this function is only exported so it can be used by the `internal`
 // package. It is not available for customers.
-func NewError(code Code, innerErr error) error {
+func NewError(code ErrorCode, innerErr error) error {
 	return &Error{
 		Code:     code,
 		innerErr: innerErr,

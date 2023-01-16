@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkDelete.json
 func ExampleVirtualNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,8 +38,8 @@ func ExampleVirtualNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkGet.json
-func ExampleVirtualNetworksClient_Get_virtualNetworkGet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGet.json
+func ExampleVirtualNetworksClient_Get_getVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,8 +57,8 @@ func ExampleVirtualNetworksClient_Get_virtualNetworkGet() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkGetWithSubnetDelegation.json
-func ExampleVirtualNetworksClient_Get_virtualNetworkGetWithSubnetDelegation() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGetWithSubnetDelegation.json
+func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithADelegatedSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -76,8 +76,8 @@ func ExampleVirtualNetworksClient_Get_virtualNetworkGetWithSubnetDelegation() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkGetWithServiceAssociationLink.json
-func ExampleVirtualNetworksClient_Get_virtualNetworkGetWithServiceAssociationLink() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGetWithServiceAssociationLink.json
+func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithServiceAssociationLinks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -95,8 +95,8 @@ func ExampleVirtualNetworksClient_Get_virtualNetworkGetWithServiceAssociationLin
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkCreate.json
-func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkCreate.json
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,8 +127,8 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkCreateWithBgpCommunities.json
-func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateWithBgpCommunities() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkCreateWithBgpCommunities.json
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithBgpCommunities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -168,8 +168,8 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateWithBg
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkCreateSubnetWithDelegation.json
-func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateSubnetWithDelegation() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkCreateSubnetWithDelegation.json
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithDelegatedSubnets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -213,8 +213,8 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateSubnet
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkCreateWithEncryption.json
-func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateWithEncryption() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkCreateWithEncryption.json
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -255,8 +255,8 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateWithEn
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkCreateServiceEndpoints.json
-func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateServiceEndpoints() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkCreateServiceEndpoints.json
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithServiceEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -297,8 +297,8 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateServic
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkCreateServiceEndpointPolicy.json
-func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateServiceEndpointPolicy() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkCreateServiceEndpointPolicy.json
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithServiceEndpointsAndServiceEndpointPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -343,8 +343,8 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateServic
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkCreateSubnet.json
-func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateSubnet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkCreateSubnet.json
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -381,8 +381,8 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateSubnet
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkCreateSubnetWithAddressPrefixes.json
-func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateSubnetWithAddressPrefixes() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkCreateSubnetWithAddressPrefixes.json
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSubnetContainingAddressPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -421,7 +421,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_virtualNetworkCreateSubnet
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkUpdateTags.json
 func ExampleVirtualNetworksClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +445,7 @@ func ExampleVirtualNetworksClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkListAll.json
 func ExampleVirtualNetworksClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,7 +469,7 @@ func ExampleVirtualNetworksClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkList.json
 func ExampleVirtualNetworksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -493,7 +493,7 @@ func ExampleVirtualNetworksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkCheckIPAddressAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkCheckIPAddressAvailability.json
 func ExampleVirtualNetworksClient_CheckIPAddressAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +512,7 @@ func ExampleVirtualNetworksClient_CheckIPAddressAvailability() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkListUsage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkListUsage.json
 func ExampleVirtualNetworksClient_NewListUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -526,6 +526,39 @@ func ExampleVirtualNetworksClient_NewListUsagePager() {
 	pager := client.NewListUsagePager("rg1", "vnetName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGetDdosProtectionStatus.json
+func ExampleVirtualNetworksClient_BeginListDdosProtectionStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginListDdosProtectionStatus(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientBeginListDdosProtectionStatusOptions{Top: to.Ptr[int32](75),
+		SkipToken: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	for res.More() {
+		nextResult, err := res.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}

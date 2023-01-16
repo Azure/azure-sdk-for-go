@@ -13,32 +13,32 @@ import (
 )
 
 // SettingFields are fields to retrieve from a configuration setting.
-type SettingFields string
+type SettingFields = generated.SettingFields
 
 const (
 	// The primary identifier of a configuration setting.
-	SettingFieldsKey = SettingFields(generated.Enum6Key)
+	SettingFieldsKey SettingFields = generated.SettingFieldsKey
 
 	// A label used to group configuration settings.
-	SettingFieldsLabel = SettingFields(generated.Enum6Label)
+	SettingFieldsLabel SettingFields = generated.SettingFieldsLabel
 
 	// The value of the configuration setting.
-	SettingFieldsValue = SettingFields(generated.Enum6Value)
+	SettingFieldsValue SettingFields = generated.SettingFieldsValue
 
 	// The content type of the configuration setting's value.
-	SettingFieldsContentType = SettingFields(generated.Enum6ContentType)
+	SettingFieldsContentType SettingFields = generated.SettingFieldsContentType
 
 	// An ETag indicating the version of a configuration setting within a configuration store.
-	SettingFieldsETag = SettingFields(generated.Enum6Etag)
+	SettingFieldsETag SettingFields = generated.SettingFieldsEtag
 
 	// The last time a modifying operation was performed on the given configuration setting.
-	SettingFieldsLastModified = SettingFields(generated.Enum6LastModified)
+	SettingFieldsLastModified SettingFields = generated.SettingFieldsLastModified
 
 	// A value indicating whether the configuration setting is read-only.
-	SettingFieldsIsReadOnly = SettingFields(generated.Enum6Locked)
+	SettingFieldsIsReadOnly SettingFields = generated.SettingFieldsLocked
 
 	// A list of tags that can help identify what a configuration setting may be applicable for.
-	SettingFieldsTags = SettingFields(generated.Enum6Tags)
+	SettingFieldsTags SettingFields = generated.SettingFieldsTags
 )
 
 // SettingSelector is a set of options that allows selecting a filtered set of configuration setting entities
@@ -72,19 +72,39 @@ func AllSettingFields() []SettingFields {
 	}
 }
 
-func (sc SettingSelector) toGenerated() *generated.AzureAppConfigurationClientGetRevisionsOptions {
+func (sc SettingSelector) toGeneratedGetRevisions() *generated.AzureAppConfigurationClientGetRevisionsOptions {
 	var dt *string
 	if sc.AcceptDateTime != nil {
 		str := sc.AcceptDateTime.Format(timeFormat)
 		dt = &str
 	}
 
-	sf := make([]generated.Enum6, len(sc.Fields))
+	sf := make([]SettingFields, len(sc.Fields))
 	for i := range sc.Fields {
-		sf[i] = (generated.Enum6)(sc.Fields[i])
+		sf[i] = SettingFields(sc.Fields[i])
 	}
 
 	return &generated.AzureAppConfigurationClientGetRevisionsOptions{
+		After:  dt,
+		Key:    sc.KeyFilter,
+		Label:  sc.LabelFilter,
+		Select: sf,
+	}
+}
+
+func (sc SettingSelector) toGeneratedGetKeyValues() *generated.AzureAppConfigurationClientGetKeyValuesOptions {
+	var dt *string
+	if sc.AcceptDateTime != nil {
+		str := sc.AcceptDateTime.Format(timeFormat)
+		dt = &str
+	}
+
+	sf := make([]SettingFields, len(sc.Fields))
+	for i := range sc.Fields {
+		sf[i] = SettingFields(sc.Fields[i])
+	}
+
+	return &generated.AzureAppConfigurationClientGetKeyValuesOptions{
 		After:  dt,
 		Key:    sc.KeyFilter,
 		Label:  sc.LabelFilter,

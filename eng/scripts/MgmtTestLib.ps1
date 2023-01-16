@@ -21,8 +21,8 @@ function Invoke-MgmtTestgen ()
         [string]$autorestPath = "",
         [string]$config = "autorest.md",
         [string]$autorestVersion = "3.8.2",
-        [string]$goExtension = "@autorest/go@4.0.0-preview.44",
-        [string]$testExtension = "@autorest/gotest@4.3.0",
+        [string]$goExtension = "@autorest/go@4.0.0-preview.45",
+        [string]$testExtension = "@autorest/gotest@4.5.0",
         [string]$outputFolder
     )
     if ($clean)

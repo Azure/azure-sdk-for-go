@@ -70,7 +70,7 @@ type BlobUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (s *BlobRecordedTestsSuite) TestCreateBlobClient() {
+func (s *BlobUnrecordedTestsSuite) TestCreateBlobClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

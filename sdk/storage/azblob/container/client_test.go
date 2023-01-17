@@ -1705,7 +1705,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
 }
 
-func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

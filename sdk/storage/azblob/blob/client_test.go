@@ -70,7 +70,7 @@ type BlobUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (s *BlobUnrecordedTestsSuite) TestCreateBlobClient() {
+func (s *BlobRecordedTestsSuite) TestCreateBlobClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -382,7 +382,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, nil)
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
@@ -488,7 +488,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASDest() {
 		_require.Nil(err)
 
 		containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+strconv.Itoa(i), svcClient)
-		_, err := containerClient.SetAccessPolicy(context.Background(), nil, nil)
+		_, err := containerClient.SetAccessPolicy(context.Background(), nil)
 		_require.Nil(err)
 
 		blobClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
@@ -1023,7 +1023,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions) // So that we don't have to create a SAS
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions) // So that we don't have to create a SAS
 	_require.Nil(err)
 
 	// Must copy across accounts so it takes time to copy

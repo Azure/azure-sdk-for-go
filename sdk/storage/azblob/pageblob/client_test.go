@@ -11,7 +11,6 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -415,7 +414,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &container.SetAccessPolicyOptions{Access: to.Ptr(container.PublicAccessTypeBlob)})
+	_, err = containerClient.SetAccessPolicy(context.Background(), &container.SetAccessPolicyOptions{Access: to.Ptr(container.PublicAccessTypeBlob)})
 	_require.Nil(err)
 
 	srcBlob := createNewPageBlob(context.Background(), _require, "src"+testcommon.GenerateBlobName(testName), containerClient)
@@ -3962,7 +3961,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestCreatePageBlobWithTags() {
 
 	// Test FilterBlobs API
 	where := "\"azure\"='blob'"
-	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.Nil(err)
 	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
 	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
@@ -4003,9 +4002,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
 
 	// Tags with spaces
 	where := "\"GO \"='.Net'"
-	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{
-		Where: &where,
-	})
+	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.Nil(err)
 	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "GO ")
 	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, ".Net")

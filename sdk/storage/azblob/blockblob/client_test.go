@@ -421,7 +421,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //	}
 
 // nolint
-func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -467,7 +467,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 }
 
 // nolint
-func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2055,7 +2055,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockListReturnsVID() {
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
+func (s *BlockBlobRecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2117,7 +2117,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	_require.NotEqual(len(found), 0)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestORSSource() {
+func (s *BlockBlobRecordedTestsSuite) TestORSSource() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2247,7 +2247,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestORSSource() {
 //	}
 // }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTags() {
+func (s *BlockBlobRecordedTestsSuite) TestSetBlobTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2338,7 +2338,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	}
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithVID() {
+func (s *BlockBlobRecordedTestsSuite) TestSetBlobTagsWithVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2392,7 +2392,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithVID() {
 	_require.Nil(blobGetTagsResponse.BlobTagSet)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	// _context := getTestContext(testName)
@@ -2429,7 +2429,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharacters
 	}
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	// _context := getTestContext(testName)
@@ -2689,7 +2689,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //	// _require.Equal(resp.RawResponse.StatusCode, 202)
 // }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestGetPropertiesReturnsTagsCount() {
+func (s *BlockBlobRecordedTestsSuite) TestGetPropertiesReturnsTagsCount() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2748,7 +2748,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagForSnapshot() {
 }
 
 // TODO: Once new pacer is done.
-func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
+func (s *BlockBlobRecordedTestsSuite) TestListBlobReturnsTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2790,7 +2790,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	}
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
+func (s *BlockBlobRecordedTestsSuite) TestFilterBlobsWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2828,14 +2828,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 
 	// Test invalid tag
 	where := "\"tag4\"='fourthtag'"
-	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.Nil(err)
 	_require.Equal(len(lResp.Blobs), 0)
 
 	// Test multiple valid tags
 	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
 	// where := "foo=\"value 1\""
-	lResp, err = svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	lResp, err = svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.Nil(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 2)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[1])
@@ -2843,7 +2843,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 
 	// Test tags with spaces
 	where = "\"tag key\"='tag value'"
-	lResp, err = svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	lResp, err = svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.Nil(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
@@ -3243,7 +3243,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
 // }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3450,7 +3450,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //	_require.EqualValues(actualBlobData, blobData)
 // }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
+func (s *BlockBlobRecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

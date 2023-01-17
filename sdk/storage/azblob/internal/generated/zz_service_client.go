@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
 	endpoint string
-	pl       runtime.Pipeline
+	pl runtime.Pipeline
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
@@ -34,7 +34,7 @@ type ServiceClient struct {
 func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 	client := &ServiceClient{
 		endpoint: endpoint,
-		pl:       pl,
+		pl: pl,
 	}
 	return client
 }
@@ -44,9 +44,10 @@ func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 // be scoped within the expression to a single container.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
+// where - Filters the results to return only to return only blobs whose tags match the specified expression.
 // options - ServiceClientFilterBlobsOptions contains the optional parameters for the ServiceClient.FilterBlobs method.
-func (client *ServiceClient) FilterBlobs(ctx context.Context, options *ServiceClientFilterBlobsOptions) (ServiceClientFilterBlobsResponse, error) {
-	req, err := client.filterBlobsCreateRequest(ctx, options)
+func (client *ServiceClient) FilterBlobs(ctx context.Context, where string, options *ServiceClientFilterBlobsOptions) (ServiceClientFilterBlobsResponse, error) {
+	req, err := client.filterBlobsCreateRequest(ctx, where, options)
 	if err != nil {
 		return ServiceClientFilterBlobsResponse{}, err
 	}
@@ -61,7 +62,7 @@ func (client *ServiceClient) FilterBlobs(ctx context.Context, options *ServiceCl
 }
 
 // filterBlobsCreateRequest creates the FilterBlobs request.
-func (client *ServiceClient) filterBlobsCreateRequest(ctx context.Context, options *ServiceClientFilterBlobsOptions) (*policy.Request, error) {
+func (client *ServiceClient) filterBlobsCreateRequest(ctx context.Context, where string, options *ServiceClientFilterBlobsOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -71,9 +72,7 @@ func (client *ServiceClient) filterBlobsCreateRequest(ctx context.Context, optio
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	if options != nil && options.Where != nil {
-		reqQP.Set("where", *options.Where)
-	}
+	reqQP.Set("where", where)
 	if options != nil && options.Marker != nil {
 		reqQP.Set("marker", *options.Marker)
 	}
@@ -549,3 +548,4 @@ func (client *ServiceClient) submitBatchHandleResponse(resp *http.Response) (Ser
 	}
 	return result, nil
 }
+

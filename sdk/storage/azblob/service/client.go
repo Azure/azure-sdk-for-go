@@ -277,8 +277,8 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 // https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
-func (s *Client) FilterBlobs(ctx context.Context, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
+func (s *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
 	serviceFilterBlobsOptions := o.format()
-	resp, err := s.generated().FilterBlobs(ctx, serviceFilterBlobsOptions)
+	resp, err := s.generated().FilterBlobs(ctx, where, serviceFilterBlobsOptions)
 	return resp, err
 }

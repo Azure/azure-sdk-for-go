@@ -219,8 +219,6 @@ type FilterBlobsOptions struct {
 	// of the results. For this reason, it is possible that the service will
 	// return fewer results than specified by maxresults, or than the default of 5000.
 	MaxResults *int32
-	// Filters the results to return only to return only blobs whose tags match the specified expression.
-	Where *string
 }
 
 func (o *FilterBlobsOptions) format() *generated.ServiceClientFilterBlobsOptions {
@@ -230,6 +228,5 @@ func (o *FilterBlobsOptions) format() *generated.ServiceClientFilterBlobsOptions
 	return &generated.ServiceClientFilterBlobsOptions{
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
-		Where:      o.Where,
 	}
 }

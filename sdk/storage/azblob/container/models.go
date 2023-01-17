@@ -257,16 +257,25 @@ type SetAccessPolicyOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	AccessConditions *AccessConditions
+	ContainerACL     []*SignedIdentifier
 }
 
-func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions, []*SignedIdentifier, error) {
 	if o == nil {
-		return nil, nil, nil
+		return nil, nil, nil, nil, nil
+	}
+	if o.ContainerACL != nil {
+		for _, c := range o.ContainerACL {
+			err := formatTime(c)
+			if err != nil {
+				return nil, nil, nil, nil, err
+			}
+		}
 	}
 	lac, mac := exported.FormatContainerAccessConditions(o.AccessConditions)
 	return &generated.ContainerClientSetAccessPolicyOptions{
 		Access: o.Access,
-	}, lac, mac
+	}, lac, mac, o.ContainerACL, nil
 }
 
 func formatTime(c *SignedIdentifier) error {

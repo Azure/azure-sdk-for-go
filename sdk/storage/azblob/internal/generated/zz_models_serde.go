@@ -25,11 +25,11 @@ func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start  *timeRFC3339 `xml:"Start"`
+		Start *timeRFC3339 `xml:"Start"`
 	}{
-		alias:  (*alias)(&a),
+		alias: (*alias)(&a),
 		Expiry: (*timeRFC3339)(a.Expiry),
-		Start:  (*timeRFC3339)(a.Start),
+		Start: (*timeRFC3339)(a.Start),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -40,7 +40,7 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	aux := &struct {
 		*alias
 		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start  *timeRFC3339 `xml:"Start"`
+		Start *timeRFC3339 `xml:"Start"`
 	}{
 		alias: (*alias)(a),
 	}
@@ -87,7 +87,7 @@ func (b BlobHierarchyListSegment) MarshalXML(e *xml.Encoder, start xml.StartElem
 	type alias BlobHierarchyListSegment
 	aux := &struct {
 		*alias
-		BlobItems    *[]*BlobItem   `xml:"Blob"`
+		BlobItems *[]*BlobItem `xml:"Blob"`
 		BlobPrefixes *[]*BlobPrefix `xml:"BlobPrefix"`
 	}{
 		alias: (*alias)(&b),
@@ -106,7 +106,7 @@ func (b *BlobItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	type alias BlobItem
 	aux := &struct {
 		*alias
-		Metadata   additionalProperties `xml:"Metadata"`
+		Metadata additionalProperties `xml:"Metadata"`
 		OrMetadata additionalProperties `xml:"OrMetadata"`
 	}{
 		alias: (*alias)(b),
@@ -124,25 +124,25 @@ func (b BlobProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error
 	type alias BlobProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime        *timeRFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5                  *string      `xml:"Content-MD5"`
-		CopyCompletionTime          *timeRFC1123 `xml:"CopyCompletionTime"`
-		CreationTime                *timeRFC1123 `xml:"Creation-Time"`
-		DeletedTime                 *timeRFC1123 `xml:"DeletedTime"`
-		ExpiresOn                   *timeRFC1123 `xml:"Expiry-Time"`
+		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5 *string `xml:"Content-MD5"`
+		CopyCompletionTime *timeRFC1123 `xml:"CopyCompletionTime"`
+		CreationTime *timeRFC1123 `xml:"Creation-Time"`
+		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
+		ExpiresOn *timeRFC1123 `xml:"Expiry-Time"`
 		ImmutabilityPolicyExpiresOn *timeRFC1123 `xml:"ImmutabilityPolicyUntilDate"`
-		LastAccessedOn              *timeRFC1123 `xml:"LastAccessTime"`
-		LastModified                *timeRFC1123 `xml:"Last-Modified"`
+		LastAccessedOn *timeRFC1123 `xml:"LastAccessTime"`
+		LastModified *timeRFC1123 `xml:"Last-Modified"`
 	}{
-		alias:                       (*alias)(&b),
-		AccessTierChangeTime:        (*timeRFC1123)(b.AccessTierChangeTime),
-		CopyCompletionTime:          (*timeRFC1123)(b.CopyCompletionTime),
-		CreationTime:                (*timeRFC1123)(b.CreationTime),
-		DeletedTime:                 (*timeRFC1123)(b.DeletedTime),
-		ExpiresOn:                   (*timeRFC1123)(b.ExpiresOn),
+		alias: (*alias)(&b),
+		AccessTierChangeTime: (*timeRFC1123)(b.AccessTierChangeTime),
+		CopyCompletionTime: (*timeRFC1123)(b.CopyCompletionTime),
+		CreationTime: (*timeRFC1123)(b.CreationTime),
+		DeletedTime: (*timeRFC1123)(b.DeletedTime),
+		ExpiresOn: (*timeRFC1123)(b.ExpiresOn),
 		ImmutabilityPolicyExpiresOn: (*timeRFC1123)(b.ImmutabilityPolicyExpiresOn),
-		LastAccessedOn:              (*timeRFC1123)(b.LastAccessedOn),
-		LastModified:                (*timeRFC1123)(b.LastModified),
+		LastAccessedOn: (*timeRFC1123)(b.LastAccessedOn),
+		LastModified: (*timeRFC1123)(b.LastModified),
 	}
 	if b.ContentMD5 != nil {
 		encodedContentMD5 := runtime.EncodeByteArray(b.ContentMD5, runtime.Base64StdFormat)
@@ -156,15 +156,15 @@ func (b *BlobProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) er
 	type alias BlobProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime        *timeRFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5                  *string      `xml:"Content-MD5"`
-		CopyCompletionTime          *timeRFC1123 `xml:"CopyCompletionTime"`
-		CreationTime                *timeRFC1123 `xml:"Creation-Time"`
-		DeletedTime                 *timeRFC1123 `xml:"DeletedTime"`
-		ExpiresOn                   *timeRFC1123 `xml:"Expiry-Time"`
+		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`
+		ContentMD5 *string `xml:"Content-MD5"`
+		CopyCompletionTime *timeRFC1123 `xml:"CopyCompletionTime"`
+		CreationTime *timeRFC1123 `xml:"Creation-Time"`
+		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
+		ExpiresOn *timeRFC1123 `xml:"Expiry-Time"`
 		ImmutabilityPolicyExpiresOn *timeRFC1123 `xml:"ImmutabilityPolicyUntilDate"`
-		LastAccessedOn              *timeRFC1123 `xml:"LastAccessTime"`
-		LastModified                *timeRFC1123 `xml:"Last-Modified"`
+		LastAccessedOn *timeRFC1123 `xml:"LastAccessTime"`
+		LastModified *timeRFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(b),
 	}
@@ -208,7 +208,7 @@ func (b BlockList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	type alias BlockList
 	aux := &struct {
 		*alias
-		CommittedBlocks   *[]*Block `xml:"CommittedBlocks>Block"`
+		CommittedBlocks *[]*Block `xml:"CommittedBlocks>Block"`
 		UncommittedBlocks *[]*Block `xml:"UncommittedBlocks>Block"`
 	}{
 		alias: (*alias)(&b),
@@ -228,8 +228,8 @@ func (b BlockLookupList) MarshalXML(e *xml.Encoder, start xml.StartElement) erro
 	type alias BlockLookupList
 	aux := &struct {
 		*alias
-		Committed   *[]*string `xml:"Committed"`
-		Latest      *[]*string `xml:"Latest"`
+		Committed *[]*string `xml:"Committed"`
+		Latest *[]*string `xml:"Latest"`
 		Uncommitted *[]*string `xml:"Uncommitted"`
 	}{
 		alias: (*alias)(&b),
@@ -267,11 +267,11 @@ func (c ContainerProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) 
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
-		DeletedTime  *timeRFC1123 `xml:"DeletedTime"`
+		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
 		LastModified *timeRFC1123 `xml:"Last-Modified"`
 	}{
-		alias:        (*alias)(&c),
-		DeletedTime:  (*timeRFC1123)(c.DeletedTime),
+		alias: (*alias)(&c),
+		DeletedTime: (*timeRFC1123)(c.DeletedTime),
 		LastModified: (*timeRFC1123)(c.LastModified),
 	}
 	return e.EncodeElement(aux, start)
@@ -282,7 +282,7 @@ func (c *ContainerProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElemen
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
-		DeletedTime  *timeRFC1123 `xml:"DeletedTime"`
+		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
 		LastModified *timeRFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(c),
@@ -317,7 +317,7 @@ func (g GeoReplication) MarshalXML(e *xml.Encoder, start xml.StartElement) error
 		*alias
 		LastSyncTime *timeRFC1123 `xml:"LastSyncTime"`
 	}{
-		alias:        (*alias)(&g),
+		alias: (*alias)(&g),
 		LastSyncTime: (*timeRFC1123)(g.LastSyncTime),
 	}
 	return e.EncodeElement(aux, start)
@@ -360,7 +360,7 @@ func (p PageList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	aux := &struct {
 		*alias
 		ClearRange *[]*ClearRange `xml:"ClearRange"`
-		PageRange  *[]*PageRange  `xml:"PageRange"`
+		PageRange *[]*PageRange `xml:"PageRange"`
 	}{
 		alias: (*alias)(&p),
 	}
@@ -402,8 +402,8 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "Message":
-			err = unpopulate(val, "Message", &s.Message)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Message", &s.Message)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -433,11 +433,11 @@ func (u UserDelegationKey) MarshalXML(e *xml.Encoder, start xml.StartElement) er
 	aux := &struct {
 		*alias
 		SignedExpiry *timeRFC3339 `xml:"SignedExpiry"`
-		SignedStart  *timeRFC3339 `xml:"SignedStart"`
+		SignedStart *timeRFC3339 `xml:"SignedStart"`
 	}{
-		alias:        (*alias)(&u),
+		alias: (*alias)(&u),
 		SignedExpiry: (*timeRFC3339)(u.SignedExpiry),
-		SignedStart:  (*timeRFC3339)(u.SignedStart),
+		SignedStart: (*timeRFC3339)(u.SignedStart),
 	}
 	return e.EncodeElement(aux, start)
 }
@@ -448,7 +448,7 @@ func (u *UserDelegationKey) UnmarshalXML(d *xml.Decoder, start xml.StartElement)
 	aux := &struct {
 		*alias
 		SignedExpiry *timeRFC3339 `xml:"SignedExpiry"`
-		SignedStart  *timeRFC3339 `xml:"SignedStart"`
+		SignedStart *timeRFC3339 `xml:"SignedStart"`
 	}{
 		alias: (*alias)(u),
 	}
@@ -479,3 +479,4 @@ func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	}
 	return nil
 }
+

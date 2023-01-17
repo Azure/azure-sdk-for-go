@@ -332,3 +332,14 @@ directive:
       return $.
         replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`)
 ```
+
+
+### Change where parameter in blob filtering to be required
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FilterBlobsWhere
+  transform: >
+    $.required = true;
+```

@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewBlockBlobClient() instead.
 type BlockBlobClient struct {
 	endpoint string
-	pl       runtime.Pipeline
+	pl runtime.Pipeline
 }
 
 // NewBlockBlobClient creates a new instance of BlockBlobClient with the specified values.
@@ -34,7 +34,7 @@ type BlockBlobClient struct {
 func NewBlockBlobClient(endpoint string, pl runtime.Pipeline) *BlockBlobClient {
 	client := &BlockBlobClient{
 		endpoint: endpoint,
-		pl:       pl,
+		pl: pl,
 	}
 	return client
 }
@@ -958,3 +958,4 @@ func (client *BlockBlobClient) uploadHandleResponse(resp *http.Response) (BlockB
 	}
 	return result, nil
 }
+

@@ -6747,6 +6747,7 @@ func (b BackendAddressPoolPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "outboundRules", b.OutboundRules)
 	populate(objectMap, "provisioningState", b.ProvisioningState)
 	populate(objectMap, "tunnelInterfaces", b.TunnelInterfaces)
+	populate(objectMap, "virtualNetwork", b.VirtualNetwork)
 	return json.Marshal(objectMap)
 }
 
@@ -6788,6 +6789,9 @@ func (b *BackendAddressPoolPropertiesFormat) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tunnelInterfaces":
 			err = unpopulate(val, "TunnelInterfaces", &b.TunnelInterfaces)
+			delete(rawMsg, key)
+		case "virtualNetwork":
+			err = unpopulate(val, "VirtualNetwork", &b.VirtualNetwork)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -10066,7 +10070,7 @@ func (d *DdosProtectionPlanListResult) UnmarshalJSON(data []byte) error {
 func (d DdosProtectionPlanPropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "publicIpAddresses", d.PublicIPAddresses)
+	populate(objectMap, "publicIPAddresses", d.PublicIPAddresses)
 	populate(objectMap, "resourceGuid", d.ResourceGUID)
 	populate(objectMap, "virtualNetworks", d.VirtualNetworks)
 	return json.Marshal(objectMap)
@@ -10084,7 +10088,7 @@ func (d *DdosProtectionPlanPropertiesFormat) UnmarshalJSON(data []byte) error {
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &d.ProvisioningState)
 			delete(rawMsg, key)
-		case "publicIpAddresses":
+		case "publicIPAddresses":
 			err = unpopulate(val, "PublicIPAddresses", &d.PublicIPAddresses)
 			delete(rawMsg, key)
 		case "resourceGuid":
@@ -10315,6 +10319,37 @@ func (d *Delegation) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &d.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DelegationProperties.
+func (d DelegationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "provisioningState", d.ProvisioningState)
+	populate(objectMap, "serviceName", d.ServiceName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DelegationProperties.
+func (d *DelegationProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &d.ProvisioningState)
+			delete(rawMsg, key)
+		case "serviceName":
+			err = unpopulate(val, "ServiceName", &d.ServiceName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -21763,6 +21798,41 @@ func (p *Parameter) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type PartnerManagedResourceProperties.
+func (p PartnerManagedResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "internalLoadBalancerId", p.InternalLoadBalancerID)
+	populate(objectMap, "standardLoadBalancerId", p.StandardLoadBalancerID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PartnerManagedResourceProperties.
+func (p *PartnerManagedResourceProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &p.ID)
+			delete(rawMsg, key)
+		case "internalLoadBalancerId":
+			err = unpopulate(val, "InternalLoadBalancerID", &p.InternalLoadBalancerID)
+			delete(rawMsg, key)
+		case "standardLoadBalancerId":
+			err = unpopulate(val, "StandardLoadBalancerID", &p.StandardLoadBalancerID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type PatchObject.
 func (p PatchObject) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -22082,6 +22152,8 @@ func (p *PeerRouteList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PolicySettings.
 func (p PolicySettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "customBlockResponseBody", p.CustomBlockResponseBody)
+	populate(objectMap, "customBlockResponseStatusCode", p.CustomBlockResponseStatusCode)
 	populate(objectMap, "fileUploadLimitInMb", p.FileUploadLimitInMb)
 	populate(objectMap, "maxRequestBodySizeInKb", p.MaxRequestBodySizeInKb)
 	populate(objectMap, "mode", p.Mode)
@@ -22099,6 +22171,12 @@ func (p *PolicySettings) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "customBlockResponseBody":
+			err = unpopulate(val, "CustomBlockResponseBody", &p.CustomBlockResponseBody)
+			delete(rawMsg, key)
+		case "customBlockResponseStatusCode":
+			err = unpopulate(val, "CustomBlockResponseStatusCode", &p.CustomBlockResponseStatusCode)
+			delete(rawMsg, key)
 		case "fileUploadLimitInMb":
 			err = unpopulate(val, "FileUploadLimitInMb", &p.FileUploadLimitInMb)
 			delete(rawMsg, key)
@@ -30280,8 +30358,11 @@ func (v VirtualAppliancePropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "bootStrapConfigurationBlobs", v.BootStrapConfigurationBlobs)
 	populate(objectMap, "cloudInitConfiguration", v.CloudInitConfiguration)
 	populate(objectMap, "cloudInitConfigurationBlobs", v.CloudInitConfigurationBlobs)
+	populate(objectMap, "delegation", v.Delegation)
+	populate(objectMap, "deploymentType", v.DeploymentType)
 	populate(objectMap, "inboundSecurityRules", v.InboundSecurityRules)
 	populate(objectMap, "nvaSku", v.NvaSKU)
+	populate(objectMap, "partnerManagedResource", v.PartnerManagedResource)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "sshPublicKey", v.SSHPublicKey)
 	populate(objectMap, "virtualApplianceAsn", v.VirtualApplianceAsn)
@@ -30312,11 +30393,20 @@ func (v *VirtualAppliancePropertiesFormat) UnmarshalJSON(data []byte) error {
 		case "cloudInitConfigurationBlobs":
 			err = unpopulate(val, "CloudInitConfigurationBlobs", &v.CloudInitConfigurationBlobs)
 			delete(rawMsg, key)
+		case "delegation":
+			err = unpopulate(val, "Delegation", &v.Delegation)
+			delete(rawMsg, key)
+		case "deploymentType":
+			err = unpopulate(val, "DeploymentType", &v.DeploymentType)
+			delete(rawMsg, key)
 		case "inboundSecurityRules":
 			err = unpopulate(val, "InboundSecurityRules", &v.InboundSecurityRules)
 			delete(rawMsg, key)
 		case "nvaSku":
 			err = unpopulate(val, "NvaSKU", &v.NvaSKU)
+			delete(rawMsg, key)
+		case "partnerManagedResource":
+			err = unpopulate(val, "PartnerManagedResource", &v.PartnerManagedResource)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)

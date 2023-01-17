@@ -154,7 +154,7 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Timespan != nil {
-		reqQP.Set("timespan", *options.Timespan)
+		reqQP.Set("timespan", string(*options.Timespan))
 	}
 	if options != nil && options.Interval != nil {
 		reqQP.Set("interval", *options.Interval)

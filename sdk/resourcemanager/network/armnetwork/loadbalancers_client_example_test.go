@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerDelete.json
 func ExampleLoadBalancersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleLoadBalancersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerGet.json
 func ExampleLoadBalancersClient_Get_getLoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleLoadBalancersClient_Get_getLoadBalancer() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerGetInboundNatRulePortMapping.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerGetInboundNatRulePortMapping.json
 func ExampleLoadBalancersClient_Get_getLoadBalancerWithInboundNatRulePortMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleLoadBalancersClient_Get_getLoadBalancerWithInboundNatRulePortMapping
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerCreate.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancer() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateWithZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerCreateWithZones.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithFrontendIpInZone1() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithFronte
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateGatewayLoadBalancerConsumer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerCreateGatewayLoadBalancerConsumer.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerConsumerConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +358,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithOneBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -452,7 +452,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithTwoBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +540,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateGlobalTier.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerCreateGlobalTier.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGlobalTierAndOneRegionalLoadBalancerInItsBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -628,7 +628,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGlobal
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateStandardSku.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerCreateStandardSku.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithStandardSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -721,7 +721,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithStanda
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateWithInboundNatPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerCreateWithInboundNatPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithInboundNatPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -785,7 +785,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithInboun
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerCreateWithOutboundRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerCreateWithOutboundRules.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithOutboundRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -892,7 +892,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithOutbou
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerUpdateTags.json
 func ExampleLoadBalancersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -916,7 +916,7 @@ func ExampleLoadBalancersClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerListAll.json
 func ExampleLoadBalancersClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -940,7 +940,7 @@ func ExampleLoadBalancersClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerList.json
 func ExampleLoadBalancersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -964,7 +964,7 @@ func ExampleLoadBalancersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancersSwapPublicIpAddresses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancersSwapPublicIpAddresses.json
 func ExampleLoadBalancersClient_BeginSwapPublicIPAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1003,7 +1003,7 @@ func ExampleLoadBalancersClient_BeginSwapPublicIPAddresses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/QueryInboundNatRulePortMapping.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/QueryInboundNatRulePortMapping.json
 func ExampleLoadBalancersClient_BeginListInboundNatRulePortMappings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -55,6 +55,16 @@ type ProcessorOptions struct {
 	// from partition clients with a lower OwnerLevel.
 	// Default is 0.
 	OwnerLevel int64
+
+	// Prefetch represents the size of the internal prefetch buffer for each ProcessorPartitionClient
+	// created by this Processor. When set, this client will attempt to always maintain
+	// an internal cache of events of this size, asynchronously, increasing the odds that
+	// ReceiveEvents() will use a locally stored cache of events, rather than having to
+	// wait for events to arrive from the network.
+	//
+	// Defaults to 300 events if Prefetch == 0.
+	// Disabled if Prefetch < 0.
+	Prefetch int32
 }
 
 // StartPositions are used if there is no checkpoint for a partition in
@@ -82,6 +92,7 @@ type Processor struct {
 	defaultStartPositions   StartPositions
 	checkpointStore         CheckpointStore
 	ownerLevel              int64
+	prefetch                int32
 
 	// consumerClient is actually a *azeventhubs.ConsumerClient
 	// it's an interface here to make testing easier.
@@ -156,6 +167,7 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 			PerPartition: startPosPerPartition,
 			Default:      options.StartPositions.Default,
 		},
+		prefetch:              options.Prefetch,
 		consumerClientDetails: consumerClient.getDetails(),
 		runCalled:             make(chan struct{}),
 		lb:                    newProcessorLoadBalancer(checkpointStore, consumerClient.getDetails(), strategy, partitionDurationExpiration),
@@ -327,6 +339,7 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &PartitionClientOptions{
 		StartPosition: sp,
 		OwnerLevel:    &p.ownerLevel,
+		Prefetch:      p.prefetch,
 	})
 
 	if err != nil {

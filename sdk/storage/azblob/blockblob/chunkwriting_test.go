@@ -7,221 +7,164 @@
 package blockblob
 
 import (
+	"bytes"
 	"context"
 	"crypto/md5"
-	"errors"
 	"fmt"
 	"io"
-	"math/rand"
-	"os"
-	"path/filepath"
-	"strings"
-	"sync/atomic"
+	"sync"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-const finalFileName = "final"
+type fakeBlockBlob struct {
+	uncommittedBlocksMu sync.Mutex
+	UncommittedBlocks   map[string][]byte
+	CommittedBlocks     []byte
 
-type fakeBlockWriter struct {
-	path       string
-	block      int32
-	errOnBlock int32
-	stageDelay time.Duration
+	ErrOnBlockID int           // when > -1, StageBlock returns an error on a blockID >= ErrOnBlockID
+	StageDelay   time.Duration // when > 0, StageBlock sleeps for the specified duration before returning
 }
 
-func newFakeBlockWriter() *fakeBlockWriter {
-	generatedUuid, _ := uuid.New()
-	f := &fakeBlockWriter{
-		path:       filepath.Join(os.TempDir(), generatedUuid.String()),
-		block:      -1,
-		errOnBlock: -1,
+func newFakeBlockBlob() *fakeBlockBlob {
+	return &fakeBlockBlob{
+		UncommittedBlocks: map[string][]byte{},
+		ErrOnBlockID:      -1,
 	}
-
-	if err := os.MkdirAll(f.path, 0700); err != nil {
-		panic(err)
-	}
-
-	return f
 }
 
-func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.ReadSeekCloser, _ *StageBlockOptions) (StageBlockResponse, error) {
-	n := atomic.AddInt32(&f.block, 1)
-
-	if f.stageDelay > 0 {
-		time.Sleep(f.stageDelay)
-	}
-
-	if f.errOnBlock > -1 && n >= f.errOnBlock {
-		return StageBlockResponse{}, io.ErrNoProgress
-	}
-
-	blockID = strings.Replace(blockID, "/", "slash", -1)
-
-	fp, err := os.OpenFile(filepath.Join(f.path, blockID), os.O_CREATE+os.O_WRONLY, 0600)
-	if err != nil {
-		return StageBlockResponse{}, fmt.Errorf("could not create a stage block file: %s", err)
-	}
-	defer func(fp *os.File) {
-		_ = fp.Close()
-	}(fp)
-
-	if _, err := io.Copy(fp, body); err != nil {
+func (f *fakeBlockBlob) StageBlock(ctx context.Context, blockID string, body io.ReadSeekCloser, _ *StageBlockOptions) (StageBlockResponse, error) {
+	if err := ctx.Err(); err != nil {
 		return StageBlockResponse{}, err
+	}
+
+	data, err := io.ReadAll(body)
+	if err != nil {
+		return StageBlockResponse{}, err
+	}
+
+	var blockCount int
+	f.uncommittedBlocksMu.Lock()
+	if _, ok := f.UncommittedBlocks[blockID]; ok {
+		f.uncommittedBlocksMu.Unlock()
+		return StageBlockResponse{}, fmt.Errorf("duplicate block ID %s", blockID)
+	}
+	f.UncommittedBlocks[blockID] = data
+	blockCount = len(f.UncommittedBlocks)
+	f.uncommittedBlocksMu.Unlock()
+
+	if f.StageDelay > 0 {
+		select {
+		case <-ctx.Done():
+			return StageBlockResponse{}, ctx.Err()
+		case <-time.After(f.StageDelay):
+			// delay elapsed
+		}
+	}
+
+	if f.ErrOnBlockID > -1 && blockCount >= f.ErrOnBlockID {
+		return StageBlockResponse{}, io.ErrNoProgress
 	}
 
 	return StageBlockResponse{}, nil
 }
 
-func (f *fakeBlockWriter) CommitBlockList(_ context.Context, base64BlockIDs []string, _ *CommitBlockListOptions) (CommitBlockListResponse, error) {
-	dst, err := os.OpenFile(filepath.Join(f.path, finalFileName), os.O_CREATE+os.O_WRONLY, 0600)
-	if err != nil {
+func (f *fakeBlockBlob) CommitBlockList(ctx context.Context, base64BlockIDs []string, _ *CommitBlockListOptions) (CommitBlockListResponse, error) {
+	if err := ctx.Err(); err != nil {
 		return CommitBlockListResponse{}, err
 	}
-	defer func(dst *os.File) {
-		_ = dst.Close()
-	}(dst)
 
-	for _, id := range base64BlockIDs {
-		id = strings.Replace(id, "/", "slash", -1)
-		src, err := os.Open(filepath.Join(f.path, id))
-		if err != nil {
-			return CommitBlockListResponse{}, fmt.Errorf("could not combine chunk %s: %s", id, err)
+	for _, blockID := range base64BlockIDs {
+		toCommit, ok := f.UncommittedBlocks[blockID]
+		if !ok {
+			return CommitBlockListResponse{}, fmt.Errorf("didn't find block with ID %s", blockID)
 		}
-		_, err = io.Copy(dst, src)
-		if err != nil {
-			return CommitBlockListResponse{}, fmt.Errorf("problem writing final file from chunks: %s", err)
-		}
-		err = src.Close()
-		if err != nil {
-			return CommitBlockListResponse{}, fmt.Errorf("problem closing the source : %s", err)
-		}
+
+		f.CommittedBlocks = append(f.CommittedBlocks, toCommit...)
+		delete(f.UncommittedBlocks, blockID)
 	}
+
 	return CommitBlockListResponse{}, nil
 }
 
-func (f *fakeBlockWriter) cleanup() {
-	err := os.RemoveAll(f.path)
-	if err != nil {
-		return
+func (f *fakeBlockBlob) Upload(ctx context.Context, body io.ReadSeekCloser, _ *UploadOptions) (UploadResponse, error) {
+	if err := ctx.Err(); err != nil {
+		return UploadResponse{}, err
 	}
+
+	data, err := io.ReadAll(body)
+	if err != nil {
+		return UploadResponse{}, err
+	}
+
+	f.CommittedBlocks = data
+	return UploadResponse{}, nil
 }
 
-func (f *fakeBlockWriter) final() string {
-	return filepath.Join(f.path, finalFileName)
-}
-
-func createSrcFile(size int) (string, error) {
-	generatedUuid, err := uuid.New()
-	if err != nil {
-		return "", err
-	}
-	p := filepath.Join(os.TempDir(), generatedUuid.String())
-	fp, err := os.OpenFile(p, os.O_CREATE+os.O_WRONLY, 0600)
-	if err != nil {
-		return "", fmt.Errorf("could not create source file: %s", err)
-	}
-	defer func(fp *os.File) {
-		_ = fp.Close()
-	}(fp)
-
-	lr := &io.LimitedReader{R: rand.New(rand.NewSource(time.Now().UnixNano())), N: int64(size)}
-	copied, err := io.Copy(fp, lr)
-	switch {
-	case err != nil && err != io.EOF:
-		return "", fmt.Errorf("copying %v: %s", size, err)
-	case copied != int64(size):
-		return "", fmt.Errorf("copying %v: copied %d bytes, expected %d", size, copied, size)
-	}
-	return p, nil
-}
-
-func fileMD5(p string) string {
-	f, err := os.Open(p)
-	if err != nil {
-		panic(err)
-	}
-	defer func(f *os.File) {
-		_ = f.Close()
-
-	}(f)
-
+func calcMD5(data []byte) string {
 	h := md5.New()
-	if _, err := io.Copy(h, f); err != nil {
+	if _, err := io.Copy(h, bytes.NewReader(data)); err != nil {
 		panic(err)
 	}
 
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
-func TestGetErr(t *testing.T) {
-	t.Parallel()
+// used to track proper acquisition and closing of buffers
+type bufMgrTracker struct {
+	inner bufferManager[mmb]
 
-	canceled, cancel := context.WithCancel(context.Background())
-	cancel()
-	err := errors.New("error")
+	Count int  // total count of allocated buffers
+	Freed bool // buffers were freed
+}
 
-	tests := []struct {
-		desc string
-		ctx  context.Context
-		err  error
-		want error
-	}{
-		{"No errors", context.Background(), nil, nil},
-		{"Context was cancelled", canceled, nil, context.Canceled},
-		{"Context was cancelled but had error", canceled, err, err},
-		{"Err returned", context.Background(), err, err},
-	}
-
-	tm, err := shared.NewStaticBuffer(_1MiB, 1)
-	if err != nil {
-		panic(err)
-	}
-
-	for _, test := range tests {
-		c := copier{
-			errCh: make(chan error, 1),
-			ctx:   test.ctx,
-			o:     UploadStreamOptions{transferManager: tm},
-		}
-		if test.err != nil {
-			c.errCh <- test.err
-		}
-
-		got := c.getErr()
-		if test.want != got {
-			t.Errorf("TestGetErr(%s): got %v, want %v", test.desc, got, test.want)
-		}
+func newBufMgrTracker(maxBuffers int, bufferSize int64) *bufMgrTracker {
+	return &bufMgrTracker{
+		inner: newMMBPool(maxBuffers, bufferSize),
 	}
 }
 
+func (pool *bufMgrTracker) Acquire() <-chan mmb {
+	return pool.inner.Acquire()
+}
+
+func (pool *bufMgrTracker) Grow() (int, error) {
+	n, err := pool.inner.Grow()
+	if err != nil {
+		return 0, err
+	}
+	pool.Count = n
+	return n, nil
+}
+
+func (pool *bufMgrTracker) Release(buffer mmb) {
+	pool.inner.Release(buffer)
+}
+
+func (pool *bufMgrTracker) Free() {
+	pool.inner.Free()
+	pool.Freed = true
+}
+
 func TestSlowDestCopyFrom(t *testing.T) {
-	p, err := createSrcFile(_1MiB + 500*1024) //This should cause 2 reads
-	if err != nil {
-		panic(err)
-	}
-	defer func(name string) {
-		_ = os.Remove(name)
-	}(p)
+	bigSrc := make([]byte, _1MiB+500*1024) //This should cause 2 reads
 
-	from, err := os.Open(p)
-	if err != nil {
-		panic(err)
-	}
-	defer from.Close()
+	fakeBB := newFakeBlockBlob()
 
-	br := newFakeBlockWriter()
-	defer br.cleanup()
+	fakeBB.StageDelay = 200 * time.Millisecond
+	fakeBB.ErrOnBlockID = 0
 
-	br.stageDelay = 200 * time.Millisecond
-	br.errOnBlock = 0
+	var tracker *bufMgrTracker
 
 	errs := make(chan error, 1)
 	go func() {
-		_, err := copyFromReader(context.Background(), from, br, UploadStreamOptions{})
+		_, err := copyFromReader(context.Background(), bytes.NewReader(bigSrc), fakeBB, UploadStreamOptions{}, func(maxBuffers int, bufferSize int64) bufferManager[mmb] {
+			tracker = newBufMgrTracker(maxBuffers, bufferSize)
+			return tracker
+		})
 		errs <- err
 	}()
 
@@ -231,23 +174,18 @@ func TestSlowDestCopyFrom(t *testing.T) {
 	select {
 	case <-ctx.Done():
 		failMsg := "TestSlowDestCopyFrom(slow writes shouldn't cause deadlock) failed: Context expired, copy deadlocked"
-		t.Error(failMsg)
-	case <-errs:
-		return
+		t.Fatal(failMsg)
+	case err := <-errs:
+		require.ErrorIs(t, err, io.ErrNoProgress)
 	}
+
+	require.Equal(t, 1, tracker.Count)
+	require.True(t, tracker.Freed)
 }
 
 func TestCopyFromReader(t *testing.T) {
-	t.Parallel()
-
 	canceled, cancel := context.WithCancel(context.Background())
 	cancel()
-
-	spm, err := shared.NewSyncPool(_1MiB, 2)
-	if err != nil {
-		panic(err)
-	}
-	defer spm.Close()
 
 	tests := []struct {
 		desc      string
@@ -320,37 +258,27 @@ func TestCopyFromReader(t *testing.T) {
 			fileSize: 12 * _1MiB,
 			o:        UploadStreamOptions{Concurrency: 5, BlockSize: 8 * 1024 * 1024},
 		},
-		{
-			desc:     "Send file(12 MiB) with default UploadStreamOptions using SyncPool manager",
-			ctx:      context.Background(),
-			fileSize: 12 * _1MiB,
-			o: UploadStreamOptions{
-				transferManager: spm,
-			},
-		},
 	}
 
 	for _, test := range tests {
-		p, err := createSrcFile(test.fileSize)
-		if err != nil {
-			panic(err)
-		}
-		defer func(name string) {
-			_ = os.Remove(name)
-		}(p)
+		from := make([]byte, test.fileSize)
+		fakeBB := newFakeBlockBlob()
 
-		from, err := os.Open(p)
-		if err != nil {
-			panic(err)
-		}
-
-		br := newFakeBlockWriter()
-		defer br.cleanup()
 		if test.uploadErr {
-			br.errOnBlock = 1
+			fakeBB.ErrOnBlockID = 1
 		}
 
-		_, err = copyFromReader(test.ctx, from, br, test.o)
+		var tracker *bufMgrTracker
+
+		_, err := copyFromReader(test.ctx, bytes.NewReader(from), fakeBB, test.o, func(maxBuffers int, bufferSize int64) bufferManager[mmb] {
+			tracker = newBufMgrTracker(maxBuffers, bufferSize)
+			return tracker
+		})
+
+		// assert that at least one buffer was allocated
+		assert.Greater(t, tracker.Count, 0, test.desc)
+		require.True(t, tracker.Freed)
+
 		switch {
 		case err == nil && test.err:
 			t.Errorf("TestCopyFromReader(%s): got err == nil, want err != nil", test.desc)
@@ -362,11 +290,44 @@ func TestCopyFromReader(t *testing.T) {
 			continue
 		}
 
-		want := fileMD5(p)
-		got := fileMD5(br.final())
+		want := calcMD5(from)
+		got := calcMD5(fakeBB.CommittedBlocks)
 
 		if got != want {
 			t.Errorf("TestCopyFromReader(%s): MD5 not the same: got %s, want %s", test.desc, got, want)
 		}
 	}
+}
+
+type readFailer struct {
+	reader io.Reader
+
+	reads  int
+	failOn int
+}
+
+func (r *readFailer) Read(b []byte) (int, error) {
+	r.reads++
+	if r.reads == r.failOn {
+		return 0, io.ErrNoProgress
+	}
+	return r.reader.Read(b)
+}
+
+func TestCopyFromReaderReadError(t *testing.T) {
+	fakeBB := newFakeBlockBlob()
+	var tracker *bufMgrTracker
+
+	rf := readFailer{
+		reader: bytes.NewReader(make([]byte, 5*_1MiB)),
+		failOn: 2,
+	}
+	_, err := copyFromReader(context.Background(), &rf, fakeBB, UploadStreamOptions{}, func(maxBuffers int, bufferSize int64) bufferManager[mmb] {
+		tracker = newBufMgrTracker(maxBuffers, bufferSize)
+		return tracker
+	})
+
+	require.ErrorIs(t, err, io.ErrNoProgress)
+	assert.Greater(t, tracker.Count, 0)
+	require.True(t, tracker.Freed)
 }

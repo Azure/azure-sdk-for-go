@@ -55,9 +55,10 @@ func NewPacketCoreDataPlanesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates or updates a packet core data plane.
+// BeginCreateOrUpdate - Creates or updates a packet core data plane. Must be created in the same location as its parent packet
+// core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // packetCoreControlPlaneName - The name of the packet core control plane.
 // packetCoreDataPlaneName - The name of the packet core data plane.
@@ -78,9 +79,10 @@ func (client *PacketCoreDataPlanesClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 }
 
-// CreateOrUpdate - Creates or updates a packet core data plane.
+// CreateOrUpdate - Creates or updates a packet core data plane. Must be created in the same location as its parent packet
+// core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 func (client *PacketCoreDataPlanesClient) createOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, parameters PacketCoreDataPlane, options *PacketCoreDataPlanesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, parameters, options)
 	if err != nil {
@@ -120,7 +122,7 @@ func (client *PacketCoreDataPlanesClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -128,7 +130,7 @@ func (client *PacketCoreDataPlanesClient) createOrUpdateCreateRequest(ctx contex
 
 // BeginDelete - Deletes the specified packet core data plane.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // packetCoreControlPlaneName - The name of the packet core control plane.
 // packetCoreDataPlaneName - The name of the packet core data plane.
@@ -150,7 +152,7 @@ func (client *PacketCoreDataPlanesClient) BeginDelete(ctx context.Context, resou
 
 // Delete - Deletes the specified packet core data plane.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 func (client *PacketCoreDataPlanesClient) deleteOperation(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *PacketCoreDataPlanesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, options)
 	if err != nil {
@@ -190,7 +192,7 @@ func (client *PacketCoreDataPlanesClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +200,7 @@ func (client *PacketCoreDataPlanesClient) deleteCreateRequest(ctx context.Contex
 
 // Get - Gets information about the specified packet core data plane.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // packetCoreControlPlaneName - The name of the packet core control plane.
 // packetCoreDataPlaneName - The name of the packet core data plane.
@@ -243,7 +245,7 @@ func (client *PacketCoreDataPlanesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,8 +261,7 @@ func (client *PacketCoreDataPlanesClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByPacketCoreControlPlanePager - Lists all the packet core data planes associated with a packet core control plane.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // packetCoreControlPlaneName - The name of the packet core control plane.
 // options - PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions contains the optional parameters for the PacketCoreDataPlanesClient.ListByPacketCoreControlPlane
@@ -313,7 +314,7 @@ func (client *PacketCoreDataPlanesClient) listByPacketCoreControlPlaneCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +331,7 @@ func (client *PacketCoreDataPlanesClient) listByPacketCoreControlPlaneHandleResp
 
 // UpdateTags - Updates packet core data planes tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // packetCoreControlPlaneName - The name of the packet core control plane.
 // packetCoreDataPlaneName - The name of the packet core data plane.
@@ -376,7 +377,7 @@ func (client *PacketCoreDataPlanesClient) updateTagsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

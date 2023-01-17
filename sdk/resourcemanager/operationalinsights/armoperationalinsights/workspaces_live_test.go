@@ -10,6 +10,7 @@ package armoperationalinsights_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestWorkspacesTestSuite(t *testing.T) {
 func (testsuite *WorkspacesTestSuite) TestWorkspace() {
 	var err error
 	// From step Workspaces_CreateOrUpdate
+	fmt.Println("Call operation: Workspaces_CreateOrUpdate")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{
@@ -79,6 +81,7 @@ func (testsuite *WorkspacesTestSuite) TestWorkspace() {
 	testsuite.Require().NoError(err)
 
 	// From step Workspaces_List
+	fmt.Println("Call operation: Workspaces_List")
 	workspacesClientNewListPager := workspacesClient.NewListPager(nil)
 	for workspacesClientNewListPager.More() {
 		_, err := workspacesClientNewListPager.NextPage(testsuite.ctx)
@@ -87,10 +90,12 @@ func (testsuite *WorkspacesTestSuite) TestWorkspace() {
 	}
 
 	// From step Workspaces_Get
+	fmt.Println("Call operation: Workspaces_Get")
 	_, err = workspacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Workspaces_ListByResourceGroup
+	fmt.Println("Call operation: Workspaces_ListByResourceGroup")
 	workspacesClientNewListByResourceGroupPager := workspacesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for workspacesClientNewListByResourceGroupPager.More() {
 		_, err := workspacesClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -99,6 +104,7 @@ func (testsuite *WorkspacesTestSuite) TestWorkspace() {
 	}
 
 	// From step Workspaces_Update
+	fmt.Println("Call operation: Workspaces_Update")
 	_, err = workspacesClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.WorkspacePatch{
 		Properties: &armoperationalinsights.WorkspaceProperties{
 			RetentionInDays: to.Ptr[int32](30),
@@ -113,12 +119,14 @@ func (testsuite *WorkspacesTestSuite) TestWorkspace() {
 	testsuite.Require().NoError(err)
 
 	// From step Workspaces_Delete
+	fmt.Println("Call operation: Workspaces_Delete")
 	workspacesClientDeleteResponsePoller, err := workspacesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, &armoperationalinsights.WorkspacesClientBeginDeleteOptions{Force: nil})
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, workspacesClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step DeletedWorkspaces_List
+	fmt.Println("Call operation: DeletedWorkspaces_List")
 	deletedWorkspacesClient, err := armoperationalinsights.NewDeletedWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	deletedWorkspacesClientNewListPager := deletedWorkspacesClient.NewListPager(nil)
@@ -129,6 +137,7 @@ func (testsuite *WorkspacesTestSuite) TestWorkspace() {
 	}
 
 	// From step DeletedWorkspaces_ListByResourceGroup
+	fmt.Println("Call operation: DeletedWorkspaces_ListByResourceGroup")
 	deletedWorkspacesClientNewListByResourceGroupPager := deletedWorkspacesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for deletedWorkspacesClientNewListByResourceGroupPager.More() {
 		_, err := deletedWorkspacesClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -141,6 +150,7 @@ func (testsuite *WorkspacesTestSuite) TestWorkspace() {
 func (testsuite *WorkspacesTestSuite) TestOperations() {
 	var err error
 	// From step Operations_List
+	fmt.Println("Call operation: Operations_List")
 	operationsClient, err := armoperationalinsights.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	operationsClientNewListPager := operationsClient.NewListPager(nil)

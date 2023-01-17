@@ -8,6 +8,7 @@ package armdeploymentscripts_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -69,6 +70,7 @@ func (testsuite *DeploymentScriptsClientTestSuite) TestDeploymentScriptsCRUD() {
 	testsuite.Require().Equal(identityName, *identityResp.Name)
 
 	// create deployment script
+	fmt.Println("Call operation: DeploymentScripts_Create")
 	deploymentScriptsClient, err := armdeploymentscripts.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scriptName := "go-test-script"
@@ -101,21 +103,25 @@ func (testsuite *DeploymentScriptsClientTestSuite) TestDeploymentScriptsCRUD() {
 	testsuite.Require().Equal(scriptName, *dsResp.GetDeploymentScript().Name)
 
 	// get deployment scripts
+	fmt.Println("Call operation: DeploymentScripts_Get")
 	getResp, err := deploymentScriptsClient.Get(testsuite.ctx, testsuite.resourceGroupName, scriptName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(scriptName, *getResp.GetDeploymentScript().Name)
 
 	// get log
+	fmt.Println("Call operation: DeploymentScripts_GetLogs")
 	getLogResp, err := deploymentScriptsClient.GetLogs(testsuite.ctx, testsuite.resourceGroupName, scriptName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(1, len(getLogResp.Value))
 
 	// getLogsDefault
+	fmt.Println("Call operation: DeploymentScripts_GetLogsDefault")
 	getLogDefaultResp, err := deploymentScriptsClient.GetLogsDefault(testsuite.ctx, testsuite.resourceGroupName, scriptName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal("default", *getLogDefaultResp.Name)
 
 	// update deployment script
+	fmt.Println("Call operation: DeploymentScripts_Update")
 	updateResp, err := deploymentScriptsClient.Update(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -132,14 +138,17 @@ func (testsuite *DeploymentScriptsClientTestSuite) TestDeploymentScriptsCRUD() {
 	testsuite.Require().Equal("live", *updateResp.GetDeploymentScript().Tags["test"])
 
 	// list deployment script by subscription
+	fmt.Println("Call operation: DeploymentScripts_ListBySubscription")
 	listBySubscription := deploymentScriptsClient.NewListBySubscriptionPager(nil)
 	testsuite.Require().True(listBySubscription.More())
 
 	// list deployment script by resource group
+	fmt.Println("Call operation: DeploymentScripts_ListByResourceGroup")
 	listByResourceGroup := deploymentScriptsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listByResourceGroup.More())
 
 	// delete deployment script
+	fmt.Println("Call operation: DeploymentScripts_Delete")
 	_, err = deploymentScriptsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scriptName, nil)
 	testsuite.Require().NoError(err)
 }

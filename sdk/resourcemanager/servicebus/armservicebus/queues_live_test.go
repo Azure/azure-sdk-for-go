@@ -10,6 +10,7 @@ package armservicebus_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -65,6 +66,7 @@ func TestQueuesTestSuite(t *testing.T) {
 func (testsuite *QueuesTestSuite) Prepare() {
 	var err error
 	// From step Namespace_Create
+	fmt.Println("Call operation: Namespaces_Create")
 	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespace{
@@ -87,6 +89,7 @@ func (testsuite *QueuesTestSuite) Prepare() {
 func (testsuite *QueuesTestSuite) TestQueue() {
 	var err error
 	// From step Queue_Create
+	fmt.Println("Call operation: Queue_Create")
 	queuesClient, err := armservicebus.NewQueuesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = queuesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, armservicebus.SBQueue{
@@ -97,10 +100,12 @@ func (testsuite *QueuesTestSuite) TestQueue() {
 	testsuite.Require().NoError(err)
 
 	// From step Queue_Get
+	fmt.Println("Call operation: Queue_Get")
 	_, err = queuesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_ListByNamespace
+	fmt.Println("Call operation: Queue_ListByNamespace")
 	queuesClientNewListByNamespacePager := queuesClient.NewListByNamespacePager(testsuite.resourceGroupName, testsuite.namespaceName, &armservicebus.QueuesClientListByNamespaceOptions{Skip: nil,
 		Top: nil,
 	})
@@ -111,6 +116,7 @@ func (testsuite *QueuesTestSuite) TestQueue() {
 	}
 
 	// From step Queue_CreateAuthorizationRule
+	fmt.Println("Call operation: Queue_CreateAuthorizationRule")
 	_, err = queuesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, armservicebus.SBAuthorizationRule{
 		Properties: &armservicebus.SBAuthorizationRuleProperties{
 			Rights: []*armservicebus.AccessRights{
@@ -121,10 +127,12 @@ func (testsuite *QueuesTestSuite) TestQueue() {
 	testsuite.Require().NoError(err)
 
 	// From step Queue_GetAuthorizationRule
+	fmt.Println("Call operation: Queue_GetAuthorizationRule")
 	_, err = queuesClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_ListAuthorizationRules
+	fmt.Println("Call operation: Queue_ListAuthorizationRules")
 	queuesClientNewListAuthorizationRulesPager := queuesClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, nil)
 	for queuesClientNewListAuthorizationRulesPager.More() {
 		_, err := queuesClientNewListAuthorizationRulesPager.NextPage(testsuite.ctx)
@@ -133,20 +141,24 @@ func (testsuite *QueuesTestSuite) TestQueue() {
 	}
 
 	// From step Queue_RegenerateKeys
+	fmt.Println("Call operation: Queue_RegenerateKeys")
 	_, err = queuesClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
 		KeyType: to.Ptr(armservicebus.KeyTypePrimaryKey),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_ListKeys
+	fmt.Println("Call operation: Queue_ListKeys")
 	_, err = queuesClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_DeleteAuthorizationRule
+	fmt.Println("Call operation: Queue_DeleteAuthorizationRule")
 	_, err = queuesClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_Delete
+	fmt.Println("Call operation: Queue_Delete")
 	_, err = queuesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, nil)
 	testsuite.Require().NoError(err)
 }
@@ -154,6 +166,7 @@ func (testsuite *QueuesTestSuite) TestQueue() {
 func (testsuite *QueuesTestSuite) Cleanup() {
 	var err error
 	// From step Namespace_Delete
+	fmt.Println("Call operation: Namespace_Delete")
 	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namespacesClientDeleteResponsePoller, err := namespacesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)

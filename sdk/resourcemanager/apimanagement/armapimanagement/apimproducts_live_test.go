@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -69,6 +70,7 @@ func TestApimproductsTestSuite(t *testing.T) {
 func (testsuite *ApimproductsTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -91,6 +93,7 @@ func (testsuite *ApimproductsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Product_CreateOrUpdate
+	fmt.Println("Call operation: Product_CreateOrUpdate")
 	productClient, err := armapimanagement.NewProductClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = productClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, armapimanagement.ProductContract{
@@ -105,12 +108,14 @@ func (testsuite *ApimproductsTestSuite) Prepare() {
 func (testsuite *ApimproductsTestSuite) TestProduct() {
 	var err error
 	// From step Product_GetEntityTag
+	fmt.Println("Call operation: Product_GetEntityTag")
 	productClient, err := armapimanagement.NewProductClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = productClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Product_ListByService
+	fmt.Println("Call operation: Product_ListByService")
 	productClientNewListByServicePager := productClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.ProductClientListByServiceOptions{Filter: nil,
 		Top:          nil,
 		Skip:         nil,
@@ -124,10 +129,12 @@ func (testsuite *ApimproductsTestSuite) TestProduct() {
 	}
 
 	// From step Product_Get
+	fmt.Println("Call operation: Product_Get")
 	_, err = productClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Product_ListByTags
+	fmt.Println("Call operation: Product_ListByTags")
 	productClientNewListByTagsPager := productClient.NewListByTagsPager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.ProductClientListByTagsOptions{Filter: nil,
 		Top:                      nil,
 		Skip:                     nil,
@@ -140,6 +147,7 @@ func (testsuite *ApimproductsTestSuite) TestProduct() {
 	}
 
 	// From step Product_Update
+	fmt.Println("Call operation: Product_Update")
 	_, err = productClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, "*", armapimanagement.ProductUpdateParameters{
 		Properties: &armapimanagement.ProductUpdateProperties{
 			DisplayName: to.Ptr("Test Template ProductName 4"),
@@ -152,6 +160,7 @@ func (testsuite *ApimproductsTestSuite) TestProduct() {
 func (testsuite *ApimproductsTestSuite) TestProductapi() {
 	var err error
 	// From step Api_CreateOrUpdate
+	fmt.Println("Call operation: Api_CreateOrUpdate")
 	aPIClient, err := armapimanagement.NewAPIClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aPIClientCreateOrUpdateResponsePoller, err := aPIClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.APICreateOrUpdateParameter{
@@ -166,16 +175,19 @@ func (testsuite *ApimproductsTestSuite) TestProductapi() {
 	testsuite.Require().NoError(err)
 
 	// From step ProductApi_CreateOrUpdate
+	fmt.Println("Call operation: ProductApi_CreateOrUpdate")
 	productAPIClient, err := armapimanagement.NewProductAPIClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = productAPIClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.apiId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ProductApi_CheckEntityExists
+	fmt.Println("Call operation: ProductApi_CheckEntityExists")
 	_, err = productAPIClient.CheckEntityExists(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.apiId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ProductApi_ListByProduct
+	fmt.Println("Call operation: ProductApi_ListByProduct")
 	productAPIClientNewListByProductPager := productAPIClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, &armapimanagement.ProductAPIClientListByProductOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -187,6 +199,7 @@ func (testsuite *ApimproductsTestSuite) TestProductapi() {
 	}
 
 	// From step ProductApi_Delete
+	fmt.Println("Call operation: ProductApi_Delete")
 	_, err = productAPIClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.apiId, nil)
 	testsuite.Require().NoError(err)
 }
@@ -195,6 +208,7 @@ func (testsuite *ApimproductsTestSuite) TestProductapi() {
 func (testsuite *ApimproductsTestSuite) TestProductgroup() {
 	var err error
 	// From step Group_CreateOrUpdate
+	fmt.Println("Call operation: Group_CreateOrUpdate")
 	groupClient, err := armapimanagement.NewGroupClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = groupClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.groupId, armapimanagement.GroupCreateParameters{
@@ -205,16 +219,19 @@ func (testsuite *ApimproductsTestSuite) TestProductgroup() {
 	testsuite.Require().NoError(err)
 
 	// From step ProductGroup_CreateOrUpdate
+	fmt.Println("Call operation: ProductGroup_CreateOrUpdate")
 	productGroupClient, err := armapimanagement.NewProductGroupClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = productGroupClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.groupId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ProductGroup_CheckEntityExists
+	fmt.Println("Call operation: ProductGroup_CheckEntityExists")
 	_, err = productGroupClient.CheckEntityExists(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.groupId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ProductGroup_ListByProduct
+	fmt.Println("Call operation: ProductGroup_ListByProduct")
 	productGroupClientNewListByProductPager := productGroupClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, &armapimanagement.ProductGroupClientListByProductOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -226,6 +243,7 @@ func (testsuite *ApimproductsTestSuite) TestProductgroup() {
 	}
 
 	// From step ProductGroup_Delete
+	fmt.Println("Call operation: ProductGroup_Delete")
 	_, err = productGroupClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.groupId, nil)
 	testsuite.Require().NoError(err)
 }
@@ -234,6 +252,7 @@ func (testsuite *ApimproductsTestSuite) TestProductgroup() {
 func (testsuite *ApimproductsTestSuite) TestProductpolicy() {
 	var err error
 	// From step ProductPolicy_CreateOrUpdate
+	fmt.Println("Call operation: ProductPolicy_CreateOrUpdate")
 	productPolicyClient, err := armapimanagement.NewProductPolicyClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = productPolicyClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
@@ -244,18 +263,22 @@ func (testsuite *ApimproductsTestSuite) TestProductpolicy() {
 	testsuite.Require().NoError(err)
 
 	// From step ProductPolicy_GetEntityTag
+	fmt.Println("Call operation: ProductPolicy_GetEntityTag")
 	_, err = productPolicyClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, armapimanagement.PolicyIDNamePolicy, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ProductPolicy_ListByProduct
+	fmt.Println("Call operation: ProductPolicy_ListByProduct")
 	_, err = productPolicyClient.ListByProduct(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ProductPolicy_Get
+	fmt.Println("Call operation: ProductPolicy_Get")
 	_, err = productPolicyClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, armapimanagement.PolicyIDNamePolicy, &armapimanagement.ProductPolicyClientGetOptions{Format: nil})
 	testsuite.Require().NoError(err)
 
 	// From step ProductPolicy_Delete
+	fmt.Println("Call operation: ProductPolicy_Delete")
 	_, err = productPolicyClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, armapimanagement.PolicyIDNamePolicy, "*", nil)
 	testsuite.Require().NoError(err)
 }
@@ -264,6 +287,7 @@ func (testsuite *ApimproductsTestSuite) TestProductpolicy() {
 func (testsuite *ApimproductsTestSuite) TestProducttag() {
 	var err error
 	// From step Tag_CreateOrUpdate
+	fmt.Println("Call operation: Tag_CreateOrUpdate")
 	tagClient, err := armapimanagement.NewTagClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = tagClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagId, armapimanagement.TagCreateUpdateParameters{
@@ -274,18 +298,22 @@ func (testsuite *ApimproductsTestSuite) TestProducttag() {
 	testsuite.Require().NoError(err)
 
 	// From step Tag_AssignToProduct
+	fmt.Println("Call operation: Tag_AssignToProduct")
 	_, err = tagClient.AssignToProduct(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.tagId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_GetEntityStateByProduct
+	fmt.Println("Call operation: Tag_GetEntityStateByProduct")
 	_, err = tagClient.GetEntityStateByProduct(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.tagId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_GetByProduct
+	fmt.Println("Call operation: Tag_GetByProduct")
 	_, err = tagClient.GetByProduct(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.tagId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_ListByProduct
+	fmt.Println("Call operation: Tag_ListByProduct")
 	tagClientNewListByProductPager := tagClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, &armapimanagement.TagClientListByProductOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -297,6 +325,7 @@ func (testsuite *ApimproductsTestSuite) TestProducttag() {
 	}
 
 	// From step Tag_DetachFromProduct
+	fmt.Println("Call operation: Tag_DetachFromProduct")
 	_, err = tagClient.DetachFromProduct(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, testsuite.tagId, nil)
 	testsuite.Require().NoError(err)
 }
@@ -305,6 +334,7 @@ func (testsuite *ApimproductsTestSuite) TestProducttag() {
 func (testsuite *ApimproductsTestSuite) TestProductsubscriptions() {
 	var err error
 	// From step ProductSubscriptions_List
+	fmt.Println("Call operation: ProductSubscriptions_List")
 	productSubscriptionsClient, err := armapimanagement.NewProductSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	productSubscriptionsClientNewListPager := productSubscriptionsClient.NewListPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, &armapimanagement.ProductSubscriptionsClientListOptions{Filter: nil,
@@ -321,6 +351,7 @@ func (testsuite *ApimproductsTestSuite) TestProductsubscriptions() {
 func (testsuite *ApimproductsTestSuite) Cleanup() {
 	var err error
 	// From step Product_Delete
+	fmt.Println("Call operation: Product_Delete")
 	productClient, err := armapimanagement.NewProductClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = productClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, "*", &armapimanagement.ProductClientDeleteOptions{DeleteSubscriptions: to.Ptr(true)})

@@ -34,6 +34,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 
 	batch.CreateItem(emulatorTests.marshallItem("test", "tBatch"), nil)
 	batch.CreateItem(emulatorTests.marshallItem("test2", "tBatch"), nil)
+	batch.CreateItem(emulatorTests.marshallItem("test5", "tBatch"), nil)
 
 	// Default behavior has no content body
 	response, err := container.ExecuteTransactionalBatch(context.TODO(), batch, nil)
@@ -41,8 +42,8 @@ func TestItemTransactionalBatch(t *testing.T) {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}
 
-	if len(response.OperationResults) != 2 {
-		t.Fatalf("Expected 2 operation results, got %v", len(response.OperationResults))
+	if len(response.OperationResults) != 3 {
+		t.Fatalf("Expected 3 operation results, got %v", len(response.OperationResults))
 	}
 
 	if !response.Success {
@@ -122,6 +123,9 @@ func TestItemTransactionalBatch(t *testing.T) {
 
 	batch3.UpsertItem(emulatorTests.marshallItem("test4", "tBatch"), nil)
 	batch3.ReplaceItem("test3", emulatorTests.marshallItem("test3", "tBatch"), nil)
+	p := PatchOperations{}
+	p.AppendAdd("/newField", "newValue")
+	batch3.PatchItem("test5", p, nil)
 
 	response3, err := container.ExecuteTransactionalBatch(context.TODO(), batch3, &TransactionalBatchOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
@@ -132,8 +136,8 @@ func TestItemTransactionalBatch(t *testing.T) {
 		t.Fatalf("Expected Success to be true, got false")
 	}
 
-	if len(response3.OperationResults) != 2 {
-		t.Fatalf("Expected 2 operation results, got %v", len(response3.OperationResults))
+	if len(response3.OperationResults) != 3 {
+		t.Fatalf("Expected 3 operation results, got %v", len(response3.OperationResults))
 	}
 
 	for index, operationResult := range response3.OperationResults {
@@ -142,6 +146,10 @@ func TestItemTransactionalBatch(t *testing.T) {
 		}
 
 		if index == 1 && operationResult.StatusCode != http.StatusOK {
+			t.Fatalf("Expected status code 200, got %v", operationResult.StatusCode)
+		}
+
+		if index == 2 && operationResult.StatusCode != http.StatusOK {
 			t.Fatalf("Expected status code 200, got %v", operationResult.StatusCode)
 		}
 

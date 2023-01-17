@@ -11,7 +11,7 @@ package armmediaservices
 
 const (
 	moduleName    = "armmediaservices"
-	moduleVersion = "v3.1.0"
+	moduleVersion = "v3.2.0"
 )
 
 // AacAudioProfile - The encoding profile to be used when encoding audio with AAC.
@@ -239,7 +239,7 @@ const (
 	ChannelMappingFrontLeft ChannelMapping = "FrontLeft"
 	// ChannelMappingFrontRight - The Front Right Channel.
 	ChannelMappingFrontRight ChannelMapping = "FrontRight"
-	// ChannelMappingLowFrequencyEffects - Low Frequency Effects Channel. Sometimes referred to as the Subwoofer.
+	// ChannelMappingLowFrequencyEffects - Low Frequency Effects Channel. Sometimes referred to as the subwoofer.
 	ChannelMappingLowFrequencyEffects ChannelMapping = "LowFrequencyEffects"
 	// ChannelMappingStereoLeft - The Left Stereo channel. Sometimes referred to as Down Mix Left.
 	ChannelMappingStereoLeft ChannelMapping = "StereoLeft"
@@ -492,7 +492,7 @@ func PossibleDeinterlaceParityValues() []DeinterlaceParity {
 type EncoderNamedPreset string
 
 const (
-	// EncoderNamedPresetAACGoodQualityAudio - Produces a single MP4 file containing only stereo audio encoded at 192 kbps.
+	// EncoderNamedPresetAACGoodQualityAudio - Produces a single MP4 file containing only AAC stereo audio encoded at 192 kbps.
 	EncoderNamedPresetAACGoodQualityAudio EncoderNamedPreset = "AACGoodQualityAudio"
 	// EncoderNamedPresetAdaptiveStreaming - Produces a set of GOP aligned MP4 files with H.264 video and stereo AAC audio. Auto-generates
 	// a bitrate ladder based on the input resolution, bitrate and frame rate. The auto-generated preset will never exceed the
@@ -513,6 +513,9 @@ const (
 	// video and audio output files. This preset can be used to clip an existing asset or convert a group of key frame (GOP) aligned
 	// MP4 files as an asset that can be streamed.
 	EncoderNamedPresetCopyAllBitrateNonInterleaved EncoderNamedPreset = "CopyAllBitrateNonInterleaved"
+	// EncoderNamedPresetDDGoodQualityAudio - Produces a single MP4 file containing only DD(Digital Dolby) stereo audio encoded
+	// at 192 kbps.
+	EncoderNamedPresetDDGoodQualityAudio EncoderNamedPreset = "DDGoodQualityAudio"
 	// EncoderNamedPresetH264MultipleBitrate1080P - Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 kbps to 400 kbps,
 	// and stereo AAC audio. Resolution starts at 1080p and goes down to 180p.
 	EncoderNamedPresetH264MultipleBitrate1080P EncoderNamedPreset = "H264MultipleBitrate1080p"
@@ -560,6 +563,7 @@ func PossibleEncoderNamedPresetValues() []EncoderNamedPreset {
 		EncoderNamedPresetContentAwareEncoding,
 		EncoderNamedPresetContentAwareEncodingExperimental,
 		EncoderNamedPresetCopyAllBitrateNonInterleaved,
+		EncoderNamedPresetDDGoodQualityAudio,
 		EncoderNamedPresetH264MultipleBitrate1080P,
 		EncoderNamedPresetH264MultipleBitrate720P,
 		EncoderNamedPresetH264MultipleBitrateSD,
@@ -863,6 +867,8 @@ func PossibleInterleaveOutputValues() []InterleaveOutput {
 type JobErrorCategory string
 
 const (
+	// JobErrorCategoryAccount - The error is related to account information.
+	JobErrorCategoryAccount JobErrorCategory = "Account"
 	// JobErrorCategoryConfiguration - The error is configuration related.
 	JobErrorCategoryConfiguration JobErrorCategory = "Configuration"
 	// JobErrorCategoryContent - The error is related to data in the input files.
@@ -878,6 +884,7 @@ const (
 // PossibleJobErrorCategoryValues returns the possible values for the JobErrorCategory const type.
 func PossibleJobErrorCategoryValues() []JobErrorCategory {
 	return []JobErrorCategory{
+		JobErrorCategoryAccount,
 		JobErrorCategoryConfiguration,
 		JobErrorCategoryContent,
 		JobErrorCategoryDownload,
@@ -905,6 +912,9 @@ const (
 	// JobErrorCodeDownloadTransientError - While trying to download the input files, there was an issue during transfer (storage
 	// service, network errors), see details and check your source.
 	JobErrorCodeDownloadTransientError JobErrorCode = "DownloadTransientError"
+	// JobErrorCodeIdentityUnsupported - There was an error verifying to the account identity. Check and fix the identity configurations
+	// and retry. If unsuccessful, please contact support.
+	JobErrorCodeIdentityUnsupported JobErrorCode = "IdentityUnsupported"
 	// JobErrorCodeServiceError - Fatal service error, please contact support.
 	JobErrorCodeServiceError JobErrorCode = "ServiceError"
 	// JobErrorCodeServiceTransientError - Transient error, please retry, if retry is unsuccessful, please contact support.
@@ -925,6 +935,7 @@ func PossibleJobErrorCodeValues() []JobErrorCode {
 		JobErrorCodeContentUnsupported,
 		JobErrorCodeDownloadNotAccessible,
 		JobErrorCodeDownloadTransientError,
+		JobErrorCodeIdentityUnsupported,
 		JobErrorCodeServiceError,
 		JobErrorCodeServiceTransientError,
 		JobErrorCodeUploadNotAccessible,

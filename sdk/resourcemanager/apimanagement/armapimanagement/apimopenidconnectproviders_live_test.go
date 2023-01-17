@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimopenidconnectprovidersTestSuite(t *testing.T) {
 func (testsuite *ApimopenidconnectprovidersTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimopenidconnectprovidersTestSuite) Prepare() {
 func (testsuite *ApimopenidconnectprovidersTestSuite) TestOpenidconnectprovider() {
 	var err error
 	// From step OpenIdConnectProvider_CreateOrUpdate
+	fmt.Println("Call operation: OpenIdConnectProvider_CreateOrUpdate")
 	openIDConnectProviderClient, err := armapimanagement.NewOpenIDConnectProviderClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = openIDConnectProviderClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.opid, armapimanagement.OpenidConnectProviderContract{
@@ -101,10 +104,12 @@ func (testsuite *ApimopenidconnectprovidersTestSuite) TestOpenidconnectprovider(
 	testsuite.Require().NoError(err)
 
 	// From step OpenIdConnectProvider_GetEntityTag
+	fmt.Println("Call operation: OpenIdConnectProvider_GetEntityTag")
 	_, err = openIDConnectProviderClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.opid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step OpenIdConnectProvider_ListByService
+	fmt.Println("Call operation: OpenIdConnectProvider_ListByService")
 	openIDConnectProviderClientNewListByServicePager := openIDConnectProviderClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.OpenIDConnectProviderClientListByServiceOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -116,10 +121,12 @@ func (testsuite *ApimopenidconnectprovidersTestSuite) TestOpenidconnectprovider(
 	}
 
 	// From step OpenIdConnectProvider_Get
+	fmt.Println("Call operation: OpenIdConnectProvider_Get")
 	_, err = openIDConnectProviderClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.opid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step OpenIdConnectProvider_Update
+	fmt.Println("Call operation: OpenIdConnectProvider_Update")
 	_, err = openIDConnectProviderClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.opid, "*", armapimanagement.OpenidConnectProviderUpdateContract{
 		Properties: &armapimanagement.OpenidConnectProviderUpdateContractProperties{
 			ClientSecret: to.Ptr("updatedsecret"),
@@ -128,10 +135,12 @@ func (testsuite *ApimopenidconnectprovidersTestSuite) TestOpenidconnectprovider(
 	testsuite.Require().NoError(err)
 
 	// From step OpenIdConnectProvider_ListSecrets
+	fmt.Println("Call operation: OpenIdConnectProvider_ListSecrets")
 	_, err = openIDConnectProviderClient.ListSecrets(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.opid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step OpenIdConnectProvider_Delete
+	fmt.Println("Call operation: OpenIdConnectProvider_Delete")
 	_, err = openIDConnectProviderClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.opid, "*", nil)
 	testsuite.Require().NoError(err)
 }

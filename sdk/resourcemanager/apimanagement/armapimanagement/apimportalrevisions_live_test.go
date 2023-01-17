@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimportalrevisionsTestSuite(t *testing.T) {
 func (testsuite *ApimportalrevisionsTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimportalrevisionsTestSuite) Prepare() {
 func (testsuite *ApimportalrevisionsTestSuite) TestPortalrevision() {
 	var err error
 	// From step PortalRevision_CreateOrUpdate
+	fmt.Println("Call operation: PortalRevision_CreateOrUpdate")
 	portalRevisionClient, err := armapimanagement.NewPortalRevisionClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	portalRevisionClientCreateOrUpdateResponsePoller, err := portalRevisionClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.portalRevisionId, armapimanagement.PortalRevisionContract{
@@ -101,10 +104,12 @@ func (testsuite *ApimportalrevisionsTestSuite) TestPortalrevision() {
 	testsuite.Require().NoError(err)
 
 	// From step PortalRevision_GetEntityTag
+	fmt.Println("Call operation: PortalRevision_GetEntityTag")
 	_, err = portalRevisionClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.portalRevisionId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PortalRevision_ListByService
+	fmt.Println("Call operation: PortalRevision_ListByService")
 	portalRevisionClientNewListByServicePager := portalRevisionClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.PortalRevisionClientListByServiceOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -116,10 +121,12 @@ func (testsuite *ApimportalrevisionsTestSuite) TestPortalrevision() {
 	}
 
 	// From step PortalRevision_Get
+	fmt.Println("Call operation: PortalRevision_Get")
 	_, err = portalRevisionClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.portalRevisionId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PortalRevision_Update
+	fmt.Println("Call operation: PortalRevision_Update")
 	portalRevisionClientUpdateResponsePoller, err := portalRevisionClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.portalRevisionId, "*", armapimanagement.PortalRevisionContract{
 		Properties: &armapimanagement.PortalRevisionContractProperties{
 			Description: to.Ptr("portal revision update"),

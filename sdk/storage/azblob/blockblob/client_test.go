@@ -3450,7 +3450,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //	_require.EqualValues(actualBlobData, blobData)
 // }
 
-func (s *BlockBlobRecordedTestsSuite) TestUploadStreamToBlobProperties() {
+func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

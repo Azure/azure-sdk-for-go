@@ -72,6 +72,12 @@ type RestoreContainerOptions = container.RestoreOptions
 // domain) to call APIs in another domain
 type CorsRule = generated.CorsRule
 
+// FilterBlobSegment - The result of a Filter Blobs API call
+type FilterBlobSegment = generated.FilterBlobSegment
+
+// BlobTags - Blob tags
+type BlobTags = generated.BlobTags
+
 // FilterBlobItem - Blob info returned from method Client.FilterBlobs
 type FilterBlobItem = generated.FilterBlobItem
 

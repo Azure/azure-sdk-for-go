@@ -22,24 +22,25 @@ import (
 // Don't use this type directly, use NewMessagesClient() instead.
 type MessagesClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewMessagesClient creates a new instance of MessagesClient with the specified values.
-// endpoint - The URL of the service account, queue or message that is the target of the desired operation.
-// pl - the pipeline used for sending requests and handling responses.
+//   - endpoint - The URL of the service account, queue or message that is the target of the desired operation.
+//   - pl - the pipeline used for sending requests and handling responses.
 func NewMessagesClient(endpoint string, pl runtime.Pipeline) *MessagesClient {
 	client := &MessagesClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
 
 // Clear - The Clear operation deletes all messages from the specified queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// options - MessagesClientClearOptions contains the optional parameters for the MessagesClient.Clear method.
+//   - options - MessagesClientClearOptions contains the optional parameters for the MessagesClient.Clear method.
 func (client *MessagesClient) Clear(ctx context.Context, options *MessagesClientClearOptions) (MessagesClientClearResponse, error) {
 	req, err := client.clearCreateRequest(ctx, options)
 	if err != nil {
@@ -95,8 +96,9 @@ func (client *MessagesClient) clearHandleResponse(resp *http.Response) (Messages
 
 // Dequeue - The Dequeue operation retrieves one or more messages from the front of the queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// options - MessagesClientDequeueOptions contains the optional parameters for the MessagesClient.Dequeue method.
+//   - options - MessagesClientDequeueOptions contains the optional parameters for the MessagesClient.Dequeue method.
 func (client *MessagesClient) Dequeue(ctx context.Context, options *MessagesClientDequeueOptions) (MessagesClientDequeueResponse, error) {
 	req, err := client.dequeueCreateRequest(ctx, options)
 	if err != nil {
@@ -164,9 +166,10 @@ func (client *MessagesClient) dequeueHandleResponse(resp *http.Response) (Messag
 // be in a format that can be included in an XML request with UTF-8 encoding. The encoded message can be up to 64 KB in size
 // for versions 2011-08-18 and newer, or 8 KB in size for previous versions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// queueMessage - A Message object which can be stored in a Queue
-// options - MessagesClientEnqueueOptions contains the optional parameters for the MessagesClient.Enqueue method.
+//   - queueMessage - A Message object which can be stored in a Queue
+//   - options - MessagesClientEnqueueOptions contains the optional parameters for the MessagesClient.Enqueue method.
 func (client *MessagesClient) Enqueue(ctx context.Context, queueMessage QueueMessage, options *MessagesClientEnqueueOptions) (MessagesClientEnqueueResponse, error) {
 	req, err := client.enqueueCreateRequest(ctx, queueMessage, options)
 	if err != nil {
@@ -232,8 +235,9 @@ func (client *MessagesClient) enqueueHandleResponse(resp *http.Response) (Messag
 // Peek - The Peek operation retrieves one or more messages from the front of the queue, but does not alter the visibility
 // of the message.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// options - MessagesClientPeekOptions contains the optional parameters for the MessagesClient.Peek method.
+//   - options - MessagesClientPeekOptions contains the optional parameters for the MessagesClient.Peek method.
 func (client *MessagesClient) Peek(ctx context.Context, options *MessagesClientPeekOptions) (MessagesClientPeekResponse, error) {
 	req, err := client.peekCreateRequest(ctx, options)
 	if err != nil {
@@ -293,4 +297,3 @@ func (client *MessagesClient) peekHandleResponse(resp *http.Response) (MessagesC
 	}
 	return result, nil
 }
-

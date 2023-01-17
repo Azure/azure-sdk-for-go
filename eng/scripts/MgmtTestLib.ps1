@@ -16,8 +16,6 @@ function Invoke-MgmtTestgen ()
         [switch]$cleanGenerated,
         [switch]$format,
         [switch]$tidy,
-        [switch]$alwaysSetBodyParamRequired,
-        [switch]$removeUnreferencedTypes,
         [string]$autorestPath = "",
         [string]$config = "autorest.md",
         [string]$autorestVersion = "3.8.2",
@@ -63,14 +61,14 @@ function Invoke-MgmtTestgen ()
             $mockTestFlag = "false"
         }
         
-        $honorBodyPlacement = "false"
-        if (-not $alwaysSetBodyParamRequired)
+        $honorBodyPlacement = "true"
+        if (Get-ChildItem "build.go" | Select-String -Pattern "alwaysSetBodyParamRequired")
         {
-            $honorBodyPlacement = "true"
+            $honorBodyPlacement = "false"
         }
 
         $removeUnreferencedTypesFlag = "false"
-        if ($removeUnreferencedTypes)
+        if (Get-ChildItem "build.go" | Select-String -Pattern "removeUnreferencedTypes")
         {
             $removeUnreferencedTypesFlag = "true"
         }

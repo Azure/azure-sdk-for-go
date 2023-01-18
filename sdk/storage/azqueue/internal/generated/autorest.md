@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.43"
+use: "@autorest/go@4.0.0-preview.45"
 ```
 
 
@@ -67,18 +67,4 @@ directive:
         replace(/func \(client \*ServiceClient\) NewListQueuesSegmentPager\(.+\/\/ listQueuesSegmentCreateRequest creates the ListQueuesSegment request/s, `// ListQueuesSegmentCreateRequest creates the ListQueuesFlatSegment ListQueuesSegment`).
         replace(/\(client \*ServiceClient\) listQueuesSegmentCreateRequest\(/, `(client *ServiceClient) ListQueuesSegmentCreateRequest(`).
         replace(/\(client \*ServiceClient\) listQueuesSegmentHandleResponse\(/, `(client *ServiceClient) ListQueuesSegmentHandleResponse(`);
-```
-
-### Fix encoder and decoder parameter names to be non-conflicting
-
-``` yaml
-directive:
-  - from: zz_models_serde.go
-    where: $
-    transform: >-
-      return $.
-        replace(/d\s*\*xml\.Decoder/g, "dec *xml.Decoder").
-        replace(/d\.DecodeElement\(/g, "dec.DecodeElement(").
-        replace(/e\s*\*xml\.Encoder/g, "enc *xml.Encoder").
-        replace(/e\.EncodeElement\(/g, "enc.EncodeElement(");
 ```

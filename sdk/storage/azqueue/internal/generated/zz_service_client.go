@@ -24,16 +24,16 @@ import (
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
-// endpoint - The URL of the service account, queue or message that is the target of the desired operation.
-// pl - the pipeline used for sending requests and handling responses.
+//   - endpoint - The URL of the service account, queue or message that is the target of the desired operation.
+//   - pl - the pipeline used for sending requests and handling responses.
 func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 	client := &ServiceClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -41,8 +41,9 @@ func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 // GetProperties - gets the properties of a storage account's Queue service, including properties for Storage Analytics and
 // CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// options - ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
+//   - options - ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 func (client *ServiceClient) GetProperties(ctx context.Context, options *ServiceClientGetPropertiesOptions) (ServiceClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
 	if err != nil {
@@ -98,8 +99,9 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // location endpoint when read-access geo-redundant replication is enabled for the storage
 // account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// options - ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
+//   - options - ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
 func (client *ServiceClient) GetStatistics(ctx context.Context, options *ServiceClientGetStatisticsOptions) (ServiceClientGetStatisticsResponse, error) {
 	req, err := client.getStatisticsCreateRequest(ctx, options)
 	if err != nil {
@@ -159,10 +161,11 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 }
 
 // NewListQueuesSegmentPager - The List Queues Segment operation returns a list of the queues under the specified account
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// options - ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.ListQueuesSegment
-// method.
+//   - options - ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.NewListQueuesSegmentPager
+//     method.
+//
 // ListQueuesSegmentCreateRequest creates the ListQueuesFlatSegment ListQueuesSegment.
 func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context, options *ServiceClientListQueuesSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
@@ -220,9 +223,10 @@ func (client *ServiceClient) ListQueuesSegmentHandleResponse(resp *http.Response
 // SetProperties - Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// storageServiceProperties - The StorageService properties.
-// options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
+//   - storageServiceProperties - The StorageService properties.
+//   - options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 func (client *ServiceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
 	req, err := client.setPropertiesCreateRequest(ctx, storageServiceProperties, options)
 	if err != nil {
@@ -270,4 +274,3 @@ func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (S
 	}
 	return result, nil
 }
-

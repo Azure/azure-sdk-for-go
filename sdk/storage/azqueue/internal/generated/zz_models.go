@@ -35,13 +35,13 @@ type CorsRule struct {
 	AllowedMethods *string `xml:"AllowedMethods"`
 
 	// REQUIRED; The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
-// is the domain from which the request originates. Note that the origin must be an exact
-// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*'
-// to allow all origin domains to make requests via CORS.
+	// is the domain from which the request originates. Note that the origin must be an exact
+	// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*'
+	// to allow all origin domains to make requests via CORS.
 	AllowedOrigins *string `xml:"AllowedOrigins"`
 
 	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request
-// issuer
+	// issuer
 	ExposedHeaders *string `xml:"ExposedHeaders"`
 
 	// REQUIRED; The maximum amount time that a browser should cache the preflight OPTIONS request.
@@ -66,7 +66,7 @@ type DequeuedMessageItem struct {
 	MessageText *string `xml:"MessageText"`
 
 	// REQUIRED; This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
-// dequeued by another client.
+	// dequeued by another client.
 	PopReceipt *string `xml:"PopReceipt"`
 
 	// REQUIRED; The time that the message will again become visible in the Queue.
@@ -85,7 +85,7 @@ type EnqueuedMessage struct {
 	MessageID *string `xml:"MessageId"`
 
 	// REQUIRED; This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
-// dequeued by another client.
+	// dequeued by another client.
 	PopReceipt *string `xml:"PopReceipt"`
 
 	// REQUIRED; The time that the message will again become visible in the Queue.
@@ -94,8 +94,8 @@ type EnqueuedMessage struct {
 
 type GeoReplication struct {
 	// REQUIRED; A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available
-// for read operations at the secondary. Primary writes after this point in time may or may
-// not be available for reads.
+	// for read operations at the secondary. Primary writes after this point in time may or may
+	// not be available for reads.
 	LastSyncTime *time.Time `xml:"LastSyncTime"`
 
 	// REQUIRED; The status of the secondary location
@@ -114,9 +114,9 @@ type ListQueuesSegmentResponse struct {
 	Prefix *string `xml:"Prefix"`
 
 	// REQUIRED
-	ServiceEndpoint *string `xml:"ServiceEndpoint,attr"`
-	Marker *string `xml:"Marker"`
-	QueueItems []*QueueItem `xml:"Queues>Queue"`
+	ServiceEndpoint *string      `xml:"ServiceEndpoint,attr"`
+	Marker          *string      `xml:"Marker"`
+	QueueItems      []*QueueItem `xml:"Queues>Queue"`
 }
 
 // Logging - Azure Analytics Logging settings.
@@ -140,7 +140,7 @@ type Logging struct {
 // MessageIDClientDeleteOptions contains the optional parameters for the MessageIDClient.Delete method.
 type MessageIDClientDeleteOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -149,7 +149,7 @@ type MessageIDClientDeleteOptions struct {
 // MessageIDClientUpdateOptions contains the optional parameters for the MessageIDClient.Update method.
 type MessageIDClientUpdateOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -158,7 +158,7 @@ type MessageIDClientUpdateOptions struct {
 // MessagesClientClearOptions contains the optional parameters for the MessagesClient.Clear method.
 type MessagesClientClearOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -167,49 +167,49 @@ type MessagesClientClearOptions struct {
 // MessagesClientDequeueOptions contains the optional parameters for the MessagesClient.Dequeue method.
 type MessagesClientDequeueOptions struct {
 	// Optional. A nonzero integer value that specifies the number of messages to retrieve from the queue, up to a maximum of
-// 32. If fewer are visible, the visible messages are returned. By default, a single
-// message is retrieved from the queue with this operation.
+	// 32. If fewer are visible, the visible messages are returned. By default, a single
+	// message is retrieved from the queue with this operation.
 	NumberOfMessages *int32
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
 	// Optional. Specifies the new visibility timeout value, in seconds, relative to server time. The default value is 30 seconds.
-// A specified value must be larger than or equal to 1 second, and cannot be
-// larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout
-// of a message can be set to a value later than the expiry time.
+	// A specified value must be larger than or equal to 1 second, and cannot be
+	// larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout
+	// of a message can be set to a value later than the expiry time.
 	Visibilitytimeout *int32
 }
 
 // MessagesClientEnqueueOptions contains the optional parameters for the MessagesClient.Enqueue method.
 type MessagesClientEnqueueOptions struct {
 	// Optional. Specifies the time-to-live interval for the message, in seconds. Prior to version 2017-07-29, the maximum time-to-live
-// allowed is 7 days. For version 2017-07-29 or later, the maximum
-// time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this parameter is
-// omitted, the default time-to-live is 7 days.
+	// allowed is 7 days. For version 2017-07-29 or later, the maximum
+	// time-to-live can be any positive number, as well as -1 indicating that the message does not expire. If this parameter is
+	// omitted, the default time-to-live is 7 days.
 	MessageTimeToLive *int32
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
 	// Optional. If specified, the request must be made using an x-ms-version of 2011-08-18 or later. If not specified, the default
-// value is 0. Specifies the new visibility timeout value, in seconds,
-// relative to server time. The new value must be larger than or equal to 0, and cannot be larger than 7 days. The visibility
-// timeout of a message cannot be set to a value later than the expiry time.
-// visibilitytimeout should be set to a value smaller than the time-to-live value.
+	// value is 0. Specifies the new visibility timeout value, in seconds,
+	// relative to server time. The new value must be larger than or equal to 0, and cannot be larger than 7 days. The visibility
+	// timeout of a message cannot be set to a value later than the expiry time.
+	// visibilitytimeout should be set to a value smaller than the time-to-live value.
 	Visibilitytimeout *int32
 }
 
 // MessagesClientPeekOptions contains the optional parameters for the MessagesClient.Peek method.
 type MessagesClientPeekOptions struct {
 	// Optional. A nonzero integer value that specifies the number of messages to retrieve from the queue, up to a maximum of
-// 32. If fewer are visible, the visible messages are returned. By default, a single
-// message is retrieved from the queue with this operation.
+	// 32. If fewer are visible, the visible messages are returned. By default, a single
+	// message is retrieved from the queue with this operation.
 	NumberOfMessages *int32
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -251,12 +251,12 @@ type PeekedMessageItem struct {
 // QueueClientCreateOptions contains the optional parameters for the QueueClient.Create method.
 type QueueClientCreateOptions struct {
 	// Optional. Include this parameter to specify that the queue's metadata be returned as part of the response body. Note that
-// metadata requested with this parameter must be stored in accordance with the
-// naming restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all metadata names
-// must adhere to the naming conventions for C# identifiers.
-	Metadata map[string]string
+	// metadata requested with this parameter must be stored in accordance with the
+	// naming restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all metadata names
+	// must adhere to the naming conventions for C# identifiers.
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -265,7 +265,7 @@ type QueueClientCreateOptions struct {
 // QueueClientDeleteOptions contains the optional parameters for the QueueClient.Delete method.
 type QueueClientDeleteOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -274,7 +274,7 @@ type QueueClientDeleteOptions struct {
 // QueueClientGetAccessPolicyOptions contains the optional parameters for the QueueClient.GetAccessPolicy method.
 type QueueClientGetAccessPolicyOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -283,7 +283,7 @@ type QueueClientGetAccessPolicyOptions struct {
 // QueueClientGetPropertiesOptions contains the optional parameters for the QueueClient.GetProperties method.
 type QueueClientGetPropertiesOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -292,7 +292,7 @@ type QueueClientGetPropertiesOptions struct {
 // QueueClientSetAccessPolicyOptions contains the optional parameters for the QueueClient.SetAccessPolicy method.
 type QueueClientSetAccessPolicyOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -301,12 +301,12 @@ type QueueClientSetAccessPolicyOptions struct {
 // QueueClientSetMetadataOptions contains the optional parameters for the QueueClient.SetMetadata method.
 type QueueClientSetMetadataOptions struct {
 	// Optional. Include this parameter to specify that the queue's metadata be returned as part of the response body. Note that
-// metadata requested with this parameter must be stored in accordance with the
-// naming restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all metadata names
-// must adhere to the naming conventions for C# identifiers.
-	Metadata map[string]string
+	// metadata requested with this parameter must be stored in accordance with the
+	// naming restrictions imposed by the 2009-09-19 version of the Queue service. Beginning with this version, all metadata names
+	// must adhere to the naming conventions for C# identifiers.
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -333,14 +333,14 @@ type RetentionPolicy struct {
 	Enabled *bool `xml:"Enabled"`
 
 	// Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than this
-// value will be deleted
+	// value will be deleted
 	Days *int32 `xml:"Days"`
 }
 
 // ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 type ServiceClientGetPropertiesOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -349,32 +349,33 @@ type ServiceClientGetPropertiesOptions struct {
 // ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
 type ServiceClientGetStatisticsOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
 }
 
-// ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.ListQueuesSegment method.
+// ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.NewListQueuesSegmentPager
+// method.
 type ServiceClientListQueuesSegmentOptions struct {
 	// Include this parameter to specify that the queues' metadata be returned as part of the response body.
 	Include []string
 	// A string value that identifies the portion of the list of queues to be returned with the next listing operation. The operation
-// returns the NextMarker value within the response body if the listing
-// operation did not return all queues remaining to be listed with the current page. The NextMarker value can be used as the
-// value for the marker parameter in a subsequent call to request the next page
-// of list items. The marker value is opaque to the client.
+	// returns the NextMarker value within the response body if the listing
+	// operation did not return all queues remaining to be listed with the current page. The NextMarker value can be used as the
+	// value for the marker parameter in a subsequent call to request the next page
+	// of list items. The marker value is opaque to the client.
 	Marker *string
 	// Specifies the maximum number of queues to return. If the request does not specify maxresults, or specifies a value greater
-// than 5000, the server will return up to 5000 items. Note that if the listing
-// operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
-// of the results. For this reason, it is possible that the service will return
-// fewer results than specified by maxresults, or than the default of 5000.
+	// than 5000, the server will return up to 5000 items. Note that if the listing
+	// operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
+	// of the results. For this reason, it is possible that the service will return
+	// fewer results than specified by maxresults, or than the default of 5000.
 	Maxresults *int32
 	// Filters the results to return only queues whose name begins with the specified prefix.
 	Prefix *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -383,7 +384,7 @@ type ServiceClientListQueuesSegmentOptions struct {
 // ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 type ServiceClientSetPropertiesOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
-// analytics logging is enabled.
+	// analytics logging is enabled.
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
@@ -422,4 +423,3 @@ type StorageServiceStats struct {
 	// Geo-Replication information for the Secondary Storage Service
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
 }
-

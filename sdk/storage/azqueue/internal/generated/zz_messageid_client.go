@@ -22,26 +22,27 @@ import (
 // Don't use this type directly, use NewMessageIDClient() instead.
 type MessageIDClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewMessageIDClient creates a new instance of MessageIDClient with the specified values.
-// endpoint - The URL of the service account, queue or message that is the target of the desired operation.
-// pl - the pipeline used for sending requests and handling responses.
+//   - endpoint - The URL of the service account, queue or message that is the target of the desired operation.
+//   - pl - the pipeline used for sending requests and handling responses.
 func NewMessageIDClient(endpoint string, pl runtime.Pipeline) *MessageIDClient {
 	client := &MessageIDClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
 
 // Delete - The Delete operation deletes the specified message.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// popReceipt - Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update
-// Message operation.
-// options - MessageIDClientDeleteOptions contains the optional parameters for the MessageIDClient.Delete method.
+//   - popReceipt - Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update
+//     Message operation.
+//   - options - MessageIDClientDeleteOptions contains the optional parameters for the MessageIDClient.Delete method.
 func (client *MessageIDClient) Delete(ctx context.Context, popReceipt string, options *MessageIDClientDeleteOptions) (MessageIDClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, popReceipt, options)
 	if err != nil {
@@ -101,15 +102,16 @@ func (client *MessageIDClient) deleteHandleResponse(resp *http.Response) (Messag
 // update the contents of a message. A message must be in a format that can be included in an XML request with UTF-8 encoding,
 // and the encoded message can be up to 64KB in size.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-28
-// popReceipt - Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update
-// Message operation.
-// visibilitytimeout - Optional. Specifies the new visibility timeout value, in seconds, relative to server time. The default
-// value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot be
-// larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout
-// of a message can be set to a value later than the expiry time.
-// queueMessage - A Message object which can be stored in a Queue
-// options - MessageIDClientUpdateOptions contains the optional parameters for the MessageIDClient.Update method.
+//   - popReceipt - Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update
+//     Message operation.
+//   - visibilitytimeout - Optional. Specifies the new visibility timeout value, in seconds, relative to server time. The default
+//     value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot be
+//     larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout
+//     of a message can be set to a value later than the expiry time.
+//   - queueMessage - A Message object which can be stored in a Queue
+//   - options - MessageIDClientUpdateOptions contains the optional parameters for the MessageIDClient.Update method.
 func (client *MessageIDClient) Update(ctx context.Context, popReceipt string, visibilitytimeout int32, queueMessage QueueMessage, options *MessageIDClientUpdateOptions) (MessageIDClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, popReceipt, visibilitytimeout, queueMessage, options)
 	if err != nil {
@@ -174,4 +176,3 @@ func (client *MessageIDClient) updateHandleResponse(resp *http.Response) (Messag
 	}
 	return result, nil
 }
-

@@ -65,11 +65,7 @@ func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.T
 			// body, authorize the request, and send it again.
 			rb := reqBody{body, req.Raw().Header.Get("content-type")}
 			req.SetOperationValue(rb)
-
-			// TODO: seems like we ought to use req.SetBody() here but it apparently doesn't allow setting an empty body
-			req.Raw().Body = nil
-			req.Raw().ContentLength = 0
-			req.Raw().Header.Del("content-type")
+			req.SetBody(nil, "")
 		}
 		// returning nil indicates the request is authorized and the bearer token policy should send it
 		return nil

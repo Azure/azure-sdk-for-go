@@ -2689,7 +2689,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //	// _require.Equal(resp.RawResponse.StatusCode, 202)
 // }
 
-func (s *BlockBlobRecordedTestsSuite) TestGetPropertiesReturnsTagsCount() {
+func (s *BlockBlobUnrecordedTestsSuite) TestGetPropertiesReturnsTagsCount() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

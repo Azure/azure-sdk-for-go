@@ -136,7 +136,7 @@ func Example_serviceSAS() {
 		blobName,
 		strings.NewReader(blobData),
 		&azblob.UploadStreamOptions{
-			Metadata: map[string]string{"Foo": "Bar"},
+			Metadata: map[string]*string{"Foo": to.Ptr("Bar")},
 			Tags:     map[string]string{"Year": "2022"},
 		})
 	handleError(err)

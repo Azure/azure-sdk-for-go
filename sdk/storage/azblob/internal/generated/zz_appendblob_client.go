@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewAppendBlobClient() instead.
 type AppendBlobClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewAppendBlobClient creates a new instance of AppendBlobClient with the specified values.
@@ -34,7 +34,7 @@ type AppendBlobClient struct {
 func NewAppendBlobClient(endpoint string, pl runtime.Pipeline) *AppendBlobClient {
 	client := &AppendBlobClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -651,4 +651,3 @@ func (client *AppendBlobClient) sealHandleResponse(resp *http.Response) (AppendB
 	}
 	return result, nil
 }
-

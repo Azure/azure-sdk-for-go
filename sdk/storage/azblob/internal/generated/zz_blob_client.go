@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewBlobClient() instead.
 type BlobClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewBlobClient creates a new instance of BlobClient with the specified values.
@@ -34,7 +34,7 @@ type BlobClient struct {
 func NewBlobClient(endpoint string, pl runtime.Pipeline) *BlobClient {
 	client := &BlobClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -2844,4 +2844,3 @@ func (client *BlobClient) undeleteHandleResponse(resp *http.Response) (BlobClien
 	}
 	return result, nil
 }
-

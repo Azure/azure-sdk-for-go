@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewPageBlobClient() instead.
 type PageBlobClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewPageBlobClient creates a new instance of PageBlobClient with the specified values.
@@ -34,7 +34,7 @@ type PageBlobClient struct {
 func NewPageBlobClient(endpoint string, pl runtime.Pipeline) *PageBlobClient {
 	client := &PageBlobClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -466,7 +466,7 @@ func (client *PageBlobClient) createHandleResponse(resp *http.Response) (PageBlo
 // options - PageBlobClientGetPageRangesOptions contains the optional parameters for the PageBlobClient.GetPageRanges method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
 // ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-func (client *PageBlobClient) NewGetPageRangesPager(options *PageBlobClientGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*runtime.Pager[PageBlobClientGetPageRangesResponse]) {
+func (client *PageBlobClient) NewGetPageRangesPager(options *PageBlobClientGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) *runtime.Pager[PageBlobClientGetPageRangesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PageBlobClientGetPageRangesResponse]{
 		More: func(page PageBlobClientGetPageRangesResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -594,7 +594,7 @@ func (client *PageBlobClient) GetPageRangesHandleResponse(resp *http.Response) (
 // method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
 // ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-func (client *PageBlobClient) NewGetPageRangesDiffPager(options *PageBlobClientGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*runtime.Pager[PageBlobClientGetPageRangesDiffResponse]) {
+func (client *PageBlobClient) NewGetPageRangesDiffPager(options *PageBlobClientGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) *runtime.Pager[PageBlobClientGetPageRangesDiffResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PageBlobClientGetPageRangesDiffResponse]{
 		More: func(page PageBlobClientGetPageRangesDiffResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -1285,4 +1285,3 @@ func (client *PageBlobClient) uploadPagesFromURLHandleResponse(resp *http.Respon
 	}
 	return result, nil
 }
-

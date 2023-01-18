@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
@@ -34,7 +34,7 @@ type ServiceClient struct {
 func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 	client := &ServiceClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -548,4 +548,3 @@ func (client *ServiceClient) submitBatchHandleResponse(resp *http.Response) (Ser
 	}
 	return result, nil
 }
-

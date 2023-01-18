@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v67.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-07-01/network`
+
 ## `v67.3.0`
 
 ### Others

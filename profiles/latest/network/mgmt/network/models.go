@@ -12,7 +12,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-05-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-07-01/network"
 )
 
 const (
@@ -134,6 +134,7 @@ const (
 type ApplicationGatewaySkuName = original.ApplicationGatewaySkuName
 
 const (
+	StandardBasic  ApplicationGatewaySkuName = original.StandardBasic
 	StandardLarge  ApplicationGatewaySkuName = original.StandardLarge
 	StandardMedium ApplicationGatewaySkuName = original.StandardMedium
 	StandardSmall  ApplicationGatewaySkuName = original.StandardSmall
@@ -206,10 +207,11 @@ const (
 type ApplicationGatewayTier = original.ApplicationGatewayTier
 
 const (
-	ApplicationGatewayTierStandard   ApplicationGatewayTier = original.ApplicationGatewayTierStandard
-	ApplicationGatewayTierStandardV2 ApplicationGatewayTier = original.ApplicationGatewayTierStandardV2
-	ApplicationGatewayTierWAF        ApplicationGatewayTier = original.ApplicationGatewayTierWAF
-	ApplicationGatewayTierWAFV2      ApplicationGatewayTier = original.ApplicationGatewayTierWAFV2
+	ApplicationGatewayTierStandard      ApplicationGatewayTier = original.ApplicationGatewayTierStandard
+	ApplicationGatewayTierStandardBasic ApplicationGatewayTier = original.ApplicationGatewayTierStandardBasic
+	ApplicationGatewayTierStandardV2    ApplicationGatewayTier = original.ApplicationGatewayTierStandardV2
+	ApplicationGatewayTierWAF           ApplicationGatewayTier = original.ApplicationGatewayTierWAF
+	ApplicationGatewayTierWAFV2         ApplicationGatewayTier = original.ApplicationGatewayTierWAFV2
 )
 
 type ApplicationGatewayTierTypes = original.ApplicationGatewayTierTypes
@@ -2121,6 +2123,7 @@ type DefaultAdminRule = original.DefaultAdminRule
 type DefaultRuleSetPropertyFormat = original.DefaultRuleSetPropertyFormat
 type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
 type Delegation = original.Delegation
+type DelegationProperties = original.DelegationProperties
 type DeleteBastionShareableLinkFuture = original.DeleteBastionShareableLinkFuture
 type DeviceProperties = original.DeviceProperties
 type DhcpOptions = original.DhcpOptions
@@ -2653,6 +2656,7 @@ type PacketCapturesDeleteFuture = original.PacketCapturesDeleteFuture
 type PacketCapturesGetStatusFuture = original.PacketCapturesGetStatusFuture
 type PacketCapturesStopFuture = original.PacketCapturesStopFuture
 type Parameter = original.Parameter
+type PartnerManagedResourceProperties = original.PartnerManagedResourceProperties
 type PatchObject = original.PatchObject
 type PatchRouteFilter = original.PatchRouteFilter
 type PatchRouteFilterRule = original.PatchRouteFilterRule

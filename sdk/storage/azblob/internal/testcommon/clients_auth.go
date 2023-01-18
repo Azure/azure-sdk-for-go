@@ -69,7 +69,7 @@ var BasicHeaders = blob.HTTPHeaders{
 	BlobContentEncoding:    &BlobContentEncoding,
 }
 
-var BasicMetadata = map[string]string{"Foo": "bar"}
+var BasicMetadata = map[string]*string{"Foo": to.Ptr("bar")}
 
 var BasicBlobTagsMap = map[string]string{
 	"azure": "blob",

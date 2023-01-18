@@ -7,6 +7,7 @@
 package blob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -14,13 +15,13 @@ import (
 
 func TestDeserializeORSPolicies(t *testing.T) {
 
-	headers := map[string]string{
-		"x-ms-or-111_111":   "Completed",
-		"x-ms-or-111_222":   "Failed",
-		"x-ms-or-222_111":   "Completed",
-		"x-ms-or-222_222":   "Failed",
-		"x-ms-or-policy-id": "333",     // to be ignored
-		"x-ms-not-related":  "garbage", // to be ignored
+	headers := map[string]*string{
+		"x-ms-or-111_111":   to.Ptr("Completed"),
+		"x-ms-or-111_222":   to.Ptr("Failed"),
+		"x-ms-or-222_111":   to.Ptr("Completed"),
+		"x-ms-or-222_222":   to.Ptr("Failed"),
+		"x-ms-or-policy-id": to.Ptr("333"),     // to be ignored
+		"x-ms-not-related":  to.Ptr("garbage"), // to be ignored
 	}
 
 	result := deserializeORSPolicies(headers)

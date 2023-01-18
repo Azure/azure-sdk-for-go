@@ -445,7 +445,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendMetadataEmpty() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := appendblob.CreateOptions{
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
@@ -469,7 +469,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendMetadataInvalid() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := appendblob.CreateOptions{
-		Metadata: map[string]string{"In valid!": "bar"},
+		Metadata: map[string]*string{"In valid!": to.Ptr("bar")},
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.NotNil(err)
@@ -1599,7 +1599,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_require.Equal(*blobProp.IsCurrentVersion, true)
 }
 
-func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
+func (s *AppendBlobRecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -1613,7 +1613,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
 	bbName := testcommon.GenerateName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 
-	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
+	metadata := map[string]*string{"test_key_1": to.Ptr("test_value_1"), "test_key_2": to.Ptr("2019")}
 	resp, err := bbClient.SetMetadata(context.Background(), metadata, nil)
 	_require.Nil(err)
 	_require.NotNil(resp.VersionID)

@@ -86,9 +86,6 @@ func (o *CreateOptions) format() (*generated.PageBlobClientCreateOptions, *gener
 
 // UploadPagesOptions contains the optional parameters for the Client.UploadPages method.
 type UploadPagesOptions struct {
-	// Range specifies a range of bytes.  The default value is all bytes.
-	Range blob.HTTPRange
-
 	// TransactionalValidation specifies the transfer validation type to use.
 	// The default is nil (no transfer validation).
 	TransactionalValidation blob.TransferValidationType
@@ -99,14 +96,14 @@ type UploadPagesOptions struct {
 	AccessConditions               *blob.AccessConditions
 }
 
-func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptions, *generated.LeaseAccessConditions,
+func (o *UploadPagesOptions) format(contentRange blob.HTTPRange) (*generated.PageBlobClientUploadPagesOptions, *generated.LeaseAccessConditions,
 	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
 
 	options := &generated.PageBlobClientUploadPagesOptions{
-		Range: exported.FormatHTTPRange(o.Range),
+		Range: exported.FormatHTTPRange(contentRange),
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)

@@ -146,7 +146,7 @@ type QueueClientGetPropertiesResponse struct {
 	Date *time.Time
 
 	// Metadata contains the information returned from the x-ms-meta header response.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -202,7 +202,7 @@ type ServiceClientGetStatisticsResponse struct {
 	Version *string `xml:"Version"`
 }
 
-// ServiceClientListQueuesSegmentResponse contains the response from method ServiceClient.ListQueuesSegment.
+// ServiceClientListQueuesSegmentResponse contains the response from method ServiceClient.NewListQueuesSegmentPager.
 type ServiceClientListQueuesSegmentResponse struct {
 	ListQueuesSegmentResponse
 	// Date contains the information returned from the Date header response.
@@ -223,4 +223,3 @@ type ServiceClientSetPropertiesResponse struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
-

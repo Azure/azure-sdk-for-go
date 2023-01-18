@@ -334,12 +334,22 @@ directive:
 ```
 
 
-### Change where parameter in blob filtering to be required
+### Change `where` parameter in blob filtering to be required
 
 ``` yaml
 directive:
 - from: swagger-document
   where: $.parameters.FilterBlobsWhere
+  transform: >
+    $.required = true;
+```
+
+### Change `Duration` parameter in leases to be required
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LeaseDuration
   transform: >
     $.required = true;
 ```

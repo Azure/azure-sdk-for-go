@@ -1599,7 +1599,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_require.Equal(*blobProp.IsCurrentVersion, true)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
+func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

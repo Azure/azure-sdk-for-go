@@ -496,6 +496,22 @@ func (o *SetLegalHoldOptions) format() *generated.BlobClientSetLegalHoldOptions 
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format() time.Time {
+	var st time.Time
+	if o.StartTime != nil {
+		st = o.StartTime.UTC()
+	} else {
+		st = time.Time{}
+	}
+	return st
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // CopyFromURLOptions contains the optional parameters for the Client.CopyFromURL method.
 type CopyFromURLOptions struct {
 	// Optional. Used to set blob tags in various blob operations.

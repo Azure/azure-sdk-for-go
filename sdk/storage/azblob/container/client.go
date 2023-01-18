@@ -306,23 +306,22 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time, expiry time.Time) (string, error) {
+func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if c.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
-
+	st := o.format()
 	urlParts, err := blob.ParseURL(c.URL())
 	if err != nil {
 		return "", err
 	}
-
 	// Containers do not have snapshots, nor versions.
 	qps, err := sas.BlobSignatureValues{
 		Version:       sas.Version,
 		Protocol:      sas.ProtocolHTTPS,
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
-		StartTime:     start.UTC(),
+		StartTime:     st,
 		ExpiryTime:    expiry.UTC(),
 	}.SignWithSharedKey(c.sharedKey())
 	if err != nil {

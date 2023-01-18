@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -190,6 +191,22 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 		MinuteMetrics:         o.MinuteMetrics,
 		StaticWebsite:         o.StaticWebsite,
 	}, nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format() time.Time {
+	var st time.Time
+	if o.StartTime != nil {
+		st = o.StartTime.UTC()
+	} else {
+		st = time.Time{}
+	}
+	return st
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

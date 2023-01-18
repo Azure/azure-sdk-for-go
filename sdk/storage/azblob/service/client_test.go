@@ -581,7 +581,8 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	start := time.Now().Add(-time.Hour)
 	expiry := start.Add(time.Hour)
 
-	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, start, expiry)
+	opts := service.GetSASURLOptions{StartTime: &start}
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, expiry, &opts)
 	_require.Nil(err)
 
 	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
@@ -614,7 +615,8 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
 	start := time.Now().Add(-5 * time.Minute).UTC()
 	expiry := time.Now().Add(time.Hour)
 
-	sasUrl, err := containerClient.GetSASURL(permissions, start, expiry)
+	opts := container.GetSASURLOptions{StartTime: &start}
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, &opts)
 	_require.Nil(err)
 
 	containerClient2, err := container.NewClientWithNoCredential(sasUrl, nil)
@@ -638,9 +640,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := serviceClient.NewContainerClient(containerName)
+	start := time.Now().Add(-5 * time.Minute).UTC()
+	opts := container.GetSASURLOptions{StartTime: &start}
 
-	sasUrlReadAdd, err := containerClient.GetSASURL(sas.ContainerPermissions{Read: true, Add: true},
-		time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
+	sasUrlReadAdd, err := containerClient.GetSASURL(sas.ContainerPermissions{Read: true, Add: true}, time.Now().Add(time.Hour), &opts)
 	_require.Nil(err)
 	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})
 	_require.Nil(err)
@@ -654,8 +657,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
 
-	sasUrlRCWL, err := containerClient.GetSASURL(sas.ContainerPermissions{Add: true, Create: true, Delete: true, List: true},
-		time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
+	start = time.Now().Add(-5 * time.Minute).UTC()
+	opts = container.GetSASURLOptions{StartTime: &start}
+
+	sasUrlRCWL, err := containerClient.GetSASURL(sas.ContainerPermissions{Add: true, Create: true, Delete: true, List: true}, time.Now().Add(time.Hour), &opts)
 	_require.Nil(err)
 
 	containerClient2, err := container.NewClientWithNoCredential(sasUrlRCWL, nil)

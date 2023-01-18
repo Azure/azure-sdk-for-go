@@ -244,18 +244,18 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, start time.Time, expiry time.Time) (string, error) {
+func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if s.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
-
+	st := o.format()
 	qps, err := sas.AccountSignatureValues{
 		Version:       sas.Version,
 		Protocol:      sas.ProtocolHTTPS,
 		Permissions:   permissions.String(),
 		Services:      services.String(),
 		ResourceTypes: resources.String(),
-		StartTime:     start.UTC(),
+		StartTime:     st,
 		ExpiryTime:    expiry.UTC(),
 	}.SignWithSharedKey(s.sharedKey())
 	if err != nil {

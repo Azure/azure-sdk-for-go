@@ -266,7 +266,7 @@ func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *Co
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (b *Client) GetSASURL(permissions sas.BlobPermissions, start time.Time, expiry time.Time) (string, error) {
+func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if b.sharedKey() == nil {
 		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
 	}
@@ -281,17 +281,16 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, start time.Time, exp
 	if err != nil {
 		t = time.Time{}
 	}
+	st := o.format()
 
 	qps, err := sas.BlobSignatureValues{
 		ContainerName: urlParts.ContainerName,
 		BlobName:      urlParts.BlobName,
 		SnapshotTime:  t,
 		Version:       sas.Version,
-
-		Permissions: permissions.String(),
-
-		StartTime:  start.UTC(),
-		ExpiryTime: expiry.UTC(),
+		Permissions:   permissions.String(),
+		StartTime:     st,
+		ExpiryTime:    expiry.UTC(),
 	}.SignWithSharedKey(b.sharedKey())
 
 	if err != nil {

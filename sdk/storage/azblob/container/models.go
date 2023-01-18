@@ -67,7 +67,7 @@ type CreateOptions struct {
 	Access *PublicAccessType
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// Optional. Specifies the encryption scope settings to set on the container.
 	CpkScopeInfo *CpkScopeInfo
@@ -220,7 +220,7 @@ func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHi
 
 // SetMetadataOptions contains the optional parameters for the Client.SetMetadata method.
 type SetMetadataOptions struct {
-	Metadata                 map[string]string
+	Metadata                 map[string]*string
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions
 }

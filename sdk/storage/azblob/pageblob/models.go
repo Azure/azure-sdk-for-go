@@ -96,18 +96,14 @@ type UploadPagesOptions struct {
 	AccessConditions               *blob.AccessConditions
 }
 
-func (o *UploadPagesOptions) format(contentRange blob.HTTPRange) (*generated.PageBlobClientUploadPagesOptions, *generated.LeaseAccessConditions,
+func (o *UploadPagesOptions) format() (*generated.LeaseAccessConditions,
 	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil
-	}
-
-	options := &generated.PageBlobClientUploadPagesOptions{
-		Range: exported.FormatHTTPRange(contentRange),
+		return nil, nil, nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
+	return leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

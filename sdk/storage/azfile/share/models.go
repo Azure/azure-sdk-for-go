@@ -36,6 +36,9 @@ type CreateOptions struct {
 type DeleteOptions struct {
 	// Specifies the option include to delete the base share and all of its snapshots.
 	DeleteSnapshots *DeleteSnapshotsOptionType
+	// TODO: Should snapshot be removed from the option bag
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Snapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 }
@@ -54,6 +57,9 @@ type RestoreOptions struct {
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
 type GetPropertiesOptions struct {
+	// TODO: Should snapshot be removed from the option bag
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Snapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 }
@@ -131,6 +137,8 @@ type SetMetadataOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetStatisticsOptions contains the optional parameters for the Client.GetStatistics method.
 type GetStatisticsOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
@@ -139,3 +147,67 @@ type GetStatisticsOptions struct {
 
 // Stats - Stats for the share.
 type Stats = generated.ShareStats
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// AcquireLeaseOptions contains the optional parameters for the Client.AcquireLease method.
+type AcquireLeaseOptions struct {
+	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
+	// can be between 15 and 60 seconds. A lease duration cannot be changed using
+	// renew or change.
+	Duration *int32
+	// Proposed lease ID, in a GUID string format.
+	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
+	ProposedLeaseID *string
+	// TODO: Should snapshot be removed from the option bag
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Snapshot *string
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BreakLeaseOptions contains the optional parameters for the Client.BreakLease method.
+type BreakLeaseOptions struct {
+	// For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This
+	// break period is only used if it is shorter than the time remaining on the
+	// lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has
+	// expired, but the lease may be held for longer than the break period. If this
+	// header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses,
+	// and an infinite lease breaks immediately.
+	BreakPeriod *int32
+	// TODO: Should snapshot be removed from the option bag
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Snapshot *string
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ChangeLeaseOptions contains the optional parameters for the Client.ChangeLease method.
+type ChangeLeaseOptions struct {
+	// Proposed lease ID, in a GUID string format.
+	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
+	ProposedLeaseID *string
+	// TODO: Should snapshot be removed from the option bag
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Snapshot *string
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ReleaseLeaseOptions contains the optional parameters for the Client.ReleaseLease method.
+type ReleaseLeaseOptions struct {
+	// TODO: Should snapshot be removed from the option bag
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Snapshot *string
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// RenewLeaseOptions contains the optional parameters for the Client.RenewLease method.
+type RenewLeaseOptions struct {
+	// TODO: Should snapshot be removed from the option bag
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Snapshot *string
+}

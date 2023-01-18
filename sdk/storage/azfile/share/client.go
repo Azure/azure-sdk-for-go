@@ -144,3 +144,33 @@ func (s *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 func (s *Client) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	return GetStatisticsResponse{}, nil
 }
+
+// AcquireLease operation can be used to request a new lease.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-share.
+func (s *Client) AcquireLease(ctx context.Context, options *AcquireLeaseOptions) (AcquireLeaseResponse, error) {
+	return AcquireLeaseResponse{}, nil
+}
+
+// BreakLease operation can be used to break the lease, if the file share has an active lease. Once a lease is broken, it cannot be renewed.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-share.
+func (s *Client) BreakLease(ctx context.Context, options *BreakLeaseOptions) (BreakLeaseResponse, error) {
+	return BreakLeaseResponse{}, nil
+}
+
+// ChangeLease operation can be used to change the lease ID of an active lease.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-share.
+func (s *Client) ChangeLease(ctx context.Context, leaseID string, options *ChangeLeaseOptions) (ChangeLeaseResponse, error) {
+	return ChangeLeaseResponse{}, nil
+}
+
+// ReleaseLease operation can be used to free the lease if it is no longer needed so that another client may immediately acquire a lease against the file share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-share.
+func (s *Client) ReleaseLease(ctx context.Context, leaseID string, options *ReleaseLeaseOptions) (ReleaseLeaseResponse, error) {
+	return ReleaseLeaseResponse{}, nil
+}
+
+// RenewLease operation can be used to renew an existing lease.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-share.
+func (s *Client) RenewLease(ctx context.Context, leaseID string, options *RenewLeaseOptions) (RenewLeaseResponse, error) {
+	return RenewLeaseResponse{}, nil
+}

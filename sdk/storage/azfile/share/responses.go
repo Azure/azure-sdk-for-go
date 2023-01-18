@@ -43,3 +43,18 @@ type SetMetadataResponse = generated.ShareClientSetMetadataResponse
 
 // GetStatisticsResponse contains the response from method Client.GetStatistics.
 type GetStatisticsResponse = generated.ShareClientGetStatisticsResponse
+
+// AcquireLeaseResponse contains the response from method Client.AcquireLease.
+type AcquireLeaseResponse = generated.ShareClientAcquireLeaseResponse
+
+// BreakLeaseResponse contains the response from method Client.BreakLease.
+type BreakLeaseResponse = generated.ShareClientBreakLeaseResponse
+
+// ChangeLeaseResponse contains the response from method Client.ChangeLease.
+type ChangeLeaseResponse = generated.ShareClientChangeLeaseResponse
+
+// ReleaseLeaseResponse contains the response from method Client.ReleaseLease.
+type ReleaseLeaseResponse = generated.ShareClientReleaseLeaseResponse
+
+// RenewLeaseResponse contains the response from method Client.RenewLease.
+type RenewLeaseResponse = generated.ShareClientRenewLeaseResponse

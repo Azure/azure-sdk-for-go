@@ -23,7 +23,7 @@ type CreateOptions struct {
 	// Protocols to enable on the share.
 	EnabledProtocols *string
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Specifies the maximum size of the share, in gigabytes.
 	Quota *int32
 	// Root squash to set on the share. Only valid for NFS shares.
@@ -36,13 +36,11 @@ type CreateOptions struct {
 type DeleteOptions struct {
 	// Specifies the option include to delete the base share and all of its snapshots.
 	DeleteSnapshots *DeleteSnapshotsOptionType
-	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	//ShareSnapshot *string
-	// LeaseAccessConditions contains a group of parameters for the Client.GetProperties method
+	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-// LeaseAccessConditions contains a group of parameters for the Client.GetProperties method
+// LeaseAccessConditions contains optional parameters to access leased entity.
 type LeaseAccessConditions = generated.LeaseAccessConditions
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -51,3 +49,93 @@ type LeaseAccessConditions = generated.LeaseAccessConditions
 type RestoreOptions struct {
 	// placeholder for future options
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
+type GetPropertiesOptions struct {
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetPropertiesOptions contains the optional parameters for the Client.SetProperties method.
+type SetPropertiesOptions struct {
+	// Specifies the access tier of the share.
+	AccessTier *AccessTier
+	// Specifies the maximum size of the share, in gigabytes.
+	Quota *int32
+	// Root squash to set on the share. Only valid for NFS shares.
+	RootSquash *RootSquash
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// CreateSnapshotOptions contains the optional parameters for the Client.CreateSnapshot method.
+type CreateSnapshotOptions struct {
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]*string
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetAccessPolicyOptions contains the optional parameters for the Client.GetAccessPolicy method.
+type GetAccessPolicyOptions struct {
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// SignedIdentifier - Signed identifier.
+type SignedIdentifier = generated.SignedIdentifier
+
+// AccessPolicy - An Access policy.
+type AccessPolicy = generated.AccessPolicy
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetAccessPolicyOptions contains the optional parameters for the Client.SetAccessPolicy method.
+type SetAccessPolicyOptions struct {
+	// Specifies the ACL for the share.
+	ShareACL []*SignedIdentifier
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// CreatePermissionOptions contains the optional parameters for the Client.CreatePermission method.
+type CreatePermissionOptions struct {
+	// placeholder for future options
+}
+
+// Permission - A permission (a security descriptor) at the share level.
+type Permission = generated.SharePermission
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetPermissionOptions contains the optional parameters for the Client.GetPermission method.
+type GetPermissionOptions struct {
+	// placeholder for future options
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetMetadataOptions contains the optional parameters for the Client.SetMetadata method.
+type SetMetadataOptions struct {
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]*string
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// GetStatisticsOptions contains the optional parameters for the Client.GetStatistics method.
+type GetStatisticsOptions struct {
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// Stats - Stats for the share.
+type Stats = generated.ShareStats

@@ -72,19 +72,75 @@ func (s *Client) WithSnapshot(shareSnapshot string) (*Client, error) {
 }
 
 // Create creates a new share within a storage account. If a share with the same name already exists, the operation fails.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-share
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-share.
 func (s *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	return CreateResponse{}, nil
 }
 
 // Delete marks the specified share for deletion. The share and any files contained within it are later deleted during garbage collection.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-share
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-share.
 func (s *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	return DeleteResponse{}, nil
 }
 
 // Restore operation restores a share that had previously been soft-deleted.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/restore-share
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/restore-share.
 func (s *Client) Restore(ctx context.Context, deletedShareVersion string, options *RestoreOptions) (RestoreResponse, error) {
 	return RestoreResponse{}, nil
+}
+
+// GetProperties operation returns all user-defined metadata and system properties for the specified share or share snapshot.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-share-properties.
+func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+	return GetPropertiesResponse{}, nil
+}
+
+// SetProperties operation sets properties for the specified share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-share-properties.
+func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
+	return SetPropertiesResponse{}, nil
+}
+
+// CreateSnapshot creates a read-only snapshot of a share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/snapshot-share.
+func (s *Client) CreateSnapshot(ctx context.Context, options *CreateSnapshotOptions) (CreateSnapshotResponse, error) {
+	return CreateSnapshotResponse{}, nil
+}
+
+// GetAccessPolicy operation returns information about stored access policies specified on the share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-share-acl.
+func (s *Client) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
+	return GetAccessPolicyResponse{}, nil
+}
+
+// SetAccessPolicy operation sets a stored access policy for use with shared access signatures.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-share-acl.
+func (s *Client) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
+	return SetAccessPolicyResponse{}, nil
+}
+
+// CreatePermission operation creates a permission (a security descriptor) at the share level.
+// The created security descriptor can be used for the files and directories in the share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-permission.
+func (s *Client) CreatePermission(ctx context.Context, sharePermission string, o *CreatePermissionOptions) (CreatePermissionResponse, error) {
+	return CreatePermissionResponse{}, nil
+}
+
+// GetPermission operation gets the SDDL permission string from the service using a known permission key.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-permission.
+func (s *Client) GetPermission(ctx context.Context, filePermissionKey string, o *GetPermissionOptions) (GetPermissionResponse, error) {
+	return GetPermissionResponse{}, nil
+}
+
+// SetMetadata sets one or more user-defined name-value pairs for the specified share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-share-metadata.
+func (s *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
+	return SetMetadataResponse{}, nil
+
+}
+
+// GetStatistics operation retrieves statistics related to the share.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-share-stats.
+func (s *Client) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
+	return GetStatisticsResponse{}, nil
 }

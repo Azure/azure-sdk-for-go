@@ -14,6 +14,7 @@ import (
 	"encoding/base64"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"io"
 	"net/http"
 	"strconv"
@@ -29,8 +30,8 @@ type FileClient struct {
 }
 
 // NewFileClient creates a new instance of FileClient with the specified values.
-// endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
-// pl - the pipeline used for sending requests and handling responses.
+//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+//   - pl - the pipeline used for sending requests and handling responses.
 func NewFileClient(endpoint string, pl runtime.Pipeline) *FileClient {
 	client := &FileClient{
 		endpoint: endpoint,
@@ -41,10 +42,11 @@ func NewFileClient(endpoint string, pl runtime.Pipeline) *FileClient {
 
 // AbortCopy - Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// copyID - The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
-// options - FileClientAbortCopyOptions contains the optional parameters for the FileClient.AbortCopy method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - copyID - The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
+//   - options - FileClientAbortCopyOptions contains the optional parameters for the FileClient.AbortCopy method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) AbortCopy(ctx context.Context, copyID string, options *FileClientAbortCopyOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientAbortCopyResponse, error) {
 	req, err := client.abortCopyCreateRequest(ctx, copyID, options, leaseAccessConditions)
 	if err != nil {
@@ -103,8 +105,9 @@ func (client *FileClient) abortCopyHandleResponse(resp *http.Response) (FileClie
 
 // AcquireLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - FileClientAcquireLeaseOptions contains the optional parameters for the FileClient.AcquireLease method.
+//   - options - FileClientAcquireLeaseOptions contains the optional parameters for the FileClient.AcquireLease method.
 func (client *FileClient) AcquireLease(ctx context.Context, options *FileClientAcquireLeaseOptions) (FileClientAcquireLeaseResponse, error) {
 	req, err := client.acquireLeaseCreateRequest(ctx, options)
 	if err != nil {
@@ -184,9 +187,10 @@ func (client *FileClient) acquireLeaseHandleResponse(resp *http.Response) (FileC
 
 // BreakLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - FileClientBreakLeaseOptions contains the optional parameters for the FileClient.BreakLease method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - options - FileClientBreakLeaseOptions contains the optional parameters for the FileClient.BreakLease method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) BreakLease(ctx context.Context, options *FileClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientBreakLeaseResponse, error) {
 	req, err := client.breakLeaseCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
@@ -263,9 +267,10 @@ func (client *FileClient) breakLeaseHandleResponse(resp *http.Response) (FileCli
 
 // ChangeLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// leaseID - Specifies the current lease ID on the resource.
-// options - FileClientChangeLeaseOptions contains the optional parameters for the FileClient.ChangeLease method.
+//   - leaseID - Specifies the current lease ID on the resource.
+//   - options - FileClientChangeLeaseOptions contains the optional parameters for the FileClient.ChangeLease method.
 func (client *FileClient) ChangeLease(ctx context.Context, leaseID string, options *FileClientChangeLeaseOptions) (FileClientChangeLeaseResponse, error) {
 	req, err := client.changeLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
@@ -343,15 +348,16 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 
 // Create - Creates a new file or replaces a file. Note it only initializes the file with no content.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// fileContentLength - Specifies the maximum size for the file, up to 4 TB.
-// fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
-// for directory. ‘None’ can also be specified as default.
-// fileCreationTime - Creation time for the file/directory. Default value: Now.
-// fileLastWriteTime - Last write time for the file/directory. Default value: Now.
-// options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
-// ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - fileContentLength - Specifies the maximum size for the file, up to 4 TB.
+//   - fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
+//     for directory. ‘None’ can also be specified as default.
+//   - fileCreationTime - Creation time for the file/directory. Default value: Now.
+//   - fileLastWriteTime - Last write time for the file/directory. Default value: Now.
+//   - options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
+//   - ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, options, shareFileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
@@ -401,7 +407,9 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 	}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
-			req.Raw().Header["x-ms-meta-"+k] = []string{v}
+			if v != nil {
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+			}
 		}
 	}
 	if options != nil && options.FilePermission != nil {
@@ -491,9 +499,10 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 
 // Delete - removes the file from the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - FileClientDeleteOptions contains the optional parameters for the FileClient.Delete method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - options - FileClientDeleteOptions contains the optional parameters for the FileClient.Delete method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) Delete(ctx context.Context, options *FileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
@@ -549,9 +558,10 @@ func (client *FileClient) deleteHandleResponse(resp *http.Response) (FileClientD
 
 // Download - Reads or downloads a file from the system, including its metadata and properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - FileClientDownloadOptions contains the optional parameters for the FileClient.Download method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - options - FileClientDownloadOptions contains the optional parameters for the FileClient.Download method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) Download(ctx context.Context, options *FileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDownloadResponse, error) {
 	req, err := client.downloadCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
@@ -606,9 +616,9 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
-				result.Metadata = map[string]string{}
+				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta-"):]] = resp.Header.Get(hh)
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -745,10 +755,11 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 
 // ForceCloseHandles - Closes all handles open for given file
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
-// all handles.
-// options - FileClientForceCloseHandlesOptions contains the optional parameters for the FileClient.ForceCloseHandles method.
+//   - handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
+//     all handles.
+//   - options - FileClientForceCloseHandlesOptions contains the optional parameters for the FileClient.ForceCloseHandles method.
 func (client *FileClient) ForceCloseHandles(ctx context.Context, handleID string, options *FileClientForceCloseHandlesOptions) (FileClientForceCloseHandlesResponse, error) {
 	req, err := client.forceCloseHandlesCreateRequest(ctx, handleID, options)
 	if err != nil {
@@ -829,9 +840,10 @@ func (client *FileClient) forceCloseHandlesHandleResponse(resp *http.Response) (
 // GetProperties - Returns all user-defined metadata, standard HTTP properties, and system properties for the file. It does
 // not return the content of the file.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - FileClientGetPropertiesOptions contains the optional parameters for the FileClient.GetProperties method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - options - FileClientGetPropertiesOptions contains the optional parameters for the FileClient.GetProperties method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) GetProperties(ctx context.Context, options *FileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
@@ -882,9 +894,9 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
-				result.Metadata = map[string]string{}
+				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta-"):]] = resp.Header.Get(hh)
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("x-ms-type"); val != "" {
@@ -1011,9 +1023,10 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 
 // GetRangeList - Returns the list of valid ranges for a file.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - FileClientGetRangeListOptions contains the optional parameters for the FileClient.GetRangeList method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - options - FileClientGetRangeListOptions contains the optional parameters for the FileClient.GetRangeList method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) GetRangeList(ctx context.Context, options *FileClientGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetRangeListResponse, error) {
 	req, err := client.getRangeListCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
@@ -1099,8 +1112,9 @@ func (client *FileClient) getRangeListHandleResponse(resp *http.Response) (FileC
 
 // ListHandles - Lists handles for file
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - FileClientListHandlesOptions contains the optional parameters for the FileClient.ListHandles method.
+//   - options - FileClientListHandlesOptions contains the optional parameters for the FileClient.ListHandles method.
 func (client *FileClient) ListHandles(ctx context.Context, options *FileClientListHandlesOptions) (FileClientListHandlesResponse, error) {
 	req, err := client.listHandlesCreateRequest(ctx, options)
 	if err != nil {
@@ -1169,9 +1183,10 @@ func (client *FileClient) listHandlesHandleResponse(resp *http.Response) (FileCl
 
 // ReleaseLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// leaseID - Specifies the current lease ID on the resource.
-// options - FileClientReleaseLeaseOptions contains the optional parameters for the FileClient.ReleaseLease method.
+//   - leaseID - Specifies the current lease ID on the resource.
+//   - options - FileClientReleaseLeaseOptions contains the optional parameters for the FileClient.ReleaseLease method.
 func (client *FileClient) ReleaseLease(ctx context.Context, leaseID string, options *FileClientReleaseLeaseOptions) (FileClientReleaseLeaseResponse, error) {
 	req, err := client.releaseLeaseCreateRequest(ctx, leaseID, options)
 	if err != nil {
@@ -1243,14 +1258,15 @@ func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileC
 
 // SetHTTPHeaders - Sets HTTP headers on the file.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
-// for directory. ‘None’ can also be specified as default.
-// fileCreationTime - Creation time for the file/directory. Default value: Now.
-// fileLastWriteTime - Last write time for the file/directory. Default value: Now.
-// options - FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
-// ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
+//     for directory. ‘None’ can also be specified as default.
+//   - fileCreationTime - Creation time for the file/directory. Default value: Now.
+//   - fileLastWriteTime - Last write time for the file/directory. Default value: Now.
+//   - options - FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
+//   - ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *FileClientSetHTTPHeadersOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientSetHTTPHeadersResponse, error) {
 	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options, shareFileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
@@ -1387,9 +1403,10 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 
 // SetMetadata - Updates user-defined metadata for the specified file.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - FileClientSetMetadataOptions contains the optional parameters for the FileClient.SetMetadata method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - options - FileClientSetMetadataOptions contains the optional parameters for the FileClient.SetMetadata method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) SetMetadata(ctx context.Context, options *FileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientSetMetadataResponse, error) {
 	req, err := client.setMetadataCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
@@ -1419,7 +1436,9 @@ func (client *FileClient) setMetadataCreateRequest(ctx context.Context, options 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
-			req.Raw().Header["x-ms-meta-"+k] = []string{v}
+			if v != nil {
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+			}
 		}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
@@ -1468,16 +1487,17 @@ func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileCl
 
 // StartCopy - Copies a blob or file to a destination file within the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
-// the same storage account, you may use Shared Key to authenticate the source file. If you are
-// copying a file from another storage account, or if you are copying a blob from the same storage account or another storage
-// account, then you must authenticate the source file or blob using a shared
-// access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in
-// a share snapshot can also be specified as a copy source.
-// options - FileClientStartCopyOptions contains the optional parameters for the FileClient.StartCopy method.
-// CopyFileSmbInfo - CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
+//     the same storage account, you may use Shared Key to authenticate the source file. If you are
+//     copying a file from another storage account, or if you are copying a blob from the same storage account or another storage
+//     account, then you must authenticate the source file or blob using a shared
+//     access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in
+//     a share snapshot can also be specified as a copy source.
+//   - options - FileClientStartCopyOptions contains the optional parameters for the FileClient.StartCopy method.
+//   - CopyFileSmbInfo - CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) StartCopy(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (FileClientStartCopyResponse, error) {
 	req, err := client.startCopyCreateRequest(ctx, copySource, options, copyFileSmbInfo, leaseAccessConditions)
 	if err != nil {
@@ -1507,7 +1527,9 @@ func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
-			req.Raw().Header["x-ms-meta-"+k] = []string{v}
+			if v != nil {
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+			}
 		}
 	}
 	req.Raw().Header["x-ms-copy-source"] = []string{copySource}
@@ -1579,22 +1601,23 @@ func (client *FileClient) startCopyHandleResponse(resp *http.Response) (FileClie
 
 // UploadRange - Upload a range of bytes to a file.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// rangeParam - Specifies the range of bytes to be written. Both the start and end of the range must be specified. For an
-// update operation, the range can be up to 4 MB in size. For a clear operation, the range can be
-// up to the value of the file's full size. The File service accepts only a single byte range for the Range and 'x-ms-range'
-// headers, and the byte range must be specified in the following format:
-// bytes=startByte-endByte.
-// fileRangeWrite - Specify one of the following options: - Update: Writes the bytes specified by the request body into the
-// specified range. The Range and Content-Length headers must match to perform the update. - Clear:
-// Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length
-// header to zero, and set the Range header to a value that indicates the range
-// to clear, up to maximum file size.
-// contentLength - Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set
-// to clear, the value of this header must be set to zero.
-// optionalbody - Initial data.
-// options - FileClientUploadRangeOptions contains the optional parameters for the FileClient.UploadRange method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - rangeParam - Specifies the range of bytes to be written. Both the start and end of the range must be specified. For an
+//     update operation, the range can be up to 4 MB in size. For a clear operation, the range can be
+//     up to the value of the file's full size. The File service accepts only a single byte range for the Range and 'x-ms-range'
+//     headers, and the byte range must be specified in the following format:
+//     bytes=startByte-endByte.
+//   - fileRangeWrite - Specify one of the following options: - Update: Writes the bytes specified by the request body into the
+//     specified range. The Range and Content-Length headers must match to perform the update. - Clear:
+//     Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length
+//     header to zero, and set the Range header to a value that indicates the range
+//     to clear, up to maximum file size.
+//   - contentLength - Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set
+//     to clear, the value of this header must be set to zero.
+//   - optionalbody - Initial data.
+//   - options - FileClientUploadRangeOptions contains the optional parameters for the FileClient.UploadRange method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) UploadRange(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, optionalbody io.ReadSeekCloser, options *FileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientUploadRangeResponse, error) {
 	req, err := client.uploadRangeCreateRequest(ctx, rangeParam, fileRangeWrite, contentLength, optionalbody, options, leaseAccessConditions)
 	if err != nil {
@@ -1681,20 +1704,21 @@ func (client *FileClient) uploadRangeHandleResponse(resp *http.Response) (FileCl
 
 // UploadRangeFromURL - Upload a range of bytes to a file where the contents are read from a URL.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// rangeParam - Writes data to the specified byte range in the file.
-// copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
-// the same storage account, you may use Shared Key to authenticate the source file. If you are
-// copying a file from another storage account, or if you are copying a blob from the same storage account or another storage
-// account, then you must authenticate the source file or blob using a shared
-// access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in
-// a share snapshot can also be specified as a copy source.
-// contentLength - Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set
-// to clear, the value of this header must be set to zero.
-// options - FileClientUploadRangeFromURLOptions contains the optional parameters for the FileClient.UploadRangeFromURL method.
-// SourceModifiedAccessConditions - SourceModifiedAccessConditions contains a group of parameters for the FileClient.UploadRangeFromURL
-// method.
-// LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
+//   - rangeParam - Writes data to the specified byte range in the file.
+//   - copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
+//     the same storage account, you may use Shared Key to authenticate the source file. If you are
+//     copying a file from another storage account, or if you are copying a blob from the same storage account or another storage
+//     account, then you must authenticate the source file or blob using a shared
+//     access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in
+//     a share snapshot can also be specified as a copy source.
+//   - contentLength - Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set
+//     to clear, the value of this header must be set to zero.
+//   - options - FileClientUploadRangeFromURLOptions contains the optional parameters for the FileClient.UploadRangeFromURL method.
+//   - SourceModifiedAccessConditions - SourceModifiedAccessConditions contains a group of parameters for the FileClient.UploadRangeFromURL
+//     method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) UploadRangeFromURL(ctx context.Context, rangeParam string, copySource string, contentLength int64, options *FileClientUploadRangeFromURLOptions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (FileClientUploadRangeFromURLResponse, error) {
 	req, err := client.uploadRangeFromURLCreateRequest(ctx, rangeParam, copySource, contentLength, options, sourceModifiedAccessConditions, leaseAccessConditions)
 	if err != nil {

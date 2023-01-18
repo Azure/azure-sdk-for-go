@@ -288,7 +288,8 @@ func Example_container_ClientGetSASURL() {
 	permission := sas.ContainerPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
-	sasURL, err := containerClient.GetSASURL(permission, start, expiry)
+	options := container.GetSASURLOptions{StartTime: &start}
+	sasURL, err := containerClient.GetSASURL(permission, expiry, &options)
 	handleError(err)
 	_ = sasURL
 }

@@ -102,9 +102,9 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
-	md := map[string]string{
-		"foo": "foovalue",
-		"bar": "barvalue",
+	md := map[string]*string{
+		"foo": to.Ptr("foovalue"),
+		"bar": to.Ptr("barvalue"),
 	}
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -162,9 +162,9 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
-	md := map[string]string{
-		"foo": "foovalue",
-		"bar": "barvalue",
+	md := map[string]*string{
+		"foo": to.Ptr("foovalue"),
+		"bar": to.Ptr("barvalue"),
 	}
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -780,7 +780,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 		blobName,
 		strings.NewReader(blobData),
 		&azblob.UploadStreamOptions{
-			Metadata: map[string]string{"Foo": "Bar"},
+			Metadata: testcommon.BasicMetadata,
 			Tags:     map[string]string{"Year": "2022"},
 		})
 	_require.Nil(err)

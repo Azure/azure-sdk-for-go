@@ -195,6 +195,7 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
 type GetSASURLOptions struct {
 	StartTime *time.Time
 }

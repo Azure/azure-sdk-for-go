@@ -218,6 +218,7 @@ func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHi
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
 type GetSASURLOptions struct {
 	StartTime *time.Time
 }
@@ -268,7 +269,8 @@ func (o *GetAccessPolicyOptions) format() (*generated.ContainerClientGetAccessPo
 
 // SetAccessPolicyOptions provides set of configurations for ContainerClient.SetAccessPolicy operation
 type SetAccessPolicyOptions struct {
-	// Specifies whether data in the container may be accessed publicly and the level of access
+	// Specifies whether data in the container may be accessed publicly and the level of access.
+	// If this header is not included in the request, container data is private to the account owner.
 	Access *PublicAccessType
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.

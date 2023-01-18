@@ -496,6 +496,7 @@ func (o *SetLegalHoldOptions) format() *generated.BlobClientSetLegalHoldOptions 
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
 type GetSASURLOptions struct {
 	StartTime *time.Time
 }

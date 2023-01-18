@@ -8,7 +8,7 @@
 
 ### Other Changes
 
-* Exported some missing types in the `container` and `service` packages. Fixes [#19775](https://github.com/Azure/azure-sdk-for-go/issues/19775).
+* Exported some missing types in the `blob`, `container` and `service` packages. Fixes [#19775](https://github.com/Azure/azure-sdk-for-go/issues/19775).
 
 ### Bugs Fixed
 * Fixed encoding issues seen in FilterBlobs. Fixes [#17421](https://github.com/Azure/azure-sdk-for-go/issues/17421).

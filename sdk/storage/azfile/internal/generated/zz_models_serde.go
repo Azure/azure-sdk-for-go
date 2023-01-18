@@ -19,7 +19,7 @@ import (
 )
 
 // MarshalXML implements the xml.Marshaller interface for type AccessPolicy.
-func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (a AccessPolicy) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias AccessPolicy
 	aux := &struct {
 		*alias
@@ -30,11 +30,11 @@ func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		Expiry: (*timeRFC3339)(a.Expiry),
 		Start:  (*timeRFC3339)(a.Start),
 	}
-	return e.EncodeElement(aux, start)
+	return enc.EncodeElement(aux, start)
 }
 
 // UnmarshalXML implements the xml.Unmarshaller interface for type AccessPolicy.
-func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+func (a *AccessPolicy) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias AccessPolicy
 	aux := &struct {
 		*alias
@@ -43,7 +43,7 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	}{
 		alias: (*alias)(a),
 	}
-	if err := d.DecodeElement(aux, &start); err != nil {
+	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
 	a.Expiry = (*time.Time)(aux.Expiry)
@@ -52,7 +52,7 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 }
 
 // MarshalXML implements the xml.Marshaller interface for type FileProperty.
-func (f FileProperty) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (f FileProperty) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias FileProperty
 	aux := &struct {
 		*alias
@@ -69,11 +69,11 @@ func (f FileProperty) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		LastModified:   (*timeRFC1123)(f.LastModified),
 		LastWriteTime:  (*timeRFC3339)(f.LastWriteTime),
 	}
-	return e.EncodeElement(aux, start)
+	return enc.EncodeElement(aux, start)
 }
 
 // UnmarshalXML implements the xml.Unmarshaller interface for type FileProperty.
-func (f *FileProperty) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+func (f *FileProperty) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias FileProperty
 	aux := &struct {
 		*alias
@@ -85,7 +85,7 @@ func (f *FileProperty) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	}{
 		alias: (*alias)(f),
 	}
-	if err := d.DecodeElement(aux, &start); err != nil {
+	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
 	f.ChangeTime = (*time.Time)(aux.ChangeTime)
@@ -97,7 +97,7 @@ func (f *FileProperty) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 }
 
 // MarshalXML implements the xml.Marshaller interface for type FilesAndDirectoriesListSegment.
-func (f FilesAndDirectoriesListSegment) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (f FilesAndDirectoriesListSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias FilesAndDirectoriesListSegment
 	aux := &struct {
 		*alias
@@ -112,11 +112,11 @@ func (f FilesAndDirectoriesListSegment) MarshalXML(e *xml.Encoder, start xml.Sta
 	if f.FileItems != nil {
 		aux.FileItems = &f.FileItems
 	}
-	return e.EncodeElement(aux, start)
+	return enc.EncodeElement(aux, start)
 }
 
 // MarshalXML implements the xml.Marshaller interface for type HandleItem.
-func (h HandleItem) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (h HandleItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias HandleItem
 	aux := &struct {
 		*alias
@@ -127,11 +127,11 @@ func (h HandleItem) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		LastReconnectTime: (*timeRFC1123)(h.LastReconnectTime),
 		OpenTime:          (*timeRFC1123)(h.OpenTime),
 	}
-	return e.EncodeElement(aux, start)
+	return enc.EncodeElement(aux, start)
 }
 
 // UnmarshalXML implements the xml.Unmarshaller interface for type HandleItem.
-func (h *HandleItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+func (h *HandleItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias HandleItem
 	aux := &struct {
 		*alias
@@ -140,7 +140,7 @@ func (h *HandleItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 	}{
 		alias: (*alias)(h),
 	}
-	if err := d.DecodeElement(aux, &start); err != nil {
+	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
 	h.LastReconnectTime = (*time.Time)(aux.LastReconnectTime)
@@ -149,7 +149,7 @@ func (h *HandleItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ListHandlesResponse.
-func (l ListHandlesResponse) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (l ListHandlesResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias ListHandlesResponse
 	aux := &struct {
 		*alias
@@ -160,11 +160,11 @@ func (l ListHandlesResponse) MarshalXML(e *xml.Encoder, start xml.StartElement) 
 	if l.HandleList != nil {
 		aux.HandleList = &l.HandleList
 	}
-	return e.EncodeElement(aux, start)
+	return enc.EncodeElement(aux, start)
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ListSharesResponse.
-func (l ListSharesResponse) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (l ListSharesResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias ListSharesResponse
 	aux := &struct {
 		*alias
@@ -175,11 +175,11 @@ func (l ListSharesResponse) MarshalXML(e *xml.Encoder, start xml.StartElement) e
 	if l.ShareItems != nil {
 		aux.ShareItems = &l.ShareItems
 	}
-	return e.EncodeElement(aux, start)
+	return enc.EncodeElement(aux, start)
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ShareFileRangeList.
-func (s ShareFileRangeList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (s ShareFileRangeList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias ShareFileRangeList
 	aux := &struct {
 		*alias
@@ -194,11 +194,11 @@ func (s ShareFileRangeList) MarshalXML(e *xml.Encoder, start xml.StartElement) e
 	if s.Ranges != nil {
 		aux.Ranges = &s.Ranges
 	}
-	return e.EncodeElement(aux, start)
+	return enc.EncodeElement(aux, start)
 }
 
 // UnmarshalXML implements the xml.Unmarshaller interface for type ShareItemInternal.
-func (s *ShareItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+func (s *ShareItemInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias ShareItemInternal
 	aux := &struct {
 		*alias
@@ -206,7 +206,7 @@ func (s *ShareItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement)
 	}{
 		alias: (*alias)(s),
 	}
-	if err := d.DecodeElement(aux, &start); err != nil {
+	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
 	s.Metadata = (map[string]*string)(aux.Metadata)
@@ -215,7 +215,7 @@ func (s *ShareItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement)
 
 // MarshalJSON implements the json.Marshaller interface for type SharePermission.
 func (s SharePermission) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "permission", s.Permission)
 	return json.Marshal(objectMap)
 }
@@ -241,7 +241,7 @@ func (s *SharePermission) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalXML implements the xml.Marshaller interface for type SharePropertiesInternal.
-func (s SharePropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (s SharePropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias SharePropertiesInternal
 	aux := &struct {
 		*alias
@@ -256,11 +256,11 @@ func (s SharePropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartEleme
 		LastModified:                  (*timeRFC1123)(s.LastModified),
 		NextAllowedQuotaDowngradeTime: (*timeRFC1123)(s.NextAllowedQuotaDowngradeTime),
 	}
-	return e.EncodeElement(aux, start)
+	return enc.EncodeElement(aux, start)
 }
 
 // UnmarshalXML implements the xml.Unmarshaller interface for type SharePropertiesInternal.
-func (s *SharePropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+func (s *SharePropertiesInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias SharePropertiesInternal
 	aux := &struct {
 		*alias
@@ -271,7 +271,7 @@ func (s *SharePropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartEl
 	}{
 		alias: (*alias)(s),
 	}
-	if err := d.DecodeElement(aux, &start); err != nil {
+	if err := dec.DecodeElement(aux, &start); err != nil {
 		return err
 	}
 	s.AccessTierChangeTime = (*time.Time)(aux.AccessTierChangeTime)
@@ -282,7 +282,7 @@ func (s *SharePropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartEl
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ShareServiceProperties.
-func (s ShareServiceProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+func (s ShareServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "StorageServiceProperties"
 	type alias ShareServiceProperties
 	aux := &struct {
@@ -294,12 +294,12 @@ func (s ShareServiceProperties) MarshalXML(e *xml.Encoder, start xml.StartElemen
 	if s.Cors != nil {
 		aux.Cors = &s.Cors
 	}
-	return e.EncodeElement(aux, start)
+	return enc.EncodeElement(aux, start)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StorageError.
 func (s StorageError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "Message", s.Message)
 	return json.Marshal(objectMap)
 }
@@ -324,7 +324,7 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
+func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
 	} else if azcore.IsNullValue(v) {
@@ -334,7 +334,7 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, fn string, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil {
 		return nil
 	}

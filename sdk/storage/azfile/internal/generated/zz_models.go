@@ -63,7 +63,7 @@ type DirectoryClientCreateOptions struct {
 	// should be specified.
 	FilePermissionKey *string
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
@@ -101,7 +101,7 @@ type DirectoryClientGetPropertiesOptions struct {
 	Timeout *int32
 }
 
-// DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.ListFilesAndDirectoriesSegment
+// DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.NewListFilesAndDirectoriesSegmentPager
 // method.
 type DirectoryClientListFilesAndDirectoriesSegmentOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
@@ -147,7 +147,7 @@ type DirectoryClientListHandlesOptions struct {
 // DirectoryClientSetMetadataOptions contains the optional parameters for the DirectoryClient.SetMetadata method.
 type DirectoryClientSetMetadataOptions struct {
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
@@ -240,7 +240,7 @@ type FileClientCreateOptions struct {
 	// should be specified.
 	FilePermissionKey *string
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
@@ -349,7 +349,7 @@ type FileClientSetHTTPHeadersOptions struct {
 // FileClientSetMetadataOptions contains the optional parameters for the FileClient.SetMetadata method.
 type FileClientSetMetadataOptions struct {
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
@@ -366,7 +366,7 @@ type FileClientStartCopyOptions struct {
 	// should be specified.
 	FilePermissionKey *string
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
@@ -526,7 +526,8 @@ type ServiceClientGetPropertiesOptions struct {
 	Timeout *int32
 }
 
-// ServiceClientListSharesSegmentOptions contains the optional parameters for the ServiceClient.ListSharesSegment method.
+// ServiceClientListSharesSegmentOptions contains the optional parameters for the ServiceClient.NewListSharesSegmentPager
+// method.
 type ServiceClientListSharesSegmentOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
 	Include []ListSharesIncludeType
@@ -614,7 +615,7 @@ type ShareClientCreateOptions struct {
 	// Protocols to enable on the share.
 	EnabledProtocols *string
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Specifies the maximum size of the share, in gigabytes.
 	Quota *int32
 	// Root squash to set on the share. Only valid for NFS shares.
@@ -634,7 +635,7 @@ type ShareClientCreatePermissionOptions struct {
 // ShareClientCreateSnapshotOptions contains the optional parameters for the ShareClient.CreateSnapshot method.
 type ShareClientCreateSnapshotOptions struct {
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
@@ -729,7 +730,7 @@ type ShareClientSetAccessPolicyOptions struct {
 // ShareClientSetMetadataOptions contains the optional parameters for the ShareClient.SetMetadata method.
 type ShareClientSetMetadataOptions struct {
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32

@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/http"
 	"strconv"
 	"strings"
@@ -28,8 +29,8 @@ type DirectoryClient struct {
 }
 
 // NewDirectoryClient creates a new instance of DirectoryClient with the specified values.
-// endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
-// pl - the pipeline used for sending requests and handling responses.
+//   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
+//   - pl - the pipeline used for sending requests and handling responses.
 func NewDirectoryClient(endpoint string, pl runtime.Pipeline) *DirectoryClient {
 	client := &DirectoryClient{
 		endpoint: endpoint,
@@ -40,12 +41,13 @@ func NewDirectoryClient(endpoint string, pl runtime.Pipeline) *DirectoryClient {
 
 // Create - Creates a new directory under the specified share or parent directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
-// for directory. ‘None’ can also be specified as default.
-// fileCreationTime - Creation time for the file/directory. Default value: Now.
-// fileLastWriteTime - Last write time for the file/directory. Default value: Now.
-// options - DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
+//   - fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
+//     for directory. ‘None’ can also be specified as default.
+//   - fileCreationTime - Creation time for the file/directory. Default value: Now.
+//   - fileLastWriteTime - Last write time for the file/directory. Default value: Now.
+//   - options - DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
 func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
@@ -75,7 +77,9 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
-			req.Raw().Header["x-ms-meta-"+k] = []string{v}
+			if v != nil {
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+			}
 		}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
@@ -163,8 +167,9 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 
 // Delete - Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - DirectoryClientDeleteOptions contains the optional parameters for the DirectoryClient.Delete method.
+//   - options - DirectoryClientDeleteOptions contains the optional parameters for the DirectoryClient.Delete method.
 func (client *DirectoryClient) Delete(ctx context.Context, options *DirectoryClientDeleteOptions) (DirectoryClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
 	if err != nil {
@@ -218,11 +223,12 @@ func (client *DirectoryClient) deleteHandleResponse(resp *http.Response) (Direct
 
 // ForceCloseHandles - Closes all handles open for given directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
-// all handles.
-// options - DirectoryClientForceCloseHandlesOptions contains the optional parameters for the DirectoryClient.ForceCloseHandles
-// method.
+//   - handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
+//     all handles.
+//   - options - DirectoryClientForceCloseHandlesOptions contains the optional parameters for the DirectoryClient.ForceCloseHandles
+//     method.
 func (client *DirectoryClient) ForceCloseHandles(ctx context.Context, handleID string, options *DirectoryClientForceCloseHandlesOptions) (DirectoryClientForceCloseHandlesResponse, error) {
 	req, err := client.forceCloseHandlesCreateRequest(ctx, handleID, options)
 	if err != nil {
@@ -307,8 +313,9 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 // of a directory. The data returned does not include the files in the directory or any
 // subdirectories.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - DirectoryClientGetPropertiesOptions contains the optional parameters for the DirectoryClient.GetProperties method.
+//   - options - DirectoryClientGetPropertiesOptions contains the optional parameters for the DirectoryClient.GetProperties method.
 func (client *DirectoryClient) GetProperties(ctx context.Context, options *DirectoryClientGetPropertiesOptions) (DirectoryClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
 	if err != nil {
@@ -350,9 +357,9 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
-				result.Metadata = map[string]string{}
+				result.Metadata = map[string]*string{}
 			}
-			result.Metadata[hh[len("x-ms-meta-"):]] = resp.Header.Get(hh)
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
@@ -423,10 +430,10 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 
 // NewListFilesAndDirectoriesSegmentPager - Returns a list of files or directories under the specified share or directory.
 // It lists the contents only for a single level of the directory hierarchy.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.ListFilesAndDirectoriesSegment
-// method.
+//   - options - DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.NewListFilesAndDirectoriesSegmentPager
+//     method.
 func (client *DirectoryClient) NewListFilesAndDirectoriesSegmentPager(options *DirectoryClientListFilesAndDirectoriesSegmentOptions) *runtime.Pager[DirectoryClientListFilesAndDirectoriesSegmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DirectoryClientListFilesAndDirectoriesSegmentResponse]{
 		More: func(page DirectoryClientListFilesAndDirectoriesSegmentResponse) bool {
@@ -518,8 +525,9 @@ func (client *DirectoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp
 
 // ListHandles - Lists handles for directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - DirectoryClientListHandlesOptions contains the optional parameters for the DirectoryClient.ListHandles method.
+//   - options - DirectoryClientListHandlesOptions contains the optional parameters for the DirectoryClient.ListHandles method.
 func (client *DirectoryClient) ListHandles(ctx context.Context, options *DirectoryClientListHandlesOptions) (DirectoryClientListHandlesResponse, error) {
 	req, err := client.listHandlesCreateRequest(ctx, options)
 	if err != nil {
@@ -591,8 +599,9 @@ func (client *DirectoryClient) listHandlesHandleResponse(resp *http.Response) (D
 
 // SetMetadata - Updates user defined metadata for the specified directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// options - DirectoryClientSetMetadataOptions contains the optional parameters for the DirectoryClient.SetMetadata method.
+//   - options - DirectoryClientSetMetadataOptions contains the optional parameters for the DirectoryClient.SetMetadata method.
 func (client *DirectoryClient) SetMetadata(ctx context.Context, options *DirectoryClientSetMetadataOptions) (DirectoryClientSetMetadataResponse, error) {
 	req, err := client.setMetadataCreateRequest(ctx, options)
 	if err != nil {
@@ -623,7 +632,9 @@ func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, opt
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
-			req.Raw().Header["x-ms-meta-"+k] = []string{v}
+			if v != nil {
+				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
+			}
 		}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
@@ -662,12 +673,13 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 
 // SetProperties - Sets properties on the directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-02
-// fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
-// for directory. ‘None’ can also be specified as default.
-// fileCreationTime - Creation time for the file/directory. Default value: Now.
-// fileLastWriteTime - Last write time for the file/directory. Default value: Now.
-// options - DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
+//   - fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
+//     for directory. ‘None’ can also be specified as default.
+//   - fileCreationTime - Creation time for the file/directory. Default value: Now.
+//   - fileLastWriteTime - Last write time for the file/directory. Default value: Now.
+//   - options - DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
 func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
 	req, err := client.setPropertiesCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {

@@ -125,7 +125,7 @@ type DirectoryClientGetPropertiesResponse struct {
 	LastModified *time.Time
 
 	// Metadata contains the information returned from the x-ms-meta header response.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -134,7 +134,7 @@ type DirectoryClientGetPropertiesResponse struct {
 	Version *string
 }
 
-// DirectoryClientListFilesAndDirectoriesSegmentResponse contains the response from method DirectoryClient.ListFilesAndDirectoriesSegment.
+// DirectoryClientListFilesAndDirectoriesSegmentResponse contains the response from method DirectoryClient.NewListFilesAndDirectoriesSegmentPager.
 type DirectoryClientListFilesAndDirectoriesSegmentResponse struct {
 	ListFilesAndDirectoriesSegmentResponse
 	// ContentType contains the information returned from the Content-Type header response.
@@ -460,7 +460,7 @@ type FileClientDownloadResponse struct {
 	LeaseStatus *LeaseStatusType
 
 	// Metadata contains the information returned from the x-ms-meta header response.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -577,7 +577,7 @@ type FileClientGetPropertiesResponse struct {
 	LeaseStatus *LeaseStatusType
 
 	// Metadata contains the information returned from the x-ms-meta header response.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
@@ -793,7 +793,7 @@ type ServiceClientGetPropertiesResponse struct {
 	Version *string `xml:"Version"`
 }
 
-// ServiceClientListSharesSegmentResponse contains the response from method ServiceClient.ListSharesSegment.
+// ServiceClientListSharesSegmentResponse contains the response from method ServiceClient.NewListSharesSegmentPager.
 type ServiceClientListSharesSegmentResponse struct {
 	ListSharesResponse
 	// RequestID contains the information returned from the x-ms-request-id header response.
@@ -1020,7 +1020,7 @@ type ShareClientGetPropertiesResponse struct {
 	LeaseStatus *LeaseStatusType
 
 	// Metadata contains the information returned from the x-ms-meta header response.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// NextAllowedQuotaDowngradeTime contains the information returned from the x-ms-share-next-allowed-quota-downgrade-time header
 	// response.

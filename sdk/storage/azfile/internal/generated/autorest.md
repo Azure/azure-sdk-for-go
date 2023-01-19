@@ -46,28 +46,6 @@ directive:
     }
 ```
 
-### Change new SMB file parameters to use default values
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.parameters.FileCreationTime
-  transform: >
-    $.default = "now";
-- from: swagger-document
-  where: $.parameters.FileLastWriteTime
-  transform: >
-    $.default = "now";
-- from: swagger-document
-  where: $.parameters.FileAttributes
-  transform: >
-    $.default = "none";
-- from: swagger-document
-  where: $.parameters.FilePermission
-  transform: >
-    $.default = "inherit";
-```
-
 ### Add Last-Modified to SetMetadata
 
 ``` yaml

@@ -10,20 +10,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
 )
 
-// CreateQueueResponse contains the response from method queue.Client.Create.
+// CreateQueueResponse contains the response from method queue.ServiceClient.Create.
 type CreateQueueResponse = generated.QueueClientCreateResponse
 
-// DeleteQueueResponse contains the response from method queue.Client.Delete
+// DeleteQueueResponse contains the response from method queue.ServiceClient.Delete
 type DeleteQueueResponse = generated.QueueClientDeleteResponse
 
-// ListQueuesResponse contains the response from method Client.ListQueuesSegment.
+// ListQueuesResponse contains the response from method ServiceClient.ListQueuesSegment.
 type ListQueuesResponse = generated.ServiceClientListQueuesSegmentResponse
 
-// GetPropertiesResponse contains the response from method Client.GetProperties.
+// GetPropertiesResponse contains the response from method ServiceClient.GetProperties.
 type GetPropertiesResponse = generated.ServiceClientGetPropertiesResponse
 
-// SetPropertiesResponse contains the response from method Client.SetProperties.
+// SetPropertiesResponse contains the response from method ServiceClient.SetProperties.
 type SetPropertiesResponse = generated.ServiceClientSetPropertiesResponse
 
-// GetStatisticsResponse contains the response from method Client.GetStatistics.
+// GetStatisticsResponse contains the response from method ServiceClient.GetStatistics.
 type GetStatisticsResponse = generated.ServiceClientGetStatisticsResponse

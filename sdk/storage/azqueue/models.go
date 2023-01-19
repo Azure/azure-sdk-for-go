@@ -90,7 +90,7 @@ type ListQueuesInclude struct {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// SetPropertiesOptions provides set of options for Client.SetProperties
+// SetPropertiesOptions provides set of options for ServiceClient.SetProperties
 type SetPropertiesOptions struct {
 	// The set of CORS rules.
 	Cors []*CorsRule
@@ -120,7 +120,7 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
+// GetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 type GetPropertiesOptions struct {
 	// placeholder for future options
 }
@@ -131,7 +131,7 @@ func (o *GetPropertiesOptions) format() *generated.ServiceClientGetPropertiesOpt
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// GetStatisticsOptions provides set of options for Client.GetStatistics
+// GetStatisticsOptions provides set of options for ServiceClient.GetStatistics
 type GetStatisticsOptions struct {
 	// placeholder for future options
 }

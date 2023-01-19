@@ -22,55 +22,55 @@ import (
 	"time"
 )
 
-// ClientOptions contains the optional parameters when creating a Client.
+// ClientOptions contains the optional parameters when creating a ServiceClient.
 type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-// Client represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
-type Client base.Client[generated.ServiceClient]
+// ServiceClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
+type ServiceClient base.Client[generated.ServiceClient]
 
-// NewClient creates an instance of Client with the specified values.
+// NewServiceClient creates an instance of ServiceClient with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.queue.core.windows.net/
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
-func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
+	return (*ServiceClient)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
-// NewClientWithNoCredential creates an instance of Client with the specified values.
+// NewServiceClientWithNoCredential creates an instance of ServiceClient with the specified values.
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.queue.core.windows.net/?<sas token>
 //   - options - client options; pass nil to accept the default values
-func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
+func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
+	return (*ServiceClient)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
+// NewServiceClientWithSharedKeyCredential creates an instance of ServiceClient with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.queue.core.windows.net/
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
-func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewServiceClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, cred)), nil
+	return (*ServiceClient)(base.NewServiceClient(serviceURL, pl, cred)), nil
 }
 
-// NewClientFromConnectionString creates an instance of Client with the specified values.
+// NewServiceClientFromConnectionString creates an instance of ServiceClient with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - options - client options; pass nil to accept the default values
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (*ServiceClient, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
@@ -81,22 +81,22 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 		if err != nil {
 			return nil, err
 		}
-		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
+		return NewServiceClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
 	}
 
-	return NewClientWithNoCredential(parsed.ServiceURL, options)
+	return NewServiceClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-func (s *Client) generated() *generated.ServiceClient {
+func (s *ServiceClient) generated() *generated.ServiceClient {
 	return base.InnerClient((*base.Client[generated.ServiceClient])(s))
 }
 
-func (s *Client) sharedKey() *SharedKeyCredential {
+func (s *ServiceClient) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ServiceClient])(s))
 }
 
-// URL returns the URL endpoint used by the Client object.
-func (s *Client) URL() string {
+// URL returns the URL endpoint used by the ServiceClient object.
+func (s *ServiceClient) URL() string {
 	return s.generated().Endpoint()
 }
 
@@ -105,7 +105,7 @@ func (s *Client) URL() string {
 
 // GetProperties - gets the properties of a storage account's Queue service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
-func (s *Client) GetProperties(ctx context.Context, o *GetPropertiesOptions) (GetPropertiesResponse, error) {
+func (s *ServiceClient) GetProperties(ctx context.Context, o *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	getPropertiesOptions := o.format()
 	resp, err := s.generated().GetProperties(ctx, getPropertiesOptions)
 	return resp, err
@@ -113,14 +113,14 @@ func (s *Client) GetProperties(ctx context.Context, o *GetPropertiesOptions) (Ge
 
 // SetProperties Sets the properties of a storage account's Queue service, including Azure Storage Analytics.
 // If an element (e.g. analytics_logging) is left as None, the existing settings on the service for that functionality are preserved.
-func (s *Client) SetProperties(ctx context.Context, o *SetPropertiesOptions) (SetPropertiesResponse, error) {
+func (s *ServiceClient) SetProperties(ctx context.Context, o *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	properties, setPropertiesOptions := o.format()
 	resp, err := s.generated().SetProperties(ctx, properties, setPropertiesOptions)
 	return resp, err
 }
 
 // GetStatistics Retrieves statistics related to replication for the Queue service.
-func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (GetStatisticsResponse, error) {
+func (s *ServiceClient) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	getStatisticsOptions := o.format()
 	resp, err := s.generated().GetStatistics(ctx, getStatisticsOptions)
 
@@ -130,7 +130,7 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 // NewListQueuesPager operation returns a pager of the queues under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Queue names are returned in lexicographic order.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-queues1.
-func (s *Client) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[ListQueuesResponse] {
+func (s *ServiceClient) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[ListQueuesResponse] {
 	listOptions := generated.ServiceClientListQueuesSegmentOptions{}
 	if o != nil {
 		if o.Include.Metadata {
@@ -171,7 +171,7 @@ func (s *Client) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[ListQue
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, start time.Time, expiry time.Time) (string, error) {
+func (s *ServiceClient) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, start time.Time, expiry time.Time) (string, error) {
 	if s.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}

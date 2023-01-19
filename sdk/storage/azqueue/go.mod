@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.2.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.0.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.1
 	github.com/stretchr/testify v1.7.0
 )
 

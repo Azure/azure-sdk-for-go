@@ -60,11 +60,11 @@ func (c *ContainerClient) LeaseID() *string {
 // AcquireLease acquires a lease on the blob for write and delete operations.
 // The lease Duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *ContainerClient) AcquireLease(ctx context.Context, o *ContainerAcquireOptions) (ContainerAcquireResponse, error) {
+func (c *ContainerClient) AcquireLease(ctx context.Context, duration int32, o *ContainerAcquireOptions) (ContainerAcquireResponse, error) {
 	blobAcquireLeaseOptions, modifiedAccessConditions := o.format()
 	blobAcquireLeaseOptions.ProposedLeaseID = c.LeaseID()
 
-	resp, err := c.generated().AcquireLease(ctx, &blobAcquireLeaseOptions, modifiedAccessConditions)
+	resp, err := c.generated().AcquireLease(ctx, duration, &blobAcquireLeaseOptions, modifiedAccessConditions)
 	return resp, err
 }
 
@@ -79,19 +79,19 @@ func (c *ContainerClient) BreakLease(ctx context.Context, o *ContainerBreakOptio
 
 // ChangeLease changes the blob's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *ContainerClient) ChangeLease(ctx context.Context, o *ContainerChangeOptions) (ContainerChangeResponse, error) {
+func (c *ContainerClient) ChangeLease(ctx context.Context, proposedLeaseID string, o *ContainerChangeOptions) (ContainerChangeResponse, error) {
 	if c.LeaseID() == nil {
 		return ContainerChangeResponse{}, errors.New("leaseID cannot be nil")
 	}
-	proposedLeaseID, changeLeaseOptions, modifiedAccessConditions, err := o.format()
+	changeLeaseOptions, modifiedAccessConditions, err := o.format()
 	if err != nil {
 		return ContainerChangeResponse{}, err
 	}
-	resp, err := c.generated().ChangeLease(ctx, *c.LeaseID(), *proposedLeaseID, changeLeaseOptions, modifiedAccessConditions)
+	resp, err := c.generated().ChangeLease(ctx, *c.LeaseID(), proposedLeaseID, changeLeaseOptions, modifiedAccessConditions)
 
 	// If lease has been changed successfully, set the leaseID in client
 	if err == nil {
-		c.leaseID = proposedLeaseID
+		c.leaseID = &proposedLeaseID
 	}
 
 	return resp, err

@@ -227,6 +227,23 @@ func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHi
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format() time.Time {
+	var st time.Time
+	if o.StartTime != nil {
+		st = o.StartTime.UTC()
+	} else {
+		st = time.Time{}
+	}
+	return st
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // SetMetadataOptions contains the optional parameters for the Client.SetMetadata method.
 type SetMetadataOptions struct {
 	Metadata                 map[string]string
@@ -261,21 +278,31 @@ func (o *GetAccessPolicyOptions) format() (*generated.ContainerClientGetAccessPo
 
 // SetAccessPolicyOptions provides set of configurations for ContainerClient.SetAccessPolicy operation
 type SetAccessPolicyOptions struct {
-	// Specifies whether data in the container may be accessed publicly and the level of access
+	// Specifies whether data in the container may be accessed publicly and the level of access.
+	// If this header is not included in the request, container data is private to the account owner.
 	Access *PublicAccessType
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	AccessConditions *AccessConditions
+	ContainerACL     []*SignedIdentifier
 }
 
-func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions, []*SignedIdentifier, error) {
 	if o == nil {
-		return nil, nil, nil
+		return nil, nil, nil, nil, nil
+	}
+	if o.ContainerACL != nil {
+		for _, c := range o.ContainerACL {
+			err := formatTime(c)
+			if err != nil {
+				return nil, nil, nil, nil, err
+			}
+		}
 	}
 	lac, mac := exported.FormatContainerAccessConditions(o.AccessConditions)
 	return &generated.ContainerClientSetAccessPolicyOptions{
 		Access: o.Access,
-	}, lac, mac
+	}, lac, mac, o.ContainerACL, nil
 }
 
 func formatTime(c *SignedIdentifier) error {

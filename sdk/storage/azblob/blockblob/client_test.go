@@ -2117,7 +2117,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	_require.NotEqual(len(found), 0)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestORSSource() {
+func (s *BlockBlobRecordedTestsSuite) TestORSSource() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2311,7 +2311,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	})
 	_require.NoError(err)
 	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &lease.BlobAcquireOptions{Duration: to.Ptr[int32](60)})
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, int32(60), nil)
 	_require.Nil(err)
 	_require.NotNil(acquireLeaseResponse.LeaseID)
 	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.LeaseID())
@@ -2828,14 +2828,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 
 	// Test invalid tag
 	where := "\"tag4\"='fourthtag'"
-	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.Nil(err)
 	_require.Equal(len(lResp.Blobs), 0)
 
 	// Test multiple valid tags
 	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
 	// where := "foo=\"value 1\""
-	lResp, err = svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	lResp, err = svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.Nil(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 2)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[1])
@@ -2843,7 +2843,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 
 	// Test tags with spaces
 	where = "\"tag key\"='tag value'"
-	lResp, err = svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{Where: &where})
+	lResp, err = svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.Nil(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
@@ -3243,7 +3243,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
 // }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

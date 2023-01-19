@@ -1,5 +1,39 @@
 # CHANGELOG
 
+## `v68.0.0`
+env
+### Removed Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2018-02-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-02-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-05-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/trafficmanager/mgmt/2017-09-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2015-05-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2018-03-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2017-03-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2018-03-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2020-07-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2018-01-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/portal/mgmt/2015-08-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2015-08-31-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/mediaservices/mgmt/2018-03-30-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2018-12-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2019-12-10-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2020-10-19-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2018-03-31-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2017-08-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2019-06-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/compute/mgmt/2016-04-30-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2017-04-24-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2017-10-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-01-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2019-02-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2019-11-01-preview`
+- `github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-05-05-preview`
+
 ## `v67.4.0`
 
 ### New Packages

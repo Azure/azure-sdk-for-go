@@ -96,15 +96,3 @@ func (up URLParts) String() string {
 	}
 	return u.String()
 }
-
-type caseInsensitiveValues url.Values // map[string][]string
-
-func (values caseInsensitiveValues) Get(key string) ([]string, bool) {
-	key = strings.ToLower(key)
-	for k, v := range values {
-		if strings.ToLower(k) == key {
-			return v, true
-		}
-	}
-	return []string{}, false
-}

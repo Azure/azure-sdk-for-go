@@ -81,7 +81,8 @@ func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http
 	if err := k.updateTokenRequestOptions(res, req.Raw()); err != nil {
 		return err
 	}
-	// reattach the request's body, if it was removed by authorize()
+	// reattach the request's original body, if it was removed by authorize(). If a bug prevents recovering
+	// the body, this policy will send the request without it and get a 400 response from Key Vault.
 	var rb reqBody
 	if req.OperationValue(&rb) {
 		if err := req.SetBody(rb.body, rb.contentType); err != nil {

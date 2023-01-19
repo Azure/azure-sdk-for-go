@@ -305,7 +305,7 @@ func (o *SetMetadataOptions) format() (*generated.LeaseAccessConditions, *CpkInf
 
 // CreateSnapshotOptions contains the optional parameters for the Client.CreateSnapshot method.
 type CreateSnapshotOptions struct {
-	Metadata         map[string]string
+	Metadata         map[string]*string
 	AccessConditions *AccessConditions
 	CpkInfo          *CpkInfo
 	CpkScopeInfo     *CpkScopeInfo
@@ -341,7 +341,7 @@ type StartCopyFromURLOptions struct {
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
 	// Overrides the sealed state of the destination blob. Service version 2019-12-12 and newer.
@@ -531,7 +531,7 @@ type CopyFromURLOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
 	// Optional. Indicates the tier to be set on the blob.

@@ -104,7 +104,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateInvalidName() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	_require.NotNil(err)
@@ -121,7 +121,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyName() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	_require.NotNil(err)
@@ -143,7 +143,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateNameCollision() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 
 	containerClient = svcClient.NewContainerClient(containerName)
@@ -164,7 +164,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateInvalidMetadata() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{"1 foo": "bar"},
+		Metadata: map[string]*string{"1 foo": to.Ptr("bar")},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 
@@ -183,7 +183,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateNilMetadata() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -206,7 +206,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyMetadata() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -1083,7 +1083,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataEmpty() {
 	_require.Nil(err)
 
 	setMetadataContainerOptions := container.SetMetadataOptions{
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.SetMetadata(context.Background(), &setMetadataContainerOptions)
 	_require.Nil(err)
@@ -1128,7 +1128,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataInvalidField() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	setMetadataContainerOptions := container.SetMetadataOptions{
-		Metadata: map[string]string{"!nval!d Field!@#%": "value"},
+		Metadata: map[string]*string{"!nval!d Field!@#%": to.Ptr("value")},
 	}
 	_, err = containerClient.SetMetadata(context.Background(), &setMetadataContainerOptions)
 	_require.NotNil(err)

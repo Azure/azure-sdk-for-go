@@ -689,7 +689,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobCreatePageMetadataEmpty() {
 	sequenceNumber := int64(0)
 	createPageBlobOptions := pageblob.CreateOptions{
 		SequenceNumber: &sequenceNumber,
-		Metadata:       map[string]string{},
+		Metadata:       map[string]*string{},
 	}
 	_, err = pbClient.Create(context.Background(), pageblob.PageBytes, &createPageBlobOptions)
 	_require.Nil(err)
@@ -715,7 +715,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobCreatePageMetadataInvalid() {
 	sequenceNumber := int64(0)
 	createPageBlobOptions := pageblob.CreateOptions{
 		SequenceNumber: &sequenceNumber,
-		Metadata:       map[string]string{"In valid1": "bar"},
+		Metadata:       map[string]*string{"In valid1": to.Ptr("bar")},
 	}
 	_, err = pbClient.Create(context.Background(), pageblob.PageBytes, &createPageBlobOptions)
 	_require.NotNil(err)

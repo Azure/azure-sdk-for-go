@@ -176,7 +176,7 @@ func (b *Client) SetHTTPHeaders(ctx context.Context, HTTPHeaders HTTPHeaders, o 
 
 // SetMetadata changes a blob's metadata.
 // https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata.
-func (b *Client) SetMetadata(ctx context.Context, metadata map[string]string, o *SetMetadataOptions) (SetMetadataResponse, error) {
+func (b *Client) SetMetadata(ctx context.Context, metadata map[string]*string, o *SetMetadataOptions) (SetMetadataResponse, error) {
 	basics := generated.BlobClientSetMetadataOptions{Metadata: metadata}
 	leaseAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions := o.format()
 	resp, err := b.generated().SetMetadata(ctx, &basics, leaseAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions)

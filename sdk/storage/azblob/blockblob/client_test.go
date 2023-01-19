@@ -705,7 +705,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobMetadataInvalid() {
 	rsc := streaming.NopCloser(body)
 
 	_, err = bbClient.Upload(context.Background(), rsc, &blockblob.UploadOptions{
-		Metadata: map[string]string{"In valid!": "bar"},
+		Metadata: map[string]*string{"In valid!": to.Ptr("bar")},
 	})
 	_require.NotNil(err)
 	_require.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring)
@@ -1331,7 +1331,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 
 		copyBlockBlobFromURLOptions := blob.CopyFromURLOptions{
 			Tier:     &tier,
-			Metadata: map[string]string{"foo": "bar"},
+			Metadata: testcommon.BasicMetadata,
 		}
 		resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
 		_require.Nil(err)
@@ -1677,7 +1677,7 @@ func (s *BlockBlobRecordedTestsSuite) TestGetSetBlobMetadataWithCPK() {
 	_require.Len(getResp.Metadata, len(testcommon.BasicMetadata))
 	_require.EqualValues(getResp.Metadata, testcommon.BasicMetadata)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{}, &setBlobMetadataOptions)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{}, &setBlobMetadataOptions)
 	_require.Nil(err)
 
 	getResp, err = bbClient.GetProperties(context.Background(), &getBlobPropertiesOptions)
@@ -1714,7 +1714,7 @@ func (s *BlockBlobRecordedTestsSuite) TestGetSetBlobMetadataWithCPKScope() {
 	_require.Len(getResp.Metadata, len(testcommon.BasicMetadata))
 	_require.EqualValues(getResp.Metadata, testcommon.BasicMetadata)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{}, &setBlobMetadataOptions)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{}, &setBlobMetadataOptions)
 	_require.Nil(err)
 
 	getResp, err = bbClient.GetProperties(context.Background(), nil)

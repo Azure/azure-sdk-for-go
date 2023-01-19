@@ -324,7 +324,7 @@ func (bb *Client) SetHTTPHeaders(ctx context.Context, HTTPHeaders blob.HTTPHeade
 
 // SetMetadata changes a blob's metadata.
 // https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata.
-func (bb *Client) SetMetadata(ctx context.Context, metadata map[string]string, o *blob.SetMetadataOptions) (blob.SetMetadataResponse, error) {
+func (bb *Client) SetMetadata(ctx context.Context, metadata map[string]*string, o *blob.SetMetadataOptions) (blob.SetMetadataResponse, error) {
 	return bb.BlobClient().SetMetadata(ctx, metadata, o)
 }
 

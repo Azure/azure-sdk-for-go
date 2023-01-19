@@ -186,7 +186,7 @@ func Example_container_ClientCreate() {
 	handleError(err)
 
 	containerCreateResponse, err := containerClient.Create(context.TODO(), &container.CreateOptions{
-		Metadata: map[string]string{"Foo": "Bar"},
+		Metadata: map[string]*string{"Foo": to.Ptr("Bar")},
 	})
 	handleError(err)
 	fmt.Println(containerCreateResponse)
@@ -371,7 +371,7 @@ func Example_container_ClientSetMetadata() {
 	// You should always use lowercase letters, especially when querying a map for a metadata key.
 	creatingApp, err := os.Executable()
 	handleError(err)
-	_, err = containerClient.Create(context.TODO(), &container.CreateOptions{Metadata: map[string]string{"author": "azblob", "app": creatingApp}})
+	_, err = containerClient.Create(context.TODO(), &container.CreateOptions{Metadata: map[string]*string{"author": to.Ptr("azblob"), "app": to.Ptr(creatingApp)}})
 	handleError(err)
 
 	// Query the container's metadata
@@ -383,11 +383,11 @@ func Example_container_ClientSetMetadata() {
 	}
 
 	for k, v := range containerGetPropertiesResponse.Metadata {
-		fmt.Printf("%s=%s\n", k, v)
+		fmt.Printf("%s=%s\n", k, *v)
 	}
 
 	// Update the metadata and write it back to the container
-	containerGetPropertiesResponse.Metadata["author"] = "Mohit"
+	containerGetPropertiesResponse.Metadata["author"] = to.Ptr("Mohit")
 	_, err = containerClient.SetMetadata(context.TODO(), &container.SetMetadataOptions{Metadata: containerGetPropertiesResponse.Metadata})
 	handleError(err)
 

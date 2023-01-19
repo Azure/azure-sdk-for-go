@@ -11,7 +11,6 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -86,7 +85,7 @@ func createNewAppendBlob(ctx context.Context, _require *require.Assertions, appe
 	return abClient
 }
 
-func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlock() {
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlock() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1561,9 +1560,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 
 	// Tags with spaces
 	where := "\"GO \"='.Net'"
-	lResp, err := svcClient.FilterBlobs(context.Background(), &service.FilterBlobsOptions{
-		Where: &where,
-	})
+	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.Nil(err)
 	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[2])

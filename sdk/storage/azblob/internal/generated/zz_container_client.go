@@ -47,10 +47,13 @@ func NewContainerClient(endpoint string, pl runtime.Pipeline) *ContainerClient {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-10-02
-//   - options - ContainerClientAcquireLeaseOptions contains the optional parameters for the ContainerClient.AcquireLease method.
-//   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-func (client *ContainerClient) AcquireLease(ctx context.Context, options *ContainerClientAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (ContainerClientAcquireLeaseResponse, error) {
-	req, err := client.acquireLeaseCreateRequest(ctx, options, modifiedAccessConditions)
+// duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
+// lease can be between 15 and 60 seconds. A lease duration cannot be changed using
+// renew or change.
+// options - ContainerClientAcquireLeaseOptions contains the optional parameters for the ContainerClient.AcquireLease method.
+// ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
+func (client *ContainerClient) AcquireLease(ctx context.Context, duration int32, options *ContainerClientAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (ContainerClientAcquireLeaseResponse, error) {
+	req, err := client.acquireLeaseCreateRequest(ctx, duration, options, modifiedAccessConditions)
 	if err != nil {
 		return ContainerClientAcquireLeaseResponse{}, err
 	}
@@ -65,7 +68,7 @@ func (client *ContainerClient) AcquireLease(ctx context.Context, options *Contai
 }
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
-func (client *ContainerClient) acquireLeaseCreateRequest(ctx context.Context, options *ContainerClientAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
+func (client *ContainerClient) acquireLeaseCreateRequest(ctx context.Context, duration int32, options *ContainerClientAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -78,9 +81,7 @@ func (client *ContainerClient) acquireLeaseCreateRequest(ctx context.Context, op
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-lease-action"] = []string{"acquire"}
-	if options != nil && options.Duration != nil {
-		req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(*options.Duration), 10)}
-	}
+	req.Raw().Header["x-ms-lease-duration"] = []string{strconv.FormatInt(int64(duration), 10)}
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}

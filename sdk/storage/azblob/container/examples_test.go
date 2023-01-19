@@ -288,7 +288,8 @@ func Example_container_ClientGetSASURL() {
 	permission := sas.ContainerPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
-	sasURL, err := containerClient.GetSASURL(permission, start, expiry)
+	options := container.GetSASURLOptions{StartTime: &start}
+	sasURL, err := containerClient.GetSASURL(permission, expiry, &options)
 	handleError(err)
 	_ = sasURL
 }
@@ -326,7 +327,6 @@ func Example_container_ClientSetAccessPolicy() {
 		// ChangeLease the blob to be public access blob
 		_, err := containerClient.SetAccessPolicy(
 			context.TODO(),
-			nil,
 			&container.SetAccessPolicyOptions{
 				Access: to.Ptr(container.PublicAccessTypeBlob),
 			},

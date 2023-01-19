@@ -136,10 +136,6 @@ type BlobClientAbortCopyFromURLOptions struct {
 
 // BlobClientAcquireLeaseOptions contains the optional parameters for the BlobClient.AcquireLease method.
 type BlobClientAcquireLeaseOptions struct {
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using
-	// renew or change.
-	Duration *int32
 	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
 	// not in the correct format. See Guid Constructor (String) for a list of valid GUID
 	// string formats.
@@ -796,10 +792,6 @@ type ClearRange struct {
 
 // ContainerClientAcquireLeaseOptions contains the optional parameters for the ContainerClient.AcquireLease method.
 type ContainerClientAcquireLeaseOptions struct {
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using
-	// renew or change.
-	Duration *int32
 	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
 	// not in the correct format. See Guid Constructor (String) for a list of valid GUID
 	// string formats.
@@ -1559,8 +1551,6 @@ type ServiceClientFilterBlobsOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
 	Timeout *int32
-	// Filters the results to return only to return only blobs whose tags match the specified expression.
-	Where *string
 }
 
 // ServiceClientGetAccountInfoOptions contains the optional parameters for the ServiceClient.GetAccountInfo method.

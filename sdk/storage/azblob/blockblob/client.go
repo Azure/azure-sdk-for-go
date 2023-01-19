@@ -190,12 +190,11 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 // StageBlockFromURL copies the specified block from a source URL to the block blob's "staging area" to be later committed by a call to CommitBlockList.
 // If count is CountToEnd (0), then data is read from specified offset to the end.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url.
-func (bb *Client) StageBlockFromURL(ctx context.Context, base64BlockID string, sourceURL string,
-	contentLength int64, options *StageBlockFromURLOptions) (StageBlockFromURLResponse, error) {
+func (bb *Client) StageBlockFromURL(ctx context.Context, base64BlockID string, sourceURL string, options *StageBlockFromURLOptions) (StageBlockFromURLResponse, error) {
 
 	stageBlockFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions := options.format()
 
-	resp, err := bb.generated().StageBlockFromURL(ctx, base64BlockID, contentLength, sourceURL, stageBlockFromURLOptions,
+	resp, err := bb.generated().StageBlockFromURL(ctx, base64BlockID, 0, sourceURL, stageBlockFromURLOptions,
 		cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions)
 
 	return resp, err

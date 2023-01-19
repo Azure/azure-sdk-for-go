@@ -14,15 +14,12 @@
 - Type of `AzureVMAppContainerProtectionContainer.ContainerType` has been changed from `*ContainerType` to `*ProtectableContainerType`
 - Type of `AzureWorkloadContainer.ContainerType` has been changed from `*ContainerType` to `*ProtectableContainerType`
 - Type of `DpmContainer.ContainerType` has been changed from `*ContainerType` to `*ProtectableContainerType`
-- Type of `ErrorAdditionalInfo.Info` has been changed from `interface{}` to `any`
 - Type of `GenericContainer.ContainerType` has been changed from `*ContainerType` to `*ProtectableContainerType`
 - Type of `IaaSVMContainer.ContainerType` has been changed from `*ContainerType` to `*ProtectableContainerType`
 - Type of `MabContainer.ContainerType` has been changed from `*ContainerType` to `*ProtectableContainerType`
 - Type of `ProtectableContainer.ProtectableContainerType` has been changed from `*ContainerType` to `*ProtectableContainerType`
 - Type of `ProtectionContainer.ContainerType` has been changed from `*ContainerType` to `*ProtectableContainerType`
 - Const `ContainerTypeAzureWorkloadContainer`, `ContainerTypeMicrosoftClassicComputeVirtualMachines`, `ContainerTypeMicrosoftComputeVirtualMachines` from type alias `ContainerType` has been removed
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
 
 ### Features Added
 

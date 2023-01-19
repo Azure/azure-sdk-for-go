@@ -28,11 +28,20 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 // CpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
 type CpkScopeInfo = generated.ContainerCpkScopeInfo
 
+// BlobFlatListSegment - List of BlobItem
+type BlobFlatListSegment = generated.BlobFlatListSegment
+
+// BlobHierarchyListSegment - List of BlobItem and BlobPrefix
+type BlobHierarchyListSegment = generated.BlobHierarchyListSegment
+
 // BlobProperties - Properties of a blob
 type BlobProperties = generated.BlobProperties
 
 // BlobItem - An Azure Storage blob
 type BlobItem = generated.BlobItem
+
+// BlobTags - Blob tags
+type BlobTags = generated.BlobTags
 
 // BlobPrefix is a blob's prefix when hierarchically listing blobs.
 type BlobPrefix = generated.BlobPrefix

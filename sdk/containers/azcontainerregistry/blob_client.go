@@ -560,8 +560,8 @@ func (client *BlobClient) startUploadHandleResponse(resp *http.Response) (BlobCl
 // Generated from API version 2021-07-01
 //   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - chunkData - Raw data of blob
-//   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.uploadChunk method.
-func (client *BlobClient) uploadChunk(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
+//   - options - blobClientUploadChunkOptions contains the optional parameters for the BlobClient.uploadChunk method.
+func (client *BlobClient) uploadChunk(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *blobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
 	req, err := client.uploadChunkCreateRequest(ctx, location, chunkData, options)
 	if err != nil {
 		return BlobClientUploadChunkResponse{}, err
@@ -577,7 +577,7 @@ func (client *BlobClient) uploadChunk(ctx context.Context, location string, chun
 }
 
 // uploadChunkCreateRequest creates the uploadChunk request.
-func (client *BlobClient) uploadChunkCreateRequest(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *BlobClientUploadChunkOptions) (*policy.Request, error) {
+func (client *BlobClient) uploadChunkCreateRequest(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *blobClientUploadChunkOptions) (*policy.Request, error) {
 	urlPath := "/{nextBlobUuidLink}"
 	urlPath = strings.ReplaceAll(urlPath, "{nextBlobUuidLink}", location)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))

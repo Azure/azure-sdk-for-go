@@ -9,7 +9,6 @@ package azcontainerregistry
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -74,10 +73,10 @@ func TestBlobClient_CompleteUpload_uploadByChunk(t *testing.T) {
 	oriReader := bytes.NewReader(blob)
 	firstPart := io.NewSectionReader(oriReader, int64(0), int64(len(blob)/2))
 	secondPart := io.NewSectionReader(oriReader, int64(len(blob)/2), int64(len(blob)-len(blob)/2))
-	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, firstPart, calculator, &BlobClientUploadChunkOptions{ContentRange: to.Ptr(fmt.Sprintf("0-%d", len(blob)/2-1))})
+	uploadResp, err := client.UploadChunk(ctx, *startRes.Location, firstPart, calculator, &BlobClientUploadChunkOptions{RangeStart: to.Ptr(int32(0)), RangeEnd: to.Ptr(int32(len(blob)/2 - 1))})
 	require.NoError(t, err)
 	require.NotEmpty(t, *uploadResp.Location)
-	uploadResp, err = client.UploadChunk(ctx, *uploadResp.Location, secondPart, calculator, &BlobClientUploadChunkOptions{ContentRange: to.Ptr(fmt.Sprintf("%d-%d", len(blob)/2, len(blob)-1))})
+	uploadResp, err = client.UploadChunk(ctx, *uploadResp.Location, secondPart, calculator, &BlobClientUploadChunkOptions{RangeStart: to.Ptr(int32(len(blob) / 2)), RangeEnd: to.Ptr(int32(len(blob) - 1))})
 	require.NoError(t, err)
 	require.NotEmpty(t, *uploadResp.Location)
 	completeResp, err := client.CompleteUpload(ctx, *uploadResp.Location, calculator, nil)

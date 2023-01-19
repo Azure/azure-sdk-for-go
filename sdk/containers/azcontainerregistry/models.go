@@ -139,8 +139,8 @@ type BlobClientStartUploadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
-type BlobClientUploadChunkOptions struct {
+// blobClientUploadChunkOptions contains the optional parameters for the BlobClient.uploadChunk method.
+type blobClientUploadChunkOptions struct {
 	// Range of bytes identifying the desired block of content represented by the body. Start must the end offset retrieved via
 	// status check plus one. Note that this is a non-standard use of the
 	// Content-Range header.

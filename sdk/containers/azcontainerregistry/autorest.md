@@ -429,4 +429,9 @@ directive:
             "type": "string",
             "description": "Range of bytes identifying the desired block of content represented by the body. Start must the end offset retrieved via status check plus one. Note that this is a non-standard use of the Content-Range header."
         });
+  - from:
+      - blob_client.go
+      - models.go
+    where: $
+    transform: return $.replaceAll(/BlobClientUploadChunkOptions/g, "blobClientUploadChunkOptions").replace(/BlobClient\.UploadChunk/, "BlobClient.uploadChunk");
 ```

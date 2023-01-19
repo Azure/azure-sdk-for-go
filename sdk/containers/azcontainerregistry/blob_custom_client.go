@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"hash"
 	"io"
 	"reflect"
@@ -78,6 +79,14 @@ func NewBlobDigestCalculator() *BlobDigestCalculator {
 	}
 }
 
+// BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
+type BlobClientUploadChunkOptions struct {
+	// Start of range for the blob to be uploaded.
+	RangeStart *int32
+	// End of range for the blob to be uploaded, inclusive.
+	RangeEnd *int32
+}
+
 // UploadChunk - Upload a stream of data without completing the upload.
 //
 //   - location - Link acquired from upload start or previous chunk
@@ -86,7 +95,11 @@ func NewBlobDigestCalculator() *BlobDigestCalculator {
 //   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeeker, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
 	wrappedChunkData := &wrappedReadSeeker{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData}
-	return client.uploadChunk(ctx, location, streaming.NopCloser(wrappedChunkData), options)
+	var requestOptions *blobClientUploadChunkOptions
+	if options != nil && options.RangeStart != nil && options.RangeEnd != nil {
+		requestOptions = &blobClientUploadChunkOptions{ContentRange: to.Ptr(fmt.Sprintf("%d-%d", *options.RangeStart, *options.RangeEnd))}
+	}
+	return client.uploadChunk(ctx, location, streaming.NopCloser(wrappedChunkData), requestOptions)
 }
 
 // CompleteUpload - Complete the upload with previously uploaded content.

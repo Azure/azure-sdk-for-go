@@ -8,6 +8,7 @@ package azqueue
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -15,7 +16,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
 	"net/http"
+	"strings"
+	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -25,6 +29,19 @@ type ClientOptions struct {
 
 // Client represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
 type Client base.Client[generated.ServiceClient]
+
+// NewClient creates an instance of Client with the specified values.
+//   - serviceURL - the URL of the storage account e.g. https://<account>.queue.core.windows.net/
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
+func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	conOptions := shared.GetClientOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
+}
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
@@ -151,4 +168,33 @@ func (s *Client) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[ListQue
 	})
 }
 
-// TODO: GetSASURL()
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, start time.Time, expiry time.Time) (string, error) {
+	if s.sharedKey() == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+	}
+
+	qps, err := sas.AccountSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
+		Permissions:   permissions.String(),
+		Services:      services.String(),
+		ResourceTypes: resources.String(),
+		StartTime:     start.UTC(),
+		ExpiryTime:    expiry.UTC(),
+	}.SignWithSharedKey(s.sharedKey())
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := s.URL()
+	if !strings.HasSuffix(endpoint, "/") {
+		// add a trailing slash to be consistent with the portal
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+
+	return endpoint, nil
+}

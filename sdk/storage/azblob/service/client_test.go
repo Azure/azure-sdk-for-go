@@ -138,10 +138,10 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
 
-				unwrappedMeta := map[string]string{}
+				unwrappedMeta := map[string]*string{}
 				for k, v := range ctnr.Metadata {
 					if v != nil {
-						unwrappedMeta[k] = *v
+						unwrappedMeta[k] = v
 					}
 				}
 
@@ -199,10 +199,10 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
 
-				unwrappedMeta := map[string]string{}
+				unwrappedMeta := map[string]*string{}
 				for k, v := range ctnr.Metadata {
 					if v != nil {
-						unwrappedMeta[k] = *v
+						unwrappedMeta[k] = v
 					}
 				}
 

@@ -5,7 +5,6 @@
 ### Features Added
 
 * Add support to log calculated block size and count during uploads
-* Fixed endless loop during pagination issue [#19773](https://github.com/Azure/azure-sdk-for-go/pull/19773)
 
 ### Breaking Changes
 
@@ -31,6 +30,7 @@
 
 * Fixed encoding issues seen in FilterBlobs. Fixes [#17421](https://github.com/Azure/azure-sdk-for-go/issues/17421).
 * Fixing inconsistency seen with Metadata and ORS response. Fixes [#19688](https://github.com/Azure/azure-sdk-for-go/issues/19688).
+* Fixed endless loop during pagination issue [#19773](https://github.com/Azure/azure-sdk-for-go/pull/19773).
 
 ### Other Changes
 

@@ -5,6 +5,7 @@
 ### Features Added
 
 - Adds ProcessorOptions.Prefetch field, allowing configuration of Prefetch values for PartitionClients created using the Processor. (PR#19786)
+- Added new function to parse connection string into values using `NewConnectionStringProperties` and `ConnectionStringProperties`. (PR#TBD)
 
 ### Breaking Changes
 

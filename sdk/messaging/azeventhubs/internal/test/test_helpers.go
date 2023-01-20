@@ -16,7 +16,6 @@ import (
 	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
@@ -112,13 +111,13 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		"RESOURCE_GROUP",
 	})
 
-	parsedConn, err := conn.ParsedConnectionFromStr(envVars["EVENTHUB_CONNECTION_STRING"])
+	connProps, err := exported.NewConnectionStringProperties(envVars["EVENTHUB_CONNECTION_STRING"])
 	require.NoError(t, err)
 
 	return ConnectionParamsForTest{
 		ConnectionString:        envVars["EVENTHUB_CONNECTION_STRING"],
 		EventHubName:            envVars["EVENTHUB_NAME"],
-		EventHubNamespace:       parsedConn.Namespace,
+		EventHubNamespace:       connProps.FullyQualifiedNamespace,
 		ResourceGroup:           envVars["RESOURCE_GROUP"],
 		StorageConnectionString: envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],
 		SubscriptionID:          envVars["AZURE_SUBSCRIPTION_ID"],

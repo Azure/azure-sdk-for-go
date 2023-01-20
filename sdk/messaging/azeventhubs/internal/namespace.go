@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/telemetry"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/sbauth"
@@ -80,16 +79,16 @@ type NamespaceForAMQPLinks interface {
 // NamespaceWithConnectionString configures a namespace with the information provided in a Event Hub connection string
 func NamespaceWithConnectionString(connStr string) NamespaceOption {
 	return func(ns *Namespace) error {
-		parsed, err := conn.ParsedConnectionFromStr(connStr)
+		props, err := exported.NewConnectionStringProperties(connStr)
 		if err != nil {
 			return err
 		}
 
-		if parsed.Namespace != "" {
-			ns.FQDN = parsed.Namespace
+		if props.FullyQualifiedNamespace != "" {
+			ns.FQDN = props.FullyQualifiedNamespace
 		}
 
-		provider, err := sbauth.NewTokenProviderWithConnectionString(parsed)
+		provider, err := sbauth.NewTokenProviderWithConnectionString(props)
 		if err != nil {
 			return err
 		}

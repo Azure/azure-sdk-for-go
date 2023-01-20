@@ -15,7 +15,6 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
@@ -87,7 +86,7 @@ func NewProducerClient(fullyQualifiedNamespace string, eventHub string, credenti
 //
 //	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>;
 func NewProducerClientFromConnectionString(connectionString string, eventHub string, options *ProducerClientOptions) (*ProducerClient, error) {
-	parsedConn, err := parseConn(connectionString, eventHub)
+	props, err := parseConn(connectionString, eventHub)
 
 	if err != nil {
 		return nil, err
@@ -95,7 +94,7 @@ func NewProducerClientFromConnectionString(connectionString string, eventHub str
 
 	return newProducerClientImpl(producerClientCreds{
 		connectionString: connectionString,
-		eventHub:         parsedConn.HubName,
+		eventHub:         props.EventHubName,
 	}, options)
 }
 
@@ -278,25 +277,25 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 	return client, err
 }
 
-func parseConn(connectionString string, eventHub string) (*conn.ParsedConn, error) {
-	parsedConn, err := conn.ParsedConnectionFromStr(connectionString)
+func parseConn(connectionString string, eventHub string) (exported.ConnectionStringProperties, error) {
+	props, err := exported.NewConnectionStringProperties(connectionString)
 
 	if err != nil {
-		return nil, err
+		return exported.ConnectionStringProperties{}, err
 	}
 
-	if parsedConn.HubName == "" {
+	if props.EventHubName == "" {
 		if eventHub == "" {
-			return nil, errors.New("connection string does not contain an EntityPath. eventHub cannot be an empty string")
+			return exported.ConnectionStringProperties{}, errors.New("connection string does not contain an EntityPath. eventHub cannot be an empty string")
 		}
-		parsedConn.HubName = eventHub
-	} else if parsedConn.HubName != "" {
+		props.EventHubName = eventHub
+	} else {
 		if eventHub != "" {
-			return nil, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
+			return exported.ConnectionStringProperties{}, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
 		}
 	}
 
-	return parsedConn, nil
+	return props, nil
 }
 
 func getPartitionID(partitionID *string) string {

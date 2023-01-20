@@ -43,7 +43,7 @@ func TestAccountPermissions_String(t *testing.T) {
 			Tag:                   true,
 			FilterByTags:          true,
 			SetImmutabilityPolicy: true,
-		}, expected: "rwdxylacuptfi"},
+		}, expected: "rwdxylacupfti"},
 	}
 	for _, c := range testdata {
 		require.Equal(t, c.expected, c.input.String())
@@ -82,7 +82,7 @@ func TestAccountPermissions_Parse(t *testing.T) {
 			Tag:                   true,
 			FilterByTags:          true,
 			SetImmutabilityPolicy: true,
-		}, input: "rwdxylacuptfi"},
+		}, input: "rwdxylacupfti"},
 		{expected: AccountPermissions{
 			Read:                  true,
 			Write:                 true,

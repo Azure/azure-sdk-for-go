@@ -364,6 +364,10 @@ func (cc *fakeConsumerClient) GetEventHubProperties(ctx context.Context, options
 }
 
 func (cc *fakeConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
+	if *options.OwnerLevel != 0 {
+		panic(fmt.Sprintf("Invalid owner level passed for the Processor: got %d instead of 0", *options.OwnerLevel))
+	}
+
 	if cc.newPartitionClientFn != nil {
 		return cc.newPartitionClientFn(partitionID, options)
 	}

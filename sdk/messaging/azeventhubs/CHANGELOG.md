@@ -8,6 +8,8 @@
 
 ### Breaking Changes
 
+- ProcessorOptions.OwnerLevel has been removed. The Processor uses 0 as the owner level.
+
 ### Bugs Fixed
 
 ### Other Changes

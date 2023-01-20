@@ -10,17 +10,21 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 var (
 	mockCLITokenProviderSuccess = func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
-		return []byte(" {\"accessToken\":\"mocktoken\" , " +
-			"\"expiresOn\": \"2007-01-01 01:01:01.079627\"," +
-			"\"subscription\": \"mocksub\"," +
-			"\"tenant\": \"mocktenant\"," +
-			"\"tokenType\": \"mocktype\"}"), nil
+		return []byte(`{
+  "accessToken": "mocktoken",
+  "expiresOn": "2001-02-03 04:05:06.000007",
+  "subscription": "mocksub",
+  "tenant": "mocktenant",
+  "tokenType": "Bearer"
+}
+`), nil
 	}
 	mockCLITokenProviderFailure = func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
 		return nil, errors.New("provider failure message")
@@ -32,17 +36,18 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 	options.tokenProvider = mockCLITokenProviderSuccess
 	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
+		t.Fatal(err)
 	}
 	at, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err != nil {
-		t.Fatalf("Expected an empty error but received: %v", err)
-	}
-	if len(at.Token) == 0 {
-		t.Fatalf(("Did not receive a token"))
+		t.Fatal(err)
 	}
 	if at.Token != "mocktoken" {
-		t.Fatalf(("Did not receive the correct access token"))
+		t.Fatalf("unexpected access token %q", at.Token)
+	}
+	expected := time.Date(2001, 2, 3, 4, 5, 6, 7000, time.Local).UTC()
+	if actual := at.ExpiresOn; !actual.Equal(expected) || actual.Location() != time.UTC {
+		t.Fatalf("expected %q, got %q", expected, actual)
 	}
 }
 

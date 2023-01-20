@@ -46,7 +46,7 @@ type CreateOptions struct {
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// Optional. Indicates the tier to be set on the page blob.
 	Tier *PremiumPageBlobAccessTier
@@ -86,9 +86,6 @@ func (o *CreateOptions) format() (*generated.PageBlobClientCreateOptions, *gener
 
 // UploadPagesOptions contains the optional parameters for the Client.UploadPages method.
 type UploadPagesOptions struct {
-	// Range specifies a range of bytes.  The default value is all bytes.
-	Range blob.HTTPRange
-
 	// TransactionalValidation specifies the transfer validation type to use.
 	// The default is nil (no transfer validation).
 	TransactionalValidation blob.TransferValidationType
@@ -99,18 +96,14 @@ type UploadPagesOptions struct {
 	AccessConditions               *blob.AccessConditions
 }
 
-func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptions, *generated.LeaseAccessConditions,
+func (o *UploadPagesOptions) format() (*generated.LeaseAccessConditions,
 	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil
-	}
-
-	options := &generated.PageBlobClientUploadPagesOptions{
-		Range: exported.FormatHTTPRange(o.Range),
+		return nil, nil, nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
+	return leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

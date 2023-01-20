@@ -56,3 +56,17 @@ func TestDeleteDatabaseOptionsToHeaders(t *testing.T) {
 		t.Errorf("IfNoneMatchEtag not set matching expected %v got %v", options.IfNoneMatchEtag, headers[headerIfNoneMatch])
 	}
 }
+
+func TestQueryDatabasesRequestOptionsToHeaders(t *testing.T) {
+	options := &QueryDatabasesOptions{}
+	options.ContinuationToken = "continuationToken"
+	header := options.toHeaders()
+	if header == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
+
+	headers := *header
+	if headers[cosmosHeaderContinuationToken] != "continuationToken" {
+		t.Errorf("ContinuationToken should be continuationToken but got %v", headers[cosmosHeaderContinuationToken])
+	}
+}

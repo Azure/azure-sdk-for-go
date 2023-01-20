@@ -10,6 +10,7 @@ package armoperationalinsights_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -65,6 +66,7 @@ func TestDataExportsTestSuite(t *testing.T) {
 func (testsuite *DataExportsTestSuite) Prepare() {
 	var err error
 	// From step Workspaces_Create
+	fmt.Println("Call operation: Workspaces_CreateOrUpdate")
 	workspacesClient, err := armoperationalinsights.NewWorkspacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	workspacesClientCreateOrUpdateResponsePoller, err := workspacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, armoperationalinsights.Workspace{
@@ -135,6 +137,7 @@ func (testsuite *DataExportsTestSuite) Prepare() {
 func (testsuite *DataExportsTestSuite) TestDataExport() {
 	var err error
 	// From step DataExports_CreateOrUpdate
+	fmt.Println("Call operation: DataExports_CreateOrUpdate")
 	dataExportsClient, err := armoperationalinsights.NewDataExportsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = dataExportsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "export1", armoperationalinsights.DataExport{
@@ -149,6 +152,7 @@ func (testsuite *DataExportsTestSuite) TestDataExport() {
 	testsuite.Require().NoError(err)
 
 	// From step DataExports_ListByWorkspace
+	fmt.Println("Call operation: DataExports_ListByWorkspace")
 	dataExportsClientNewListByWorkspacePager := dataExportsClient.NewListByWorkspacePager(testsuite.resourceGroupName, testsuite.workspaceName, nil)
 	for dataExportsClientNewListByWorkspacePager.More() {
 		_, err := dataExportsClientNewListByWorkspacePager.NextPage(testsuite.ctx)
@@ -157,10 +161,12 @@ func (testsuite *DataExportsTestSuite) TestDataExport() {
 	}
 
 	// From step DataExports_Get
+	fmt.Println("Call operation: DataExports_Get")
 	_, err = dataExportsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "export1", nil)
 	testsuite.Require().NoError(err)
 
 	// From step DataExports_Delete
+	fmt.Println("Call operation: DataExports_Delete")
 	_, err = dataExportsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, "export1", nil)
 	testsuite.Require().NoError(err)
 }

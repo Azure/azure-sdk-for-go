@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestApimpoliciesTestSuite(t *testing.T) {
 func (testsuite *ApimpoliciesTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -86,6 +88,7 @@ func (testsuite *ApimpoliciesTestSuite) Prepare() {
 func (testsuite *ApimpoliciesTestSuite) TestPolicy() {
 	var err error
 	// From step Policy_CreateOrUpdate
+	fmt.Println("Call operation: Policy_CreateOrUpdate")
 	policyClient, err := armapimanagement.NewPolicyClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = policyClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
@@ -97,18 +100,22 @@ func (testsuite *ApimpoliciesTestSuite) TestPolicy() {
 	testsuite.Require().NoError(err)
 
 	// From step Policy_GetEntityTag
+	fmt.Println("Call operation: Policy_GetEntityTag")
 	_, err = policyClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PolicyIDNamePolicy, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Policy_Get
+	fmt.Println("Call operation: Policy_Get")
 	_, err = policyClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PolicyIDNamePolicy, &armapimanagement.PolicyClientGetOptions{Format: nil})
 	testsuite.Require().NoError(err)
 
 	// From step Policy_ListByService
+	fmt.Println("Call operation: Policy_ListByService")
 	_, err = policyClient.ListByService(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Policy_Delete
+	fmt.Println("Call operation: Policy_Delete")
 	_, err = policyClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PolicyIDNamePolicy, "*", nil)
 	testsuite.Require().NoError(err)
 }
@@ -117,6 +124,7 @@ func (testsuite *ApimpoliciesTestSuite) TestPolicy() {
 func (testsuite *ApimpoliciesTestSuite) TestPolicydescription() {
 	var err error
 	// From step PolicyDescription_ListByService
+	fmt.Println("Call operation: PolicyDescription_ListByService")
 	policyDescriptionClient, err := armapimanagement.NewPolicyDescriptionClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = policyDescriptionClient.ListByService(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.PolicyDescriptionClientListByServiceOptions{Scope: to.Ptr(armapimanagement.PolicyScopeContractAPI)})

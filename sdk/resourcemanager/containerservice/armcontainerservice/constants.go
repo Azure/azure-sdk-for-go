@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.3.0-beta.2"
+	moduleVersion = "v2.4.0-beta.1"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -256,7 +256,8 @@ func PossibleFleetProvisioningStateValues() []FleetProvisioningState {
 type Format string
 
 const (
-	// FormatAzure - Return azure auth-provider kubeconfig. This format is deprecated in 1.22 and will be fully removed in 1.25.
+	// FormatAzure - Return azure auth-provider kubeconfig. This format is deprecated in v1.22 and will be fully removed in v1.26.
+	// See: https://aka.ms/k8s/changes-1-26.
 	FormatAzure Format = "azure"
 	// FormatExec - Return exec format kubeconfig. This format requires kubelogin binary in the path.
 	FormatExec Format = "exec"
@@ -791,6 +792,24 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
+// RestrictionLevel - The restriction level applied to the cluster's node resource group
+type RestrictionLevel string
+
+const (
+	// RestrictionLevelReadOnly - Only */read RBAC permissions allowed on the managed node resource group
+	RestrictionLevelReadOnly RestrictionLevel = "ReadOnly"
+	// RestrictionLevelUnrestricted - All RBAC permissions are allowed on the managed node resource group
+	RestrictionLevelUnrestricted RestrictionLevel = "Unrestricted"
+)
+
+// PossibleRestrictionLevelValues returns the possible values for the RestrictionLevel const type.
+func PossibleRestrictionLevelValues() []RestrictionLevel {
+	return []RestrictionLevel{
+		RestrictionLevelReadOnly,
+		RestrictionLevelUnrestricted,
+	}
+}
+
 // ScaleDownMode - Describes how VMs are added to or removed from Agent Pools. See billing states [https://docs.microsoft.com/azure/virtual-machines/states-billing].
 type ScaleDownMode string
 
@@ -1013,6 +1032,10 @@ func PossibleWeekDayValues() []WeekDay {
 type WorkloadRuntime string
 
 const (
+	// WorkloadRuntimeKataMshvVMIsolation - Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods (Preview).
+	// Due to the use Hyper-V, AKS node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series
+	// that support Nested Virtualization such as Dv3 series.
+	WorkloadRuntimeKataMshvVMIsolation WorkloadRuntime = "KataMshvVmIsolation"
 	// WorkloadRuntimeOCIContainer - Nodes will use Kubelet to run standard OCI container workloads.
 	WorkloadRuntimeOCIContainer WorkloadRuntime = "OCIContainer"
 	// WorkloadRuntimeWasmWasi - Nodes will use Krustlet to run WASM workloads using the WASI provider (Preview).
@@ -1022,6 +1045,7 @@ const (
 // PossibleWorkloadRuntimeValues returns the possible values for the WorkloadRuntime const type.
 func PossibleWorkloadRuntimeValues() []WorkloadRuntime {
 	return []WorkloadRuntime{
+		WorkloadRuntimeKataMshvVMIsolation,
 		WorkloadRuntimeOCIContainer,
 		WorkloadRuntimeWasmWasi,
 	}

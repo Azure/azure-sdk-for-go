@@ -51,8 +51,7 @@ func Example_lease_ContainerClient_AcquireLease() {
 	// Now acquire a lease on the container.
 	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
 	duration := int32(60)
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(context.TODO(),
-		&lease.ContainerAcquireOptions{Duration: &duration})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(context.TODO(), duration, nil)
 	handleError(err)
 	fmt.Println("The container is leased for delete operations with lease ID", *acquireLeaseResponse.LeaseID)
 
@@ -77,15 +76,13 @@ func Example_lease_ContainerClient_AcquireLease() {
 
 	// AcquireLease a lease again to perform other operations.
 	// Duration is still 60
-	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(context.TODO(),
-		&lease.ContainerAcquireOptions{Duration: &duration})
+	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(context.TODO(), duration, nil)
 	handleError(err)
 	fmt.Println("The container is leased again with lease ID", *acquireLeaseResponse.LeaseID)
 
 	// We can change the ID of an existing lease.
 	newLeaseID := "6b3e65e5-e1bb-4a3f-8b72-13e9bc9cd3bf"
-	changeLeaseResponse, err := containerLeaseClient.ChangeLease(context.TODO(),
-		&lease.ContainerChangeOptions{ProposedLeaseID: to.Ptr(newLeaseID)})
+	changeLeaseResponse, err := containerLeaseClient.ChangeLease(context.TODO(), newLeaseID, nil)
 	handleError(err)
 	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
 

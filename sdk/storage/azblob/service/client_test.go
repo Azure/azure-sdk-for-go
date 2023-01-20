@@ -102,9 +102,9 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
-	md := map[string]string{
-		"foo": "foovalue",
-		"bar": "barvalue",
+	md := map[string]*string{
+		"foo": to.Ptr("foovalue"),
+		"bar": to.Ptr("barvalue"),
 	}
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -138,10 +138,10 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
 
-				unwrappedMeta := map[string]string{}
+				unwrappedMeta := map[string]*string{}
 				for k, v := range ctnr.Metadata {
 					if v != nil {
-						unwrappedMeta[k] = *v
+						unwrappedMeta[k] = v
 					}
 				}
 
@@ -162,9 +162,9 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
-	md := map[string]string{
-		"foo": "foovalue",
-		"bar": "barvalue",
+	md := map[string]*string{
+		"foo": to.Ptr("foovalue"),
+		"bar": to.Ptr("barvalue"),
 	}
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -199,10 +199,10 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 				_require.Nil(ctnr.Properties.PublicAccess)
 				_require.NotNil(ctnr.Metadata)
 
-				unwrappedMeta := map[string]string{}
+				unwrappedMeta := map[string]*string{}
 				for k, v := range ctnr.Metadata {
 					if v != nil {
-						unwrappedMeta[k] = *v
+						unwrappedMeta[k] = v
 					}
 				}
 
@@ -216,6 +216,63 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 
 	_require.Nil(err)
 	_require.GreaterOrEqual(count, 0)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestListContainersPaged() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+	const numContainers = 6
+	maxResults := int32(2)
+	const pagedContainersPrefix = "azcontainerpaged"
+
+	containers := make([]*container.Client, numContainers)
+	expectedResults := make(map[string]bool)
+	for i := 0; i < numContainers; i++ {
+		containerName := pagedContainersPrefix + testcommon.GenerateContainerName(testName) + fmt.Sprintf("%d", i)
+		containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+		containers[i] = containerClient
+		expectedResults[containerName] = false
+	}
+
+	defer func() {
+		for i := range containers {
+			testcommon.DeleteContainer(context.Background(), _require, containers[i])
+		}
+	}()
+
+	prefix := pagedContainersPrefix + testcommon.ContainerPrefix
+	listOptions := service.ListContainersOptions{MaxResults: &maxResults, Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
+	count := 0
+	results := make([]service.ContainerItem, 0)
+	pager := svcClient.NewListContainersPager(&listOptions)
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, ctnr := range resp.ContainerItems {
+			_require.NotNil(ctnr.Name)
+			results = append(results, *ctnr)
+			count += 1
+		}
+	}
+
+	_require.Equal(count, numContainers)
+	_require.Equal(len(results), numContainers)
+
+	// make sure each container we see is expected
+	for _, ctnr := range results {
+		_, ok := expectedResults[*ctnr.Name]
+		_require.Equal(ok, true)
+		expectedResults[*ctnr.Name] = true
+	}
+
+	// make sure every expected container was seen
+	for _, seen := range expectedResults {
+		_require.Equal(seen, true)
+	}
+
 }
 
 //func (s *ServiceRecordedTestsSuite) TestListContainersPaged() {
@@ -524,7 +581,8 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	start := time.Now().Add(-time.Hour)
 	expiry := start.Add(time.Hour)
 
-	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, start, expiry)
+	opts := service.GetSASURLOptions{StartTime: &start}
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, expiry, &opts)
 	_require.Nil(err)
 
 	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
@@ -557,7 +615,8 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
 	start := time.Now().Add(-5 * time.Minute).UTC()
 	expiry := time.Now().Add(time.Hour)
 
-	sasUrl, err := containerClient.GetSASURL(permissions, start, expiry)
+	opts := container.GetSASURLOptions{StartTime: &start}
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, &opts)
 	_require.Nil(err)
 
 	containerClient2, err := container.NewClientWithNoCredential(sasUrl, nil)
@@ -581,9 +640,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := serviceClient.NewContainerClient(containerName)
+	start := time.Now().Add(-5 * time.Minute).UTC()
+	opts := container.GetSASURLOptions{StartTime: &start}
 
-	sasUrlReadAdd, err := containerClient.GetSASURL(sas.ContainerPermissions{Read: true, Add: true},
-		time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
+	sasUrlReadAdd, err := containerClient.GetSASURL(sas.ContainerPermissions{Read: true, Add: true}, time.Now().Add(time.Hour), &opts)
 	_require.Nil(err)
 	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})
 	_require.Nil(err)
@@ -597,8 +657,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
 
-	sasUrlRCWL, err := containerClient.GetSASURL(sas.ContainerPermissions{Add: true, Create: true, Delete: true, List: true},
-		time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
+	start = time.Now().Add(-5 * time.Minute).UTC()
+	opts = container.GetSASURLOptions{StartTime: &start}
+
+	sasUrlRCWL, err := containerClient.GetSASURL(sas.ContainerPermissions{Add: true, Create: true, Delete: true, List: true}, time.Now().Add(time.Hour), &opts)
 	_require.Nil(err)
 
 	containerClient2, err := container.NewClientWithNoCredential(sasUrlRCWL, nil)
@@ -723,7 +785,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 		blobName,
 		strings.NewReader(blobData),
 		&azblob.UploadStreamOptions{
-			Metadata: map[string]string{"Foo": "Bar"},
+			Metadata: testcommon.BasicMetadata,
 			Tags:     map[string]string{"Year": "2022"},
 		})
 	_require.Nil(err)

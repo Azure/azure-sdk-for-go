@@ -10,6 +10,7 @@ package armcontainerregistry_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -66,6 +67,7 @@ func TestContainerregistryBuildTestSuite(t *testing.T) {
 func (testsuite *ContainerregistryBuildTestSuite) Prepare() {
 	var err error
 	// From step Registries_Create2
+	fmt.Println("Call operation: Registries_Create")
 	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	registriesClientCreateResponsePoller, err := registriesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, armcontainerregistry.Registry{
@@ -86,6 +88,7 @@ func (testsuite *ContainerregistryBuildTestSuite) Prepare() {
 func (testsuite *ContainerregistryBuildTestSuite) TestAgentpools() {
 	var err error
 	// From step AgentPools_Create
+	fmt.Println("Call operation: AgentPools_Create")
 	agentPoolsClient, err := armcontainerregistry.NewAgentPoolsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	agentPoolsClientCreateResponsePoller, err := agentPoolsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, armcontainerregistry.AgentPool{
@@ -104,6 +107,7 @@ func (testsuite *ContainerregistryBuildTestSuite) TestAgentpools() {
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_List
+	fmt.Println("Call operation: AgentPools_List")
 	agentPoolsClientNewListPager := agentPoolsClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for agentPoolsClientNewListPager.More() {
 		_, err := agentPoolsClientNewListPager.NextPage(testsuite.ctx)
@@ -112,10 +116,12 @@ func (testsuite *ContainerregistryBuildTestSuite) TestAgentpools() {
 	}
 
 	// From step AgentPools_Get
+	fmt.Println("Call operation: AgentPools_Get")
 	_, err = agentPoolsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_Update
+	fmt.Println("Call operation: AgentPools_Update")
 	agentPoolsClientUpdateResponsePoller, err := agentPoolsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, armcontainerregistry.AgentPoolUpdateParameters{
 		Properties: &armcontainerregistry.AgentPoolPropertiesUpdateParameters{
 			Count: to.Ptr[int32](1),
@@ -126,10 +132,12 @@ func (testsuite *ContainerregistryBuildTestSuite) TestAgentpools() {
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_GetQueueStatus
+	fmt.Println("Call operation: AgentPools_GetQueueStatus")
 	_, err = agentPoolsClient.GetQueueStatus(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_Delete
+	fmt.Println("Call operation: AgentPools_Delete")
 	agentPoolsClientDeleteResponsePoller, err := agentPoolsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientDeleteResponsePoller)
@@ -141,6 +149,7 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	var runId string
 	var err error
 	// From step Tasks_Create
+	fmt.Println("Call operation: Tasks_Create")
 	tasksClient, err := armcontainerregistry.NewTasksClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	tasksClientCreateResponsePoller, err := tasksClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskName, armcontainerregistry.Task{
@@ -182,6 +191,7 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	testsuite.Require().NoError(err)
 
 	// From step Tasks_List
+	fmt.Println("Call operation: Tasks_List")
 	tasksClientNewListPager := tasksClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for tasksClientNewListPager.More() {
 		_, err := tasksClientNewListPager.NextPage(testsuite.ctx)
@@ -190,10 +200,12 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	}
 
 	// From step Tasks_Get
+	fmt.Println("Call operation: Tasks_Get")
 	_, err = tasksClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tasks_Update
+	fmt.Println("Call operation: Tasks_Update")
 	tasksClientUpdateResponsePoller, err := tasksClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskName, armcontainerregistry.TaskUpdateParameters{
 		Tags: map[string]*string{
 			"testkey": to.Ptr("value"),
@@ -204,10 +216,12 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	testsuite.Require().NoError(err)
 
 	// From step Tasks_GetDetails
+	fmt.Println("Call operation: Tasks_GetDetails")
 	_, err = tasksClient.GetDetails(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TaskRuns_Create
+	fmt.Println("Call operation: TaskRuns_Create")
 	taskRunsClient, err := armcontainerregistry.NewTaskRunsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	taskRunsClientCreateResponsePoller, err := taskRunsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskRunName, armcontainerregistry.TaskRun{
@@ -233,6 +247,7 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	runId = *taskRunsClientCreateResponse.Properties.RunResult.Properties.RunID
 
 	// From step TaskRuns_List
+	fmt.Println("Call operation: TaskRuns_List")
 	taskRunsClientNewListPager := taskRunsClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for taskRunsClientNewListPager.More() {
 		_, err := taskRunsClientNewListPager.NextPage(testsuite.ctx)
@@ -241,10 +256,12 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	}
 
 	// From step TaskRuns_Get
+	fmt.Println("Call operation: TaskRuns_Get")
 	_, err = taskRunsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskRunName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TaskRuns_Update
+	fmt.Println("Call operation: TaskRuns_Update")
 	taskRunsClientUpdateResponsePoller, err := taskRunsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskRunName, armcontainerregistry.TaskRunUpdateParameters{
 		Properties: &armcontainerregistry.TaskRunPropertiesUpdateParameters{
 			ForceUpdateTag: to.Ptr("test"),
@@ -267,16 +284,19 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	testsuite.Require().NoError(err)
 
 	// From step TaskRuns_GetDetails
+	fmt.Println("Call operation: TaskRuns_GetDetails")
 	_, err = taskRunsClient.GetDetails(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskRunName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Registries_GetBuildSourceUploadUrl
+	fmt.Println("Call operation: Registries_GetBuildSourceUploadUrl")
 	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = registriesClient.GetBuildSourceUploadURL(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Runs_List
+	fmt.Println("Call operation: Runs_List")
 	runsClient, err := armcontainerregistry.NewRunsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	runsClientNewListPager := runsClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, &armcontainerregistry.RunsClientListOptions{Filter: nil,
@@ -289,20 +309,24 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	}
 
 	// From step Runs_Get
+	fmt.Println("Call operation: Runs_Get")
 	_, err = runsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, runId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Runs_Cancel
+	fmt.Println("Call operation: Runs_Cancel")
 	runsClientCancelResponsePoller, err := runsClient.BeginCancel(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, runId, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, runsClientCancelResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step Runs_GetLogSasUrl
+	fmt.Println("Call operation: Runs_GetLogSasUrl")
 	_, err = runsClient.GetLogSasURL(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, runId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Registries_ScheduleRun
+	fmt.Println("Call operation: Registries_ScheduleRun")
 	registriesClientScheduleRunResponsePoller, err := registriesClient.BeginScheduleRun(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, &armcontainerregistry.DockerBuildRequest{
 		Type:             to.Ptr("DockerBuildRequest"),
 		IsArchiveEnabled: to.Ptr(true),
@@ -336,12 +360,14 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	testsuite.Require().NoError(err)
 
 	// From step TaskRuns_Delete
+	fmt.Println("Call operation: TaskRuns_Delete")
 	taskRunsClientDeleteResponsePoller, err := taskRunsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskRunName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, taskRunsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step Runs_Update
+	fmt.Println("Call operation: Runs_Update")
 	runsClientUpdateResponsePoller, err := runsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, runId, armcontainerregistry.RunUpdateParameters{
 		IsArchiveEnabled: to.Ptr(true),
 	}, nil)
@@ -350,6 +376,7 @@ func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
 	testsuite.Require().NoError(err)
 
 	// From step Tasks_Delete
+	fmt.Println("Call operation: Tasks_Delete")
 	tasksClientDeleteResponsePoller, err := tasksClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, tasksClientDeleteResponsePoller)

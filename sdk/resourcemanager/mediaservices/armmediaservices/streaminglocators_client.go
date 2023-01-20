@@ -234,7 +234,6 @@ func (client *StreamingLocatorsClient) getHandleResponse(resp *http.Response) (S
 }
 
 // NewListPager - Lists the Streaming Locators in the account
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.

@@ -51,7 +51,7 @@ func NewGetPrivateDNSZoneSuffixClient(credential azcore.TokenCredential, options
 
 // Execute - Get private DNS zone suffix in the cloud
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2022-12-01
 // options - GetPrivateDNSZoneSuffixClientExecuteOptions contains the optional parameters for the GetPrivateDNSZoneSuffixClient.Execute
 // method.
 func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, options *GetPrivateDNSZoneSuffixClientExecuteOptions) (GetPrivateDNSZoneSuffixClientExecuteResponse, error) {
@@ -77,7 +77,7 @@ func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

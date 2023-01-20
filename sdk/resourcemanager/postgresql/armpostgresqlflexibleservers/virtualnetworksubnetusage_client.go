@@ -57,7 +57,7 @@ func NewVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore
 
 // Execute - Get virtual network subnet usage for a given vNet resource id.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2022-12-01
 // locationName - The name of the location.
 // parameters - The required parameters for creating or updating a server.
 // options - VirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the VirtualNetworkSubnetUsageClient.Execute
@@ -93,7 +93,7 @@ func (client *VirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
@@ -28,7 +29,7 @@ type GetEventHubPropertiesOptions struct {
 }
 
 // getEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
-func getEventHubProperties(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink internal.RPCLink, eventHub string, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
+func getEventHubProperties(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
 	token, err := ns.GetTokenForEntity(eventHub)
 
 	if err != nil {
@@ -87,7 +88,7 @@ type GetPartitionPropertiesOptions struct {
 
 // getPartitionProperties gets properties for a specific partition. This includes data like the last enqueued sequence number, the first sequence
 // number and when an event was last enqueued to the partition.
-func getPartitionProperties(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink internal.RPCLink, eventHub string, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
+func getPartitionProperties(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
 	token, err := ns.GetTokenForEntity(eventHub)
 
 	if err != nil {

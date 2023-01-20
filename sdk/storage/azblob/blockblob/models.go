@@ -31,7 +31,7 @@ type UploadOptions struct {
 	Tags map[string]string
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// Optional. Indicates the tier to be set on the blob.
 	Tier *blob.AccessTier
@@ -136,7 +136,7 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 // CommitBlockListOptions contains the optional parameters for Client.CommitBlockList method.
 type CommitBlockListOptions struct {
 	Tags                         map[string]string
-	Metadata                     map[string]string
+	Metadata                     map[string]*string
 	RequestID                    *string
 	Tier                         *blob.AccessTier
 	Timeout                      *int32
@@ -183,7 +183,7 @@ type uploadFromReaderOptions struct {
 	HTTPHeaders *blob.HTTPHeaders
 
 	// Metadata indicates the metadata to be associated with the blob when PutBlockList is called.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// AccessConditions indicates the access conditions for the block blob.
 	AccessConditions *blob.AccessConditions
@@ -263,7 +263,7 @@ type UploadStreamOptions struct {
 	TransactionalValidation blob.TransferValidationType
 
 	HTTPHeaders      *blob.HTTPHeaders
-	Metadata         map[string]string
+	Metadata         map[string]*string
 	AccessConditions *blob.AccessConditions
 	AccessTier       *blob.AccessTier
 	Tags             map[string]string

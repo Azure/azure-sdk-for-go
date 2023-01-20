@@ -1,16 +1,26 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.4.1 (Unreleased)
 
 ### Features Added
 
+- Adds ProcessorOptions.Prefetch field, allowing configuration of Prefetch values for PartitionClients created using the Processor. (PR#19786)
+
 ### Breaking Changes
+
+- ProcessorOptions.OwnerLevel has been removed. The Processor uses 0 as the owner level.
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.4.0 (2023-01-10)
 
 ### Bugs Fixed
 
 - User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
-
-### Other Changes
+- Connection recovery has been improved, removing some unnecessasry retries as well as adding a bound around 
+  some operations (Close) that could potentially block recovery for a long time. (PR#19683)
 
 ## 0.3.0 (2022-11-10)
 

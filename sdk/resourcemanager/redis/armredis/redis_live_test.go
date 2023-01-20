@@ -10,6 +10,7 @@ package armredis_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -122,6 +123,7 @@ func (testsuite *RedisTestSuite) Prepare() {
 	testsuite.subnetId = deploymentExtend.Properties.Outputs.(map[string]interface{})["subnetId"].(map[string]interface{})["value"].(string)
 
 	// From step Redis_Create
+	fmt.Println("Call operation: Redis_Create")
 	client, err := armredis.NewClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	clientCreateResponsePoller, err := client.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, armredis.CreateParameters{
@@ -154,6 +156,7 @@ func (testsuite *RedisTestSuite) Prepare() {
 func (testsuite *RedisTestSuite) TestRedis() {
 	var err error
 	// From step Redis_CheckNameAvailability
+	fmt.Println("Call operation: Redis_CheckNameAvailability")
 	client, err := armredis.NewClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = client.CheckNameAvailability(testsuite.ctx, armredis.CheckNameAvailabilityParameters{
@@ -163,6 +166,7 @@ func (testsuite *RedisTestSuite) TestRedis() {
 	testsuite.Require().NoError(err)
 
 	// From step Redis_ListBySubscription
+	fmt.Println("Call operation: Redis_ListBySubscription")
 	clientNewListBySubscriptionPager := client.NewListBySubscriptionPager(nil)
 	for clientNewListBySubscriptionPager.More() {
 		_, err := clientNewListBySubscriptionPager.NextPage(testsuite.ctx)
@@ -171,6 +175,7 @@ func (testsuite *RedisTestSuite) TestRedis() {
 	}
 
 	// From step Redis_ListByResourceGroup
+	fmt.Println("Call operation: Redis_ListByResourceGroup")
 	clientNewListByResourceGroupPager := client.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for clientNewListByResourceGroupPager.More() {
 		_, err := clientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -179,10 +184,12 @@ func (testsuite *RedisTestSuite) TestRedis() {
 	}
 
 	// From step Redis_Get
+	fmt.Println("Call operation: Redis_Get")
 	_, err = client.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Redis_Update
+	fmt.Println("Call operation: Redis_Update")
 	clientUpdateResponsePoller, err := client.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, armredis.UpdateParameters{
 		Properties: &armredis.UpdateProperties{
 			EnableNonSSLPort:   to.Ptr(true),
@@ -194,16 +201,19 @@ func (testsuite *RedisTestSuite) TestRedis() {
 	testsuite.Require().NoError(err)
 
 	// From step Redis_RegenerateKey
+	fmt.Println("Call operation: Redis_RegenerateKey")
 	_, err = client.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, armredis.RegenerateKeyParameters{
 		KeyType: to.Ptr(armredis.RedisKeyTypePrimary),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Redis_ListKeys
+	fmt.Println("Call operation: Redis_ListKeys")
 	_, err = client.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Redis_ForceReboot
+	fmt.Println("Call operation: Redis_ForceReboot")
 	_, err = client.ForceReboot(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, armredis.RebootParameters{
 		Ports: []*int32{
 			to.Ptr[int32](13000),
@@ -217,6 +227,7 @@ func (testsuite *RedisTestSuite) TestFirewallRule() {
 	cacheName := testsuite.name
 	var err error
 	// From step FirewallRules_CreateOrUpdate
+	fmt.Println("Call operation: FirewallRules_CreateOrUpdate")
 	firewallRulesClient, err := armredis.NewFirewallRulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = firewallRulesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, cacheName, "rule1", armredis.FirewallRule{
@@ -228,6 +239,7 @@ func (testsuite *RedisTestSuite) TestFirewallRule() {
 	testsuite.Require().NoError(err)
 
 	// From step FirewallRules_List
+	fmt.Println("Call operation: FirewallRules_List")
 	firewallRulesClientNewListPager := firewallRulesClient.NewListPager(testsuite.resourceGroupName, cacheName, nil)
 	for firewallRulesClientNewListPager.More() {
 		_, err := firewallRulesClientNewListPager.NextPage(testsuite.ctx)
@@ -236,10 +248,12 @@ func (testsuite *RedisTestSuite) TestFirewallRule() {
 	}
 
 	// From step FirewallRules_Get
+	fmt.Println("Call operation: FirewallRules_Get")
 	_, err = firewallRulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, cacheName, "rule1", nil)
 	testsuite.Require().NoError(err)
 
 	// From step FirewallRules_Delete
+	fmt.Println("Call operation: FirewallRules_Delete")
 	_, err = firewallRulesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, cacheName, "rule1", nil)
 	testsuite.Require().NoError(err)
 }
@@ -249,6 +263,7 @@ func (testsuite *RedisTestSuite) TestPatchSchedule() {
 	cacheName := testsuite.name
 	var err error
 	// From step PatchSchedules_CreateOrUpdate
+	fmt.Println("Call operation: PatchSchedules_CreateOrUpdate")
 	patchSchedulesClient, err := armredis.NewPatchSchedulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = patchSchedulesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, armredis.DefaultNameDefault, armredis.PatchSchedule{
@@ -268,6 +283,7 @@ func (testsuite *RedisTestSuite) TestPatchSchedule() {
 	testsuite.Require().NoError(err)
 
 	// From step PatchSchedules_ListByRedisResource
+	fmt.Println("Call operation: PatchSchedules_ListByRedisResource")
 	patchSchedulesClientNewListByRedisResourcePager := patchSchedulesClient.NewListByRedisResourcePager(testsuite.resourceGroupName, cacheName, nil)
 	for patchSchedulesClientNewListByRedisResourcePager.More() {
 		_, err := patchSchedulesClientNewListByRedisResourcePager.NextPage(testsuite.ctx)
@@ -276,10 +292,12 @@ func (testsuite *RedisTestSuite) TestPatchSchedule() {
 	}
 
 	// From step PatchSchedules_Get
+	fmt.Println("Call operation: PatchSchedules_Get")
 	_, err = patchSchedulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, armredis.DefaultNameDefault, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PatchSchedules_Delete
+	fmt.Println("Call operation: PatchSchedules_Delete")
 	_, err = patchSchedulesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, armredis.DefaultNameDefault, nil)
 	testsuite.Require().NoError(err)
 }
@@ -288,6 +306,7 @@ func (testsuite *RedisTestSuite) TestPatchSchedule() {
 func (testsuite *RedisTestSuite) TestOperation() {
 	var err error
 	// From step Operations_List
+	fmt.Println("Call operation: Operations_List")
 	operationsClient, err := armredis.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	operationsClientNewListPager := operationsClient.NewListPager(nil)
@@ -394,6 +413,7 @@ func (testsuite *RedisTestSuite) TestPrivateEndpointConnections() {
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnections_List
+	fmt.Println("Call operation: PrivateEndpointConnections_List")
 	privateEndpointConnectionsClient, err := armredis.NewPrivateEndpointConnectionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateEndpointConnectionsClientNewListPager := privateEndpointConnectionsClient.NewListPager(testsuite.resourceGroupName, cacheName, nil)
@@ -406,6 +426,7 @@ func (testsuite *RedisTestSuite) TestPrivateEndpointConnections() {
 	}
 
 	// From step PrivateEndpointConnections_Put
+	fmt.Println("Call operation: PrivateEndpointConnections_Put")
 	privateEndpointConnectionsClientPutResponsePoller, err := privateEndpointConnectionsClient.BeginPut(testsuite.ctx, testsuite.resourceGroupName, cacheName, privateEndpointConnectionName, armredis.PrivateEndpointConnection{
 		Properties: &armredis.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armredis.PrivateLinkServiceConnectionState{
@@ -419,10 +440,12 @@ func (testsuite *RedisTestSuite) TestPrivateEndpointConnections() {
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnections_Get
+	fmt.Println("Call operation: PrivateEndpointConnections_Get")
 	_, err = privateEndpointConnectionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, cacheName, privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PrivateLinkResources_ListByRedisCache
+	fmt.Println("Call operation: PrivateLinkResources_ListByRedisCache")
 	privateLinkResourcesClient, err := armredis.NewPrivateLinkResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateLinkResourcesClientNewListByRedisCachePager := privateLinkResourcesClient.NewListByRedisCachePager(testsuite.resourceGroupName, cacheName, nil)
@@ -433,6 +456,7 @@ func (testsuite *RedisTestSuite) TestPrivateEndpointConnections() {
 	}
 
 	// From step PrivateEndpointConnections_Delete
+	fmt.Println("Call operation: PrivateEndpointConnections_Delete")
 	_, err = privateEndpointConnectionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, cacheName, privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 }
@@ -440,6 +464,7 @@ func (testsuite *RedisTestSuite) TestPrivateEndpointConnections() {
 func (testsuite *RedisTestSuite) Cleanup() {
 	var err error
 	// From step Redis_Delete
+	fmt.Println("Call operation: Redis_Delete")
 	client, err := armredis.NewClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	clientDeleteResponsePoller, err := client.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.name, nil)

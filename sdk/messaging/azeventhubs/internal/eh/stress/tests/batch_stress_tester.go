@@ -39,7 +39,7 @@ func getBatchTesterParams(args []string) (batchTesterParams, error) {
 	// Look in ../templates/deploy-job.yaml for some of the other parameter variations we use in stress/longevity
 	// testing.
 	fs.IntVar(&params.numToSend, "send", 1000000, "Number of events to send.")
-	fs.IntVar(&params.batchSize, "receive", 1000000, "Size to request each time we call ReceiveEvents()")
+	fs.IntVar(&params.batchSize, "receive", 1000, "Size to request each time we call ReceiveEvents(). Higher batch sizes will require higher amounts of memory for this test.")
 	fs.StringVar(&batchDurationStr, "timeout", "60s", "Time to wait for each batch (ie: 1m, 30s, etc..)")
 	prefetch := fs.Int("prefetch", 0, "Number of events to set for the prefetch. Negative numbers disable prefetch altogether. 0 uses the default for the package.")
 
@@ -48,8 +48,9 @@ func getBatchTesterParams(args []string) (batchTesterParams, error) {
 	fs.StringVar(&params.partitionID, "partition", "0", "Partition ID to send and receive events to")
 	fs.IntVar(&params.maxDeadlineExceeded, "maxtimeouts", 10, "Number of consecutive receive timeouts allowed before quitting")
 	fs.BoolVar(&params.enableVerboseLogging, "verbose", false, "enable verbose azure sdk logging")
+	sleepAfterFn := addSleepAfterFlag(fs)
 
-	if err := fs.Parse(os.Args[2:]); errors.Is(err, flag.ErrHelp) {
+	if err := fs.Parse(os.Args[2:]); err != nil {
 		fs.PrintDefaults()
 		return batchTesterParams{}, err
 	}
@@ -68,6 +69,7 @@ func getBatchTesterParams(args []string) (batchTesterParams, error) {
 	}
 
 	params.batchDuration = batchDuration
+	params.sleepAfterFn = sleepAfterFn
 
 	return params, nil
 }
@@ -80,6 +82,8 @@ func BatchStressTester(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+
+	defer params.sleepAfterFn()
 
 	testData, err := newStressTestData("batch", params.enableVerboseLogging, map[string]string{
 		"BatchDuration":       params.batchDuration.String(),
@@ -160,6 +164,7 @@ type batchTesterParams struct {
 	prefetch             int32
 	maxDeadlineExceeded  int
 	enableVerboseLogging bool
+	sleepAfterFn         func()
 }
 
 func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.ConsumerClient, sp azeventhubs.StartPosition, params batchTesterParams, testData *stressTestData) error {

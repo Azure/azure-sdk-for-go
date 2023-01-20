@@ -8,6 +8,7 @@ package armstorage_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -51,6 +52,7 @@ func TestUsagesClient(t *testing.T) {
 }
 
 func (testsuite *UsagesClientTestSuite) TestUsages() {
+	fmt.Println("Call operation: Usages_ListByLocation")
 	usagesClient, err := armstorage.NewUsagesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	resp := usagesClient.NewListByLocationPager(testsuite.location, nil)

@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -100,9 +101,6 @@ func (s *ServiceClient) URL() string {
 	return s.generated().Endpoint()
 }
 
-// TODO: CreateQueue
-// TODO: DeleteQueue
-
 // GetProperties - gets the properties of a storage account's Queue service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
 func (s *ServiceClient) GetProperties(ctx context.Context, o *GetPropertiesOptions) (GetPropertiesResponse, error) {
@@ -166,6 +164,34 @@ func (s *ServiceClient) NewListQueuesPager(o *ListQueuesOptions) *runtime.Pager[
 			return s.generated().ListQueuesSegmentHandleResponse(resp)
 		},
 	})
+}
+
+// NewQueueClient creates a new QueueClient object by concatenating queueName to the end of
+// this Client's URL. The new QueueClient uses the same request policy pipeline as the Client.
+func (s *ServiceClient) NewQueueClient(queueName string) *QueueClient {
+	queueName = url.PathEscape(queueName)
+	queueURL := runtime.JoinPaths(s.URL(), queueName)
+	return (*QueueClient)(base.NewQueueClient(queueURL, s.generated().Pipeline(), s.sharedKey()))
+}
+
+// CreateQueue creates a new queue within a storage account. If a queue with the same name already exists, the operation fails.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-queue4.
+func (s *ServiceClient) CreateQueue(ctx context.Context, queueName string, options *CreateOptions) (generated.QueueClientCreateResponse, error) {
+	queueName = url.PathEscape(queueName)
+	queueURL := runtime.JoinPaths(s.URL(), queueName)
+	qC := (*QueueClient)(base.NewQueueClient(queueURL, s.generated().Pipeline(), s.sharedKey()))
+	resp, err := qC.Create(ctx, options)
+	return resp, err
+}
+
+// DeleteQueue deletes the specified queue.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-queue3.
+func (s *ServiceClient) DeleteQueue(ctx context.Context, queueName string, options *DeleteOptions) (DeleteResponse, error) {
+	queueName = url.PathEscape(queueName)
+	queueURL := runtime.JoinPaths(s.URL(), queueName)
+	qC := (*QueueClient)(base.NewQueueClient(queueURL, s.generated().Pipeline(), s.sharedKey()))
+	resp, err := qC.Delete(ctx, options)
+	return resp, err
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.

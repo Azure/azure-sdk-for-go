@@ -139,3 +139,25 @@ type GetStatisticsOptions struct {
 func (o *GetStatisticsOptions) format() *generated.ServiceClientGetStatisticsOptions {
 	return nil
 }
+
+// -------------------------------------------------QUEUES--------------------------------------------------------------
+
+// CreateOptions contains the optional parameters for the Client.Create method.
+type CreateOptions struct {
+	// Optional. Specifies a user-defined name-value pair associated with the queue.
+	Metadata map[string]*string
+}
+
+func (o *CreateOptions) format() *generated.QueueClientCreateOptions {
+	return &generated.QueueClientCreateOptions{Metadata: o.Metadata}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DeleteOptions contains the optional parameters for the Client.Delete method.
+type DeleteOptions struct {
+}
+
+func (o *DeleteOptions) format() *generated.QueueClientDeleteOptions {
+	return nil
+}

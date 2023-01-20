@@ -5,9 +5,11 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 // Contains common helpers for TESTS ONLY
+
 package testcommon
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -110,6 +112,16 @@ func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountT
 	return svcClient, err
 }
 
-// TODO: GetQueueClient()
-// TODO: CreateNewQueue()
+func GetQueueClient(queueName string, serviceClient *azqueue.ServiceClient) *azqueue.QueueClient {
+	return serviceClient.NewQueueClient(queueName)
+}
+
+func CreateNewQueue(ctx context.Context, _require *require.Assertions, queueName string, serviceClient *azqueue.ServiceClient) *azqueue.QueueClient {
+	queueClient := GetQueueClient(queueName, serviceClient)
+
+	_, err := queueClient.Create(ctx, nil)
+	_require.Nil(err)
+	return queueClient
+}
+
 // TODO: DeleteQueue()

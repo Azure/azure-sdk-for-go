@@ -21,36 +21,36 @@ func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running service Tests in %s mode\n", recordMode)
 	if recordMode == recording.LiveMode {
-		suite.Run(t, &ServiceRecordedTestsSuite{})
-		suite.Run(t, &ServiceUnrecordedTestsSuite{})
+		suite.Run(t, &RecordedTestSuite{})
+		suite.Run(t, &UnrecordedTestSuite{})
 	} else if recordMode == recording.PlaybackMode {
-		suite.Run(t, &ServiceRecordedTestsSuite{})
+		suite.Run(t, &RecordedTestSuite{})
 	} else if recordMode == recording.RecordingMode {
-		suite.Run(t, &ServiceRecordedTestsSuite{})
+		suite.Run(t, &RecordedTestSuite{})
 	}
 }
 
-func (s *ServiceRecordedTestsSuite) BeforeTest(suite string, test string) {
+func (s *RecordedTestSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-func (s *ServiceRecordedTestsSuite) AfterTest(suite string, test string) {
+func (s *RecordedTestSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-func (s *ServiceUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+func (s *UnrecordedTestSuite) BeforeTest(suite string, test string) {
 
 }
 
-func (s *ServiceUnrecordedTestsSuite) AfterTest(suite string, test string) {
+func (s *UnrecordedTestSuite) AfterTest(suite string, test string) {
 
 }
 
-type ServiceRecordedTestsSuite struct {
+type RecordedTestSuite struct {
 	suite.Suite
 }
 
-type ServiceUnrecordedTestsSuite struct {
+type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
@@ -59,7 +59,7 @@ type ServiceUnrecordedTestsSuite struct {
 //TODO: TestDeleteQueue
 //TODO: TestSAS...
 
-func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
+func (s *UnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	//testName := s.T().Name()
 
@@ -81,7 +81,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require.NotZero(sProps)
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetProperties() {
+func (s *RecordedTestSuite) TestGetProperties() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)

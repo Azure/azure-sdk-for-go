@@ -7,6 +7,7 @@
 package azqueue
 
 import (
+	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/base"
@@ -16,7 +17,31 @@ import (
 )
 
 // QueueClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
-type QueueClient base.Client[generated.QueueClient]
+type QueueClient base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient]
+
+func (q *QueueClient) generated() *generated.QueueClient {
+	queue, _, _ := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+	return queue
+}
+
+func (q *QueueClient) messagesClient() *generated.MessagesClient {
+	_, messages, _ := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+	return messages
+}
+
+func (q *QueueClient) messagesIDClient() *generated.MessageIDClient {
+	_, _, mID := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+	return mID
+}
+
+func (q *QueueClient) sharedKey() *SharedKeyCredential {
+	return base.SharedKeyComposite((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+}
+
+// URL returns the URL endpoint used by the ServiceClient object.
+func (q *QueueClient) URL() string {
+	return q.generated().Endpoint()
+}
 
 // NewQueueClient creates an instance of ServiceClient with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.queue.core.windows.net/
@@ -73,4 +98,20 @@ func NewQueueClientFromConnectionString(connectionString string, queueName strin
 	}
 
 	return NewQueueClientWithNoCredential(parsed.ServiceURL, options)
+}
+
+// Create creates a new queue within a storage account. If a queue with the same name already exists, the operation fails.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-queue4.
+func (q *QueueClient) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
+	opts := options.format()
+	resp, err := q.generated().Create(ctx, opts)
+	return resp, err
+}
+
+// Delete deletes the specified queue.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-queue3.
+func (q *QueueClient) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
+	opts := options.format()
+	resp, err := q.generated().Delete(ctx, opts)
+	return resp, err
 }

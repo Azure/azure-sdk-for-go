@@ -11,6 +11,100 @@ package armpostgresqlflexibleservers
 
 import "time"
 
+// ActiveDirectoryAdministrator - Represents an Active Directory administrator.
+type ActiveDirectoryAdministrator struct {
+	// REQUIRED; Properties of the active directory administrator.
+	Properties *AdministratorProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ActiveDirectoryAdministratorAdd - Represents an Active Directory administrator.
+type ActiveDirectoryAdministratorAdd struct {
+	// Properties of the active directory administrator.
+	Properties *AdministratorPropertiesForAdd `json:"properties,omitempty"`
+}
+
+// AdministratorListResult - A list of active directory administrators.
+type AdministratorListResult struct {
+	// The link used to get the next page of active directory.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of active directory administrators
+	Value []*ActiveDirectoryAdministrator `json:"value,omitempty"`
+}
+
+// AdministratorProperties - The properties of an Active Directory administrator.
+type AdministratorProperties struct {
+	// The objectId of the Active Directory administrator.
+	ObjectID *string `json:"objectId,omitempty"`
+
+	// Active Directory administrator principal name.
+	PrincipalName *string `json:"principalName,omitempty"`
+
+	// The principal type used to represent the type of Active Directory Administrator.
+	PrincipalType *PrincipalType `json:"principalType,omitempty"`
+
+	// The tenantId of the Active Directory administrator.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// AdministratorPropertiesForAdd - The properties of an Active Directory administrator.
+type AdministratorPropertiesForAdd struct {
+	// Active Directory administrator principal name.
+	PrincipalName *string `json:"principalName,omitempty"`
+
+	// The principal type used to represent the type of Active Directory Administrator.
+	PrincipalType *PrincipalType `json:"principalType,omitempty"`
+
+	// The tenantId of the Active Directory administrator.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// AdministratorsClientBeginCreateOptions contains the optional parameters for the AdministratorsClient.BeginCreate method.
+type AdministratorsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AdministratorsClientBeginDeleteOptions contains the optional parameters for the AdministratorsClient.BeginDelete method.
+type AdministratorsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AdministratorsClientGetOptions contains the optional parameters for the AdministratorsClient.Get method.
+type AdministratorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdministratorsClientListByServerOptions contains the optional parameters for the AdministratorsClient.ListByServer method.
+type AdministratorsClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AuthConfig - Authentication configuration properties of a server
+type AuthConfig struct {
+	// If Enabled, Azure Active Directory authentication is enabled.
+	ActiveDirectoryAuth *ActiveDirectoryAuthEnum `json:"activeDirectoryAuth,omitempty"`
+
+	// If Enabled, Password authentication is enabled.
+	PasswordAuth *PasswordAuthEnum `json:"passwordAuth,omitempty"`
+
+	// Tenant id of the server.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // Backup properties of a server
 type Backup struct {
 	// Backup retention days for the server.
@@ -21,6 +115,16 @@ type Backup struct {
 
 	// READ-ONLY; The earliest restore point time (ISO8601 format) for server.
 	EarliestRestoreDate *time.Time `json:"earliestRestoreDate,omitempty" azure:"ro"`
+}
+
+// BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
+type BackupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.ListByServer method.
+type BackupsClientListByServerOptions struct {
+	// placeholder for future optional parameters
 }
 
 // CapabilitiesListResult - location capability
@@ -34,11 +138,17 @@ type CapabilitiesListResult struct {
 
 // CapabilityProperties - Location capabilities.
 type CapabilityProperties struct {
+	// READ-ONLY; A value indicating whether fast provisioning is supported in this region.
+	FastProvisioningSupported *bool `json:"fastProvisioningSupported,omitempty" azure:"ro"`
+
 	// READ-ONLY; A value indicating whether a new server in this region can have geo-backups to paired region.
 	GeoBackupSupported *bool `json:"geoBackupSupported,omitempty" azure:"ro"`
 
 	// READ-ONLY; The status
 	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	SupportedFastProvisioningEditions []*FastProvisioningEditionCapability `json:"supportedFastProvisioningEditions,omitempty" azure:"ro"`
 
 	// READ-ONLY
 	SupportedFlexibleServerEditions []*FlexibleServerEditionCapability `json:"supportedFlexibleServerEditions,omitempty" azure:"ro"`
@@ -65,11 +175,19 @@ type CheckNameAvailabilityClientExecuteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudError - An error response from the Batch service.
-type CloudError struct {
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
-	// the OData error response format.)
-	Error *ErrorResponse `json:"error,omitempty"`
+// CheckNameAvailabilityRequest - The check availability request body.
+type CheckNameAvailabilityRequest struct {
+	// The name of the resource for which availability needs to be checked.
+	Name *string `json:"name,omitempty"`
+
+	// The resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// CheckNameAvailabilityWithLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithLocationClient.Execute
+// method.
+type CheckNameAvailabilityWithLocationClientExecuteOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Configuration - Represents a Configuration.
@@ -83,11 +201,17 @@ type Configuration struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ConfigurationForUpdate - Represents a Configuration.
+type ConfigurationForUpdate struct {
+	// The properties of a configuration.
+	Properties *ConfigurationProperties `json:"properties,omitempty"`
 }
 
 // ConfigurationListResult - A list of server configurations.
@@ -157,6 +281,18 @@ type ConfigurationsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DataEncryption - Data encryption properties of a server
+type DataEncryption struct {
+	// URI for the key for data encryption for primary server.
+	PrimaryKeyURI *string `json:"primaryKeyURI,omitempty"`
+
+	// Resource Id for the User assigned identity to be used for data encryption for primary server.
+	PrimaryUserAssignedIdentityID *string `json:"primaryUserAssignedIdentityId,omitempty"`
+
+	// Data encryption type to depict if it is System assigned vs Azure Key vault.
+	Type *ArmServerKeyType `json:"type,omitempty"`
+}
+
 // Database - Represents a Database.
 type Database struct {
 	// The properties of a database.
@@ -168,7 +304,7 @@ type Database struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -217,39 +353,22 @@ type DatabasesClientListByServerOptions struct {
 
 // DelegatedSubnetUsage - Delegated subnet usage data.
 type DelegatedSubnetUsage struct {
-	// READ-ONLY; name of the subnet
+	// READ-ONLY; Name of the delegated subnet for which IP addresses are in use
 	SubnetName *string `json:"subnetName,omitempty" azure:"ro"`
 
-	// READ-ONLY; Number of used delegated subnets
+	// READ-ONLY; Number of IP addresses used by the delegated subnet
 	Usage *int64 `json:"usage,omitempty" azure:"ro"`
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+type FastProvisioningEditionCapability struct {
+	// READ-ONLY; Fast provisioning supported sku name
+	SupportedSKU *string `json:"supportedSku,omitempty" azure:"ro"`
 
-	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
+	// READ-ONLY; Fast provisioning supported version
+	SupportedServerVersions *string `json:"supportedServerVersions,omitempty" azure:"ro"`
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.)
-type ErrorResponse struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	// READ-ONLY; Fast provisioning supported storage in Gb
+	SupportedStorageGb *int64 `json:"supportedStorageGb,omitempty" azure:"ro"`
 }
 
 // FirewallRule - Represents a server firewall rule.
@@ -263,7 +382,7 @@ type FirewallRule struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -385,29 +504,20 @@ type MaintenanceWindow struct {
 
 // NameAvailability - Represents a resource name availability.
 type NameAvailability struct {
-	// READ-ONLY; Error Message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	// Detailed reason why the given name is available.
+	Message *string `json:"message,omitempty"`
+
+	// Indicates if the resource name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+
+	// The reason why the given name is not available.
+	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
 
 	// READ-ONLY; name of the PostgreSQL server.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Indicates whether the resource name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name availability reason.
-	Reason *Reason `json:"reason,omitempty" azure:"ro"`
-
 	// READ-ONLY; type of the server
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// NameAvailabilityRequest - Request from client to check resource name availability.
-type NameAvailabilityRequest struct {
-	// REQUIRED; Resource name to verify.
-	Name *string `json:"name,omitempty"`
-
-	// Resource type used for verification.
-	Type *string `json:"type,omitempty"`
 }
 
 // Network properties of a server
@@ -481,29 +591,9 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+// ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.ListByServer method.
+type ReplicasClientListByServerOptions struct {
+	// placeholder for future optional parameters
 }
 
 // RestartParameter - Represents server restart parameters.
@@ -529,6 +619,9 @@ type Server struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
+	// Describes the identity of the application.
+	Identity *UserAssignedIdentity `json:"identity,omitempty"`
+
 	// Properties of the server.
 	Properties *ServerProperties `json:"properties,omitempty"`
 
@@ -544,17 +637,56 @@ type Server struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// ServerBackup - Server backup properties
+type ServerBackup struct {
+	// The properties of a server backup.
+	Properties *ServerBackupProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServerBackupListResult - A list of server backups.
+type ServerBackupListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of backups of a server.
+	Value []*ServerBackup `json:"value,omitempty"`
+}
+
+// ServerBackupProperties - The properties of a server backup.
+type ServerBackupProperties struct {
+	// Backup type.
+	BackupType *Origin `json:"backupType,omitempty"`
+
+	// Backup completed time (ISO8601 format).
+	CompletedTime *time.Time `json:"completedTime,omitempty"`
+
+	// Backup source
+	Source *string `json:"source,omitempty"`
+}
+
 // ServerForUpdate - Represents a server to be updated.
 type ServerForUpdate struct {
-	// The location the resource resides in.
-	Location *string `json:"location,omitempty"`
+	// Describes the identity of the application.
+	Identity *UserAssignedIdentity `json:"identity,omitempty"`
 
 	// Properties of the server.
 	Properties *ServerPropertiesForUpdate `json:"properties,omitempty"`
@@ -584,6 +716,9 @@ type ServerProperties struct {
 	// The administrator login password (required for server creation).
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
 
+	// AuthConfig properties of a server.
+	AuthConfig *AuthConfig `json:"authConfig,omitempty"`
+
 	// availability zone information of the server.
 	AvailabilityZone *string `json:"availabilityZone,omitempty"`
 
@@ -592,6 +727,9 @@ type ServerProperties struct {
 
 	// The mode to create a new PostgreSQL server.
 	CreateMode *CreateMode `json:"createMode,omitempty"`
+
+	// Data encryption properties of a server.
+	DataEncryption *DataEncryption `json:"dataEncryption,omitempty"`
 
 	// High availability properties of a server.
 	HighAvailability *HighAvailability `json:"highAvailability,omitempty"`
@@ -602,10 +740,18 @@ type ServerProperties struct {
 	// Network properties of a server.
 	Network *Network `json:"network,omitempty"`
 
-	// Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when 'createMode' is 'PointInTimeRestore'.
+	// Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when 'createMode' is 'PointInTimeRestore'
+	// or 'GeoRestore'.
 	PointInTimeUTC *time.Time `json:"pointInTimeUTC,omitempty"`
 
-	// The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore'.
+	// Replicas allowed for a server.
+	ReplicaCapacity *int32 `json:"replicaCapacity,omitempty"`
+
+	// Replication role of the server
+	ReplicationRole *ReplicationRole `json:"replicationRole,omitempty"`
+
+	// The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'
+	// or 'Replica'.
 	SourceServerResourceID *string `json:"sourceServerResourceId,omitempty"`
 
 	// Storage properties of a server.
@@ -628,11 +774,17 @@ type ServerPropertiesForUpdate struct {
 	// The password of the administrator login.
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
 
+	// AuthConfig properties of a server.
+	AuthConfig *AuthConfig `json:"authConfig,omitempty"`
+
 	// Backup properties of a server.
 	Backup *Backup `json:"backup,omitempty"`
 
 	// The mode to update a new PostgreSQL server.
 	CreateMode *CreateModeForUpdate `json:"createMode,omitempty"`
+
+	// Data encryption properties of a server.
+	DataEncryption *DataEncryption `json:"dataEncryption,omitempty"`
 
 	// High availability properties of a server.
 	HighAvailability *HighAvailability `json:"highAvailability,omitempty"`
@@ -640,8 +792,14 @@ type ServerPropertiesForUpdate struct {
 	// Maintenance window properties of a server.
 	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
 
+	// Replication role of the server
+	ReplicationRole *ReplicationRole `json:"replicationRole,omitempty"`
+
 	// Storage properties of a server.
 	Storage *Storage `json:"storage,omitempty"`
+
+	// PostgreSQL Server version.
+	Version *ServerVersion `json:"version,omitempty"`
 }
 
 // ServerVersionCapability - Server version capabilities.
@@ -654,6 +812,9 @@ type ServerVersionCapability struct {
 
 	// READ-ONLY
 	SupportedVcores []*VcoreCapability `json:"supportedVcores,omitempty" azure:"ro"`
+
+	// READ-ONLY; Supported servers versions to upgrade
+	SupportedVersionsToUpgrade []*string `json:"supportedVersionsToUpgrade,omitempty" azure:"ro"`
 }
 
 // ServersClientBeginCreateOptions contains the optional parameters for the ServersClient.BeginCreate method.
@@ -740,6 +901,26 @@ type StorageMBCapability struct {
 
 	// READ-ONLY; supported IOPS
 	SupportedIops *int64 `json:"supportedIops,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	SupportedUpgradableTierList []*StorageTierCapability `json:"supportedUpgradableTierList,omitempty" azure:"ro"`
+}
+
+type StorageTierCapability struct {
+	// READ-ONLY; Supported IOPS for this storage tier
+	Iops *int64 `json:"iops,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicates if this is a baseline storage tier or not
+	IsBaseline *bool `json:"isBaseline,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name to represent Storage tier capability
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status os this storage tier
+	Status *string `json:"status,omitempty" azure:"ro"`
+
+	// READ-ONLY; Storage tier name
+	TierName *string `json:"tierName,omitempty" azure:"ro"`
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -763,23 +944,22 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+// UserAssignedIdentity - Information describing the identities associated with this application.
+type UserAssignedIdentity struct {
+	// REQUIRED; the types of identities associated with this resource; currently restricted to 'SystemAssigned and UserAssigned'
+	Type *IdentityType `json:"type,omitempty"`
 
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	// represents user assigned identities map.
+	UserAssignedIdentities map[string]*UserIdentity `json:"userAssignedIdentities,omitempty"`
+}
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+// UserIdentity - Describes a single user-assigned identity associated with the application.
+type UserIdentity struct {
+	// the client identifier of the Service Principal which this identity represents.
+	ClientID *string `json:"clientId,omitempty"`
 
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	// the object identifier of the Service Principal which this identity represents.
+	PrincipalID *string `json:"principalId,omitempty"`
 }
 
 // VcoreCapability - Vcores capability
@@ -817,9 +997,9 @@ type VirtualNetworkSubnetUsageResult struct {
 	// READ-ONLY
 	DelegatedSubnetsUsage []*DelegatedSubnetUsage `json:"delegatedSubnetsUsage,omitempty" azure:"ro"`
 
-	// READ-ONLY; The location the resource resides in.
+	// READ-ONLY; location of the delegated subnet usage
 	Location *string `json:"location,omitempty" azure:"ro"`
 
-	// READ-ONLY; The subscription ID.
+	// READ-ONLY; subscriptionId of the delegated subnet usage
 	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 }

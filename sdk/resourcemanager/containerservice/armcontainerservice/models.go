@@ -1350,6 +1350,12 @@ type ManagedClusterNATGatewayProfile struct {
 	ManagedOutboundIPProfile *ManagedClusterManagedOutboundIPProfile `json:"managedOutboundIPProfile,omitempty"`
 }
 
+// ManagedClusterNodeResourceGroupProfile - Node resource group lockdown profile for a managed cluster.
+type ManagedClusterNodeResourceGroupProfile struct {
+	// The restriction level applied to the cluster's node resource group
+	RestrictionLevel *RestrictionLevel `json:"restrictionLevel,omitempty"`
+}
+
 // ManagedClusterOIDCIssuerProfile - The OIDC issuer profile of the Managed Cluster.
 type ManagedClusterOIDCIssuerProfile struct {
 	// Whether the OIDC issuer is enabled.
@@ -1503,8 +1509,9 @@ type ManagedClusterProperties struct {
 	// on Namespace as a ARM Resource.
 	EnableNamespaceResources *bool `json:"enableNamespaceResources,omitempty"`
 
-	// (DEPRECATING) Whether to enable Kubernetes pod security policy (preview). This feature is set for removal on October 15th,
-	// 2020. Learn more at aka.ms/aks/azpodpolicy.
+	// (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in Kubernetes
+	// v1.21, and removed from Kubernetes in v1.25. Learn more at
+	// https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
 	EnablePodSecurityPolicy *bool `json:"enablePodSecurityPolicy,omitempty"`
 
 	// Whether to enable Kubernetes Role-Based Access Control.
@@ -1540,6 +1547,9 @@ type ManagedClusterProperties struct {
 	// The name of the resource group containing agent pool nodes.
 	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty"`
 
+	// The node resource group configuration profile.
+	NodeResourceGroupProfile *ManagedClusterNodeResourceGroupProfile `json:"nodeResourceGroupProfile,omitempty"`
+
 	// The OIDC issuer profile of the Managed Cluster.
 	OidcIssuerProfile *ManagedClusterOIDCIssuerProfile `json:"oidcIssuerProfile,omitempty"`
 
@@ -1565,7 +1575,7 @@ type ManagedClusterProperties struct {
 	// The profile for Windows VMs in the Managed Cluster.
 	WindowsProfile *ManagedClusterWindowsProfile `json:"windowsProfile,omitempty"`
 
-	// Workload Auto-scaler profile for the container service cluster.
+	// Workload Auto-scaler profile for the managed cluster.
 	WorkloadAutoScalerProfile *ManagedClusterWorkloadAutoScalerProfile `json:"workloadAutoScalerProfile,omitempty"`
 
 	// READ-ONLY; The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses,
@@ -1928,7 +1938,7 @@ type ManagedClusterWindowsProfile struct {
 	LicenseType *LicenseType `json:"licenseType,omitempty"`
 }
 
-// ManagedClusterWorkloadAutoScalerProfile - Workload Auto-scaler profile for the container service cluster.
+// ManagedClusterWorkloadAutoScalerProfile - Workload Auto-scaler profile for the managed cluster.
 type ManagedClusterWorkloadAutoScalerProfile struct {
 	// KEDA (Kubernetes Event-driven Autoscaling) settings for the workload auto-scaler profile.
 	Keda                  *ManagedClusterWorkloadAutoScalerProfileKeda                  `json:"keda,omitempty"`

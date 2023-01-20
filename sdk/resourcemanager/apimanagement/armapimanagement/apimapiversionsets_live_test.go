@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimapiversionsetsTestSuite(t *testing.T) {
 func (testsuite *ApimapiversionsetsTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimapiversionsetsTestSuite) Prepare() {
 func (testsuite *ApimapiversionsetsTestSuite) TestApiversionset() {
 	var err error
 	// From step ApiVersionSet_CreateOrUpdate
+	fmt.Println("Call operation: ApiVersionSet_CreateOrUpdate")
 	aPIVersionSetClient, err := armapimanagement.NewAPIVersionSetClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIVersionSetClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.versionSetId, armapimanagement.APIVersionSetContract{
@@ -100,10 +103,12 @@ func (testsuite *ApimapiversionsetsTestSuite) TestApiversionset() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiVersionSet_GetEntityTag
+	fmt.Println("Call operation: ApiVersionSet_GetEntityTag")
 	_, err = aPIVersionSetClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.versionSetId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiVersionSet_ListByService
+	fmt.Println("Call operation: ApiVersionSet_ListByService")
 	aPIVersionSetClientNewListByServicePager := aPIVersionSetClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.APIVersionSetClientListByServiceOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -115,10 +120,12 @@ func (testsuite *ApimapiversionsetsTestSuite) TestApiversionset() {
 	}
 
 	// From step ApiVersionSet_Get
+	fmt.Println("Call operation: ApiVersionSet_Get")
 	_, err = aPIVersionSetClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.versionSetId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiVersionSet_Update
+	fmt.Println("Call operation: ApiVersionSet_Update")
 	_, err = aPIVersionSetClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.versionSetId, "*", armapimanagement.APIVersionSetUpdateParameters{
 		Properties: &armapimanagement.APIVersionSetUpdateParametersProperties{
 			Description:      to.Ptr("Version configuration"),
@@ -129,6 +136,7 @@ func (testsuite *ApimapiversionsetsTestSuite) TestApiversionset() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiVersionSet_Delete
+	fmt.Println("Call operation: ApiVersionSet_Delete")
 	_, err = aPIVersionSetClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.versionSetId, "*", nil)
 	testsuite.Require().NoError(err)
 }

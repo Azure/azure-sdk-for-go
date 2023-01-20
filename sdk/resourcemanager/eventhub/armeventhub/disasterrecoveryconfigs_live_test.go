@@ -10,6 +10,7 @@ package armeventhub_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -67,6 +68,7 @@ func TestDisasterrecoveryconfigsTestSuite(t *testing.T) {
 func (testsuite *DisasterrecoveryconfigsTestSuite) Prepare() {
 	var err error
 	// From step Namespaces_CreateOrUpdate
+	fmt.Println("Call operation: Namespaces_CreateOrUpdate")
 	namespacesClient, err := armeventhub.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armeventhub.EHNamespace{
@@ -81,6 +83,7 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Namespaces_CreateOrUpdate_Second
+	fmt.Println("Call operation: Namespaces_CreateOrUpdate")
 	namespacesClientCreateOrUpdateResponsePoller, err = namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceNameSecond, armeventhub.EHNamespace{
 		Location: to.Ptr("westus2"),
 		SKU: &armeventhub.SKU{
@@ -95,6 +98,7 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) Prepare() {
 	testsuite.secondNamespaceId = *namespacesClientCreateOrUpdateResponse.ID
 
 	// From step Namespaces_CreateOrUpdateAuthorizationRule
+	fmt.Println("Call operation: Namespaces_CreateOrUpdateAuthorizationRule")
 	_, err = namespacesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, armeventhub.AuthorizationRule{
 		Properties: &armeventhub.AuthorizationRuleProperties{
 			Rights: []*armeventhub.AccessRights{
@@ -109,6 +113,7 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) Prepare() {
 func (testsuite *DisasterrecoveryconfigsTestSuite) TestDisasterrecoveryconfig() {
 	var err error
 	// From step DisasterRecoveryConfigs_CheckNameAvailability
+	fmt.Println("Call operation: DisasterRecoveryConfigs_CheckNameAvailability")
 	disasterRecoveryConfigsClient, err := armeventhub.NewDisasterRecoveryConfigsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = disasterRecoveryConfigsClient.CheckNameAvailability(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armeventhub.CheckNameAvailabilityParameter{
@@ -117,6 +122,7 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) TestDisasterrecoveryconfig() 
 	testsuite.Require().NoError(err)
 
 	// From step DisasterRecoveryConfigs_CreateOrUpdate
+	fmt.Println("Call operation: DisasterRecoveryConfigs_CreateOrUpdate")
 	_, err = disasterRecoveryConfigsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, armeventhub.ArmDisasterRecovery{
 		Properties: &armeventhub.ArmDisasterRecoveryProperties{
 			PartnerNamespace: to.Ptr(testsuite.secondNamespaceId),
@@ -125,6 +131,7 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) TestDisasterrecoveryconfig() 
 	testsuite.Require().NoError(err)
 
 	// From step DisasterRecoveryConfigs_List
+	fmt.Println("Call operation: DisasterRecoveryConfigs_List")
 	disasterRecoveryConfigsClientNewListPager := disasterRecoveryConfigsClient.NewListPager(testsuite.resourceGroupName, testsuite.namespaceName, nil)
 	for disasterRecoveryConfigsClientNewListPager.More() {
 		_, err := disasterRecoveryConfigsClientNewListPager.NextPage(testsuite.ctx)
@@ -133,14 +140,17 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) TestDisasterrecoveryconfig() 
 	}
 
 	// From step DisasterRecoveryConfigs_GetAuthorizationRule
+	fmt.Println("Call operation: DisasterRecoveryConfigs_GetAuthorizationRule")
 	_, err = disasterRecoveryConfigsClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DisasterRecoveryConfigs_Get
+	fmt.Println("Call operation: DisasterRecoveryConfigs_Get")
 	_, err = disasterRecoveryConfigsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DisasterRecoveryConfigs_ListAuthorizationRules
+	fmt.Println("Call operation: DisasterRecoveryConfigs_ListAuthorizationRules")
 	disasterRecoveryConfigsClientNewListAuthorizationRulesPager := disasterRecoveryConfigsClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, nil)
 	for disasterRecoveryConfigsClientNewListAuthorizationRulesPager.More() {
 		_, err := disasterRecoveryConfigsClientNewListAuthorizationRulesPager.NextPage(testsuite.ctx)
@@ -149,10 +159,12 @@ func (testsuite *DisasterrecoveryconfigsTestSuite) TestDisasterrecoveryconfig() 
 	}
 
 	// From step DisasterRecoveryConfigs_ListKeys
+	fmt.Println("Call operation: DisasterRecoveryConfigs_ListKeys")
 	_, err = disasterRecoveryConfigsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.alias, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DisasterRecoveryConfigs_FailOver
+	fmt.Println("Call operation: DisasterRecoveryConfigs_FailOver")
 	_, err = disasterRecoveryConfigsClient.FailOver(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceNameSecond, testsuite.alias, nil)
 	testsuite.Require().NoError(err)
 }

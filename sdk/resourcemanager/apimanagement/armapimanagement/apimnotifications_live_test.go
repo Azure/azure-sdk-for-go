@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -64,6 +65,7 @@ func TestApimnotificationsTestSuite(t *testing.T) {
 func (testsuite *ApimnotificationsTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -86,6 +88,7 @@ func (testsuite *ApimnotificationsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Notification_CreateOrUpdate
+	fmt.Println("Call operation: Notification_CreateOrUpdate")
 	notificationClient, err := armapimanagement.NewNotificationClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = notificationClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.NotificationNameRequestPublisherNotificationMessage, &armapimanagement.NotificationClientCreateOrUpdateOptions{IfMatch: nil})
@@ -96,6 +99,7 @@ func (testsuite *ApimnotificationsTestSuite) Prepare() {
 func (testsuite *ApimnotificationsTestSuite) TestNotification() {
 	var err error
 	// From step Notification_ListByService
+	fmt.Println("Call operation: Notification_ListByService")
 	notificationClient, err := armapimanagement.NewNotificationClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	notificationClientNewListByServicePager := notificationClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.NotificationClientListByServiceOptions{Top: nil,
@@ -108,6 +112,7 @@ func (testsuite *ApimnotificationsTestSuite) TestNotification() {
 	}
 
 	// From step Notification_Get
+	fmt.Println("Call operation: Notification_Get")
 	_, err = notificationClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.NotificationNameRequestPublisherNotificationMessage, nil)
 	testsuite.Require().NoError(err)
 }
@@ -116,20 +121,24 @@ func (testsuite *ApimnotificationsTestSuite) TestNotification() {
 func (testsuite *ApimnotificationsTestSuite) TestNotificationrecipientemail() {
 	var err error
 	// From step NotificationRecipientEmail_CreateOrUpdate
+	fmt.Println("Call operation: NotificationRecipientEmail_CreateOrUpdate")
 	notificationRecipientEmailClient, err := armapimanagement.NewNotificationRecipientEmailClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = notificationRecipientEmailClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.NotificationNameRequestPublisherNotificationMessage, testsuite.email, nil)
 	testsuite.Require().NoError(err)
 
 	// From step NotificationRecipientEmail_CheckEntityExists
+	fmt.Println("Call operation: NotificationRecipientEmail_CheckEntityExists")
 	_, err = notificationRecipientEmailClient.CheckEntityExists(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.NotificationNameRequestPublisherNotificationMessage, testsuite.email, nil)
 	testsuite.Require().NoError(err)
 
 	// From step NotificationRecipientEmail_ListByNotification
+	fmt.Println("Call operation: NotificationRecipientEmail_ListByNotification")
 	_, err = notificationRecipientEmailClient.ListByNotification(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.NotificationNameRequestPublisherNotificationMessage, nil)
 	testsuite.Require().NoError(err)
 
 	// From step NotificationRecipientEmail_Delete
+	fmt.Println("Call operation: NotificationRecipientEmail_Delete")
 	_, err = notificationRecipientEmailClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.NotificationNameRequestPublisherNotificationMessage, testsuite.email, nil)
 	testsuite.Require().NoError(err)
 }

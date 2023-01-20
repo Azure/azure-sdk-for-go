@@ -1,15 +1,20 @@
 # Release History
 
-## 0.3.3 (Unreleased)
+## 0.3.4 (Unreleased)
 
 ### Features Added
-* Added `PatchItem` function to patch documents
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.3.3 (2023-01-10)
+
+### Features Added
+* Added `PatchItem` function to patch documents
+* Added support for querying databases and containers
 
 ## 0.3.2 (2022-08-09)
 

@@ -13,10 +13,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+// DownloadResponse contains the response from method BlobClient.Download.
+type DownloadResponse = generated.BlobClientDownloadResponse
+
 // DownloadStreamResponse contains the response from the DownloadStream method.
 // To read from the stream, read from the Body field, or call the NewRetryReader method.
 type DownloadStreamResponse struct {
-	generated.BlobClientDownloadResponse
+	DownloadResponse
 	ObjectReplicationRules []ObjectReplicationPolicy
 
 	client   *Client

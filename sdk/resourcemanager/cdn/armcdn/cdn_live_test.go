@@ -10,6 +10,7 @@ package armcdn_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -69,6 +70,7 @@ func TestCdnTestSuite(t *testing.T) {
 func (testsuite *CdnTestSuite) Prepare() {
 	var err error
 	// From step Profiles_Create
+	fmt.Println("Call operation: Profiles_Create")
 	profilesClient, err := armcdn.NewProfilesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	profilesClientCreateResponsePoller, err := profilesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, armcdn.Profile{
@@ -82,6 +84,7 @@ func (testsuite *CdnTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Endpoints_Create
+	fmt.Println("Call operation: Endpoints_Create")
 	endpointsClient, err := armcdn.NewEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	endpointsClientCreateResponsePoller, err := endpointsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, armcdn.Endpoint{
@@ -113,6 +116,7 @@ func (testsuite *CdnTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step OriginGroups_Create
+	fmt.Println("Call operation: OriginGroups_Create")
 	originGroupsClient, err := armcdn.NewOriginGroupsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	originGroupsClientCreateResponsePoller, err := originGroupsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.originGroupName, armcdn.OriginGroup{
@@ -134,6 +138,7 @@ func (testsuite *CdnTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Endpoints_Update
+	fmt.Println("Call operation: Endpoints_Update")
 	endpointsClientUpdateResponsePoller, err := endpointsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, armcdn.EndpointUpdateParameters{
 		Properties: &armcdn.EndpointPropertiesUpdateParameters{
 			DefaultOriginGroup: &armcdn.ResourceReference{
@@ -146,6 +151,7 @@ func (testsuite *CdnTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Origins_Create
+	fmt.Println("Call operation: Origins_Create")
 	originsClient, err := armcdn.NewOriginsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	originsClientCreateResponsePoller, err := originsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.originName, armcdn.Origin{
@@ -165,6 +171,7 @@ func (testsuite *CdnTestSuite) Prepare() {
 func (testsuite *CdnTestSuite) TestProfiles() {
 	var err error
 	// From step Profiles_List
+	fmt.Println("Call operation: Profiles_List")
 	profilesClient, err := armcdn.NewProfilesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	profilesClientNewListPager := profilesClient.NewListPager(nil)
@@ -175,6 +182,7 @@ func (testsuite *CdnTestSuite) TestProfiles() {
 	}
 
 	// From step Profiles_ListByResourceGroup
+	fmt.Println("Call operation: Profiles_ListByResourceGroup")
 	profilesClientNewListByResourceGroupPager := profilesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for profilesClientNewListByResourceGroupPager.More() {
 		_, err := profilesClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -183,10 +191,12 @@ func (testsuite *CdnTestSuite) TestProfiles() {
 	}
 
 	// From step Profiles_Get
+	fmt.Println("Call operation: Profiles_Get")
 	_, err = profilesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Profiles_Update
+	fmt.Println("Call operation: Profiles_Update")
 	profilesClientUpdateResponsePoller, err := profilesClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, armcdn.ProfileUpdateParameters{
 		Tags: map[string]*string{
 			"additionalProperties": to.Ptr("Tag1"),
@@ -197,6 +207,7 @@ func (testsuite *CdnTestSuite) TestProfiles() {
 	testsuite.Require().NoError(err)
 
 	// From step Profiles_ListResourceUsage
+	fmt.Println("Call operation: Profiles_ListResourceUsage")
 	profilesClientNewListResourceUsagePager := profilesClient.NewListResourceUsagePager(testsuite.resourceGroupName, testsuite.profileName, nil)
 	for profilesClientNewListResourceUsagePager.More() {
 		_, err := profilesClientNewListResourceUsagePager.NextPage(testsuite.ctx)
@@ -205,6 +216,7 @@ func (testsuite *CdnTestSuite) TestProfiles() {
 	}
 
 	// From step Profiles_ListSupportedOptimizationTypes
+	fmt.Println("Call operation: Profiles_ListSupportedOptimizationTypes")
 	_, err = profilesClient.ListSupportedOptimizationTypes(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, nil)
 	testsuite.Require().NoError(err)
 }
@@ -213,6 +225,7 @@ func (testsuite *CdnTestSuite) TestProfiles() {
 func (testsuite *CdnTestSuite) TestEndpoints() {
 	var err error
 	// From step Endpoints_ListByProfile
+	fmt.Println("Call operation: Endpoints_ListByProfile")
 	endpointsClient, err := armcdn.NewEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	endpointsClientNewListByProfilePager := endpointsClient.NewListByProfilePager(testsuite.resourceGroupName, testsuite.profileName, nil)
@@ -223,10 +236,12 @@ func (testsuite *CdnTestSuite) TestEndpoints() {
 	}
 
 	// From step Endpoints_Get
+	fmt.Println("Call operation: Endpoints_Get")
 	_, err = endpointsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Endpoints_ListResourceUsage
+	fmt.Println("Call operation: Endpoints_ListResourceUsage")
 	endpointsClientNewListResourceUsagePager := endpointsClient.NewListResourceUsagePager(testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
 	for endpointsClientNewListResourceUsagePager.More() {
 		_, err := endpointsClientNewListResourceUsagePager.NextPage(testsuite.ctx)
@@ -235,12 +250,14 @@ func (testsuite *CdnTestSuite) TestEndpoints() {
 	}
 
 	// From step Endpoints_ValidateCustomDomain
+	fmt.Println("Call operation: Endpoints_ValidateCustomDomain")
 	_, err = endpointsClient.ValidateCustomDomain(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, armcdn.ValidateCustomDomainInput{
 		HostName: to.Ptr("www.someDomain.com"),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Endpoints_PurgeContent
+	fmt.Println("Call operation: Endpoints_PurgeContent")
 	endpointsClientPurgeContentResponsePoller, err := endpointsClient.BeginPurgeContent(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, armcdn.PurgeParameters{
 		ContentPaths: []*string{
 			to.Ptr("/folder1")},
@@ -250,12 +267,14 @@ func (testsuite *CdnTestSuite) TestEndpoints() {
 	testsuite.Require().NoError(err)
 
 	// From step Endpoints_Stop
+	fmt.Println("Call operation: Endpoints_Stop")
 	endpointsClientStopResponsePoller, err := endpointsClient.BeginStop(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, endpointsClientStopResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step Endpoints_Start
+	fmt.Println("Call operation: Endpoints_Start")
 	endpointsClientStartResponsePoller, err := endpointsClient.BeginStart(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, endpointsClientStartResponsePoller)
@@ -266,6 +285,7 @@ func (testsuite *CdnTestSuite) TestEndpoints() {
 func (testsuite *CdnTestSuite) TestOrigins() {
 	var err error
 	// From step Origins_ListByEndpoint
+	fmt.Println("Call operation: Origins_ListByEndpoint")
 	originsClient, err := armcdn.NewOriginsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	originsClientNewListByEndpointPager := originsClient.NewListByEndpointPager(testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
@@ -276,10 +296,12 @@ func (testsuite *CdnTestSuite) TestOrigins() {
 	}
 
 	// From step Origins_Get
+	fmt.Println("Call operation: Origins_Get")
 	_, err = originsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.originName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Origins_Update
+	fmt.Println("Call operation: Origins_Update")
 	originsClientUpdateResponsePoller, err := originsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.originName, armcdn.OriginUpdateParameters{
 		Properties: &armcdn.OriginUpdatePropertiesParameters{
 			Enabled:          to.Ptr(true),
@@ -295,6 +317,7 @@ func (testsuite *CdnTestSuite) TestOrigins() {
 	testsuite.Require().NoError(err)
 
 	// From step Origins_Delete
+	fmt.Println("Call operation: Origins_Delete")
 	originsClientDeleteResponsePoller, err := originsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.originName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, originsClientDeleteResponsePoller)
@@ -305,6 +328,7 @@ func (testsuite *CdnTestSuite) TestOrigins() {
 func (testsuite *CdnTestSuite) TestOriginGroups() {
 	var err error
 	// From step OriginGroups_ListByEndpoint
+	fmt.Println("Call operation: OriginGroups_ListByEndpoint")
 	originGroupsClient, err := armcdn.NewOriginGroupsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	originGroupsClientNewListByEndpointPager := originGroupsClient.NewListByEndpointPager(testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
@@ -315,10 +339,12 @@ func (testsuite *CdnTestSuite) TestOriginGroups() {
 	}
 
 	// From step OriginGroups_Get
+	fmt.Println("Call operation: OriginGroups_Get")
 	_, err = originGroupsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.originGroupName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step OriginGroups_Update
+	fmt.Println("Call operation: OriginGroups_Update")
 	originGroupsClientUpdateResponsePoller, err := originGroupsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, testsuite.originGroupName, armcdn.OriginGroupUpdateParameters{
 		Properties: &armcdn.OriginGroupUpdatePropertiesParameters{
 			HealthProbeSettings: &armcdn.HealthProbeParameters{
@@ -338,6 +364,7 @@ func (testsuite *CdnTestSuite) TestOriginGroups() {
 func (testsuite *CdnTestSuite) TestCheckNameAvailabilityWithSubscription() {
 	var err error
 	// From step CheckNameAvailability
+	fmt.Println("Call operation: CheckNameAvailability")
 	managementClient, err := armcdn.NewManagementClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = managementClient.CheckNameAvailability(testsuite.ctx, armcdn.CheckNameAvailabilityInput{
@@ -347,6 +374,7 @@ func (testsuite *CdnTestSuite) TestCheckNameAvailabilityWithSubscription() {
 	testsuite.Require().NoError(err)
 
 	// From step CheckNameAvailabilityWithSubscription
+	fmt.Println("Call operation: CheckNameAvailabilityWithSubscription")
 	_, err = managementClient.CheckNameAvailabilityWithSubscription(testsuite.ctx, armcdn.CheckNameAvailabilityInput{
 		Name: to.Ptr("sampleName"),
 		Type: to.Ptr(armcdn.ResourceTypeMicrosoftCdnProfilesEndpoints),
@@ -358,6 +386,7 @@ func (testsuite *CdnTestSuite) TestCheckNameAvailabilityWithSubscription() {
 func (testsuite *CdnTestSuite) TestValidateProbe() {
 	var err error
 	// From step ValidateProbe
+	fmt.Println("Call operation: ValidateProbe")
 	managementClient, err := armcdn.NewManagementClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = managementClient.ValidateProbe(testsuite.ctx, armcdn.ValidateProbeInput{
@@ -370,6 +399,7 @@ func (testsuite *CdnTestSuite) TestValidateProbe() {
 func (testsuite *CdnTestSuite) TestResourceUsage() {
 	var err error
 	// From step ResourceUsage_List
+	fmt.Println("Call operation: ResourceUsage_List")
 	resourceUsageClient, err := armcdn.NewResourceUsageClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	resourceUsageClientNewListPager := resourceUsageClient.NewListPager(nil)
@@ -384,6 +414,7 @@ func (testsuite *CdnTestSuite) TestResourceUsage() {
 func (testsuite *CdnTestSuite) TestOperations() {
 	var err error
 	// From step Operations_List
+	fmt.Println("Call operation: Operations_List")
 	operationsClient, err := armcdn.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	operationsClientNewListPager := operationsClient.NewListPager(nil)
@@ -398,6 +429,7 @@ func (testsuite *CdnTestSuite) TestOperations() {
 func (testsuite *CdnTestSuite) TestEdgeNodes() {
 	var err error
 	// From step EdgeNodes_List
+	fmt.Println("Call operation: EdgeNodes_List")
 	edgeNodesClient, err := armcdn.NewEdgeNodesClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	edgeNodesClientNewListPager := edgeNodesClient.NewListPager(nil)
@@ -412,6 +444,7 @@ func (testsuite *CdnTestSuite) TestEdgeNodes() {
 func (testsuite *CdnTestSuite) TestManagedRuleSets() {
 	var err error
 	// From step ManagedRuleSets_List
+	fmt.Println("Call operation: ManagedRuleSets_List")
 	managedRuleSetsClient, err := armcdn.NewManagedRuleSetsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	managedRuleSetsClientNewListPager := managedRuleSetsClient.NewListPager(nil)
@@ -425,6 +458,7 @@ func (testsuite *CdnTestSuite) TestManagedRuleSets() {
 func (testsuite *CdnTestSuite) Cleanup() {
 	var err error
 	// From step Endpoints_Delete
+	fmt.Println("Call operation: Endpoints_Delete")
 	endpointsClient, err := armcdn.NewEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	endpointsClientDeleteResponsePoller, err := endpointsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, testsuite.endpointName, nil)
@@ -433,6 +467,7 @@ func (testsuite *CdnTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step Profiles_Delete
+	fmt.Println("Call operation: Endpoints_Delete")
 	profilesClient, err := armcdn.NewProfilesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	profilesClientDeleteResponsePoller, err := profilesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.profileName, nil)

@@ -4,6 +4,7 @@
 package internal
 
 import (
+	"context"
 	"errors"
 	"testing"
 
@@ -31,4 +32,11 @@ func TestOwnershipLost(t *testing.T) {
 	require.False(t, IsOwnershipLostError(&amqp.DetachError{}))
 	require.False(t, IsOwnershipLostError(&amqp.ConnectionError{}))
 	require.False(t, IsOwnershipLostError(errors.New("definitely not an ownership lost error")))
+}
+
+func TestGetRecoveryKind(t *testing.T) {
+	require.Equal(t, GetRecoveryKind(nil), RecoveryKindNone)
+	require.Equal(t, GetRecoveryKind(errConnResetNeeded), RecoveryKindConn)
+	require.Equal(t, GetRecoveryKind(&amqp.DetachError{}), RecoveryKindLink)
+	require.Equal(t, GetRecoveryKind(context.Canceled), RecoveryKindFatal)
 }

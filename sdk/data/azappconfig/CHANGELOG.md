@@ -3,6 +3,7 @@
 ## 0.5.1 (Unreleased)
 
 ### Features Added
+* Handle setting content type in `AddSetting` and `SetSetting` ([#19797](https://github.com/Azure/azure-sdk-for-go/issues/19797))
 
 ### Breaking Changes
 

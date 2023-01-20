@@ -217,15 +217,12 @@ func (c *Client) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions)
 
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
-func (c *Client) SetAccessPolicy(ctx context.Context, containerACL []*SignedIdentifier, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
-	accessPolicy, mac, lac := o.format()
-	for _, c := range containerACL {
-		err := formatTime(c)
-		if err != nil {
-			return SetAccessPolicyResponse{}, err
-		}
+func (c *Client) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
+	accessPolicy, mac, lac, acl, err := o.format()
+	if err != nil {
+		return SetAccessPolicyResponse{}, err
 	}
-	resp, err := c.generated().SetAccessPolicy(ctx, containerACL, accessPolicy, mac, lac)
+	resp, err := c.generated().SetAccessPolicy(ctx, acl, accessPolicy, mac, lac)
 	return resp, err
 }
 
@@ -309,23 +306,22 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time, expiry time.Time) (string, error) {
+func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if c.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
-
+	st := o.format()
 	urlParts, err := blob.ParseURL(c.URL())
 	if err != nil {
 		return "", err
 	}
-
 	// Containers do not have snapshots, nor versions.
 	qps, err := sas.BlobSignatureValues{
 		Version:       sas.Version,
 		Protocol:      sas.ProtocolHTTPS,
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
-		StartTime:     start.UTC(),
+		StartTime:     st,
 		ExpiryTime:    expiry.UTC(),
 	}.SignWithSharedKey(c.sharedKey())
 	if err != nil {

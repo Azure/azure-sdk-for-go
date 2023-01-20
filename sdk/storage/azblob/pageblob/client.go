@@ -150,14 +150,18 @@ func (pb *Client) Create(ctx context.Context, size int64, o *CreateOptions) (Cre
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
-func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, options *UploadPagesOptions) (UploadPagesResponse, error) {
+func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, contentRange blob.HTTPRange, options *UploadPagesOptions) (UploadPagesResponse, error) {
 	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
 
 	if err != nil {
 		return UploadPagesResponse{}, err
 	}
 
-	uploadPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()
+	uploadPagesOptions := &generated.PageBlobClientUploadPagesOptions{
+		Range: exported.FormatHTTPRange(contentRange),
+	}
+
+	leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()
 
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, uploadPagesOptions)
@@ -367,7 +371,7 @@ func (pb *Client) SetHTTPHeaders(ctx context.Context, HTTPHeaders blob.HTTPHeade
 
 // SetMetadata changes a blob's metadata.
 // https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata.
-func (pb *Client) SetMetadata(ctx context.Context, metadata map[string]string, o *blob.SetMetadataOptions) (blob.SetMetadataResponse, error) {
+func (pb *Client) SetMetadata(ctx context.Context, metadata map[string]*string, o *blob.SetMetadataOptions) (blob.SetMetadataResponse, error) {
 	return pb.BlobClient().SetMetadata(ctx, metadata, o)
 }
 

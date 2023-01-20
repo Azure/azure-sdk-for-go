@@ -5,6 +5,7 @@ package tests
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -380,4 +381,24 @@ func enableVerboseLogging() {
 	azlog.SetListener(func(e azlog.Event, s string) {
 		log.Printf("[%s] %s", e, s)
 	})
+}
+
+func addSleepAfterFlag(fs *flag.FlagSet) func() {
+	var durationStr string
+	fs.StringVar(&durationStr, "sleepAfter", "0m", "Time to sleep after test completes")
+
+	return func() {
+		sleepAfter, err := time.ParseDuration(durationStr)
+
+		if err != nil {
+			log.Printf("Invalid sleepAfter duration given: %s", sleepAfter)
+			return
+		}
+
+		if sleepAfter > 0 {
+			log.Printf("Sleeping for %s", sleepAfter)
+			time.Sleep(sleepAfter)
+			log.Printf("Done sleeping for %s", sleepAfter)
+		}
+	}
 }

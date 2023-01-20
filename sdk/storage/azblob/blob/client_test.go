@@ -243,16 +243,15 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyMetadata() {
 	anotherBlobName := "copy" + blobName
 	copyBlobClient := testcommon.GetBlockBlobClient(anotherBlobName, containerClient)
 
-	var metadata = map[string]string{"Bla": "foo"}
 	resp, err := copyBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &blob.StartCopyFromURLOptions{
-		Metadata: metadata,
+		Metadata: testcommon.BasicMetadata,
 	})
 	_require.Nil(err)
 	waitForCopy(_require, copyBlobClient, resp)
 
 	resp2, err := copyBlobClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
-	_require.EqualValues(resp2.Metadata, metadata)
+	_require.EqualValues(resp2.Metadata, testcommon.BasicMetadata)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyMetadataNil() {
@@ -305,7 +304,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyMetadataEmpty() {
 	_, err = copyBlobClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"))), nil)
 	_require.Nil(err)
 
-	metadata := make(map[string]string)
+	metadata := make(map[string]*string)
 	options := blob.StartCopyFromURLOptions{
 		Metadata: metadata,
 	}
@@ -335,8 +334,8 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyMetadataInvalidField() {
 	anotherBlobName := "copy" + testcommon.GenerateBlobName(testName)
 	copyBlobClient := testcommon.GetBlockBlobClient(anotherBlobName, containerClient)
 
-	metadata := make(map[string]string)
-	metadata["I nvalid."] = "foo"
+	metadata := make(map[string]*string)
+	metadata["I nvalid."] = to.Ptr("foo")
 	options := blob.StartCopyFromURLOptions{
 		Metadata: metadata,
 	}
@@ -382,7 +381,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, nil)
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
@@ -488,7 +487,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASDest() {
 		_require.Nil(err)
 
 		containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+strconv.Itoa(i), svcClient)
-		_, err := containerClient.SetAccessPolicy(context.Background(), nil, nil)
+		_, err := containerClient.SetAccessPolicy(context.Background(), nil)
 		_require.Nil(err)
 
 		blobClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
@@ -924,8 +923,8 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfMatchFalse() {
 			},
 		},
 	}
-	metadata := make(map[string]string)
-	metadata["bla"] = "bla"
+	metadata := make(map[string]*string)
+	metadata["bla"] = to.Ptr("bla")
 	_, err = destBlobClient.SetMetadata(context.Background(), metadata, nil)
 	_require.Nil(err)
 
@@ -1023,7 +1022,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions) // So that we don't have to create a SAS
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions) // So that we don't have to create a SAS
 	_require.Nil(err)
 
 	// Must copy across accounts so it takes time to copy
@@ -1167,7 +1166,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSnapshotMetadataInvalid() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	createBlobSnapshotOptions := blob.CreateSnapshotOptions{
-		Metadata: map[string]string{"Invalid Field!": "value"},
+		Metadata: map[string]*string{"Invalid Field!": to.Ptr("value")},
 	}
 	_, err = bbClient.CreateSnapshot(context.Background(), &createBlobSnapshotOptions)
 	_require.NotNil(err)
@@ -2729,7 +2728,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataNil() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{"not": "nil"}, nil)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{"not": to.Ptr("nil")}, nil)
 	_require.Nil(err)
 
 	_, err = bbClient.SetMetadata(context.Background(), nil, nil)
@@ -2753,10 +2752,10 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataEmpty() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{"not": "nil"}, nil)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{"not": to.Ptr("nil")}, nil)
 	_require.Nil(err)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{}, nil)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{}, nil)
 	_require.Nil(err)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
@@ -2777,7 +2776,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataInvalidField() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{"Invalid field!": "value"}, nil)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{"Invalid field!": to.Ptr("value")}, nil)
 	_require.NotNil(err)
 	_require.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring)
 	//_require.Equal(strings.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring), true)

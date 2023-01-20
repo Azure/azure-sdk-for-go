@@ -59,7 +59,7 @@ func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azc
 // GetOSFamily - Gets properties of a guest operating system family that can be specified in the XML service configuration
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // location - Name of the location that the OS family pertains to.
 // osFamilyName - Name of the OS family.
 // options - CloudServiceOperatingSystemsClientGetOSFamilyOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSFamily
@@ -99,7 +99,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,7 +117,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyHandleResponse(resp
 // GetOSVersion - Gets properties of a guest operating system version that can be specified in the XML service configuration
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // location - Name of the location that the OS version pertains to.
 // osVersionName - Name of the OS version.
 // options - CloudServiceOperatingSystemsClientGetOSVersionOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSVersion
@@ -157,7 +157,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -175,7 +175,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(res
 // NewListOSFamiliesPager - Gets a list of all guest operating system families available to be specified in the XML service
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS Families. Do this till nextLink is null to fetch all the OS Families.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // location - Name of the location that the OS families pertain to.
 // options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSFamilies
 // method.
@@ -223,7 +223,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(r
 // NewListOSVersionsPager - Gets a list of all guest operating system versions available to be specified in the XML service
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS versions. Do this till nextLink is null to fetch all the OS versions.
-// Generated from API version 2022-04-04
+// Generated from API version 2022-09-04
 // location - Name of the location that the OS versions pertain to.
 // options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSVersions
 // method.
@@ -289,7 +289,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSVersionsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

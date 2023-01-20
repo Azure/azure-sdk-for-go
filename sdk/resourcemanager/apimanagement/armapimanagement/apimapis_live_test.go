@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -83,6 +84,7 @@ func TestApimapisTestSuite(t *testing.T) {
 func (testsuite *ApimapisTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -105,6 +107,7 @@ func (testsuite *ApimapisTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Api_CreateOrUpdate
+	fmt.Println("Call operation: Api_CreateOrUpdate")
 	aPIClient, err := armapimanagement.NewAPIClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aPIClientCreateOrUpdateResponsePoller, err := aPIClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.APICreateOrUpdateParameter{
@@ -119,6 +122,7 @@ func (testsuite *ApimapisTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiOperation_CreateOrUpdate
+	fmt.Println("Call operation: ApiOperation_CreateOrUpdate")
 	aPIOperationClient, err := armapimanagement.NewAPIOperationClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIOperationClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, armapimanagement.OperationContract{
@@ -141,12 +145,14 @@ func (testsuite *ApimapisTestSuite) Prepare() {
 func (testsuite *ApimapisTestSuite) TestApi() {
 	var err error
 	// From step Api_GetEntityTag
+	fmt.Println("Call operation: Api_GetEntityTag")
 	aPIClient, err := armapimanagement.NewAPIClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Api_ListByService
+	fmt.Println("Call operation: Api_ListByService")
 	aPIClientNewListByServicePager := aPIClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.APIClientListByServiceOptions{Filter: nil,
 		Top:                 nil,
 		Skip:                nil,
@@ -160,6 +166,7 @@ func (testsuite *ApimapisTestSuite) TestApi() {
 	}
 
 	// From step Api_ListByTags
+	fmt.Println("Call operation: Api_ListByTags")
 	aPIClientNewListByTagsPager := aPIClient.NewListByTagsPager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.APIClientListByTagsOptions{Filter: nil,
 		Top:                  nil,
 		Skip:                 nil,
@@ -172,10 +179,12 @@ func (testsuite *ApimapisTestSuite) TestApi() {
 	}
 
 	// From step Api_Get
+	fmt.Println("Call operation: Api_Get")
 	_, err = aPIClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Api_Update
+	fmt.Println("Call operation: Api_Update")
 	_, err = aPIClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, "*", armapimanagement.APIUpdateContract{
 		Properties: &armapimanagement.APIContractUpdateProperties{
 			Path:        to.Ptr("newecho"),
@@ -190,6 +199,7 @@ func (testsuite *ApimapisTestSuite) TestApi() {
 func (testsuite *ApimapisTestSuite) TestTag() {
 	var err error
 	// From step Tag_CreateOrUpdate
+	fmt.Println("Call operation: Tag_CreateOrUpdate")
 	tagClient, err := armapimanagement.NewTagClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = tagClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagId, armapimanagement.TagCreateUpdateParameters{
@@ -200,18 +210,22 @@ func (testsuite *ApimapisTestSuite) TestTag() {
 	testsuite.Require().NoError(err)
 
 	// From step Tag_AssignToApi
+	fmt.Println("Call operation: Tag_AssignToApi")
 	_, err = tagClient.AssignToAPI(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.tagId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_GetEntityStateByApi
+	fmt.Println("Call operation: Tag_GetEntityStateByApi")
 	_, err = tagClient.GetEntityStateByAPI(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.tagId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_GetByApi
+	fmt.Println("Call operation: Tag_GetByApi")
 	_, err = tagClient.GetByAPI(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.tagId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_Delete
+	fmt.Println("Call operation: Tag_Delete")
 	_, err = tagClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagId, "*", nil)
 	testsuite.Require().NoError(err)
 }
@@ -220,6 +234,7 @@ func (testsuite *ApimapisTestSuite) TestTag() {
 func (testsuite *ApimapisTestSuite) TestApirelease() {
 	var err error
 	// From step ApiRelease_CreateOrUpdate
+	fmt.Println("Call operation: ApiRelease_CreateOrUpdate")
 	aPIReleaseClient, err := armapimanagement.NewAPIReleaseClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIReleaseClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.releaseId, armapimanagement.APIReleaseContract{
@@ -231,10 +246,12 @@ func (testsuite *ApimapisTestSuite) TestApirelease() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiRelease_GetEntityTag
+	fmt.Println("Call operation: ApiRelease_GetEntityTag")
 	_, err = aPIReleaseClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.releaseId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiRelease_ListByService
+	fmt.Println("Call operation: ApiRelease_ListByService")
 	aPIReleaseClientNewListByServicePager := aPIReleaseClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, &armapimanagement.APIReleaseClientListByServiceOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -246,10 +263,12 @@ func (testsuite *ApimapisTestSuite) TestApirelease() {
 	}
 
 	// From step ApiRelease_Get
+	fmt.Println("Call operation: ApiRelease_Get")
 	_, err = aPIReleaseClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.releaseId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiRelease_Update
+	fmt.Println("Call operation: ApiRelease_Update")
 	_, err = aPIReleaseClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.releaseId, "*", armapimanagement.APIReleaseContract{
 		Properties: &armapimanagement.APIReleaseContractProperties{
 			APIID: to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.ApiManagement/service/" + testsuite.serviceName + "/apis/" + testsuite.apiId),
@@ -259,6 +278,7 @@ func (testsuite *ApimapisTestSuite) TestApirelease() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiRelease_Delete
+	fmt.Println("Call operation: ApiRelease_Delete")
 	_, err = aPIReleaseClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.releaseId, "*", nil)
 	testsuite.Require().NoError(err)
 }
@@ -267,6 +287,7 @@ func (testsuite *ApimapisTestSuite) TestApirelease() {
 func (testsuite *ApimapisTestSuite) TestApipolicy() {
 	var err error
 	// From step ApiPolicy_CreateOrUpdate
+	fmt.Println("Call operation: ApiPolicy_CreateOrUpdate")
 	aPIPolicyClient, err := armapimanagement.NewAPIPolicyClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIPolicyClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
@@ -278,18 +299,22 @@ func (testsuite *ApimapisTestSuite) TestApipolicy() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiPolicy_GetEntityTag
+	fmt.Println("Call operation: ApiPolicy_GetEntityTag")
 	_, err = aPIPolicyClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.PolicyIDNamePolicy, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiPolicy_ListByApi
+	fmt.Println("Call operation: ApiPolicy_ListByApi")
 	_, err = aPIPolicyClient.ListByAPI(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiPolicy_Get
+	fmt.Println("Call operation: ApiPolicy_Get")
 	_, err = aPIPolicyClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.PolicyIDNamePolicy, &armapimanagement.APIPolicyClientGetOptions{Format: nil})
 	testsuite.Require().NoError(err)
 
 	// From step ApiPolicy_Delete
+	fmt.Println("Call operation: ApiPolicy_Delete")
 	_, err = aPIPolicyClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.PolicyIDNamePolicy, "*", nil)
 	testsuite.Require().NoError(err)
 }
@@ -298,6 +323,7 @@ func (testsuite *ApimapisTestSuite) TestApipolicy() {
 func (testsuite *ApimapisTestSuite) TestApischema() {
 	var err error
 	// From step ApiSchema_CreateOrUpdate
+	fmt.Println("Call operation: ApiSchema_CreateOrUpdate")
 	aPISchemaClient, err := armapimanagement.NewAPISchemaClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	aPISchemaClientCreateOrUpdateResponsePoller, err := aPISchemaClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.schemaId, armapimanagement.SchemaContract{
@@ -313,10 +339,12 @@ func (testsuite *ApimapisTestSuite) TestApischema() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiSchema_GetEntityTag
+	fmt.Println("Call operation: ApiSchema_GetEntityTag")
 	_, err = aPISchemaClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.schemaId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiSchema_ListByApi
+	fmt.Println("Call operation: ApiSchema_ListByApi")
 	aPISchemaClientNewListByAPIPager := aPISchemaClient.NewListByAPIPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, &armapimanagement.APISchemaClientListByAPIOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -328,10 +356,12 @@ func (testsuite *ApimapisTestSuite) TestApischema() {
 	}
 
 	// From step ApiSchema_Get
+	fmt.Println("Call operation: ApiSchema_Get")
 	_, err = aPISchemaClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.schemaId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiSchema_Delete
+	fmt.Println("Call operation: ApiSchema_Delete")
 	_, err = aPISchemaClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.schemaId, "*", &armapimanagement.APISchemaClientDeleteOptions{Force: nil})
 	testsuite.Require().NoError(err)
 }
@@ -340,12 +370,14 @@ func (testsuite *ApimapisTestSuite) TestApischema() {
 func (testsuite *ApimapisTestSuite) TestApioperation() {
 	var err error
 	// From step ApiOperation_GetEntityTag
+	fmt.Println("Call operation: ApiOperation_GetEntityTag")
 	aPIOperationClient, err := armapimanagement.NewAPIOperationClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIOperationClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiOperation_ListByApi
+	fmt.Println("Call operation: ApiOperation_ListByApi")
 	aPIOperationClientNewListByAPIPager := aPIOperationClient.NewListByAPIPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, &armapimanagement.APIOperationClientListByAPIOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -358,10 +390,12 @@ func (testsuite *ApimapisTestSuite) TestApioperation() {
 	}
 
 	// From step ApiOperation_Get
+	fmt.Println("Call operation: ApiOperation_Get")
 	_, err = aPIOperationClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiOperation_Update
+	fmt.Println("Call operation: ApiOperation_Update")
 	_, err = aPIOperationClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, "*", armapimanagement.OperationUpdateContract{
 		Properties: &armapimanagement.OperationUpdateContractProperties{
 			Description: to.Ptr("update description"),
@@ -374,6 +408,7 @@ func (testsuite *ApimapisTestSuite) TestApioperation() {
 func (testsuite *ApimapisTestSuite) TestOperationstag() {
 	var err error
 	// From step Tag_CreateOrUpdate
+	fmt.Println("Call operation: Tag_CreateOrUpdate")
 	tagClient, err := armapimanagement.NewTagClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = tagClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagOperationId, armapimanagement.TagCreateUpdateParameters{
@@ -384,18 +419,22 @@ func (testsuite *ApimapisTestSuite) TestOperationstag() {
 	testsuite.Require().NoError(err)
 
 	// From step Tag_AssignToOperation
+	fmt.Println("Call operation: Tag_AssignToOperation")
 	_, err = tagClient.AssignToOperation(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, testsuite.tagOperationId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_GetEntityStateByOperation
+	fmt.Println("Call operation: Tag_GetEntityStateByOperation")
 	_, err = tagClient.GetEntityStateByOperation(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, testsuite.tagOperationId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_GetByOperation
+	fmt.Println("Call operation: Tag_GetByOperation")
 	_, err = tagClient.GetByOperation(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, testsuite.tagOperationId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tag_Delete
+	fmt.Println("Call operation: Tag_Delete")
 	_, err = tagClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.tagOperationId, "*", nil)
 	testsuite.Require().NoError(err)
 }
@@ -404,6 +443,7 @@ func (testsuite *ApimapisTestSuite) TestOperationstag() {
 func (testsuite *ApimapisTestSuite) TestApioperationpolicy() {
 	var err error
 	// From step ApiOperationPolicy_CreateOrUpdate
+	fmt.Println("Call operation: ApiOperationPolicy_CreateOrUpdate")
 	aPIOperationPolicyClient, err := armapimanagement.NewAPIOperationPolicyClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIOperationPolicyClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
@@ -415,18 +455,22 @@ func (testsuite *ApimapisTestSuite) TestApioperationpolicy() {
 	testsuite.Require().NoError(err)
 
 	// From step ApiOperationPolicy_GetEntityTag
+	fmt.Println("Call operation: ApiOperationPolicy_GetEntityTag")
 	_, err = aPIOperationPolicyClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, armapimanagement.PolicyIDNamePolicy, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiOperationPolicy_ListByOperation
+	fmt.Println("Call operation: ApiOperationPolicy_ListByOperation")
 	_, err = aPIOperationPolicyClient.ListByOperation(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ApiOperationPolicy_Get
+	fmt.Println("Call operation: ApiOperationPolicy_Get")
 	_, err = aPIOperationPolicyClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, armapimanagement.PolicyIDNamePolicy, &armapimanagement.APIOperationPolicyClientGetOptions{Format: nil})
 	testsuite.Require().NoError(err)
 
 	// From step ApiOperationPolicy_Delete
+	fmt.Println("Call operation: ApiOperationPolicy_Delete")
 	_, err = aPIOperationPolicyClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, armapimanagement.PolicyIDNamePolicy, "*", nil)
 	testsuite.Require().NoError(err)
 }
@@ -434,12 +478,14 @@ func (testsuite *ApimapisTestSuite) TestApioperationpolicy() {
 func (testsuite *ApimapisTestSuite) Cleanup() {
 	var err error
 	// From step ApiOperation_Delete
+	fmt.Println("Call operation: ApiOperation_Delete")
 	aPIOperationClient, err := armapimanagement.NewAPIOperationClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIOperationClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, "*", nil)
 	testsuite.Require().NoError(err)
 
 	// From step Api_Delete
+	fmt.Println("Call operation: Api_Delete")
 	aPIClient, err := armapimanagement.NewAPIClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, "*", &armapimanagement.APIClientDeleteOptions{DeleteRevisions: nil})

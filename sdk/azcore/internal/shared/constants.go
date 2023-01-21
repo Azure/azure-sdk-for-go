@@ -21,6 +21,8 @@ const (
 	HeaderOperationLocation      = "Operation-Location"
 	HeaderRetryAfter             = "Retry-After"
 	HeaderUserAgent              = "User-Agent"
+	HeaderXMSClientRequestID     = "x-ms-client-request-id"
+	HeaderXMSRequestID           = "x-ms-request-id"
 )
 
 const BearerTokenPrefix = "Bearer "

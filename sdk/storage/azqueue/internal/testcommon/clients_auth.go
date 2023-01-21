@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
 	"github.com/stretchr/testify/require"
@@ -40,7 +41,7 @@ const (
 	FakeStorageURL     = "https://fakestorage.queue.core.windows.net"
 )
 
-var BasicMetadata = map[string]string{"Foo": "bar"}
+var BasicMetadata = map[string]*string{"Foo": to.Ptr("bar")}
 
 func setClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Logging.AllowedHeaders = append(opts.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
@@ -124,4 +125,7 @@ func CreateNewQueue(ctx context.Context, _require *require.Assertions, queueName
 	return queueClient
 }
 
-// TODO: DeleteQueue()
+func DeleteQueue(ctx context.Context, _require *require.Assertions, queueClient *azqueue.QueueClient) {
+	_, err := queueClient.Delete(ctx, nil)
+	_require.Nil(err)
+}

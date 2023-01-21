@@ -149,6 +149,9 @@ type CreateOptions struct {
 }
 
 func (o *CreateOptions) format() *generated.QueueClientCreateOptions {
+	if o == nil {
+		return nil
+	}
 	return &generated.QueueClientCreateOptions{Metadata: o.Metadata}
 }
 

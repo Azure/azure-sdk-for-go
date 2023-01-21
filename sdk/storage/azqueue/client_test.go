@@ -8,6 +8,7 @@ package azqueue_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
@@ -54,11 +55,6 @@ type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
-//TODO: TestListQueues
-//TODO: TestCreateQueue
-//TODO: TestDeleteQueue
-//TODO: TestSAS...
-
 func (s *UnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	//testName := s.T().Name()
@@ -91,3 +87,111 @@ func (s *RecordedTestSuite) TestGetProperties() {
 	_require.Nil(err)
 	_require.NotZero(sProps)
 }
+
+func (s *RecordedTestSuite) TestCreateQueue() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := svcClient.NewQueueClient(queueName)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	resp, err := svcClient.CreateQueue(context.Background(), queueName, nil)
+	_require.Nil(err)
+	_require.NotZero(resp)
+}
+
+func (s *RecordedTestSuite) TestCreateQueueWithMetadata() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := svcClient.NewQueueClient(queueName)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+	opts := azqueue.CreateOptions{Metadata: testcommon.BasicMetadata}
+
+	resp, err := svcClient.CreateQueue(context.Background(), queueName, &opts)
+	_require.Nil(err)
+	_require.NotZero(resp)
+}
+
+func (s *RecordedTestSuite) TestDeleteQueue() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	createResp, err := svcClient.CreateQueue(context.Background(), queueName, nil)
+	_require.Nil(err)
+	_require.NotZero(createResp)
+
+	delResp, err := svcClient.DeleteQueue(context.Background(), queueName, nil)
+	_require.Nil(err)
+	_require.NotZero(delResp)
+}
+
+func (s *RecordedTestSuite) TestListQueuesWithMetadata() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+	md := map[string]*string{
+		"foo": to.Ptr("foovalue"),
+		"bar": to.Ptr("barvalue"),
+	}
+
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	_, err = queueClient.Create(context.Background(), &azqueue.CreateOptions{Metadata: md})
+	defer func(queueClient *azqueue.QueueClient, ctx context.Context, options *azqueue.DeleteOptions) {
+		_, err := queueClient.Delete(ctx, options)
+		if err != nil {
+			_require.Nil(err)
+		}
+	}(queueClient, context.Background(), nil)
+	_require.Nil(err)
+	listOptions := azqueue.ListQueuesOptions{Include: azqueue.ListQueuesInclude{Metadata: true}}
+	pager := svcClient.NewListQueuesPager(&listOptions)
+
+	exists := false
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, queue := range resp.QueueItems {
+			_require.NotNil(queue.Name)
+			if *queue.Name == queueName {
+				_require.NotNil(queue.Metadata)
+				unwrappedMeta := map[string]*string{}
+				for k, v := range queue.Metadata {
+					if v != nil {
+						unwrappedMeta[k] = v
+					}
+				}
+				_require.EqualValues(unwrappedMeta, md)
+				exists = true
+			}
+		}
+		if err != nil {
+			break
+		}
+	}
+
+	_require.Nil(err)
+	_require.True(exists)
+}
+
+//func (s *RecordedTestSuite) TestSASCreateQueue() {
+//	_require := require.New(s.T())
+//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//	_require.NoError(err)
+//
+//	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
+//	sProps, err := svcClient.GetProperties(context.Background(), nil)
+//	_require.Nil(err)
+//	_require.NotZero(sProps)
+//}

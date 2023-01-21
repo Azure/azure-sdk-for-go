@@ -23,7 +23,7 @@ import (
 	"time"
 )
 
-// ClientOptions contains the optional parameters when creating a ServiceClient.
+// ClientOptions contains the optional parameters when creating a ServiceClient or QueueClient.
 type ClientOptions struct {
 	azcore.ClientOptions
 }
@@ -180,8 +180,7 @@ func (s *ServiceClient) CreateQueue(ctx context.Context, queueName string, optio
 	queueName = url.PathEscape(queueName)
 	queueURL := runtime.JoinPaths(s.URL(), queueName)
 	qC := (*QueueClient)(base.NewQueueClient(queueURL, s.generated().Pipeline(), s.sharedKey()))
-	resp, err := qC.Create(ctx, options)
-	return resp, err
+	return qC.Create(ctx, options)
 }
 
 // DeleteQueue deletes the specified queue.
@@ -190,8 +189,7 @@ func (s *ServiceClient) DeleteQueue(ctx context.Context, queueName string, optio
 	queueName = url.PathEscape(queueName)
 	queueURL := runtime.JoinPaths(s.URL(), queueName)
 	qC := (*QueueClient)(base.NewQueueClient(queueURL, s.generated().Pipeline(), s.sharedKey()))
-	resp, err := qC.Delete(ctx, options)
-	return resp, err
+	return qC.Delete(ctx, options)
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.

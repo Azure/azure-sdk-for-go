@@ -185,13 +185,46 @@ func (s *RecordedTestSuite) TestListQueuesWithMetadata() {
 	_require.True(exists)
 }
 
-//func (s *RecordedTestSuite) TestSASCreateQueue() {
-//	_require := require.New(s.T())
-//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-//	_require.NoError(err)
-//
-//	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
-//	sProps, err := svcClient.GetProperties(context.Background(), nil)
-//	_require.Nil(err)
-//	_require.NotZero(sProps)
-//}
+func (s *RecordedTestSuite) TestListQueuesPagination() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	queueNames := []string{queueName + "1", queueName + "2", queueName + "3"}
+
+	for i := 0; i < len(queueNames); i++ {
+		_, err := svcClient.CreateQueue(context.Background(), queueNames[i], nil)
+		if err != nil {
+			_require.Nil(err)
+		}
+	}
+	// cleanup created queues
+	defer func(queueNames []string, ctx context.Context, options *azqueue.DeleteOptions) {
+		for i := 0; i < len(queueNames); i++ {
+			_, err := svcClient.DeleteQueue(ctx, queueNames[i], nil)
+			if err != nil {
+				_require.Nil(err)
+			}
+		}
+	}(queueNames, context.Background(), nil)
+	_require.Nil(err)
+	pager := svcClient.NewListQueuesPager(&azqueue.ListQueuesOptions{MaxResults: to.Ptr(int32(1))})
+
+	count := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, queue := range resp.QueueItems {
+			_require.NotNil(queue.Name)
+			count += 1
+		}
+		if err != nil {
+			break
+		}
+	}
+	_require.GreaterOrEqual(count, 3)
+}
+
+//TODO: TestSAS

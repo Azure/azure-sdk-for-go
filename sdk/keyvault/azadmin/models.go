@@ -11,6 +11,12 @@ package azadmin
 
 import "time"
 
+// AccessControlClientCreateOrUpdateRoleDefinitionOptions contains the optional parameters for the AccessControlClient.CreateOrUpdateRoleDefinition
+// method.
+type AccessControlClientCreateOrUpdateRoleDefinitionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AccessControlClientCreateRoleAssignmentOptions contains the optional parameters for the AccessControlClient.CreateRoleAssignment
 // method.
 type AccessControlClientCreateRoleAssignmentOptions struct {
@@ -55,12 +61,6 @@ type AccessControlClientListRoleAssignmentsOptions struct {
 type AccessControlClientListRoleDefinitionsOptions struct {
 	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
 	Filter *string
-}
-
-// AccessControlClientSetRoleDefinitionOptions contains the optional parameters for the AccessControlClient.SetRoleDefinition
-// method.
-type AccessControlClientSetRoleDefinitionOptions struct {
-	// placeholder for future optional parameters
 }
 
 // BackupClientBeginFullBackupOptions contains the optional parameters for the BackupClient.BeginFullBackup method.
@@ -361,7 +361,7 @@ type SettingsClientUpdateSettingOptions struct {
 // SettingsListResult - The settings list result.
 type SettingsListResult struct {
 	// READ-ONLY; A response message containing a list of account settings with their associated value.
-	Value []*Setting `json:"value,omitempty" azure:"ro"`
+	Settings []*Setting `json:"settings,omitempty" azure:"ro"`
 }
 
 // UpdateSettingRequest - The update settings request object.

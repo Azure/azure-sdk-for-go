@@ -9,6 +9,11 @@
 
 package azadmin
 
+// AccessControlClientCreateOrUpdateRoleDefinitionResponse contains the response from method AccessControlClient.CreateOrUpdateRoleDefinition.
+type AccessControlClientCreateOrUpdateRoleDefinitionResponse struct {
+	RoleDefinition
+}
+
 // AccessControlClientCreateRoleAssignmentResponse contains the response from method AccessControlClient.CreateRoleAssignment.
 type AccessControlClientCreateRoleAssignmentResponse struct {
 	RoleAssignment
@@ -42,11 +47,6 @@ type AccessControlClientListRoleAssignmentsResponse struct {
 // AccessControlClientListRoleDefinitionsResponse contains the response from method AccessControlClient.ListRoleDefinitions.
 type AccessControlClientListRoleDefinitionsResponse struct {
 	RoleDefinitionListResult
-}
-
-// AccessControlClientSetRoleDefinitionResponse contains the response from method AccessControlClient.SetRoleDefinition.
-type AccessControlClientSetRoleDefinitionResponse struct {
-	RoleDefinition
 }
 
 // BackupClientFullBackupResponse contains the response from method BackupClient.FullBackup.

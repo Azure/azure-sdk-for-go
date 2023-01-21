@@ -34,7 +34,7 @@ directive:
       to: AccessControl_DeleteRoleAssignment
   - rename-operation:
       from: RoleDefinitions_CreateOrUpdate
-      to: AccessControl_SetRoleDefinition
+      to: AccessControl_CreateOrUpdateRoleDefinition
   - rename-operation:
       from: RoleAssignments_Create
       to: AccessControl_CreateRoleAssignment
@@ -54,10 +54,10 @@ directive:
     # rename setting operations to generate as their own client
   - rename-operation:
       from: GetSetting
-      to: Settings_GetSetting #change to Get?
+      to: Settings_GetSetting
   - rename-operation:
       from: GetSettings
-      to: Settings_GetSettings # change to List?
+      to: Settings_GetSettings
   - rename-operation:
       from: UpdateSetting
       to: Settings_UpdateSetting
@@ -73,5 +73,13 @@ directive:
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewSettingsClient.+\{\s(?:.+\s)+\}\s/, "");
 
+ 
+  # change type of scope parameter from string to RoleScope
+  - from: accesscontrol_client.go
+    where: $
+    transform:  return $.replace(/scope string/g, "scope RoleScope");
+  - from: accesscontrol_client.go
+    where: $
+    transform:  return $.replace(/scope\)/g, "string(scope))");
 
 ```

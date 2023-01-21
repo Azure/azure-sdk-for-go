@@ -750,7 +750,7 @@ func (s *Setting) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SettingsListResult.
 func (s SettingsListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
+	populate(objectMap, "settings", s.Settings)
 	return json.Marshal(objectMap)
 }
 
@@ -763,8 +763,8 @@ func (s *SettingsListResult) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "value":
-			err = unpopulate(val, "Value", &s.Value)
+		case "settings":
+			err = unpopulate(val, "Settings", &s.Settings)
 			delete(rawMsg, key)
 		}
 		if err != nil {

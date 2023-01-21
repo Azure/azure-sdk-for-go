@@ -26,6 +26,57 @@ type AccessControlClient struct {
 	pl       runtime.Pipeline
 }
 
+// CreateOrUpdateRoleDefinition - Creates or updates a custom role definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.4-preview.1
+// scope - The scope of the role definition to create or update. Managed HSM only supports '/'.
+// roleDefinitionName - The name of the role definition to create or update. It can be any valid GUID.
+// parameters - Parameters for the role definition.
+// options - AccessControlClientCreateOrUpdateRoleDefinitionOptions contains the optional parameters for the AccessControlClient.CreateOrUpdateRoleDefinition
+// method.
+func (client *AccessControlClient) CreateOrUpdateRoleDefinition(ctx context.Context, scope RoleScope, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *AccessControlClientCreateOrUpdateRoleDefinitionOptions) (AccessControlClientCreateOrUpdateRoleDefinitionResponse, error) {
+	req, err := client.createOrUpdateRoleDefinitionCreateRequest(ctx, scope, roleDefinitionName, parameters, options)
+	if err != nil {
+		return AccessControlClientCreateOrUpdateRoleDefinitionResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return AccessControlClientCreateOrUpdateRoleDefinitionResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+		return AccessControlClientCreateOrUpdateRoleDefinitionResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.createOrUpdateRoleDefinitionHandleResponse(resp)
+}
+
+// createOrUpdateRoleDefinitionCreateRequest creates the CreateOrUpdateRoleDefinition request.
+func (client *AccessControlClient) createOrUpdateRoleDefinitionCreateRequest(ctx context.Context, scope RoleScope, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *AccessControlClientCreateOrUpdateRoleDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}"
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
+	if roleDefinitionName == "" {
+		return nil, errors.New("parameter roleDefinitionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionName}", url.PathEscape(roleDefinitionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "7.4-preview.1")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
+// createOrUpdateRoleDefinitionHandleResponse handles the CreateOrUpdateRoleDefinition response.
+func (client *AccessControlClient) createOrUpdateRoleDefinitionHandleResponse(resp *http.Response) (AccessControlClientCreateOrUpdateRoleDefinitionResponse, error) {
+	result := AccessControlClientCreateOrUpdateRoleDefinitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
+		return AccessControlClientCreateOrUpdateRoleDefinitionResponse{}, err
+	}
+	return result, nil
+}
+
 // CreateRoleAssignment - Creates a role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.4-preview.1
@@ -34,7 +85,7 @@ type AccessControlClient struct {
 // parameters - Parameters for the role assignment.
 // options - AccessControlClientCreateRoleAssignmentOptions contains the optional parameters for the AccessControlClient.CreateRoleAssignment
 // method.
-func (client *AccessControlClient) CreateRoleAssignment(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *AccessControlClientCreateRoleAssignmentOptions) (AccessControlClientCreateRoleAssignmentResponse, error) {
+func (client *AccessControlClient) CreateRoleAssignment(ctx context.Context, scope RoleScope, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *AccessControlClientCreateRoleAssignmentOptions) (AccessControlClientCreateRoleAssignmentResponse, error) {
 	req, err := client.createRoleAssignmentCreateRequest(ctx, scope, roleAssignmentName, parameters, options)
 	if err != nil {
 		return AccessControlClientCreateRoleAssignmentResponse{}, err
@@ -50,9 +101,9 @@ func (client *AccessControlClient) CreateRoleAssignment(ctx context.Context, sco
 }
 
 // createRoleAssignmentCreateRequest creates the CreateRoleAssignment request.
-func (client *AccessControlClient) createRoleAssignmentCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *AccessControlClientCreateRoleAssignmentOptions) (*policy.Request, error) {
+func (client *AccessControlClient) createRoleAssignmentCreateRequest(ctx context.Context, scope RoleScope, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *AccessControlClientCreateRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleAssignmentName == "" {
 		return nil, errors.New("parameter roleAssignmentName cannot be empty")
 	}
@@ -84,7 +135,7 @@ func (client *AccessControlClient) createRoleAssignmentHandleResponse(resp *http
 // roleAssignmentName - The name of the role assignment to delete.
 // options - AccessControlClientDeleteRoleAssignmentOptions contains the optional parameters for the AccessControlClient.DeleteRoleAssignment
 // method.
-func (client *AccessControlClient) DeleteRoleAssignment(ctx context.Context, scope string, roleAssignmentName string, options *AccessControlClientDeleteRoleAssignmentOptions) (AccessControlClientDeleteRoleAssignmentResponse, error) {
+func (client *AccessControlClient) DeleteRoleAssignment(ctx context.Context, scope RoleScope, roleAssignmentName string, options *AccessControlClientDeleteRoleAssignmentOptions) (AccessControlClientDeleteRoleAssignmentResponse, error) {
 	req, err := client.deleteRoleAssignmentCreateRequest(ctx, scope, roleAssignmentName, options)
 	if err != nil {
 		return AccessControlClientDeleteRoleAssignmentResponse{}, err
@@ -100,9 +151,9 @@ func (client *AccessControlClient) DeleteRoleAssignment(ctx context.Context, sco
 }
 
 // deleteRoleAssignmentCreateRequest creates the DeleteRoleAssignment request.
-func (client *AccessControlClient) deleteRoleAssignmentCreateRequest(ctx context.Context, scope string, roleAssignmentName string, options *AccessControlClientDeleteRoleAssignmentOptions) (*policy.Request, error) {
+func (client *AccessControlClient) deleteRoleAssignmentCreateRequest(ctx context.Context, scope RoleScope, roleAssignmentName string, options *AccessControlClientDeleteRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleAssignmentName == "" {
 		return nil, errors.New("parameter roleAssignmentName cannot be empty")
 	}
@@ -134,7 +185,7 @@ func (client *AccessControlClient) deleteRoleAssignmentHandleResponse(resp *http
 // roleDefinitionName - The name (GUID) of the role definition to delete.
 // options - AccessControlClientDeleteRoleDefinitionOptions contains the optional parameters for the AccessControlClient.DeleteRoleDefinition
 // method.
-func (client *AccessControlClient) DeleteRoleDefinition(ctx context.Context, scope string, roleDefinitionName string, options *AccessControlClientDeleteRoleDefinitionOptions) (AccessControlClientDeleteRoleDefinitionResponse, error) {
+func (client *AccessControlClient) DeleteRoleDefinition(ctx context.Context, scope RoleScope, roleDefinitionName string, options *AccessControlClientDeleteRoleDefinitionOptions) (AccessControlClientDeleteRoleDefinitionResponse, error) {
 	req, err := client.deleteRoleDefinitionCreateRequest(ctx, scope, roleDefinitionName, options)
 	if err != nil {
 		return AccessControlClientDeleteRoleDefinitionResponse{}, err
@@ -150,9 +201,9 @@ func (client *AccessControlClient) DeleteRoleDefinition(ctx context.Context, sco
 }
 
 // deleteRoleDefinitionCreateRequest creates the DeleteRoleDefinition request.
-func (client *AccessControlClient) deleteRoleDefinitionCreateRequest(ctx context.Context, scope string, roleDefinitionName string, options *AccessControlClientDeleteRoleDefinitionOptions) (*policy.Request, error) {
+func (client *AccessControlClient) deleteRoleDefinitionCreateRequest(ctx context.Context, scope RoleScope, roleDefinitionName string, options *AccessControlClientDeleteRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleDefinitionName == "" {
 		return nil, errors.New("parameter roleDefinitionName cannot be empty")
 	}
@@ -184,7 +235,7 @@ func (client *AccessControlClient) deleteRoleDefinitionHandleResponse(resp *http
 // roleAssignmentName - The name of the role assignment to get.
 // options - AccessControlClientGetRoleAssignmentOptions contains the optional parameters for the AccessControlClient.GetRoleAssignment
 // method.
-func (client *AccessControlClient) GetRoleAssignment(ctx context.Context, scope string, roleAssignmentName string, options *AccessControlClientGetRoleAssignmentOptions) (AccessControlClientGetRoleAssignmentResponse, error) {
+func (client *AccessControlClient) GetRoleAssignment(ctx context.Context, scope RoleScope, roleAssignmentName string, options *AccessControlClientGetRoleAssignmentOptions) (AccessControlClientGetRoleAssignmentResponse, error) {
 	req, err := client.getRoleAssignmentCreateRequest(ctx, scope, roleAssignmentName, options)
 	if err != nil {
 		return AccessControlClientGetRoleAssignmentResponse{}, err
@@ -200,9 +251,9 @@ func (client *AccessControlClient) GetRoleAssignment(ctx context.Context, scope 
 }
 
 // getRoleAssignmentCreateRequest creates the GetRoleAssignment request.
-func (client *AccessControlClient) getRoleAssignmentCreateRequest(ctx context.Context, scope string, roleAssignmentName string, options *AccessControlClientGetRoleAssignmentOptions) (*policy.Request, error) {
+func (client *AccessControlClient) getRoleAssignmentCreateRequest(ctx context.Context, scope RoleScope, roleAssignmentName string, options *AccessControlClientGetRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleAssignmentName == "" {
 		return nil, errors.New("parameter roleAssignmentName cannot be empty")
 	}
@@ -234,7 +285,7 @@ func (client *AccessControlClient) getRoleAssignmentHandleResponse(resp *http.Re
 // roleDefinitionName - The name of the role definition to get.
 // options - AccessControlClientGetRoleDefinitionOptions contains the optional parameters for the AccessControlClient.GetRoleDefinition
 // method.
-func (client *AccessControlClient) GetRoleDefinition(ctx context.Context, scope string, roleDefinitionName string, options *AccessControlClientGetRoleDefinitionOptions) (AccessControlClientGetRoleDefinitionResponse, error) {
+func (client *AccessControlClient) GetRoleDefinition(ctx context.Context, scope RoleScope, roleDefinitionName string, options *AccessControlClientGetRoleDefinitionOptions) (AccessControlClientGetRoleDefinitionResponse, error) {
 	req, err := client.getRoleDefinitionCreateRequest(ctx, scope, roleDefinitionName, options)
 	if err != nil {
 		return AccessControlClientGetRoleDefinitionResponse{}, err
@@ -250,9 +301,9 @@ func (client *AccessControlClient) GetRoleDefinition(ctx context.Context, scope 
 }
 
 // getRoleDefinitionCreateRequest creates the GetRoleDefinition request.
-func (client *AccessControlClient) getRoleDefinitionCreateRequest(ctx context.Context, scope string, roleDefinitionName string, options *AccessControlClientGetRoleDefinitionOptions) (*policy.Request, error) {
+func (client *AccessControlClient) getRoleDefinitionCreateRequest(ctx context.Context, scope RoleScope, roleDefinitionName string, options *AccessControlClientGetRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleDefinitionName == "" {
 		return nil, errors.New("parameter roleDefinitionName cannot be empty")
 	}
@@ -282,7 +333,7 @@ func (client *AccessControlClient) getRoleDefinitionHandleResponse(resp *http.Re
 // scope - The scope of the role assignments.
 // options - AccessControlClientListRoleAssignmentsOptions contains the optional parameters for the AccessControlClient.ListRoleAssignments
 // method.
-func (client *AccessControlClient) NewListRoleAssignmentsPager(scope string, options *AccessControlClientListRoleAssignmentsOptions) *runtime.Pager[AccessControlClientListRoleAssignmentsResponse] {
+func (client *AccessControlClient) NewListRoleAssignmentsPager(scope RoleScope, options *AccessControlClientListRoleAssignmentsOptions) *runtime.Pager[AccessControlClientListRoleAssignmentsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccessControlClientListRoleAssignmentsResponse]{
 		More: func(page AccessControlClientListRoleAssignmentsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -311,9 +362,9 @@ func (client *AccessControlClient) NewListRoleAssignmentsPager(scope string, opt
 }
 
 // listRoleAssignmentsCreateRequest creates the ListRoleAssignments request.
-func (client *AccessControlClient) listRoleAssignmentsCreateRequest(ctx context.Context, scope string, options *AccessControlClientListRoleAssignmentsOptions) (*policy.Request, error) {
+func (client *AccessControlClient) listRoleAssignmentsCreateRequest(ctx context.Context, scope RoleScope, options *AccessControlClientListRoleAssignmentsOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -342,7 +393,7 @@ func (client *AccessControlClient) listRoleAssignmentsHandleResponse(resp *http.
 // scope - The scope of the role definition.
 // options - AccessControlClientListRoleDefinitionsOptions contains the optional parameters for the AccessControlClient.ListRoleDefinitions
 // method.
-func (client *AccessControlClient) NewListRoleDefinitionsPager(scope string, options *AccessControlClientListRoleDefinitionsOptions) *runtime.Pager[AccessControlClientListRoleDefinitionsResponse] {
+func (client *AccessControlClient) NewListRoleDefinitionsPager(scope RoleScope, options *AccessControlClientListRoleDefinitionsOptions) *runtime.Pager[AccessControlClientListRoleDefinitionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccessControlClientListRoleDefinitionsResponse]{
 		More: func(page AccessControlClientListRoleDefinitionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -371,9 +422,9 @@ func (client *AccessControlClient) NewListRoleDefinitionsPager(scope string, opt
 }
 
 // listRoleDefinitionsCreateRequest creates the ListRoleDefinitions request.
-func (client *AccessControlClient) listRoleDefinitionsCreateRequest(ctx context.Context, scope string, options *AccessControlClientListRoleDefinitionsOptions) (*policy.Request, error) {
+func (client *AccessControlClient) listRoleDefinitionsCreateRequest(ctx context.Context, scope RoleScope, options *AccessControlClientListRoleDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
@@ -393,57 +444,6 @@ func (client *AccessControlClient) listRoleDefinitionsHandleResponse(resp *http.
 	result := AccessControlClientListRoleDefinitionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinitionListResult); err != nil {
 		return AccessControlClientListRoleDefinitionsResponse{}, err
-	}
-	return result, nil
-}
-
-// SetRoleDefinition - Creates or updates a custom role definition.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 7.4-preview.1
-// scope - The scope of the role definition to create or update. Managed HSM only supports '/'.
-// roleDefinitionName - The name of the role definition to create or update. It can be any valid GUID.
-// parameters - Parameters for the role definition.
-// options - AccessControlClientSetRoleDefinitionOptions contains the optional parameters for the AccessControlClient.SetRoleDefinition
-// method.
-func (client *AccessControlClient) SetRoleDefinition(ctx context.Context, scope string, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *AccessControlClientSetRoleDefinitionOptions) (AccessControlClientSetRoleDefinitionResponse, error) {
-	req, err := client.setRoleDefinitionCreateRequest(ctx, scope, roleDefinitionName, parameters, options)
-	if err != nil {
-		return AccessControlClientSetRoleDefinitionResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AccessControlClientSetRoleDefinitionResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return AccessControlClientSetRoleDefinitionResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.setRoleDefinitionHandleResponse(resp)
-}
-
-// setRoleDefinitionCreateRequest creates the SetRoleDefinition request.
-func (client *AccessControlClient) setRoleDefinitionCreateRequest(ctx context.Context, scope string, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *AccessControlClientSetRoleDefinitionOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if roleDefinitionName == "" {
-		return nil, errors.New("parameter roleDefinitionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionName}", url.PathEscape(roleDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.4-preview.1")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// setRoleDefinitionHandleResponse handles the SetRoleDefinition response.
-func (client *AccessControlClient) setRoleDefinitionHandleResponse(resp *http.Response) (AccessControlClientSetRoleDefinitionResponse, error) {
-	result := AccessControlClientSetRoleDefinitionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
-		return AccessControlClientSetRoleDefinitionResponse{}, err
 	}
 	return result, nil
 }

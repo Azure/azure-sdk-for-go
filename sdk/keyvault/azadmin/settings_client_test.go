@@ -7,13 +7,46 @@ import (
 	"context"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azadmin"
 	"github.com/stretchr/testify/require"
 )
 
-// TODO- fix get settings, currently broken
-/*func TestGetSettings(t *testing.T) {
+func TestGetSetting(t *testing.T) {
+	client := startSettingsTest(t)
+	settingName := "AllowKeyManagementOperationsThroughARM"
+
+	res, err := client.GetSetting(context.Background(), settingName, nil)
+	require.NoError(t, err)
+	require.NotNil(t, res)
+	require.Equal(t, *res.Name, settingName)
+	require.Equal(t, *res.Type, azadmin.SettingTypeEnumBoolean)
+	require.NotNil(t, res.Value)
+	testSerde(t, &res)
+}
+
+func TestGetSetting_InvalidSettingName(t *testing.T) {
+	client := startSettingsTest(t)
+
+	res, err := client.GetSetting(context.Background(), "", nil)
+	require.Error(t, err, "parameter settingName cannot be empty")
+	require.Nil(t, res.Name)
+	require.Nil(t, res.Type)
+	require.Nil(t, res.Value)
+
+	res, err = client.GetSetting(context.Background(), "invalid name", nil)
+	require.Error(t, err)
+	require.Nil(t, res.Name)
+	require.Nil(t, res.Type)
+	require.Nil(t, res.Value)
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, "UnknownError", httpErr.ErrorCode)
+	require.Equal(t, 500, httpErr.StatusCode)
+}
+
+func TestGetSettings(t *testing.T) {
 	client := startSettingsTest(t)
 
 	res, err := client.GetSettings(context.Background(), nil)
@@ -28,14 +61,14 @@ import (
 
 	testSerde(t, &res)
 
-}*/
+}
 
 func TestUpdateSetting(t *testing.T) {
 	client := startSettingsTest(t)
 	settingName := "AllowKeyManagementOperationsThroughARM"
 	var updatedBool string
 
-	res, err := client.GetSetting(context.Background(), "AllowKeyManagementOperationsThroughARM", nil)
+	res, err := client.GetSetting(context.Background(), settingName, nil)
 	require.NoError(t, err)
 	_ = res
 
@@ -51,22 +84,43 @@ func TestUpdateSetting(t *testing.T) {
 	update, err := client.UpdateSetting(context.Background(), settingName, updateSettingRequest, nil)
 	require.NoError(t, err)
 	require.NotNil(t, res)
-	require.Equal(t, *res.Name, settingName)
-	require.Equal(t, *res.Type, azadmin.SettingTypeEnumBoolean)
+	require.Equal(t, settingName, *res.Name)
+	require.Equal(t, azadmin.SettingTypeEnumBoolean, *res.Type)
 
 	require.NotEqual(t, res.Value, update.Value)
 	_ = update
 }
 
-func TestGetSetting(t *testing.T) {
+func TestUpdateSetting_InvalidSettingName(t *testing.T) {
 	client := startSettingsTest(t)
-	settingName := "AllowKeyManagementOperationsThroughARM"
 
-	res, err := client.GetSetting(context.Background(), settingName, nil)
-	require.NoError(t, err)
-	require.NotNil(t, res)
-	require.Equal(t, *res.Name, settingName)
-	require.Equal(t, *res.Type, azadmin.SettingTypeEnumBoolean)
-	require.NotNil(t, res.Value)
-	testSerde(t, &res)
+	res, err := client.UpdateSetting(context.Background(), "", azadmin.UpdateSettingRequest{Value: to.Ptr("true")}, nil)
+	require.Error(t, err, "parameter settingName cannot be empty")
+	require.Nil(t, res.Name)
+	require.Nil(t, res.Type)
+	require.Nil(t, res.Value)
+
+	res, err = client.UpdateSetting(context.Background(), "invalid name", azadmin.UpdateSettingRequest{Value: to.Ptr("true")}, nil)
+	require.Error(t, err)
+	require.Nil(t, res.Name)
+	require.Nil(t, res.Type)
+	require.Nil(t, res.Value)
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, "Nocontentprovided", httpErr.ErrorCode)
+	require.Equal(t, 400, httpErr.StatusCode)
+}
+
+func TestUpdateSetting_InvalidUpdateSettingRequest(t *testing.T) {
+	client := startSettingsTest(t)
+
+	res, err := client.UpdateSetting(context.Background(), "AllowKeyManagementOperationsThroughARM", azadmin.UpdateSettingRequest{Value: to.Ptr("invalid")}, nil)
+	require.Error(t, err)
+	require.Nil(t, res.Name)
+	require.Nil(t, res.Type)
+	require.Nil(t, res.Value)
+	var httpErr *azcore.ResponseError
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, "Nocontentprovided", httpErr.ErrorCode)
+	require.Equal(t, 400, httpErr.StatusCode)
 }

@@ -31,7 +31,6 @@ var (
 
 func TestMain(m *testing.M) {
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		//TODO - doublecheck env var name
 		hsmURL = os.Getenv("AZURE_MANAGEDHSM_URL")
 	}
 	if hsmURL == "" {

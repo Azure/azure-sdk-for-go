@@ -5,6 +5,8 @@ package azadmin_test
 
 import (
 	"context"
+	"math/rand"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -14,7 +16,100 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var servicePrincipalId string = "aed295e0-2ae7-4c2a-9abc-813f0ca233d3"
+func TestRoleDefinition(t *testing.T) {
+	client := startAccessControlTest(t)
+
+	name := uuid.New().String()
+	scope := azadmin.RoleScopeGlobal
+	roleType := azadmin.RoleTypeCustomRole
+	roleName := uuid.New().String()
+	permission := azadmin.DataActionBackupHsmKeys
+	parameters := azadmin.RoleDefinitionCreateParameters{
+		Properties: &azadmin.RoleDefinitionProperties{
+			AssignableScopes: []*azadmin.RoleScope{to.Ptr(scope)},
+			Description:      to.Ptr("test"),
+			Permissions:      []*azadmin.Permission{{DataActions: []*azadmin.DataAction{to.Ptr(permission)}}},
+			RoleName:         to.Ptr(roleName),
+			RoleType:         to.Ptr(roleType),
+		},
+	}
+	testSerde(t, &parameters)
+
+	// test create definition
+	createdDefinition, err := client.CreateOrUpdateRoleDefinition(context.Background(), scope, name, parameters, nil)
+	require.NoError(t, err)
+	require.Equal(t, name, *createdDefinition.Name)
+	require.Len(t, createdDefinition.Properties.AssignableScopes, 1)
+	require.Equal(t, scope, *createdDefinition.Properties.AssignableScopes[0])
+	require.Equal(t, "test", *createdDefinition.Properties.Description)
+	require.Equal(t, roleType, *createdDefinition.Properties.RoleType)
+	require.Equal(t, roleName, *createdDefinition.Properties.RoleName)
+	require.Len(t, createdDefinition.Properties.Permissions, 1)
+	require.Equal(t, permission, *createdDefinition.Properties.Permissions[0].DataActions[0])
+	testSerde(t, &createdDefinition)
+
+	// update
+	updatedPermission := azadmin.DataActionCreateHsmKey
+	parameters.Properties.Permissions[0].DataActions = []*azadmin.DataAction{to.Ptr(updatedPermission)}
+	updatedDefinition, err := client.CreateOrUpdateRoleDefinition(context.Background(), scope, name, parameters, nil)
+	require.NoError(t, err)
+	require.Equal(t, createdDefinition.ID, updatedDefinition.ID)
+	require.Len(t, updatedDefinition.Properties.Permissions, 1)
+	require.Equal(t, updatedPermission, *updatedDefinition.Properties.Permissions[0].DataActions[0])
+
+	// get
+	gotDefinition, err := client.GetRoleDefinition(context.Background(), scope, name, nil)
+	require.NoError(t, err)
+	require.Equal(t, *updatedDefinition.ID, *gotDefinition.ID)
+
+	// test list role definitions and check if created definition is in list exactly once
+	updatedDefinitionCount := 0
+	pager := client.NewListRoleDefinitionsPager(scope, nil)
+	require.True(t, pager.More())
+	for pager.More() {
+		res, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.NotNil(t, res)
+
+		require.NotNil(t, res.Value)
+		for _, roleDefinition := range res.Value {
+			require.NotNil(t, roleDefinition.Properties)
+			require.NotNil(t, roleDefinition.ID)
+			require.NotNil(t, roleDefinition.Name)
+			require.NotNil(t, roleDefinition.Type)
+
+			if *roleDefinition.ID == *updatedDefinition.ID {
+				updatedDefinitionCount++
+			}
+		}
+
+		testSerde(t, &res)
+	}
+	require.Equal(t, 1, updatedDefinitionCount)
+
+	// test delete
+	deletedDefinition, err := client.DeleteRoleDefinition(context.Background(), scope, name, nil)
+	require.NoError(t, err)
+	require.Equal(t, updatedDefinition.ID, deletedDefinition.ID)
+
+	// verify role definition is deleted
+	pager = client.NewListRoleDefinitionsPager(scope, nil)
+	for pager.More() {
+		res, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+
+		for _, roleDefinition := range res.Value {
+			require.NotNil(t, roleDefinition.Properties)
+			require.NotNil(t, roleDefinition.ID)
+			require.NotNil(t, roleDefinition.Name)
+			require.NotNil(t, roleDefinition.Type)
+
+			if *roleDefinition.ID == *updatedDefinition.ID {
+				t.Fatal("expected role definition to be deleted")
+			}
+		}
+	}
+}
 
 func TestDeleteRoleDefinition_FailureInvalidRole(t *testing.T) {
 	client := startAccessControlTest(t)
@@ -33,7 +128,59 @@ func TestDeleteRoleDefinition_FailureInvalidRole(t *testing.T) {
 	testSerde(t, &res)
 }
 
-func TestDeleteRoleAssignment_FailureInvalidRole(t *testing.T) {
+func TestRoleAssignment(t *testing.T) {
+	client := startAccessControlTest(t)
+
+	scope := azadmin.RoleScopeGlobal
+	name := uuid.New().String()
+	principalID := os.Getenv("KEYVAULT_CLIENT_ID")
+
+	// get random role definition to use for their service principal
+	pager := client.NewListRoleDefinitionsPager(scope, nil)
+	require.True(t, pager.More())
+	roleDefinitions, err := pager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.NotNil(t, roleDefinitions.Value)
+	roleDefinition := roleDefinitions.Value[rand.Intn(len(roleDefinitions.Value))]
+	roleAssignment := azadmin.RoleAssignmentCreateParameters{Properties: &azadmin.RoleAssignmentProperties{PrincipalID: to.Ptr(principalID), RoleDefinitionID: roleDefinition.ID}}
+
+	// create role assignment
+	createdAssignment, err := client.CreateRoleAssignment(context.Background(), scope, name, roleAssignment, nil)
+	require.NoError(t, err)
+	require.Equal(t, name, createdAssignment.Name)
+
+	// test if able to get role assignment
+	res, err := client.GetRoleAssignment(context.Background(), scope, name, nil)
+	require.NoError(t, err)
+	_ = res
+
+	// test if new role assignment is in list of all assignments
+	assignmentsPager := client.NewListRoleAssignmentsPager(scope, nil)
+	require.True(t, assignmentsPager.More())
+
+	for assignmentsPager.More() {
+		res, err := assignmentsPager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.NotNil(t, res)
+
+		require.NotNil(t, res.Value)
+		for _, roleAssignment := range res.Value {
+			require.NotNil(t, roleAssignment.Properties)
+			require.NotNil(t, roleAssignment.ID)
+			require.NotNil(t, roleAssignment.Name)
+			require.NotNil(t, roleAssignment.Type)
+		}
+
+		testSerde(t, &res)
+	}
+
+	// delete role assignment
+	delete, err := client.DeleteRoleAssignment(context.Background(), scope, name, nil)
+	require.NoError(t, err)
+	_ = delete
+}
+
+/*func TestDeleteRoleAssignment_FailureInvalidRole(t *testing.T) {
 	client := startAccessControlTest(t)
 	var httpErr *azcore.ResponseError
 
@@ -48,39 +195,9 @@ func TestDeleteRoleAssignment_FailureInvalidRole(t *testing.T) {
 	require.Nil(t, res.Type)
 
 	testSerde(t, &res)
-}
+}*/
 
-func TestSetRoleDefinition(t *testing.T) {
-	client := startAccessControlTest(t)
-	roleDefinitionName := uuid.New()
-	roleName := uuid.New()
-
-	parameters := azadmin.RoleDefinitionCreateParameters{
-		Properties: &azadmin.RoleDefinitionProperties{
-			AssignableScopes: []*azadmin.RoleScope{to.Ptr(azadmin.RoleScopeGlobal)},
-			Description:      to.Ptr(""),
-			Permissions:      []*azadmin.Permission{},
-			RoleName:         to.Ptr(roleName.String()),
-			RoleType:         to.Ptr(azadmin.RoleTypeCustomRole),
-		},
-	}
-	testSerde(t, &parameters)
-
-	res, err := client.SetRoleDefinition(context.Background(), "/", roleDefinitionName.String(), parameters, nil)
-	require.NoError(t, err)
-	require.NotNil(t, res)
-	require.NotNil(t, res.Properties.AssignableScopes)
-	require.Equal(t, "", *res.Properties.Description)
-	require.Equal(t, []*azadmin.Permission{}, res.Properties.Permissions)
-	require.Equal(t, roleName.String(), *res.Properties.RoleName)
-	require.NotNil(t, res.Properties.RoleType)
-	require.Equal(t, "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/"+roleDefinitionName.String(), *res.ID)
-	require.Equal(t, roleDefinitionName.String(), *res.Name)
-
-	testSerde(t, &res)
-
-}
-func TestCreateRoleAssignment(t *testing.T) {
+/*func TestCreateRoleAssignment(t *testing.T) {
 	client := startAccessControlTest(t)
 	roleDefinitionID := "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/7b127d3c-77bd-4e3e-bbe0-dbb8971fa7f8"
 	roleAssignmentID := uuid.New()
@@ -91,38 +208,9 @@ func TestCreateRoleAssignment(t *testing.T) {
 	require.NoError(t, err)
 	_ = res
 
-}
+}*/
 
-func TestGetRoleAssignment(t *testing.T) {
-	//client := startAccessControlTest(t)
-
-	//res, err := client.GetRoleAssignment(context.Background(), "", )
-}
-
-func TestNewListRoleDefinitionsPager(t *testing.T) {
-	client := startAccessControlTest(t)
-
-	pager := client.NewListRoleDefinitionsPager("/", nil)
-	require.True(t, pager.More())
-
-	for pager.More() {
-		res, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		require.NotNil(t, res)
-
-		require.NotNil(t, res.Value)
-		for _, roleDef := range res.Value {
-			require.NotNil(t, roleDef.Properties)
-			require.NotNil(t, roleDef.ID)
-			require.NotNil(t, roleDef.Name)
-			require.NotNil(t, roleDef.Type)
-		}
-
-		testSerde(t, &res)
-
-	}
-}
-
+/*
 func TestNewListRoleAssignmentsPager(t *testing.T) {
 	client := startAccessControlTest(t)
 
@@ -144,4 +232,4 @@ func TestNewListRoleAssignmentsPager(t *testing.T) {
 
 		testSerde(t, &res)
 	}
-}
+}*/

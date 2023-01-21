@@ -24,19 +24,19 @@ func (q *QueueClient) generated() *generated.QueueClient {
 	return queue
 }
 
-func (q *QueueClient) messagesClient() *generated.MessagesClient {
-	_, messages, _ := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
-	return messages
-}
-
-func (q *QueueClient) messagesIDClient() *generated.MessageIDClient {
-	_, _, mID := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
-	return mID
-}
-
-func (q *QueueClient) sharedKey() *SharedKeyCredential {
-	return base.SharedKeyComposite((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
-}
+//func (q *QueueClient) messagesClient() *generated.MessagesClient {
+//	_, messages, _ := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+//	return messages
+//}
+//
+//func (q *QueueClient) messagesIDClient() *generated.MessageIDClient {
+//	_, _, mID := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+//	return mID
+//}
+//
+//func (q *QueueClient) sharedKey() *SharedKeyCredential {
+//	return base.SharedKeyComposite((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+//}
 
 // URL returns the URL endpoint used by the ServiceClient object.
 func (q *QueueClient) URL() string {

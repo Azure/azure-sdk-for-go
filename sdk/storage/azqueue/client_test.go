@@ -77,6 +77,10 @@ func (s *UnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_require.NotZero(sProps)
 }
 
+//TODO: TestSetProperties
+//TODO: TestGetStatistics
+//TODO: TestGetSASUrl
+
 func (s *RecordedTestSuite) TestGetProperties() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -226,5 +230,3 @@ func (s *RecordedTestSuite) TestListQueuesPagination() {
 	}
 	_require.GreaterOrEqual(count, 3)
 }
-
-//TODO: TestSAS

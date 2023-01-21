@@ -1,3 +1,9 @@
+//go:build go1.18
+// +build go1.18
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package azqueue_test
 
 //func (s *RecordedTestSuite) TestCreateQueue() {
@@ -11,3 +17,16 @@ package azqueue_test
 //	//_require.Nil(err)
 //	//_require.NotZero(sProps)
 //}
+
+//TODO: TestCreateQueue
+//TODO: TestDeleteQueue
+//TODO: TestSetQueueMetadata
+//TODO: TestGetQueueMetadata
+//TODO: TestSetQueueACL
+//TODO: TestGetQueueACL
+//TODO: TestPutMessage
+//TODO: TestGetMessages
+//TODO: TestPeekMessages
+//TODO: TestDeleteMessage
+//TODO: TestClearMessages
+//TODO: TestUpdateMessage

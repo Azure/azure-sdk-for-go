@@ -51,9 +51,6 @@ type Metrics = generated.Metrics
 // Logging - Azure Analytics Logging settings.
 type Logging = generated.Logging
 
-// TODO: CreateQueueOptions = queue.CreateOptions
-// TODO: DeleteQueueOptions = queue.DeleteOptions
-
 // StorageServiceProperties - Storage Service Properties.
 type StorageServiceProperties = generated.StorageServiceProperties
 
@@ -142,7 +139,7 @@ func (o *GetStatisticsOptions) format() *generated.ServiceClientGetStatisticsOpt
 
 // -------------------------------------------------QUEUES--------------------------------------------------------------
 
-// CreateOptions contains the optional parameters for the Client.Create method.
+// CreateOptions contains the optional parameters for creating a queue.
 type CreateOptions struct {
 	// Optional. Specifies a user-defined name-value pair associated with the queue.
 	Metadata map[string]*string
@@ -157,7 +154,7 @@ func (o *CreateOptions) format() *generated.QueueClientCreateOptions {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DeleteOptions contains the optional parameters for the Client.Delete method.
+// DeleteOptions contains the optional parameters for deleting a queue.
 type DeleteOptions struct {
 }
 

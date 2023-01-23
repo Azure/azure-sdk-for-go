@@ -271,6 +271,7 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCors() {
 			_require.Equal(resp.Cors[i].AllowedHeaders, &allowedHeaders2)
 		}
 	}
+	_require.Nil(err)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {

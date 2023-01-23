@@ -59,6 +59,7 @@ func NewTracer(newSpanFn func(ctx context.Context, spanName string, options *Spa
 
 // Tracer is the factory that creates Span instances.
 type Tracer struct {
+	attrs     []Attribute
 	newSpanFn func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
 }
 
@@ -68,9 +69,21 @@ type Tracer struct {
 //   - options contains optional values for the span, pass nil to accept any defaults
 func (t Tracer) Start(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span) {
 	if t.newSpanFn != nil {
-		return t.newSpanFn(ctx, spanName, options)
+		opts := SpanOptions{}
+		if options != nil {
+			opts = *options
+		}
+		opts.Attributes = append(opts.Attributes, t.attrs...)
+		return t.newSpanFn(ctx, spanName, &opts)
 	}
 	return ctx, Span{}
+}
+
+// SetAttributes sets attrs to be applied to each Span. If a key from attrs
+// already exists for an attribute of the Span it will be overwritten with
+// the value contained in attrs.
+func (t *Tracer) SetAttributes(attrs ...Attribute) {
+	t.attrs = append(t.attrs, attrs...)
 }
 
 // SpanOptions contains optional settings for creating a span.

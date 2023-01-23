@@ -18,6 +18,7 @@ type PipelineOptions struct {
 	AllowedHeaders, AllowedQueryParameters []string
 	APIVersion                             APIVersionOptions
 	PerCall, PerRetry                      []policy.Policy
+	TracingNamespace                       string
 }
 
 // Pipeline represents a primitive for sending HTTP requests and receiving responses.

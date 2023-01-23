@@ -7,6 +7,7 @@
 package runtime
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -16,8 +17,8 @@ import (
 
 // httpTracePolicy is a policy that creates a trace for the HTTP request and its response
 func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
-	var tracer tracing.Tracer
-	if req.OperationValue(&tracer) {
+	rawTracer := req.Raw().Context().Value(ctxWithTracingTracer{})
+	if tracer, ok := rawTracer.(tracing.Tracer); ok {
 		attributes := []tracing.Attribute{
 			{Key: "http.method", Value: req.Raw().Method},
 			{Key: "http.url", Value: req.Raw().URL.String()},
@@ -27,11 +28,11 @@ func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
 			attributes = append(attributes, tracing.Attribute{Key: "http.user_agent", Value: ua})
 		}
 		if reqID := req.Raw().Header.Get(shared.HeaderXMSClientRequestID); reqID != "" {
-			attributes = append(attributes, tracing.Attribute{Key: "requestId", Value: reqID})
+			attributes = append(attributes, tracing.Attribute{Key: "az.client_request_id", Value: reqID})
 		}
 
 		ctx := req.Raw().Context()
-		ctx, span := tracer.Start(ctx, "azure-sdk.http", &tracing.SpanOptions{
+		ctx, span := tracer.Start(ctx, "HTTP "+req.Raw().Method, &tracing.SpanOptions{
 			Kind:       tracing.SpanKindClient,
 			Attributes: attributes,
 		})
@@ -40,7 +41,7 @@ func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
 			if resp != nil {
 				span.SetAttributes(tracing.Attribute{Key: "http.status_code", Value: resp.StatusCode})
 				if reqID := resp.Header.Get(shared.HeaderXMSRequestID); reqID != "" {
-					span.SetAttributes(tracing.Attribute{Key: "serviceRequestId", Value: reqID})
+					span.SetAttributes(tracing.Attribute{Key: "az.service_request_id", Value: reqID})
 				}
 			}
 			span.End()
@@ -51,3 +52,31 @@ func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
 	resp, err = req.Next()
 	return
 }
+
+// StartSpanOptions contains the optional values for StartSpan.
+type StartSpanOptions struct {
+	// for future expansion
+}
+
+// StartSpan starts a new tracing span.
+// You must call the returned func to terminate the span. Pass the applicable error
+// if the span will exit with an error condition.
+//   - ctx is the parent context of the newly created context
+//   - name is the name of the span. this is typically the fully qualified name of an API ("Client.Method")
+//   - tracer is the client's Tracer for creating spans
+//   - options contains optional values. pass nil to accept any default values
+func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options *StartSpanOptions) (context.Context, func(error)) {
+	ctx, span := tracer.Start(ctx, name, &tracing.SpanOptions{
+		Kind: tracing.SpanKindInternal,
+	})
+	ctx = context.WithValue(ctx, ctxWithTracingTracer{}, tracer)
+	return ctx, func(err error) {
+		if err != nil {
+			span.AddError(err)
+		}
+		span.End()
+	}
+}
+
+// ctxWithTracingTracer is used as a context key for adding/retrieving tracing.Tracer.
+type ctxWithTracingTracer struct{}

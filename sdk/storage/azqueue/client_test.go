@@ -193,6 +193,7 @@ func (s *RecordedTestSuite) TestSetPropertiesSetCors() {
 			_require.Equal(resp.Cors[i].AllowedHeaders, &allowedHeaders2)
 		}
 	}
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestGetProperties() {

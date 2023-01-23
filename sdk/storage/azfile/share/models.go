@@ -152,10 +152,6 @@ type Stats = generated.ShareStats
 
 // AcquireLeaseOptions contains the optional parameters for the Client.AcquireLease method.
 type AcquireLeaseOptions struct {
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using
-	// renew or change.
-	Duration *int32
 	// Proposed lease ID, in a GUID string format.
 	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
 	ProposedLeaseID *string
@@ -186,9 +182,6 @@ type BreakLeaseOptions struct {
 
 // ChangeLeaseOptions contains the optional parameters for the Client.ChangeLease method.
 type ChangeLeaseOptions struct {
-	// Proposed lease ID, in a GUID string format.
-	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
-	ProposedLeaseID *string
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	Snapshot *string

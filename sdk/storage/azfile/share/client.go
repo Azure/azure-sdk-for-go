@@ -145,9 +145,13 @@ func (s *Client) GetStatistics(ctx context.Context, options *GetStatisticsOption
 	return GetStatisticsResponse{}, nil
 }
 
+// TODO: should the lease methods be part of a new lease client like azblob?
+
 // AcquireLease operation can be used to request a new lease.
+// The lease duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-share.
-func (s *Client) AcquireLease(ctx context.Context, options *AcquireLeaseOptions) (AcquireLeaseResponse, error) {
+func (s *Client) AcquireLease(ctx context.Context, duration int32, options *AcquireLeaseOptions) (AcquireLeaseResponse, error) {
+	// TODO: update generated code to make duration as required parameter
 	return AcquireLeaseResponse{}, nil
 }
 
@@ -159,7 +163,8 @@ func (s *Client) BreakLease(ctx context.Context, options *BreakLeaseOptions) (Br
 
 // ChangeLease operation can be used to change the lease ID of an active lease.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-share.
-func (s *Client) ChangeLease(ctx context.Context, leaseID string, options *ChangeLeaseOptions) (ChangeLeaseResponse, error) {
+func (s *Client) ChangeLease(ctx context.Context, leaseID string, proposedLeaseID string, options *ChangeLeaseOptions) (ChangeLeaseResponse, error) {
+	// TODO: update generated code to make proposedLeaseID as required parameter
 	return ChangeLeaseResponse{}, nil
 }
 

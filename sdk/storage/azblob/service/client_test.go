@@ -157,6 +157,122 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
+func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	days := to.Ptr[int32](5)
+	enabled := to.Ptr(true)
+
+	loggingOpts := service.Logging{
+		Read: enabled, Write: enabled, Delete: enabled,
+		RetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}}
+	opts := service.SetPropertiesOptions{Logging: &loggingOpts}
+	_, err = svcClient.SetProperties(context.Background(), &opts)
+
+	_require.Nil(err)
+	resp1, err := svcClient.GetProperties(context.Background(), nil)
+
+	_require.Nil(err)
+	_require.Equal(resp1.Logging.Write, enabled)
+	_require.Equal(resp1.Logging.Read, enabled)
+	_require.Equal(resp1.Logging.Delete, enabled)
+	_require.Equal(resp1.Logging.RetentionPolicy.Days, days)
+	_require.Equal(resp1.Logging.RetentionPolicy.Enabled, enabled)
+}
+
+func (s *ServiceRecordedTestsSuite) TestSetPropertiesHourMetrics() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	days := to.Ptr[int32](5)
+	enabled := to.Ptr(true)
+
+	metricsOpts := service.Metrics{
+		Enabled: enabled, IncludeAPIs: enabled, RetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}}
+	opts := service.SetPropertiesOptions{HourMetrics: &metricsOpts}
+	_, err = svcClient.SetProperties(context.Background(), &opts)
+
+	_require.Nil(err)
+	resp1, err := svcClient.GetProperties(context.Background(), nil)
+
+	_require.Nil(err)
+	_require.Equal(resp1.HourMetrics.Enabled, enabled)
+	_require.Equal(resp1.HourMetrics.IncludeAPIs, enabled)
+	_require.Equal(resp1.HourMetrics.RetentionPolicy.Days, days)
+	_require.Equal(resp1.HourMetrics.RetentionPolicy.Enabled, enabled)
+}
+
+func (s *ServiceRecordedTestsSuite) TestSetPropertiesMinuteMetrics() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	days := to.Ptr[int32](5)
+	enabled := to.Ptr(true)
+
+	metricsOpts := service.Metrics{
+		Enabled: enabled, IncludeAPIs: enabled, RetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}}
+	opts := service.SetPropertiesOptions{MinuteMetrics: &metricsOpts}
+	_, err = svcClient.SetProperties(context.Background(), &opts)
+
+	_require.Nil(err)
+	resp1, err := svcClient.GetProperties(context.Background(), nil)
+
+	_require.Nil(err)
+	_require.Equal(resp1.MinuteMetrics.Enabled, enabled)
+	_require.Equal(resp1.MinuteMetrics.IncludeAPIs, enabled)
+	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Days, days)
+	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Enabled, enabled)
+}
+
+func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCors() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	defaultAge := to.Ptr[int32](500)
+	defaultStr := to.Ptr[string]("")
+
+	allowedOrigins1 := "www.xyz.com"
+	allowedMethods1 := "GET"
+	corsOpts1 := &service.CorsRule{AllowedOrigins: &allowedOrigins1, AllowedMethods: &allowedMethods1}
+
+	allowedOrigins2 := "www.xyz.com,www.ab.com,www.bc.com"
+	allowedMethods2 := "GET, PUT"
+	maxAge2 := to.Ptr[int32](500)
+	exposedHeaders2 := "x-ms-meta-data*,x-ms-meta-source*,x-ms-meta-abc,x-ms-meta-bcd"
+	allowedHeaders2 := "x-ms-meta-data*,x-ms-meta-target*,x-ms-meta-xyz,x-ms-meta-foo"
+
+	corsOpts2 := &service.CorsRule{
+		AllowedOrigins: &allowedOrigins2, AllowedMethods: &allowedMethods2,
+		MaxAgeInSeconds: maxAge2, ExposedHeaders: &exposedHeaders2, AllowedHeaders: &allowedHeaders2}
+
+	corsRules := []*service.CorsRule{corsOpts1, corsOpts2}
+
+	opts := service.SetPropertiesOptions{Cors: corsRules}
+	_, err = svcClient.SetProperties(context.Background(), &opts)
+
+	_require.Nil(err)
+	resp, err := svcClient.GetProperties(context.Background(), nil)
+	for i := 0; i < len(resp.Cors); i++ {
+		if resp.Cors[i].AllowedOrigins == &allowedOrigins1 {
+			_require.Equal(resp.Cors[i].AllowedMethods, &allowedMethods1)
+			_require.Equal(resp.Cors[i].MaxAgeInSeconds, defaultAge)
+			_require.Equal(resp.Cors[i].ExposedHeaders, defaultStr)
+			_require.Equal(resp.Cors[i].AllowedHeaders, defaultStr)
+
+		} else if resp.Cors[i].AllowedOrigins == &allowedOrigins2 {
+			_require.Equal(resp.Cors[i].AllowedMethods, &allowedMethods2)
+			_require.Equal(resp.Cors[i].MaxAgeInSeconds, &maxAge2)
+			_require.Equal(resp.Cors[i].ExposedHeaders, &exposedHeaders2)
+			_require.Equal(resp.Cors[i].AllowedHeaders, &allowedHeaders2)
+		}
+	}
+}
+
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

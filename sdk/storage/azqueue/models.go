@@ -7,6 +7,7 @@
 package azqueue
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
@@ -105,6 +106,43 @@ type SetPropertiesOptions struct {
 func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *generated.ServiceClientSetPropertiesOptions) {
 	if o == nil {
 		return generated.StorageServiceProperties{}, nil
+	}
+
+	defaultVersion := to.Ptr[string]("1.0")
+	defaultAge := to.Ptr[int32](0)
+	emptyStr := to.Ptr[string]("")
+
+	if o.Cors != nil {
+		for i := 0; i < len(o.Cors); i++ {
+			if o.Cors[i].AllowedHeaders == nil {
+				o.Cors[i].AllowedHeaders = emptyStr
+			}
+			if o.Cors[i].ExposedHeaders == nil {
+				o.Cors[i].ExposedHeaders = emptyStr
+			}
+			if o.Cors[i].MaxAgeInSeconds == nil {
+				o.Cors[i].MaxAgeInSeconds = defaultAge
+			}
+		}
+	}
+
+	if o.HourMetrics != nil {
+		if o.HourMetrics.Version == nil {
+			o.HourMetrics.Version = defaultVersion
+		}
+	}
+
+	if o.Logging != nil {
+		if o.Logging.Version == nil {
+			o.Logging.Version = defaultVersion
+		}
+	}
+
+	if o.MinuteMetrics != nil {
+		if o.MinuteMetrics.Version == nil {
+			o.MinuteMetrics.Version = defaultVersion
+		}
+
 	}
 
 	return generated.StorageServiceProperties{

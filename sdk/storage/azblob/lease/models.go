@@ -60,7 +60,6 @@ func (o *BlobBreakOptions) format() (*generated.BlobClientBreakLeaseOptions, *Mo
 
 // BlobChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
 type BlobChangeOptions struct {
-	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -140,7 +139,6 @@ func (o *ContainerBreakOptions) format() (*generated.ContainerClientBreakLeaseOp
 
 // ContainerChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
 type ContainerChangeOptions struct {
-	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 

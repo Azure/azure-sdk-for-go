@@ -149,3 +149,7 @@ const (
 	UnsupportedQueryParameter                         Code = "UnsupportedQueryParameter"
 	UnsupportedXMLNode                                Code = "UnsupportedXmlNode"
 )
+
+var (
+	SharedKeyDoesNotExist = errors.New("SAS can only be signed with a SharedKeyCredential")
+)

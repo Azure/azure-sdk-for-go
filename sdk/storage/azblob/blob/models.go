@@ -104,7 +104,7 @@ type downloadOptions struct {
 	CpkInfo      *CpkInfo
 	CpkScopeInfo *CpkScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -154,7 +154,7 @@ type DownloadBufferOptions struct {
 	// CpkScopeInfo contains a group of parameters for client provided encryption scope.
 	CpkScopeInfo *CpkScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -191,7 +191,7 @@ type DownloadFileOptions struct {
 // DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
-	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
+	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself.
 	DeleteSnapshots  *DeleteSnapshotsOptionType
 	AccessConditions *AccessConditions
 	// Setting DeleteType to DeleteTypePermanent will permanently delete soft-delete snapshot and/or version blobs.

@@ -18,7 +18,7 @@ import (
 
 // Type Declarations ---------------------------------------------------------------------
 
-// PageList - the list of pages
+// PageList - the list of pages.
 type PageList = generated.PageList
 
 // ClearRange defines a range of pages.
@@ -170,20 +170,20 @@ func (o *ClearPagesOptions) format() (*generated.LeaseAccessConditions, *generat
 // GetPageRangesOptions contains the optional parameters for the Client.NewGetPageRangesPager method.
 type GetPageRangesOptions struct {
 	Marker *string
-	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
+	// Specifies the maximum number of containers to return. If the request does not specify MaxResults, or specifies a value
 	// greater than 5000, the server will return up to 5000 items. Note that if the
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will
-	// return fewer results than specified by maxresults, or than the default of 5000.
+	// return fewer results than specified by MaxResults, or than the default of 5000.
 	MaxResults *int32
 	// Optional. This header is only supported in service versions 2019-04-19 and after and specifies the URL of a previous snapshot
 	// of the target blob. The response will only contain pages that were changed
 	// between the target blob and its previous snapshot.
 	PrevSnapshotURL *string
-	// Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that specifies that the response
+	// Optional in version 2015-07-08 and newer. The PrevSnapshot parameter is a DateTime value that specifies that the response
 	// will contain only pages that were changed between target blob and previous
 	// snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot
-	// specified by prevsnapshot is the older of the two. Note that incremental
+	// specified by PrevSnapshot is the older of the two. Note that incremental
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
 	// Range specifies a range of bytes.  The default value is all bytes.
@@ -220,20 +220,20 @@ type GetPageRangesDiffOptions struct {
 	// as the value for the marker parameter in a subsequent call to request the next
 	// page of list items. The marker value is opaque to the client.
 	Marker *string
-	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
+	// Specifies the maximum number of containers to return. If the request does not specify MaxResults, or specifies a value
 	// greater than 5000, the server will return up to 5000 items. Note that if the
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will
-	// return fewer results than specified by maxresults, or than the default of 5000.
+	// return fewer results than specified by MaxResults, or than the default of 5000.
 	MaxResults *int32
 	// Optional. This header is only supported in service versions 2019-04-19 and after and specifies the URL of a previous snapshot
 	// of the target blob. The response will only contain pages that were changed
 	// between the target blob and its previous snapshot.
 	PrevSnapshotURL *string
-	// Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that specifies that the response
+	// Optional in version 2015-07-08 and newer. The PrevSnapshot parameter is a DateTime value that specifies that the response
 	// will contain only pages that were changed between target blob and previous
 	// snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot
-	// specified by prevsnapshot is the older of the two. Note that incremental
+	// specified by PrevSnapshot is the older of the two. Note that incremental
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
 	// Range specifies a range of bytes.  The default value is all bytes.

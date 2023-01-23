@@ -8,7 +8,7 @@ package container
 
 import (
 	"context"
-	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"net/http"
 	"net/url"
 	"time"
@@ -308,7 +308,7 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if c.sharedKey() == nil {
-		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+		return "", bloberror.NoSharedKeyCredential
 	}
 	st := o.format()
 	urlParts, err := blob.ParseURL(c.URL())

@@ -151,5 +151,5 @@ const (
 )
 
 var (
-	SharedKeyDoesNotExist = errors.New("SAS can only be signed with a SharedKeyCredential")
+	NoSharedKeyCredential = errors.New("SAS can only be signed with a SharedKeyCredential")
 )

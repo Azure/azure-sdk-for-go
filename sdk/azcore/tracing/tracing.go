@@ -9,6 +9,7 @@ package tracing
 
 import (
 	"context"
+	"net/http"
 )
 
 // ProviderOptions contains the optional values when creating a Provider.
@@ -45,15 +46,20 @@ func (p Provider) NewTracer(name, version string) (tracer Tracer) {
 
 // TracerOptions contains the optional values when creating a Tracer.
 type TracerOptions struct {
-	// for future expansion
+	// Inject contains the implementation for the Tracer.Inject method.
+	Inject func(context.Context, *http.Request) error
 }
 
 // NewTracer creates a Tracer with the specified values.
 //   - newSpanFn is the underlying implementation for creating Span instances
 //   - options contains optional values; pass nil to accept the default value
 func NewTracer(newSpanFn func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span), options *TracerOptions) Tracer {
+	if options == nil {
+		options = &TracerOptions{}
+	}
 	return Tracer{
 		newSpanFn: newSpanFn,
+		injectFn:  options.Inject,
 	}
 }
 
@@ -61,6 +67,7 @@ func NewTracer(newSpanFn func(ctx context.Context, spanName string, options *Spa
 type Tracer struct {
 	attrs     []Attribute
 	newSpanFn func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
+	injectFn  func(ctx context.Context, req *http.Request) error
 }
 
 // Start creates a new span and a context.Context that contains it.
@@ -84,6 +91,20 @@ func (t Tracer) Start(ctx context.Context, spanName string, options *SpanOptions
 // the value contained in attrs.
 func (t *Tracer) SetAttributes(attrs ...Attribute) {
 	t.attrs = append(t.attrs, attrs...)
+}
+
+// Inject gets the traceparent and tracestate values from the provided context
+// and sets them as headers in the HTTP request.
+func (t Tracer) Inject(ctx context.Context, req *http.Request) error {
+	if t.injectFn != nil {
+		return t.injectFn(ctx, req)
+	}
+	return nil
+}
+
+// Enabled returns true if this Tracer is capable of creating Spans.
+func (t Tracer) Enabled() bool {
+	return t.newSpanFn != nil
 }
 
 // SpanOptions contains optional settings for creating a span.

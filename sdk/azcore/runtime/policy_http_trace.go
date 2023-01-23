@@ -48,6 +48,10 @@ func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
 		}()
 
 		req = req.WithContext(ctx)
+		err = tracer.Inject(req.Raw().Context(), req.Raw())
+		if err != nil {
+			return
+		}
 	}
 	resp, err = req.Next()
 	return
@@ -66,6 +70,9 @@ type StartSpanOptions struct {
 //   - tracer is the client's Tracer for creating spans
 //   - options contains optional values. pass nil to accept any default values
 func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options *StartSpanOptions) (context.Context, func(error)) {
+	if !tracer.Enabled() {
+		return ctx, func(err error) {}
+	}
 	ctx, span := tracer.Start(ctx, name, &tracing.SpanOptions{
 		Kind: tracing.SpanKindInternal,
 	})

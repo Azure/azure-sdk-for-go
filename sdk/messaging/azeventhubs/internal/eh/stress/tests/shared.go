@@ -125,7 +125,7 @@ func newStressTestData(name string, verbose bool, baggage map[string]string) (*s
 		return nil, err
 	}
 
-	td.Namespace = props.FullyQualifiedNamespace
+	td.Namespace = *props.FullyQualifiedNamespace
 
 	startBaggage := map[string]string{
 		"Namespace": td.Namespace,

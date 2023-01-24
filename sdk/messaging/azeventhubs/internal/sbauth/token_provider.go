@@ -34,10 +34,10 @@ func NewTokenProviderWithConnectionString(props exported.ConnectionStringPropert
 
 	var authOption sas.TokenProviderOption
 
-	if props.SharedAccessSignature == "" {
-		authOption = sas.TokenProviderWithKey(props.SharedAccessKeyName, props.SharedAccessKey, defaultTokenExpiry)
+	if props.SharedAccessSignature == nil {
+		authOption = sas.TokenProviderWithKey(*props.SharedAccessKeyName, *props.SharedAccessKey, defaultTokenExpiry)
 	} else {
-		authOption = sas.TokenProviderWithSAS(props.SharedAccessSignature)
+		authOption = sas.TokenProviderWithSAS(*props.SharedAccessSignature)
 	}
 
 	provider, err := sas.NewTokenProvider(authOption)

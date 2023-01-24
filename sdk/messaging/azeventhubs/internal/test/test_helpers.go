@@ -117,7 +117,7 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 	return ConnectionParamsForTest{
 		ConnectionString:        envVars["EVENTHUB_CONNECTION_STRING"],
 		EventHubName:            envVars["EVENTHUB_NAME"],
-		EventHubNamespace:       connProps.FullyQualifiedNamespace,
+		EventHubNamespace:       *connProps.FullyQualifiedNamespace,
 		ResourceGroup:           envVars["RESOURCE_GROUP"],
 		StorageConnectionString: envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],
 		SubscriptionID:          envVars["AZURE_SUBSCRIPTION_ID"],

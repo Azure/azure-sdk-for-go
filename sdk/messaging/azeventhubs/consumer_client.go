@@ -105,7 +105,7 @@ func NewConsumerClientFromConnectionString(connectionString string, eventHub str
 	return newConsumerClient(consumerClientArgs{
 		consumerGroup:    consumerGroup,
 		connectionString: connectionString,
-		eventHub:         props.EventHubName,
+		eventHub:         *props.EntityPath,
 	}, options)
 }
 

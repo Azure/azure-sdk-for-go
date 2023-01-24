@@ -10,6 +10,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"net/url"
 	"strconv"
@@ -146,15 +147,19 @@ func CreateConnectionStringWithSAS(connectionString string, duration time.Durati
 		return "", err
 	}
 
-	signer := NewSigner(props.SharedAccessKeyName, props.SharedAccessKey)
+	if props.SharedAccessKeyName == nil || props.SharedAccessKey == nil {
+		return "", errors.New("Missing SharedAccessKeyName/SharedAccessKey")
+	}
 
-	sig, _, err := signer.SignWithDuration(props.FullyQualifiedNamespace, duration)
+	signer := NewSigner(*props.SharedAccessKeyName, *props.SharedAccessKey)
+
+	sig, _, err := signer.SignWithDuration(*props.FullyQualifiedNamespace, duration)
 
 	if err != nil {
 		return "", err
 	}
 
-	return fmt.Sprintf("Endpoint=sb://%s;SharedAccessSignature=%s", props.FullyQualifiedNamespace, sig), nil
+	return fmt.Sprintf("Endpoint=sb://%s;SharedAccessSignature=%s", *props.FullyQualifiedNamespace, sig), nil
 }
 
 func signatureExpiry(from time.Time, interval time.Duration) string {

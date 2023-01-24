@@ -13,30 +13,34 @@ import (
 // ConnectionStringProperties are the properties of a connection string
 // as returned by [NewConnectionStringProperties].
 type ConnectionStringProperties struct {
-	// Endpoint represents the Endpoint value in the connection string.
+	// Endpoint is the Endpoint value in the connection string.
 	// Ex: sb://example.servicebus.windows.net
-	Endpoint string
+	Endpoint *string
 
-	// EventHubName is EntityPath value in the connection string.
-	EventHubName string
+	// EntityPath is EntityPath value in the connection string.
+	EntityPath *string
 
 	// FullyQualifiedNamespace is the Endpoint value without the protocol scheme.
 	// Ex: example.servicebus.windows.net
-	FullyQualifiedNamespace string
+	FullyQualifiedNamespace *string
 
 	// SharedAccessKey is the SharedAccessKey value in the connection string.
-	SharedAccessKey string
+	SharedAccessKey *string
 
 	// SharedAccessKeyName is the SharedAccessKeyName value in the connection string.
-	SharedAccessKeyName string
+	SharedAccessKeyName *string
 
 	// SharedAccessSignature is the SharedAccessSignature value in the connection string.
-	SharedAccessSignature string
+	SharedAccessSignature *string
 }
 
 // NewConnectionStringProperties takes a connection string from the Azure portal and returns the
-// parsed representation The method will return an error if the Endpoint, SharedAccessKeyName
-// or SharedAccessKey is empty.
+// parsed representation.
+//
+// There are two supported formats:
+//  1. Connection strings generated from the portal (or elsewhere) that contain an embedded key and keyname.
+//  2. A connection string with an embedded SharedAccessSignature:
+//     Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"
 func NewConnectionStringProperties(connStr string) (ConnectionStringProperties, error) {
 	const (
 		endpointKey              = "Endpoint"
@@ -45,12 +49,6 @@ func NewConnectionStringProperties(connStr string) (ConnectionStringProperties, 
 		entityPathKey            = "EntityPath"
 		sharedAccessSignatureKey = "SharedAccessSignature"
 	)
-
-	// We can parse two types of connection strings.
-	// 1. Connection strings generated from the portal (or elsewhere) that contain an embedded key and keyname.
-	// 2. A specially formatted connection string with an embedded SharedAccessSignature:
-	//   Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"
-	//var namespace, hubName, keyName, secret, sas string
 
 	csp := ConnectionStringProperties{}
 
@@ -71,32 +69,28 @@ func NewConnectionStringProperties(connStr string) (ConnectionStringProperties, 
 			if err != nil {
 				return ConnectionStringProperties{}, errors.New("failed parsing connection string due to an incorrectly formatted Endpoint value")
 			}
-			csp.Endpoint = value
-			csp.FullyQualifiedNamespace = u.Host
+			csp.Endpoint = &value
+			csp.FullyQualifiedNamespace = &u.Host
 		case strings.EqualFold(sharedAccessKeyNameKey, key):
-			csp.SharedAccessKeyName = value
-			// keyName = value
+			csp.SharedAccessKeyName = &value
 		case strings.EqualFold(sharedAccessKeyKey, key):
-			csp.SharedAccessKey = value
-			// secret = value
+			csp.SharedAccessKey = &value
 		case strings.EqualFold(entityPathKey, key):
-			csp.EventHubName = value
-			//hubName = value
+			csp.EntityPath = &value
 		case strings.EqualFold(sharedAccessSignatureKey, key):
-			csp.SharedAccessSignature = value
-			// sas = value
+			csp.SharedAccessSignature = &value
 		}
 	}
 
-	if csp.FullyQualifiedNamespace == "" {
+	if csp.FullyQualifiedNamespace == nil {
 		return ConnectionStringProperties{}, fmt.Errorf("key %q must not be empty", endpointKey)
 	}
 
-	if csp.SharedAccessSignature == "" && csp.SharedAccessKeyName == "" {
+	if csp.SharedAccessSignature == nil && csp.SharedAccessKeyName == nil {
 		return ConnectionStringProperties{}, fmt.Errorf("key %q must not be empty", sharedAccessKeyNameKey)
 	}
 
-	if csp.SharedAccessKey == "" && csp.SharedAccessSignature == "" {
+	if csp.SharedAccessKey == nil && csp.SharedAccessSignature == nil {
 		return ConnectionStringProperties{}, fmt.Errorf("key %q or %q cannot both be empty", sharedAccessKeyKey, sharedAccessSignatureKey)
 	}
 

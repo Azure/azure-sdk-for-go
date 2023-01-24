@@ -5,22 +5,22 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package azpki
+package certificatemanager
 
-type Accept string
+type CertificateFileFormat string
 
 const (
-	AcceptApplicationPkixCert Accept = "application/pkix-cert"
-	AcceptApplicationXPemFile Accept = "application/x-pem-file"
-	AcceptApplicationXPkcs7Certificates Accept = "application/x-pkcs7-certificates"
+	CertificateFileFormatApplicationPkixCert CertificateFileFormat = "application/pkix-cert"
+	CertificateFileFormatApplicationXPemFile CertificateFileFormat = "application/x-pem-file"
+	CertificateFileFormatApplicationXPkcs7Certificates CertificateFileFormat = "application/x-pkcs7-certificates"
 )
 
-// PossibleAcceptValues returns the possible values for the Accept const type.
-func PossibleAcceptValues() []Accept {
-	return []Accept{	
-		AcceptApplicationPkixCert,
-		AcceptApplicationXPemFile,
-		AcceptApplicationXPkcs7Certificates,
+// PossibleCertificateFileFormatValues returns the possible values for the CertificateFileFormat const type.
+func PossibleCertificateFileFormatValues() []CertificateFileFormat {
+	return []CertificateFileFormat{	
+		CertificateFileFormatApplicationPkixCert,
+		CertificateFileFormatApplicationXPemFile,
+		CertificateFileFormatApplicationXPkcs7Certificates,
 	}
 }
 
@@ -63,8 +63,8 @@ const (
 	ExtendedKeyUsageIPSecEndSystem ExtendedKeyUsage = "IpsecEndSystem"
 	ExtendedKeyUsageIPSecTunnel ExtendedKeyUsage = "IpsecTunnel"
 	ExtendedKeyUsageIPSecUser ExtendedKeyUsage = "IpsecUser"
-	ExtendedKeyUsageMacAddress ExtendedKeyUsage = "MacAddress"
-	ExtendedKeyUsageOcspSigning ExtendedKeyUsage = "OcspSigning"
+	ExtendedKeyUsageMACAddress ExtendedKeyUsage = "MACAddress"
+	ExtendedKeyUsageOCSPSigning ExtendedKeyUsage = "OCSPSigning"
 	ExtendedKeyUsageServerAuth ExtendedKeyUsage = "ServerAuth"
 	ExtendedKeyUsageSmartcardLogon ExtendedKeyUsage = "SmartcardLogon"
 	ExtendedKeyUsageTimeStamping ExtendedKeyUsage = "TimeStamping"
@@ -79,18 +79,31 @@ func PossibleExtendedKeyUsageValues() []ExtendedKeyUsage {
 		ExtendedKeyUsageIPSecEndSystem,
 		ExtendedKeyUsageIPSecTunnel,
 		ExtendedKeyUsageIPSecUser,
-		ExtendedKeyUsageMacAddress,
-		ExtendedKeyUsageOcspSigning,
+		ExtendedKeyUsageMACAddress,
+		ExtendedKeyUsageOCSPSigning,
 		ExtendedKeyUsageServerAuth,
 		ExtendedKeyUsageSmartcardLogon,
 		ExtendedKeyUsageTimeStamping,
 	}
 }
 
+type Include string
+
+const (
+	IncludeLogs Include = "logs"
+)
+
+// PossibleIncludeValues returns the possible values for the Include const type.
+func PossibleIncludeValues() []Include {
+	return []Include{	
+		IncludeLogs,
+	}
+}
+
 type KeyUsage string
 
 const (
-	KeyUsageCrlSign KeyUsage = "CrlSign"
+	KeyUsageCRLSign KeyUsage = "CRLSign"
 	KeyUsageDataEncipherment KeyUsage = "DataEncipherment"
 	KeyUsageDecipherOnly KeyUsage = "DecipherOnly"
 	KeyUsageDigitalSignature KeyUsage = "DigitalSignature"
@@ -104,7 +117,7 @@ const (
 // PossibleKeyUsageValues returns the possible values for the KeyUsage const type.
 func PossibleKeyUsageValues() []KeyUsage {
 	return []KeyUsage{	
-		KeyUsageCrlSign,
+		KeyUsageCRLSign,
 		KeyUsageDataEncipherment,
 		KeyUsageDecipherOnly,
 		KeyUsageDigitalSignature,

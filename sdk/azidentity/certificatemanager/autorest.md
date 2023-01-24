@@ -3,7 +3,7 @@ export-clients: true
 go: true
 input-file: https://github.com/Azure/azure-rest-api-specs-pr/blob/f9a0ac622533987324a0a18237af12ce4f526563/specification/pki/data-plane/Microsoft.Pki/preview/2022-09-01-preview/pki.json
 license-header: MICROSOFT_MIT_NO_VERSION
-module: github.com/Azure/azure-sdk-for-go/sdk/certificatemanager/azpki
+module: github.com/Azure/azure-sdk-for-go/sdk/azidentity/certificatemanager
 openapi-type: "data-plane"
-output-folder: ../azpki
+output-folder: ../azidentity/certificatemanager
 use: "@autorest/go"

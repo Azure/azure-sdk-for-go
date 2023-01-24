@@ -153,13 +153,13 @@ func CreateConnectionStringWithSAS(connectionString string, duration time.Durati
 
 	signer := NewSigner(*props.SharedAccessKeyName, *props.SharedAccessKey)
 
-	sig, _, err := signer.SignWithDuration(*props.FullyQualifiedNamespace, duration)
+	sig, _, err := signer.SignWithDuration(props.FullyQualifiedNamespace, duration)
 
 	if err != nil {
 		return "", err
 	}
 
-	return fmt.Sprintf("Endpoint=sb://%s;SharedAccessSignature=%s", *props.FullyQualifiedNamespace, sig), nil
+	return fmt.Sprintf("Endpoint=sb://%s;SharedAccessSignature=%s", props.FullyQualifiedNamespace, sig), nil
 }
 
 func signatureExpiry(from time.Time, interval time.Duration) string {

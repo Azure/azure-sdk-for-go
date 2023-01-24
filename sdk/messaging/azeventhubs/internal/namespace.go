@@ -84,9 +84,7 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 			return err
 		}
 
-		if props.FullyQualifiedNamespace != nil {
-			ns.FQDN = *props.FullyQualifiedNamespace
-		}
+		ns.FQDN = props.FullyQualifiedNamespace
 
 		provider, err := sbauth.NewTokenProviderWithConnectionString(props)
 		if err != nil {

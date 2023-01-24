@@ -15,14 +15,14 @@ import (
 type ConnectionStringProperties struct {
 	// Endpoint is the Endpoint value in the connection string.
 	// Ex: sb://example.servicebus.windows.net
-	Endpoint *string
+	Endpoint string
 
 	// EntityPath is EntityPath value in the connection string.
 	EntityPath *string
 
 	// FullyQualifiedNamespace is the Endpoint value without the protocol scheme.
 	// Ex: example.servicebus.windows.net
-	FullyQualifiedNamespace *string
+	FullyQualifiedNamespace string
 
 	// SharedAccessKey is the SharedAccessKey value in the connection string.
 	SharedAccessKey *string
@@ -69,8 +69,8 @@ func ParseConnectionString(connStr string) (ConnectionStringProperties, error) {
 			if err != nil {
 				return ConnectionStringProperties{}, errors.New("failed parsing connection string due to an incorrectly formatted Endpoint value")
 			}
-			csp.Endpoint = &value
-			csp.FullyQualifiedNamespace = &u.Host
+			csp.Endpoint = value
+			csp.FullyQualifiedNamespace = u.Host
 		case strings.EqualFold(sharedAccessKeyNameKey, key):
 			csp.SharedAccessKeyName = &value
 		case strings.EqualFold(sharedAccessKeyKey, key):
@@ -82,7 +82,7 @@ func ParseConnectionString(connStr string) (ConnectionStringProperties, error) {
 		}
 	}
 
-	if csp.FullyQualifiedNamespace == nil {
+	if csp.FullyQualifiedNamespace == "" {
 		return ConnectionStringProperties{}, fmt.Errorf("key %q must not be empty", endpointKey)
 	}
 

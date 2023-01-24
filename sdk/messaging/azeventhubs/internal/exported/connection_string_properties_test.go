@@ -28,8 +28,8 @@ func TestNewConnectionStringProperties(t *testing.T) {
 
 		require.Equal(t, exported.ConnectionStringProperties{
 			EntityPath:              &hubName,
-			Endpoint:                to.Ptr("sb://" + namespace + ".servicebus.windows.net/"),
-			FullyQualifiedNamespace: to.Ptr(namespace + ".servicebus.windows.net"),
+			Endpoint:                "sb://" + namespace + ".servicebus.windows.net/",
+			FullyQualifiedNamespace: namespace + ".servicebus.windows.net",
 			SharedAccessKeyName:     &keyName,
 			SharedAccessKey:         &secret,
 			SharedAccessSignature:   nil,
@@ -44,8 +44,8 @@ func TestNewConnectionStringProperties(t *testing.T) {
 
 		require.Equal(t, exported.ConnectionStringProperties{
 			EntityPath:              &hubName,
-			Endpoint:                to.Ptr("sb://" + namespace + ".servicebus.windows.net/"),
-			FullyQualifiedNamespace: to.Ptr(namespace + ".servicebus.windows.net"),
+			Endpoint:                "sb://" + namespace + ".servicebus.windows.net/",
+			FullyQualifiedNamespace: namespace + ".servicebus.windows.net",
 			SharedAccessKeyName:     &keyName,
 			SharedAccessKey:         &secret,
 			SharedAccessSignature:   nil,
@@ -60,8 +60,8 @@ func TestNewConnectionStringProperties(t *testing.T) {
 
 		require.Equal(t, exported.ConnectionStringProperties{
 			EntityPath:              nil,
-			Endpoint:                to.Ptr("sb://" + namespace + ".servicebus.windows.net/"),
-			FullyQualifiedNamespace: to.Ptr(namespace + ".servicebus.windows.net"),
+			Endpoint:                "sb://" + namespace + ".servicebus.windows.net/",
+			FullyQualifiedNamespace: namespace + ".servicebus.windows.net",
 			SharedAccessKeyName:     &keyName,
 			SharedAccessKey:         &secret,
 			SharedAccessSignature:   nil,
@@ -76,8 +76,8 @@ func TestNewConnectionStringProperties(t *testing.T) {
 
 		require.Equal(t, exported.ConnectionStringProperties{
 			EntityPath:              nil,
-			Endpoint:                to.Ptr("sb://" + namespace + ".servicebus.windows.net/"),
-			FullyQualifiedNamespace: to.Ptr(namespace + ".servicebus.windows.net"),
+			Endpoint:                "sb://" + namespace + ".servicebus.windows.net/",
+			FullyQualifiedNamespace: namespace + ".servicebus.windows.net",
 			SharedAccessKeyName:     nil,
 			SharedAccessKey:         nil,
 			SharedAccessSignature:   to.Ptr("SharedAccessSignature sr=" + namespace + ".servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"),

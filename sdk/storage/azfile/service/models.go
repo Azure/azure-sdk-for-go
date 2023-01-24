@@ -78,8 +78,8 @@ type SmbMultichannel = generated.SmbMultichannel
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ListSharesSegmentOptions contains the optional parameters for the Client.NewListSharesSegmentPager method.
-type ListSharesSegmentOptions struct {
+// ListSharesOptions contains the optional parameters for the Client.NewListSharesPager method.
+type ListSharesOptions struct {
 	// Include this parameter to specify one or more datasets to include in the responseBody.
 	Include []ListSharesIncludeType
 	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
@@ -94,6 +94,8 @@ type ListSharesSegmentOptions struct {
 	Prefix *string
 }
 
+// ShareItem - A listed Azure Storage share item.
 type ShareItem = generated.ShareItemInternal
 
+// ShareProperties - Properties of a share.
 type ShareProperties = generated.SharePropertiesInternal

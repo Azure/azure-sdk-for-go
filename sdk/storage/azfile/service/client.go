@@ -116,6 +116,8 @@ func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOption
 	return SetPropertiesResponse{}, nil
 }
 
-func (s *Client) NewListSharesSegmentPager(options *ListSharesSegmentOptions) *runtime.Pager[ListSharesSegmentResponse] {
+// NewListSharesPager operation returns a pager of the shares under the specified account.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
+func (s *Client) NewListSharesPager(options *ListSharesOptions) *runtime.Pager[ListSharesSegmentResponse] {
 	return nil
 }

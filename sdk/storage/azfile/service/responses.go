@@ -23,7 +23,7 @@ type GetPropertiesResponse = generated.ServiceClientGetPropertiesResponse
 // SetPropertiesResponse contains the response from method Client.SetProperties.
 type SetPropertiesResponse = generated.ServiceClientSetPropertiesResponse
 
-// ListSharesSegmentResponse contains the response from method Client.NewListSharesSegmentPager.
+// ListSharesSegmentResponse contains the response from method Client.NewListSharesPager.
 type ListSharesSegmentResponse = generated.ServiceClientListSharesSegmentResponse
 
 // ListSharesResponse - An enumeration of shares.

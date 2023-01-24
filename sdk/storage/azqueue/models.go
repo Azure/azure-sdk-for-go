@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
+	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -57,6 +58,9 @@ type StorageServiceProperties = generated.StorageServiceProperties
 
 // StorageServiceStats - Stats for the storage service.
 type StorageServiceStats = generated.StorageServiceStats
+
+// SignedIdentifier - signed identifier
+type SignedIdentifier = generated.SignedIdentifier
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -197,5 +201,79 @@ type DeleteOptions struct {
 }
 
 func (o *DeleteOptions) format() *generated.QueueClientDeleteOptions {
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetMetadataOptions contains the optional parameters for the QueueClient.SetMetadata method.
+type SetMetadataOptions struct {
+	Metadata map[string]*string
+}
+
+func (o *SetMetadataOptions) format() *generated.QueueClientSetMetadataOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.QueueClientSetMetadataOptions{Metadata: o.Metadata}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetAccessPolicyOptions contains the optional parameters for the QueueClient.GetAccessPolicy method.
+type GetAccessPolicyOptions struct {
+}
+
+func (o *GetAccessPolicyOptions) format() *generated.QueueClientGetAccessPolicyOptions {
+	if o == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetAccessPolicyOptions provides set of configurations for QueueClient.SetAccessPolicy operation
+type SetAccessPolicyOptions struct {
+	QueueACL []*SignedIdentifier
+}
+
+func (o *SetAccessPolicyOptions) format() (*generated.QueueClientSetAccessPolicyOptions, []*SignedIdentifier, error) {
+	if o == nil {
+		return nil, nil, nil
+	}
+	if o.QueueACL != nil {
+		for _, c := range o.QueueACL {
+			err := formatTime(c)
+			if err != nil {
+				return nil, nil, err
+			}
+		}
+	}
+	return &generated.QueueClientSetAccessPolicyOptions{}, o.QueueACL, nil
+}
+
+func formatTime(c *SignedIdentifier) error {
+	if c.AccessPolicy == nil {
+		return nil
+	}
+
+	if c.AccessPolicy.Start != nil {
+		st, err := time.Parse(time.RFC3339, c.AccessPolicy.Start.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		c.AccessPolicy.Start = &st
+	}
+	if c.AccessPolicy.Expiry != nil {
+		et, err := time.Parse(time.RFC3339, c.AccessPolicy.Expiry.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		c.AccessPolicy.Expiry = &et
+	}
+
 	return nil
 }

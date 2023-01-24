@@ -30,8 +30,17 @@ type GetStatisticsResponse = generated.ServiceClientGetStatisticsResponse
 
 //------------------------------------------ QUEUES -------------------------------------------------------------------
 
-// CreateResponse contains the response from method Client.Create.
+// CreateResponse contains the response from method QueueClient.Create.
 type CreateResponse = generated.QueueClientCreateResponse
 
-// DeleteResponse contains the response from method Client.Delete.
+// DeleteResponse contains the response from method QueueClient.Delete.
 type DeleteResponse = generated.QueueClientDeleteResponse
+
+// SetMetadataResponse contains the response from method QueueClient.SetMetadata.
+type SetMetadataResponse = generated.QueueClientSetMetadataResponse
+
+// GetAccessPolicyResponse contains the response from method QueueClient.GetAccessPolicy.
+type GetAccessPolicyResponse = generated.QueueClientGetAccessPolicyResponse
+
+// SetAccessPolicyResponse contains the response from method QueueClient.SetAccessPolicy.
+type SetAccessPolicyResponse = generated.QueueClientSetAccessPolicyResponse

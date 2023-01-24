@@ -190,7 +190,7 @@ func (c *Client) Restore(ctx context.Context, deletedContainerVersion string, op
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-metadata.
 func (c *Client) GetProperties(ctx context.Context, o *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	// NOTE: GetMetadata actually calls GetProperties internally because GetProperties returns the metadata AND the properties.
-	// This allows us to not expose a GetProperties method at all simplifying the API.
+	// This allows us to not expose a GetMetadata method at all simplifying the API.
 	// The optionals are nil, like they were in track 1.5
 	opts, leaseAccessConditions := o.format()
 

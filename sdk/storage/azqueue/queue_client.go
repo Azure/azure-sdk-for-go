@@ -115,3 +115,30 @@ func (q *QueueClient) Delete(ctx context.Context, options *DeleteOptions) (Delet
 	resp, err := q.generated().Delete(ctx, opts)
 	return resp, err
 }
+
+// SetMetadata deletes the specified queue.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata.
+func (q *QueueClient) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
+	opts := options.format()
+	resp, err := q.generated().SetMetadata(ctx, opts)
+	return resp, err
+}
+
+// GetAccessPolicy returns the queue's access policy.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-queue-acl.
+func (q *QueueClient) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
+	options := o.format()
+	resp, err := q.generated().GetAccessPolicy(ctx, options)
+	return resp, err
+}
+
+// SetAccessPolicy sets the queue's permissions.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-queue-acl.
+func (q *QueueClient) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
+	opts, acl, err := o.format()
+	if err != nil {
+		return SetAccessPolicyResponse{}, err
+	}
+	resp, err := q.generated().SetAccessPolicy(ctx, acl, opts)
+	return resp, err
+}

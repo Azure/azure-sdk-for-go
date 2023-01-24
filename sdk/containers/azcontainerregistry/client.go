@@ -409,8 +409,8 @@ func (client *Client) listManifestsCreateRequest(ctx context.Context, name strin
 	if options != nil && options.Last != nil {
 		reqQP.Set("last", *options.Last)
 	}
-	if options != nil && options.N != nil {
-		reqQP.Set("n", strconv.FormatInt(int64(*options.N), 10))
+	if options != nil && options.MaxNum != nil {
+		reqQP.Set("n", strconv.FormatInt(int64(*options.MaxNum), 10))
 	}
 	reqQP.Set("api-version", "2021-07-01")
 	if options != nil && options.OrderBy != nil {
@@ -428,7 +428,7 @@ func (client *Client) listManifestsHandleResponse(resp *http.Response) (ClientLi
 		val = runtime.JoinPaths(client.endpoint, extractNextLink(val))
 		result.Link = &val
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ACRManifests); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Manifests); err != nil {
 		return ClientListManifestsResponse{}, err
 	}
 	return result, nil
@@ -477,8 +477,8 @@ func (client *Client) listRepositoriesCreateRequest(ctx context.Context, options
 	if options != nil && options.Last != nil {
 		reqQP.Set("last", *options.Last)
 	}
-	if options != nil && options.N != nil {
-		reqQP.Set("n", strconv.FormatInt(int64(*options.N), 10))
+	if options != nil && options.MaxNum != nil {
+		reqQP.Set("n", strconv.FormatInt(int64(*options.MaxNum), 10))
 	}
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -547,8 +547,8 @@ func (client *Client) listTagsCreateRequest(ctx context.Context, name string, op
 	if options != nil && options.Last != nil {
 		reqQP.Set("last", *options.Last)
 	}
-	if options != nil && options.N != nil {
-		reqQP.Set("n", strconv.FormatInt(int64(*options.N), 10))
+	if options != nil && options.MaxNum != nil {
+		reqQP.Set("n", strconv.FormatInt(int64(*options.MaxNum), 10))
 	}
 	if options != nil && options.Digest != nil {
 		reqQP.Set("digest", *options.Digest)

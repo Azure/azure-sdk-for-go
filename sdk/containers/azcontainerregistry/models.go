@@ -16,20 +16,6 @@ type acrAccessToken struct {
 	AccessToken *string `json:"access_token,omitempty"`
 }
 
-// ACRManifests - Manifest attributes
-type ACRManifests struct {
-	Link *string `json:"link,omitempty"`
-
-	// List of manifests
-	Manifests []*ManifestAttributes `json:"manifests,omitempty"`
-
-	// Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
-	RegistryLoginServer *string `json:"registry,omitempty"`
-
-	// Image name
-	Repository *string `json:"imageName,omitempty"`
-}
-
 type acrRefreshToken struct {
 	// The refresh token to be used for generating access tokens
 	RefreshToken *string `json:"refresh_token,omitempty"`
@@ -188,7 +174,7 @@ type ClientListManifestsOptions struct {
 	// Query parameter for the last item in previous query. Result set will include values lexically after last.
 	Last *string
 	// query parameter for max number of items
-	N *int32
+	MaxNum *int32
 	// Sort options for ordering manifests in a collection.
 	OrderBy *ArtifactManifestOrderBy
 }
@@ -198,7 +184,7 @@ type ClientListRepositoriesOptions struct {
 	// Query parameter for the last item in previous query. Result set will include values lexically after last.
 	Last *string
 	// query parameter for max number of items
-	N *int32
+	MaxNum *int32
 }
 
 // ClientListTagsOptions contains the optional parameters for the Client.NewListTagsPager method.
@@ -208,7 +194,7 @@ type ClientListTagsOptions struct {
 	// Query parameter for the last item in previous query. Result set will include values lexically after last.
 	Last *string
 	// query parameter for max number of items
-	N *int32
+	MaxNum *int32
 	// Sort options for ordering tags in a collection.
 	OrderBy *ArtifactTagOrderBy
 }
@@ -304,6 +290,19 @@ type ManifestWriteableProperties struct {
 
 	// Write enabled
 	CanWrite *bool `json:"writeEnabled,omitempty"`
+}
+
+// Manifests - Manifest attributes
+type Manifests struct {
+	// List of manifests
+	Attributes []*ManifestAttributes `json:"manifests,omitempty"`
+	Link       *string               `json:"link,omitempty"`
+
+	// Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
+	RegistryLoginServer *string `json:"registry,omitempty"`
+
+	// Image name
+	Repository *string `json:"imageName,omitempty"`
 }
 
 // Repositories - List of repositories

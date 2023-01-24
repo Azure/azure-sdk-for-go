@@ -170,16 +170,16 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	pager := client.NewListManifestsPager("hello-world", &ClientListManifestsOptions{
-		N: to.Ptr[int32](1),
+		MaxNum: to.Ptr[int32](1),
 	})
 	pages := 0
 	items := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.ACRManifests.Manifests)
+		require.NotEmpty(t, page.Manifests.Attributes)
 		pages++
-		for i, v := range page.ACRManifests.Manifests {
+		for i, v := range page.Manifests.Attributes {
 			fmt.Printf("page %d manifest %d: %s\n", pages, i+1, *v.Digest)
 			items++
 		}
@@ -194,8 +194,8 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.ACRManifests.Manifests)
-		for i, v := range page.ACRManifests.Manifests {
+		require.NotEmpty(t, page.Manifests.Attributes)
+		for i, v := range page.Manifests.Attributes {
 			fmt.Printf("manifest order by last updated on descending %d: %s\n", i+1, *v.Digest)
 			descendingItems = append(descendingItems, v)
 		}
@@ -207,8 +207,8 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		require.NotEmpty(t, page.ACRManifests.Manifests)
-		for i, v := range page.ACRManifests.Manifests {
+		require.NotEmpty(t, page.Manifests.Attributes)
+		for i, v := range page.Manifests.Attributes {
 			fmt.Printf("manifest order by last updated on descending %d: %s\n", i+1, *v.Digest)
 			ascendingItems = append(ascendingItems, v)
 		}
@@ -239,7 +239,7 @@ func TestClient_NewListRepositoriesPager(t *testing.T) {
 	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	pager := client.NewListRepositoriesPager(&ClientListRepositoriesOptions{
-		N: to.Ptr[int32](1),
+		MaxNum: to.Ptr[int32](1),
 	})
 	pages := 0
 	items := 0
@@ -264,7 +264,7 @@ func TestClient_NewListTagsPager(t *testing.T) {
 	client, err := NewClient("https://azacrlivetest.azurecr.io", cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	pager := client.NewListTagsPager("hello-world", &ClientListTagsOptions{
-		N: to.Ptr[int32](1),
+		MaxNum: to.Ptr[int32](1),
 	})
 	pages := 0
 	items := 0

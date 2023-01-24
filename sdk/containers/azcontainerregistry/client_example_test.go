@@ -88,7 +88,7 @@ func ExampleClient_NewListManifestsPager() {
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for i, v := range page.ACRManifests.Manifests {
+		for i, v := range page.Manifests.Attributes {
 			fmt.Printf("manifest %d: %s\n", i+1, *v.Digest)
 		}
 	}

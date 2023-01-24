@@ -41,7 +41,7 @@ func Example_deleteImages() {
 					log.Fatalf("failed to advance manifest page: %v", err)
 				}
 				imagesToKeep := 3
-				for i, m := range manifestPage.ACRManifests.Manifests {
+				for i, m := range manifestPage.Manifests.Attributes {
 					if i >= imagesToKeep {
 						for _, t := range m.Tags {
 							fmt.Printf("delete tag from image: %s", *t)

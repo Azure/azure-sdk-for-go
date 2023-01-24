@@ -172,7 +172,7 @@ type ClientGetTagPropertiesResponse struct {
 
 // ClientListManifestsResponse contains the response from method Client.NewListManifestsPager.
 type ClientListManifestsResponse struct {
-	ACRManifests
+	Manifests
 	// Link contains the information returned from the Link header response.
 	Link *string
 }

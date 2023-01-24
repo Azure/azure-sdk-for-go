@@ -43,45 +43,6 @@ func (a *acrAccessToken) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ACRManifests.
-func (a ACRManifests) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "link", a.Link)
-	populate(objectMap, "manifests", a.Manifests)
-	populate(objectMap, "registry", a.RegistryLoginServer)
-	populate(objectMap, "imageName", a.Repository)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ACRManifests.
-func (a *ACRManifests) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "link":
-			err = unpopulate(val, "Link", &a.Link)
-			delete(rawMsg, key)
-		case "manifests":
-			err = unpopulate(val, "Manifests", &a.Manifests)
-			delete(rawMsg, key)
-		case "registry":
-			err = unpopulate(val, "RegistryLoginServer", &a.RegistryLoginServer)
-			delete(rawMsg, key)
-		case "imageName":
-			err = unpopulate(val, "Repository", &a.Repository)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type acrRefreshToken.
 func (a acrRefreshToken) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -354,6 +315,45 @@ func (m *ManifestWriteableProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "writeEnabled":
 			err = unpopulate(val, "CanWrite", &m.CanWrite)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Manifests.
+func (m Manifests) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "manifests", m.Attributes)
+	populate(objectMap, "link", m.Link)
+	populate(objectMap, "registry", m.RegistryLoginServer)
+	populate(objectMap, "imageName", m.Repository)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Manifests.
+func (m *Manifests) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "manifests":
+			err = unpopulate(val, "Attributes", &m.Attributes)
+			delete(rawMsg, key)
+		case "link":
+			err = unpopulate(val, "Link", &m.Link)
+			delete(rawMsg, key)
+		case "registry":
+			err = unpopulate(val, "RegistryLoginServer", &m.RegistryLoginServer)
+			delete(rawMsg, key)
+		case "imageName":
+			err = unpopulate(val, "Repository", &m.Repository)
 			delete(rawMsg, key)
 		}
 		if err != nil {

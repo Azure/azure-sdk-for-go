@@ -79,7 +79,7 @@ type NamespaceForAMQPLinks interface {
 // NamespaceWithConnectionString configures a namespace with the information provided in a Event Hub connection string
 func NamespaceWithConnectionString(connStr string) NamespaceOption {
 	return func(ns *Namespace) error {
-		props, err := exported.NewConnectionStringProperties(connStr)
+		props, err := exported.ParseConnectionString(connStr)
 		if err != nil {
 			return err
 		}

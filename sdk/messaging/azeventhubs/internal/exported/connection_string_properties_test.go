@@ -23,7 +23,7 @@ func TestNewConnectionStringProperties(t *testing.T) {
 	t.Run("Simple", func(t *testing.T) {
 		var happyConnStr = "Endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";EntityPath=" + hubName
 
-		props, err := exported.NewConnectionStringProperties(happyConnStr)
+		props, err := exported.ParseConnectionString(happyConnStr)
 		require.NoError(t, err)
 
 		require.Equal(t, exported.ConnectionStringProperties{
@@ -39,7 +39,7 @@ func TestNewConnectionStringProperties(t *testing.T) {
 	t.Run("CaseIndifference", func(t *testing.T) {
 		var lowerCase = "endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccesskeyName=" + keyName + ";sharedAccessKey=" + secret + ";Entitypath=" + hubName
 
-		props, err := exported.NewConnectionStringProperties(lowerCase)
+		props, err := exported.ParseConnectionString(lowerCase)
 		require.NoError(t, err)
 
 		require.Equal(t, exported.ConnectionStringProperties{
@@ -55,7 +55,7 @@ func TestNewConnectionStringProperties(t *testing.T) {
 	t.Run("NoEntityPath", func(t *testing.T) {
 		var noEntityPath = "Endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret
 
-		props, err := exported.NewConnectionStringProperties(noEntityPath)
+		props, err := exported.ParseConnectionString(noEntityPath)
 		require.NoError(t, err)
 
 		require.Equal(t, exported.ConnectionStringProperties{
@@ -71,7 +71,7 @@ func TestNewConnectionStringProperties(t *testing.T) {
 	t.Run("EmbeddedSAS", func(t *testing.T) {
 		var withEmbeddedSAS = "Endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccessSignature=SharedAccessSignature sr=" + namespace + ".servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"
 
-		props, err := exported.NewConnectionStringProperties(withEmbeddedSAS)
+		props, err := exported.ParseConnectionString(withEmbeddedSAS)
 		require.NoError(t, err)
 
 		require.Equal(t, exported.ConnectionStringProperties{
@@ -85,19 +85,19 @@ func TestNewConnectionStringProperties(t *testing.T) {
 	})
 
 	t.Run("WithoutEndpoint", func(t *testing.T) {
-		_, err := exported.NewConnectionStringProperties("NoEndpoint=Blah")
+		_, err := exported.ParseConnectionString("NoEndpoint=Blah")
 		require.EqualError(t, err, "key \"Endpoint\" must not be empty")
 	})
 
 	t.Run("NoSASOrKeyName", func(t *testing.T) {
-		_, err := exported.NewConnectionStringProperties("Endpoint=sb://" + namespace + ".servicebus.windows.net/")
+		_, err := exported.ParseConnectionString("Endpoint=sb://" + namespace + ".servicebus.windows.net/")
 		require.EqualError(t, err, "key \"SharedAccessKeyName\" must not be empty")
 	})
 
 	t.Run("NoSASOrKeyValue", func(t *testing.T) {
 		var s = "Endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccessKeyName=" + keyName + ";EntityPath=" + hubName
 
-		_, err := exported.NewConnectionStringProperties(s)
+		_, err := exported.ParseConnectionString(s)
 		require.EqualError(t, err, "key \"SharedAccessKey\" or \"SharedAccessSignature\" cannot both be empty")
 	})
 }

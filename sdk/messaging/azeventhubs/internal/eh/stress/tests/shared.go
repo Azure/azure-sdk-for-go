@@ -119,7 +119,7 @@ func newStressTestData(name string, verbose bool, baggage map[string]string) (*s
 
 	log.Printf("Name: %s, TestRunID: %s", td.name, td.runID)
 
-	props, err := exported.NewConnectionStringProperties(td.ConnectionString)
+	props, err := exported.ParseConnectionString(td.ConnectionString)
 
 	if err != nil {
 		return nil, err

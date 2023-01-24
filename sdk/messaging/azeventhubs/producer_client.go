@@ -283,7 +283,7 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 // If the connection string has an EntityPath then eventHub must be empty.
 // If the connection string does not have an entity path then the eventHub must contain a value.
 func parseConn(connectionString string, eventHub string) (exported.ConnectionStringProperties, error) {
-	props, err := exported.NewConnectionStringProperties(connectionString)
+	props, err := exported.ParseConnectionString(connectionString)
 
 	if err != nil {
 		return exported.ConnectionStringProperties{}, err

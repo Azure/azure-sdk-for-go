@@ -34,14 +34,14 @@ type ConnectionStringProperties struct {
 	SharedAccessSignature *string
 }
 
-// NewConnectionStringProperties takes a connection string from the Azure portal and returns the
+// ParseConnectionString takes a connection string from the Azure portal and returns the
 // parsed representation.
 //
 // There are two supported formats:
 //  1. Connection strings generated from the portal (or elsewhere) that contain an embedded key and keyname.
 //  2. A connection string with an embedded SharedAccessSignature:
 //     Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"
-func NewConnectionStringProperties(connStr string) (ConnectionStringProperties, error) {
+func ParseConnectionString(connStr string) (ConnectionStringProperties, error) {
 	const (
 		endpointKey              = "Endpoint"
 		sharedAccessKeyNameKey   = "SharedAccessKeyName"

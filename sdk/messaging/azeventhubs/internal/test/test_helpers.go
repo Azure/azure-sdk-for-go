@@ -111,7 +111,7 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		"RESOURCE_GROUP",
 	})
 
-	connProps, err := exported.NewConnectionStringProperties(envVars["EVENTHUB_CONNECTION_STRING"])
+	connProps, err := exported.ParseConnectionString(envVars["EVENTHUB_CONNECTION_STRING"])
 	require.NoError(t, err)
 
 	return ConnectionParamsForTest{

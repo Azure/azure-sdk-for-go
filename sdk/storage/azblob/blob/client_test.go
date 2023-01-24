@@ -3555,6 +3555,7 @@ func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 	blobClient, err := blob.NewClientWithSharedKeyCredential(bbClient.URL(), cred, nil)
+	_require.NoError(err)
 
 	// Adding SAS and options
 	permissions := sas.BlobPermissions{

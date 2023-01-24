@@ -18,13 +18,13 @@ type ObjectReplicationRules struct {
 	Status string
 }
 
-// ObjectReplicationPolicy are deserialized attributes
+// ObjectReplicationPolicy are deserialized attributes.
 type ObjectReplicationPolicy struct {
 	PolicyId *string
 	Rules    *[]ObjectReplicationRules
 }
 
-// deserializeORSPolicies is utility function to deserialize ORS Policies
+// deserializeORSPolicies is utility function to deserialize ORS Policies.
 func deserializeORSPolicies(policies map[string]*string) (objectReplicationPolicies []ObjectReplicationPolicy) {
 	if policies == nil {
 		return nil
@@ -56,7 +56,7 @@ func deserializeORSPolicies(policies map[string]*string) (objectReplicationPolic
 	return
 }
 
-// ParseHTTPHeaders parses GetPropertiesResponse and returns HTTPHeaders
+// ParseHTTPHeaders parses GetPropertiesResponse and returns HTTPHeaders.
 func ParseHTTPHeaders(resp GetPropertiesResponse) HTTPHeaders {
 	return HTTPHeaders{
 		BlobContentType:        resp.ContentType,

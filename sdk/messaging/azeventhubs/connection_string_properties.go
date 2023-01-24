@@ -6,7 +6,7 @@ package azeventhubs
 import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 
 // ConnectionStringProperties are the properties of a connection string
-// as returned by [NewConnectionStringProperties].
+// as returned by [ParseConnectionString].
 type ConnectionStringProperties = exported.ConnectionStringProperties
 
 // ParseConnectionString takes a connection string from the Azure portal and returns the

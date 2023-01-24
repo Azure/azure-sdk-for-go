@@ -11,7 +11,7 @@ import (
 )
 
 // ConnectionStringProperties are the properties of a connection string
-// as returned by [NewConnectionStringProperties].
+// as returned by [ParseConnectionString].
 type ConnectionStringProperties struct {
 	// Endpoint is the Endpoint value in the connection string.
 	// Ex: sb://example.servicebus.windows.net

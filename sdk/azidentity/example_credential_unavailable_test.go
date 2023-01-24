@@ -13,22 +13,21 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 // timeoutWrapper signals ChainedTokenCredential to try another credential when managed identity times out
 type timeoutWrapper struct {
 	cred    *azidentity.ManagedIdentityCredential
-	timeout *time.Duration
+	timeout time.Duration
 }
 
 // GetToken implements the azcore.TokenCredential interface
-func (w timeoutWrapper) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+func (w *timeoutWrapper) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	var tk azcore.AccessToken
 	var err error
-	if *w.timeout > 0 {
-		c, cancel := context.WithTimeout(ctx, *w.timeout)
+	if w.timeout > 0 {
+		c, cancel := context.WithTimeout(ctx, w.timeout)
 		defer cancel()
 		tk, err = w.cred.GetToken(c, opts)
 		if ce := c.Err(); errors.Is(ce, context.DeadlineExceeded) {
@@ -37,7 +36,7 @@ func (w timeoutWrapper) GetToken(ctx context.Context, opts policy.TokenRequestOp
 			err = azidentity.NewCredentialUnavailableError("managed identity timed out")
 		} else {
 			// some managed identity implementation is available, so don't apply the timeout to future calls
-			*w.timeout = 0
+			w.timeout = 0
 		}
 	} else {
 		tk, err = w.cred.GetToken(ctx, opts)
@@ -58,7 +57,7 @@ func ExampleNewChainedTokenCredential_managedIdentityTimeout() {
 		// TODO: handle error
 	}
 	creds := []azcore.TokenCredential{
-		timeoutWrapper{mic, to.Ptr(time.Second)},
+		&timeoutWrapper{mic, time.Second},
 		azCLI,
 	}
 	chain, err := azidentity.NewChainedTokenCredential(creds, nil)

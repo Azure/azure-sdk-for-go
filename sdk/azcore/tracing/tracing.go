@@ -48,6 +48,9 @@ func (p Provider) NewTracer(name, version string) (tracer Tracer) {
 type TracerOptions struct {
 	// Inject contains the implementation for the Tracer.Inject method.
 	Inject func(context.Context, *http.Request) error
+
+	// SpanFromContext contains the implementation for the Tracer.SpanFromContext method.
+	SpanFromContext func(context.Context) (Span, bool)
 }
 
 // NewTracer creates a Tracer with the specified values.
@@ -58,16 +61,18 @@ func NewTracer(newSpanFn func(ctx context.Context, spanName string, options *Spa
 		options = &TracerOptions{}
 	}
 	return Tracer{
-		newSpanFn: newSpanFn,
-		injectFn:  options.Inject,
+		newSpanFn:         newSpanFn,
+		injectFn:          options.Inject,
+		spanFromContextFn: options.SpanFromContext,
 	}
 }
 
 // Tracer is the factory that creates Span instances.
 type Tracer struct {
-	attrs     []Attribute
-	newSpanFn func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
-	injectFn  func(ctx context.Context, req *http.Request) error
+	attrs             []Attribute
+	newSpanFn         func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
+	injectFn          func(ctx context.Context, req *http.Request) error
+	spanFromContextFn func(ctx context.Context) (Span, bool)
 }
 
 // Start creates a new span and a context.Context that contains it.
@@ -105,6 +110,15 @@ func (t Tracer) Inject(ctx context.Context, req *http.Request) error {
 // Enabled returns true if this Tracer is capable of creating Spans.
 func (t Tracer) Enabled() bool {
 	return t.newSpanFn != nil
+}
+
+// SpanFromContext returns the Span associated with the current context.
+// If the provided context has no Span, false is returned.
+func (t Tracer) SpanFromContext(ctx context.Context) (Span, bool) {
+	if t.spanFromContextFn != nil {
+		return t.spanFromContextFn(ctx)
+	}
+	return Span{}, false
 }
 
 // SpanOptions contains optional settings for creating a span.

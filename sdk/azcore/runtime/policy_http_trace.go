@@ -17,7 +17,7 @@ import (
 
 // httpTracePolicy is a policy that creates a trace for the HTTP request and its response
 func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
-	rawTracer := req.Raw().Context().Value(ctxWithTracingTracer{})
+	rawTracer := req.Raw().Context().Value(shared.CtxWithTracingTracer{})
 	if tracer, ok := rawTracer.(tracing.Tracer); ok {
 		attributes := []tracing.Attribute{
 			{Key: "http.method", Value: req.Raw().Method},
@@ -76,7 +76,7 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	ctx, span := tracer.Start(ctx, name, &tracing.SpanOptions{
 		Kind: tracing.SpanKindInternal,
 	})
-	ctx = context.WithValue(ctx, ctxWithTracingTracer{}, tracer)
+	ctx = context.WithValue(ctx, shared.CtxWithTracingTracer{}, tracer)
 	return ctx, func(err error) {
 		if err != nil {
 			span.AddError(err)
@@ -84,6 +84,3 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 		span.End()
 	}
 }
-
-// ctxWithTracingTracer is used as a context key for adding/retrieving tracing.Tracer.
-type ctxWithTracingTracer struct{}

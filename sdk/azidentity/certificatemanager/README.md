@@ -1,6 +1,6 @@
 # Azure Template Package client library for Go
 
-Azure Template Package client library for Go (`azpki`)  matches necessary patterns that the development team has established to create a unified SDK written in the Go programming language. These libraries follow the Azure SDK Design Guidelines for Go.
+Azure Template Package client library for Go (`certificatemanager`)  matches necessary patterns that the development team has established to create a unified SDK written in the Go programming language. These libraries follow the Azure SDK Design Guidelines for Go.
 
 The library allows client libraries to expose common functionality in a consistent fashion.  Once you learn how to use these APIs in one client library, you will know how to use them in other client libraries.
 
@@ -54,7 +54,7 @@ Security issues and bugs should be reported privately, via email, to the Microso
 
 ### License
 
-Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/template/azpki/LICENSE.txt) license.
+Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/certificatemanager/LICENSE.txt) license.
 
 <!-- LINKS -->
 [azure_sdk_for_go_contributing]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md

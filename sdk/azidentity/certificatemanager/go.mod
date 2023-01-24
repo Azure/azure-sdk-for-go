@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/template/azpki
+module github.com/Azure/azure-sdk-for-go/sdk/azidentity/certificatemanager
 
 go 1.18
 

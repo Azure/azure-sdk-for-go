@@ -3609,7 +3609,7 @@ func (s *BlobUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 	expiry := start.Add(time.Hour)
 	opts := blob.GetSASURLOptions{StartTime: &start}
 
-	// GetSASURL fails (with NoSharedKeyCredential) because blob client is created without credentials
+	// GetSASURL fails (with MissingSharedKeyCredential) because blob client is created without credentials
 	_, err = bbClient.BlobClient().GetSASURL(permissions, expiry, &opts)
-	_require.Equal(err, bloberror.NoSharedKeyCredential)
+	_require.Equal(err, bloberror.MissingSharedKeyCredential)
 }

@@ -623,9 +623,9 @@ func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 	expiry := start.Add(time.Hour)
 	opts := service.GetSASURLOptions{StartTime: &start}
 
-	// GetSASURL fails (with NoSharedKeyCredential) because service client is created without credentials
+	// GetSASURL fails (with MissingSharedKeyCredential) because service client is created without credentials
 	_, err = serviceClient.GetSASURL(resources, permissions, services, expiry, &opts)
-	_require.Equal(err, bloberror.NoSharedKeyCredential)
+	_require.Equal(err, bloberror.MissingSharedKeyCredential)
 
 }
 

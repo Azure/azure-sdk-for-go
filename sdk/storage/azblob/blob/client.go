@@ -268,7 +268,7 @@ func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *Co
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if b.sharedKey() == nil {
-		return "", bloberror.NoSharedKeyCredential
+		return "", bloberror.MissingSharedKeyCredential
 	}
 
 	urlParts, err := ParseURL(b.URL())

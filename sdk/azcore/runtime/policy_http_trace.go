@@ -43,6 +43,8 @@ func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
 				if reqID := resp.Header.Get(shared.HeaderXMSRequestID); reqID != "" {
 					span.SetAttributes(tracing.Attribute{Key: "az.service_request_id", Value: reqID})
 				}
+			} else if err != nil {
+				span.SetStatus(tracing.SpanStatusError, err.Error())
 			}
 			span.End()
 		}()
@@ -79,7 +81,7 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	ctx = context.WithValue(ctx, shared.CtxWithTracingTracer{}, tracer)
 	return ctx, func(err error) {
 		if err != nil {
-			span.AddError(err)
+			span.SetStatus(tracing.SpanStatusError, err.Error())
 		}
 		span.End()
 	}

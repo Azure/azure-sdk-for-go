@@ -5,6 +5,7 @@
 ### Features Added
 
 * Add support to log calculated block size and count during uploads
+* Added MissingSharedKeyCredential error type for cleaner UX. Related to [#19864](https://github.com/Azure/azure-sdk-for-go/issues/19864).
 
 ### Breaking Changes
 

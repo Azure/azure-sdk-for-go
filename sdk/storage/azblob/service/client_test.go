@@ -594,6 +594,41 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
 
+func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
+	_require := require.New(s.T())
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	// Creating service client without credentials
+	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), nil)
+	_require.Nil(err)
+
+	// Adding SAS and options
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Update: true,
+		Delete: true,
+	}
+	services := sas.AccountServices{
+		Blob: true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
+	opts := service.GetSASURLOptions{StartTime: &start}
+
+	// GetSASURL fails (with MissingSharedKeyCredential) because service client is created without credentials
+	_, err = serviceClient.GetSASURL(resources, permissions, services, expiry, &opts)
+	_require.Equal(err, bloberror.MissingSharedKeyCredential)
+
+}
+
 func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

@@ -7,12 +7,8 @@
 package azcertificatemanager
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
 	"reflect"
-	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -22,20 +18,20 @@ import (
 
 // Client contains the methods for the Client group.
 type Client struct {
-	endpoint string
-	certificateFormat *string
+	endpoint              string
+	certificateFormat     *string
 	certificateFileFormat *string
-	pl runtime.Pipeline
+	pl                    runtime.Pipeline
 }
 
 type ClientOptions struct {
 	azcore.ClientOptions
-	CertificateFormat *string
+	CertificateFormat     *string
 	CertificateFileFormat *string
 }
 
 // NewClient creates a new instance of Client with the specified values.
-func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, errors) {
+func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -49,12 +45,10 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{c.Audience + "/.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	client := &Client{
-		endpoint: endpoint,
-		certificateFormat: options.CertificateFormat,
+		endpoint:              endpoint,
+		certificateFormat:     options.CertificateFormat,
 		certificateFileFormat: options.CertificateFileFormat,
-		pl: pl,
+		pl:                    pl,
 	}
-	return client,nil
+	return client, nil
 }
-
-

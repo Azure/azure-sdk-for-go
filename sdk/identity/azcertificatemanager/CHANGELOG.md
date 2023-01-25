@@ -1,5 +1,7 @@
 # Release History
 
-## 0.1.0 (2023-01-17)
+## 0.1.0 (2023-01-25)
 
-* Template package validating release pipeline
+### Features Added
+
+* Initial Release

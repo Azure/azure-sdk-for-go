@@ -334,7 +334,7 @@ func (f fakeConfidentialClient) AcquireTokenByCredential(ctx context.Context, sc
 	return f.returnResult()
 }
 
-func (f fakeConfidentialClient) AcquireTokenOnBehalfOf(ctx context.Context, userAssertion string, scopes []string) (confidential.AuthResult, error) {
+func (f fakeConfidentialClient) AcquireTokenOnBehalfOf(ctx context.Context, userAssertion string, scopes []string, options ...confidential.AcquireOnBehalfOfOption) (confidential.AuthResult, error) {
 	if f.oboCallback != nil {
 		f.oboCallback(ctx, userAssertion, scopes)
 	}

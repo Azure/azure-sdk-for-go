@@ -8,7 +8,7 @@ trigger:
     - release/*
   paths:
     include:
-    - sdk/template/azidentity/certificatemanager
+    - sdk/template/identity/azcertificatemanager
 
 pr:
   branches:
@@ -19,10 +19,10 @@ pr:
     - release/*
   paths:
     include:
-    - sdk/template/azidentity/certificatemanager
+    - sdk/template/identity/azcertificatemanager
 
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'template/azidentity/certificatemanager'
+    ServiceDirectory: 'template/identity/azcertificatemanager'

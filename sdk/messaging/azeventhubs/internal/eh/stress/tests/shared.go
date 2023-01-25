@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package tests
 
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -17,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/joho/godotenv"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -117,13 +119,13 @@ func newStressTestData(name string, verbose bool, baggage map[string]string) (*s
 
 	log.Printf("Name: %s, TestRunID: %s", td.name, td.runID)
 
-	parsedConn, err := conn.ParsedConnectionFromStr(td.ConnectionString)
+	props, err := exported.ParseConnectionString(td.ConnectionString)
 
 	if err != nil {
 		return nil, err
 	}
 
-	td.Namespace = parsedConn.Namespace
+	td.Namespace = props.FullyQualifiedNamespace
 
 	startBaggage := map[string]string{
 		"Namespace": td.Namespace,
@@ -380,4 +382,24 @@ func enableVerboseLogging() {
 	azlog.SetListener(func(e azlog.Event, s string) {
 		log.Printf("[%s] %s", e, s)
 	})
+}
+
+func addSleepAfterFlag(fs *flag.FlagSet) func() {
+	var durationStr string
+	fs.StringVar(&durationStr, "sleepAfter", "0m", "Time to sleep after test completes")
+
+	return func() {
+		sleepAfter, err := time.ParseDuration(durationStr)
+
+		if err != nil {
+			log.Printf("Invalid sleepAfter duration given: %s", sleepAfter)
+			return
+		}
+
+		if sleepAfter > 0 {
+			log.Printf("Sleeping for %s", sleepAfter)
+			time.Sleep(sleepAfter)
+			log.Printf("Done sleeping for %s", sleepAfter)
+		}
+	}
 }

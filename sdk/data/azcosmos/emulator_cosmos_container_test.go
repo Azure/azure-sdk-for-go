@@ -52,6 +52,28 @@ func TestContainerCRUD(t *testing.T) {
 		t.Fatalf("Failed to read container: %v", err)
 	}
 
+	receivedIds := []string{}
+	opt := QueryContainersOptions{
+		QueryParameters: []QueryParameter{
+			{"@id", "aContainer"},
+		},
+	}
+	queryPager := database.NewQueryContainersPager("SELECT * FROM root r WHERE r.id = @id", &opt)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("Failed to query databases: %v", err)
+		}
+
+		for _, db := range queryResponse.Containers {
+			receivedIds = append(receivedIds, db.ID)
+		}
+	}
+
+	if len(receivedIds) != 1 {
+		t.Fatalf("Expected 1 container, got %d", len(receivedIds))
+	}
+
 	updatedProperties := ContainerProperties{
 		ID: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{

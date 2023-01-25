@@ -10,6 +10,7 @@ package armpostgresql_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -64,6 +65,7 @@ func TestPostgresqlTestSuite(t *testing.T) {
 func (testsuite *PostgresqlTestSuite) Prepare() {
 	var err error
 	// From step Servers_Create
+	fmt.Println("Call operation: Servers_Create")
 	serversClient, err := armpostgresql.NewServersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serversClientCreateResponsePoller, err := serversClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ServerForCreate{
@@ -98,6 +100,7 @@ func (testsuite *PostgresqlTestSuite) Prepare() {
 func (testsuite *PostgresqlTestSuite) TestServers() {
 	var err error
 	// From step Servers_List
+	fmt.Println("Call operation: Servers_List")
 	serversClient, err := armpostgresql.NewServersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serversClientNewListPager := serversClient.NewListPager(nil)
@@ -108,6 +111,7 @@ func (testsuite *PostgresqlTestSuite) TestServers() {
 	}
 
 	// From step Servers_ListByResourceGroup
+	fmt.Println("Call operation: Servers_ListByResourceGroup")
 	serversClientNewListByResourceGroupPager := serversClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for serversClientNewListByResourceGroupPager.More() {
 		_, err := serversClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -116,10 +120,12 @@ func (testsuite *PostgresqlTestSuite) TestServers() {
 	}
 
 	// From step Servers_Get
+	fmt.Println("Call operation: Servers_Get")
 	_, err = serversClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Servers_Update
+	fmt.Println("Call operation: Servers_Update")
 	serversClientUpdateResponsePoller, err := serversClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ServerUpdateParameters{
 		Properties: &armpostgresql.ServerUpdateParametersProperties{
 			AdministratorLoginPassword: to.Ptr(testsuite.adminPassword),
@@ -132,6 +138,7 @@ func (testsuite *PostgresqlTestSuite) TestServers() {
 	testsuite.Require().NoError(err)
 
 	// From step Servers_Restart
+	fmt.Println("Call operation: Servers_Restart")
 	serversClientRestartResponsePoller, err := serversClient.BeginRestart(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, serversClientRestartResponsePoller)
@@ -142,6 +149,7 @@ func (testsuite *PostgresqlTestSuite) TestServers() {
 func (testsuite *PostgresqlTestSuite) TestReplicas() {
 	var err error
 	// From step Replicas_ListByServer
+	fmt.Println("Call operation: Replicas_ListByServer")
 	replicasClient, err := armpostgresql.NewReplicasClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	replicasClientNewListByServerPager := replicasClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
@@ -156,6 +164,7 @@ func (testsuite *PostgresqlTestSuite) TestReplicas() {
 func (testsuite *PostgresqlTestSuite) TestFirewallrules() {
 	var err error
 	// From step FirewallRules_CreateOrUpdate
+	fmt.Println("Call operation: FirewallRules_CreateOrUpdate")
 	firewallRulesClient, err := armpostgresql.NewFirewallRulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	firewallRulesClientCreateOrUpdateResponsePoller, err := firewallRulesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "rule1", armpostgresql.FirewallRule{
@@ -169,6 +178,7 @@ func (testsuite *PostgresqlTestSuite) TestFirewallrules() {
 	testsuite.Require().NoError(err)
 
 	// From step FirewallRules_ListByServer
+	fmt.Println("Call operation: FirewallRules_ListByServer")
 	firewallRulesClientNewListByServerPager := firewallRulesClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
 	for firewallRulesClientNewListByServerPager.More() {
 		_, err := firewallRulesClientNewListByServerPager.NextPage(testsuite.ctx)
@@ -177,10 +187,12 @@ func (testsuite *PostgresqlTestSuite) TestFirewallrules() {
 	}
 
 	// From step FirewallRules_Get
+	fmt.Println("Call operation: FirewallRules_Get")
 	_, err = firewallRulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "rule1", nil)
 	testsuite.Require().NoError(err)
 
 	// From step FirewallRules_Delete
+	fmt.Println("Call operation: FirewallRules_Delete")
 	firewallRulesClientDeleteResponsePoller, err := firewallRulesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "rule1", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, firewallRulesClientDeleteResponsePoller)
@@ -255,6 +267,7 @@ func (testsuite *PostgresqlTestSuite) TestVirtualnetworkrules() {
 	subnetId = deploymentExtend.Properties.Outputs.(map[string]interface{})["subnetId"].(map[string]interface{})["value"].(string)
 
 	// From step VirtualNetworkRules_CreateOrUpdate
+	fmt.Println("Call operation: VirtualNetworkRules_CreateOrUpdate")
 	virtualNetworkRulesClient, err := armpostgresql.NewVirtualNetworkRulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	virtualNetworkRulesClientCreateOrUpdateResponsePoller, err := virtualNetworkRulesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "vnet-firewall-rule", armpostgresql.VirtualNetworkRule{
@@ -268,6 +281,7 @@ func (testsuite *PostgresqlTestSuite) TestVirtualnetworkrules() {
 	testsuite.Require().NoError(err)
 
 	// From step VirtualNetworkRules_ListByServer
+	fmt.Println("Call operation: VirtualNetworkRules_ListByServer")
 	virtualNetworkRulesClientNewListByServerPager := virtualNetworkRulesClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
 	for virtualNetworkRulesClientNewListByServerPager.More() {
 		_, err := virtualNetworkRulesClientNewListByServerPager.NextPage(testsuite.ctx)
@@ -276,10 +290,12 @@ func (testsuite *PostgresqlTestSuite) TestVirtualnetworkrules() {
 	}
 
 	// From step VirtualNetworkRules_Get
+	fmt.Println("Call operation: VirtualNetworkRules_Get")
 	_, err = virtualNetworkRulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "vnet-firewall-rule", nil)
 	testsuite.Require().NoError(err)
 
 	// From step VirtualNetworkRules_Delete
+	fmt.Println("Call operation: VirtualNetworkRules_Delete")
 	virtualNetworkRulesClientDeleteResponsePoller, err := virtualNetworkRulesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "vnet-firewall-rule", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, virtualNetworkRulesClientDeleteResponsePoller)
@@ -290,6 +306,7 @@ func (testsuite *PostgresqlTestSuite) TestVirtualnetworkrules() {
 func (testsuite *PostgresqlTestSuite) TestDatabases() {
 	var err error
 	// From step Databases_CreateOrUpdate
+	fmt.Println("Call operation: Databases_CreateOrUpdate")
 	databasesClient, err := armpostgresql.NewDatabasesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databasesClientCreateOrUpdateResponsePoller, err := databasesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "db1", armpostgresql.Database{
@@ -303,6 +320,7 @@ func (testsuite *PostgresqlTestSuite) TestDatabases() {
 	testsuite.Require().NoError(err)
 
 	// From step Databases_ListByServer
+	fmt.Println("Call operation: Databases_ListByServer")
 	databasesClientNewListByServerPager := databasesClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
 	for databasesClientNewListByServerPager.More() {
 		_, err := databasesClientNewListByServerPager.NextPage(testsuite.ctx)
@@ -311,10 +329,12 @@ func (testsuite *PostgresqlTestSuite) TestDatabases() {
 	}
 
 	// From step Databases_Get
+	fmt.Println("Call operation: Databases_Get")
 	_, err = databasesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "db1", nil)
 	testsuite.Require().NoError(err)
 
 	// From step Databases_Delete
+	fmt.Println("Call operation: Databases_Delete")
 	databasesClientDeleteResponsePoller, err := databasesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "db1", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, databasesClientDeleteResponsePoller)
@@ -325,6 +345,7 @@ func (testsuite *PostgresqlTestSuite) TestDatabases() {
 func (testsuite *PostgresqlTestSuite) TestConfigurations() {
 	var err error
 	// From step Configurations_CreateOrUpdate
+	fmt.Println("Call operation: Configurations_CreateOrUpdate")
 	configurationsClient, err := armpostgresql.NewConfigurationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	configurationsClientCreateOrUpdateResponsePoller, err := configurationsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "array_nulls", armpostgresql.Configuration{
@@ -338,6 +359,7 @@ func (testsuite *PostgresqlTestSuite) TestConfigurations() {
 	testsuite.Require().NoError(err)
 
 	// From step Configurations_ListByServer
+	fmt.Println("Call operation: Configurations_ListByServer")
 	configurationsClientNewListByServerPager := configurationsClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
 	for configurationsClientNewListByServerPager.More() {
 		_, err := configurationsClientNewListByServerPager.NextPage(testsuite.ctx)
@@ -346,6 +368,7 @@ func (testsuite *PostgresqlTestSuite) TestConfigurations() {
 	}
 
 	// From step Configurations_Get
+	fmt.Println("Call operation: Configurations_Get")
 	_, err = configurationsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "array_nulls", nil)
 	testsuite.Require().NoError(err)
 }
@@ -354,6 +377,7 @@ func (testsuite *PostgresqlTestSuite) TestConfigurations() {
 func (testsuite *PostgresqlTestSuite) TestServerparameters() {
 	var err error
 	// From step ServerParameters_ListUpdateConfigurations
+	fmt.Println("Call operation: ServerParameters_ListUpdateConfigurations")
 	serverParametersClient, err := armpostgresql.NewServerParametersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serverParametersClientListUpdateConfigurationsResponsePoller, err := serverParametersClient.BeginListUpdateConfigurations(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ConfigurationListResult{
@@ -380,6 +404,7 @@ func (testsuite *PostgresqlTestSuite) TestServerparameters() {
 func (testsuite *PostgresqlTestSuite) TestLogfiles() {
 	var err error
 	// From step LogFiles_ListByServer
+	fmt.Println("Call operation: LogFiles_ListByServer")
 	logFilesClient, err := armpostgresql.NewLogFilesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	logFilesClientNewListByServerPager := logFilesClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
@@ -394,6 +419,7 @@ func (testsuite *PostgresqlTestSuite) TestLogfiles() {
 func (testsuite *PostgresqlTestSuite) TestServeradministrators() {
 	var err error
 	// From step ServerAdministrators_CreateOrUpdate
+	fmt.Println("Call operation: ServerAdministrators_CreateOrUpdate")
 	serverAdministratorsClient, err := armpostgresql.NewServerAdministratorsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serverAdministratorsClientCreateOrUpdateResponsePoller, err := serverAdministratorsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ServerAdministratorResource{
@@ -409,6 +435,7 @@ func (testsuite *PostgresqlTestSuite) TestServeradministrators() {
 	testsuite.Require().NoError(err)
 
 	// From step ServerAdministrators_List
+	fmt.Println("Call operation: ServerAdministrators_List")
 	serverAdministratorsClientNewListPager := serverAdministratorsClient.NewListPager(testsuite.resourceGroupName, testsuite.serverName, nil)
 	for serverAdministratorsClientNewListPager.More() {
 		_, err := serverAdministratorsClientNewListPager.NextPage(testsuite.ctx)
@@ -417,10 +444,12 @@ func (testsuite *PostgresqlTestSuite) TestServeradministrators() {
 	}
 
 	// From step ServerAdministrators_Get
+	fmt.Println("Call operation: ServerAdministrators_Get")
 	_, err = serverAdministratorsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ServerAdministrators_Delete
+	fmt.Println("Call operation: ServerAdministrators_Delete")
 	serverAdministratorsClientDeleteResponsePoller, err := serverAdministratorsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, serverAdministratorsClientDeleteResponsePoller)
@@ -431,6 +460,7 @@ func (testsuite *PostgresqlTestSuite) TestServeradministrators() {
 func (testsuite *PostgresqlTestSuite) TestRecoverableservers() {
 	var err error
 	// From step RecoverableServers_Get
+	fmt.Println("Call operation: RecoverableServers_Get")
 	recoverableServersClient, err := armpostgresql.NewRecoverableServersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = recoverableServersClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, nil)
@@ -441,6 +471,7 @@ func (testsuite *PostgresqlTestSuite) TestRecoverableservers() {
 func (testsuite *PostgresqlTestSuite) TestServerbasedperformancetier() {
 	var err error
 	// From step ServerBasedPerformanceTier_List
+	fmt.Println("Call operation: ServerBasedPerformanceTier_List")
 	serverBasedPerformanceTierClient, err := armpostgresql.NewServerBasedPerformanceTierClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serverBasedPerformanceTierClientNewListPager := serverBasedPerformanceTierClient.NewListPager(testsuite.resourceGroupName, testsuite.serverName, nil)
@@ -455,6 +486,7 @@ func (testsuite *PostgresqlTestSuite) TestServerbasedperformancetier() {
 func (testsuite *PostgresqlTestSuite) TestLocationbasedperformancetier() {
 	var err error
 	// From step LocationBasedPerformanceTier_List
+	fmt.Println("Call operation: LocationBasedPerformanceTier_List")
 	locationBasedPerformanceTierClient, err := armpostgresql.NewLocationBasedPerformanceTierClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	locationBasedPerformanceTierClientNewListPager := locationBasedPerformanceTierClient.NewListPager("WestUS", nil)
@@ -469,6 +501,7 @@ func (testsuite *PostgresqlTestSuite) TestLocationbasedperformancetier() {
 func (testsuite *PostgresqlTestSuite) TestChecknameavailability() {
 	var err error
 	// From step CheckNameAvailability_Execute
+	fmt.Println("Call operation: CheckNameAvailability_Execute")
 	checkNameAvailabilityClient, err := armpostgresql.NewCheckNameAvailabilityClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = checkNameAvailabilityClient.Execute(testsuite.ctx, armpostgresql.NameAvailabilityRequest{
@@ -482,6 +515,7 @@ func (testsuite *PostgresqlTestSuite) TestChecknameavailability() {
 func (testsuite *PostgresqlTestSuite) TestOperations() {
 	var err error
 	// From step Operations_List
+	fmt.Println("Call operation: Operations_List")
 	operationsClient, err := armpostgresql.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = operationsClient.List(testsuite.ctx, nil)
@@ -491,6 +525,7 @@ func (testsuite *PostgresqlTestSuite) TestOperations() {
 func (testsuite *PostgresqlTestSuite) Cleanup() {
 	var err error
 	// From step Servers_Delete
+	fmt.Println("Call operation: Servers_Delete")
 	serversClient, err := armpostgresql.NewServersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serversClientDeleteResponsePoller, err := serversClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, nil)

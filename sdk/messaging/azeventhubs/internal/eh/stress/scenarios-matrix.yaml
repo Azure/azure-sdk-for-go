@@ -6,13 +6,39 @@ matrix:
   scenarios:
     batch:
       testTarget: batch
+      type: "batch"
+      rounds: 100
+      prefetch: 0
+      verbose: ""
+      sleepAfter: "5m"
     batchprefetchoff:
-      testTarget: batchprefetchoff
+      testTarget: batch
+      rounds: 100
+      prefetch: -1
+      verbose: ""
+      sleepAfter: "5m"
     batchinfinite:
-      testTarget: batchinfinite
+      testTarget: batch
+      type: "batch"
+      rounds: 100
+      prefetch: 0
+      verbose: ""
+      sleepAfter: "5m"
     processor:
       testTarget: processor
+      rounds: 100
+      prefetch: 0
+      verbose: ""
+      sleepAfter: "5m"
     processorprefetchoff:
-      testTarget: processorprefetchoff
+      testTarget: processor
+      rounds: 100
+      prefetch: -1
+      verbose: ""
+      sleepAfter: "5m"
     processorinfinite:
-      testTarget: processorinfinite
+      testTarget: processor
+      rounds: 100
+      prefetch: 0
+      verbose: ""
+      sleepAfter: "5m"

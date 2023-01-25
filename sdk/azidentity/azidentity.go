@@ -43,7 +43,7 @@ const (
 	tenantIDValidationErr   = "invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"
 )
 
-func getConfidentialClient(clientID, tenantID string, cred confidential.Credential, co *azcore.ClientOptions, additionalOpts ...confidential.Option) (confidential.Client, error) {
+var getConfidentialClient = func(clientID, tenantID string, cred confidential.Credential, co *azcore.ClientOptions, additionalOpts ...confidential.Option) (confidentialClient, error) {
 	if !validTenantID(tenantID) {
 		return confidential.Client{}, errors.New(tenantIDValidationErr)
 	}
@@ -63,7 +63,11 @@ func getConfidentialClient(clientID, tenantID string, cred confidential.Credenti
 	return confidential.New(clientID, cred, o...)
 }
 
+<<<<<<< HEAD
 func getPublicClient(clientID, tenantID string, co *azcore.ClientOptions, additionalOpts ...public.Option) (public.Client, error) {
+=======
+var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions) (public.Client, error) {
+>>>>>>> caeed5de3b592c958e7215a70e2f3fe9bfd3eac9
 	if !validTenantID(tenantID) {
 		return public.Client{}, errors.New(tenantIDValidationErr)
 	}
@@ -163,9 +167,16 @@ func (p pipelineAdapter) Do(r *http.Request) (*http.Response, error) {
 
 // enables fakes for test scenarios
 type confidentialClient interface {
+<<<<<<< HEAD
 	AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireSilentOption) (confidential.AuthResult, error)
 	AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireByAuthCodeOption) (confidential.AuthResult, error)
 	AcquireTokenByCredential(ctx context.Context, scopes []string, options ...confidential.AcquireByCredentialOption) (confidential.AuthResult, error)
+=======
+	AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireTokenSilentOption) (confidential.AuthResult, error)
+	AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireTokenByAuthCodeOption) (confidential.AuthResult, error)
+	AcquireTokenByCredential(ctx context.Context, scopes []string) (confidential.AuthResult, error)
+	AcquireTokenOnBehalfOf(ctx context.Context, userAssertion string, scopes []string) (confidential.AuthResult, error)
+>>>>>>> caeed5de3b592c958e7215a70e2f3fe9bfd3eac9
 }
 
 // enables fakes for test scenarios

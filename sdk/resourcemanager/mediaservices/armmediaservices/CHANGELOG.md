@@ -1,5 +1,20 @@
 # Release History
 
+## 3.2.0 (2023-01-13)
+### Features Added
+
+- New value `EncoderNamedPresetDDGoodQualityAudio` added to type alias `EncoderNamedPreset`
+- New value `JobErrorCategoryAccount` added to type alias `JobErrorCategory`
+- New value `JobErrorCodeIdentityUnsupported` added to type alias `JobErrorCode`
+- New function `*DDAudio.GetAudio() *Audio`
+- New function `*DDAudio.GetCodec() *Codec`
+- New struct `DDAudio`
+- New struct `Fade`
+- New field `FadeIn` in struct `Filters`
+- New field `FadeOut` in struct `Filters`
+- New field `ExperimentalOptions` in struct `StandardEncoderPreset`
+
+
 ## 3.1.0 (2022-09-02)
 ### Features Added
 

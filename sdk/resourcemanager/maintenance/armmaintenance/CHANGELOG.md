@@ -1,5 +1,11 @@
 # Release History
 
+## 1.1.0-beta.2 (2023-01-27)
+### Features Added
+
+- New value `MaintenanceScopeResource` added to type alias `MaintenanceScope`
+
+
 ## 1.1.0-beta.1 (2022-05-19)
 ### Features Added
 

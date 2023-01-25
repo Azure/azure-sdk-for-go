@@ -5,6 +5,7 @@ package internal
 import (
 	"context"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 )
@@ -13,7 +14,7 @@ func (l *rpcLink) LinkName() string {
 	return l.sender.LinkName()
 }
 
-func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (RPCLink, uint64, error) {
+func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error) {
 	client, connID, err := ns.GetAMQPClientImpl(ctx)
 
 	if err != nil {

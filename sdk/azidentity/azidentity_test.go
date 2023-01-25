@@ -307,6 +307,9 @@ type fakeConfidentialClient struct {
 
 	// set true to have silent auth succeed
 	silentAuth bool
+
+	// optional callbacks for validating MSAL call args
+	oboCallback func(context.Context, string, []string)
 }
 
 func (f fakeConfidentialClient) returnResult() (confidential.AuthResult, error) {
@@ -328,6 +331,13 @@ func (f fakeConfidentialClient) AcquireTokenByAuthCode(ctx context.Context, code
 }
 
 func (f fakeConfidentialClient) AcquireTokenByCredential(ctx context.Context, scopes []string, options ...confidential.AcquireByCredentialOption) (confidential.AuthResult, error) {
+	return f.returnResult()
+}
+
+func (f fakeConfidentialClient) AcquireTokenOnBehalfOf(ctx context.Context, userAssertion string, scopes []string) (confidential.AuthResult, error) {
+	if f.oboCallback != nil {
+		f.oboCallback(ctx, userAssertion, scopes)
+	}
 	return f.returnResult()
 }
 

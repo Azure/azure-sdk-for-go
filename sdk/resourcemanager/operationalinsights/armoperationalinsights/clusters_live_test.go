@@ -10,6 +10,7 @@ package armoperationalinsights_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestClustersTestSuite(t *testing.T) {
 func (testsuite *ClustersTestSuite) TestCluster() {
 	var err error
 	// From step Clusters_Create
+	fmt.Println("Call operation: Clusters_CreateOrUpdate")
 	clustersClient, err := armoperationalinsights.NewClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	clustersClientCreateOrUpdateResponsePoller, err := clustersClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, armoperationalinsights.Cluster{
@@ -80,6 +82,7 @@ func (testsuite *ClustersTestSuite) TestCluster() {
 	testsuite.Require().NoError(err)
 
 	// From step Clusters_List
+	fmt.Println("Call operation: Clusters_List")
 	clustersClientNewListPager := clustersClient.NewListPager(nil)
 	for clustersClientNewListPager.More() {
 		_, err := clustersClientNewListPager.NextPage(testsuite.ctx)
@@ -88,6 +91,7 @@ func (testsuite *ClustersTestSuite) TestCluster() {
 	}
 
 	// From step Clusters_ListByResourceGroup
+	fmt.Println("Call operation: Clusters_ListByResourceGroup")
 	clustersClientNewListByResourceGroupPager := clustersClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for clustersClientNewListByResourceGroupPager.More() {
 		_, err := clustersClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -96,10 +100,12 @@ func (testsuite *ClustersTestSuite) TestCluster() {
 	}
 
 	// From step Clusters_Get
+	fmt.Println("Call operation: Clusters_Get")
 	_, err = clustersClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Clusters_Update
+	fmt.Println("Call operation: Clusters_Update")
 	clustersClientUpdateResponsePoller, err := clustersClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, armoperationalinsights.ClusterPatch{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("val2"),
@@ -110,6 +116,7 @@ func (testsuite *ClustersTestSuite) TestCluster() {
 	testsuite.Require().NoError(err)
 
 	// From step Clusters_Delete
+	fmt.Println("Call operation: Clusters_Delete")
 	clustersClientDeleteResponsePoller, err := clustersClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, clustersClientDeleteResponsePoller)

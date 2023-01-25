@@ -7,8 +7,6 @@
 package lease
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
@@ -24,10 +22,6 @@ type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
 // BlobAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
 type BlobAcquireOptions struct {
-	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.
-	Duration *int32
-
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -35,9 +29,7 @@ func (o *BlobAcquireOptions) format() (generated.BlobClientAcquireLeaseOptions, 
 	if o == nil {
 		return generated.BlobClientAcquireLeaseOptions{}, nil
 	}
-	return generated.BlobClientAcquireLeaseOptions{
-		Duration: o.Duration,
-	}, o.ModifiedAccessConditions
+	return generated.BlobClientAcquireLeaseOptions{}, o.ModifiedAccessConditions
 }
 
 // BlobBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
@@ -68,25 +60,15 @@ func (o *BlobBreakOptions) format() (*generated.BlobClientBreakLeaseOptions, *Mo
 
 // BlobChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
 type BlobChangeOptions struct {
-	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *BlobChangeOptions) format() (*string, *generated.BlobClientChangeLeaseOptions, *ModifiedAccessConditions, error) {
-	generatedUuid, err := uuid.New()
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	leaseID := to.Ptr(generatedUuid.String())
+func (o *BlobChangeOptions) format() (*generated.BlobClientChangeLeaseOptions, *ModifiedAccessConditions, error) {
 	if o == nil {
-		return leaseID, nil, nil, nil
+		return nil, nil, nil
 	}
 
-	if o.ProposedLeaseID == nil {
-		o.ProposedLeaseID = leaseID
-	}
-
-	return o.ProposedLeaseID, nil, o.ModifiedAccessConditions, nil
+	return nil, o.ModifiedAccessConditions, nil
 }
 
 // BlobRenewOptions contains the optional parameters for the LeaseClient.RenewLease method.
@@ -119,10 +101,6 @@ func (o *BlobReleaseOptions) format() (*generated.BlobClientReleaseLeaseOptions,
 
 // ContainerAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
 type ContainerAcquireOptions struct {
-	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.
-	Duration *int32
-
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -130,9 +108,7 @@ func (o *ContainerAcquireOptions) format() (generated.ContainerClientAcquireLeas
 	if o == nil {
 		return generated.ContainerClientAcquireLeaseOptions{}, nil
 	}
-	return generated.ContainerClientAcquireLeaseOptions{
-		Duration: o.Duration,
-	}, o.ModifiedAccessConditions
+	return generated.ContainerClientAcquireLeaseOptions{}, o.ModifiedAccessConditions
 }
 
 // ContainerBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
@@ -163,25 +139,14 @@ func (o *ContainerBreakOptions) format() (*generated.ContainerClientBreakLeaseOp
 
 // ContainerChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
 type ContainerChangeOptions struct {
-	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ContainerChangeOptions) format() (*string, *generated.ContainerClientChangeLeaseOptions, *ModifiedAccessConditions, error) {
-	generatedUuid, err := uuid.New()
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	leaseID := to.Ptr(generatedUuid.String())
+func (o *ContainerChangeOptions) format() (*generated.ContainerClientChangeLeaseOptions, *ModifiedAccessConditions, error) {
 	if o == nil {
-		return leaseID, nil, nil, nil
+		return nil, nil, nil
 	}
-
-	if o.ProposedLeaseID == nil {
-		o.ProposedLeaseID = leaseID
-	}
-
-	return o.ProposedLeaseID, nil, o.ModifiedAccessConditions, nil
+	return nil, o.ModifiedAccessConditions, nil
 }
 
 // ContainerRenewOptions contains the optional parameters for the LeaseClient.RenewLease method.

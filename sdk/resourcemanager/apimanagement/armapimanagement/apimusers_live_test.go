@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimusersTestSuite(t *testing.T) {
 func (testsuite *ApimusersTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimusersTestSuite) Prepare() {
 func (testsuite *ApimusersTestSuite) TestUser() {
 	var err error
 	// From step User_CreateOrUpdate
+	fmt.Println("Call operation: User_CreateOrUpdate")
 	userClient, err := armapimanagement.NewUserClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = userClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, armapimanagement.UserCreateParameters{
@@ -103,10 +106,12 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	testsuite.Require().NoError(err)
 
 	// From step User_GetEntityTag
+	fmt.Println("Call operation: User_GetEntityTag")
 	_, err = userClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step User_ListByService
+	fmt.Println("Call operation: User_ListByService")
 	userClientNewListByServicePager := userClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.UserClientListByServiceOptions{Filter: nil,
 		Top:          nil,
 		Skip:         nil,
@@ -119,10 +124,12 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	}
 
 	// From step User_Get
+	fmt.Println("Call operation: User_Get")
 	_, err = userClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step User_Update
+	fmt.Println("Call operation: User_Update")
 	_, err = userClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, "*", armapimanagement.UserUpdateParameters{
 		Properties: &armapimanagement.UserUpdateParametersProperties{
 			Email:     to.Ptr("foobar@outlook.com"),
@@ -133,10 +140,12 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	testsuite.Require().NoError(err)
 
 	// From step User_GenerateSsoUrl
+	fmt.Println("Call operation: User_GenerateSsoUrl")
 	_, err = userClient.GenerateSsoURL(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step UserGroup_List
+	fmt.Println("Call operation: UserGroup_List")
 	userGroupClient, err := armapimanagement.NewUserGroupClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	userGroupClientNewListPager := userGroupClient.NewListPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, &armapimanagement.UserGroupClientListOptions{Filter: nil,
@@ -150,6 +159,7 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	}
 
 	// From step UserSubscription_List
+	fmt.Println("Call operation: UserSubscription_List")
 	userSubscriptionClient, err := armapimanagement.NewUserSubscriptionClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	userSubscriptionClientNewListPager := userSubscriptionClient.NewListPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, &armapimanagement.UserSubscriptionClientListOptions{Filter: nil,
@@ -163,6 +173,7 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	}
 
 	// From step UserIdentities_List
+	fmt.Println("Call operation: UserIdentities_List")
 	userIdentitiesClient, err := armapimanagement.NewUserIdentitiesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	userIdentitiesClientNewListPager := userIdentitiesClient.NewListPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, nil)
@@ -173,12 +184,14 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	}
 
 	// From step UserConfirmationPassword_Send
+	fmt.Println("Call operation: UserConfirmationPassword_Send")
 	userConfirmationPasswordClient, err := armapimanagement.NewUserConfirmationPasswordClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = userConfirmationPasswordClient.Send(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, &armapimanagement.UserConfirmationPasswordClientSendOptions{AppType: nil})
 	testsuite.Require().NoError(err)
 
 	// From step User_Delete
+	fmt.Println("Call operation: User_Delete")
 	_, err = userClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, "*", &armapimanagement.UserClientDeleteOptions{DeleteSubscriptions: nil,
 		Notify:  nil,
 		AppType: nil,

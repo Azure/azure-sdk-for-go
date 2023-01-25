@@ -16,15 +16,5 @@
                 "storeLogByFilter": "[error|Error|Exception]"
             }
         }
-    },
-    "mockTest": {
-        "mockTestScript": {
-            "path": "./eng/scripts/automation/Invoke-MockTest.ps1",
-            "script": "pwsh",
-            "logPrefix": "[GO-MockTest]",
-            "stderr":{
-                "storeLogByFilter": "[error|Error|Exception]"
-            }
-        }
     }
 }

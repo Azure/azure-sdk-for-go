@@ -77,7 +77,7 @@ type AppendBlobClientCreateOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -136,10 +136,6 @@ type BlobClientAbortCopyFromURLOptions struct {
 
 // BlobClientAcquireLeaseOptions contains the optional parameters for the BlobClient.AcquireLease method.
 type BlobClientAcquireLeaseOptions struct {
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using
-	// renew or change.
-	Duration *int32
 	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
 	// not in the correct format. See Guid Constructor (String) for a list of valid GUID
 	// string formats.
@@ -197,7 +193,7 @@ type BlobClientCopyFromURLOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -218,7 +214,7 @@ type BlobClientCreateSnapshotOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -415,7 +411,7 @@ type BlobClientSetMetadataOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -476,7 +472,7 @@ type BlobClientStartCopyFromURLOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
@@ -656,7 +652,7 @@ type BlockBlobClientCommitBlockListOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -699,7 +695,7 @@ type BlockBlobClientPutBlobFromURLOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -762,7 +758,7 @@ type BlockBlobClientUploadOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -796,10 +792,6 @@ type ClearRange struct {
 
 // ContainerClientAcquireLeaseOptions contains the optional parameters for the ContainerClient.AcquireLease method.
 type ContainerClientAcquireLeaseOptions struct {
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using
-	// renew or change.
-	Duration *int32
 	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
 	// not in the correct format. See Guid Constructor (String) for a list of valid GUID
 	// string formats.
@@ -849,7 +841,7 @@ type ContainerClientCreateOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -893,7 +885,7 @@ type ContainerClientGetPropertiesOptions struct {
 	Timeout *int32
 }
 
-// ContainerClientListBlobFlatSegmentOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegment
+// ContainerClientListBlobFlatSegmentOptions contains the optional parameters for the ContainerClient.NewListBlobFlatSegmentPager
 // method.
 type ContainerClientListBlobFlatSegmentOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
@@ -920,7 +912,7 @@ type ContainerClientListBlobFlatSegmentOptions struct {
 	Timeout *int32
 }
 
-// ContainerClientListBlobHierarchySegmentOptions contains the optional parameters for the ContainerClient.ListBlobHierarchySegment
+// ContainerClientListBlobHierarchySegmentOptions contains the optional parameters for the ContainerClient.NewListBlobHierarchySegmentPager
 // method.
 type ContainerClientListBlobHierarchySegmentOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
@@ -1013,7 +1005,7 @@ type ContainerClientSetMetadataOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -1333,7 +1325,7 @@ type PageBlobClientCreateOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -1344,7 +1336,8 @@ type PageBlobClientCreateOptions struct {
 	Timeout *int32
 }
 
-// PageBlobClientGetPageRangesDiffOptions contains the optional parameters for the PageBlobClient.GetPageRangesDiff method.
+// PageBlobClientGetPageRangesDiffOptions contains the optional parameters for the PageBlobClient.NewGetPageRangesDiffPager
+// method.
 type PageBlobClientGetPageRangesDiffOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
@@ -1382,7 +1375,7 @@ type PageBlobClientGetPageRangesDiffOptions struct {
 	Timeout *int32
 }
 
-// PageBlobClientGetPageRangesOptions contains the optional parameters for the PageBlobClient.GetPageRanges method.
+// PageBlobClientGetPageRangesOptions contains the optional parameters for the PageBlobClient.NewGetPageRangesPager method.
 type PageBlobClientGetPageRangesOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
@@ -1495,7 +1488,7 @@ type QueryFormat struct {
 	JSONTextConfiguration *JSONTextConfiguration `xml:"JsonTextConfiguration"`
 
 	// parquet configuration
-	ParquetTextConfiguration interface{} `xml:"ParquetTextConfiguration"`
+	ParquetTextConfiguration any `xml:"ParquetTextConfiguration"`
 }
 
 // QueryRequest - Groups the set of query request settings.
@@ -1558,8 +1551,6 @@ type ServiceClientFilterBlobsOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations]
 	Timeout *int32
-	// Filters the results to return only to return only blobs whose tags match the specified expression.
-	Where *string
 }
 
 // ServiceClientGetAccountInfoOptions contains the optional parameters for the ServiceClient.GetAccountInfo method.
@@ -1597,7 +1588,7 @@ type ServiceClientGetUserDelegationKeyOptions struct {
 	Timeout *int32
 }
 
-// ServiceClientListContainersSegmentOptions contains the optional parameters for the ServiceClient.ListContainersSegment
+// ServiceClientListContainersSegmentOptions contains the optional parameters for the ServiceClient.NewListContainersSegmentPager
 // method.
 type ServiceClientListContainersSegmentOptions struct {
 	// Include this parameter to specify that the container's metadata be returned as part of the response body.

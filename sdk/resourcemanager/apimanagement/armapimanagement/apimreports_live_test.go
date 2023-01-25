@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestApimreportsTestSuite(t *testing.T) {
 func (testsuite *ApimreportsTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -86,6 +88,7 @@ func (testsuite *ApimreportsTestSuite) Prepare() {
 func (testsuite *ApimreportsTestSuite) TestReports() {
 	var err error
 	// From step Reports_ListByApi
+	fmt.Println("Call operation: Reports_ListByApi")
 	reportsClient, err := armapimanagement.NewReportsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	reportsClientNewListByAPIPager := reportsClient.NewListByAPIPager(testsuite.resourceGroupName, testsuite.serviceName, "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByAPIOptions{Top: nil,
@@ -99,6 +102,7 @@ func (testsuite *ApimreportsTestSuite) TestReports() {
 	}
 
 	// From step Reports_ListByGeo
+	fmt.Println("Call operation: Reports_ListByGeo")
 	reportsClientNewListByGeoPager := reportsClient.NewListByGeoPager(testsuite.resourceGroupName, testsuite.serviceName, "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByGeoOptions{Top: nil,
 		Skip: nil,
 	})
@@ -109,6 +113,7 @@ func (testsuite *ApimreportsTestSuite) TestReports() {
 	}
 
 	// From step Reports_ListByOperation
+	fmt.Println("Call operation: Reports_ListByOperation")
 	reportsClientNewListByOperationPager := reportsClient.NewListByOperationPager(testsuite.resourceGroupName, testsuite.serviceName, "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByOperationOptions{Top: nil,
 		Skip:    nil,
 		Orderby: nil,
@@ -120,6 +125,7 @@ func (testsuite *ApimreportsTestSuite) TestReports() {
 	}
 
 	// From step Reports_ListByProduct
+	fmt.Println("Call operation: Reports_ListByProduct")
 	reportsClientNewListByProductPager := reportsClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByProductOptions{Top: nil,
 		Skip:    nil,
 		Orderby: nil,
@@ -131,6 +137,7 @@ func (testsuite *ApimreportsTestSuite) TestReports() {
 	}
 
 	// From step Reports_ListBySubscription
+	fmt.Println("Call operation: Reports_ListBySubscription")
 	reportsClientNewListBySubscriptionPager := reportsClient.NewListBySubscriptionPager(testsuite.resourceGroupName, testsuite.serviceName, "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListBySubscriptionOptions{Top: nil,
 		Skip:    nil,
 		Orderby: nil,
@@ -142,6 +149,7 @@ func (testsuite *ApimreportsTestSuite) TestReports() {
 	}
 
 	// From step Reports_ListByTime
+	fmt.Println("Call operation: Reports_ListByTime")
 	reportsClientNewListByTimePager := reportsClient.NewListByTimePager(testsuite.resourceGroupName, testsuite.serviceName, "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", "PT15M", &armapimanagement.ReportsClientListByTimeOptions{Top: nil,
 		Skip:    nil,
 		Orderby: nil,
@@ -153,6 +161,7 @@ func (testsuite *ApimreportsTestSuite) TestReports() {
 	}
 
 	// From step Reports_ListByUser
+	fmt.Println("Call operation: Reports_ListByUser")
 	reportsClientNewListByUserPager := reportsClient.NewListByUserPager(testsuite.resourceGroupName, testsuite.serviceName, "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByUserOptions{Top: nil,
 		Skip:    nil,
 		Orderby: nil,
@@ -168,6 +177,7 @@ func (testsuite *ApimreportsTestSuite) TestReports() {
 func (testsuite *ApimreportsTestSuite) TestRegion() {
 	var err error
 	// From step Region_ListByService
+	fmt.Println("Call operation: Region_ListByService")
 	regionClient, err := armapimanagement.NewRegionClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	regionClientNewListByServicePager := regionClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, nil)

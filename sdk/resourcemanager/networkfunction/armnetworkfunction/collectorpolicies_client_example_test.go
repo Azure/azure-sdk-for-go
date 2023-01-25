@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/CollectorPoliciesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPoliciesList.json
 func ExampleCollectorPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleCollectorPoliciesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1",
-		"atc",
-		nil)
+	pager := client.NewListPager("rg1", "atc", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleCollectorPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/CollectorPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyGet.json
 func ExampleCollectorPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleCollectorPoliciesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"atc",
-		"cp1",
-		nil)
+	res, err := client.Get(ctx, "rg1", "atc", "cp1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleCollectorPoliciesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/CollectorPolicyCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyCreate.json
 func ExampleCollectorPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,31 +71,27 @@ func ExampleCollectorPoliciesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"atc",
-		"cp1",
-		armnetworkfunction.CollectorPolicy{
-			Properties: &armnetworkfunction.CollectorPolicyPropertiesFormat{
-				EmissionPolicies: []*armnetworkfunction.EmissionPoliciesPropertiesFormat{
-					{
-						EmissionDestinations: []*armnetworkfunction.EmissionPolicyDestination{
-							{
-								DestinationType: to.Ptr(armnetworkfunction.DestinationTypeAzureMonitor),
-							}},
-						EmissionType: to.Ptr(armnetworkfunction.EmissionTypeIPFIX),
-					}},
-				IngestionPolicy: &armnetworkfunction.IngestionPolicyPropertiesFormat{
-					IngestionSources: []*armnetworkfunction.IngestionSourcesPropertiesFormat{
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "atc", "cp1", armnetworkfunction.CollectorPolicy{
+		Location: to.Ptr("West US"),
+		Properties: &armnetworkfunction.CollectorPolicyPropertiesFormat{
+			EmissionPolicies: []*armnetworkfunction.EmissionPoliciesPropertiesFormat{
+				{
+					EmissionDestinations: []*armnetworkfunction.EmissionPolicyDestination{
 						{
-							ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"),
-							SourceType: to.Ptr(armnetworkfunction.SourceTypeResource),
+							DestinationType: to.Ptr(armnetworkfunction.DestinationTypeAzureMonitor),
 						}},
-					IngestionType: to.Ptr(armnetworkfunction.IngestionTypeIPFIX),
-				},
+					EmissionType: to.Ptr(armnetworkfunction.EmissionTypeIPFIX),
+				}},
+			IngestionPolicy: &armnetworkfunction.IngestionPolicyPropertiesFormat{
+				IngestionSources: []*armnetworkfunction.IngestionSourcesPropertiesFormat{
+					{
+						ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"),
+						SourceType: to.Ptr(armnetworkfunction.SourceTypeResource),
+					}},
+				IngestionType: to.Ptr(armnetworkfunction.IngestionTypeIPFIX),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -113,7 +103,7 @@ func ExampleCollectorPoliciesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/CollectorPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyDelete.json
 func ExampleCollectorPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,11 +114,7 @@ func ExampleCollectorPoliciesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"atc",
-		"cp1",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "atc", "cp1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -136,4 +122,28 @@ func ExampleCollectorPoliciesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyUpdateTags.json
+func ExampleCollectorPoliciesClient_UpdateTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armnetworkfunction.NewCollectorPoliciesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.UpdateTags(ctx, "rg1", "atc", "cp1", armnetworkfunction.TagsObject{
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+			"key2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }

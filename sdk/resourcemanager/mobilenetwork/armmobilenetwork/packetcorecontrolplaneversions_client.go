@@ -54,7 +54,7 @@ func NewPacketCoreControlPlaneVersionsClient(credential azcore.TokenCredential, 
 
 // Get - Gets information about the specified packet core control plane version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
+// Generated from API version 2022-11-01
 // versionName - The name of the packet core control plane version.
 // options - PacketCoreControlPlaneVersionsClientGetOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.Get
 // method.
@@ -85,7 +85,7 @@ func (client *PacketCoreControlPlaneVersionsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,58 +100,57 @@ func (client *PacketCoreControlPlaneVersionsClient) getHandleResponse(resp *http
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Lists all supported packet core control planes versions.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01-preview
-// options - PacketCoreControlPlaneVersionsClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.ListByResourceGroup
+// NewListPager - Lists all supported packet core control planes versions.
+// Generated from API version 2022-11-01
+// options - PacketCoreControlPlaneVersionsClientListOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.List
 // method.
-func (client *PacketCoreControlPlaneVersionsClient) NewListByResourceGroupPager(options *PacketCoreControlPlaneVersionsClientListByResourceGroupOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlaneVersionsClientListByResourceGroupResponse]{
-		More: func(page PacketCoreControlPlaneVersionsClientListByResourceGroupResponse) bool {
+func (client *PacketCoreControlPlaneVersionsClient) NewListPager(options *PacketCoreControlPlaneVersionsClientListOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlaneVersionsClientListResponse]{
+		More: func(page PacketCoreControlPlaneVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *PacketCoreControlPlaneVersionsClientListByResourceGroupResponse) (PacketCoreControlPlaneVersionsClientListByResourceGroupResponse, error) {
+		Fetcher: func(ctx context.Context, page *PacketCoreControlPlaneVersionsClientListResponse) (PacketCoreControlPlaneVersionsClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, options)
+				req, err = client.listCreateRequest(ctx, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return PacketCoreControlPlaneVersionsClientListByResourceGroupResponse{}, err
+				return PacketCoreControlPlaneVersionsClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return PacketCoreControlPlaneVersionsClientListByResourceGroupResponse{}, err
+				return PacketCoreControlPlaneVersionsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PacketCoreControlPlaneVersionsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+				return PacketCoreControlPlaneVersionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			return client.listHandleResponse(resp)
 		},
 	})
 }
 
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PacketCoreControlPlaneVersionsClient) listByResourceGroupCreateRequest(ctx context.Context, options *PacketCoreControlPlaneVersionsClientListByResourceGroupOptions) (*policy.Request, error) {
+// listCreateRequest creates the List request.
+func (client *PacketCoreControlPlaneVersionsClient) listCreateRequest(ctx context.Context, options *PacketCoreControlPlaneVersionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PacketCoreControlPlaneVersionsClient) listByResourceGroupHandleResponse(resp *http.Response) (PacketCoreControlPlaneVersionsClientListByResourceGroupResponse, error) {
-	result := PacketCoreControlPlaneVersionsClientListByResourceGroupResponse{}
+// listHandleResponse handles the List response.
+func (client *PacketCoreControlPlaneVersionsClient) listHandleResponse(resp *http.Response) (PacketCoreControlPlaneVersionsClientListResponse, error) {
+	result := PacketCoreControlPlaneVersionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PacketCoreControlPlaneVersionListResult); err != nil {
-		return PacketCoreControlPlaneVersionsClientListByResourceGroupResponse{}, err
+		return PacketCoreControlPlaneVersionsClientListResponse{}, err
 	}
 	return result, nil
 }

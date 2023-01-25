@@ -8,6 +8,7 @@ package armstorage_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,6 +54,7 @@ func TestEncryptionScopesClient(t *testing.T) {
 
 func (testsuite *EncryptionScopesClientTestSuite) TestEncryptionScopesCRUD() {
 	// create storage account
+	fmt.Println("Call operation: StorageAccounts_Create")
 	storageAccountsClient, err := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scName := "gotestaccount2"
@@ -94,6 +96,7 @@ func (testsuite *EncryptionScopesClientTestSuite) TestEncryptionScopesCRUD() {
 	testsuite.Require().Equal(scName, *resp.Name)
 
 	// put file services
+	fmt.Println("Call operation: EncryptionScopes_Put")
 	encryptionScopesClient, err := armstorage.NewEncryptionScopesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	encryptionScopeName := "go-test-encryption"
@@ -114,15 +117,18 @@ func (testsuite *EncryptionScopesClientTestSuite) TestEncryptionScopesCRUD() {
 	testsuite.Require().Equal(encryptionScopeName, *putResp.Name)
 
 	// get
+	fmt.Println("Call operation: EncryptionScopes_Get")
 	getResp, err := encryptionScopesClient.Get(testsuite.ctx, testsuite.resourceGroupName, scName, encryptionScopeName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(encryptionScopeName, *getResp.Name)
 
 	// list
+	fmt.Println("Call operation: EncryptionScopes_List")
 	listPager := encryptionScopesClient.NewListPager(testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// patch
+	fmt.Println("Call operation: EncryptionScopes_Patch")
 	patchResp, err := encryptionScopesClient.Patch(
 		testsuite.ctx,
 		testsuite.resourceGroupName,

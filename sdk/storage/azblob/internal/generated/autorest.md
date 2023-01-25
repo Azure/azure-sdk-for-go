@@ -19,7 +19,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: true
-use: "@autorest/go@4.0.0-preview.43"
+use: "@autorest/go@4.0.0-preview.45"
 ```
 
 ### Remove pager methods and export various generated methods in container client
@@ -320,4 +320,35 @@ directive:
 - rename-model:
     from: BlobPropertiesInternal
     to: BlobProperties
+```
+
+### Updating encoding URL, Golang adds '+' which disrupts encoding with service
+
+``` yaml
+directive:
+  - from: zz_service_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/req.Raw\(\).URL.RawQuery \= reqQP.Encode\(\)/, `req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)`)
+```
+
+### Change `where` parameter in blob filtering to be required
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FilterBlobsWhere
+  transform: >
+    $.required = true;
+```
+
+### Change `Duration` parameter in leases to be required
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LeaseDuration
+  transform: >
+    $.required = true;
 ```

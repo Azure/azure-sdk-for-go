@@ -75,8 +75,8 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 		testGetTokenSuccess(t, cred)
 	})
 	t.Run("LoginHint", func(t *testing.T) {
-		upn := "fakeuser@test"
-		t.Logf(`consider this test passing when "%s" appears in the login prompt`, upn)
+		upn := "test@pass"
+		t.Logf("consider this test passing when %q appears in the login prompt", upn)
 		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{LoginHint: upn})
 		if err != nil {
 			t.Fatal(err)

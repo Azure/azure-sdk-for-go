@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 type certTest struct {
@@ -228,12 +229,17 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 }
 
 func TestClientCertificateCredentialADFS_Live(t *testing.T) {
-	certData, err := os.ReadFile(liveSP.pfxPath)
+	if recording.GetRecordMode() == recording.LiveMode {
+		if adfsLiveSP.certPass == "" || adfsLiveSP.clientID == "" || adfsLiveSP.pfxPath == "" || adfsLiveSP.scope == "" || adfsLiveSP.tenantID == "" {
+			t.Skip("this test requires manual recording and access to ADFS instance, and can't pass live in CI")
+		}
+	}
+	certData, err := os.ReadFile(adfsLiveSP.pfxPath)
 	if err != nil {
 		t.Fatalf(`failed to read cert: %v`, err)
 	}
 	var password []byte
-	if v := liveSP.certPass; v != "" {
+	if v := adfsLiveSP.certPass; v != "" {
 		password = []byte(v)
 	}
 	certs, key, err := ParseCertificates(certData, password)
@@ -247,11 +253,13 @@ func TestClientCertificateCredentialADFS_Live(t *testing.T) {
 	}
 	defer stop()
 	opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: disableID}
-	cred, err := NewClientCertificateCredential(liveSP.tenantID, liveSP.clientID, certs, key, opts)
+	cred, err := NewClientCertificateCredential(adfsLiveSP.tenantID, adfsLiveSP.clientID, certs, key, opts)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	testGetTokenSuccess(t, cred)
+	var scope []string
+	scope = append(scope, adfsLiveSP.scope)
+	testGetTokenSuccess(t, cred, scope...)
 }
 
 func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {

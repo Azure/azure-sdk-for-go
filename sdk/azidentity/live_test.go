@@ -36,7 +36,6 @@ var liveSP = struct {
 	pemPath  string
 	pfxPath  string
 	sniPath  string
-	certPass string
 }{
 	tenantID: os.Getenv("IDENTITY_SP_TENANT_ID"),
 	clientID: os.Getenv("IDENTITY_SP_CLIENT_ID"),
@@ -44,7 +43,6 @@ var liveSP = struct {
 	pemPath:  os.Getenv("IDENTITY_SP_CERT_PEM"),
 	pfxPath:  os.Getenv("IDENTITY_SP_CERT_PFX"),
 	sniPath:  os.Getenv("IDENTITY_SP_CERT_SNI"),
-	certPass: os.Getenv("IDENTITY_SP_CERT_PASS"),
 }
 
 var liveUser = struct {
@@ -64,7 +62,35 @@ const (
 	fakeUsername   = "fake@user"
 )
 
-var liveTestScope = "https://management.core.windows.net//.default" // For ADFS tests, had to change this scope to openid
+var adfsLiveSP = struct {
+	tenantID string
+	clientID string
+	secret   string
+	pfxPath  string
+	certPass string
+	scope    string
+}{
+	tenantID: os.Getenv("ADFS_SP_TENANT_ID"),
+	clientID: os.Getenv("ADFS_SP_CLIENT_ID"),
+	secret:   os.Getenv("ADFS_SP_CLIENT_SECRET"),
+	pfxPath:  os.Getenv("ADFS_SP_CERT_PFX"),
+	certPass: os.Getenv("ADFS_SP_CERT_PASSWORD"),
+	scope:    os.Getenv("ADFS_SCOPE"),
+}
+
+var adfsLiveUser = struct {
+	tenantID string
+	clientID string
+	username string
+	password string
+}{
+	username: os.Getenv("ADFS_TEST_USERNAME"),
+	password: os.Getenv("ADFS_TEST_PASSWORD"),
+	tenantID: os.Getenv("ADFS_TEST_TENANTID"),
+	clientID: os.Getenv("ADFS_TEST_CLIENTID"),
+}
+
+var liveTestScope = "https://management.core.windows.net//.default"
 
 var disableInstanceDiscovery = os.Getenv("DISABLE_INSTANCE_DISCOVERY")
 
@@ -115,6 +141,8 @@ func TestMain(m *testing.M) {
 			liveSP.tenantID:                                 fakeTenantID,
 			liveUser.tenantID:                               fakeTenantID,
 			liveUser.username:                               fakeUsername,
+			adfsLiveSP.tenantID:                             fakeTenantID,
+			adfsLiveUser.tenantID:                           fakeTenantID,
 		}
 		for target, replacement := range pathVars {
 			if target != "" {
@@ -196,8 +224,14 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 }
 
 // testGetTokenSuccess is a helper for happy path tests that acquires, and validates, a token from a credential
-func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential) {
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential, customScope ...string) {
+	var scopes []string
+	if customScope == nil {
+		scopes = append(scopes, liveTestScope)
+	} else {
+		scopes = append(scopes, customScope...)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: scopes})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -210,7 +244,7 @@ func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential) {
 	if tk.ExpiresOn.Location() != time.UTC {
 		t.Fatal("ExpiresOn isn't UTC")
 	}
-	tk2, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk2, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: scopes})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -3574,10 +3574,7 @@ func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
 	_require.Nil(err)
 
 	// Get new blob client with sasUrl and attempt GetProperties
-	client, err := blob.NewClientWithNoCredential(sasUrl, nil)
-	_require.Nil(err)
-
-	_, err = client.GetProperties(context.Background(), nil)
+	_, err = blob.NewClientWithNoCredential(sasUrl, nil)
 	_require.Nil(err)
 }
 

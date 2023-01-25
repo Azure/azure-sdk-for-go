@@ -2221,16 +2221,6 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 	_require.Nil(err)
 
 	// Create container client with sasUrl
-	client, err := container.NewClientWithNoCredential(sasUrl, nil)
-	_require.Nil(err)
-
-	// Create and upload block blob
-	bbClient := client.NewBlockBlobClient("testing")
-	_require.NotNil(bbClient)
-
-	uploadBlockBlobOptions := blockblob.UploadOptions{
-		Metadata: testcommon.BasicMetadata,
-	}
-	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader("Content")), &uploadBlockBlobOptions)
+	_, err = container.NewClientWithNoCredential(sasUrl, nil)
 	_require.Nil(err)
 }

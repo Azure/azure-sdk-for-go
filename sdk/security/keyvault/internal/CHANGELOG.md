@@ -1,10 +1,11 @@
 # Release History
 
-## 0.7.2 (Unreleased)
+## 0.8.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Moved to new location
 
 ### Bugs Fixed
 

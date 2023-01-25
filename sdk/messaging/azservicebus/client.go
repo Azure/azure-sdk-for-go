@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 )
 
@@ -28,15 +29,10 @@ type Client struct {
 	//   PR: https://github.com/Azure/azure-sdk-for-go/pull/16847
 	linkCounter uint64
 
-	linksMu   *sync.Mutex
-	links     map[uint64]internal.Closeable
-	creds     clientCreds
-	namespace interface {
-		// used internally by `Client`
-		internal.NamespaceWithNewAMQPLinks
-		// for child clients
-		internal.NamespaceForAMQPLinks
-	}
+	linksMu      *sync.Mutex
+	links        map[uint64]amqpwrap.Closeable
+	creds        clientCreds
+	namespace    internal.NamespaceForAMQPLinks
 	retryOptions RetryOptions
 
 	// acceptNextTimeout controls how long the session accept can take before
@@ -124,7 +120,7 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 	client := &Client{
 		linksMu: &sync.Mutex{},
 		creds:   creds,
-		links:   map[uint64]internal.Closeable{},
+		links:   map[uint64]amqpwrap.Closeable{},
 	}
 
 	var err error
@@ -303,7 +299,7 @@ func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topi
 // Close closes the current connection Service Bus as well as any Senders or Receivers created
 // using this client.
 func (client *Client) Close(ctx context.Context) error {
-	var links []internal.Closeable
+	var links []amqpwrap.Closeable
 
 	client.linksMu.Lock()
 
@@ -319,7 +315,7 @@ func (client *Client) Close(ctx context.Context) error {
 		}
 	}
 
-	return client.namespace.Close(ctx, true)
+	return client.namespace.Close(true)
 }
 
 func (client *Client) acceptNextSessionForEntity(ctx context.Context, entity entity, options *SessionReceiverOptions) (*SessionReceiver, error) {
@@ -347,7 +343,7 @@ func (client *Client) acceptNextSessionForEntity(ctx context.Context, entity ent
 	return sessionReceiver, nil
 }
 
-func (client *Client) addCloseable(id uint64, closeable internal.Closeable) {
+func (client *Client) addCloseable(id uint64, closeable amqpwrap.Closeable) {
 	client.linksMu.Lock()
 	client.links[id] = closeable
 	client.linksMu.Unlock()

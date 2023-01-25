@@ -274,7 +274,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 		},
 		cleanupOnClose:      func() {},
 		getRecoveryKindFunc: internal.GetRecoveryKind,
-		newLinkFn: func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+		newLinkFn: func(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
 			return nil, nil, nil
 		},
 		retryOptions: RetryOptions{
@@ -305,7 +305,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
-	fakeAMQPLinks.Err = internal.RPCError{Resp: &internal.RPCResponse{Code: internal.RPCResponseCodeLockLost}}
+	fakeAMQPLinks.Err = internal.RPCError{Resp: &amqpwrap.RPCResponse{Code: internal.RPCResponseCodeLockLost}}
 
 	err = receiver.AbandonMessage(context.Background(), &ReceivedMessage{}, nil)
 	require.Empty(t, messages)
@@ -790,7 +790,7 @@ func defaultNewReceiverArgsForTest() newReceiverArgs {
 		ns:                  &internal.FakeNS{},
 		cleanupOnClose:      func() {},
 		getRecoveryKindFunc: internal.GetRecoveryKind,
-		newLinkFn: func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+		newLinkFn: func(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
 			return nil, nil, nil
 		},
 		retryOptions: exported.RetryOptions{},

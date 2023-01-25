@@ -9,6 +9,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/stretchr/testify/require"
@@ -41,7 +42,7 @@ func TestSessionReceiverUserFacingErrors(t *testing.T) {
 	fakeRPCLink := &internal.FakeRPCLink{}
 	fakeAMQPLinks.RPC = fakeRPCLink
 
-	fakeRPCLink.Resp = &internal.RPCResponse{
+	fakeRPCLink.Resp = &amqpwrap.RPCResponse{
 		Message: &amqp.Message{
 			Value: map[string]interface{}{
 				"expiration": time.Now(),
@@ -63,7 +64,7 @@ func TestSessionReceiverUserFacingErrors(t *testing.T) {
 	require.NotNil(t, receiver)
 
 	fakeRPCLink.Resp = nil
-	fakeRPCLink.Error = internal.RPCError{Resp: &internal.RPCResponse{Code: internal.RPCResponseCodeLockLost}}
+	fakeRPCLink.Error = internal.RPCError{Resp: &amqpwrap.RPCResponse{Code: internal.RPCResponseCodeLockLost}}
 
 	state, err := receiver.GetSessionState(context.Background(), nil)
 	require.Nil(t, state)

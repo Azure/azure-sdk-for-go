@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/sas"
 )
 
@@ -28,16 +28,16 @@ func NewTokenProvider(tokenCredential azcore.TokenCredential) *TokenProvider {
 }
 
 // NewTokenProviderWithConnectionString creates a tokenProvider from a connection string.
-func NewTokenProviderWithConnectionString(parsed *conn.ParsedConn) (*TokenProvider, error) {
+func NewTokenProviderWithConnectionString(props exported.ConnectionStringProperties) (*TokenProvider, error) {
 	// NOTE: this is the value we've been using since forever. AFAIK, it's arbitrary.
 	const defaultTokenExpiry = 2 * time.Hour
 
 	var authOption sas.TokenProviderOption
 
-	if parsed.SAS == "" {
-		authOption = sas.TokenProviderWithKey(parsed.KeyName, parsed.Key, defaultTokenExpiry)
+	if props.SharedAccessSignature == nil {
+		authOption = sas.TokenProviderWithKey(*props.SharedAccessKeyName, *props.SharedAccessKey, defaultTokenExpiry)
 	} else {
-		authOption = sas.TokenProviderWithSAS(parsed.SAS)
+		authOption = sas.TokenProviderWithSAS(*props.SharedAccessSignature)
 	}
 
 	provider, err := sas.NewTokenProvider(authOption)

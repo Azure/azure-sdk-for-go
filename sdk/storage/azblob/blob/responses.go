@@ -31,7 +31,7 @@ type DownloadStreamResponse struct {
 // NewRetryReader constructs new RetryReader stream for reading data. If a connection fails while
 // reading, it will make additional requests to reestablish a connection and continue reading.
 // Pass nil for options to accept the default options.
-// Callers of this method should not access the DowloadStreamResponse.Body field.
+// Callers of this method should not access the DownloadStreamResponse.Body field.
 func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *RetryReaderOptions) *RetryReader {
 	if options == nil {
 		options = &RetryReaderOptions{}

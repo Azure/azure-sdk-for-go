@@ -32,7 +32,7 @@ type UserDelegationKey = generated.UserDelegationKey
 // KeyInfo contains KeyInfo struct.
 type KeyInfo = generated.KeyInfo
 
-// GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method
+// GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method.
 type GetUserDelegationCredentialOptions struct {
 	// placeholder for future options
 }
@@ -71,31 +71,31 @@ type RestoreContainerOptions = container.RestoreOptions
 // CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
 // domain. Web browsers implement a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
-// domain) to call APIs in another domain
+// domain) to call APIs in another domain.
 type CorsRule = generated.CorsRule
 
-// FilterBlobSegment - The result of a Filter Blobs API call
+// FilterBlobSegment - The result of a Filter Blobs API call.
 type FilterBlobSegment = generated.FilterBlobSegment
 
 // BlobTags - Blob tags
 type BlobTags = generated.BlobTags
 
-// FilterBlobItem - Blob info returned from method Client.FilterBlobs
+// FilterBlobItem - Blob info returned from method Client.FilterBlobs.
 type FilterBlobItem = generated.FilterBlobItem
 
-// GeoReplication - Geo-Replication information for the Secondary Storage Service
+// GeoReplication - Geo-Replication information for the Secondary Storage Service.
 type GeoReplication = generated.GeoReplication
 
-// RetentionPolicy - the retention policy which determines how long the associated data should persist
+// RetentionPolicy - the retention policy which determines how long the associated data should persist.
 type RetentionPolicy = generated.RetentionPolicy
 
-// Metrics - a summary of request statistics grouped by API in hour or minute aggregates for blobs
+// Metrics - a summary of request statistics grouped by API in hour or minute aggregates for blobs.
 type Metrics = generated.Metrics
 
 // Logging - Azure Analytics Logging settings.
 type Logging = generated.Logging
 
-// StaticWebsite - The properties that enable an account to host a static website
+// StaticWebsite - The properties that enable an account to host a static website.
 type StaticWebsite = generated.StaticWebsite
 
 // StorageServiceProperties - Storage Service Properties.
@@ -128,7 +128,7 @@ func (o *GetPropertiesOptions) format() *generated.ServiceClientGetPropertiesOpt
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ListContainersOptions provides set of configurations for ListContainers operation
+// ListContainersOptions provides set of configurations for ListContainers operation.
 type ListContainersOptions struct {
 	Include ListContainersInclude
 
@@ -165,10 +165,10 @@ type SetPropertiesOptions struct {
 	Cors []*CorsRule
 
 	// The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible
-	// values include version 2008-10-27 and all more recent versions
+	// values include version 2008-10-27 and all more recent versions.
 	DefaultServiceVersion *string
 
-	// the retention policy which determines how long the associated data should persist
+	// the retention policy which determines how long the associated data should persist.
 	DeleteRetentionPolicy *RetentionPolicy
 
 	// a summary of request statistics grouped by API in hour or minute aggregates for blobs
@@ -183,7 +183,7 @@ type SetPropertiesOptions struct {
 	// If version is not set - we default to "1.0"
 	MinuteMetrics *Metrics
 
-	// The properties that enable an account to host a static website
+	// The properties that enable an account to host a static website.
 	StaticWebsite *StaticWebsite
 }
 
@@ -270,7 +270,7 @@ func (o *GetStatisticsOptions) format() *generated.ServiceClientGetStatisticsOpt
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// FilterBlobsOptions provides set of options for Client.FindBlobsByTags
+// FilterBlobsOptions provides set of options for Client.FindBlobsByTags.
 type FilterBlobsOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing

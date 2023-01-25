@@ -14,9 +14,56 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/stretchr/testify/require"
 )
+
+func TestProducerClient_SAS(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+	sasCS, err := sas.CreateConnectionStringWithSAS(testParams.ConnectionString, time.Hour)
+	require.NoError(t, err)
+
+	// sanity check - we did actually generate a connection string with an embedded SharedAccessSignature
+	require.Contains(t, sasCS, "SharedAccessSignature=SharedAccessSignature")
+
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(sasCS, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, producerClient)
+
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(sasCS, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, consumerClient)
+
+	beforeProps, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
+	require.NoError(t, err)
+
+	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionID: to.Ptr("0"),
+	})
+	require.NoError(t, err)
+
+	err = batch.AddEventData(&azeventhubs.EventData{
+		Body: []byte("hello world"),
+	}, nil)
+	require.NoError(t, err)
+
+	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
+
+	partClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
+		StartPosition: getStartPosition(beforeProps),
+	})
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, partClient)
+
+	events, err := partClient.ReceiveEvents(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, events)
+}
 
 func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)

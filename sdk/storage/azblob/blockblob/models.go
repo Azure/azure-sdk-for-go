@@ -20,7 +20,7 @@ import (
 // Block - Represents a single block in a block blob. It describes the block's ID and size.
 type Block = generated.Block
 
-// BlockList - type of blocklist (committed/uncommitted)
+// BlockList - can be uncommitted or committed blocks (committed/uncommitted)
 type BlockList = generated.BlockList
 
 // Request Model Declaration -------------------------------------------------------------------------------------------
@@ -209,10 +209,10 @@ type uploadFromReaderOptions struct {
 	TransactionalContentMD5 []byte
 }
 
-// UploadBufferOptions provides set of configurations for UploadBuffer operation
+// UploadBufferOptions provides set of configurations for UploadBuffer operation.
 type UploadBufferOptions = uploadFromReaderOptions
 
-// UploadFileOptions provides set of configurations for UploadFile operation
+// UploadFileOptions provides set of configurations for UploadFile operation.
 type UploadFileOptions = uploadFromReaderOptions
 
 func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
@@ -251,9 +251,9 @@ func (o *uploadFromReaderOptions) getCommitBlockListOptions() *CommitBlockListOp
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// UploadStreamOptions provides set of configurations for UploadStream operation
+// UploadStreamOptions provides set of configurations for UploadStream operation.
 type UploadStreamOptions struct {
-	// BlockSize defines the size of the buffer used during upload. The default and mimimum value is 1 MiB.
+	// BlockSize defines the size of the buffer used during upload. The default and minimum value is 1 MiB.
 	BlockSize int64
 
 	// Concurrency defines the max number of concurrent uploads to be performed to upload the file.
@@ -329,19 +329,19 @@ func (u *UploadStreamOptions) getUploadOptions() *UploadOptions {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ExpiryType defines values for ExpiryType
+// ExpiryType defines values for ExpiryType.
 type ExpiryType = exported.ExpiryType
 
-// ExpiryTypeAbsolute defines the absolute time for the blob expiry
+// ExpiryTypeAbsolute defines the absolute time for the blob expiry.
 type ExpiryTypeAbsolute = exported.ExpiryTypeAbsolute
 
-// ExpiryTypeRelativeToNow defines the duration relative to now for the blob expiry
+// ExpiryTypeRelativeToNow defines the duration relative to now for the blob expiry.
 type ExpiryTypeRelativeToNow = exported.ExpiryTypeRelativeToNow
 
-// ExpiryTypeRelativeToCreation defines the duration relative to creation for the blob expiry
+// ExpiryTypeRelativeToCreation defines the duration relative to creation for the blob expiry.
 type ExpiryTypeRelativeToCreation = exported.ExpiryTypeRelativeToCreation
 
-// ExpiryTypeNever defines that the blob will be set to never expire
+// ExpiryTypeNever defines that the blob will be set to never expire.
 type ExpiryTypeNever = exported.ExpiryTypeNever
 
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.

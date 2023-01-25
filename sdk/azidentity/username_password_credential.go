@@ -20,6 +20,9 @@ const credNameUserPassword = "UsernamePasswordCredential"
 // UsernamePasswordCredentialOptions contains optional parameters for UsernamePasswordCredential.
 type UsernamePasswordCredentialOptions struct {
 	azcore.ClientOptions
+
+	// disableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
 }
 
 // UsernamePasswordCredential authenticates a user with a password. Microsoft doesn't recommend this kind of authentication,
@@ -39,7 +42,9 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	if options == nil {
 		options = &UsernamePasswordCredentialOptions{}
 	}
-	c, err := getPublicClient(clientID, tenantID, &options.ClientOptions)
+	var o []public.Option
+	o = append(o, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
+	c, err := getPublicClient(clientID, tenantID, &options.ClientOptions, o...)
 	if err != nil {
 		return nil, err
 	}

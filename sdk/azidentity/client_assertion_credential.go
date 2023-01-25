@@ -32,6 +32,8 @@ type ClientAssertionCredential struct {
 // ClientAssertionCredentialOptions contains optional parameters for ClientAssertionCredential.
 type ClientAssertionCredentialOptions struct {
 	azcore.ClientOptions
+
+	DisableInstanceDiscovery bool
 }
 
 // NewClientAssertionCredential constructs a ClientAssertionCredential. The getAssertion function must be thread safe. Pass nil for options to accept defaults.
@@ -47,7 +49,9 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 			return getAssertion(ctx)
 		},
 	)
-	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions)
+	var o []confidential.Option
+	o = append(o, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
+	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, o...)
 	if err != nil {
 		return nil, err
 	}

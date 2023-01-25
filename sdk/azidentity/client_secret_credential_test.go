@@ -9,6 +9,7 @@ package azidentity
 import (
 	"context"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -42,7 +43,11 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 func TestClientSecretCredential_Live(t *testing.T) {
 	opts, stop := initRecording(t)
 	defer stop()
-	o := ClientSecretCredentialOptions{ClientOptions: opts}
+	disableID, err := strconv.ParseBool(disableInstanceDiscovery)
+	if err != nil {
+		disableID = false
+	}
+	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disableID}
 	cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, &o)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)

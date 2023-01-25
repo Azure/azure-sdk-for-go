@@ -13,6 +13,7 @@ import (
 	"log"
 	"os"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -224,6 +225,33 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 			testGetTokenSuccess(t, cred)
 		})
 	}
+}
+
+func TestClientCertificateCredentialADFS_Live(t *testing.T) {
+	certData, err := os.ReadFile(liveSP.pfxPath)
+	if err != nil {
+		t.Fatalf(`failed to read cert: %v`, err)
+	}
+	var password []byte
+	if v := liveSP.certPass; v != "" {
+		password = []byte(v)
+	}
+	certs, key, err := ParseCertificates(certData, password)
+	if err != nil {
+		t.Fatalf(`failed to parse cert: %v`, err)
+	}
+	o, stop := initRecording(t)
+	disableID, err := strconv.ParseBool(disableInstanceDiscovery)
+	if err != nil {
+		disableID = false
+	}
+	defer stop()
+	opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: disableID}
+	cred, err := NewClientCertificateCredential(liveSP.tenantID, liveSP.clientID, certs, key, opts)
+	if err != nil {
+		t.Fatalf("failed to construct credential: %v", err)
+	}
+	testGetTokenSuccess(t, cred)
 }
 
 func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {

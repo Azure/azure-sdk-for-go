@@ -30,6 +30,9 @@ type InteractiveBrowserCredentialOptions struct {
 	// RedirectURL will be supported in a future version but presently doesn't work: https://github.com/Azure/azure-sdk-for-go/issues/15632.
 	// Applications which have "http://localhost" registered as a redirect URL need not set this option.
 	RedirectURL string
+
+	// disableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
 }
 
 func (o *InteractiveBrowserCredentialOptions) init() {
@@ -55,7 +58,9 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		cp = *options
 	}
 	cp.init()
-	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions)
+	var o []public.Option
+	o = append(o, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
+	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions, o...)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +78,7 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
-	o := []public.InteractiveAuthOption{}
+	o := []public.AcquireInteractiveOption{}
 	if c.options.RedirectURL != "" {
 		o = append(o, public.WithRedirectURI(c.options.RedirectURL))
 	}

@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -240,7 +241,11 @@ func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
 	setEnvironmentVariables(t, vars)
 	opts, stop := initRecording(t)
 	defer stop()
-	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts})
+	disableID, err := strconv.ParseBool(disableInstanceDiscovery)
+	if err != nil {
+		disableID = false
+	}
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disableID})
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
@@ -278,6 +283,7 @@ func TestEnvironmentCredential_InvalidClientSecretLive(t *testing.T) {
 
 func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
 	vars := map[string]string{
+		//for ADFS change clientID
 		azureClientID: developerSignOnClientID,
 		azureTenantID: liveUser.tenantID,
 		azureUsername: liveUser.username,

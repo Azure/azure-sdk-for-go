@@ -33,6 +33,9 @@ type DeviceCodeCredentialOptions struct {
 	// this function with authentication details when it receives a device code. By default, the credential
 	// prints these details to stdout.
 	UserPrompt func(context.Context, DeviceCodeMessage) error
+
+	// disableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
 }
 
 func (o *DeviceCodeCredentialOptions) init() {
@@ -78,7 +81,9 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 		cp = *options
 	}
 	cp.init()
-	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions)
+	var o []public.Option
+	o = append(o, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
+	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions, o...)
 	if err != nil {
 		return nil, err
 	}

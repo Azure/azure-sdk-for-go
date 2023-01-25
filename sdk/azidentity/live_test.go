@@ -36,6 +36,7 @@ var liveSP = struct {
 	pemPath  string
 	pfxPath  string
 	sniPath  string
+	certPass string
 }{
 	tenantID: os.Getenv("IDENTITY_SP_TENANT_ID"),
 	clientID: os.Getenv("IDENTITY_SP_CLIENT_ID"),
@@ -43,6 +44,7 @@ var liveSP = struct {
 	pemPath:  os.Getenv("IDENTITY_SP_CERT_PEM"),
 	pfxPath:  os.Getenv("IDENTITY_SP_CERT_PFX"),
 	sniPath:  os.Getenv("IDENTITY_SP_CERT_SNI"),
+	certPass: os.Getenv("IDENTITY_SP_CERT_PASS"),
 }
 
 var liveUser = struct {
@@ -62,7 +64,9 @@ const (
 	fakeUsername   = "fake@user"
 )
 
-var liveTestScope = "https://management.core.windows.net//.default"
+var liveTestScope = "https://management.core.windows.net//.default" // For ADFS tests, had to change this scope to openid
+
+var disableInstanceDiscovery = os.Getenv("DISABLE_INSTANCE_DISCOVERY")
 
 func init() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
@@ -211,6 +215,6 @@ func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential) {
 		t.Fatal(err)
 	}
 	if tk2.Token != tk.Token || tk2.ExpiresOn != tk.ExpiresOn {
-		t.Fatal("expected a cached token")
+		t.Fatalf("expected a cached token: %s\n with time :%s \n, got %s with time %s", tk2.Token, tk2.ExpiresOn, tk.Token, tk.ExpiresOn)
 	}
 }

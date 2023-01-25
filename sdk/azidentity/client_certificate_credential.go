@@ -29,6 +29,9 @@ type ClientCertificateCredentialOptions struct {
 	// header of each token request's JWT. This is required for Subject Name/Issuer (SNI) authentication.
 	// Defaults to False.
 	SendCertificateChain bool
+
+	// disableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
 }
 
 // ClientCertificateCredential authenticates a service principal with a certificate.
@@ -52,6 +55,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if options.SendCertificateChain {
 		o = append(o, confidential.WithX5C())
 	}
+	o = append(o, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, o...)
 	if err != nil {
 		return nil, err

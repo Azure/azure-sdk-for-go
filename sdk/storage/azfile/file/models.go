@@ -6,7 +6,14 @@
 
 package file
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"time"
+)
+
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential
 
 // SMBProperties contains the optional parameters regarding the SMB/NTFS properties for a file.
 type SMBProperties struct {
@@ -29,4 +36,151 @@ type Permissions struct {
 	// Key of the permission to be set for the directory/file.
 	// Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
 	PermissionKey *string
+}
+
+// HTTPHeaders contains optional parameters for the Client.Create method.
+type HTTPHeaders = generated.ShareFileHTTPHeaders
+
+// LeaseAccessConditions contains optional parameters to access leased entity.
+type LeaseAccessConditions = generated.LeaseAccessConditions
+
+// CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
+type CopyFileSmbInfo = generated.CopyFileSmbInfo
+
+// HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
+// ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
+// which has an offset but no zero value count indicates from the offset to the resource's end.
+type HTTPRange struct {
+	Offset int64
+	Count  int64
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// CreateOptions contains the optional parameters for the Client.Create method.
+type CreateOptions struct {
+	// The default value is 'None' for Attributes and 'now' for CreationTime and LastWriteTime fields in file.SMBProperties.
+	// TODO: Change the types of creation time and last write time to string from time.Time to include values like 'now', 'preserve', etc.
+	SMBProperties *SMBProperties
+	// The default value is 'inherit' for Permission field in file.Permissions.
+	Permissions           *Permissions
+	HTTPHeaders           *HTTPHeaders
+	LeaseAccessConditions *LeaseAccessConditions
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]*string
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DeleteOptions contains the optional parameters for the Client.Delete method.
+type DeleteOptions struct {
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
+type GetPropertiesOptions struct {
+	// ShareSnapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query for the file properties.
+	ShareSnapshot *string
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetPropertiesOptions contains the optional parameters for the Client.SetProperties method.
+type SetPropertiesOptions struct {
+	// Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges
+	// above the specified byte value are cleared.
+	FileContentLength *int64
+	// The default value is 'preserve' for Attributes, CreationTime and LastWriteTime fields in file.SMBProperties.
+	// TODO: Change the types of creation time and last write time to string from time.Time to include values like 'now', 'preserve', etc.
+	SMBProperties *SMBProperties
+	// The default value is 'preserve' for Permission field in file.Permissions.
+	Permissions *Permissions
+	HTTPHeaders *HTTPHeaders
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetMetadataOptions contains the optional parameters for the Client.SetMetadata method.
+type SetMetadataOptions struct {
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]*string
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// StartCopyFromURLOptions contains the optional parameters for the Client.StartCopyFromURL method.
+type StartCopyFromURLOptions struct {
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]*string
+	// required if x-ms-file-permission-copy-mode is specified as override
+	Permissions     *Permissions
+	CopyFileSmbInfo *CopyFileSmbInfo
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	// Required if the destination file has an active lease.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DownloadOptions contains the optional parameters for the Client.Download method.
+type DownloadOptions struct {
+	// Return file data only from the specified byte range.
+	Range HTTPRange
+	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the
+	// range, as long as the range is less than or equal to 4 MB in size.
+	RangeGetContentMD5 *bool
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	// If specified, the operation is performed only if the file's lease is currently active and
+	// the lease ID that's specified in the request matches the lease ID of the file.
+	// Otherwise, the operation fails with status code 412 (Precondition Failed).
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// AbortCopyOptions contains the optional parameters for the Client.AbortCopy method.
+type AbortCopyOptions struct {
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	// Required if the destination file has an active lease.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// AcquireLeaseOptions contains the optional parameters for the Client.AcquireLease method.
+type AcquireLeaseOptions struct {
+	// Proposed lease ID, in a GUID string format.
+	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
+	ProposedLeaseID *string
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BreakLeaseOptions contains the optional parameters for the Client.BreakLease method.
+type BreakLeaseOptions struct {
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ChangeLeaseOptions contains the optional parameters for the Client.ChangeLease method.
+type ChangeLeaseOptions struct {
+	// placeholder for future options
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ReleaseLeaseOptions contains the optional parameters for the Client.ReleaseLease method.
+type ReleaseLeaseOptions struct {
+	// placeholder for future options
 }

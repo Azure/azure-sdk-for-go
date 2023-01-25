@@ -150,7 +150,7 @@ const (
 	UnsupportedXMLNode                                Code = "UnsupportedXmlNode"
 )
 
-// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
 var (
+	// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
 	MissingSharedKeyCredential = errors.New("SAS can only be signed with a SharedKeyCredential")
 )

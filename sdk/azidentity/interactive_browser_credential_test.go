@@ -79,7 +79,7 @@ func TestInteractiveBrowserCredential_RedirectURLLive(t *testing.T) {
 		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
 	}
 	// the default application's registration allows redirecting to any localhost port
-	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{RedirectURL: "localhost:8180"})
+	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{RedirectURL: "http://localhost:8180"})
 	if err != nil {
 		t.Fatal(err)
 	}

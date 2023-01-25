@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal
+module github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal
 
 go 1.18
 

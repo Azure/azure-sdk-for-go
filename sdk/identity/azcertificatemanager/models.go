@@ -29,7 +29,7 @@ type CertificateAttributes struct {
 	SerialNumber *string `json:"serialNumber,omitempty"`
 
 	// Distinguished name for the certificate.
-	Subject *string `json:"subject,omitempty"`
+	Subject                 *string   `json:"subject,omitempty"`
 	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
 
 	// The validity start date in UTC.
@@ -54,7 +54,7 @@ type CertificateDescriptionResponse struct {
 	IssuedAt *time.Time `json:"issuedAt,omitempty"`
 
 	// The name of the PKI.
-	Name *string `json:"name,omitempty"`
+	Name             *string             `json:"name,omitempty"`
 	RevocationReason []*RevocationReason `json:"revocationReason,omitempty"`
 
 	// The attributes of the certificate.
@@ -88,7 +88,7 @@ type CertificateValue struct {
 	SerialNumber *string `json:"serialNumber,omitempty"`
 
 	// Distinguished name for the certificate.
-	Subject *string `json:"subject,omitempty"`
+	Subject                 *string   `json:"subject,omitempty"`
 	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
 
 	// Thumbprint of the certificate.
@@ -156,17 +156,16 @@ type EnrollResponse struct {
 	IssuedAt *time.Time `json:"issuedAt,omitempty"`
 
 	// This is a part of the response only if the 'include' query parameter is set to 'log'. Contains warnings/errors generated
-// during the enrollment.
+	// during the enrollment.
 	Log []*LogEntry `json:"log,omitempty"`
 
 	// The name of the PKI.
-	Name *string `json:"name,omitempty"`
+	Name             *string             `json:"name,omitempty"`
 	RevocationReason []*RevocationReason `json:"revocationReason,omitempty"`
 
 	// The attributes and the certificate value in pem/pkcs7 format. Can also contain the certificate chain in pkcs7/pem formats.
 	Value *CertificateValue `json:"value,omitempty"`
 }
-
 
 // LogEntry - Logs generated during a particular operation enrollment/revocation.
 type LogEntry struct {
@@ -212,8 +211,8 @@ type Substitutes struct {
 	InvalidAt *time.Time `json:"invalidAt,omitempty"`
 
 	// Acceptable values of KeyUsage.
-	KeyUsage []*KeyUsage `json:"keyUsage,omitempty"`
-	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
+	KeyUsage                []*KeyUsage `json:"keyUsage,omitempty"`
+	SubjectAlternativeNames []*string   `json:"subjectAlternativeNames,omitempty"`
 
 	// Subject name for the certificate.
 	SubjectName *string `json:"subjectName,omitempty"`
@@ -221,4 +220,3 @@ type Substitutes struct {
 	// The validity start date in UTC.
 	ValidAt *time.Time `json:"validAt,omitempty"`
 }
-

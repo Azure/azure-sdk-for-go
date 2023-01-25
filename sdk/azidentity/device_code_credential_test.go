@@ -86,9 +86,9 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_Live(t *testing.T) {
-	// if recording.GetRecordMode() != recording.PlaybackMode {
-	// 	t.Skip("this test requires manual recording and can't pass live in CI")
-	// }
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("this test requires manual recording and can't pass live in CI")
+	}
 	o, stop := initRecording(t)
 	defer stop()
 	opts := DeviceCodeCredentialOptions{TenantID: liveUser.tenantID, ClientOptions: o}

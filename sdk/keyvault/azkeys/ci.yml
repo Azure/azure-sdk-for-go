@@ -24,6 +24,7 @@ pr:
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
+    TimeoutInMinutes: 120
     ServiceDirectory: 'keyvault/azkeys'
     RunLiveTests: true
     AdditionalMatrixConfigs:

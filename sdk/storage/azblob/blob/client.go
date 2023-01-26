@@ -8,7 +8,7 @@ package blob
 
 import (
 	"context"
-	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"io"
 	"os"
 	"sync"
@@ -268,7 +268,7 @@ func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *Co
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if b.sharedKey() == nil {
-		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+		return "", bloberror.MissingSharedKeyCredential
 	}
 
 	urlParts, err := ParseURL(b.URL())

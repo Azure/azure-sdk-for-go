@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Upgrade to `azcore` v1.3.0
 
 ## 0.7.1 (2022-11-14)
 

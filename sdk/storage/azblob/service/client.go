@@ -8,7 +8,7 @@ package service
 
 import (
 	"context"
-	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"net/http"
 	"strings"
 	"time"
@@ -245,7 +245,7 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if s.sharedKey() == nil {
-		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+		return "", bloberror.MissingSharedKeyCredential
 	}
 	st := o.format()
 	qps, err := sas.AccountSignatureValues{

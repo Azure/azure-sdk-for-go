@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package tests
 
 import (
@@ -38,16 +39,18 @@ func getBatchTesterParams(args []string) (batchTesterParams, error) {
 	// Look in ../templates/deploy-job.yaml for some of the other parameter variations we use in stress/longevity
 	// testing.
 	fs.IntVar(&params.numToSend, "send", 1000000, "Number of events to send.")
-	fs.IntVar(&params.batchSize, "receive", 1000000, "Size to request each time we call ReceiveEvents()")
-	fs.StringVar(&batchDurationStr, "timeout", "1s", "Time to wait for each batch (ie: 1m, 30s, etc..)")
+	fs.IntVar(&params.batchSize, "receive", 1000, "Size to request each time we call ReceiveEvents(). Higher batch sizes will require higher amounts of memory for this test.")
+	fs.StringVar(&batchDurationStr, "timeout", "60s", "Time to wait for each batch (ie: 1m, 30s, etc..)")
 	prefetch := fs.Int("prefetch", 0, "Number of events to set for the prefetch. Negative numbers disable prefetch altogether. 0 uses the default for the package.")
 
 	fs.Int64Var(&params.rounds, "rounds", 100, "Number of rounds to run with these parameters. -1 means math.MaxInt64")
 	fs.IntVar(&params.paddingBytes, "padding", 1024, "Extra number of bytes to add into each message body")
 	fs.StringVar(&params.partitionID, "partition", "0", "Partition ID to send and receive events to")
+	fs.IntVar(&params.maxDeadlineExceeded, "maxtimeouts", 10, "Number of consecutive receive timeouts allowed before quitting")
 	fs.BoolVar(&params.enableVerboseLogging, "verbose", false, "enable verbose azure sdk logging")
+	sleepAfterFn := addSleepAfterFlag(fs)
 
-	if err := fs.Parse(os.Args[2:]); errors.Is(err, flag.ErrHelp) {
+	if err := fs.Parse(os.Args[2:]); err != nil {
 		fs.PrintDefaults()
 		return batchTesterParams{}, err
 	}
@@ -66,6 +69,7 @@ func getBatchTesterParams(args []string) (batchTesterParams, error) {
 	}
 
 	params.batchDuration = batchDuration
+	params.sleepAfterFn = sleepAfterFn
 
 	return params, nil
 }
@@ -79,15 +83,18 @@ func BatchStressTester(ctx context.Context) error {
 		return err
 	}
 
+	defer params.sleepAfterFn()
+
 	testData, err := newStressTestData("batch", params.enableVerboseLogging, map[string]string{
-		"BatchDuration": params.batchDuration.String(),
-		"BatchSize":     fmt.Sprintf("%d", params.batchSize),
-		"NumToSend":     fmt.Sprintf("%d", params.numToSend),
-		"PaddingBytes":  fmt.Sprintf("%d", params.paddingBytes),
-		"PartitionId":   params.partitionID,
-		"Prefetch":      fmt.Sprintf("%d", params.prefetch),
-		"Rounds":        fmt.Sprintf("%d", params.rounds),
-		"Verbose":       fmt.Sprintf("%t", params.enableVerboseLogging),
+		"BatchDuration":       params.batchDuration.String(),
+		"BatchSize":           fmt.Sprintf("%d", params.batchSize),
+		"NumToSend":           fmt.Sprintf("%d", params.numToSend),
+		"PaddingBytes":        fmt.Sprintf("%d", params.paddingBytes),
+		"PartitionId":         params.partitionID,
+		"Prefetch":            fmt.Sprintf("%d", params.prefetch),
+		"Rounds":              fmt.Sprintf("%d", params.rounds),
+		"Verbose":             fmt.Sprintf("%t", params.enableVerboseLogging),
+		"MaxDeadlineExceeded": fmt.Sprintf("%d", params.maxDeadlineExceeded),
 	})
 
 	if err != nil {
@@ -104,8 +111,6 @@ func BatchStressTester(ctx context.Context) error {
 		return err
 	}
 
-	defer closeOrPanic(producerClient)
-
 	// we're going to read (and re-read these events over and over in our tests)
 	log.Printf("Sending messages to partition %s", params.partitionID)
 
@@ -116,6 +121,8 @@ func BatchStressTester(ctx context.Context) error {
 		numExtraBytes: params.paddingBytes,
 		testData:      testData,
 	})
+
+	closeOrPanic(producerClient)
 
 	if err != nil {
 		log.Fatalf("Failed to send events to partition %s: %s", params.partitionID, err)
@@ -155,7 +162,9 @@ type batchTesterParams struct {
 	batchDuration        time.Duration
 	rounds               int64
 	prefetch             int32
+	maxDeadlineExceeded  int
 	enableVerboseLogging bool
+	sleepAfterFn         func()
 }
 
 func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.ConsumerClient, sp azeventhubs.StartPosition, params batchTesterParams, testData *stressTestData) error {
@@ -174,12 +183,19 @@ func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.Con
 	defer log.Printf("[r:%d/%d,p:%s] Done receiving messages from partition", round, params.rounds, params.partitionID)
 
 	total := 0
+	numCancels := 0
+	const cancelLimit = 5
 
 	analyzeErrorFn := func(err error) error {
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
 				// track these, we can use it as a proxy for "network was slow" or similar.
 				testData.TC.TrackMetric(MetricDeadlineExceeded, float64(1), nil)
+				numCancels++
+
+				if numCancels >= cancelLimit {
+					return fmt.Errorf("cancellation errors were received %d times in a row. Stopping test as this indicates a problem", numCancels)
+				}
 			} else {
 				return fmt.Errorf("received %d/%d, but then got err: %w", total, params.numToSend, err)
 			}
@@ -193,8 +209,8 @@ func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.Con
 		events, err := partClient.ReceiveEvents(ctx, params.batchSize, nil)
 		cancel()
 
-		if analyzeErrorFn(err) != nil {
-			panic(analyzeErrorFn(err))
+		if err := analyzeErrorFn(err); err != nil {
+			panic(err)
 		}
 
 		testData.TC.TrackMetric(MetricReceived, float64(len(events)), nil)

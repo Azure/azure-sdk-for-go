@@ -83,11 +83,11 @@ func (c *BlobClient) LeaseID() *string {
 // AcquireLease acquires a lease on the blob for write and delete operations.
 // The lease Duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *BlobClient) AcquireLease(ctx context.Context, o *BlobAcquireOptions) (BlobAcquireResponse, error) {
+func (c *BlobClient) AcquireLease(ctx context.Context, duration int32, o *BlobAcquireOptions) (BlobAcquireResponse, error) {
 	blobAcquireLeaseOptions, modifiedAccessConditions := o.format()
 	blobAcquireLeaseOptions.ProposedLeaseID = c.LeaseID()
 
-	resp, err := c.generated().AcquireLease(ctx, &blobAcquireLeaseOptions, modifiedAccessConditions)
+	resp, err := c.generated().AcquireLease(ctx, duration, &blobAcquireLeaseOptions, modifiedAccessConditions)
 	return resp, err
 }
 
@@ -102,19 +102,19 @@ func (c *BlobClient) BreakLease(ctx context.Context, o *BlobBreakOptions) (BlobB
 
 // ChangeLease changes the blob's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (c *BlobClient) ChangeLease(ctx context.Context, o *BlobChangeOptions) (BlobChangeResponse, error) {
+func (c *BlobClient) ChangeLease(ctx context.Context, proposedLeaseID string, o *BlobChangeOptions) (BlobChangeResponse, error) {
 	if c.LeaseID() == nil {
 		return BlobChangeResponse{}, errors.New("leaseID cannot be nil")
 	}
-	proposedLeaseID, changeLeaseOptions, modifiedAccessConditions, err := o.format()
+	changeLeaseOptions, modifiedAccessConditions, err := o.format()
 	if err != nil {
 		return BlobChangeResponse{}, err
 	}
-	resp, err := c.generated().ChangeLease(ctx, *c.LeaseID(), *proposedLeaseID, changeLeaseOptions, modifiedAccessConditions)
+	resp, err := c.generated().ChangeLease(ctx, *c.LeaseID(), proposedLeaseID, changeLeaseOptions, modifiedAccessConditions)
 
 	// If lease has been changed successfully, set the leaseID in client
 	if err == nil {
-		c.leaseID = proposedLeaseID
+		c.leaseID = &proposedLeaseID
 	}
 
 	return resp, err

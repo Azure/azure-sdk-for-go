@@ -268,7 +268,6 @@ func (client *TracksClient) getHandleResponse(resp *http.Response) (TracksClient
 }
 
 // NewListPager - Lists the Tracks in the asset
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.

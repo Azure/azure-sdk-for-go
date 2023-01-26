@@ -26,7 +26,7 @@ func TestRetrier(t *testing.T) {
 
 		called := 0
 
-		err := Retry(ctx, testLogEvent, "notused", exported.RetryOptions{}, func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(ctx, testLogEvent, func() string { return "notused" }, exported.RetryOptions{}, func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return nil
 		}, func(err error) bool {
@@ -50,7 +50,7 @@ func TestRetrier(t *testing.T) {
 			return false
 		}
 
-		err := Retry(ctx, testLogEvent, "notused", fastRetryOptions, func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(ctx, testLogEvent, func() string { return "notused" }, fastRetryOptions, func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 
 			if args.I == 3 {
@@ -77,7 +77,7 @@ func TestRetrier(t *testing.T) {
 			return true
 		}
 
-		err := Retry(ctx, testLogEvent, "notused", exported.RetryOptions{}, func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(ctx, testLogEvent, func() string { return "notused" }, exported.RetryOptions{}, func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return errors.New("isFatalFn says this is a fatal error")
 		}, isFatalFn)
@@ -98,7 +98,7 @@ func TestRetrier(t *testing.T) {
 
 		maxRetries := int32(2)
 
-		err := Retry(context.Background(), testLogEvent, "notused", exported.RetryOptions{
+		err := Retry(context.Background(), testLogEvent, func() string { return "notused" }, exported.RetryOptions{
 			MaxRetries:    maxRetries,
 			RetryDelay:    time.Millisecond,
 			MaxRetryDelay: time.Millisecond,
@@ -131,7 +131,7 @@ func TestRetrier(t *testing.T) {
 
 		called := 0
 
-		err := Retry(context.Background(), testLogEvent, "notused", customRetryOptions, func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, func() string { return "notused" }, customRetryOptions, func(ctx context.Context, args *RetryFnArgs) error {
 			called++
 			return errors.New("whatever")
 		}, isFatalFn)
@@ -151,7 +151,7 @@ func TestCancellationCancelsSleep(t *testing.T) {
 
 	called := 0
 
-	err := Retry(ctx, testLogEvent, "notused", exported.RetryOptions{
+	err := Retry(ctx, testLogEvent, func() string { return "notused" }, exported.RetryOptions{
 		RetryDelay: time.Hour,
 	}, func(ctx context.Context, args *RetryFnArgs) error {
 		called++
@@ -175,7 +175,7 @@ func TestCancellationFromUserFunc(t *testing.T) {
 
 	called := 0
 
-	err := Retry(alreadyCancelledCtx, testLogEvent, "notused", exported.RetryOptions{}, func(ctx context.Context, args *RetryFnArgs) error {
+	err := Retry(alreadyCancelledCtx, testLogEvent, func() string { return "notused" }, exported.RetryOptions{}, func(ctx context.Context, args *RetryFnArgs) error {
 		called++
 
 		select {
@@ -199,7 +199,7 @@ func TestCancellationTimeoutsArentPropagatedToUser(t *testing.T) {
 	tryAgainErr := errors.New("try again")
 	called := 0
 
-	err := Retry(context.Background(), testLogEvent, "notused", exported.RetryOptions{
+	err := Retry(context.Background(), testLogEvent, func() string { return "notused" }, exported.RetryOptions{
 		RetryDelay: time.Millisecond,
 	}, func(ctx context.Context, args *RetryFnArgs) error {
 		called++
@@ -301,7 +301,7 @@ func TestRetryLogging(t *testing.T) {
 	t.Run("normal error", func(t *testing.T) {
 		logs = nil
 
-		err := Retry(context.Background(), testLogEvent, "my_operation", exported.RetryOptions{
+		err := Retry(context.Background(), testLogEvent, func() string { return "my_operation" }, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
 		}, func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc", "Attempt %d, within test func, returning error hello", args.I)
@@ -332,7 +332,7 @@ func TestRetryLogging(t *testing.T) {
 	t.Run("cancellation error", func(t *testing.T) {
 		logs = nil
 
-		err := Retry(context.Background(), testLogEvent, "test_operation", exported.RetryOptions{
+		err := Retry(context.Background(), testLogEvent, func() string { return "test_operation" }, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
 		}, func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc",
@@ -352,7 +352,7 @@ func TestRetryLogging(t *testing.T) {
 	t.Run("custom fatal error", func(t *testing.T) {
 		logs = nil
 
-		err := Retry(context.Background(), testLogEvent, "test_operation", exported.RetryOptions{
+		err := Retry(context.Background(), testLogEvent, func() string { return "test_operation" }, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
 		}, func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc",
@@ -374,7 +374,7 @@ func TestRetryLogging(t *testing.T) {
 
 		reset := false
 
-		err := Retry(context.Background(), testLogEvent, "test_operation", exported.RetryOptions{
+		err := Retry(context.Background(), testLogEvent, func() string { return "test_operation" }, exported.RetryOptions{
 			RetryDelay: time.Microsecond,
 		}, func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc", "Attempt %d, within test func", args.I)

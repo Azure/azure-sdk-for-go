@@ -9,10 +9,19 @@ package azidentity
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
+	"regexp"
+	"strings"
 	"testing"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
@@ -67,6 +76,30 @@ func TestDefaultAzureCredential_ConstructorErrorHandler(t *testing.T) {
 	}
 }
 
+func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
+	cred, err := NewDefaultAzureCredential(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond)
+	defer cancel()
+	_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+	// these credentials' constructors returned errors because their configuration is absent;
+	// those errors should be represented in the error returned by DefaultAzureCredential.GetToken()
+	for _, name := range []string{"EnvironmentCredential", credNameWorkloadIdentity} {
+		matched, err := regexp.MatchString(name+`: .+\n`, err.Error())
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !matched {
+			t.Errorf("expected an error message from %s", name)
+		}
+	}
+}
+
 func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
 	for _, ID := range []ManagedIDKind{nil, ClientID("client-id")} {
 		t.Run(fmt.Sprintf("%v", ID), func(t *testing.T) {
@@ -78,8 +111,8 @@ func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
 				t.Fatal(err)
 			}
 			for _, c := range cred.chain.sources {
-				if m, ok := c.(*ManagedIdentityCredential); ok {
-					if actual := m.mic.id; actual != ID {
+				if w, ok := c.(*timeoutWrapper); ok {
+					if actual := w.mic.mic.id; actual != ID {
 						t.Fatalf(`expected "%s", got "%v"`, ID, actual)
 					}
 					return
@@ -87,5 +120,104 @@ func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
 			}
 			t.Fatal("default chain should include ManagedIdentityCredential")
 		})
+	}
+}
+
+func TestDefaultAzureCredential_Workload(t *testing.T) {
+	expectedAssertion := "service account token"
+	tempFile := filepath.Join(t.TempDir(), "service-account-token-file")
+	if err := os.WriteFile(tempFile, []byte(expectedAssertion), os.ModePerm); err != nil {
+		t.Fatalf(`failed to write temporary file "%s": %v`, tempFile, err)
+	}
+	pred := func(req *http.Request) bool {
+		if err := req.ParseForm(); err != nil {
+			t.Fatal(err)
+		}
+		if actual := req.PostForm["client_assertion"]; actual[0] != expectedAssertion {
+			t.Fatalf(`unexpected assertion "%s"`, actual[0])
+		}
+		if actual := req.PostForm["client_id"]; actual[0] != fakeClientID {
+			t.Fatalf(`unexpected assertion "%s"`, actual[0])
+		}
+		if actual := strings.Split(req.URL.Path, "/")[1]; actual != fakeTenantID {
+			t.Fatalf(`unexpected tenant "%s"`, actual)
+		}
+		return true
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
+	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
+	srv.AppendResponse(mock.WithPredicate(pred), mock.WithBody(accessTokenRespSuccess))
+	srv.AppendResponse()
+	for k, v := range map[string]string{
+		azureAuthorityHost:      cloud.AzurePublic.ActiveDirectoryAuthorityHost,
+		azureClientID:           fakeClientID,
+		azureFederatedTokenFile: tempFile,
+		azureTenantID:           fakeTenantID,
+	} {
+		t.Setenv(k, v)
+	}
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: srv}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	testGetTokenSuccess(t, cred)
+}
+
+// delayPolicy adds a delay to pipeline requests. Used to test timeout behavior.
+type delayPolicy struct {
+	delay time.Duration
+}
+
+func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
+	time.Sleep(p.delay)
+	return req.Next()
+}
+
+func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.SetResponse(mock.WithBody(accessTokenRespSuccess))
+
+	timeout := 5 * time.Millisecond
+	dp := delayPolicy{2 * timeout}
+	mic, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+		ClientOptions: policy.ClientOptions{
+			PerCallPolicies: []policy.Policy{&dp},
+			Retry:           policy.RetryOptions{MaxRetries: -1},
+			Transport:       srv,
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	wrapper := timeoutWrapper{mic, timeout}
+	chain, err := NewChainedTokenCredential([]azcore.TokenCredential{&wrapper}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i := 0; i < 2; i++ {
+		// expecting credentialUnavailableError because delay exceeds the wrapper's timeout
+		_, err = chain.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+		if _, ok := err.(*credentialUnavailableError); !ok {
+			t.Fatalf("expected credentialUnavailableError, got %v", err)
+		}
+	}
+
+	// remove the delay so the credential can authenticate
+	dp.delay = 0
+	tk, err := chain.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token != tokenValue {
+		t.Fatalf(`got unexpected token "%s"`, tk.Token)
+	}
+	// now there should be no special timeout (using a different scope bypasses the cache, forcing a token request)
+	dp.delay = 3 * timeout
+	tk, err = chain.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"not-" + liveTestScope}})
+	if err != nil {
+		t.Fatal(err)
 	}
 }

@@ -16,13 +16,15 @@ type BatchQueryRequest struct {
 	// REQUIRED; The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
 	Body *Body `json:"body,omitempty"`
 
-	// REQUIRED; The error details.
-	ID *string `json:"id,omitempty"`
+	// REQUIRED; Unique ID corresponding to each request in the batch
+	CorrelationID *string `json:"id,omitempty"`
 
-	// REQUIRED; Workspace Id to be included in the query
-	Workspace *string `json:"workspace,omitempty"`
+	// REQUIRED; Primary Workspace ID of the query
+	WorkspaceID *string `json:"workspace,omitempty"`
 
-	// Dictionary of
+	// Optional. Headers of the request. Can use prefer header to set server timeout, query statistics and visualization information.
+	// For more information, see
+	// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#readme-increase-wait-time-include-statistics-include-render-visualization
 	Headers map[string]*string `json:"headers,omitempty"`
 
 	// The method of a single request in a batch, defaults to POST
@@ -35,11 +37,11 @@ type BatchQueryRequest struct {
 // BatchQueryResponse - Contains the batch query response and the headers, id, and status of the request
 type BatchQueryResponse struct {
 	// Contains the tables, columns & rows resulting from a query.
-	Body *BatchQueryResults `json:"body,omitempty"`
+	Body          *BatchQueryResults `json:"body,omitempty"`
+	CorrelationID *string            `json:"id,omitempty"`
 
 	// Dictionary of
 	Headers map[string]*string `json:"headers,omitempty"`
-	ID      *string            `json:"id,omitempty"`
 	Status  *int32             `json:"status,omitempty"`
 }
 
@@ -48,14 +50,14 @@ type BatchQueryResults struct {
 	// The code and message for an error.
 	Error *ErrorInfo `json:"error,omitempty"`
 
-	// Visualization data in JSON format.
-	Render interface{} `json:"render,omitempty"`
-
 	// Statistics represented in JSON format.
-	Statistics interface{} `json:"statistics,omitempty"`
+	Statistics []byte `json:"statistics,omitempty"`
 
 	// The list of tables, columns and rows.
 	Tables []*Table `json:"tables,omitempty"`
+
+	// Visualization data in JSON format.
+	Visualization []byte `json:"render,omitempty"`
 }
 
 // BatchRequest - An array of requests.
@@ -75,12 +77,12 @@ type Body struct {
 	// REQUIRED; The query to execute.
 	Query *string `json:"query,omitempty"`
 
+	// A list of workspaces to query in addition to the primary workspace.
+	AdditionalWorkspaces []*string `json:"workspaces,omitempty"`
+
 	// Optional. The timespan over which to query data. This is an ISO8601 time period value. This timespan is applied in addition
 	// to any that are specified in the query expression.
-	Timespan *string `json:"timespan,omitempty"`
-
-	// A list of workspaces that are included in the query.
-	Workspaces []*string `json:"workspaces,omitempty"`
+	Timespan *TimeInterval `json:"timespan,omitempty"`
 }
 
 // Column - A column in a table.
@@ -101,15 +103,15 @@ type LocalizableString struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
-// LogsClientBatchOptions contains the optional parameters for the LogsClient.Batch method.
-type LogsClientBatchOptions struct {
+// LogsClientQueryBatchOptions contains the optional parameters for the LogsClient.QueryBatch method.
+type LogsClientQueryBatchOptions struct {
 	// placeholder for future optional parameters
 }
 
 // LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
 type LogsClientQueryWorkspaceOptions struct {
 	// Optional. The prefer header to set server timeout, query statistics and visualization information.
-	Prefer *string
+	Options *LogsQueryOptions
 }
 
 // MetadataValue - Represents a metric metadata value.
@@ -258,15 +260,14 @@ type MetricValue struct {
 	Total *float64 `json:"total,omitempty"`
 }
 
-// MetricsClientListMetricDefinitionsOptions contains the optional parameters for the MetricsClient.ListMetricDefinitions
-// method.
-type MetricsClientListMetricDefinitionsOptions struct {
+// MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.ListDefinitions method.
+type MetricsClientListDefinitionsOptions struct {
 	// Metric namespace to query metric definitions for.
 	Metricnamespace *string
 }
 
-// MetricsClientListMetricNamespacesOptions contains the optional parameters for the MetricsClient.ListMetricNamespaces method.
-type MetricsClientListMetricNamespacesOptions struct {
+// MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.ListNamespaces method.
+type MetricsClientListNamespacesOptions struct {
 	// The ISO 8601 conform Date start time from which to query for metric namespaces.
 	StartTime *string
 }
@@ -299,7 +300,7 @@ type MetricsClientQueryResourceOptions struct {
 	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
 	ResultType *ResultType
 	// The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
-	Timespan *string
+	Timespan *TimeInterval
 	// The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
 	Top *int32
 }
@@ -309,7 +310,7 @@ type Response struct {
 	// REQUIRED; The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
 	// '/'. This may be adjusted in the future and returned back from what was originally
 	// requested.
-	Timespan *string `json:"timespan,omitempty"`
+	Timespan *TimeInterval `json:"timespan,omitempty"`
 
 	// REQUIRED; the value of the collection.
 	Value []*Metric `json:"value,omitempty"`
@@ -337,11 +338,11 @@ type Results struct {
 	// The code and message for an error.
 	Error *ErrorInfo `json:"error,omitempty"`
 
-	// Visualization data in JSON format.
-	Render interface{} `json:"render,omitempty"`
-
 	// Statistics represented in JSON format.
-	Statistics interface{} `json:"statistics,omitempty"`
+	Statistics []byte `json:"statistics,omitempty"`
+
+	// Visualization data in JSON format.
+	Visualization []byte `json:"render,omitempty"`
 }
 
 // Table - Contains the columns and rows for one table in a query response.
@@ -353,7 +354,7 @@ type Table struct {
 	Name *string `json:"name,omitempty"`
 
 	// REQUIRED; The resulting rows from this query.
-	Rows [][]interface{} `json:"rows,omitempty"`
+	Rows []Row `json:"rows,omitempty"`
 }
 
 // TimeSeriesElement - A time series result type. The discriminator value is always TimeSeries in this case.

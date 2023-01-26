@@ -1,5 +1,40 @@
 # Release History
 
+## 1.1.5 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.4 (2023-01-10)
+
+### Bugs Fixed
+
+- User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
+
+## 1.1.3 (2022-11-16)
+
+### Bugs Fixed
+
+- Removing changes for client-side idle timer and closing without timeout. Combined these are 
+  causing issues with links not properly recovering or closing. Investigating an alternative
+  for a future release.
+
+## 1.1.2 (2022-11-08)
+
+### Features Added
+
+- Added a client-side idle timer which will reset Receiver links, transparently, if the link is idle for 
+  5 minutes.
+
+### Bugs Fixed
+
+- $cbs link is properly closed, even on cancellation (#19492)
+
 ## 1.1.1 (2022-10-11)
 
 ### Bugs Fixed

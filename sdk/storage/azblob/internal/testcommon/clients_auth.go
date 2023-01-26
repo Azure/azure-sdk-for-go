@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -34,6 +35,8 @@ const (
 	TestAccountSecondary  TestAccountType = "SECONDARY_"
 	TestAccountPremium    TestAccountType = "PREMIUM_"
 	TestAccountSoftDelete TestAccountType = "SOFT_DELETE_"
+	TestAccountDatalake   TestAccountType = "DATALAKE_"
+	TestAccountImmutable  TestAccountType = "IMMUTABLE_"
 )
 
 const (
@@ -66,7 +69,7 @@ var BasicHeaders = blob.HTTPHeaders{
 	BlobContentEncoding:    &BlobContentEncoding,
 }
 
-var BasicMetadata = map[string]string{"Foo": "bar"}
+var BasicMetadata = map[string]*string{"Foo": to.Ptr("bar")}
 
 var BasicBlobTagsMap = map[string]string{
 	"azure": "blob",
@@ -84,7 +87,7 @@ var SpecialCharBlobTagsMap = map[string]string{
 }
 
 func setClientOptions(t *testing.T, opts *azcore.ClientOptions) {
-	opts.Logging.AllowedHeaders = []string{"X-Request-Mismatch", "X-Request-Mismatch-Error"}
+	opts.Logging.AllowedHeaders = append(opts.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
@@ -263,4 +266,17 @@ func EnableSoftDelete(ctx context.Context, _require *require.Assertions, client 
 func DisableSoftDelete(ctx context.Context, _require *require.Assertions, client *service.Client) {
 	_, err := client.SetProperties(ctx, &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(false)}})
 	_require.Nil(err)
+}
+
+func ListBlobsCount(ctx context.Context, _require *require.Assertions, listPager *runtime.Pager[container.ListBlobsFlatResponse], ctr int) {
+	found := make([]*container.BlobItem, 0)
+	for listPager.More() {
+		resp, err := listPager.NextPage(ctx)
+		_require.Nil(err)
+		if err != nil {
+			break
+		}
+		found = append(found, resp.Segment.BlobItems...)
+	}
+	_require.Len(found, ctr)
 }

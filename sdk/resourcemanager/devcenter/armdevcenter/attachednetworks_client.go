@@ -33,7 +33,7 @@ type AttachedNetworksClient struct {
 }
 
 // NewAttachedNetworksClient creates a new instance of AttachedNetworksClient with the specified values.
-// subscriptionID - Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewAttachedNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedNetworksClient, error) {
@@ -58,8 +58,8 @@ func NewAttachedNetworksClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Creates or updates an attached NetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // attachedNetworkConnectionName - The name of the attached NetworkConnection.
 // body - Represents an attached NetworkConnection.
@@ -81,7 +81,7 @@ func (client *AttachedNetworksClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Creates or updates an attached NetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-11-11-preview
 func (client *AttachedNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, attachedNetworkConnectionName string, body AttachedNetworkConnection, options *AttachedNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, attachedNetworkConnectionName, body, options)
 	if err != nil {
@@ -121,7 +121,7 @@ func (client *AttachedNetworksClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -129,8 +129,8 @@ func (client *AttachedNetworksClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Un-attach a NetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // attachedNetworkConnectionName - The name of the attached NetworkConnection.
 // options - AttachedNetworksClientBeginDeleteOptions contains the optional parameters for the AttachedNetworksClient.BeginDelete
@@ -151,7 +151,7 @@ func (client *AttachedNetworksClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Un-attach a NetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-11-11-preview
 func (client *AttachedNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, attachedNetworkConnectionName string, options *AttachedNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, attachedNetworkConnectionName, options)
 	if err != nil {
@@ -191,7 +191,7 @@ func (client *AttachedNetworksClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,8 +199,8 @@ func (client *AttachedNetworksClient) deleteCreateRequest(ctx context.Context, r
 
 // GetByDevCenter - Gets an attached NetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // attachedNetworkConnectionName - The name of the attached NetworkConnection.
 // options - AttachedNetworksClientGetByDevCenterOptions contains the optional parameters for the AttachedNetworksClient.GetByDevCenter
@@ -244,7 +244,7 @@ func (client *AttachedNetworksClient) getByDevCenterCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,8 +261,8 @@ func (client *AttachedNetworksClient) getByDevCenterHandleResponse(resp *http.Re
 
 // GetByProject - Gets an attached NetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // attachedNetworkConnectionName - The name of the attached NetworkConnection.
 // options - AttachedNetworksClientGetByProjectOptions contains the optional parameters for the AttachedNetworksClient.GetByProject
@@ -306,7 +306,7 @@ func (client *AttachedNetworksClient) getByProjectCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,8 +322,8 @@ func (client *AttachedNetworksClient) getByProjectHandleResponse(resp *http.Resp
 }
 
 // NewListByDevCenterPager - Lists the attached NetworkConnections for a DevCenter.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // devCenterName - The name of the devcenter.
 // options - AttachedNetworksClientListByDevCenterOptions contains the optional parameters for the AttachedNetworksClient.ListByDevCenter
 // method.
@@ -375,7 +375,7 @@ func (client *AttachedNetworksClient) listByDevCenterCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -394,8 +394,8 @@ func (client *AttachedNetworksClient) listByDevCenterHandleResponse(resp *http.R
 }
 
 // NewListByProjectPager - Lists the attached NetworkConnections for a Project.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // options - AttachedNetworksClientListByProjectOptions contains the optional parameters for the AttachedNetworksClient.ListByProject
 // method.
@@ -447,7 +447,7 @@ func (client *AttachedNetworksClient) listByProjectCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

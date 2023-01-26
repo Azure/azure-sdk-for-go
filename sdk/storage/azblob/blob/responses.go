@@ -13,10 +13,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+// DownloadResponse contains the response from method BlobClient.Download.
+type DownloadResponse = generated.BlobClientDownloadResponse
+
 // DownloadStreamResponse contains the response from the DownloadStream method.
 // To read from the stream, read from the Body field, or call the NewRetryReader method.
 type DownloadStreamResponse struct {
-	generated.BlobClientDownloadResponse
+	DownloadResponse
 	ObjectReplicationRules []ObjectReplicationPolicy
 
 	client   *Client
@@ -28,7 +31,7 @@ type DownloadStreamResponse struct {
 // NewRetryReader constructs new RetryReader stream for reading data. If a connection fails while
 // reading, it will make additional requests to reestablish a connection and continue reading.
 // Pass nil for options to accept the default options.
-// Callers of this method should not access the DowloadStreamResponse.Body field.
+// Callers of this method should not access the DownloadStreamResponse.Body field.
 func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *RetryReaderOptions) *RetryReader {
 	if options == nil {
 		options = &RetryReaderOptions{}
@@ -84,6 +87,15 @@ type SetTagsResponse = generated.BlobClientSetTagsResponse
 
 // GetTagsResponse contains the response from method BlobClient.GetTags.
 type GetTagsResponse = generated.BlobClientGetTagsResponse
+
+// SetImmutabilityPolicyResponse contains the response from method BlobClient.SetImmutabilityPolicy.
+type SetImmutabilityPolicyResponse = generated.BlobClientSetImmutabilityPolicyResponse
+
+// DeleteImmutabilityPolicyResponse contains the response from method BlobClient.DeleteImmutabilityPolicyResponse.
+type DeleteImmutabilityPolicyResponse = generated.BlobClientDeleteImmutabilityPolicyResponse
+
+// SetLegalHoldResponse contains the response from method BlobClient.SetLegalHold.
+type SetLegalHoldResponse = generated.BlobClientSetLegalHoldResponse
 
 // CopyFromURLResponse contains the response from method BlobClient.CopyFromURL.
 type CopyFromURLResponse = generated.BlobClientCopyFromURLResponse

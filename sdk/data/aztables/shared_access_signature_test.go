@@ -60,7 +60,7 @@ func TestSASServiceClient(t *testing.T) {
 	require.NoError(t, err)
 	svcClient, err := createServiceClientForRecordingWithNoCredential(t, sasUrl)
 	require.NoError(t, err)
-	defer recording.Stop(t, nil) //nolint
+	defer require.NoError(t, recording.Stop(t, nil))
 
 	_, err = svcClient.CreateTable(ctx, tableName+"002", nil)
 	require.NoError(t, err)
@@ -106,7 +106,7 @@ func TestSASClient(t *testing.T) {
 	require.NoError(t, err)
 	client, err := createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
-	defer recording.Stop(t, nil) //nolint
+	defer require.NoError(t, recording.Stop(t, nil))
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -160,7 +160,7 @@ func TestSASClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
-	defer recording.Stop(t, nil) //nolint
+	defer require.NoError(t, recording.Stop(t, nil))
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -229,7 +229,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
-	defer recording.Stop(t, nil) //nolint
+	defer require.NoError(t, recording.Stop(t, nil))
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",

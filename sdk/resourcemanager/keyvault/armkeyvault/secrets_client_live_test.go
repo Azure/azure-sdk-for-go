@@ -8,6 +8,7 @@ package armkeyvault_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -56,6 +57,7 @@ func TestSecretsClient(t *testing.T) {
 
 func (testsuite *SecretsClientTestSuite) TestSecretsCRUD() {
 	// create vault
+	fmt.Println("Call operation: Vaults_CreateOrUpdate")
 	vaultsClient, err := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	vaultName := "go-test-vault-2"
@@ -103,6 +105,7 @@ func (testsuite *SecretsClientTestSuite) TestSecretsCRUD() {
 	testsuite.Require().Equal(vaultName, *vResp.Name)
 
 	// create secret
+	fmt.Println("Call operation: Secrets_CreateOrUpdate")
 	secretsClient, err := armkeyvault.NewSecretsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	secretName := "go-test-secret2"
@@ -125,6 +128,7 @@ func (testsuite *SecretsClientTestSuite) TestSecretsCRUD() {
 	testsuite.Require().Equal(secretName, *secretResp.Name)
 
 	// update secret
+	fmt.Println("Call operation: Secrets_Update")
 	updateResp, err := secretsClient.Update(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -144,11 +148,13 @@ func (testsuite *SecretsClientTestSuite) TestSecretsCRUD() {
 	testsuite.Require().Equal("recording", *updateResp.Tags["test"])
 
 	// get secret
+	fmt.Println("Call operation: Secrets_Get")
 	getResp, err := secretsClient.Get(testsuite.ctx, testsuite.resourceGroupName, vaultName, secretName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(secretName, *getResp.Name)
 
 	// list secret
+	fmt.Println("Call operation: Secrets_List")
 	secretPager := secretsClient.NewListPager(testsuite.resourceGroupName, vaultName, nil)
 	testsuite.Require().True(secretPager.More())
 }

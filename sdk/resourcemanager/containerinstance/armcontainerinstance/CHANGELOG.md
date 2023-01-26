@@ -1,5 +1,24 @@
 # Release History
 
+## 2.2.0-beta.1 (2023-01-27)
+### Features Added
+
+- New value `ContainerGroupSKUConfidential` added to type alias `ContainerGroupSKU`
+- New type alias `ContainerGroupPriority` with values `ContainerGroupPriorityRegular`, `ContainerGroupPrioritySpot`
+- New struct `ConfidentialComputeProperties`
+- New field `ConfidentialComputeProperties` in struct `ContainerGroupPropertiesProperties`
+- New field `Priority` in struct `ContainerGroupPropertiesProperties`
+
+
+## 2.1.0 (2022-11-08)
+### Features Added
+
+- New struct `DeploymentExtensionSpec`
+- New struct `DeploymentExtensionSpecProperties`
+- New field `Extensions` in struct `ContainerGroupPropertiesProperties`
+- New field `Identity` in struct `EncryptionProperties`
+
+
 ## 2.0.0 (2022-08-26)
 ### Breaking Changes
 

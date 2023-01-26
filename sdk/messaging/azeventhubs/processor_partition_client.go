@@ -8,7 +8,7 @@ import "context"
 // ProcessorPartitionClient allows you to receive events, similar to a PartitionClient, with
 // integration into a checkpoint store for tracking progress.
 //
-// This type is instantiated from the Processor type, which handles dynamic load balancing.
+// This type is instantiated from [Processor.NextPartitionClient], which handles dynamic load balancing.
 //
 // See [example_processor_test.go] for an example of typical usage.
 //
@@ -26,6 +26,8 @@ type ProcessorPartitionClient struct {
 
 // ReceiveEvents receives events until 'count' events have been received or the context has
 // expired or been cancelled.
+//
+// See [PartitionClient.ReceiveEvents] for more information, including troubleshooting.
 func (c *ProcessorPartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) ([]*ReceivedEventData, error) {
 	return c.innerClient.ReceiveEvents(ctx, count, options)
 }

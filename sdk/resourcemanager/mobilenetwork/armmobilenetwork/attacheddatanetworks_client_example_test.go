@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/AttachedDataNetworkDelete.json
 func ExampleAttachedDataNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,12 +28,7 @@ func ExampleAttachedDataNetworksClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"TestPacketCoreCP",
-		"TestPacketCoreDP",
-		"TestAttachedDataNetwork",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -43,7 +38,7 @@ func ExampleAttachedDataNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/AttachedDataNetworkGet.json
 func ExampleAttachedDataNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,12 +49,7 @@ func ExampleAttachedDataNetworksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"TestPacketCoreCP",
-		"TestPacketCoreDP",
-		"TestAttachedDataNetwork",
-		nil)
+	res, err := client.Get(ctx, "rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -67,7 +57,7 @@ func ExampleAttachedDataNetworksClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/AttachedDataNetworkCreate.json
 func ExampleAttachedDataNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,43 +68,37 @@ func ExampleAttachedDataNetworksClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"TestPacketCoreCP",
-		"TestPacketCoreDP",
-		"TestAttachedDataNetwork",
-		armmobilenetwork.AttachedDataNetwork{
-			Location: to.Ptr("eastus"),
-			Properties: &armmobilenetwork.AttachedDataNetworkPropertiesFormat{
-				DNSAddresses: []*string{
-					to.Ptr("1.1.1.1")},
-				NaptConfiguration: &armmobilenetwork.NaptConfiguration{
-					Enabled:       to.Ptr(armmobilenetwork.NaptEnabledEnabled),
-					PinholeLimits: to.Ptr[int32](65536),
-					PinholeTimeouts: &armmobilenetwork.PinholeTimeouts{
-						Icmp: to.Ptr[int32](30),
-						TCP:  to.Ptr[int32](180),
-						UDP:  to.Ptr[int32](30),
-					},
-					PortRange: &armmobilenetwork.PortRange{
-						MaxPort: to.Ptr[int32](49999),
-						MinPort: to.Ptr[int32](1024),
-					},
-					PortReuseHoldTime: &armmobilenetwork.PortReuseHoldTimes{
-						TCP: to.Ptr[int32](120),
-						UDP: to.Ptr[int32](60),
-					},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork", armmobilenetwork.AttachedDataNetwork{
+		Location: to.Ptr("eastus"),
+		Properties: &armmobilenetwork.AttachedDataNetworkPropertiesFormat{
+			DNSAddresses: []*string{
+				to.Ptr("1.1.1.1")},
+			NaptConfiguration: &armmobilenetwork.NaptConfiguration{
+				Enabled:       to.Ptr(armmobilenetwork.NaptEnabledEnabled),
+				PinholeLimits: to.Ptr[int32](65536),
+				PinholeTimeouts: &armmobilenetwork.PinholeTimeouts{
+					Icmp: to.Ptr[int32](30),
+					TCP:  to.Ptr[int32](180),
+					UDP:  to.Ptr[int32](30),
 				},
-				UserEquipmentAddressPoolPrefix: []*string{
-					to.Ptr("2.2.0.0/16")},
-				UserEquipmentStaticAddressPoolPrefix: []*string{
-					to.Ptr("2.4.0.0/16")},
-				UserPlaneDataInterface: &armmobilenetwork.InterfaceProperties{
-					Name: to.Ptr("N6"),
+				PortRange: &armmobilenetwork.PortRange{
+					MaxPort: to.Ptr[int32](49999),
+					MinPort: to.Ptr[int32](1024),
+				},
+				PortReuseHoldTime: &armmobilenetwork.PortReuseHoldTimes{
+					TCP: to.Ptr[int32](120),
+					UDP: to.Ptr[int32](60),
 				},
 			},
+			UserEquipmentAddressPoolPrefix: []*string{
+				to.Ptr("2.2.0.0/16")},
+			UserEquipmentStaticAddressPoolPrefix: []*string{
+				to.Ptr("2.4.0.0/16")},
+			UserPlaneDataInterface: &armmobilenetwork.InterfaceProperties{
+				Name: to.Ptr("N6"),
+			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -126,7 +110,7 @@ func ExampleAttachedDataNetworksClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/AttachedDataNetworkUpdateTags.json
 func ExampleAttachedDataNetworksClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,18 +121,12 @@ func ExampleAttachedDataNetworksClient_UpdateTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx,
-		"rg1",
-		"TestPacketCoreCP",
-		"TestPacketCoreDP",
-		"TestAttachedDataNetwork",
-		armmobilenetwork.TagsObject{
-			Tags: map[string]*string{
-				"tag1": to.Ptr("value1"),
-				"tag2": to.Ptr("value2"),
-			},
+	res, err := client.UpdateTags(ctx, "rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork", armmobilenetwork.TagsObject{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -156,7 +134,7 @@ func ExampleAttachedDataNetworksClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
 func ExampleAttachedDataNetworksClient_NewListByPacketCoreDataPlanePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,10 +145,7 @@ func ExampleAttachedDataNetworksClient_NewListByPacketCoreDataPlanePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPacketCoreDataPlanePager("rg1",
-		"TestPacketCoreCP",
-		"TestPacketCoreDP",
-		nil)
+	pager := client.NewListByPacketCoreDataPlanePager("rg1", "TestPacketCoreCP", "TestPacketCoreDP", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

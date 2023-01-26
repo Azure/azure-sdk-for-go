@@ -18,7 +18,7 @@ import (
 
 // Type Declarations ---------------------------------------------------------------------
 
-// PageList - the list of pages
+// PageList - the list of pages.
 type PageList = generated.PageList
 
 // ClearRange defines a range of pages.
@@ -46,7 +46,7 @@ type CreateOptions struct {
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 
 	// Optional. Indicates the tier to be set on the page blob.
 	Tier *PremiumPageBlobAccessTier
@@ -86,12 +86,9 @@ func (o *CreateOptions) format() (*generated.PageBlobClientCreateOptions, *gener
 
 // UploadPagesOptions contains the optional parameters for the Client.UploadPages method.
 type UploadPagesOptions struct {
-	// Range specifies a range of bytes.  The default value is all bytes.
-	Range blob.HTTPRange
-
-	TransactionalContentCRC64 []byte
-	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 []byte
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation blob.TransferValidationType
 
 	CpkInfo                        *blob.CpkInfo
 	CpkScopeInfo                   *blob.CpkScopeInfo
@@ -99,20 +96,14 @@ type UploadPagesOptions struct {
 	AccessConditions               *blob.AccessConditions
 }
 
-func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptions, *generated.LeaseAccessConditions,
+func (o *UploadPagesOptions) format() (*generated.LeaseAccessConditions,
 	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil
-	}
-
-	options := &generated.PageBlobClientUploadPagesOptions{
-		TransactionalContentCRC64: o.TransactionalContentCRC64,
-		TransactionalContentMD5:   o.TransactionalContentMD5,
-		Range:                     exported.FormatHTTPRange(o.Range),
+		return nil, nil, nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
+	return leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -121,10 +112,9 @@ func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptio
 type UploadPagesFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
-	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMD5 []byte
-	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64 []byte
+
+	// SourceContentValidation contains the validation mechanism used on the range of bytes read from the source.
+	SourceContentValidation blob.SourceContentValidationType
 
 	CpkInfo *blob.CpkInfo
 
@@ -144,9 +134,11 @@ func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPag
 	}
 
 	options := &generated.PageBlobClientUploadPagesFromURLOptions{
-		SourceContentMD5:        o.SourceContentMD5,
-		SourceContentcrc64:      o.SourceContentCRC64,
 		CopySourceAuthorization: o.CopySourceAuthorization,
+	}
+
+	if o.SourceContentValidation != nil {
+		o.SourceContentValidation.Apply(options)
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
@@ -178,20 +170,20 @@ func (o *ClearPagesOptions) format() (*generated.LeaseAccessConditions, *generat
 // GetPageRangesOptions contains the optional parameters for the Client.NewGetPageRangesPager method.
 type GetPageRangesOptions struct {
 	Marker *string
-	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
+	// Specifies the maximum number of containers to return. If the request does not specify MaxResults, or specifies a value
 	// greater than 5000, the server will return up to 5000 items. Note that if the
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will
-	// return fewer results than specified by maxresults, or than the default of 5000.
+	// return fewer results than specified by MaxResults, or than the default of 5000.
 	MaxResults *int32
 	// Optional. This header is only supported in service versions 2019-04-19 and after and specifies the URL of a previous snapshot
 	// of the target blob. The response will only contain pages that were changed
 	// between the target blob and its previous snapshot.
 	PrevSnapshotURL *string
-	// Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that specifies that the response
+	// Optional in version 2015-07-08 and newer. The PrevSnapshot parameter is a DateTime value that specifies that the response
 	// will contain only pages that were changed between target blob and previous
 	// snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot
-	// specified by prevsnapshot is the older of the two. Note that incremental
+	// specified by PrevSnapshot is the older of the two. Note that incremental
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
 	// Range specifies a range of bytes.  The default value is all bytes.
@@ -228,20 +220,20 @@ type GetPageRangesDiffOptions struct {
 	// as the value for the marker parameter in a subsequent call to request the next
 	// page of list items. The marker value is opaque to the client.
 	Marker *string
-	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
+	// Specifies the maximum number of containers to return. If the request does not specify MaxResults, or specifies a value
 	// greater than 5000, the server will return up to 5000 items. Note that if the
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will
-	// return fewer results than specified by maxresults, or than the default of 5000.
+	// return fewer results than specified by MaxResults, or than the default of 5000.
 	MaxResults *int32
 	// Optional. This header is only supported in service versions 2019-04-19 and after and specifies the URL of a previous snapshot
 	// of the target blob. The response will only contain pages that were changed
 	// between the target blob and its previous snapshot.
 	PrevSnapshotURL *string
-	// Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that specifies that the response
+	// Optional in version 2015-07-08 and newer. The PrevSnapshot parameter is a DateTime value that specifies that the response
 	// will contain only pages that were changed between target blob and previous
 	// snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot
-	// specified by prevsnapshot is the older of the two. Note that incremental
+	// specified by PrevSnapshot is the older of the two. Note that incremental
 	// snapshots are currently supported only for blobs created on or after January 1, 2016.
 	PrevSnapshot *string
 	// Range specifies a range of bytes.  The default value is all bytes.

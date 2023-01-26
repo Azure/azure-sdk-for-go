@@ -104,7 +104,7 @@ type downloadOptions struct {
 	CpkInfo      *CpkInfo
 	CpkScopeInfo *CpkScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -154,7 +154,7 @@ type DownloadBufferOptions struct {
 	// CpkScopeInfo contains a group of parameters for client provided encryption scope.
 	CpkScopeInfo *CpkScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -191,9 +191,14 @@ type DownloadFileOptions struct {
 // DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
-	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
+	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself.
 	DeleteSnapshots  *DeleteSnapshotsOptionType
 	AccessConditions *AccessConditions
+	// Setting DeleteType to DeleteTypePermanent will permanently delete soft-delete snapshot and/or version blobs.
+	// WARNING: This is a dangerous operation and should not be used unless you know the implications. Please proceed
+	// with caution.
+	// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob
+	BlobDeleteType *DeleteType
 }
 
 func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -203,6 +208,7 @@ func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated
 
 	basics := generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
+		DeleteType:      o.BlobDeleteType, // None by default
 	}
 
 	if o.AccessConditions == nil {
@@ -299,7 +305,7 @@ func (o *SetMetadataOptions) format() (*generated.LeaseAccessConditions, *CpkInf
 
 // CreateSnapshotOptions contains the optional parameters for the Client.CreateSnapshot method.
 type CreateSnapshotOptions struct {
-	Metadata         map[string]string
+	Metadata         map[string]*string
 	AccessConditions *AccessConditions
 	CpkInfo          *CpkInfo
 	CpkScopeInfo     *CpkScopeInfo
@@ -335,7 +341,7 @@ type StartCopyFromURLOptions struct {
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
 	// blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
 	// Overrides the sealed state of the destination blob. Service version 2019-12-12 and newer.
@@ -442,6 +448,71 @@ func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generat
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// SetImmutabilityPolicyOptions contains the parameter for Client.SetImmutabilityPolicy
+type SetImmutabilityPolicyOptions struct {
+	// Specifies the immutability policy mode to set on the blob. Possible values to set include: "Locked", "Unlocked".
+	// "Mutable" can only be returned by service, don't set to "Mutable". If mode is not set - it will default to Unlocked.
+	Mode                     *ImmutabilityPolicySetting
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *SetImmutabilityPolicyOptions) format() (*generated.BlobClientSetImmutabilityPolicyOptions, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+	ac := &exported.BlobAccessConditions{
+		ModifiedAccessConditions: o.ModifiedAccessConditions,
+	}
+	_, modifiedAccessConditions := exported.FormatBlobAccessConditions(ac)
+
+	options := &generated.BlobClientSetImmutabilityPolicyOptions{
+		ImmutabilityPolicyMode: o.Mode,
+	}
+
+	return options, modifiedAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DeleteImmutabilityPolicyOptions contains the optional parameters for the Client.DeleteImmutabilityPolicy method.
+type DeleteImmutabilityPolicyOptions struct {
+	// placeholder for future options
+}
+
+func (o *DeleteImmutabilityPolicyOptions) format() *generated.BlobClientDeleteImmutabilityPolicyOptions {
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetLegalHoldOptions contains the optional parameters for the Client.SetLegalHold method.
+type SetLegalHoldOptions struct {
+	// placeholder for future options
+}
+
+func (o *SetLegalHoldOptions) format() *generated.BlobClientSetLegalHoldOptions {
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format() time.Time {
+	var st time.Time
+	if o.StartTime != nil {
+		st = o.StartTime.UTC()
+	} else {
+		st = time.Time{}
+	}
+	return st
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // CopyFromURLOptions contains the optional parameters for the Client.CopyFromURL method.
 type CopyFromURLOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
@@ -460,7 +531,7 @@ type CopyFromURLOptions struct {
 	// is not copied from the source blob or file. Note that beginning with
 	// version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers,
 	// Blobs, and Metadata for more information.
-	Metadata map[string]string
+	Metadata map[string]*string
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 []byte
 	// Optional. Indicates the tier to be set on the blob.

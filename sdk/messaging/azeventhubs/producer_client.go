@@ -15,7 +15,6 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
@@ -87,7 +86,7 @@ func NewProducerClient(fullyQualifiedNamespace string, eventHub string, credenti
 //
 //	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>;
 func NewProducerClientFromConnectionString(connectionString string, eventHub string, options *ProducerClientOptions) (*ProducerClient, error) {
-	parsedConn, err := parseConn(connectionString, eventHub)
+	props, err := parseConn(connectionString, eventHub)
 
 	if err != nil {
 		return nil, err
@@ -95,7 +94,7 @@ func NewProducerClientFromConnectionString(connectionString string, eventHub str
 
 	return newProducerClientImpl(producerClientCreds{
 		connectionString: connectionString,
-		eventHub:         parsedConn.HubName,
+		eventHub:         *props.EntityPath,
 	}, options)
 }
 
@@ -150,14 +149,14 @@ func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *EventD
 	return batch, nil
 }
 
-// SendEventBatchOptions contains optional parameters for the SendEventBatch function
-type SendEventBatchOptions struct {
+// SendEventDataBatchOptions contains optional parameters for the SendEventDataBatch function
+type SendEventDataBatchOptions struct {
 	// For future expansion
 }
 
-// SendEventBatch sends an event data batch to Event Hubs.
-func (pc *ProducerClient) SendEventBatch(ctx context.Context, batch *EventDataBatch, options *SendEventBatchOptions) error {
-	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+// SendEventDataBatch sends an event data batch to Event Hubs.
+func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDataBatch, options *SendEventDataBatchOptions) error {
+	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventDataBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
 		return lwid.Link.Send(ctx, batch.toAMQPMessage())
 	})
 	return internal.TransformError(err)
@@ -278,25 +277,30 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 	return client, err
 }
 
-func parseConn(connectionString string, eventHub string) (*conn.ParsedConn, error) {
-	parsedConn, err := conn.ParsedConnectionFromStr(connectionString)
+// parseConn parses the connection string and ensures that the returned [exported.ConnectionStringProperties]
+// has an EntityPath set, either from the connection string or using the eventHub parameter.
+//
+// If the connection string has an EntityPath then eventHub must be empty.
+// If the connection string does not have an entity path then the eventHub must contain a value.
+func parseConn(connectionString string, eventHub string) (exported.ConnectionStringProperties, error) {
+	props, err := exported.ParseConnectionString(connectionString)
 
 	if err != nil {
-		return nil, err
+		return exported.ConnectionStringProperties{}, err
 	}
 
-	if parsedConn.HubName == "" {
+	if props.EntityPath == nil {
 		if eventHub == "" {
-			return nil, errors.New("connection string does not contain an EntityPath. eventHub cannot be an empty string")
+			return exported.ConnectionStringProperties{}, errors.New("connection string does not contain an EntityPath. eventHub cannot be an empty string")
 		}
-		parsedConn.HubName = eventHub
-	} else if parsedConn.HubName != "" {
+		props.EntityPath = &eventHub
+	} else {
 		if eventHub != "" {
-			return nil, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
+			return exported.ConnectionStringProperties{}, errors.New("connection string contains an EntityPath. eventHub must be an empty string")
 		}
 	}
 
-	return parsedConn, nil
+	return props, nil
 }
 
 func getPartitionID(partitionID *string) string {

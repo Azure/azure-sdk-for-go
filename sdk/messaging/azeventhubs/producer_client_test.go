@@ -14,9 +14,56 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/stretchr/testify/require"
 )
+
+func TestProducerClient_SAS(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+	sasCS, err := sas.CreateConnectionStringWithSAS(testParams.ConnectionString, time.Hour)
+	require.NoError(t, err)
+
+	// sanity check - we did actually generate a connection string with an embedded SharedAccessSignature
+	require.Contains(t, sasCS, "SharedAccessSignature=SharedAccessSignature")
+
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(sasCS, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, producerClient)
+
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(sasCS, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, consumerClient)
+
+	beforeProps, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
+	require.NoError(t, err)
+
+	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionID: to.Ptr("0"),
+	})
+	require.NoError(t, err)
+
+	err = batch.AddEventData(&azeventhubs.EventData{
+		Body: []byte("hello world"),
+	}, nil)
+	require.NoError(t, err)
+
+	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
+
+	partClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
+		StartPosition: getStartPosition(beforeProps),
+	})
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, partClient)
+
+	events, err := partClient.ReceiveEvents(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, events)
+}
 
 func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
@@ -115,7 +162,7 @@ func TestProducerClient_SendToAny(t *testing.T) {
 
 			partitionsBeforeSend := getAllPartitionProperties(t, producer)
 
-			err = producer.SendEventBatch(context.Background(), batch, nil)
+			err = producer.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
 
 			consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
@@ -223,7 +270,7 @@ func TestProducerClient_AMQPAnnotatedMessages(t *testing.T) {
 		}, nil)
 		require.NoError(t, err)
 
-		err = producer.SendEventBatch(context.Background(), batch, nil)
+		err = producer.SendEventDataBatch(context.Background(), batch, nil)
 		require.NoError(t, err)
 
 		numEvents = int64(batch.NumEvents())
@@ -352,7 +399,7 @@ func TestProducerClient_SendBatchExample(t *testing.T) {
 
 			// This batch is full - we can send it and create a new one and continue
 			// packaging and sending events.
-			if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+			if err := producerClient.SendEventDataBatch(context.TODO(), batch, nil); err != nil {
 				panic(err)
 			}
 
@@ -375,7 +422,7 @@ func TestProducerClient_SendBatchExample(t *testing.T) {
 
 	// if we have any events in the last batch, send it
 	if batch.NumEvents() > 0 {
-		if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+		if err := producerClient.SendEventDataBatch(context.TODO(), batch, nil); err != nil {
 			panic(err)
 		}
 
@@ -535,7 +582,7 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 		expectedBodies = append(expectedBodies, msg)
 	}
 
-	err = producer.SendEventBatch(context.Background(), batch, nil)
+	err = producer.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
 	// give us 60 seconds to receive all 100 messages we sent in the batch

@@ -16,6 +16,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"net/http"
 	"os"
 	"strings"
 	"testing"
@@ -110,7 +111,7 @@ func TestBackupRestore(t *testing.T) {
 
 	deleteResp, err := client.DeleteCertificate(ctx, certName, nil)
 	require.NoError(t, err)
-	pollStatus(t, 404, func() error {
+	pollStatus(t, http.StatusNotFound, func() error {
 		_, err = client.GetDeletedCertificate(ctx, certName, nil)
 		return err
 	})
@@ -120,7 +121,7 @@ func TestBackupRestore(t *testing.T) {
 
 	var restoreResp azcertificates.RestoreCertificateResponse
 	restoreParams := azcertificates.RestoreCertificateParameters{CertificateBundleBackup: backup.Value}
-	pollStatus(t, 409, func() error {
+	pollStatus(t, http.StatusConflict, func() error {
 		restoreResp, err = client.RestoreCertificate(ctx, restoreParams, nil)
 		return err
 	})
@@ -203,7 +204,7 @@ func TestCRUD(t *testing.T) {
 	testSerde(t, &deleteResp.DeletedCertificateBundle)
 
 	var getDeletedResp azcertificates.GetDeletedCertificateResponse
-	pollStatus(t, 404, func() error {
+	pollStatus(t, http.StatusNotFound, func() error {
 		getDeletedResp, err = client.GetDeletedCertificate(ctx, certName, nil)
 		return err
 	})
@@ -227,14 +228,14 @@ func TestDeleteRecover(t *testing.T) {
 
 	deleteResp, err := client.DeleteCertificate(ctx, certName, nil)
 	require.NoError(t, err)
-	pollStatus(t, 404, func() error {
+	pollStatus(t, http.StatusNotFound, func() error {
 		_, err = client.GetDeletedCertificate(ctx, certName, nil)
 		return err
 	})
 
 	recoverResp, err := client.RecoverDeletedCertificate(ctx, certName, nil)
 	require.NoError(t, err)
-	pollStatus(t, 404, func() error {
+	pollStatus(t, http.StatusNotFound, func() error {
 		_, err = client.GetCertificate(ctx, certName, "", nil)
 		return err
 	})
@@ -284,9 +285,10 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 				},
 				DisableChallengeResourceVerification: test.disableVerify,
 			}
-			client := azcertificates.NewClient(vaultURL, &FakeCredential{}, options)
+			client, err := azcertificates.NewClient(vaultURL, &FakeCredential{}, options)
+			require.NoError(t, err)
 			pager := client.NewListCertificatesPager(nil)
-			_, err := pager.NextPage(context.Background())
+			_, err = pager.NextPage(context.Background())
 			if test.err {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), "challenge resource")
@@ -435,7 +437,7 @@ func TestListCertificates(t *testing.T) {
 	require.Equal(t, 0, count)
 
 	for _, name := range certNames {
-		pollStatus(t, 404, func() error {
+		pollStatus(t, http.StatusNotFound, func() error {
 			_, err := client.GetDeletedCertificate(ctx, name, nil)
 			return err
 		})
@@ -564,7 +566,16 @@ func TestOperationCRUD(t *testing.T) {
 	client := startTest(t)
 
 	certName := getName(t, "")
-	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &selfSignedPolicy}
+	policy := azcertificates.CertificatePolicy{
+		IssuerParameters: &azcertificates.IssuerParameters{
+			Name:                    to.Ptr("Unknown"),
+			CertificateTransparency: to.Ptr(false),
+		},
+		X509CertificateProperties: &azcertificates.X509CertificateProperties{
+			Subject: to.Ptr("CN=MyCert"),
+		},
+	}
+	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &policy}
 	_, err := client.CreateCertificate(ctx, certName, createParams, nil)
 	require.NoError(t, err)
 
@@ -578,7 +589,12 @@ func TestOperationCRUD(t *testing.T) {
 	require.Equal(t, params.CancellationRequested, getResp.CancellationRequested)
 	testSerde(t, &getResp.CertificateOperation)
 
-	_, err = client.DeleteCertificateOperation(ctx, certName, nil)
+	pollStatus(t, http.StatusConflict, func() error {
+		// Key Vault returns an error when the update is slow or this delete
+		// is fast such that the delete executes before the update completes
+		_, err = client.DeleteCertificateOperation(ctx, certName, nil)
+		return err
+	})
 	require.NoError(t, err)
 }
 

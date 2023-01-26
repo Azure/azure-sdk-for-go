@@ -8,6 +8,7 @@ package armtemplatespecs_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,6 +54,7 @@ func TestTemplateSpecVersionsClient(t *testing.T) {
 
 func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCRUD() {
 	// create template spec
+	fmt.Println("Call operation: TemplateSpecs_CreateOrUpdate")
 	templateSpecName := "go-test-template"
 	templateSpecsClient, err := armtemplatespecs.NewClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -75,6 +77,7 @@ func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCR
 	testsuite.Require().Equal(templateSpecName, *resp.Name)
 
 	// create template version
+	fmt.Println("Call operation: TemplateSpecVersions_CreateOrUpdate")
 	templateSpecVersion := "go-test-template-version"
 	templateSpecVersionsClient, err := armtemplatespecs.NewTemplateSpecVersionsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -107,6 +110,7 @@ func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCR
 	testsuite.Require().NotNil(vResp)
 
 	// update
+	fmt.Println("Call operation: TemplateSpecVersions_Update")
 	updateResp, err := templateSpecVersionsClient.Update(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, templateSpecVersion, &armtemplatespecs.TemplateSpecVersionsClientUpdateOptions{
 		TemplateSpecVersionUpdateModel: &armtemplatespecs.TemplateSpecVersionUpdateModel{
 			Tags: map[string]*string{
@@ -118,15 +122,18 @@ func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCR
 	testsuite.Require().Equal("live", *updateResp.Tags["test"])
 
 	// get
+	fmt.Println("Call operation: TemplateSpecVersions_Get")
 	getResp, err := templateSpecVersionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, templateSpecVersion, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(templateSpecVersion, *getResp.Name)
 
 	// list
+	fmt.Println("Call operation: TemplateSpecVersions_List")
 	pager := templateSpecVersionsClient.NewListPager(testsuite.resourceGroupName, templateSpecName, nil)
 	testsuite.Require().True(pager.More())
 
 	// delete
+	fmt.Println("Call operation: TemplateSpecVersions_Delete")
 	_, err = templateSpecVersionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, templateSpecName, templateSpecVersion, nil)
 	testsuite.Require().NoError(err)
 }

@@ -5,8 +5,8 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/669c27936542af9b2d308581d618e5a744125c21/specification/machinelearningservices/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/669c27936542af9b2d308581d618e5a744125c21/specification/machinelearningservices/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/aafb0944f7ab936e8cfbad8969bd5eb32263fb4f/specification/machinelearningservices/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 2.0.0
+module-version: 3.0.0
 ```

@@ -30,95 +30,95 @@ import (
 const (
 	accessTokenRespMalformed = `{"access_token": 0, "expires_in": 3600}`
 	badTenantID              = "bad_tenant"
-	tenantDiscoveryResponse  = `{
-		"token_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/token",
+	tokenExpiresIn           = 3600
+	tokenValue               = "new_token"
+)
+
+var (
+	accessTokenRespSuccess    = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn))
+	instanceDiscoveryResponse = []byte(strings.ReplaceAll(`{
+		"tenant_discovery_endpoint": "https://login.microsoftonline.com/{tenant}/v2.0/.well-known/openid-configuration",
+		"api-version": "1.1",
+		"metadata": [
+			{
+				"preferred_network": "login.microsoftonline.com",
+				"preferred_cache": "login.windows.net",
+				"aliases": [
+					"login.microsoftonline.com",
+					"login.windows.net",
+					"login.microsoft.com",
+					"sts.windows.net"
+				]
+			}
+		]
+	}`, "{tenant}", fakeTenantID))
+	tenantDiscoveryResponse = []byte(strings.ReplaceAll(`{
+		"token_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token",
 		"token_endpoint_auth_methods_supported": [
-		"client_secret_post",
-		"private_key_jwt",
-		"client_secret_basic"
+			"client_secret_post",
+			"private_key_jwt",
+			"client_secret_basic"
 		],
-		"jwks_uri": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/discovery/v2.0/keys",
+		"jwks_uri": "https://login.microsoftonline.com/{tenant}/discovery/v2.0/keys",
 		"response_modes_supported": [
-		"query",
-		"fragment",
-		"form_post"
+			"query",
+			"fragment",
+			"form_post"
 		],
 		"subject_types_supported": [
-		"pairwise"
+			"pairwise"
 		],
 		"id_token_signing_alg_values_supported": [
-		"RS256"
+			"RS256"
 		],
 		"response_types_supported": [
-		"code",
-		"id_token",
-		"code id_token",
-		"id_token token"
+			"code",
+			"id_token",
+			"code id_token",
+			"id_token token"
 		],
 		"scopes_supported": [
-		"openid",
-		"profile",
-		"email",
-		"offline_access"
+			"openid",
+			"profile",
+			"email",
+			"offline_access"
 		],
-		"issuer": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/v2.0",
+		"issuer": "https://login.microsoftonline.com/{tenant}/v2.0",
 		"request_uri_parameter_supported": false,
 		"userinfo_endpoint": "https://graph.microsoft.com/oidc/userinfo",
-		"authorization_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/authorize",
-		"device_authorization_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/devicecode",
+		"authorization_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize",
+		"device_authorization_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/devicecode",
 		"http_logout_supported": true,
 		"frontchannel_logout_supported": true,
-		"end_session_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/logout",
+		"end_session_endpoint": "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/logout",
 		"claims_supported": [
-		"sub",
-		"iss",
-		"cloud_instance_name",
-		"cloud_instance_host_name",
-		"cloud_graph_host_name",
-		"msgraph_host",
-		"aud",
-		"exp",
-		"iat",
-		"auth_time",
-		"acr",
-		"nonce",
-		"preferred_username",
-		"name",
-		"tid",
-		"ver",
-		"at_hash",
-		"c_hash",
-		"email"
+			"sub",
+			"iss",
+			"cloud_instance_name",
+			"cloud_instance_host_name",
+			"cloud_graph_host_name",
+			"msgraph_host",
+			"aud",
+			"exp",
+			"iat",
+			"auth_time",
+			"acr",
+			"nonce",
+			"preferred_username",
+			"name",
+			"tid",
+			"ver",
+			"at_hash",
+			"c_hash",
+			"email"
 		],
-		"kerberos_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/kerberos",
+		"kerberos_endpoint": "https://login.microsoftonline.com/{tenant}/kerberos",
 		"tenant_region_scope": "NA",
 		"cloud_instance_name": "microsoftonline.com",
 		"cloud_graph_host_name": "graph.windows.net",
 		"msgraph_host": "graph.microsoft.com",
 		"rbac_url": "https://pas.windows.net"
-		}`
-	tokenExpiresIn = 3600
-	tokenValue     = "new_token"
-)
-
-var (
-	accessTokenRespSuccess    = fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn)
-	instanceDiscoveryResponse = []byte(`{
-	"tenant_discovery_endpoint": "https://login.microsoftonline.com/tenant/v2.0/.well-known/openid-configuration",
-	"api-version": "1.1",
-	"metadata": [
-		{
-			"preferred_network": "login.microsoftonline.com",
-			"preferred_cache": "login.windows.net",
-			"aliases": [
-				"login.microsoftonline.com",
-				"login.windows.net",
-				"login.microsoft.com",
-				"sts.windows.net"
-			]
-		}
-	]
-}`)
+	}`, "{tenant}", fakeTenantID))
 )
 
 // constants for this file
@@ -307,6 +307,9 @@ type fakeConfidentialClient struct {
 
 	// set true to have silent auth succeed
 	silentAuth bool
+
+	// optional callbacks for validating MSAL call args
+	oboCallback func(context.Context, string, []string)
 }
 
 func (f fakeConfidentialClient) returnResult() (confidential.AuthResult, error) {
@@ -316,18 +319,25 @@ func (f fakeConfidentialClient) returnResult() (confidential.AuthResult, error) 
 	return f.ar, nil
 }
 
-func (f fakeConfidentialClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireTokenSilentOption) (confidential.AuthResult, error) {
+func (f fakeConfidentialClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireSilentOption) (confidential.AuthResult, error) {
 	if f.silentAuth {
 		return f.ar, nil
 	}
 	return confidential.AuthResult{}, errors.New("silent authentication failed")
 }
 
-func (f fakeConfidentialClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireTokenByAuthCodeOption) (confidential.AuthResult, error) {
+func (f fakeConfidentialClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireByAuthCodeOption) (confidential.AuthResult, error) {
 	return f.returnResult()
 }
 
-func (f fakeConfidentialClient) AcquireTokenByCredential(ctx context.Context, scopes []string) (confidential.AuthResult, error) {
+func (f fakeConfidentialClient) AcquireTokenByCredential(ctx context.Context, scopes []string, options ...confidential.AcquireByCredentialOption) (confidential.AuthResult, error) {
+	return f.returnResult()
+}
+
+func (f fakeConfidentialClient) AcquireTokenOnBehalfOf(ctx context.Context, userAssertion string, scopes []string, options ...confidential.AcquireOnBehalfOfOption) (confidential.AuthResult, error) {
+	if f.oboCallback != nil {
+		f.oboCallback(ctx, userAssertion, scopes)
+	}
 	return f.returnResult()
 }
 
@@ -356,29 +366,29 @@ func (f fakePublicClient) returnResult() (public.AuthResult, error) {
 	return f.ar, nil
 }
 
-func (f fakePublicClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...public.AcquireTokenSilentOption) (public.AuthResult, error) {
+func (f fakePublicClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...public.AcquireSilentOption) (public.AuthResult, error) {
 	if f.silentAuth {
 		return f.ar, nil
 	}
 	return public.AuthResult{}, errors.New("silent authentication failed")
 }
 
-func (f fakePublicClient) AcquireTokenByUsernamePassword(ctx context.Context, scopes []string, username string, password string) (public.AuthResult, error) {
+func (f fakePublicClient) AcquireTokenByUsernamePassword(ctx context.Context, scopes []string, username string, password string, options ...public.AcquireByUsernamePasswordOption) (public.AuthResult, error) {
 	return f.returnResult()
 }
 
-func (f fakePublicClient) AcquireTokenByDeviceCode(ctx context.Context, scopes []string) (public.DeviceCode, error) {
+func (f fakePublicClient) AcquireTokenByDeviceCode(ctx context.Context, scopes []string, options ...public.AcquireByDeviceCodeOption) (public.DeviceCode, error) {
 	if f.err != nil {
 		return public.DeviceCode{}, f.err
 	}
 	return f.dc, nil
 }
 
-func (f fakePublicClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...public.AcquireTokenByAuthCodeOption) (public.AuthResult, error) {
+func (f fakePublicClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...public.AcquireByAuthCodeOption) (public.AuthResult, error) {
 	return f.returnResult()
 }
 
-func (f fakePublicClient) AcquireTokenInteractive(ctx context.Context, scopes []string, options ...public.InteractiveAuthOption) (public.AuthResult, error) {
+func (f fakePublicClient) AcquireTokenInteractive(ctx context.Context, scopes []string, options ...public.AcquireInteractiveOption) (public.AuthResult, error) {
 	return f.returnResult()
 }
 

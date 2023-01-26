@@ -195,6 +195,10 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &CspmMonitorGcpOffering{}
 	case string(OfferingTypeCspmMonitorGithub):
 		b = &CspmMonitorGithubOffering{}
+	case string(OfferingTypeDefenderCspmAws):
+		b = &DefenderCspmAwsOffering{}
+	case string(OfferingTypeDefenderCspmGcp):
+		b = &DefenderCspmGcpOffering{}
 	case string(OfferingTypeDefenderForContainersAws):
 		b = &DefenderForContainersAwsOffering{}
 	case string(OfferingTypeDefenderForContainersGcp):
@@ -203,6 +207,10 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &DefenderFoDatabasesAwsOffering{}
 	case string(OfferingTypeDefenderForDatabasesGcp):
 		b = &DefenderForDatabasesGcpOffering{}
+	case string(OfferingTypeDefenderForDevOpsAzureDevOps):
+		b = &DefenderForDevOpsAzureDevOpsOffering{}
+	case string(OfferingTypeDefenderForDevOpsGithub):
+		b = &DefenderForDevOpsGithubOffering{}
 	case string(OfferingTypeDefenderForServersAws):
 		b = &DefenderForServersAwsOffering{}
 	case string(OfferingTypeDefenderForServersGcp):
@@ -245,7 +253,7 @@ func unmarshalEnvironmentDataClassification(rawMsg json.RawMessage) (Environment
 	var b EnvironmentDataClassification
 	switch m["environmentType"] {
 	case string(EnvironmentTypeAwsAccount):
-		b = &AWSEnvironmentData{}
+		b = &AwsEnvironmentData{}
 	case string(EnvironmentTypeAzureDevOpsScope):
 		b = &AzureDevOpsScopeEnvironmentData{}
 	case string(EnvironmentTypeGcpProject):

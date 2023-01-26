@@ -86,7 +86,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 	flagSet.String("package-config", "", "Additional config for package")
-	flagSet.String("go-version", "1.19", "Go version")
+	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
 }
 
@@ -205,6 +205,9 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			c.rpName = arm
 			c.namespaceName = info.Name
 			c.flags.SpecRPName = info.SpecName
+			if info.ReleaseDate != nil {
+				c.flags.ReleaseDate = info.ReleaseDate.Format("2006-01-02")
+			}
 			err = c.generate(sdkRepo, specCommitHash)
 			if err != nil {
 				return err

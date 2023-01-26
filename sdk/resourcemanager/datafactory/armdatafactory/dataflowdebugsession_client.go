@@ -291,7 +291,6 @@ func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx contex
 }
 
 // NewQueryByFactoryPager - Query all active data flow debug sessions.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.

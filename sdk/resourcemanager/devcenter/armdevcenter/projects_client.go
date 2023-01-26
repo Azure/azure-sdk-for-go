@@ -33,7 +33,7 @@ type ProjectsClient struct {
 }
 
 // NewProjectsClient creates a new instance of ProjectsClient with the specified values.
-// subscriptionID - Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectsClient, error) {
@@ -58,8 +58,8 @@ func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Creates or updates a project.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // body - Represents a project.
 // options - ProjectsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectsClient.BeginCreateOrUpdate
@@ -80,7 +80,7 @@ func (client *ProjectsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Creates or updates a project.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-11-11-preview
 func (client *ProjectsClient) createOrUpdate(ctx context.Context, resourceGroupName string, projectName string, body Project, options *ProjectsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, projectName, body, options)
 	if err != nil {
@@ -116,7 +116,7 @@ func (client *ProjectsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -124,8 +124,8 @@ func (client *ProjectsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Deletes a project resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // options - ProjectsClientBeginDeleteOptions contains the optional parameters for the ProjectsClient.BeginDelete method.
 func (client *ProjectsClient) BeginDelete(ctx context.Context, resourceGroupName string, projectName string, options *ProjectsClientBeginDeleteOptions) (*runtime.Poller[ProjectsClientDeleteResponse], error) {
@@ -144,7 +144,7 @@ func (client *ProjectsClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Deletes a project resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-11-11-preview
 func (client *ProjectsClient) deleteOperation(ctx context.Context, resourceGroupName string, projectName string, options *ProjectsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, projectName, options)
 	if err != nil {
@@ -180,7 +180,7 @@ func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,8 +188,8 @@ func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets a specific project.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // options - ProjectsClientGetOptions contains the optional parameters for the ProjectsClient.Get method.
 func (client *ProjectsClient) Get(ctx context.Context, resourceGroupName string, projectName string, options *ProjectsClientGetOptions) (ProjectsClientGetResponse, error) {
@@ -227,7 +227,7 @@ func (client *ProjectsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,8 +243,8 @@ func (client *ProjectsClient) getHandleResponse(resp *http.Response) (ProjectsCl
 }
 
 // NewListByResourceGroupPager - Lists all projects in the resource group.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ProjectsClientListByResourceGroupOptions contains the optional parameters for the ProjectsClient.ListByResourceGroup
 // method.
 func (client *ProjectsClient) NewListByResourceGroupPager(resourceGroupName string, options *ProjectsClientListByResourceGroupOptions) *runtime.Pager[ProjectsClientListByResourceGroupResponse] {
@@ -291,7 +291,7 @@ func (client *ProjectsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -310,7 +310,7 @@ func (client *ProjectsClient) listByResourceGroupHandleResponse(resp *http.Respo
 }
 
 // NewListBySubscriptionPager - Lists all projects in the subscription.
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-11-11-preview
 // options - ProjectsClientListBySubscriptionOptions contains the optional parameters for the ProjectsClient.ListBySubscription
 // method.
 func (client *ProjectsClient) NewListBySubscriptionPager(options *ProjectsClientListBySubscriptionOptions) *runtime.Pager[ProjectsClientListBySubscriptionResponse] {
@@ -353,7 +353,7 @@ func (client *ProjectsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -373,8 +373,8 @@ func (client *ProjectsClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // BeginUpdate - Partially updates a project.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-11-11-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // projectName - The name of the project.
 // body - Updatable project properties.
 // options - ProjectsClientBeginUpdateOptions contains the optional parameters for the ProjectsClient.BeginUpdate method.
@@ -394,7 +394,7 @@ func (client *ProjectsClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - Partially updates a project.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-11-11-preview
 func (client *ProjectsClient) update(ctx context.Context, resourceGroupName string, projectName string, body ProjectUpdate, options *ProjectsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, projectName, body, options)
 	if err != nil {
@@ -430,7 +430,7 @@ func (client *ProjectsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-11-11-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

@@ -8,13 +8,14 @@ package armnetwork_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -52,6 +53,7 @@ func TestVirtualNetworksClient(t *testing.T) {
 
 func (testsuite *VirtualNetworksClientTestSuite) TestVirtualMachineCRUD() {
 	// create virtual network
+	fmt.Println("Call operation: VirtualNetworks_CreateOrUpdate")
 	vnClient, err := armnetwork.NewVirtualNetworksClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	vnName := "go-test-vn"
@@ -77,6 +79,7 @@ func (testsuite *VirtualNetworksClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal(vnName, *vnResp.Name)
 
 	//virtual network update tags
+	fmt.Println("Call operation: VirtualNetworks_UpdateTags")
 	tagResp, err := vnClient.UpdateTags(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -93,15 +96,18 @@ func (testsuite *VirtualNetworksClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal("value1", *tagResp.Tags["tag1"])
 
 	// get virtual network
+	fmt.Println("Call operation: VirtualNetworks_Get")
 	vnResp2, err := vnClient.Get(testsuite.ctx, testsuite.resourceGroupName, vnName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(vnName, *vnResp2.Name)
 
 	//virtual network list
+	fmt.Println("Call operation: VirtualNetworks_List")
 	listPager := vnClient.NewListPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().Equal(true, listPager.More())
 
 	//virtual network delete
+	fmt.Println("Call operation: VirtualNetworks_Delete")
 	delPoller, err := vnClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, vnName, nil)
 	testsuite.Require().NoError(err)
 	delResp, err := testutil.PollForTest(testsuite.ctx, delPoller)

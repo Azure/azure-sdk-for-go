@@ -1,5 +1,119 @@
 # Release History
 
+## 2.0.0 (2023-01-27)
+### Breaking Changes
+
+- Function `NewPacketCoreControlPlaneClient` has been removed
+- Function `*PacketCoreControlPlaneClient.BeginCollectDiagnosticsPackage` has been removed
+- Function `*PacketCoreControlPlaneClient.BeginReinstall` has been removed
+- Function `*PacketCoreControlPlaneClient.BeginRollback` has been removed
+- Function `NewSimClient` has been removed
+- Function `*SimClient.BeginBulkDelete` has been removed
+- Function `*SimClient.BeginBulkUpload` has been removed
+- Function `*SimClient.BeginBulkUploadEncrypted` has been removed
+- Struct `PacketCoreControlPlaneClient` has been removed
+- Struct `PacketCoreControlPlaneClientCollectDiagnosticsPackageResponse` has been removed
+- Struct `PacketCoreControlPlaneClientReinstallResponse` has been removed
+- Struct `PacketCoreControlPlaneClientRollbackResponse` has been removed
+- Struct `SimClient` has been removed
+- Struct `SimClientBulkDeleteResponse` has been removed
+- Struct `SimClientBulkUploadEncryptedResponse` has been removed
+- Struct `SimClientBulkUploadResponse` has been removed
+
+### Features Added
+
+- New function `*PacketCoreControlPlanesClient.BeginCollectDiagnosticsPackage(context.Context, string, string, PacketCoreControlPlaneCollectDiagnosticsPackage, *PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions) (*runtime.Poller[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse], error)`
+- New function `*PacketCoreControlPlanesClient.BeginReinstall(context.Context, string, string, *PacketCoreControlPlanesClientBeginReinstallOptions) (*runtime.Poller[PacketCoreControlPlanesClientReinstallResponse], error)`
+- New function `*PacketCoreControlPlanesClient.BeginRollback(context.Context, string, string, *PacketCoreControlPlanesClientBeginRollbackOptions) (*runtime.Poller[PacketCoreControlPlanesClientRollbackResponse], error)`
+- New function `*SimsClient.BeginBulkDelete(context.Context, string, string, SimDeleteList, *SimsClientBeginBulkDeleteOptions) (*runtime.Poller[SimsClientBulkDeleteResponse], error)`
+- New function `*SimsClient.BeginBulkUpload(context.Context, string, string, SimUploadList, *SimsClientBeginBulkUploadOptions) (*runtime.Poller[SimsClientBulkUploadResponse], error)`
+- New function `*SimsClient.BeginBulkUploadEncrypted(context.Context, string, string, EncryptedSimUploadList, *SimsClientBeginBulkUploadEncryptedOptions) (*runtime.Poller[SimsClientBulkUploadEncryptedResponse], error)`
+- New struct `PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse`
+- New struct `PacketCoreControlPlanesClientReinstallResponse`
+- New struct `PacketCoreControlPlanesClientRollbackResponse`
+- New struct `SimsClientBulkDeleteResponse`
+- New struct `SimsClientBulkUploadEncryptedResponse`
+- New struct `SimsClientBulkUploadResponse`
+
+
+## 1.0.0 (2022-12-23)
+### Breaking Changes
+
+- Type of `LocalDiagnosticsAccessConfiguration.HTTPSServerCertificate` has been changed from `*KeyVaultCertificate` to `*HTTPSServerCertificate`
+- Const `BillingSKUEdgeSite2GBPS`, `BillingSKUEdgeSite3GBPS`, `BillingSKUEdgeSite4GBPS`, `BillingSKUEvaluationPackage`, `BillingSKUFlagshipStarterPackage`, `BillingSKULargePackage`, `BillingSKUMediumPackage` from type alias `BillingSKU` has been removed
+- Const `PlatformTypeBaseVM` from type alias `PlatformType` has been removed
+- Function `*MobileNetworksClient.BeginListSimIDs` has been removed
+- Function `*PacketCoreControlPlaneVersionsClient.NewListByResourceGroupPager` has been removed
+- Function `*SimsClient.NewListBySimGroupPager` has been removed
+- Struct `KeyVaultCertificate` has been removed
+- Struct `MobileNetworksClientListSimIDsResponse` has been removed
+- Struct `PacketCoreControlPlaneVersionsClientListByResourceGroupResponse` has been removed
+- Struct `SimIDListResult` has been removed
+- Struct `SimsClientListBySimGroupResponse` has been removed
+- Field `MobileNetwork` of struct `PacketCoreControlPlanePropertiesFormat` has been removed
+- Field `RecommendedVersion` of struct `PacketCoreControlPlaneVersionPropertiesFormat` has been removed
+- Field `VersionState` of struct `PacketCoreControlPlaneVersionPropertiesFormat` has been removed
+
+### Features Added
+
+- New value `BillingSKUG0`, `BillingSKUG1`, `BillingSKUG10`, `BillingSKUG2`, `BillingSKUG3`, `BillingSKUG4`, `BillingSKUG5` added to type alias `BillingSKU`
+- New value `PlatformTypeThreePAZURESTACKHCI` added to type alias `PlatformType`
+- New type alias `AuthenticationType` with values `AuthenticationTypeAAD`, `AuthenticationTypePassword`
+- New type alias `CertificateProvisioningState` with values `CertificateProvisioningStateFailed`, `CertificateProvisioningStateNotProvisioned`, `CertificateProvisioningStateProvisioned`
+- New type alias `InstallationState` with values `InstallationStateFailed`, `InstallationStateInstalled`, `InstallationStateInstalling`, `InstallationStateReinstalling`, `InstallationStateRollingBack`, `InstallationStateUninstalled`, `InstallationStateUninstalling`, `InstallationStateUpdating`, `InstallationStateUpgrading`
+- New type alias `ObsoleteVersion` with values `ObsoleteVersionNotObsolete`, `ObsoleteVersionObsolete`
+- New type alias `SiteProvisioningState` with values `SiteProvisioningStateAdding`, `SiteProvisioningStateDeleting`, `SiteProvisioningStateFailed`, `SiteProvisioningStateNotApplicable`, `SiteProvisioningStateProvisioned`, `SiteProvisioningStateUpdating`
+- New function `NewPacketCoreControlPlaneClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PacketCoreControlPlaneClient, error)`
+- New function `*PacketCoreControlPlaneClient.BeginCollectDiagnosticsPackage(context.Context, string, string, PacketCoreControlPlaneCollectDiagnosticsPackage, *PacketCoreControlPlaneClientBeginCollectDiagnosticsPackageOptions) (*runtime.Poller[PacketCoreControlPlaneClientCollectDiagnosticsPackageResponse], error)`
+- New function `*PacketCoreControlPlaneClient.BeginReinstall(context.Context, string, string, *PacketCoreControlPlaneClientBeginReinstallOptions) (*runtime.Poller[PacketCoreControlPlaneClientReinstallResponse], error)`
+- New function `*PacketCoreControlPlaneClient.BeginRollback(context.Context, string, string, *PacketCoreControlPlaneClientBeginRollbackOptions) (*runtime.Poller[PacketCoreControlPlaneClientRollbackResponse], error)`
+- New function `*PacketCoreControlPlaneVersionsClient.NewListPager(*PacketCoreControlPlaneVersionsClientListOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListResponse]`
+- New function `NewSimClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SimClient, error)`
+- New function `*SimClient.BeginBulkDelete(context.Context, string, string, SimDeleteList, *SimClientBeginBulkDeleteOptions) (*runtime.Poller[SimClientBulkDeleteResponse], error)`
+- New function `*SimClient.BeginBulkUpload(context.Context, string, string, SimUploadList, *SimClientBeginBulkUploadOptions) (*runtime.Poller[SimClientBulkUploadResponse], error)`
+- New function `*SimClient.BeginBulkUploadEncrypted(context.Context, string, string, EncryptedSimUploadList, *SimClientBeginBulkUploadEncryptedOptions) (*runtime.Poller[SimClientBulkUploadEncryptedResponse], error)`
+- New function `*SimsClient.NewListByGroupPager(string, string, *SimsClientListByGroupOptions) *runtime.Pager[SimsClientListByGroupResponse]`
+- New struct `AsyncOperationID`
+- New struct `AsyncOperationStatus`
+- New struct `AzureStackHCIClusterResourceID`
+- New struct `CertificateProvisioning`
+- New struct `CommonSimPropertiesFormat`
+- New struct `EncryptedSimPropertiesFormat`
+- New struct `EncryptedSimUploadList`
+- New struct `HTTPSServerCertificate`
+- New struct `Installation`
+- New struct `PacketCoreControlPlaneClient`
+- New struct `PacketCoreControlPlaneClientCollectDiagnosticsPackageResponse`
+- New struct `PacketCoreControlPlaneClientReinstallResponse`
+- New struct `PacketCoreControlPlaneClientRollbackResponse`
+- New struct `PacketCoreControlPlaneCollectDiagnosticsPackage`
+- New struct `PacketCoreControlPlaneVersionsClientListResponse`
+- New struct `Platform`
+- New struct `SimClient`
+- New struct `SimClientBulkDeleteResponse`
+- New struct `SimClientBulkUploadEncryptedResponse`
+- New struct `SimClientBulkUploadResponse`
+- New struct `SimDeleteList`
+- New struct `SimNameAndEncryptedProperties`
+- New struct `SimNameAndProperties`
+- New struct `SimUploadList`
+- New struct `SimsClientListByGroupResponse`
+- New struct `SiteResourceID`
+- New field `MaximumNumberOfBufferedPackets` in struct `DataNetworkConfiguration`
+- New field `AuthenticationType` in struct `LocalDiagnosticsAccessConfiguration`
+- New field `Installation` in struct `PacketCoreControlPlanePropertiesFormat`
+- New field `RollbackVersion` in struct `PacketCoreControlPlanePropertiesFormat`
+- New field `Sites` in struct `PacketCoreControlPlanePropertiesFormat`
+- New field `UeMtu` in struct `PacketCoreControlPlanePropertiesFormat`
+- New field `Platforms` in struct `PacketCoreControlPlaneVersionPropertiesFormat`
+- New field `AzureStackEdgeDevices` in struct `PlatformConfiguration`
+- New field `AzureStackHciCluster` in struct `PlatformConfiguration`
+- New field `SiteProvisioningState` in struct `SimPolicyPropertiesFormat`
+- New field `SiteProvisioningState` in struct `SimPropertiesFormat`
+- New field `VendorKeyFingerprint` in struct `SimPropertiesFormat`
+- New field `VendorName` in struct `SimPropertiesFormat`
+
+
 ## 0.6.0 (2022-07-21)
 ### Breaking Changes
 

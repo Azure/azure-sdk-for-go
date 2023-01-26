@@ -174,3 +174,40 @@ func TestTransactionalBatchDeleteItem(t *testing.T) {
 		t.Errorf("Expected id %v, but got %v", itemId, asDelete.id)
 	}
 }
+
+func TestTransactionalBatchPatchItem(t *testing.T) {
+	batch := &TransactionalBatch{}
+	batch.partitionKey = NewPartitionKeyString("foo")
+	patchOperations := PatchOperations{}
+
+	options := &TransactionalBatchItemOptions{}
+	etag := azcore.ETag("someEtag")
+	options.IfMatchETag = &etag
+	itemId := "bar"
+
+	patchOperations.AppendAdd("/foo", "bar")
+
+	batch.PatchItem(itemId, patchOperations, options)
+
+	if len(batch.operations) != 1 {
+		t.Errorf("Expected 1 operation, but got %v", len(batch.operations))
+	}
+
+	if batch.operations[0].getOperationType() != operationTypePatch {
+		t.Errorf("Expected operation type %v, but got %v", operationTypePatch, batch.operations[0].getOperationType())
+	}
+
+	asPatch := batch.operations[0].(batchOperationPatch)
+
+	if asPatch.operationType != "Patch" {
+		t.Errorf("Expected operation type %v, but got %v", "Patch", asPatch.operationType)
+	}
+
+	if asPatch.ifMatch != options.IfMatchETag {
+		t.Errorf("Expected ifMatch %v, but got %v", etag, asPatch.ifMatch)
+	}
+
+	if len(asPatch.patchOperations.operations) != len(patchOperations.operations) {
+		t.Errorf("Expected patch operations %v, but got %v", patchOperations, asPatch.patchOperations)
+	}
+}

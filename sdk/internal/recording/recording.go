@@ -14,16 +14,17 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"math/rand"
 	"net/http"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -54,6 +55,7 @@ const (
 	randomSeedVariableName      = "randomSeed"
 	nowVariableName             = "now"
 	ModeEnvironmentVariableName = "AZURE_TEST_MODE"
+	recordingAssetConfigName    = "assets.json"
 )
 
 // Inspired by https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
@@ -512,7 +514,27 @@ type recordedTest struct {
 	variables   map[string]interface{}
 }
 
-var testSuite = map[string]recordedTest{}
+// testMap maps test names to metadata
+type testMap struct {
+	m *sync.Map
+}
+
+// Load returns the named test's metadata, if it has been stored
+func (t *testMap) Load(name string) (recordedTest, bool) {
+	var rt recordedTest
+	v, ok := t.m.Load(name)
+	if ok {
+		rt = v.(recordedTest)
+	}
+	return rt, ok
+}
+
+// Store sets metadata for the named test
+func (t *testMap) Store(name string, data recordedTest) {
+	t.m.Store(name, data)
+}
+
+var testSuite = testMap{&sync.Map{}}
 
 var client = http.Client{
 	Transport: &http.Transport{
@@ -574,7 +596,95 @@ func (r RecordingOptions) baseURL() string {
 }
 
 func getTestId(pathToRecordings string, t *testing.T) string {
-	return path.Join(pathToRecordings, "recordings", t.Name()+".json")
+	return filepath.Join(pathToRecordings, "recordings", t.Name()+".json")
+}
+
+func getGitRoot(fromPath string) (string, error) {
+	absPath, err := filepath.Abs(fromPath)
+	if err != nil {
+		return "", err
+	}
+	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
+	cmd.Dir = absPath
+
+	root, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("Unable to find git root for path '%s'", absPath)
+	}
+
+	// Wrap with Abs() to get os-specific path separators to support sub-path matching
+	return filepath.Abs(strings.TrimSpace(string(root)))
+}
+
+// Traverse up from a recording path until an asset config file is found.
+// Stop searching when the root of the git repository is reached.
+func findAssetsConfigFile(fromPath string, untilPath string) (string, error) {
+	absPath, err := filepath.Abs(fromPath)
+	if err != nil {
+		return "", err
+	}
+	assetConfigPath := filepath.Join(absPath, recordingAssetConfigName)
+
+	if _, err := os.Stat(assetConfigPath); err == nil {
+		return assetConfigPath, nil
+	} else if !errors.Is(err, fs.ErrNotExist) {
+		return "", err
+	}
+
+	if absPath == untilPath {
+		return "", nil
+	}
+
+	parentDir := filepath.Dir(absPath)
+	// This shouldn't be hit due to checks in getGitRoot, but it can't hurt to be defensive
+	if parentDir == absPath || parentDir == "." {
+		return "", nil
+	}
+
+	return findAssetsConfigFile(parentDir, untilPath)
+}
+
+// Returns absolute and relative paths to an asset configuration file, or an error.
+func getAssetsConfigLocation(pathToRecordings string) (string, string, error) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return "", "", err
+	}
+	gitRoot, err := getGitRoot(cwd)
+	if err != nil {
+		return "", "", err
+	}
+	abs, err := findAssetsConfigFile(filepath.Join(gitRoot, pathToRecordings), gitRoot)
+	if err != nil {
+		return "", "", err
+	}
+
+	// Pass a path relative to the git root to test proxy so that paths
+	// can be resolved when the repo root is mounted as a volume in a container
+	rel := strings.Replace(abs, gitRoot, "", 1)
+	rel = strings.TrimLeft(rel, string(os.PathSeparator))
+	return abs, rel, nil
+}
+
+func requestStart(url string, testId string, assetConfigLocation string) (*http.Response, error) {
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	reqBody := map[string]string{"x-recording-file": testId}
+	if assetConfigLocation != "" {
+		reqBody["x-recording-assets-file"] = assetConfigLocation
+	}
+	marshalled, err := json.Marshal(reqBody)
+	if err != nil {
+		return nil, err
+	}
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+
+	return client.Do(req)
 }
 
 // Start tells the test proxy to begin accepting requests for a given test
@@ -586,7 +696,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		return nil
 	}
 
-	if testStruct, ok := testSuite[t.Name()]; ok {
+	if testStruct, ok := testSuite.Load(t.Name()); ok {
 		if testStruct.liveOnly {
 			// test should only be run live, don't want to generate recording
 			return nil
@@ -595,25 +705,27 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 
 	testId := getTestId(pathToRecordings, t)
 
+	absAssetLocation, relAssetLocation, err := getAssetsConfigLocation(pathToRecordings)
+	if err != nil {
+		return err
+	}
+
 	url := fmt.Sprintf("%s/%s/start", options.baseURL(), recordMode)
 
-	req, err := http.NewRequest("POST", url, nil)
-	if err != nil {
+	var resp *http.Response
+	if absAssetLocation == "" {
+		resp, err = requestStart(url, testId, "")
+		if err != nil {
+			return err
+		}
+	} else if resp, err = requestStart(url, testId, absAssetLocation); err != nil {
 		return err
+	} else if resp.StatusCode >= 400 {
+		if resp, err = requestStart(url, testId, relAssetLocation); err != nil {
+			return err
+		}
 	}
 
-	req.Header.Set("Content-Type", "application/json")
-	marshalled, err := json.Marshal(map[string]string{"x-recording-file": testId})
-	if err != nil {
-		return err
-	}
-	req.Body = io.NopCloser(bytes.NewReader(marshalled))
-	req.ContentLength = int64(len(marshalled))
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
 	recId := resp.Header.Get(IDHeader)
 	if recId == "" {
 		b, err := io.ReadAll(resp.Body)
@@ -638,16 +750,16 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		}
 	}
 
-	if val, ok := testSuite[t.Name()]; ok {
+	if val, ok := testSuite.Load(t.Name()); ok {
 		val.recordingId = recId
 		val.variables = m
-		testSuite[t.Name()] = val
+		testSuite.Store(t.Name(), val)
 	} else {
-		testSuite[t.Name()] = recordedTest{
+		testSuite.Store(t.Name(), recordedTest{
 			recordingId: recId,
 			liveOnly:    false,
 			variables:   m,
-		}
+		})
 	}
 	return nil
 }
@@ -661,7 +773,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 		return nil
 	}
 
-	if testStruct, ok := testSuite[t.Name()]; ok {
+	if testStruct, ok := testSuite.Load(t.Name()); ok {
 		if testStruct.liveOnly {
 			// test should only be run live, don't want to generate recording
 			return nil
@@ -685,7 +797,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 
 	var recTest recordedTest
 	var ok bool
-	if recTest, ok = testSuite[t.Name()]; !ok {
+	if recTest, ok = testSuite.Load(t.Name()); !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
 	req.Header.Set(IDHeader, recTest.recordingId)
@@ -712,11 +824,11 @@ func GetEnvVariable(varName string, recordedValue string) string {
 }
 
 func LiveOnly(t *testing.T) {
-	if val, ok := testSuite[t.Name()]; ok {
+	if val, ok := testSuite.Load(t.Name()); ok {
 		val.liveOnly = true
-		testSuite[t.Name()] = val
+		testSuite.Store(t.Name(), val)
 	} else {
-		testSuite[t.Name()] = recordedTest{liveOnly: true}
+		testSuite.Store(t.Name(), recordedTest{liveOnly: true})
 	}
 	if GetRecordMode() == PlaybackMode {
 		t.Skip("Live Test Only")
@@ -732,7 +844,7 @@ func Sleep(duration time.Duration) {
 }
 
 func GetRecordingId(t *testing.T) string {
-	if val, ok := testSuite[t.Name()]; ok {
+	if val, ok := testSuite.Load(t.Name()); ok {
 		return val.recordingId
 	} else {
 		return ""
@@ -799,7 +911,7 @@ func GetHTTPClient(t *testing.T) (*http.Client, error) {
 }
 
 func IsLiveOnly(t *testing.T) bool {
-	if s, ok := testSuite[t.Name()]; ok {
+	if s, ok := testSuite.Load(t.Name()); ok {
 		return s.liveOnly
 	}
 	return false
@@ -807,7 +919,7 @@ func IsLiveOnly(t *testing.T) bool {
 
 // GetVariables returns access to the variables stored by the test proxy for a specific test
 func GetVariables(t *testing.T) map[string]interface{} {
-	if s, ok := testSuite[t.Name()]; ok {
+	if s, ok := testSuite.Load(t.Name()); ok {
 		return s.variables
 	}
 	return nil

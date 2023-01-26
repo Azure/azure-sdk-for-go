@@ -9,13 +9,17 @@ In this basic quickstart guide, we will walk you through how to authenticate to 
 
 ## Migration from older versions of Azure management libraries for Go
 
-If you are an existing user of the older version of Azure management library for Go (packages that are located under [`/services`](https://github.com/Azure/azure-sdk-for-go/tree/main/services)), and you are looking for a migration guide to upgrade to the latest version of the SDK, please refer to [this migration guide](https://aka.ms/azsdk/go/mgmt/migration) for detailed instructions.
+If you are an existing user of the older version of Azure management library for Go (packages that are located under [`/services`](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services)), and you are looking for a migration guide to upgrade to the latest version of the SDK, please refer to [this migration guide](https://aka.ms/azsdk/go/mgmt/migration) for detailed instructions.
 
 ## Prerequisites
 
 You will need Go 1.18 and latest version of resource management modules.
 
 You will need to authenticate to Azure either by using Azure CLI to sign in or setting environment variables.
+
+### Upgrade Go version
+
+You could download and install the latest version of Go from [here](https://go.dev/doc/install). It will replace the existing Go on your machine. If you want to install multiple Go versions on the same machine, you could refer this [doc](https://go.dev/doc/manage-install).
 
 ### Using Azure CLI to Sign In
 

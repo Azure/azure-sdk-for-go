@@ -1,5 +1,8 @@
 # Azure Workload Monitor Module for Go
 
+Deprecated: The service backing this library is retired on November 30th, 2022. At that point, this library will no longer work. Please migrate to Azure Monitor Log Alerts API in module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor.
+For more details on the Azure VM Insights Guest Health retirement, please visit: https://azure.microsoft.com/updates/transition-to-azure-monitor-log-alerts-for-vm-guest-health-by-30-november-2022
+
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadmonitor/armworkloadmonitor)
 
 The `armworkloadmonitor` module provides operations for working with Azure Workload Monitor.
@@ -11,7 +14,7 @@ The `armworkloadmonitor` module provides operations for working with Azure Workl
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.18 or above
+- Go 1.18 or above (You could download and install the latest version of Go from [here](https://go.dev/doc/install). It will replace the existing Go on your machine. If you want to install multiple Go versions on the same machine, you could refer this [doc](https://go.dev/doc/manage-install).)
 
 ## Install the package
 

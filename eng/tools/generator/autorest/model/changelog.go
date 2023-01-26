@@ -5,9 +5,11 @@ package model
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/markdown"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
 )
@@ -122,21 +124,51 @@ func getNewContents(c *delta.Content) []string {
 	}
 
 	var items []string
+	if len(c.Consts) > 0 || len(c.TypeAliases) > 0 {
+		newTypeAlias := make(map[string][]string)
+		existedTypeAlias := make(map[string][]string)
+		for _, k := range sortChangeItem(c.Consts) {
+			cs := c.Consts[k]
+			if _, ok := c.TypeAliases[cs.Type]; ok {
+				if alias, ok := newTypeAlias[cs.Type]; ok {
+					alias = append(alias, k)
+					newTypeAlias[cs.Type] = alias
+				} else {
+					alias = []string{k}
+					newTypeAlias[cs.Type] = alias
+				}
+			} else {
+				if alias, ok := existedTypeAlias[cs.Type]; ok {
+					alias = append(alias, k)
+					existedTypeAlias[cs.Type] = alias
+				} else {
+					existedTypeAlias[cs.Type] = []string{k}
+				}
+			}
+		}
 
-	if len(c.Consts) > 0 {
-		for k := range c.Consts {
-			line := fmt.Sprintf("New const `%s`", k)
+		for _, k := range sortChangeItem(existedTypeAlias) {
+			aliasValue := ""
+			for _, cs := range existedTypeAlias[k] {
+				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
+			}
+			line := fmt.Sprintf("New value %s added to type alias `%s`", strings.TrimRight(strings.TrimSpace(aliasValue), ","), k)
+			items = append(items, line)
+		}
+
+		for _, k := range sortChangeItem(newTypeAlias) {
+			aliasValue := ""
+			for _, cs := range newTypeAlias[k] {
+				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
+			}
+			line := fmt.Sprintf("New type alias `%s` with values %s", k, strings.TrimRight(strings.TrimSpace(aliasValue), ","))
 			items = append(items, line)
 		}
 	}
-	if len(c.TypeAliases) > 0 {
-		for k := range c.TypeAliases {
-			line := fmt.Sprintf("New type alias `%s`", k)
-			items = append(items, line)
-		}
-	}
+
 	if len(c.Funcs) > 0 {
-		for k, v := range c.Funcs {
+		for _, k := range sortFuncItem(c.Funcs) {
+			v := c.Funcs[k]
 			params := ""
 			if v.Params != nil {
 				params = *v.Params
@@ -160,13 +192,14 @@ func getNewContents(c *delta.Content) []string {
 	}
 	if len(c.Structs) > 0 {
 		modified := c.GetModifiedStructs()
-		for s, f := range modified {
+		for _, s := range sortChangeItem(modified) {
+			f := modified[s]
 			for _, af := range f.AnonymousFields {
 				line := fmt.Sprintf("New anonymous field `%s` in struct `%s`", af, s)
 				items = append(items, line)
 			}
-			for f := range f.Fields {
-				line := fmt.Sprintf("New field `%s` in struct `%s`", f, s)
+			for _, field := range sortChangeItem(f.Fields) {
+				line := fmt.Sprintf("New field `%s` in struct `%s`", field, s)
 				items = append(items, line)
 			}
 		}
@@ -199,22 +232,24 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 
 	// write const changes
 	if len(b.Consts) > 0 {
-		for k, v := range b.Consts {
+		for _, k := range sortChangeItem(b.Consts) {
+			v := b.Consts[k]
 			line := fmt.Sprintf("Const `%s` type has been changed from `%s` to `%s`", k, v.From, v.To)
 			items = append(items, line)
 		}
-		// TODO -- sort?
 	}
 	// write type alias changes
 	if len(b.TypeAliases) > 0 {
-		for k, v := range b.TypeAliases {
+		for _, k := range sortChangeItem(b.TypeAliases) {
+			v := b.TypeAliases[k]
 			line := fmt.Sprintf("Type alias `%s` type has been changed from `%s` to `%s`", k, v.From, v.To)
 			items = append(items, line)
 		}
 	}
 	// write function changes
 	if len(b.Funcs) > 0 {
-		for k, v := range b.Funcs {
+		for _, k := range sortFuncItem(b.Funcs) {
+			v := b.Funcs[k]
 			if v.Params != nil {
 				line := fmt.Sprintf("Function `%s` parameter(s) have been changed from `(%s)` to `(%s)`", k, v.Params.From, v.Params.To)
 				items = append(items, line)
@@ -227,7 +262,8 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 	}
 	// write struct changes
 	if len(b.Structs) > 0 {
-		for k, v := range b.Structs {
+		for _, k := range sortChangeItem(b.Structs) {
+			v := b.Structs[k]
 			for f, d := range v.Fields {
 				line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
 				items = append(items, line)
@@ -247,24 +283,55 @@ func getRemovedContent(removed *delta.Content) []string {
 	var items []string
 	// write constants
 	if len(removed.Consts) > 0 {
-		for k := range removed.Consts {
-			line := fmt.Sprintf("Const `%s` has been removed", k)
+		removedConst := make(map[string][]string)
+		for _, k := range sortChangeItem(removed.Consts) {
+			cs := removed.Consts[k]
+			if _, ok := removed.TypeAliases[cs.Type]; !ok {
+				if alias, ok := removedConst[cs.Type]; ok {
+					alias = append(alias, k)
+					removedConst[cs.Type] = alias
+				} else {
+					alias = []string{k}
+					removedConst[cs.Type] = alias
+				}
+			}
+		}
+
+		for _, k := range sortChangeItem(removedConst) {
+			consts := ""
+			for _, cs := range removedConst[k] {
+				consts = fmt.Sprintf("%s`%s`, ", consts, cs)
+			}
+			line := fmt.Sprintf("Const %s from type alias `%s` has been removed", strings.TrimRight(strings.TrimSpace(consts), ","), k)
 			items = append(items, line)
 		}
 	}
 	// write type alias
 	if len(removed.TypeAliases) > 0 {
-		for k := range removed.TypeAliases {
+		for _, k := range sortChangeItem(removed.TypeAliases) {
 			line := fmt.Sprintf("Type alias `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}
 	// write functions
 	if len(removed.Funcs) > 0 {
-		for k := range removed.Funcs {
+		var lroItem []string
+		for _, k := range sortFuncItem(removed.Funcs) {
+			v := removed.Funcs[k]
+			if v.ReplacedBy != nil {
+				var line string
+				if !strings.Contains(k, "Begin") {
+					line = fmt.Sprintf("Operation `%s` has been changed to LRO, use `%s` instead.", k, *v.ReplacedBy)
+				} else {
+					line = fmt.Sprintf("Operation `%s` has been changed to non-LRO, use `%s` instead.", k, *v.ReplacedBy)
+				}
+				lroItem = append(lroItem, line)
+				continue
+			}
 			line := fmt.Sprintf("Function `%s` has been removed", k)
 			items = append(items, line)
 		}
+		items = append(items, lroItem...)
 	}
 	// write complete struct removal
 	if len(removed.CompleteStructs) > 0 {
@@ -276,17 +343,79 @@ func getRemovedContent(removed *delta.Content) []string {
 	// write struct modification (some fields are removed)
 	modified := removed.GetModifiedStructs()
 	if len(modified) > 0 {
-		for s, f := range modified {
+		for _, s := range sortChangeItem(modified) {
+			f := modified[s]
 			for _, af := range f.AnonymousFields {
 				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", af, s)
 				items = append(items, line)
 			}
-			for f := range f.Fields {
-				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", f, s)
+			for _, field := range sortChangeItem(f.Fields) {
+				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", field, s)
 				items = append(items, line)
 			}
 		}
 	}
 
 	return items
+}
+
+type sortItem interface {
+	delta.Signature | delta.StructDef | exports.Const | exports.TypeAlias | exports.Struct | string | []string
+}
+
+func sortChangeItem[T sortItem](change map[string]T) []string {
+	s := make([]string, 0, len(change))
+	for k := range change {
+		s = append(s, k)
+	}
+
+	sort.Strings(s)
+	return s
+}
+
+func sortFuncItem[T delta.FuncSig | exports.Func](change map[string]T) []string {
+	s := make([]string, 0, len(change))
+	for k := range change {
+		s = append(s, k)
+	}
+
+	sort.Slice(s, func(i, j int) bool {
+		si := removePattern(s[i], getReturnValue(change[s[i]]))
+		sj := removePattern(s[j], getReturnValue(change[s[j]]))
+		return si < sj
+	})
+
+	return s
+}
+
+func getReturnValue(t interface{}) string {
+	switch value := t.(type) {
+	case delta.FuncSig:
+		if value.Returns == nil {
+			return ""
+		}
+		return value.Returns.To
+	case exports.Func:
+		if value.Returns == nil {
+			return ""
+		}
+		return *value.Returns
+	}
+	return ""
+}
+
+func removePattern(funcName string, returnValue string) string {
+	funcName = strings.TrimLeft(strings.TrimLeft(funcName, "*"), "New")
+	before, after, b := strings.Cut(funcName, ".")
+	if !b {
+		return funcName
+	}
+
+	if strings.Contains(returnValue, "runtime.Poller") {
+		after = strings.TrimLeft(after, "Begin")
+	} else if strings.Contains(returnValue, "runtime.Pager") {
+		after = strings.TrimLeft(after, "New")
+	}
+
+	return fmt.Sprintf("%s.%s", before, after)
 }

@@ -477,7 +477,7 @@ type AsyncOperationResult struct {
 // AudioClassification provides polymorphic access to related types.
 // Call the interface's GetAudio() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AacAudio, *Audio
+// - *AacAudio, *Audio, *DDAudio
 type AudioClassification interface {
 	CodecClassification
 	// GetAudio returns the Audio content of the underlying type.
@@ -793,7 +793,7 @@ func (c *ClipTime) GetClipTime() *ClipTime { return c }
 // CodecClassification provides polymorphic access to related types.
 // Call the interface's GetCodec() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AacAudio, *Audio, *Codec, *CopyAudio, *CopyVideo, *H264Video, *H265Video, *Image, *JpgImage, *PNGImage, *Video
+// - *AacAudio, *Audio, *Codec, *CopyAudio, *CopyVideo, *DDAudio, *H264Video, *H265Video, *Image, *JpgImage, *PNGImage, *Video
 type CodecClassification interface {
 	// GetCodec returns the Codec content of the underlying type.
 	GetCodec() *Codec
@@ -949,7 +949,7 @@ func (c *ContentKeyPolicyConfiguration) GetContentKeyPolicyConfiguration() *Cont
 
 // ContentKeyPolicyFairPlayConfiguration - Specifies a configuration for FairPlay licenses.
 type ContentKeyPolicyFairPlayConfiguration struct {
-	// REQUIRED; The key that must be used as FairPlay Application Secret key.
+	// REQUIRED; The key that must be used as FairPlay Application Secret key. This needs to be base64 encoded.
 	Ask []byte `json:"ask,omitempty"`
 
 	// REQUIRED; The Base64 representation of FairPlay certificate in PKCS 12 (pfx) format (including private key).
@@ -1422,6 +1422,47 @@ type CrossSiteAccessPolicies struct {
 	CrossDomainPolicy *string `json:"crossDomainPolicy,omitempty"`
 }
 
+// DDAudio - Describes Dolby Digital Audio Codec (AC3) audio encoding settings. The current implementation for Dolby Digital
+// Audio support are: Audio channel numbers at 1((mono), 2(stereo), 6(5.1side); Audio
+// sampling frequency rates at: 32K/44.1K/48K Hz; Audio bitrate values as AC3 specification supports: 32000, 40000, 48000,
+// 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000,
+// 320000, 384000, 448000, 512000, 576000, 640000 bps.
+type DDAudio struct {
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The bitrate, in bits per second, of the output encoded audio.
+	Bitrate *int32 `json:"bitrate,omitempty"`
+
+	// The number of channels in the audio.
+	Channels *int32 `json:"channels,omitempty"`
+
+	// An optional label for the codec. The label can be used to control muxing behavior.
+	Label *string `json:"label,omitempty"`
+
+	// The sampling rate to use for encoding in hertz.
+	SamplingRate *int32 `json:"samplingRate,omitempty"`
+}
+
+// GetAudio implements the AudioClassification interface for type DDAudio.
+func (d *DDAudio) GetAudio() *Audio {
+	return &Audio{
+		Channels:     d.Channels,
+		SamplingRate: d.SamplingRate,
+		Bitrate:      d.Bitrate,
+		ODataType:    d.ODataType,
+		Label:        d.Label,
+	}
+}
+
+// GetCodec implements the CodecClassification interface for type DDAudio.
+func (d *DDAudio) GetCodec() *Codec {
+	return &Codec{
+		ODataType: d.ODataType,
+		Label:     d.Label,
+	}
+}
+
 // DashSettings - The DASH setting for a track.
 type DashSettings struct {
 	// The role for the DASH setting.
@@ -1593,6 +1634,23 @@ func (f *FaceDetectorPreset) GetPreset() *Preset {
 	}
 }
 
+// Fade - Describes the properties of a Fade effect applied to the input media.
+type Fade struct {
+	// REQUIRED; The Duration of the fade effect in the video. The value can be in ISO 8601 format (For example, PT05S to fade
+	// In/Out a color during 5 seconds), or a frame count (For example, 10 to fade 10 frames from
+	// the start time), or a relative value to stream duration (For example, 10% to fade 10% of stream duration)
+	Duration *string `json:"duration,omitempty"`
+
+	// REQUIRED; The Color for the fade In/Out. it can be on the CSS Level1 colors https://developer.mozilla.org/en-US/docs/Web/CSS/colorvalue/colorkeywords
+	// or an RGB/hex value: e.g: rgb(255,0,0), 0xFF0000 or #FF0000
+	FadeColor *string `json:"fadeColor,omitempty"`
+
+	// The position in the input video from where to start fade. The value can be in ISO 8601 format (For example, PT05S to start
+	// at 5 seconds), or a frame count (For example, 10 to start at the 10th frame),
+	// or a relative value to stream duration (For example, 10% to start at 10% of stream duration). Default is 0
+	Start *string `json:"start,omitempty"`
+}
+
 // FilterTrackPropertyCondition - The class to specify one track property condition.
 type FilterTrackPropertyCondition struct {
 	// REQUIRED; The track property condition operation.
@@ -1621,6 +1679,12 @@ type Filters struct {
 	// The de-interlacing settings.
 	Deinterlace *Deinterlace `json:"deinterlace,omitempty"`
 
+	// Describes the properties of a Fade effect applied to the input media.
+	FadeIn *Fade `json:"fadeIn,omitempty"`
+
+	// Describes the properties of a Fade effect applied to the input media.
+	FadeOut *Fade `json:"fadeOut,omitempty"`
+
 	// The properties of overlays to be applied to the input video. These could be audio, image or video overlays.
 	Overlays []OverlayClassification `json:"overlays,omitempty"`
 
@@ -1645,15 +1709,16 @@ type FormatClassification interface {
 
 // Format - Base class for output.
 type Format struct {
-	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// REQUIRED; The file naming pattern used for the creation of output files. The following macros are supported in the file
 	// name: {Basename} - An expansion macro that will use the name of the input video file. If
 	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
 	// input video files will be used. If the length of base name of the input video
 	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
 	// extension for this format. {Label} - The label assigned to the
-	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
-	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
-	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {AudioStream} - string "Audio" plus
+	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
+	// macros will be collapsed and removed from the filename.
 	FilenamePattern *string `json:"filenamePattern,omitempty"`
 
 	// REQUIRED; The discriminator for derived types.
@@ -2109,15 +2174,16 @@ type ImageFormatClassification interface {
 
 // ImageFormat - Describes the properties for an output image file.
 type ImageFormat struct {
-	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// REQUIRED; The file naming pattern used for the creation of output files. The following macros are supported in the file
 	// name: {Basename} - An expansion macro that will use the name of the input video file. If
 	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
 	// input video files will be used. If the length of base name of the input video
 	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
 	// extension for this format. {Label} - The label assigned to the
-	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
-	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
-	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {AudioStream} - string "Audio" plus
+	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
+	// macros will be collapsed and removed from the filename.
 	FilenamePattern *string `json:"filenamePattern,omitempty"`
 
 	// REQUIRED; The discriminator for derived types.
@@ -2599,15 +2665,16 @@ type JobsClientUpdateOptions struct {
 
 // JpgFormat - Describes the settings for producing JPEG thumbnails.
 type JpgFormat struct {
-	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// REQUIRED; The file naming pattern used for the creation of output files. The following macros are supported in the file
 	// name: {Basename} - An expansion macro that will use the name of the input video file. If
 	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
 	// input video files will be used. If the length of base name of the input video
 	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
 	// extension for this format. {Label} - The label assigned to the
-	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
-	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
-	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {AudioStream} - string "Audio" plus
+	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
+	// macros will be collapsed and removed from the filename.
 	FilenamePattern *string `json:"filenamePattern,omitempty"`
 
 	// REQUIRED; The discriminator for derived types.
@@ -3386,15 +3453,16 @@ type MetricSpecification struct {
 
 // Mp4Format - Describes the properties for an output ISO MP4 file.
 type Mp4Format struct {
-	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// REQUIRED; The file naming pattern used for the creation of output files. The following macros are supported in the file
 	// name: {Basename} - An expansion macro that will use the name of the input video file. If
 	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
 	// input video files will be used. If the length of base name of the input video
 	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
 	// extension for this format. {Label} - The label assigned to the
-	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
-	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
-	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {AudioStream} - string "Audio" plus
+	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
+	// macros will be collapsed and removed from the filename.
 	FilenamePattern *string `json:"filenamePattern,omitempty"`
 
 	// REQUIRED; The discriminator for derived types.
@@ -3436,15 +3504,16 @@ type MultiBitrateFormatClassification interface {
 // behavior is to produce one output file for each video layer which is muxed together with all the
 // audios. The exact output files produced can be controlled by specifying the outputFiles collection.
 type MultiBitrateFormat struct {
-	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// REQUIRED; The file naming pattern used for the creation of output files. The following macros are supported in the file
 	// name: {Basename} - An expansion macro that will use the name of the input video file. If
 	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
 	// input video files will be used. If the length of base name of the input video
 	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
 	// extension for this format. {Label} - The label assigned to the
-	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
-	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
-	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {AudioStream} - string "Audio" plus
+	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
+	// macros will be collapsed and removed from the filename.
 	FilenamePattern *string `json:"filenamePattern,omitempty"`
 
 	// REQUIRED; The discriminator for derived types.
@@ -3587,15 +3656,16 @@ func (o *Overlay) GetOverlay() *Overlay { return o }
 
 // PNGFormat - Describes the settings for producing PNG thumbnails.
 type PNGFormat struct {
-	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// REQUIRED; The file naming pattern used for the creation of output files. The following macros are supported in the file
 	// name: {Basename} - An expansion macro that will use the name of the input video file. If
 	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
 	// input video files will be used. If the length of base name of the input video
 	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
 	// extension for this format. {Label} - The label assigned to the
-	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
-	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
-	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {AudioStream} - string "Audio" plus
+	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
+	// macros will be collapsed and removed from the filename.
 	FilenamePattern *string `json:"filenamePattern,omitempty"`
 
 	// REQUIRED; The discriminator for derived types.
@@ -4103,6 +4173,9 @@ type StandardEncoderPreset struct {
 
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+
+	// Dictionary containing key value pairs for parameters not exposed in the preset itself
+	ExperimentalOptions map[string]*string `json:"experimentalOptions,omitempty"`
 
 	// One or more filtering operations that are applied to the input media before encoding.
 	Filters *Filters `json:"filters,omitempty"`
@@ -4848,15 +4921,16 @@ type TransformsClientUpdateOptions struct {
 // TransportStreamFormat - Describes the properties for generating an MPEG-2 Transport Stream (ISO/IEC 13818-1) output video
 // file(s).
 type TransportStreamFormat struct {
-	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
+	// REQUIRED; The file naming pattern used for the creation of output files. The following macros are supported in the file
 	// name: {Basename} - An expansion macro that will use the name of the input video file. If
 	// the base name(the file suffix is not included) of the input video file is less than 32 characters long, the base name of
 	// input video files will be used. If the length of base name of the input video
 	// file exceeds 32 characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
 	// extension for this format. {Label} - The label assigned to the
-	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate.
-	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec.
-	// {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
+	// codec/layer. {Index} - A unique index for thumbnails. Only applicable to thumbnails. {AudioStream} - string "Audio" plus
+	// audio stream number(start from 1). {Bitrate} - The audio/video bitrate in kbps.
+	// Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted
+	// macros will be collapsed and removed from the filename.
 	FilenamePattern *string `json:"filenamePattern,omitempty"`
 
 	// REQUIRED; The discriminator for derived types.

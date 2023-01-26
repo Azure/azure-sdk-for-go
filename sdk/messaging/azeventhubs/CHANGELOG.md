@@ -1,6 +1,40 @@
 # Release History
 
-## 0.2.0 (Unreleased)
+## 0.4.1 (Unreleased)
+
+### Features Added
+
+- Adds ProcessorOptions.Prefetch field, allowing configuration of Prefetch values for PartitionClients created using the Processor. (PR#19786)
+- Added new function to parse connection string into values using `ParseConnectionString` and `ConnectionStringProperties`. (PR#19855)
+
+### Breaking Changes
+
+- ProcessorOptions.OwnerLevel has been removed. The Processor uses 0 as the owner level.
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.4.0 (2023-01-10)
+
+### Bugs Fixed
+
+- User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
+- Connection recovery has been improved, removing some unnecessasry retries as well as adding a bound around 
+  some operations (Close) that could potentially block recovery for a long time. (PR#19683)
+
+## 0.3.0 (2022-11-10)
+
+### Bugs Fixed
+
+- $cbs link is properly closed, even on cancellation (#19492)
+
+### Breaking Changes
+
+- ProducerClient.SendEventBatch renamed to ProducerClient.SendEventDataBatch, to align with
+  the name of the type.
+
+## 0.2.0 (2022-10-17)
 
 ### Features Added
 
@@ -20,9 +54,8 @@
 
 ### Bugs Fixed
 
-- Retries now respect cancellation when they're in the "delay before next try" phase. (PR#TBD)
-
-### Other Changes
+- Retries now respect cancellation when they're in the "delay before next try" phase. (PR#19295)
+- Fixed a potential leak which could cause us to open and leak a $cbs link connection, resulting in errors. (PR#19326)
 
 ## 0.1.1 (2022-09-08)
 

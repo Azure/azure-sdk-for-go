@@ -247,7 +247,6 @@ func (client *AssetFiltersClient) getHandleResponse(resp *http.Response) (AssetF
 }
 
 // NewListPager - List Asset Filters associated with the specified Asset.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.

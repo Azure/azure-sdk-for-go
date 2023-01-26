@@ -5,3 +5,4 @@ charts
 newstress
 oldstress
 *.log
+generatedValues.yaml

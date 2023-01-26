@@ -11,46 +11,8 @@ package armdatafactory
 
 const (
 	moduleName    = "armdatafactory"
-	moduleVersion = "v1.3.0"
+	moduleVersion = "v3.0.0"
 )
-
-type AmazonRdsForOraclePartitionOption string
-
-const (
-	AmazonRdsForOraclePartitionOptionDynamicRange              AmazonRdsForOraclePartitionOption = "DynamicRange"
-	AmazonRdsForOraclePartitionOptionNone                      AmazonRdsForOraclePartitionOption = "None"
-	AmazonRdsForOraclePartitionOptionPhysicalPartitionsOfTable AmazonRdsForOraclePartitionOption = "PhysicalPartitionsOfTable"
-)
-
-// PossibleAmazonRdsForOraclePartitionOptionValues returns the possible values for the AmazonRdsForOraclePartitionOption const type.
-func PossibleAmazonRdsForOraclePartitionOptionValues() []AmazonRdsForOraclePartitionOption {
-	return []AmazonRdsForOraclePartitionOption{
-		AmazonRdsForOraclePartitionOptionDynamicRange,
-		AmazonRdsForOraclePartitionOptionNone,
-		AmazonRdsForOraclePartitionOptionPhysicalPartitionsOfTable,
-	}
-}
-
-type AvroCompressionCodec string
-
-const (
-	AvroCompressionCodecBzip2   AvroCompressionCodec = "bzip2"
-	AvroCompressionCodecDeflate AvroCompressionCodec = "deflate"
-	AvroCompressionCodecNone    AvroCompressionCodec = "none"
-	AvroCompressionCodecSnappy  AvroCompressionCodec = "snappy"
-	AvroCompressionCodecXz      AvroCompressionCodec = "xz"
-)
-
-// PossibleAvroCompressionCodecValues returns the possible values for the AvroCompressionCodec const type.
-func PossibleAvroCompressionCodecValues() []AvroCompressionCodec {
-	return []AvroCompressionCodec{
-		AvroCompressionCodecBzip2,
-		AvroCompressionCodecDeflate,
-		AvroCompressionCodecNone,
-		AvroCompressionCodecSnappy,
-		AvroCompressionCodecXz,
-	}
-}
 
 // AzureFunctionActivityMethod - The list of HTTP methods supported by a AzureFunctionActivity.
 type AzureFunctionActivityMethod string
@@ -158,56 +120,6 @@ func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadC
 	}
 }
 
-// CompressionCodec - All available compressionCodec values.
-type CompressionCodec string
-
-const (
-	CompressionCodecBzip2      CompressionCodec = "bzip2"
-	CompressionCodecDeflate    CompressionCodec = "deflate"
-	CompressionCodecGzip       CompressionCodec = "gzip"
-	CompressionCodecLz4        CompressionCodec = "lz4"
-	CompressionCodecLzo        CompressionCodec = "lzo"
-	CompressionCodecNone       CompressionCodec = "none"
-	CompressionCodecSnappy     CompressionCodec = "snappy"
-	CompressionCodecTar        CompressionCodec = "tar"
-	CompressionCodecTarGZip    CompressionCodec = "tarGZip"
-	CompressionCodecZipDeflate CompressionCodec = "zipDeflate"
-)
-
-// PossibleCompressionCodecValues returns the possible values for the CompressionCodec const type.
-func PossibleCompressionCodecValues() []CompressionCodec {
-	return []CompressionCodec{
-		CompressionCodecBzip2,
-		CompressionCodecDeflate,
-		CompressionCodecGzip,
-		CompressionCodecLz4,
-		CompressionCodecLzo,
-		CompressionCodecNone,
-		CompressionCodecSnappy,
-		CompressionCodecTar,
-		CompressionCodecTarGZip,
-		CompressionCodecZipDeflate,
-	}
-}
-
-// CopyBehaviorType - All available types of copy behavior.
-type CopyBehaviorType string
-
-const (
-	CopyBehaviorTypeFlattenHierarchy  CopyBehaviorType = "FlattenHierarchy"
-	CopyBehaviorTypeMergeFiles        CopyBehaviorType = "MergeFiles"
-	CopyBehaviorTypePreserveHierarchy CopyBehaviorType = "PreserveHierarchy"
-)
-
-// PossibleCopyBehaviorTypeValues returns the possible values for the CopyBehaviorType const type.
-func PossibleCopyBehaviorTypeValues() []CopyBehaviorType {
-	return []CopyBehaviorType{
-		CopyBehaviorTypeFlattenHierarchy,
-		CopyBehaviorTypeMergeFiles,
-		CopyBehaviorTypePreserveHierarchy,
-	}
-}
-
 // CosmosDbConnectionMode - The connection mode used to access CosmosDB account. Type: string (or Expression with resultType
 // string).
 type CosmosDbConnectionMode string
@@ -307,22 +219,6 @@ func PossibleDataFlowReferenceTypeValues() []DataFlowReferenceType {
 	}
 }
 
-// DatasetCompressionLevel - All available compression levels.
-type DatasetCompressionLevel string
-
-const (
-	DatasetCompressionLevelFastest DatasetCompressionLevel = "Fastest"
-	DatasetCompressionLevelOptimal DatasetCompressionLevel = "Optimal"
-)
-
-// PossibleDatasetCompressionLevelValues returns the possible values for the DatasetCompressionLevel const type.
-func PossibleDatasetCompressionLevelValues() []DatasetCompressionLevel {
-	return []DatasetCompressionLevel{
-		DatasetCompressionLevelFastest,
-		DatasetCompressionLevelOptimal,
-	}
-}
-
 // DatasetReferenceType - Dataset reference type.
 type DatasetReferenceType string
 
@@ -418,40 +314,6 @@ func PossibleDependencyConditionValues() []DependencyCondition {
 		DependencyConditionFailed,
 		DependencyConditionSkipped,
 		DependencyConditionSucceeded,
-	}
-}
-
-// DynamicsAuthenticationType - All available dynamicsAuthenticationType values.
-type DynamicsAuthenticationType string
-
-const (
-	DynamicsAuthenticationTypeAADServicePrincipal DynamicsAuthenticationType = "AADServicePrincipal"
-	DynamicsAuthenticationTypeIfd                 DynamicsAuthenticationType = "Ifd"
-	DynamicsAuthenticationTypeOffice365           DynamicsAuthenticationType = "Office365"
-)
-
-// PossibleDynamicsAuthenticationTypeValues returns the possible values for the DynamicsAuthenticationType const type.
-func PossibleDynamicsAuthenticationTypeValues() []DynamicsAuthenticationType {
-	return []DynamicsAuthenticationType{
-		DynamicsAuthenticationTypeAADServicePrincipal,
-		DynamicsAuthenticationTypeIfd,
-		DynamicsAuthenticationTypeOffice365,
-	}
-}
-
-// DynamicsDeploymentType - All available dynamicsDeploymentType values.
-type DynamicsDeploymentType string
-
-const (
-	DynamicsDeploymentTypeOnPremisesWithIfd DynamicsDeploymentType = "OnPremisesWithIfd"
-	DynamicsDeploymentTypeOnline            DynamicsDeploymentType = "Online"
-)
-
-// PossibleDynamicsDeploymentTypeValues returns the possible values for the DynamicsDeploymentType const type.
-func PossibleDynamicsDeploymentTypeValues() []DynamicsDeploymentType {
-	return []DynamicsDeploymentType{
-		DynamicsDeploymentTypeOnPremisesWithIfd,
-		DynamicsDeploymentTypeOnline,
 	}
 }
 
@@ -650,24 +512,6 @@ func PossibleHTTPAuthenticationTypeValues() []HTTPAuthenticationType {
 		HTTPAuthenticationTypeClientCertificate,
 		HTTPAuthenticationTypeDigest,
 		HTTPAuthenticationTypeWindows,
-	}
-}
-
-// HdiNodeTypes - All available HdiNodeTypes values.
-type HdiNodeTypes string
-
-const (
-	HdiNodeTypesHeadnode   HdiNodeTypes = "Headnode"
-	HdiNodeTypesWorkernode HdiNodeTypes = "Workernode"
-	HdiNodeTypesZookeeper  HdiNodeTypes = "Zookeeper"
-)
-
-// PossibleHdiNodeTypesValues returns the possible values for the HdiNodeTypes const type.
-func PossibleHdiNodeTypesValues() []HdiNodeTypes {
-	return []HdiNodeTypes{
-		HdiNodeTypesHeadnode,
-		HdiNodeTypesWorkernode,
-		HdiNodeTypesZookeeper,
 	}
 }
 
@@ -945,38 +789,6 @@ func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateRe
 	}
 }
 
-// JSONFormatFilePattern - JSON format file pattern. A property of JsonFormat.
-type JSONFormatFilePattern string
-
-const (
-	JSONFormatFilePatternArrayOfObjects JSONFormatFilePattern = "arrayOfObjects"
-	JSONFormatFilePatternSetOfObjects   JSONFormatFilePattern = "setOfObjects"
-)
-
-// PossibleJSONFormatFilePatternValues returns the possible values for the JSONFormatFilePattern const type.
-func PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern {
-	return []JSONFormatFilePattern{
-		JSONFormatFilePatternArrayOfObjects,
-		JSONFormatFilePatternSetOfObjects,
-	}
-}
-
-// JSONWriteFilePattern - All available filePatterns.
-type JSONWriteFilePattern string
-
-const (
-	JSONWriteFilePatternArrayOfObjects JSONWriteFilePattern = "arrayOfObjects"
-	JSONWriteFilePatternSetOfObjects   JSONWriteFilePattern = "setOfObjects"
-)
-
-// PossibleJSONWriteFilePatternValues returns the possible values for the JSONWriteFilePattern const type.
-func PossibleJSONWriteFilePatternValues() []JSONWriteFilePattern {
-	return []JSONWriteFilePattern{
-		JSONWriteFilePatternArrayOfObjects,
-		JSONWriteFilePatternSetOfObjects,
-	}
-}
-
 // LinkedServiceReferenceType - Linked service reference type.
 type LinkedServiceReferenceType string
 
@@ -1038,24 +850,6 @@ func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
 	return []MongoDbAuthenticationType{
 		MongoDbAuthenticationTypeAnonymous,
 		MongoDbAuthenticationTypeBasic,
-	}
-}
-
-// NetezzaPartitionOption - The partition mechanism that will be used for Netezza read in parallel.
-type NetezzaPartitionOption string
-
-const (
-	NetezzaPartitionOptionDataSlice    NetezzaPartitionOption = "DataSlice"
-	NetezzaPartitionOptionDynamicRange NetezzaPartitionOption = "DynamicRange"
-	NetezzaPartitionOptionNone         NetezzaPartitionOption = "None"
-)
-
-// PossibleNetezzaPartitionOptionValues returns the possible values for the NetezzaPartitionOption const type.
-func PossibleNetezzaPartitionOptionValues() []NetezzaPartitionOption {
-	return []NetezzaPartitionOption{
-		NetezzaPartitionOptionDataSlice,
-		NetezzaPartitionOptionDynamicRange,
-		NetezzaPartitionOptionNone,
 	}
 }
 
@@ -1128,43 +922,6 @@ func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
 		ODataAuthenticationTypeBasic,
 		ODataAuthenticationTypeManagedServiceIdentity,
 		ODataAuthenticationTypeWindows,
-	}
-}
-
-// OraclePartitionOption - The partition mechanism that will be used for Oracle read in parallel.
-type OraclePartitionOption string
-
-const (
-	OraclePartitionOptionDynamicRange              OraclePartitionOption = "DynamicRange"
-	OraclePartitionOptionNone                      OraclePartitionOption = "None"
-	OraclePartitionOptionPhysicalPartitionsOfTable OraclePartitionOption = "PhysicalPartitionsOfTable"
-)
-
-// PossibleOraclePartitionOptionValues returns the possible values for the OraclePartitionOption const type.
-func PossibleOraclePartitionOptionValues() []OraclePartitionOption {
-	return []OraclePartitionOption{
-		OraclePartitionOptionDynamicRange,
-		OraclePartitionOptionNone,
-		OraclePartitionOptionPhysicalPartitionsOfTable,
-	}
-}
-
-type OrcCompressionCodec string
-
-const (
-	OrcCompressionCodecLzo    OrcCompressionCodec = "lzo"
-	OrcCompressionCodecNone   OrcCompressionCodec = "none"
-	OrcCompressionCodecSnappy OrcCompressionCodec = "snappy"
-	OrcCompressionCodecZlib   OrcCompressionCodec = "zlib"
-)
-
-// PossibleOrcCompressionCodecValues returns the possible values for the OrcCompressionCodec const type.
-func PossibleOrcCompressionCodecValues() []OrcCompressionCodec {
-	return []OrcCompressionCodec{
-		OrcCompressionCodecLzo,
-		OrcCompressionCodecNone,
-		OrcCompressionCodecSnappy,
-		OrcCompressionCodecZlib,
 	}
 }
 
@@ -1447,58 +1204,6 @@ func PossibleSQLAlwaysEncryptedAkvAuthTypeValues() []SQLAlwaysEncryptedAkvAuthTy
 	}
 }
 
-// SQLDWWriteBehaviorEnum - Specify the write behavior when copying data into sql dw.
-type SQLDWWriteBehaviorEnum string
-
-const (
-	SQLDWWriteBehaviorEnumInsert SQLDWWriteBehaviorEnum = "Insert"
-	SQLDWWriteBehaviorEnumUpsert SQLDWWriteBehaviorEnum = "Upsert"
-)
-
-// PossibleSQLDWWriteBehaviorEnumValues returns the possible values for the SQLDWWriteBehaviorEnum const type.
-func PossibleSQLDWWriteBehaviorEnumValues() []SQLDWWriteBehaviorEnum {
-	return []SQLDWWriteBehaviorEnum{
-		SQLDWWriteBehaviorEnumInsert,
-		SQLDWWriteBehaviorEnumUpsert,
-	}
-}
-
-// SQLPartitionOption - The partition mechanism that will be used for Sql read in parallel.
-type SQLPartitionOption string
-
-const (
-	SQLPartitionOptionDynamicRange              SQLPartitionOption = "DynamicRange"
-	SQLPartitionOptionNone                      SQLPartitionOption = "None"
-	SQLPartitionOptionPhysicalPartitionsOfTable SQLPartitionOption = "PhysicalPartitionsOfTable"
-)
-
-// PossibleSQLPartitionOptionValues returns the possible values for the SQLPartitionOption const type.
-func PossibleSQLPartitionOptionValues() []SQLPartitionOption {
-	return []SQLPartitionOption{
-		SQLPartitionOptionDynamicRange,
-		SQLPartitionOptionNone,
-		SQLPartitionOptionPhysicalPartitionsOfTable,
-	}
-}
-
-// SQLWriteBehaviorEnum - Specify the write behavior when copying data into sql.
-type SQLWriteBehaviorEnum string
-
-const (
-	SQLWriteBehaviorEnumInsert          SQLWriteBehaviorEnum = "Insert"
-	SQLWriteBehaviorEnumStoredProcedure SQLWriteBehaviorEnum = "StoredProcedure"
-	SQLWriteBehaviorEnumUpsert          SQLWriteBehaviorEnum = "Upsert"
-)
-
-// PossibleSQLWriteBehaviorEnumValues returns the possible values for the SQLWriteBehaviorEnum const type.
-func PossibleSQLWriteBehaviorEnumValues() []SQLWriteBehaviorEnum {
-	return []SQLWriteBehaviorEnum{
-		SQLWriteBehaviorEnumInsert,
-		SQLWriteBehaviorEnumStoredProcedure,
-		SQLWriteBehaviorEnumUpsert,
-	}
-}
-
 // SalesforceSinkWriteBehavior - The write behavior for the operation. Default is Insert.
 type SalesforceSinkWriteBehavior string
 
@@ -1560,48 +1265,6 @@ func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
 	return []SapHanaAuthenticationType{
 		SapHanaAuthenticationTypeBasic,
 		SapHanaAuthenticationTypeWindows,
-	}
-}
-
-// SapHanaPartitionOption - The partition mechanism that will be used for SAP HANA read in parallel.
-type SapHanaPartitionOption string
-
-const (
-	SapHanaPartitionOptionNone                      SapHanaPartitionOption = "None"
-	SapHanaPartitionOptionPhysicalPartitionsOfTable SapHanaPartitionOption = "PhysicalPartitionsOfTable"
-	SapHanaPartitionOptionSapHanaDynamicRange       SapHanaPartitionOption = "SapHanaDynamicRange"
-)
-
-// PossibleSapHanaPartitionOptionValues returns the possible values for the SapHanaPartitionOption const type.
-func PossibleSapHanaPartitionOptionValues() []SapHanaPartitionOption {
-	return []SapHanaPartitionOption{
-		SapHanaPartitionOptionNone,
-		SapHanaPartitionOptionPhysicalPartitionsOfTable,
-		SapHanaPartitionOptionSapHanaDynamicRange,
-	}
-}
-
-// SapTablePartitionOption - The partition mechanism that will be used for SAP table read in parallel.
-type SapTablePartitionOption string
-
-const (
-	SapTablePartitionOptionNone                     SapTablePartitionOption = "None"
-	SapTablePartitionOptionPartitionOnCalendarDate  SapTablePartitionOption = "PartitionOnCalendarDate"
-	SapTablePartitionOptionPartitionOnCalendarMonth SapTablePartitionOption = "PartitionOnCalendarMonth"
-	SapTablePartitionOptionPartitionOnCalendarYear  SapTablePartitionOption = "PartitionOnCalendarYear"
-	SapTablePartitionOptionPartitionOnInt           SapTablePartitionOption = "PartitionOnInt"
-	SapTablePartitionOptionPartitionOnTime          SapTablePartitionOption = "PartitionOnTime"
-)
-
-// PossibleSapTablePartitionOptionValues returns the possible values for the SapTablePartitionOption const type.
-func PossibleSapTablePartitionOptionValues() []SapTablePartitionOption {
-	return []SapTablePartitionOption{
-		SapTablePartitionOptionNone,
-		SapTablePartitionOptionPartitionOnCalendarDate,
-		SapTablePartitionOptionPartitionOnCalendarMonth,
-		SapTablePartitionOptionPartitionOnCalendarYear,
-		SapTablePartitionOptionPartitionOnInt,
-		SapTablePartitionOptionPartitionOnTime,
 	}
 }
 
@@ -1730,22 +1393,6 @@ func PossibleServiceNowAuthenticationTypeValues() []ServiceNowAuthenticationType
 	return []ServiceNowAuthenticationType{
 		ServiceNowAuthenticationTypeBasic,
 		ServiceNowAuthenticationTypeOAuth2,
-	}
-}
-
-// ServicePrincipalCredentialType - All available servicePrincipalCredentialType values.
-type ServicePrincipalCredentialType string
-
-const (
-	ServicePrincipalCredentialTypeServicePrincipalCert ServicePrincipalCredentialType = "ServicePrincipalCert"
-	ServicePrincipalCredentialTypeServicePrincipalKey  ServicePrincipalCredentialType = "ServicePrincipalKey"
-)
-
-// PossibleServicePrincipalCredentialTypeValues returns the possible values for the ServicePrincipalCredentialType const type.
-func PossibleServicePrincipalCredentialTypeValues() []ServicePrincipalCredentialType {
-	return []ServicePrincipalCredentialType{
-		ServicePrincipalCredentialTypeServicePrincipalCert,
-		ServicePrincipalCredentialTypeServicePrincipalKey,
 	}
 }
 
@@ -1891,32 +1538,6 @@ func PossibleSsisPackageLocationTypeValues() []SsisPackageLocationType {
 	}
 }
 
-// StoredProcedureParameterType - Stored procedure parameter type.
-type StoredProcedureParameterType string
-
-const (
-	StoredProcedureParameterTypeBoolean StoredProcedureParameterType = "Boolean"
-	StoredProcedureParameterTypeDate    StoredProcedureParameterType = "Date"
-	StoredProcedureParameterTypeDecimal StoredProcedureParameterType = "Decimal"
-	StoredProcedureParameterTypeGUID    StoredProcedureParameterType = "Guid"
-	StoredProcedureParameterTypeInt     StoredProcedureParameterType = "Int"
-	StoredProcedureParameterTypeInt64   StoredProcedureParameterType = "Int64"
-	StoredProcedureParameterTypeString  StoredProcedureParameterType = "String"
-)
-
-// PossibleStoredProcedureParameterTypeValues returns the possible values for the StoredProcedureParameterType const type.
-func PossibleStoredProcedureParameterTypeValues() []StoredProcedureParameterType {
-	return []StoredProcedureParameterType{
-		StoredProcedureParameterTypeBoolean,
-		StoredProcedureParameterTypeDate,
-		StoredProcedureParameterTypeDecimal,
-		StoredProcedureParameterTypeGUID,
-		StoredProcedureParameterTypeInt,
-		StoredProcedureParameterTypeInt64,
-		StoredProcedureParameterTypeString,
-	}
-}
-
 // SybaseAuthenticationType - AuthenticationType to be used for connection.
 type SybaseAuthenticationType string
 
@@ -1962,24 +1583,6 @@ func PossibleTeradataAuthenticationTypeValues() []TeradataAuthenticationType {
 	return []TeradataAuthenticationType{
 		TeradataAuthenticationTypeBasic,
 		TeradataAuthenticationTypeWindows,
-	}
-}
-
-// TeradataPartitionOption - The partition mechanism that will be used for teradata read in parallel.
-type TeradataPartitionOption string
-
-const (
-	TeradataPartitionOptionDynamicRange TeradataPartitionOption = "DynamicRange"
-	TeradataPartitionOptionHash         TeradataPartitionOption = "Hash"
-	TeradataPartitionOptionNone         TeradataPartitionOption = "None"
-)
-
-// PossibleTeradataPartitionOptionValues returns the possible values for the TeradataPartitionOption const type.
-func PossibleTeradataPartitionOptionValues() []TeradataPartitionOption {
-	return []TeradataPartitionOption{
-		TeradataPartitionOptionDynamicRange,
-		TeradataPartitionOptionHash,
-		TeradataPartitionOptionNone,
 	}
 }
 

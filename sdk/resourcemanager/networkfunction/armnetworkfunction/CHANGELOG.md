@@ -1,5 +1,20 @@
 # Release History
 
+## 2.0.0 (2022-12-23)
+### Breaking Changes
+
+- Type of `AzureTrafficCollectorPropertiesFormat.CollectorPolicies` has been changed from `[]*CollectorPolicy` to `[]*ResourceReference`
+- Type of `CollectorPolicy.SystemData` has been changed from `*CollectorPolicySystemData` to `*TrackedResourceSystemData`
+- Struct `CollectorPolicySystemData` has been removed
+
+### Features Added
+
+- New type alias `APIVersionParameter`
+- New function `*CollectorPoliciesClient.UpdateTags(context.Context, string, string, string, TagsObject, *CollectorPoliciesClientUpdateTagsOptions) (CollectorPoliciesClientUpdateTagsResponse, error)`
+- New field `Location` in struct `CollectorPolicy`
+- New field `Tags` in struct `CollectorPolicy`
+
+
 ## 1.0.0 (2022-07-07)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

@@ -85,7 +85,10 @@ func TestMain(m *testing.M) {
 		// will be fast because the tests which created these secrets requested their
 		// deletion. Now, at the end of the run, Key Vault will have finished deleting
 		// most of them...
-		client := azsecrets.NewClient(vaultURL, credential, nil)
+		client, err := azsecrets.NewClient(vaultURL, credential, nil)
+		if err != nil {
+			panic(err)
+		}
 		for _, name := range secretsToPurge.names {
 			// ...but we need a retry loop for the others. Note this wouldn't benefit
 			// from client-side parallelization because Key Vault's delete operations
@@ -115,7 +118,9 @@ func startTest(t *testing.T) *azsecrets.Client {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	opts := &azsecrets.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
-	return azsecrets.NewClient(vaultURL, credential, opts)
+	client, err := azsecrets.NewClient(vaultURL, credential, opts)
+	require.NoError(t, err)
+	return client
 }
 
 func createRandomName(t *testing.T, prefix string) string {

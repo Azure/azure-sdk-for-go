@@ -1024,8 +1024,8 @@ type ContainerClientSubmitBatchOptions struct {
 	Timeout *int32
 }
 
-// ContainerCpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
-type ContainerCpkScopeInfo struct {
+// ContainerCPKScopeInfo contains a group of parameters for the ContainerClient.Create method.
+type ContainerCPKScopeInfo struct {
 	// Optional. Version 2019-07-07 and later. Specifies the default encryption scope to set on the container and use for all
 	// future writes.
 	DefaultEncryptionScope *string
@@ -1095,8 +1095,8 @@ type CorsRule struct {
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
-// CpkInfo contains a group of parameters for the BlobClient.Download method.
-type CpkInfo struct {
+// CPKInfo contains a group of parameters for the BlobClient.Download method.
+type CPKInfo struct {
 	// The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided
 	// if the x-ms-encryption-key header is provided.
 	EncryptionAlgorithm *EncryptionAlgorithmType
@@ -1108,8 +1108,8 @@ type CpkInfo struct {
 	EncryptionKeySHA256 *string
 }
 
-// CpkScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
-type CpkScopeInfo struct {
+// CPKScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
+type CPKScopeInfo struct {
 	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
 	// in the request. If not specified, encryption is performed with the default
 	// account encryption scope. For more information, see Encryption at Rest for Azure Storage Services.

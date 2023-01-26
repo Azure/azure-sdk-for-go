@@ -9,7 +9,6 @@ package azidentity
 import (
 	"context"
 	"reflect"
-	"strconv"
 	"strings"
 	"testing"
 
@@ -53,18 +52,14 @@ func TestClientSecretCredential_Live(t *testing.T) {
 }
 
 func TestClientSecretCredentialADFS_Live(t *testing.T) {
-	if recording.GetRecordMode() == recording.LiveMode {
-		if adfsLiveSP.certPass == "" || adfsLiveSP.clientID == "" || adfsLiveSP.pfxPath == "" || adfsLiveSP.scope == "" || adfsLiveSP.tenantID == "" {
-			t.Skip("this test requires manual recording and access to ADFS instance, and can't pass live in CI")
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		if adfsLiveSP.clientID == "" || adfsLiveSP.secret == "" || adfsLiveSP.scope == "" {
+			t.Skip("set ADFS_SP_* environment variables to run this test live")
 		}
 	}
 	opts, stop := initRecording(t)
 	defer stop()
-	disableID, err := strconv.ParseBool(disableInstanceDiscovery)
-	if err != nil {
-		disableID = false
-	}
-	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disableID}
+	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true}
 	cred, err := NewClientSecretCredential(adfsLiveSP.tenantID, adfsLiveSP.clientID, adfsLiveSP.secret, &o)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)

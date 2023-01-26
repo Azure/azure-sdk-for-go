@@ -13,7 +13,6 @@ import (
 	"log"
 	"os"
 	"reflect"
-	"strconv"
 	"strings"
 	"testing"
 
@@ -230,29 +229,21 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 
 func TestClientCertificateCredentialADFS_Live(t *testing.T) {
 	if recording.GetRecordMode() == recording.LiveMode {
-		if adfsLiveSP.certPass == "" || adfsLiveSP.clientID == "" || adfsLiveSP.pfxPath == "" || adfsLiveSP.scope == "" || adfsLiveSP.tenantID == "" {
+		if adfsLiveSP.clientID == "" || adfsLiveSP.pemPath == "" || adfsLiveSP.scope == "" {
 			t.Skip("this test requires manual recording and access to ADFS instance, and can't pass live in CI")
 		}
 	}
-	certData, err := os.ReadFile(adfsLiveSP.pfxPath)
+	certData, err := os.ReadFile(adfsLiveSP.pemPath)
 	if err != nil {
 		t.Fatalf(`failed to read cert: %v`, err)
 	}
-	var password []byte
-	if v := adfsLiveSP.certPass; v != "" {
-		password = []byte(v)
-	}
-	certs, key, err := ParseCertificates(certData, password)
+	certs, key, err := ParseCertificates(certData, nil)
 	if err != nil {
 		t.Fatalf(`failed to parse cert: %v`, err)
 	}
 	o, stop := initRecording(t)
-	disableID, err := strconv.ParseBool(disableInstanceDiscovery)
-	if err != nil {
-		disableID = false
-	}
 	defer stop()
-	opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: disableID}
+	opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
 	cred, err := NewClientCertificateCredential(adfsLiveSP.tenantID, adfsLiveSP.clientID, certs, key, opts)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)

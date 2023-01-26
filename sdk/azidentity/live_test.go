@@ -66,15 +66,13 @@ var adfsLiveSP = struct {
 	tenantID string
 	clientID string
 	secret   string
-	pfxPath  string
-	certPass string
+	pemPath  string
 	scope    string
 }{
-	tenantID: os.Getenv("ADFS_SP_TENANT_ID"),
+	tenantID: "adfs",
 	clientID: os.Getenv("ADFS_SP_CLIENT_ID"),
 	secret:   os.Getenv("ADFS_SP_CLIENT_SECRET"),
-	pfxPath:  os.Getenv("ADFS_SP_CERT_PFX"),
-	certPass: os.Getenv("ADFS_SP_CERT_PASSWORD"),
+	pemPath:  os.Getenv("ADFS_SP_CERT_PEM"),
 	scope:    os.Getenv("ADFS_SCOPE"),
 }
 
@@ -141,8 +139,6 @@ func TestMain(m *testing.M) {
 			liveSP.tenantID:                                 fakeTenantID,
 			liveUser.tenantID:                               fakeTenantID,
 			liveUser.username:                               fakeUsername,
-			adfsLiveSP.tenantID:                             fakeTenantID,
-			adfsLiveUser.tenantID:                           fakeTenantID,
 		}
 		for target, replacement := range pathVars {
 			if target != "" {

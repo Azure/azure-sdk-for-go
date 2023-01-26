@@ -32,7 +32,7 @@ type InteractiveBrowserCredentialOptions struct {
 	// Applications which have registered "http://localhost" as a redirect URI need not set this option.
 	RedirectURL string
 
-	// disableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
 	DisableInstanceDiscovery bool
 }
 
@@ -59,9 +59,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		cp = *options
 	}
 	cp.init()
-	var o []public.Option
-	o = append(o, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
-	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions, o...)
+	c, err := getPublicClient(cp.ClientID, cp.TenantID, &cp.ClientOptions, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	if err != nil {
 		return nil, err
 	}

@@ -9,7 +9,6 @@ package azidentity
 import (
 	"context"
 	"reflect"
-	"strconv"
 	"strings"
 	"testing"
 
@@ -41,11 +40,7 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 func TestUsernamePasswordCredential_Live(t *testing.T) {
 	o, stop := initRecording(t)
 	defer stop()
-	disableID, err := strconv.ParseBool(disableInstanceDiscovery)
-	if err != nil {
-		disableID = false
-	}
-	opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: disableID}
+	opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
 	//for ADFS changed the clientID
 	cred, err := NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
 	if err != nil {

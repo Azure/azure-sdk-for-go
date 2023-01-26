@@ -21,7 +21,7 @@ const credNameUserPassword = "UsernamePasswordCredential"
 type UsernamePasswordCredentialOptions struct {
 	azcore.ClientOptions
 
-	// disableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
 	DisableInstanceDiscovery bool
 }
 
@@ -42,9 +42,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	if options == nil {
 		options = &UsernamePasswordCredentialOptions{}
 	}
-	var o []public.Option
-	o = append(o, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
-	c, err := getPublicClient(clientID, tenantID, &options.ClientOptions, o...)
+	c, err := getPublicClient(clientID, tenantID, &options.ClientOptions, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	if err != nil {
 		return nil, err
 	}

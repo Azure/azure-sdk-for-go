@@ -49,9 +49,7 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 			return getAssertion(ctx)
 		},
 	)
-	var o []confidential.Option
-	o = append(o, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
-	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, o...)
+	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	if err != nil {
 		return nil, err
 	}

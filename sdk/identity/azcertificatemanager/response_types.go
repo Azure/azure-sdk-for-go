@@ -37,4 +37,3 @@ type ClientGetCaCertificateResponse struct {
 type ClientRevokeResponse struct {
 	// placeholder for future response values
 }
-

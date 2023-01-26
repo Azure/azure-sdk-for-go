@@ -22,7 +22,7 @@ const (
 
 // PossibleCertificateFileFormatValues returns the possible values for the CertificateFileFormat const type.
 func PossibleCertificateFileFormatValues() []CertificateFileFormat {
-	return []CertificateFileFormat{	
+	return []CertificateFileFormat{
 		CertificateFileFormatApplicationPkixCert,
 		CertificateFileFormatApplicationXPemFile,
 		CertificateFileFormatApplicationXPkcs7Certificates,
@@ -40,7 +40,7 @@ const (
 
 // PossibleCertificateFormatValues returns the possible values for the CertificateFormat const type.
 func PossibleCertificateFormatValues() []CertificateFormat {
-	return []CertificateFormat{	
+	return []CertificateFormat{
 		CertificateFormatPem,
 		CertificateFormatPkcs7,
 	}
@@ -57,7 +57,7 @@ const (
 
 // PossibleChainFormatValues returns the possible values for the ChainFormat const type.
 func PossibleChainFormatValues() []ChainFormat {
-	return []ChainFormat{	
+	return []ChainFormat{
 		ChainFormatP7B,
 		ChainFormatPem,
 	}
@@ -93,7 +93,7 @@ const (
 
 // PossibleExtendedKeyUsageValues returns the possible values for the ExtendedKeyUsage const type.
 func PossibleExtendedKeyUsageValues() []ExtendedKeyUsage {
-	return []ExtendedKeyUsage{	
+	return []ExtendedKeyUsage{
 		ExtendedKeyUsageClientAuth,
 		ExtendedKeyUsageCodeSigning,
 		ExtendedKeyUsageEmailProtection,
@@ -117,7 +117,7 @@ const (
 
 // PossibleIncludeValues returns the possible values for the Include const type.
 func PossibleIncludeValues() []Include {
-	return []Include{	
+	return []Include{
 		IncludeLogs,
 	}
 }
@@ -148,7 +148,7 @@ const (
 
 // PossibleKeyUsageValues returns the possible values for the KeyUsage const type.
 func PossibleKeyUsageValues() []KeyUsage {
-	return []KeyUsage{	
+	return []KeyUsage{
 		KeyUsageCrlSign,
 		KeyUsageDataEncipherment,
 		KeyUsageDecipherOnly,
@@ -188,7 +188,7 @@ const (
 
 // PossibleRevocationReasonValues returns the possible values for the RevocationReason const type.
 func PossibleRevocationReasonValues() []RevocationReason {
-	return []RevocationReason{	
+	return []RevocationReason{
 		RevocationReasonAACompromise,
 		RevocationReasonAffiliationChanged,
 		RevocationReasonCACompromise,
@@ -201,4 +201,3 @@ func PossibleRevocationReasonValues() []RevocationReason {
 		RevocationReasonUnspecified,
 	}
 }
-

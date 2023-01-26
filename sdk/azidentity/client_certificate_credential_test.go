@@ -229,7 +229,7 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 
 func TestClientCertificateCredentialADFS_Live(t *testing.T) {
 	if recording.GetRecordMode() == recording.LiveMode {
-		if adfsLiveSP.clientID == "" || adfsLiveSP.pemPath == "" || adfsLiveSP.scope == "" {
+		if adfsLiveSP.clientID == "" || adfsLiveSP.pemPath == "" {
 			t.Skip("this test requires manual recording and access to ADFS instance, and can't pass live in CI")
 		}
 	}
@@ -248,9 +248,7 @@ func TestClientCertificateCredentialADFS_Live(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	var scope []string
-	scope = append(scope, adfsLiveSP.scope)
-	testGetTokenSuccess(t, cred, scope...)
+	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
 }
 
 func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {

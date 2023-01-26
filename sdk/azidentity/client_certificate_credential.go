@@ -30,7 +30,7 @@ type ClientCertificateCredentialOptions struct {
 	// Defaults to False.
 	SendCertificateChain bool
 
-	// disableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
 	DisableInstanceDiscovery bool
 }
 

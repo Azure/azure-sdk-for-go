@@ -101,3 +101,23 @@ func TestDeviceCodeCredential_Live(t *testing.T) {
 	}
 	testGetTokenSuccess(t, cred)
 }
+
+func TestDeviceCodeCredentialADFS_Live(t *testing.T) {
+	// if recording.GetRecordMode() != recording.PlaybackMode {
+	// 	t.Skip("this test requires manual recording and can't pass live in CI")
+	// }
+	if adfsLiveSP.clientID == "" {
+		t.Skip("set ADFS_SP_* environment variables to run this test")
+	}
+	o, stop := initRecording(t)
+	defer stop()
+	opts := DeviceCodeCredentialOptions{TenantID: adfsLiveSP.tenantID, ClientID: adfsLiveSP.clientID, ClientOptions: o, DisableInstanceDiscovery: true}
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }
+	}
+	cred, err := NewDeviceCodeCredential(&opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
+}

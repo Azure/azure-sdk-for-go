@@ -53,7 +53,7 @@ func TestClientSecretCredential_Live(t *testing.T) {
 
 func TestClientSecretCredentialADFS_Live(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		if adfsLiveSP.clientID == "" || adfsLiveSP.secret == "" || adfsLiveSP.scope == "" {
+		if adfsLiveSP.clientID == "" || adfsLiveSP.secret == "" {
 			t.Skip("set ADFS_SP_* environment variables to run this test live")
 		}
 	}
@@ -64,9 +64,7 @@ func TestClientSecretCredentialADFS_Live(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	var scope []string
-	scope = append(scope, adfsLiveSP.scope)
-	testGetTokenSuccess(t, cred, scope...)
+	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
 }
 
 func TestClientSecretCredential_InvalidSecretLive(t *testing.T) {

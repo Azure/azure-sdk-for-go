@@ -73,24 +73,20 @@ var adfsLiveSP = struct {
 	clientID: os.Getenv("ADFS_SP_CLIENT_ID"),
 	secret:   os.Getenv("ADFS_SP_CLIENT_SECRET"),
 	pemPath:  os.Getenv("ADFS_SP_CERT_PEM"),
-	scope:    os.Getenv("ADFS_SCOPE"),
+	scope:    "openid",
 }
 
 var adfsLiveUser = struct {
-	tenantID string
 	clientID string
 	username string
 	password string
 }{
-	username: os.Getenv("ADFS_TEST_USERNAME"),
-	password: os.Getenv("ADFS_TEST_PASSWORD"),
-	tenantID: os.Getenv("ADFS_TEST_TENANTID"),
-	clientID: os.Getenv("ADFS_TEST_CLIENTID"),
+	username: os.Getenv("ADFS_IDENTITY_TEST_USERNAME"),
+	password: os.Getenv("ADFS_IDENTITY_TEST_PASSWORD"),
+	clientID: os.Getenv("ADFS_IDENTITY_TEST_CLIENT_ID"),
 }
 
 var liveTestScope = "https://management.core.windows.net//.default"
-
-var disableInstanceDiscovery = os.Getenv("DISABLE_INSTANCE_DISCOVERY")
 
 func init() {
 	if recording.GetRecordMode() == recording.PlaybackMode {

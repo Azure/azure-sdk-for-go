@@ -11,13 +11,13 @@ import (
 	"fmt"
 	"os"
 	"reflect"
-	"strconv"
 	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 func resetEnvironmentVarsForTest() {
@@ -241,15 +241,32 @@ func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
 	setEnvironmentVariables(t, vars)
 	opts, stop := initRecording(t)
 	defer stop()
-	disableID, err := strconv.ParseBool(disableInstanceDiscovery)
-	if err != nil {
-		disableID = false
-	}
-	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disableID})
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts})
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
 	testGetTokenSuccess(t, cred)
+}
+
+func TestEnvironmentCredentialADFS_ClientSecretLive(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		if adfsLiveSP.clientID == "" || adfsLiveSP.secret == "" {
+			t.Skip("set ADFS_SP_* environment variables to run this test live")
+		}
+	}
+	vars := map[string]string{
+		azureClientID:     adfsLiveSP.clientID,
+		azureClientSecret: adfsLiveSP.secret,
+		azureTenantID:     adfsLiveSP.tenantID,
+	}
+	setEnvironmentVariables(t, vars)
+	opts, stop := initRecording(t)
+	defer stop()
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true})
+	if err != nil {
+		t.Fatalf("failed to construct credential: %v", err)
+	}
+	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
 }
 
 func TestEnvironmentCredential_InvalidClientSecretLive(t *testing.T) {
@@ -283,7 +300,6 @@ func TestEnvironmentCredential_InvalidClientSecretLive(t *testing.T) {
 
 func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
 	vars := map[string]string{
-		//for ADFS change clientID
 		azureClientID: developerSignOnClientID,
 		azureTenantID: liveUser.tenantID,
 		azureUsername: liveUser.username,
@@ -297,6 +313,28 @@ func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
 	testGetTokenSuccess(t, cred)
+}
+
+func TestEnvironmentCredentialADFS_UserPasswordLive(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		if adfsLiveUser.clientID == "" || adfsLiveUser.username == "" || adfsLiveUser.password == "" {
+			t.Skip("set ADFS_IDENTITY_TEST_* environment variables to run this test live")
+		}
+	}
+	vars := map[string]string{
+		azureClientID: adfsLiveUser.clientID,
+		azureTenantID: adfsLiveSP.tenantID,
+		azureUsername: adfsLiveUser.username,
+		azurePassword: adfsLiveUser.password,
+	}
+	setEnvironmentVariables(t, vars)
+	opts, stop := initRecording(t)
+	defer stop()
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true})
+	if err != nil {
+		t.Fatalf("failed to construct credential: %v", err)
+	}
+	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
 }
 
 func TestEnvironmentCredential_InvalidPasswordLive(t *testing.T) {

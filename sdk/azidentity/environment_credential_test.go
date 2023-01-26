@@ -255,9 +255,10 @@ func TestEnvironmentCredentialADFS_ClientSecretLive(t *testing.T) {
 		}
 	}
 	vars := map[string]string{
-		azureClientID:     adfsLiveSP.clientID,
-		azureClientSecret: adfsLiveSP.secret,
-		azureTenantID:     adfsLiveSP.tenantID,
+		azureClientID:      adfsLiveSP.clientID,
+		azureClientSecret:  adfsLiveSP.secret,
+		azureTenantID:      adfsLiveSP.tenantID,
+		azureAuthorityHost: adfsAuthority,
 	}
 	setEnvironmentVariables(t, vars)
 	opts, stop := initRecording(t)
@@ -322,10 +323,11 @@ func TestEnvironmentCredentialADFS_UserPasswordLive(t *testing.T) {
 		}
 	}
 	vars := map[string]string{
-		azureClientID: adfsLiveUser.clientID,
-		azureTenantID: adfsLiveSP.tenantID,
-		azureUsername: adfsLiveUser.username,
-		azurePassword: adfsLiveUser.password,
+		azureClientID:      adfsLiveUser.clientID,
+		azureTenantID:      adfsLiveSP.tenantID,
+		azureUsername:      adfsLiveUser.username,
+		azurePassword:      adfsLiveUser.password,
+		azureAuthorityHost: adfsAuthority,
 	}
 	setEnvironmentVariables(t, vars)
 	opts, stop := initRecording(t)

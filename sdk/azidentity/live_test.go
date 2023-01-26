@@ -62,6 +62,8 @@ const (
 	fakeUsername   = "fake@user"
 )
 
+var adfsAuthority = "https://adfs.redmond.azurestack.corp.microsoft.com"
+
 var adfsLiveSP = struct {
 	tenantID string
 	clientID string

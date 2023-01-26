@@ -55,6 +55,11 @@ func TestUsernamePasswordCredentialADFS_Live(t *testing.T) {
 			t.Skip("set ADFS_IDENTITY_TEST_* environment variables to run this test live")
 		}
 	}
+	//Set authority host to be ADFS authority
+	vars := map[string]string{
+		azureAuthorityHost: adfsAuthority,
+	}
+	setEnvironmentVariables(t, vars)
 	o, stop := initRecording(t)
 	defer stop()
 	opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}

@@ -57,6 +57,11 @@ func TestClientSecretCredentialADFS_Live(t *testing.T) {
 			t.Skip("set ADFS_SP_* environment variables to run this test live")
 		}
 	}
+	//Set authority host to be ADFS authority
+	vars := map[string]string{
+		azureAuthorityHost: adfsAuthority,
+	}
+	setEnvironmentVariables(t, vars)
 	opts, stop := initRecording(t)
 	defer stop()
 	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true}

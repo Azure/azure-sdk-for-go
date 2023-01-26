@@ -5,6 +5,7 @@ package runtime
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"strings"
@@ -64,10 +65,19 @@ func NewBearerTokenPolicy(cred azcore.TokenCredential, opts *armpolicy.BearerTok
 	copy(p.scopes, opts.Scopes)
 	p.btp = azruntime.NewBearerTokenPolicy(cred, opts.Scopes, &azpolicy.BearerTokenOptions{
 		AuthorizationHandler: azpolicy.AuthorizationHandler{
-			OnRequest: p.onRequest,
+			OnChallenge: p.onChallenge,
+			OnRequest:   p.onRequest,
 		},
 	})
 	return p
+}
+
+func (b *BearerTokenPolicy) onChallenge(req *azpolicy.Request, res *http.Response, authNZ func(azpolicy.TokenRequestOptions) error) error {
+	challenge := res.Header.Get(shared.HeaderWWWAuthenticate)
+	if claims := parseChallenge(challenge); claims != "" {
+		return authNZ(azpolicy.TokenRequestOptions{Claims: claims, Scopes: b.scopes})
+	}
+	return fmt.Errorf("failed to parse authentication challenge %q", challenge)
 }
 
 // onRequest authorizes requests with one or more bearer tokens
@@ -98,4 +108,27 @@ func (b *BearerTokenPolicy) onRequest(req *azpolicy.Request, authNZ func(azpolic
 // Do authorizes a request with a bearer token
 func (b *BearerTokenPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
 	return b.btp.Do(req)
+}
+
+// parseChallenge parses claims from an authentication challenge so a client can request a token that will satisfy
+// conditional access policies. Returns an empty string when no claims are found or claims aren't in ARM's format.
+// This function isn't universally applicable because RPs differ in challenge format and content.
+func parseChallenge(wwwAuthenticate string) string {
+	claims := ""
+	for _, param := range strings.Split(wwwAuthenticate, ",") {
+		if _, after, found := strings.Cut(param, "claims="); found {
+			if claims != "" {
+				// The header contains multiple challenges, at least two of which specify claims. The specs allow this
+				// but it's unclear what a client should do in this case and there's as yet no concrete example of it.
+				return ""
+			}
+			// trim stuff that would get an error from RawURLEncoding; claims may or may not be padded
+			claims = strings.Trim(after, `\"=`)
+			// we don't return the error because when not nil it's something unhelpful like "illegal base64 data at input byte 42"
+			if b, err := base64.RawURLEncoding.DecodeString(claims); err == nil {
+				claims = string(b)
+			}
+		}
+	}
+	return claims
 }

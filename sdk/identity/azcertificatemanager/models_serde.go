@@ -40,29 +40,29 @@ func (c *CertificateAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "extendedKeyUsage":
-			err = unpopulate(val, "ExtendedKeyUsage", &c.ExtendedKeyUsage)
-			delete(rawMsg, key)
+				err = unpopulate(val, "ExtendedKeyUsage", &c.ExtendedKeyUsage)
+				delete(rawMsg, key)
 		case "invalidAt":
-			err = unpopulateTimeRFC3339(val, "InvalidAt", &c.InvalidAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "InvalidAt", &c.InvalidAt)
+				delete(rawMsg, key)
 		case "issuer":
-			err = unpopulate(val, "Issuer", &c.Issuer)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Issuer", &c.Issuer)
+				delete(rawMsg, key)
 		case "keyUsage":
-			err = unpopulate(val, "KeyUsage", &c.KeyUsage)
-			delete(rawMsg, key)
+				err = unpopulate(val, "KeyUsage", &c.KeyUsage)
+				delete(rawMsg, key)
 		case "serialNumber":
-			err = unpopulate(val, "SerialNumber", &c.SerialNumber)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SerialNumber", &c.SerialNumber)
+				delete(rawMsg, key)
 		case "subject":
-			err = unpopulate(val, "Subject", &c.Subject)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Subject", &c.Subject)
+				delete(rawMsg, key)
 		case "subjectAlternativeNames":
-			err = unpopulate(val, "SubjectAlternativeNames", &c.SubjectAlternativeNames)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SubjectAlternativeNames", &c.SubjectAlternativeNames)
+				delete(rawMsg, key)
 		case "validAt":
-			err = unpopulateTimeRFC3339(val, "ValidAt", &c.ValidAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "ValidAt", &c.ValidAt)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -95,29 +95,29 @@ func (c *CertificateDescriptionResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "CAName":
-			err = unpopulate(val, "CAName", &c.CAName)
-			delete(rawMsg, key)
+				err = unpopulate(val, "CAName", &c.CAName)
+				delete(rawMsg, key)
 		case "enrollmentPolicyName":
-			err = unpopulate(val, "EnrollmentPolicyName", &c.EnrollmentPolicyName)
-			delete(rawMsg, key)
+				err = unpopulate(val, "EnrollmentPolicyName", &c.EnrollmentPolicyName)
+				delete(rawMsg, key)
 		case "enrollmentPolicyVersion":
-			err = unpopulate(val, "EnrollmentPolicyVersion", &c.EnrollmentPolicyVersion)
-			delete(rawMsg, key)
+				err = unpopulate(val, "EnrollmentPolicyVersion", &c.EnrollmentPolicyVersion)
+				delete(rawMsg, key)
 		case "invalidAt":
-			err = unpopulateTimeRFC3339(val, "InvalidAt", &c.InvalidAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "InvalidAt", &c.InvalidAt)
+				delete(rawMsg, key)
 		case "issuedAt":
-			err = unpopulateTimeRFC3339(val, "IssuedAt", &c.IssuedAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "IssuedAt", &c.IssuedAt)
+				delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &c.Name)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Name", &c.Name)
+				delete(rawMsg, key)
 		case "revocationReason":
-			err = unpopulate(val, "RevocationReason", &c.RevocationReason)
-			delete(rawMsg, key)
+				err = unpopulate(val, "RevocationReason", &c.RevocationReason)
+				delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &c.Value)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Value", &c.Value)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -154,41 +154,41 @@ func (c *CertificateValue) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "extendedKeyUsage":
-			err = unpopulate(val, "ExtendedKeyUsage", &c.ExtendedKeyUsage)
-			delete(rawMsg, key)
+				err = unpopulate(val, "ExtendedKeyUsage", &c.ExtendedKeyUsage)
+				delete(rawMsg, key)
 		case "invalidAt":
-			err = unpopulateTimeRFC3339(val, "InvalidAt", &c.InvalidAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "InvalidAt", &c.InvalidAt)
+				delete(rawMsg, key)
 		case "issuer":
-			err = unpopulate(val, "Issuer", &c.Issuer)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Issuer", &c.Issuer)
+				delete(rawMsg, key)
 		case "keyUsage":
-			err = unpopulate(val, "KeyUsage", &c.KeyUsage)
-			delete(rawMsg, key)
+				err = unpopulate(val, "KeyUsage", &c.KeyUsage)
+				delete(rawMsg, key)
 		case "PEM":
-			err = unpopulate(val, "PEM", &c.PEM)
-			delete(rawMsg, key)
+				err = unpopulate(val, "PEM", &c.PEM)
+				delete(rawMsg, key)
 		case "PEMChain":
-			err = unpopulate(val, "PEMChain", &c.PEMChain)
-			delete(rawMsg, key)
+				err = unpopulate(val, "PEMChain", &c.PEMChain)
+				delete(rawMsg, key)
 		case "PKCS7":
-			err = unpopulate(val, "PKCS7", &c.PKCS7)
-			delete(rawMsg, key)
+				err = unpopulate(val, "PKCS7", &c.PKCS7)
+				delete(rawMsg, key)
 		case "serialNumber":
-			err = unpopulate(val, "SerialNumber", &c.SerialNumber)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SerialNumber", &c.SerialNumber)
+				delete(rawMsg, key)
 		case "subject":
-			err = unpopulate(val, "Subject", &c.Subject)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Subject", &c.Subject)
+				delete(rawMsg, key)
 		case "subjectAlternativeNames":
-			err = unpopulate(val, "SubjectAlternativeNames", &c.SubjectAlternativeNames)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SubjectAlternativeNames", &c.SubjectAlternativeNames)
+				delete(rawMsg, key)
 		case "thumbprint":
-			err = unpopulate(val, "Thumbprint", &c.Thumbprint)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Thumbprint", &c.Thumbprint)
+				delete(rawMsg, key)
 		case "validAt":
-			err = unpopulateTimeRFC3339(val, "ValidAt", &c.ValidAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "ValidAt", &c.ValidAt)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
@@ -215,11 +215,11 @@ func (e *EnrollRequest) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "CSR":
-			err = unpopulate(val, "CSR", &e.CSR)
-			delete(rawMsg, key)
+				err = unpopulate(val, "CSR", &e.CSR)
+				delete(rawMsg, key)
 		case "substitutes":
-			err = unpopulate(val, "Substitutes", &e.Substitutes)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Substitutes", &e.Substitutes)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -253,32 +253,32 @@ func (e *EnrollResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "CAName":
-			err = unpopulate(val, "CAName", &e.CAName)
-			delete(rawMsg, key)
+				err = unpopulate(val, "CAName", &e.CAName)
+				delete(rawMsg, key)
 		case "enrollmentPolicyName":
-			err = unpopulate(val, "EnrollmentPolicyName", &e.EnrollmentPolicyName)
-			delete(rawMsg, key)
+				err = unpopulate(val, "EnrollmentPolicyName", &e.EnrollmentPolicyName)
+				delete(rawMsg, key)
 		case "enrollmentPolicyVersion":
-			err = unpopulate(val, "EnrollmentPolicyVersion", &e.EnrollmentPolicyVersion)
-			delete(rawMsg, key)
+				err = unpopulate(val, "EnrollmentPolicyVersion", &e.EnrollmentPolicyVersion)
+				delete(rawMsg, key)
 		case "invalidAt":
-			err = unpopulateTimeRFC3339(val, "InvalidAt", &e.InvalidAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "InvalidAt", &e.InvalidAt)
+				delete(rawMsg, key)
 		case "issuedAt":
-			err = unpopulateTimeRFC3339(val, "IssuedAt", &e.IssuedAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "IssuedAt", &e.IssuedAt)
+				delete(rawMsg, key)
 		case "log":
-			err = unpopulate(val, "Log", &e.Log)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Log", &e.Log)
+				delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &e.Name)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Name", &e.Name)
+				delete(rawMsg, key)
 		case "revocationReason":
-			err = unpopulate(val, "RevocationReason", &e.RevocationReason)
-			delete(rawMsg, key)
+				err = unpopulate(val, "RevocationReason", &e.RevocationReason)
+				delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &e.Value)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Value", &e.Value)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -286,6 +286,8 @@ func (e *EnrollResponse) UnmarshalJSON(data []byte) error {
 	}
 	return nil
 }
+
+
 
 // MarshalJSON implements the json.Marshaller interface for type LogEntry.
 func (l LogEntry) MarshalJSON() ([]byte, error) {
@@ -305,11 +307,11 @@ func (l *LogEntry) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "description":
-			err = unpopulate(val, "Description", &l.Description)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Description", &l.Description)
+				delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &l.Type)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Type", &l.Type)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", l, err)
@@ -335,8 +337,8 @@ func (r *RevokeRequest) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "revocationReason":
-			err = unpopulate(val, "RevocationReason", &r.RevocationReason)
-			delete(rawMsg, key)
+				err = unpopulate(val, "RevocationReason", &r.RevocationReason)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -366,20 +368,20 @@ func (r *RevokeResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "CAName":
-			err = unpopulate(val, "CAName", &r.CAName)
-			delete(rawMsg, key)
+				err = unpopulate(val, "CAName", &r.CAName)
+				delete(rawMsg, key)
 		case "invalidAt":
-			err = unpopulateTimeRFC3339(val, "InvalidAt", &r.InvalidAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "InvalidAt", &r.InvalidAt)
+				delete(rawMsg, key)
 		case "log":
-			err = unpopulate(val, "Log", &r.Log)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Log", &r.Log)
+				delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &r.Name)
-			delete(rawMsg, key)
+				err = unpopulate(val, "Name", &r.Name)
+				delete(rawMsg, key)
 		case "serialNumber":
-			err = unpopulate(val, "SerialNumber", &r.SerialNumber)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SerialNumber", &r.SerialNumber)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", r, err)
@@ -411,26 +413,26 @@ func (s *Substitutes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "distinguishedName":
-			err = unpopulate(val, "DistinguishedName", &s.DistinguishedName)
-			delete(rawMsg, key)
+				err = unpopulate(val, "DistinguishedName", &s.DistinguishedName)
+				delete(rawMsg, key)
 		case "extendedKeyUsage":
-			err = unpopulate(val, "ExtendedKeyUsage", &s.ExtendedKeyUsage)
-			delete(rawMsg, key)
+				err = unpopulate(val, "ExtendedKeyUsage", &s.ExtendedKeyUsage)
+				delete(rawMsg, key)
 		case "invalidAt":
-			err = unpopulateTimeRFC3339(val, "InvalidAt", &s.InvalidAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "InvalidAt", &s.InvalidAt)
+				delete(rawMsg, key)
 		case "keyUsage":
-			err = unpopulate(val, "KeyUsage", &s.KeyUsage)
-			delete(rawMsg, key)
+				err = unpopulate(val, "KeyUsage", &s.KeyUsage)
+				delete(rawMsg, key)
 		case "subjectAlternativeNames":
-			err = unpopulate(val, "SubjectAlternativeNames", &s.SubjectAlternativeNames)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SubjectAlternativeNames", &s.SubjectAlternativeNames)
+				delete(rawMsg, key)
 		case "subjectName":
-			err = unpopulate(val, "SubjectName", &s.SubjectName)
-			delete(rawMsg, key)
+				err = unpopulate(val, "SubjectName", &s.SubjectName)
+				delete(rawMsg, key)
 		case "validAt":
-			err = unpopulateTimeRFC3339(val, "ValidAt", &s.ValidAt)
-			delete(rawMsg, key)
+				err = unpopulateTimeRFC3339(val, "ValidAt", &s.ValidAt)
+				delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -458,3 +460,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

@@ -35,10 +35,10 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
 // CPKInfo contains a group of parameters for client provided encryption key.
-type CPKInfo = generated.CpkInfo
+type CPKInfo = generated.CPKInfo
 
 // CPKScopeInfo contains a group of parameters for client provided encryption scope.
-type CPKScopeInfo = generated.CpkScopeInfo
+type CPKScopeInfo = generated.CPKScopeInfo
 
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
@@ -70,7 +70,7 @@ type DownloadStreamOptions struct {
 	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
+func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
@@ -257,7 +257,7 @@ type GetPropertiesOptions struct {
 }
 
 func (o *GetPropertiesOptions) format() (*generated.BlobClientGetPropertiesOptions,
-	*generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
+	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
@@ -311,8 +311,8 @@ type CreateSnapshotOptions struct {
 	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *CreateSnapshotOptions) format() (*generated.BlobClientCreateSnapshotOptions, *generated.CpkInfo,
-	*generated.CpkScopeInfo, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
+func (o *CreateSnapshotOptions) format() (*generated.BlobClientCreateSnapshotOptions, *generated.CPKInfo,
+	*generated.CPKScopeInfo, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil
 	}

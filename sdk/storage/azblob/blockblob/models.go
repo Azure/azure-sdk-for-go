@@ -49,7 +49,7 @@ type UploadOptions struct {
 }
 
 func (o *UploadOptions) format() (*generated.BlockBlobClientUploadOptions, *generated.BlobHTTPHeaders, *generated.LeaseAccessConditions,
-	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.ModifiedAccessConditions) {
+	*generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
@@ -84,7 +84,7 @@ type StageBlockOptions struct {
 }
 
 // StageBlockOptions contains the optional parameters for the Client.StageBlock method.
-func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.CpkScopeInfo) {
+func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.CPKScopeInfo) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
@@ -114,7 +114,7 @@ type StageBlockFromURLOptions struct {
 	CPKScopeInfo *blob.CPKScopeInfo
 }
 
-func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBlockFromURLOptions, *generated.CpkInfo, *generated.CpkScopeInfo, *generated.LeaseAccessConditions, *generated.SourceModifiedAccessConditions) {
+func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBlockFromURLOptions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.LeaseAccessConditions, *generated.SourceModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil
 	}

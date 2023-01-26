@@ -147,7 +147,7 @@ func (c *Client) NewPageBlobClient(blobName string) *pageblob.Client {
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/create-container.
 func (c *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	var opts *generated.ContainerClientCreateOptions
-	var cpkScopes *generated.ContainerCpkScopeInfo
+	var cpkScopes *generated.ContainerCPKScopeInfo
 	if options != nil {
 		opts = &generated.ContainerClientCreateOptions{
 			Access:   options.Access,

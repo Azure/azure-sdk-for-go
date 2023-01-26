@@ -52,7 +52,7 @@ type CreateOptions struct {
 	Metadata map[string]*string
 }
 
-func (o *CreateOptions) format() (*generated.AppendBlobClientCreateOptions, *generated.BlobHTTPHeaders, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.CpkScopeInfo, *generated.ModifiedAccessConditions) {
+func (o *CreateOptions) format() (*generated.AppendBlobClientCreateOptions, *generated.BlobHTTPHeaders, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
@@ -87,7 +87,7 @@ type AppendBlockOptions struct {
 }
 
 func (o *AppendBlockOptions) format() (*generated.AppendBlobClientAppendBlockOptions, *generated.AppendPositionAccessConditions,
-	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
+	*generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
@@ -117,8 +117,8 @@ type AppendBlockFromURLOptions struct {
 	Range blob.HTTPRange
 }
 
-func (o *AppendBlockFromURLOptions) format() (*generated.AppendBlobClientAppendBlockFromURLOptions, *generated.CpkInfo,
-	*generated.CpkScopeInfo, *generated.LeaseAccessConditions, *generated.AppendPositionAccessConditions,
+func (o *AppendBlockFromURLOptions) format() (*generated.AppendBlobClientAppendBlockFromURLOptions, *generated.CPKInfo,
+	*generated.CPKScopeInfo, *generated.LeaseAccessConditions, *generated.AppendPositionAccessConditions,
 	*generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil, nil

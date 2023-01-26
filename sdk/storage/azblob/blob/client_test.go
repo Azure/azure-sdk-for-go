@@ -3400,7 +3400,7 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 //		injectedError:          err,
 //		NotifyFailedRead:       nil,
 //		TreatEarlyCloseAsError: false,
-//		CpkInfo:                nil,
+//		CPKInfo:                nil,
 //		CPKScopeInfo:           nil,
 //	}
 //}

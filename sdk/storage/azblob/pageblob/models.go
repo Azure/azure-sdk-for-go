@@ -67,7 +67,7 @@ type CreateOptions struct {
 }
 
 func (o *CreateOptions) format() (*generated.PageBlobClientCreateOptions, *generated.BlobHTTPHeaders,
-	*generated.LeaseAccessConditions, *generated.CpkInfo, *generated.CpkScopeInfo, *generated.ModifiedAccessConditions) {
+	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
@@ -97,7 +97,7 @@ type UploadPagesOptions struct {
 }
 
 func (o *UploadPagesOptions) format() (*generated.LeaseAccessConditions,
-	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
+	*generated.CPKInfo, *generated.CPKScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil
 	}
@@ -127,7 +127,7 @@ type UploadPagesFromURLOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPagesFromURLOptions, *generated.CpkInfo, *generated.CpkScopeInfo,
+func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPagesFromURLOptions, *generated.CPKInfo, *generated.CPKScopeInfo,
 	*generated.LeaseAccessConditions, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil, nil
@@ -155,8 +155,8 @@ type ClearPagesOptions struct {
 	AccessConditions               *blob.AccessConditions
 }
 
-func (o *ClearPagesOptions) format() (*generated.LeaseAccessConditions, *generated.CpkInfo,
-	*generated.CpkScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *ClearPagesOptions) format() (*generated.LeaseAccessConditions, *generated.CPKInfo,
+	*generated.CPKScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil
 	}
@@ -274,7 +274,7 @@ type ResizeOptions struct {
 }
 
 func (o *ResizeOptions) format() (*generated.PageBlobClientResizeOptions, *generated.LeaseAccessConditions,
-	*generated.CpkInfo, *generated.CpkScopeInfo, *generated.ModifiedAccessConditions) {
+	*generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil
 	}

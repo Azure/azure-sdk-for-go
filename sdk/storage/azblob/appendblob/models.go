@@ -37,9 +37,9 @@ type CreateOptions struct {
 
 	HTTPHeaders *blob.HTTPHeaders
 
-	CpkInfo *blob.CpkInfo
+	CPKInfo *blob.CPKInfo
 
-	CpkScopeInfo *blob.CpkScopeInfo
+	CPKScopeInfo *blob.CPKScopeInfo
 
 	// Optional. Used to set blob tags in various blob operations.
 	Tags map[string]string
@@ -66,7 +66,7 @@ func (o *CreateOptions) format() (*generated.AppendBlobClientCreateOptions, *gen
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &options, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
+	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -79,9 +79,9 @@ type AppendBlockOptions struct {
 
 	AppendPositionAccessConditions *AppendPositionAccessConditions
 
-	CpkInfo *blob.CpkInfo
+	CPKInfo *blob.CPKInfo
 
-	CpkScopeInfo *blob.CpkScopeInfo
+	CPKScopeInfo *blob.CPKScopeInfo
 
 	AccessConditions *blob.AccessConditions
 }
@@ -93,7 +93,7 @@ func (o *AppendBlockOptions) format() (*generated.AppendBlobClientAppendBlockOpt
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &generated.AppendBlobClientAppendBlockOptions{}, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions, leaseAccessConditions
+	return &generated.AppendBlobClientAppendBlockOptions{}, o.AppendPositionAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions, leaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -105,9 +105,9 @@ type AppendBlockFromURLOptions struct {
 
 	AppendPositionAccessConditions *AppendPositionAccessConditions
 
-	CpkInfo *blob.CpkInfo
+	CPKInfo *blob.CPKInfo
 
-	CpkScopeInfo *blob.CpkScopeInfo
+	CPKScopeInfo *blob.CPKScopeInfo
 
 	SourceModifiedAccessConditions *blob.SourceModifiedAccessConditions
 
@@ -133,7 +133,7 @@ func (o *AppendBlockFromURLOptions) format() (*generated.AppendBlobClientAppendB
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, o.AppendPositionAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
+	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.AppendPositionAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

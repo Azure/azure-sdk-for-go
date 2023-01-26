@@ -25,8 +25,8 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
-// CpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
-type CpkScopeInfo = generated.ContainerCpkScopeInfo
+// CPKScopeInfo contains a group of parameters for the ContainerClient.Create method.
+type CPKScopeInfo = generated.ContainerCpkScopeInfo
 
 // BlobFlatListSegment - List of BlobItem.
 type BlobFlatListSegment = generated.BlobFlatListSegment
@@ -79,7 +79,7 @@ type CreateOptions struct {
 	Metadata map[string]*string
 
 	// Optional. Specifies the encryption scope settings to set on the container.
-	CpkScopeInfo *CpkScopeInfo
+	CPKScopeInfo *CPKScopeInfo
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

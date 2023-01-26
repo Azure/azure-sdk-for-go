@@ -1645,7 +1645,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 
 	createAppendBlobOptions := appendblob.CreateOptions{
-		CpkInfo: &testcommon.TestCPKByValue,
+		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
@@ -1654,7 +1654,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
 		appendBlockOptions := appendblob.AppendBlockOptions{
-			CpkInfo: &testcommon.TestCPKByValue,
+			CPKInfo: &testcommon.TestCPKByValue,
 		}
 		resp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_require.Nil(err)
@@ -1679,7 +1679,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := blob.DownloadStreamOptions{
-		CpkInfo: &testcommon.TestCPKByValue,
+		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	downloadResp, err := abClient.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.Nil(err)
@@ -1702,7 +1702,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 
 	createAppendBlobOptions := appendblob.CreateOptions{
-		CpkScopeInfo: &encryptionScope,
+		CPKScopeInfo: &encryptionScope,
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
@@ -1711,7 +1711,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
 		appendBlockOptions := appendblob.AppendBlockOptions{
-			CpkScopeInfo: &encryptionScope,
+			CPKScopeInfo: &encryptionScope,
 		}
 		resp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_require.Nil(err)
@@ -1732,7 +1732,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := blob.DownloadStreamOptions{
-		CpkScopeInfo: &encryptionScope,
+		CPKScopeInfo: &encryptionScope,
 	}
 	downloadResp, err := abClient.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.Nil(err)
@@ -1990,7 +1990,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	srcBlobURLWithSAS := srcBlobParts.URL()
 //
 //	createAppendBlobOptions := appendblob.CreateOptions{
-//		CpkInfo: &testcommon.TestCPKByValue,
+//		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	_, err = destBlob.Create(ctx, &createAppendBlobOptions)
 //	_require.Nil(err)
@@ -2001,7 +2001,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	appendBlockURLOptions := AppendBlobAppendBlockFromURLOptions{
 //		Offset:  &offset,
 //		Count:   &count,
-//		CpkInfo: &testcommon.TestCPKByValue,
+//		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 //	_require.Nil(err)
@@ -2025,14 +2025,14 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions := blob.downloadWriterAtOptions{
-//		CpkInfo: &testcommon.TestInvalidCPKByValue,
+//		CPKInfo: &testcommon.TestInvalidCPKByValue,
 //	}
 //	_, err = destBlob.DownloadStream(ctx, &downloadBlobOptions)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = blob.downloadWriterAtOptions{
-//		CpkInfo: &testcommon.TestCPKByValue,
+//		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	downloadResp, err := destBlob.DownloadStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
@@ -2040,7 +2040,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	_require.Equal(*downloadResp.IsServerEncrypted, true)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
 //
-//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CPKInfo: &testcommon.TestCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 // }
@@ -2099,7 +2099,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	srcBlobURLWithSAS := srcBlobParts.URL()
 //
 //	createAppendBlobOptions := appendblob.CreateOptions{
-//		CpkScopeInfo: &testcommon.TestCPKByScope,
+//		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	_, err = destBlob.Create(ctx, &createAppendBlobOptions)
 //	_require.Nil(err)
@@ -2110,7 +2110,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	appendBlockURLOptions := AppendBlobAppendBlockFromURLOptions{
 //		Offset:       &offset,
 //		Count:        &count,
-//		CpkScopeInfo: &testcommon.TestCPKByScope,
+//		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 //	_require.Nil(err)
@@ -2129,14 +2129,14 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 //	_require.Equal(*appendFromURLResp.IsServerEncrypted, true)
 //
 //	downloadBlobOptions := blob.downloadWriterAtOptions{
-//		CpkScopeInfo: &testcommon.TestCPKByScope,
+//		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	downloadResp, err := destBlob.DownloadStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	_require.Equal(*downloadResp.IsServerEncrypted, true)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
 //
-//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CPKInfo: &testcommon.TestCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 // }

@@ -53,9 +53,9 @@ type CreateOptions struct {
 
 	HTTPHeaders *blob.HTTPHeaders
 
-	CpkInfo *blob.CpkInfo
+	CPKInfo *blob.CPKInfo
 
-	CpkScopeInfo *blob.CpkScopeInfo
+	CPKScopeInfo *blob.CPKScopeInfo
 
 	AccessConditions *blob.AccessConditions
 	// Specifies the date time when the blobs immutability policy is set to expire.
@@ -79,7 +79,7 @@ func (o *CreateOptions) format() (*generated.PageBlobClientCreateOptions, *gener
 		Tier:               o.Tier,
 	}
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
+	return options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -90,8 +90,8 @@ type UploadPagesOptions struct {
 	// The default is nil (no transfer validation).
 	TransactionalValidation blob.TransferValidationType
 
-	CpkInfo                        *blob.CpkInfo
-	CpkScopeInfo                   *blob.CpkScopeInfo
+	CPKInfo                        *blob.CPKInfo
+	CPKScopeInfo                   *blob.CPKScopeInfo
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
 	AccessConditions               *blob.AccessConditions
 }
@@ -103,7 +103,7 @@ func (o *UploadPagesOptions) format() (*generated.LeaseAccessConditions,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
+	return leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -116,9 +116,9 @@ type UploadPagesFromURLOptions struct {
 	// SourceContentValidation contains the validation mechanism used on the range of bytes read from the source.
 	SourceContentValidation blob.SourceContentValidationType
 
-	CpkInfo *blob.CpkInfo
+	CPKInfo *blob.CPKInfo
 
-	CpkScopeInfo *blob.CpkScopeInfo
+	CPKScopeInfo *blob.CPKScopeInfo
 
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
 
@@ -142,15 +142,15 @@ func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPag
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
+	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ClearPagesOptions contains the optional parameters for the Client.ClearPages operation
 type ClearPagesOptions struct {
-	CpkInfo                        *blob.CpkInfo
-	CpkScopeInfo                   *blob.CpkScopeInfo
+	CPKInfo                        *blob.CPKInfo
+	CPKScopeInfo                   *blob.CPKScopeInfo
 	SequenceNumberAccessConditions *SequenceNumberAccessConditions
 	AccessConditions               *blob.AccessConditions
 }
@@ -162,7 +162,7 @@ func (o *ClearPagesOptions) format() (*generated.LeaseAccessConditions, *generat
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
+	return leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -268,8 +268,8 @@ func (o *GetPageRangesDiffOptions) format() (*generated.PageBlobClientGetPageRan
 
 // ResizeOptions contains the optional parameters for the Client.Resize method.
 type ResizeOptions struct {
-	CpkInfo          *blob.CpkInfo
-	CpkScopeInfo     *blob.CpkScopeInfo
+	CPKInfo          *blob.CPKInfo
+	CPKScopeInfo     *blob.CPKScopeInfo
 	AccessConditions *blob.AccessConditions
 }
 
@@ -280,7 +280,7 @@ func (o *ResizeOptions) format() (*generated.PageBlobClientResizeOptions, *gener
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return nil, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
+	return nil, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

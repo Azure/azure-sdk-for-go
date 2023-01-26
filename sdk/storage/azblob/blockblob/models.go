@@ -40,8 +40,8 @@ type UploadOptions struct {
 	TransactionalContentMD5 []byte
 
 	HTTPHeaders                  *blob.HTTPHeaders
-	CpkInfo                      *blob.CpkInfo
-	CpkScopeInfo                 *blob.CpkScopeInfo
+	CPKInfo                      *blob.CPKInfo
+	CPKScopeInfo                 *blob.CPKScopeInfo
 	AccessConditions             *blob.AccessConditions
 	LegalHold                    *bool
 	ImmutabilityPolicyMode       *blob.ImmutabilityPolicySetting
@@ -65,16 +65,16 @@ func (o *UploadOptions) format() (*generated.BlockBlobClientUploadOptions, *gene
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
+	return &basics, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
 // StageBlockOptions contains the optional parameters for the Client.StageBlock method.
 type StageBlockOptions struct {
-	CpkInfo *blob.CpkInfo
+	CPKInfo *blob.CPKInfo
 
-	CpkScopeInfo *blob.CpkScopeInfo
+	CPKScopeInfo *blob.CPKScopeInfo
 
 	LeaseAccessConditions *blob.LeaseAccessConditions
 
@@ -89,7 +89,7 @@ func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOption
 		return nil, nil, nil, nil
 	}
 
-	return &generated.BlockBlobClientStageBlockOptions{}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
+	return &generated.BlockBlobClientStageBlockOptions{}, o.LeaseAccessConditions, o.CPKInfo, o.CPKScopeInfo
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -109,9 +109,9 @@ type StageBlockFromURLOptions struct {
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range blob.HTTPRange
 
-	CpkInfo *blob.CpkInfo
+	CPKInfo *blob.CPKInfo
 
-	CpkScopeInfo *blob.CpkScopeInfo
+	CPKScopeInfo *blob.CPKScopeInfo
 }
 
 func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBlockFromURLOptions, *generated.CpkInfo, *generated.CpkScopeInfo, *generated.LeaseAccessConditions, *generated.SourceModifiedAccessConditions) {
@@ -128,7 +128,7 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 		o.SourceContentValidation.Apply(options)
 	}
 
-	return options, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions
+	return options, o.CPKInfo, o.CPKScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -143,8 +143,8 @@ type CommitBlockListOptions struct {
 	TransactionalContentCRC64    []byte
 	TransactionalContentMD5      []byte
 	HTTPHeaders                  *blob.HTTPHeaders
-	CpkInfo                      *blob.CpkInfo
-	CpkScopeInfo                 *blob.CpkScopeInfo
+	CPKInfo                      *blob.CPKInfo
+	CPKScopeInfo                 *blob.CPKScopeInfo
 	AccessConditions             *blob.AccessConditions
 	LegalHold                    *bool
 	ImmutabilityPolicyMode       *blob.ImmutabilityPolicySetting
@@ -195,8 +195,8 @@ type uploadFromReaderOptions struct {
 	Tags map[string]string
 
 	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
-	CpkInfo      *blob.CpkInfo
-	CpkScopeInfo *blob.CpkScopeInfo
+	CPKInfo      *blob.CPKInfo
+	CPKScopeInfo *blob.CPKScopeInfo
 
 	// Concurrency indicates the maximum number of blocks to upload in parallel (0=default)
 	Concurrency uint16
@@ -218,8 +218,8 @@ type UploadFileOptions = uploadFromReaderOptions
 func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
 	leaseAccessConditions, _ := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &StageBlockOptions{
-		CpkInfo:               o.CpkInfo,
-		CpkScopeInfo:          o.CpkScopeInfo,
+		CPKInfo:               o.CPKInfo,
+		CPKScopeInfo:          o.CPKScopeInfo,
 		LeaseAccessConditions: leaseAccessConditions,
 
 		TransactionalValidation: o.TransactionalValidation,
@@ -233,8 +233,8 @@ func (o *uploadFromReaderOptions) getUploadBlockBlobOptions() *UploadOptions {
 		Tier:             o.AccessTier,
 		HTTPHeaders:      o.HTTPHeaders,
 		AccessConditions: o.AccessConditions,
-		CpkInfo:          o.CpkInfo,
-		CpkScopeInfo:     o.CpkScopeInfo,
+		CPKInfo:          o.CPKInfo,
+		CPKScopeInfo:     o.CPKScopeInfo,
 	}
 }
 
@@ -244,8 +244,8 @@ func (o *uploadFromReaderOptions) getCommitBlockListOptions() *CommitBlockListOp
 		Metadata:     o.Metadata,
 		Tier:         o.AccessTier,
 		HTTPHeaders:  o.HTTPHeaders,
-		CpkInfo:      o.CpkInfo,
-		CpkScopeInfo: o.CpkScopeInfo,
+		CPKInfo:      o.CPKInfo,
+		CPKScopeInfo: o.CPKScopeInfo,
 	}
 }
 
@@ -267,8 +267,8 @@ type UploadStreamOptions struct {
 	AccessConditions *blob.AccessConditions
 	AccessTier       *blob.AccessTier
 	Tags             map[string]string
-	CpkInfo          *blob.CpkInfo
-	CpkScopeInfo     *blob.CpkScopeInfo
+	CPKInfo          *blob.CPKInfo
+	CPKScopeInfo     *blob.CPKScopeInfo
 }
 
 func (u *UploadStreamOptions) setDefaults() {
@@ -289,8 +289,8 @@ func (u *UploadStreamOptions) getStageBlockOptions() *StageBlockOptions {
 	leaseAccessConditions, _ := exported.FormatBlobAccessConditions(u.AccessConditions)
 	return &StageBlockOptions{
 		TransactionalValidation: u.TransactionalValidation,
-		CpkInfo:                 u.CpkInfo,
-		CpkScopeInfo:            u.CpkScopeInfo,
+		CPKInfo:                 u.CPKInfo,
+		CPKScopeInfo:            u.CPKScopeInfo,
 		LeaseAccessConditions:   leaseAccessConditions,
 	}
 }
@@ -305,8 +305,8 @@ func (u *UploadStreamOptions) getCommitBlockListOptions() *CommitBlockListOption
 		Metadata:         u.Metadata,
 		Tier:             u.AccessTier,
 		HTTPHeaders:      u.HTTPHeaders,
-		CpkInfo:          u.CpkInfo,
-		CpkScopeInfo:     u.CpkScopeInfo,
+		CPKInfo:          u.CPKInfo,
+		CPKScopeInfo:     u.CPKScopeInfo,
 		AccessConditions: u.AccessConditions,
 	}
 }
@@ -321,8 +321,8 @@ func (u *UploadStreamOptions) getUploadOptions() *UploadOptions {
 		Metadata:         u.Metadata,
 		Tier:             u.AccessTier,
 		HTTPHeaders:      u.HTTPHeaders,
-		CpkInfo:          u.CpkInfo,
-		CpkScopeInfo:     u.CpkScopeInfo,
+		CPKInfo:          u.CPKInfo,
+		CPKScopeInfo:     u.CPKScopeInfo,
 		AccessConditions: u.AccessConditions,
 	}
 }

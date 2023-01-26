@@ -153,7 +153,7 @@ func (c *Client) Create(ctx context.Context, options *CreateOptions) (CreateResp
 			Access:   options.Access,
 			Metadata: options.Metadata,
 		}
-		cpkScopes = options.CpkScopeInfo
+		cpkScopes = options.CPKScopeInfo
 	}
 	resp, err := c.generated().Create(ctx, opts, cpkScopes)
 

@@ -14,13 +14,13 @@ import (
 
 // ObjectReplicationRules struct
 type ObjectReplicationRules struct {
-	RuleId string
+	RuleID string
 	Status string
 }
 
 // ObjectReplicationPolicy are deserialized attributes.
 type ObjectReplicationPolicy struct {
-	PolicyId *string
+	PolicyID *string
 	Rules    *[]ObjectReplicationRules
 }
 
@@ -44,12 +44,12 @@ func deserializeORSPolicies(policies map[string]*string) (objectReplicationPolic
 		policyAndRuleIDs := strings.Split(strings.Split(key, "or-")[1], "_")
 		policyId, ruleId := policyAndRuleIDs[0], policyAndRuleIDs[1]
 
-		parsedResult[policyId] = append(parsedResult[policyId], ObjectReplicationRules{RuleId: ruleId, Status: *value})
+		parsedResult[policyId] = append(parsedResult[policyId], ObjectReplicationRules{RuleID: ruleId, Status: *value})
 	}
 
 	for policyId, rules := range parsedResult {
 		objectReplicationPolicies = append(objectReplicationPolicies, ObjectReplicationPolicy{
-			PolicyId: &policyId,
+			PolicyID: &policyId,
 			Rules:    &rules,
 		})
 	}

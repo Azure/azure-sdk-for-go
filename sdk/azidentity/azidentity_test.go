@@ -316,18 +316,18 @@ func (f fakeConfidentialClient) returnResult() (confidential.AuthResult, error) 
 	return f.ar, nil
 }
 
-func (f fakeConfidentialClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireTokenSilentOption) (confidential.AuthResult, error) {
+func (f fakeConfidentialClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...confidential.AcquireSilentOption) (confidential.AuthResult, error) {
 	if f.silentAuth {
 		return f.ar, nil
 	}
 	return confidential.AuthResult{}, errors.New("silent authentication failed")
 }
 
-func (f fakeConfidentialClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireTokenByAuthCodeOption) (confidential.AuthResult, error) {
+func (f fakeConfidentialClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...confidential.AcquireByAuthCodeOption) (confidential.AuthResult, error) {
 	return f.returnResult()
 }
 
-func (f fakeConfidentialClient) AcquireTokenByCredential(ctx context.Context, scopes []string) (confidential.AuthResult, error) {
+func (f fakeConfidentialClient) AcquireTokenByCredential(ctx context.Context, scopes []string, options ...confidential.AcquireByCredentialOption) (confidential.AuthResult, error) {
 	return f.returnResult()
 }
 
@@ -356,29 +356,29 @@ func (f fakePublicClient) returnResult() (public.AuthResult, error) {
 	return f.ar, nil
 }
 
-func (f fakePublicClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...public.AcquireTokenSilentOption) (public.AuthResult, error) {
+func (f fakePublicClient) AcquireTokenSilent(ctx context.Context, scopes []string, options ...public.AcquireSilentOption) (public.AuthResult, error) {
 	if f.silentAuth {
 		return f.ar, nil
 	}
 	return public.AuthResult{}, errors.New("silent authentication failed")
 }
 
-func (f fakePublicClient) AcquireTokenByUsernamePassword(ctx context.Context, scopes []string, username string, password string) (public.AuthResult, error) {
+func (f fakePublicClient) AcquireTokenByUsernamePassword(ctx context.Context, scopes []string, username string, password string, options ...public.AcquireByUsernamePasswordOption) (public.AuthResult, error) {
 	return f.returnResult()
 }
 
-func (f fakePublicClient) AcquireTokenByDeviceCode(ctx context.Context, scopes []string) (public.DeviceCode, error) {
+func (f fakePublicClient) AcquireTokenByDeviceCode(ctx context.Context, scopes []string, options ...public.AcquireByDeviceCodeOption) (public.DeviceCode, error) {
 	if f.err != nil {
 		return public.DeviceCode{}, f.err
 	}
 	return f.dc, nil
 }
 
-func (f fakePublicClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...public.AcquireTokenByAuthCodeOption) (public.AuthResult, error) {
+func (f fakePublicClient) AcquireTokenByAuthCode(ctx context.Context, code string, redirectURI string, scopes []string, options ...public.AcquireByAuthCodeOption) (public.AuthResult, error) {
 	return f.returnResult()
 }
 
-func (f fakePublicClient) AcquireTokenInteractive(ctx context.Context, scopes []string, options ...public.InteractiveAuthOption) (public.AuthResult, error) {
+func (f fakePublicClient) AcquireTokenInteractive(ctx context.Context, scopes []string, options ...public.AcquireInteractiveOption) (public.AuthResult, error) {
 	return f.returnResult()
 }
 

@@ -21,6 +21,8 @@ import (
 	"strings"
 )
 
+
+
 // CertificateDetails - Client makes a call to this end point to retrieve the end entity certificate details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
@@ -289,3 +291,4 @@ func (client *Client) revokeCreateRequest(ctx context.Context, baseURL string, c
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, r)
 }
+

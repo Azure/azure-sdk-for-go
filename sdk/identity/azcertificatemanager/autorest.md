@@ -15,7 +15,8 @@ output-folder: ../azcertificatemanager
 use: "@autorest/go"
 
 directive:
-  # delete unused error models
+ 
+# delete unused error models
   - from: models.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+type (?:Error).+\{(?:\s.+\s)+\}\s/g, "");

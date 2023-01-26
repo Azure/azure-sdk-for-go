@@ -12,14 +12,17 @@ package azcertificatemanager
 type CertificateFileFormat string
 
 const (
-	CertificateFileFormatApplicationPkixCert           CertificateFileFormat = "application/pkix-cert"
-	CertificateFileFormatApplicationXPemFile           CertificateFileFormat = "application/x-pem-file"
+	// CertificateFileFormatApplicationPkixCert - Pkix-cert Format
+	CertificateFileFormatApplicationPkixCert CertificateFileFormat = "application/pkix-cert"
+	// CertificateFileFormatApplicationXPemFile - X-Pem-File Format
+	CertificateFileFormatApplicationXPemFile CertificateFileFormat = "application/x-pem-file"
+	// CertificateFileFormatApplicationXPkcs7Certificates - X-Pkcs7-Certificates Format
 	CertificateFileFormatApplicationXPkcs7Certificates CertificateFileFormat = "application/x-pkcs7-certificates"
 )
 
 // PossibleCertificateFileFormatValues returns the possible values for the CertificateFileFormat const type.
 func PossibleCertificateFileFormatValues() []CertificateFileFormat {
-	return []CertificateFileFormat{
+	return []CertificateFileFormat{	
 		CertificateFileFormatApplicationPkixCert,
 		CertificateFileFormatApplicationXPemFile,
 		CertificateFileFormatApplicationXPkcs7Certificates,
@@ -29,13 +32,15 @@ func PossibleCertificateFileFormatValues() []CertificateFileFormat {
 type CertificateFormat string
 
 const (
-	CertificateFormatPem   CertificateFormat = "pem"
+	// CertificateFormatPem - PEM
+	CertificateFormatPem CertificateFormat = "pem"
+	// CertificateFormatPkcs7 - PKCS7
 	CertificateFormatPkcs7 CertificateFormat = "pkcs7"
 )
 
 // PossibleCertificateFormatValues returns the possible values for the CertificateFormat const type.
 func PossibleCertificateFormatValues() []CertificateFormat {
-	return []CertificateFormat{
+	return []CertificateFormat{	
 		CertificateFormatPem,
 		CertificateFormatPkcs7,
 	}
@@ -44,37 +49,51 @@ func PossibleCertificateFormatValues() []CertificateFormat {
 type ChainFormat string
 
 const (
+	// ChainFormatP7B - P7B
 	ChainFormatP7B ChainFormat = "p7b"
+	// ChainFormatPem - PEM
 	ChainFormatPem ChainFormat = "pem"
 )
 
 // PossibleChainFormatValues returns the possible values for the ChainFormat const type.
 func PossibleChainFormatValues() []ChainFormat {
-	return []ChainFormat{
+	return []ChainFormat{	
 		ChainFormatP7B,
 		ChainFormatPem,
 	}
 }
 
+// ExtendedKeyUsage - Acceptable values of ExtendedKeyUsage.
 type ExtendedKeyUsage string
 
 const (
-	ExtendedKeyUsageClientAuth      ExtendedKeyUsage = "ClientAuth"
-	ExtendedKeyUsageCodeSigning     ExtendedKeyUsage = "CodeSigning"
+	// ExtendedKeyUsageClientAuth - ClientAuth
+	ExtendedKeyUsageClientAuth ExtendedKeyUsage = "ClientAuth"
+	// ExtendedKeyUsageCodeSigning - CodeSigning
+	ExtendedKeyUsageCodeSigning ExtendedKeyUsage = "CodeSigning"
+	// ExtendedKeyUsageEmailProtection - EmailProtection
 	ExtendedKeyUsageEmailProtection ExtendedKeyUsage = "EmailProtection"
-	ExtendedKeyUsageIPSecEndSystem  ExtendedKeyUsage = "IpsecEndSystem"
-	ExtendedKeyUsageIPSecTunnel     ExtendedKeyUsage = "IpsecTunnel"
-	ExtendedKeyUsageIPSecUser       ExtendedKeyUsage = "IpsecUser"
-	ExtendedKeyUsageMACAddress      ExtendedKeyUsage = "MACAddress"
-	ExtendedKeyUsageOCSPSigning     ExtendedKeyUsage = "OCSPSigning"
-	ExtendedKeyUsageServerAuth      ExtendedKeyUsage = "ServerAuth"
-	ExtendedKeyUsageSmartcardLogon  ExtendedKeyUsage = "SmartcardLogon"
-	ExtendedKeyUsageTimeStamping    ExtendedKeyUsage = "TimeStamping"
+	// ExtendedKeyUsageIPSecEndSystem - IpsecEndSystem
+	ExtendedKeyUsageIPSecEndSystem ExtendedKeyUsage = "IpsecEndSystem"
+	// ExtendedKeyUsageIPSecTunnel - IpsecTunnel
+	ExtendedKeyUsageIPSecTunnel ExtendedKeyUsage = "IpsecTunnel"
+	// ExtendedKeyUsageIPSecUser - IpsecUser
+	ExtendedKeyUsageIPSecUser ExtendedKeyUsage = "IpsecUser"
+	// ExtendedKeyUsageMACAddress - MACAddress
+	ExtendedKeyUsageMACAddress ExtendedKeyUsage = "MACAddress"
+	// ExtendedKeyUsageOCSPSigning - OCSPSigning
+	ExtendedKeyUsageOCSPSigning ExtendedKeyUsage = "OCSPSigning"
+	// ExtendedKeyUsageServerAuth - ServerAuth
+	ExtendedKeyUsageServerAuth ExtendedKeyUsage = "ServerAuth"
+	// ExtendedKeyUsageSmartcardLogon - SmartcardLogon
+	ExtendedKeyUsageSmartcardLogon ExtendedKeyUsage = "SmartcardLogon"
+	// ExtendedKeyUsageTimeStamping - TimeStamping
+	ExtendedKeyUsageTimeStamping ExtendedKeyUsage = "TimeStamping"
 )
 
 // PossibleExtendedKeyUsageValues returns the possible values for the ExtendedKeyUsage const type.
 func PossibleExtendedKeyUsageValues() []ExtendedKeyUsage {
-	return []ExtendedKeyUsage{
+	return []ExtendedKeyUsage{	
 		ExtendedKeyUsageClientAuth,
 		ExtendedKeyUsageCodeSigning,
 		ExtendedKeyUsageEmailProtection,
@@ -92,33 +111,44 @@ func PossibleExtendedKeyUsageValues() []ExtendedKeyUsage {
 type Include string
 
 const (
+	// IncludeLogs - Logs
 	IncludeLogs Include = "logs"
 )
 
 // PossibleIncludeValues returns the possible values for the Include const type.
 func PossibleIncludeValues() []Include {
-	return []Include{
+	return []Include{	
 		IncludeLogs,
 	}
 }
 
+// KeyUsage - Acceptable values of KeyUsage.
 type KeyUsage string
 
 const (
-	KeyUsageCrlSign          KeyUsage = "CrlSign"
+	// KeyUsageCrlSign - CrlSign
+	KeyUsageCrlSign KeyUsage = "CrlSign"
+	// KeyUsageDataEncipherment - DataEncipherment
 	KeyUsageDataEncipherment KeyUsage = "DataEncipherment"
-	KeyUsageDecipherOnly     KeyUsage = "DecipherOnly"
+	// KeyUsageDecipherOnly - DecipherOnly
+	KeyUsageDecipherOnly KeyUsage = "DecipherOnly"
+	// KeyUsageDigitalSignature - DigitalSignature
 	KeyUsageDigitalSignature KeyUsage = "DigitalSignature"
-	KeyUsageEncipherOnly     KeyUsage = "EncipherOnly"
-	KeyUsageKeyAgreement     KeyUsage = "KeyAgreement"
-	KeyUsageKeyCertSign      KeyUsage = "KeyCertSign"
-	KeyUsageKeyEncipherment  KeyUsage = "KeyEncipherment"
-	KeyUsageNonRepudiation   KeyUsage = "NonRepudiation"
+	// KeyUsageEncipherOnly - EncipherOnly
+	KeyUsageEncipherOnly KeyUsage = "EncipherOnly"
+	// KeyUsageKeyAgreement - KeyAgreement
+	KeyUsageKeyAgreement KeyUsage = "KeyAgreement"
+	// KeyUsageKeyCertSign - KeyCertSign
+	KeyUsageKeyCertSign KeyUsage = "KeyCertSign"
+	// KeyUsageKeyEncipherment - KeyEncipherment
+	KeyUsageKeyEncipherment KeyUsage = "KeyEncipherment"
+	// KeyUsageNonRepudiation - NonRepudiation
+	KeyUsageNonRepudiation KeyUsage = "NonRepudiation"
 )
 
 // PossibleKeyUsageValues returns the possible values for the KeyUsage const type.
 func PossibleKeyUsageValues() []KeyUsage {
-	return []KeyUsage{
+	return []KeyUsage{	
 		KeyUsageCrlSign,
 		KeyUsageDataEncipherment,
 		KeyUsageDecipherOnly,
@@ -134,21 +164,31 @@ func PossibleKeyUsageValues() []KeyUsage {
 type RevocationReason string
 
 const (
-	RevocationReasonAACompromise         RevocationReason = "aACompromise"
-	RevocationReasonAffiliationChanged   RevocationReason = "affiliationChanged"
-	RevocationReasonCACompromise         RevocationReason = "cACompromise"
-	RevocationReasonCertificateHold      RevocationReason = "certificateHold"
+	// RevocationReasonAACompromise - AACompromise
+	RevocationReasonAACompromise RevocationReason = "aACompromise"
+	// RevocationReasonAffiliationChanged - AffiliationChanged
+	RevocationReasonAffiliationChanged RevocationReason = "affiliationChanged"
+	// RevocationReasonCACompromise - CACompromise
+	RevocationReasonCACompromise RevocationReason = "cACompromise"
+	// RevocationReasonCertificateHold - CertificateHold
+	RevocationReasonCertificateHold RevocationReason = "certificateHold"
+	// RevocationReasonCessationOfOperation - CessationOfOperation
 	RevocationReasonCessationOfOperation RevocationReason = "cessationOfOperation"
-	RevocationReasonKeyCompromise        RevocationReason = "keyCompromise"
-	RevocationReasonPrivilegeWithdrawn   RevocationReason = "privilegeWithdrawn"
-	RevocationReasonRemoveFromCRL        RevocationReason = "removeFromCRL"
-	RevocationReasonSuperseded           RevocationReason = "superseded"
-	RevocationReasonUnspecified          RevocationReason = "unspecified"
+	// RevocationReasonKeyCompromise - KeyCompromise
+	RevocationReasonKeyCompromise RevocationReason = "keyCompromise"
+	// RevocationReasonPrivilegeWithdrawn - PrivilegeWithdrawn
+	RevocationReasonPrivilegeWithdrawn RevocationReason = "privilegeWithdrawn"
+	// RevocationReasonRemoveFromCRL - RemoveFromCRL
+	RevocationReasonRemoveFromCRL RevocationReason = "removeFromCRL"
+	// RevocationReasonSuperseded - Superseded
+	RevocationReasonSuperseded RevocationReason = "superseded"
+	// RevocationReasonUnspecified - Unspecified
+	RevocationReasonUnspecified RevocationReason = "unspecified"
 )
 
 // PossibleRevocationReasonValues returns the possible values for the RevocationReason const type.
 func PossibleRevocationReasonValues() []RevocationReason {
-	return []RevocationReason{
+	return []RevocationReason{	
 		RevocationReasonAACompromise,
 		RevocationReasonAffiliationChanged,
 		RevocationReasonCACompromise,
@@ -161,3 +201,4 @@ func PossibleRevocationReasonValues() []RevocationReason {
 		RevocationReasonUnspecified,
 	}
 }
+

@@ -151,7 +151,7 @@ type DownloadBufferOptions struct {
 	// CPKInfo contains a group of parameters for client provided encryption key.
 	CPKInfo *CPKInfo
 
-	// CPKScopeInfocontains a group of parameters for client provided encryption scope.
+	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
 
 	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).

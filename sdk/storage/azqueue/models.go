@@ -277,3 +277,138 @@ func formatTime(c *SignedIdentifier) error {
 
 	return nil
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetQueuePropertiesOptions contains the optional parameters for the QueueClient.GetProperties method.
+type GetQueuePropertiesOptions struct {
+}
+
+func (o *GetQueuePropertiesOptions) format() *generated.QueueClientGetPropertiesOptions {
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// EnqueueMessageOptions contains the optional parameters for the QueueClient.EnqueueMessage method.
+type EnqueueMessageOptions struct {
+	TimeToLive        *int32
+	VisibilityTimeout *int32
+}
+
+func (o *EnqueueMessageOptions) format() *generated.MessagesClientEnqueueOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.MessagesClientEnqueueOptions{MessageTimeToLive: o.TimeToLive,
+		Visibilitytimeout: o.VisibilityTimeout}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DequeueMessageOptions contains the optional parameters for the QueueClient.EnqueueMessage method.
+type DequeueMessageOptions struct {
+	VisibilityTimeout *int32
+}
+
+func (o *DequeueMessageOptions) format() *generated.MessagesClientDequeueOptions {
+	numberOfMessages := int32(1)
+	if o == nil {
+		return &generated.MessagesClientDequeueOptions{NumberOfMessages: &numberOfMessages}
+	}
+
+	return &generated.MessagesClientDequeueOptions{NumberOfMessages: &numberOfMessages,
+		Visibilitytimeout: o.VisibilityTimeout}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DequeueMessagesOptions contains the optional parameters for the QueueClient.DequeueMessages method.
+type DequeueMessagesOptions struct {
+	NumberOfMessages  *int32
+	VisibilityTimeout *int32
+}
+
+func (o *DequeueMessagesOptions) format() *generated.MessagesClientDequeueOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.MessagesClientDequeueOptions{NumberOfMessages: o.NumberOfMessages,
+		Visibilitytimeout: o.VisibilityTimeout}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// UpdateMessageOptions contains the optional parameters for the QueueClient.UpdateMessage method.
+type UpdateMessageOptions struct {
+	VisibilityTimeout *int32
+}
+
+func (o *UpdateMessageOptions) format() *generated.MessageIDClientUpdateOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.MessageIDClientUpdateOptions{Visibilitytimeout: o.VisibilityTimeout}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DeleteMessageOptions contains the optional parameters for the QueueClient.DeleteMessage method.
+type DeleteMessageOptions struct {
+}
+
+func (o *DeleteMessageOptions) format() *generated.MessageIDClientDeleteOptions {
+	if o == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PeekMessageOptions contains the optional parameters for the QueueClient.PeekMessage method.
+type PeekMessageOptions struct {
+}
+
+func (o *PeekMessageOptions) format() *generated.MessagesClientPeekOptions {
+	numberOfMessages := int32(1)
+	if o == nil {
+		return &generated.MessagesClientPeekOptions{NumberOfMessages: &numberOfMessages}
+	}
+
+	return &generated.MessagesClientPeekOptions{NumberOfMessages: &numberOfMessages}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// PeekMessagesOptions contains the optional parameters for the QueueClient.PeekMessages method.
+type PeekMessagesOptions struct {
+	NumberOfMessages *int32
+}
+
+func (o *PeekMessagesOptions) format() *generated.MessagesClientPeekOptions {
+	numberOfMessages := int32(1)
+	if o == nil {
+		return &generated.MessagesClientPeekOptions{NumberOfMessages: &numberOfMessages}
+	}
+
+	return &generated.MessagesClientPeekOptions{NumberOfMessages: o.NumberOfMessages}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ClearMessagesOptions contains the optional parameters for the QueueClient.ClearMessages method.
+type ClearMessagesOptions struct {
+}
+
+func (o *ClearMessagesOptions) format() *generated.MessagesClientClearOptions {
+	if o == nil {
+		return nil
+	}
+
+	return nil
+}

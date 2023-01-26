@@ -153,6 +153,11 @@ type MessageIDClientUpdateOptions struct {
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
+	// Optional. Specifies the new visibility timeout value, in seconds, relative to server time. The default value is 30 seconds.
+	// A specified value must be larger than or equal to 1 second, and cannot be
+	// larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout
+	// of a message can be set to a value later than the expiry time.
+	Visibilitytimeout *int32
 }
 
 // MessagesClientClearOptions contains the optional parameters for the MessagesClient.Clear method.

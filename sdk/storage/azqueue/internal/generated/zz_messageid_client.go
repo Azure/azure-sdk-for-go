@@ -106,14 +106,10 @@ func (client *MessageIDClient) deleteHandleResponse(resp *http.Response) (Messag
 // Generated from API version 2018-03-28
 //   - popReceipt - Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update
 //     Message operation.
-//   - visibilitytimeout - Optional. Specifies the new visibility timeout value, in seconds, relative to server time. The default
-//     value is 30 seconds. A specified value must be larger than or equal to 1 second, and cannot be
-//     larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout
-//     of a message can be set to a value later than the expiry time.
 //   - queueMessage - A Message object which can be stored in a Queue
 //   - options - MessageIDClientUpdateOptions contains the optional parameters for the MessageIDClient.Update method.
-func (client *MessageIDClient) Update(ctx context.Context, popReceipt string, visibilitytimeout int32, queueMessage QueueMessage, options *MessageIDClientUpdateOptions) (MessageIDClientUpdateResponse, error) {
-	req, err := client.updateCreateRequest(ctx, popReceipt, visibilitytimeout, queueMessage, options)
+func (client *MessageIDClient) Update(ctx context.Context, popReceipt string, queueMessage QueueMessage, options *MessageIDClientUpdateOptions) (MessageIDClientUpdateResponse, error) {
+	req, err := client.updateCreateRequest(ctx, popReceipt, queueMessage, options)
 	if err != nil {
 		return MessageIDClientUpdateResponse{}, err
 	}
@@ -128,14 +124,16 @@ func (client *MessageIDClient) Update(ctx context.Context, popReceipt string, vi
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MessageIDClient) updateCreateRequest(ctx context.Context, popReceipt string, visibilitytimeout int32, queueMessage QueueMessage, options *MessageIDClientUpdateOptions) (*policy.Request, error) {
+func (client *MessageIDClient) updateCreateRequest(ctx context.Context, popReceipt string, queueMessage QueueMessage, options *MessageIDClientUpdateOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("popreceipt", popReceipt)
-	reqQP.Set("visibilitytimeout", strconv.FormatInt(int64(visibilitytimeout), 10))
+	if options != nil && options.Visibilitytimeout != nil {
+		reqQP.Set("visibilitytimeout", strconv.FormatInt(int64(*options.Visibilitytimeout), 10))
+	}
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}

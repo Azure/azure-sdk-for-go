@@ -44,3 +44,24 @@ type GetAccessPolicyResponse = generated.QueueClientGetAccessPolicyResponse
 
 // SetAccessPolicyResponse contains the response from method QueueClient.SetAccessPolicy.
 type SetAccessPolicyResponse = generated.QueueClientSetAccessPolicyResponse
+
+// GetQueuePropertiesResponse contains the response from method QueueClient.GetProperties.
+type GetQueuePropertiesResponse = generated.QueueClientGetPropertiesResponse
+
+// EnqueueMessagesResponse contains the response from method QueueClient.EnqueueMessage.
+type EnqueueMessagesResponse = generated.MessagesClientEnqueueResponse
+
+// DequeueMessagesResponse contains the response from method QueueClient.DequeueMessage or QueueClient.DequeueMessages.
+type DequeueMessagesResponse = generated.MessagesClientDequeueResponse
+
+// UpdateMessageResponse contains the response from method QueueClient.UpdateMessage.
+type UpdateMessageResponse = generated.MessageIDClientUpdateResponse
+
+// DeleteMessageResponse contains the response from method QueueClient.DeleteMessage.
+type DeleteMessageResponse = generated.MessageIDClientDeleteResponse
+
+// PeekMessagesResponse contains the response from method QueueClient.PeekMessage or QueueClient.PeekMessages.
+type PeekMessagesResponse = generated.MessagesClientPeekResponse
+
+// ClearMessagesResponse contains the response from method QueueClient.ClearMessages.
+type ClearMessagesResponse = generated.MessagesClientClearResponse

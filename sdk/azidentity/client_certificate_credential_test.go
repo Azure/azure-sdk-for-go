@@ -228,7 +228,7 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 }
 
 func TestClientCertificateCredentialADFS_Live(t *testing.T) {
-	if recording.GetRecordMode() == recording.LiveMode {
+	if recording.GetRecordMode() != recording.PlaybackMode {
 		if adfsLiveSP.clientID == "" || adfsLiveSP.pemPath == "" {
 			t.Skip("this test requires manual recording and access to ADFS instance, and can't pass live in CI")
 		}

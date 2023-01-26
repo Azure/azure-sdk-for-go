@@ -103,6 +103,12 @@ func init() {
 		liveUser.tenantID = fakeTenantID
 		liveUser.username = fakeUsername
 		liveUser.password = "fake-password"
+		adfsLiveSP.secret = "fake-secret"
+		adfsLiveSP.clientID = fakeClientID
+		adfsLiveSP.pemPath = "testdata/certificate.pem"
+		adfsLiveUser.username = fakeUsername
+		adfsLiveUser.password = "fake-password"
+		adfsLiveUser.clientID = fakeClientID
 	}
 }
 

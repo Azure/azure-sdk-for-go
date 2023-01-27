@@ -8,12 +8,15 @@ package azqueue
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
+	"time"
 )
 
 // QueueClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
@@ -27,11 +30,6 @@ func (q *QueueClient) generated() *generated.QueueClient {
 func (q *QueueClient) messagesClient() *generated.MessagesClient {
 	_, messages, _ := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
 	return messages
-}
-
-func (q *QueueClient) messagesIDClient() *generated.MessageIDClient {
-	_, _, mID := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
-	return mID
 }
 
 func (q *QueueClient) sharedKey() *SharedKeyCredential {
@@ -168,20 +166,24 @@ func (q *QueueClient) DequeueMessage(ctx context.Context, o *DequeueMessageOptio
 	return resp, err
 }
 
-// UpdateMessage updates a message from the queue with the given ID.
+// UpdateMessage updates a message from the queue with the given popReceipt.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/update-message.
-func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, content string, o *UpdateMessageOptions) (UpdateMessageResponse, error) {
+func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popReceipt string, content string, o *UpdateMessageOptions) (UpdateMessageResponse, error) {
 	opts := o.format()
 	message := generated.QueueMessage{MessageText: &content}
-	resp, err := q.messagesIDClient().Update(ctx, messageID, message, opts)
+	messageURL := runtime.JoinPaths(q.generated().Endpoint(), messageID)
+	messageClient := generated.NewMessageIDClient(messageURL, q.generated().Pipeline())
+	resp, err := messageClient.Update(ctx, popReceipt, message, opts)
 	return resp, err
 }
 
-// DeleteMessage deletes message from queue with the given ID.
+// DeleteMessage deletes message from queue with the given popReceipt.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-message2.
-func (q *QueueClient) DeleteMessage(ctx context.Context, messageID string, o *DeleteMessageOptions) (DeleteMessageResponse, error) {
+func (q *QueueClient) DeleteMessage(ctx context.Context, messageID string, popReceipt string, o *DeleteMessageOptions) (DeleteMessageResponse, error) {
 	opts := o.format()
-	resp, err := q.messagesIDClient().Delete(ctx, messageID, opts)
+	messageURL := runtime.JoinPaths(q.generated().Endpoint(), messageID)
+	messageClient := generated.NewMessageIDClient(messageURL, q.generated().Pipeline())
+	resp, err := messageClient.Delete(ctx, popReceipt, opts)
 	return resp, err
 }
 
@@ -215,4 +217,34 @@ func (q *QueueClient) ClearMessages(ctx context.Context, o *ClearMessagesOptions
 	opts := o.format()
 	resp, err := q.messagesClient().Clear(ctx, opts)
 	return resp, err
+}
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (q *QueueClient) GetSASURL(permissions sas.QueuePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	if q.sharedKey() == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+	}
+
+	st := o.format()
+	urlParts, err := ParseURL(q.URL())
+	if err != nil {
+		return "", err
+	}
+	qps, err := sas.QueueSignatureValues{
+		Version:     sas.Version,
+		Protocol:    sas.ProtocolHTTPS,
+		StartTime:   st,
+		ExpiryTime:  expiry.UTC(),
+		Permissions: permissions.String(),
+		QueueName:   urlParts.QueueName,
+	}.SignWithSharedKey(q.sharedKey())
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := q.URL() + "?" + qps.Encode()
+
+	return endpoint, nil
 }

@@ -196,7 +196,7 @@ func (s *RecordedTestSuite) TestSetPropertiesSetCors() {
 	_require.NoError(err)
 }
 
-func (s *RecordedTestSuite) TestGetProperties() {
+func (s *RecordedTestSuite) TestServiceGetProperties() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -207,7 +207,7 @@ func (s *RecordedTestSuite) TestGetProperties() {
 	_require.NotZero(sProps)
 }
 
-func (s *RecordedTestSuite) TestCreateQueue() {
+func (s *RecordedTestSuite) TestServiceCreateQueue() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -222,7 +222,7 @@ func (s *RecordedTestSuite) TestCreateQueue() {
 	_require.NotZero(resp)
 }
 
-func (s *RecordedTestSuite) TestCreateQueueWithMetadata() {
+func (s *RecordedTestSuite) TestServiceCreateQueueWithMetadata() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -238,7 +238,7 @@ func (s *RecordedTestSuite) TestCreateQueueWithMetadata() {
 	_require.NotZero(resp)
 }
 
-func (s *RecordedTestSuite) TestDeleteQueue() {
+func (s *RecordedTestSuite) TestServiceDeleteQueue() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -254,7 +254,7 @@ func (s *RecordedTestSuite) TestDeleteQueue() {
 	_require.NotZero(delResp)
 }
 
-func (s *RecordedTestSuite) TestListQueuesWithMetadata() {
+func (s *RecordedTestSuite) TestServiceListQueuesWithMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -304,7 +304,7 @@ func (s *RecordedTestSuite) TestListQueuesWithMetadata() {
 	_require.True(exists)
 }
 
-func (s *RecordedTestSuite) TestListQueuesPagination() {
+func (s *RecordedTestSuite) TestServiceListQueuesPagination() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

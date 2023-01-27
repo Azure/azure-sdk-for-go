@@ -6,17 +6,81 @@
 
 package azqueue_test
 
-//func (s *RecordedTestSuite) TestCreateQueue() {
-//	_require := require.New(s.T())
-//	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-//	_require.NoError(err)
-//
-//	testcommon.CreateNewQueue(context.Background(), _require, "test1123", svcClient)
-//	//// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
-//	//sProps, err := svcClient.GetProperties(context.Background(), nil)
-//	//_require.Nil(err)
-//	//_require.NotZero(sProps)
-//}
+import (
+	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/testcommon"
+	"github.com/stretchr/testify/require"
+)
+
+func (s *RecordedTestSuite) TestQueueCreateQueue() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	resp, err := queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(resp)
+}
+
+func (s *RecordedTestSuite) TestQueueCreateQueueWithMetadata() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	opts := azqueue.CreateOptions{Metadata: testcommon.BasicMetadata}
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	resp, err := queueClient.Create(context.Background(), &opts)
+	_require.Nil(err)
+	_require.NotZero(resp)
+}
+
+func (s *RecordedTestSuite) TestQueueDeleteQueue() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	resp, err := queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(resp)
+
+	delResp, err := queueClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(delResp)
+}
+
+func (s *RecordedTestSuite) TestQueueSetMetadata() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := azqueue.SetMetadataOptions{Metadata: testcommon.BasicMetadata}
+	_, err = queueClient.SetMetadata(context.Background(), &opts)
+	_require.Nil(err)
+
+	resp, err := queueClient.GetProperties(context.Background(), nil)
+	_require.Equal(resp.Metadata, testcommon.BasicMetadata)
+}
 
 //TODO: TestCreateQueue
 //TODO: TestDeleteQueue

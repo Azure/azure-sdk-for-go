@@ -71,6 +71,12 @@ type DequeuedMessageItem = generated.DequeuedMessageItem
 // PeekedMessageItem - peeked message
 type PeekedMessageItem = generated.PeekedMessageItem
 
+// ListQueuesSegmentResponse - response segment
+type ListQueuesSegmentResponse = generated.ListQueuesSegmentResponse
+
+// QueueItem - queue item
+type QueueItem = generated.QueueItem
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ListQueuesOptions provides set of configurations for ListQueues operation

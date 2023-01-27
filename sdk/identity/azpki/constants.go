@@ -7,9 +7,9 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package azcertificatemanager
+package azpki
 
-//Possible CertificateFileFormat values
+// CertificateFileFormat - Possible CertificateFileFormat values
 type CertificateFileFormat string
 
 const (
@@ -30,7 +30,7 @@ func PossibleCertificateFileFormatValues() []CertificateFileFormat {
 	}
 }
 
-//Possible CertificateFormat values
+// CertificateFormat - Possible CertificateFormat values
 type CertificateFormat string
 
 const (
@@ -48,7 +48,7 @@ func PossibleCertificateFormatValues() []CertificateFormat {
 	}
 }
 
-//Possible ChainFormat values
+// ChainFormat - Possible ChainFormat values
 type ChainFormat string
 
 const (
@@ -111,7 +111,7 @@ func PossibleExtendedKeyUsageValues() []ExtendedKeyUsage {
 	}
 }
 
-//Possible include values
+// Include - Possible include values
 type Include string
 
 const (

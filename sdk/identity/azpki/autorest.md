@@ -7,12 +7,12 @@
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs-pr/blob/f9a0ac622533987324a0a18237af12ce4f526563/specification/pki/data-plane/Microsoft.Pki/preview/2022-09-01-preview/pki.json
+input-file: C:\Users\arpitsaxena\source\repos\azure-rest-api-specs-pr\specification\pki\Microsoft.Pki\preview\2022-09-01-preview\pki.json
 license-header: MICROSOFT_MIT_NO_VERSION
-module: github.com/Azure/azure-sdk-for-go/sdk/identity/azcertificatemanager
+module: github.com/Azure/azure-sdk-for-go/sdk/identity/azpki
 openapi-type: "data-plane"
-output-folder: ../azcertificatemanager
-use: "@autorest/go"
+output-folder: C:\Users\arpitsaxena\Documents\repos\Azure\azure-sdk-for-go\sdk\identity\azpki
+use: "@autorest/go@4.0.0-preview.45"
 
 directive:
  
@@ -35,13 +35,13 @@ directive:
 # Update generated type const
   - from: constants.go
     where: $
-    transform: return $.replace("type CertificateFileFormat string", "//Possible CertificateFileFormat values\n type CertificateFileFormat string");
+    transform: return $.replace("type CertificateFileFormat string", "// CertificateFileFormat - Possible CertificateFileFormat values\n type CertificateFileFormat string");
   - from: constants.go
     where: $
-    transform: return $.replace("type CertificateFormat string", "//Possible CertificateFormat values\n type CertificateFormat string");
+    transform: return $.replace("type CertificateFormat string", "// CertificateFormat - Possible CertificateFormat values\n type CertificateFormat string");
   - from: constants.go
     where: $
-    transform: return $.replace("type ChainFormat string", "//Possible ChainFormat values\n type ChainFormat string");
+    transform: return $.replace("type ChainFormat string", "// ChainFormat - Possible ChainFormat values\n type ChainFormat string");
   - from: constants.go
     where: $
-    transform: return $.replace("type Include string", "//Possible include values\n type Include string");
+    transform: return $.replace("type Include string", "// Include - Possible include values\n type Include string");

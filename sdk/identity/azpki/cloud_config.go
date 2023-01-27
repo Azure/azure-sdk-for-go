@@ -4,14 +4,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azcertificatemanager
+package azpki
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 // Cloud Service Names for Monitor Query Logs and Metrics, used to identify the respective cloud.ServiceConfiguration
 const (
-	ServiceNameLogs    cloud.ServiceName = "azcertificatemanagerLogs"
-	ServiceNameMetrics cloud.ServiceName = "azcertificatemanagerMetrics"
+	ServiceNameLogs cloud.ServiceName = "azpkiLogs"
 )
 
 func init() {

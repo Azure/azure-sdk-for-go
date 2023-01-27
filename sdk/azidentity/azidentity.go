@@ -63,7 +63,7 @@ var getConfidentialClient = func(clientID, tenantID string, cred confidential.Cr
 	return confidential.New(clientID, cred, o...)
 }
 
-func getPublicClient(clientID, tenantID string, co *azcore.ClientOptions, additionalOpts ...public.Option) (public.Client, error) {
+var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions, additionalOpts ...public.Option) (public.Client, error) {
 	if !validTenantID(tenantID) {
 		return public.Client{}, errors.New(tenantIDValidationErr)
 	}

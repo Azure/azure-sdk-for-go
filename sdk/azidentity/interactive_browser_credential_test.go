@@ -113,11 +113,15 @@ func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
 	if !runManualBrowserTests {
 		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
 	}
-	if adfsLiveUser.clientID == "" {
+	if adfsLiveUser.clientID == fakeClientID {
 		t.Skip("set ADFS_IDENTITY_TEST_CLIENT_ID environment variables to run this test live")
 	}
 	//Redirect URL is necessary
-	url := "http://localhost:8405"
+	url := adfsLiveSP.redirectURL
+	vars := map[string]string{
+		azureAuthorityHost: adfsAuthority,
+	}
+	setEnvironmentVariables(t, vars)
 	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{ClientID: adfsLiveUser.clientID, TenantID: adfsLiveSP.tenantID, RedirectURL: url, DisableInstanceDiscovery: true})
 	if err != nil {
 		t.Fatal(err)

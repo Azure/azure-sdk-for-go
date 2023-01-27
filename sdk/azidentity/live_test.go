@@ -62,20 +62,22 @@ const (
 	fakeUsername   = "fake@user"
 )
 
-var adfsAuthority = "https://adfs.redmond.azurestack.corp.microsoft.com"
+var adfsAuthority = os.Getenv("ADFS_AUTHORITY_HOST")
 
 var adfsLiveSP = struct {
-	tenantID string
-	clientID string
-	secret   string
-	pemPath  string
-	scope    string
+	tenantID    string
+	clientID    string
+	secret      string
+	pemPath     string
+	scope       string
+	redirectURL string
 }{
-	tenantID: "adfs",
-	clientID: os.Getenv("ADFS_SP_CLIENT_ID"),
-	secret:   os.Getenv("ADFS_SP_CLIENT_SECRET"),
-	pemPath:  os.Getenv("ADFS_SP_CERT_PEM"),
-	scope:    "openid",
+	tenantID:    "adfs",
+	clientID:    os.Getenv("ADFS_SP_CLIENT_ID"),
+	secret:      os.Getenv("ADFS_SP_CLIENT_SECRET"),
+	pemPath:     os.Getenv("ADFS_SP_CERT_PEM"),
+	scope:       os.Getenv("ADFS_SCOPE"),
+	redirectURL: os.Getenv("ADFS_SP_REDIRECT_URL"),
 }
 
 var adfsLiveUser = struct {
@@ -249,6 +251,6 @@ func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential, customScope 
 		t.Fatal(err)
 	}
 	if tk2.Token != tk.Token || tk2.ExpiresOn != tk.ExpiresOn {
-		t.Fatalf("expected a cached token: %s\n with time :%s \n, got %s with time %s", tk2.Token, tk2.ExpiresOn, tk.Token, tk.ExpiresOn)
+		t.Fatalf("expected a cached token")
 	}
 }

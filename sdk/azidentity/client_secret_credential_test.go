@@ -61,17 +61,13 @@ func TestClientSecretCredential_Live(t *testing.T) {
 
 func TestClientSecretCredentialADFS_Live(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		if adfsLiveSP.clientID == "" || adfsLiveSP.secret == "" {
+		if adfsLiveSP.clientID == "" || adfsLiveSP.secret == "" || adfsLiveSP.scope == "" {
 			t.Skip("set ADFS_SP_* environment variables to run this test live")
 		}
 	}
-	//Set authority host to be ADFS authority
-	vars := map[string]string{
-		azureAuthorityHost: adfsAuthority,
-	}
-	setEnvironmentVariables(t, vars)
 	opts, stop := initRecording(t)
 	defer stop()
+	opts.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
 	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true}
 	cred, err := NewClientSecretCredential(adfsLiveSP.tenantID, adfsLiveSP.clientID, adfsLiveSP.secret, &o)
 	if err != nil {

@@ -117,13 +117,9 @@ func TestDeviceCodeCredentialADFS_Live(t *testing.T) {
 	if adfsLiveSP.clientID == "" {
 		t.Skip("set ADFS_SP_* environment variables to run this test")
 	}
-	//Set authority host to be ADFS authority
-	vars := map[string]string{
-		azureAuthorityHost: adfsAuthority,
-	}
-	setEnvironmentVariables(t, vars)
 	o, stop := initRecording(t)
 	defer stop()
+	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
 	opts := DeviceCodeCredentialOptions{TenantID: adfsLiveSP.tenantID, ClientID: adfsLiveSP.clientID, ClientOptions: o, DisableInstanceDiscovery: true}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }

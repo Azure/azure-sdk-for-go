@@ -250,15 +250,11 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 
 func TestClientCertificateCredentialADFS_Live(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		if adfsLiveSP.clientID == "" || adfsLiveSP.pemPath == "" {
+		if adfsLiveSP.clientID == "" || adfsLiveSP.pemPath == "" || adfsLiveSP.scope == "" {
 			t.Skip("this test requires manual recording and access to ADFS instance, and can't pass live in CI")
 		}
 	}
 	//Set authority host to be ADFS authority
-	vars := map[string]string{
-		azureAuthorityHost: adfsAuthority,
-	}
-	setEnvironmentVariables(t, vars)
 	certData, err := os.ReadFile(adfsLiveSP.pemPath)
 	if err != nil {
 		t.Fatalf(`failed to read cert: %v`, err)
@@ -269,6 +265,7 @@ func TestClientCertificateCredentialADFS_Live(t *testing.T) {
 	}
 	o, stop := initRecording(t)
 	defer stop()
+	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
 	opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
 	cred, err := NewClientCertificateCredential(adfsLiveSP.tenantID, adfsLiveSP.clientID, certs, key, opts)
 	if err != nil {

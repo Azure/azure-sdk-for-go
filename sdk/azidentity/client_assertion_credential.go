@@ -33,6 +33,7 @@ type ClientAssertionCredential struct {
 type ClientAssertionCredentialOptions struct {
 	azcore.ClientOptions
 
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
 	DisableInstanceDiscovery bool
 }
 

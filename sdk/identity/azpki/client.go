@@ -12,7 +12,6 @@ package azpki
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -20,6 +19,8 @@ import (
 	"strconv"
 	"strings"
 )
+
+
 
 // CertificateDetails - Client makes a call to this end point to retrieve the end entity certificate details.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -122,8 +123,8 @@ func (client *Client) endEntityCertificateDownloadCreateRequest(ctx context.Cont
 	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
-	if client.certificateFileFormat != nil {
-		req.Raw().Header["certificate-file-format"] = []string{*client.certificateFileFormat}
+	if client.accept != nil {
+		req.Raw().Header["accept"] = []string{*client.accept}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -173,7 +174,7 @@ func (client *Client) enrollCertificateCreateRequest(ctx context.Context, baseUR
 		reqQP.Set("fullChain", strconv.FormatBool(*options.FullChain))
 	}
 	if options != nil && options.Include != nil {
-		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
+		reqQP.Set("include", *options.Include)
 	}
 	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -232,8 +233,8 @@ func (client *Client) getCaCertificateCreateRequest(ctx context.Context, baseURL
 	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
-	if client.certificateFileFormat != nil {
-		req.Raw().Header["certificate-file-format"] = []string{*client.certificateFileFormat}
+	if client.accept != nil {
+		req.Raw().Header["accept"] = []string{*client.accept}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +283,7 @@ func (client *Client) revokeCreateRequest(ctx context.Context, baseURL string, c
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Include != nil {
-		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
+		reqQP.Set("include", *options.Include)
 	}
 	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()

@@ -7,11 +7,11 @@
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: C:\Users\arpitsaxena\source\repos\azure-rest-api-specs-pr\specification\pki\Microsoft.Pki\preview\2022-09-01-preview\pki.json
+input-file: https://github.com/Azure/azure-rest-api-specs-pr/blob/cd08bfe043227dfc55dda3a3069d6d23b006ddc0/specification/pki/data-plane/preview/2022-09-01-preview/pki.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/identity/azpki
 openapi-type: "data-plane"
-output-folder: C:\Users\arpitsaxena\Documents\repos\Azure\azure-sdk-for-go\sdk\identity\azpki
+output-folder: internal
 use: "@autorest/go@4.0.0-preview.45"
 
 directive:
@@ -35,7 +35,7 @@ directive:
 # Update generated type const
   - from: constants.go
     where: $
-    transform: return $.replace("type CertificateFileFormat string", "// CertificateFileFormat - Possible CertificateFileFormat values\n type CertificateFileFormat string");
+    transform: return $.replace("type Accept string", "// Accept - Possible Accept values\n type Accept string");
   - from: constants.go
     where: $
     transform: return $.replace("type CertificateFormat string", "// CertificateFormat - Possible CertificateFormat values\n type CertificateFormat string");

@@ -18,17 +18,17 @@ import (
 
 // Client contains the methods for the Client group.
 type Client struct {
-	endpoint              string
-	certificateFormat     *string
-	certificateFileFormat *string
-	pl                    runtime.Pipeline
+	endpoint          string
+	certificateFormat *string
+	accept            *string
+	pl                runtime.Pipeline
 }
 
 // ClientOptions - Acceptable values of ClientOptions.
 type ClientOptions struct {
 	azcore.ClientOptions
-	CertificateFormat     *string
-	CertificateFileFormat *string
+	CertificateFormat *string
+	Accept            *string
 }
 
 // NewClient creates a new instance of Client with the specified values.
@@ -46,10 +46,10 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{c.Audience + "/.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	client := &Client{
-		endpoint:              endpoint,
-		certificateFormat:     options.CertificateFormat,
-		certificateFileFormat: options.CertificateFileFormat,
-		pl:                    pl,
+		endpoint:          endpoint,
+		certificateFormat: options.CertificateFormat,
+		accept:            options.Accept,
+		pl:                pl,
 	}
 	return client, nil
 }

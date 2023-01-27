@@ -49,8 +49,8 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - shareName - the name of the share within the storage account
-//	 - directoryName - the name of the directory within the storage account
-//	 - fileName - the name of the file within the storage account
+//   - directoryName - the name of the directory within the storage account
+//   - fileName - the name of the file within the storage account
 //   - options - client options; pass nil to accept the default values
 func NewClientFromConnectionString(connectionString string, shareName string, directoryName string, fileName string, options *ClientOptions) (*Client, error) {
 	return nil, nil
@@ -70,7 +70,7 @@ func (f *Client) URL() string {
 }
 
 // Create operation creates a new file or replaces a file. Note it only initializes the file with no content.
-// 	 - fileContentLength: Specifies the maximum size for the file, up to 4 TB.
+//   - fileContentLength: Specifies the maximum size for the file, up to 4 TB.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
 	return CreateResponse{}, nil
@@ -101,14 +101,14 @@ func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 }
 
 // StartCopyFromURL operation copies the data at the source URL to a file.
-// 	 - copySource: specifies the URL of the source file or blob, up to 2KiB in length.
+//   - copySource: specifies the URL of the source file or blob, up to 2KiB in length.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/copy-file.
 func (f *Client) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyFromURLOptions) (StartCopyFromURLResponse, error) {
 	return StartCopyFromURLResponse{}, nil
 }
 
 // AbortCopy operation cancels a pending Copy File operation, and leaves a destination file with zero length and full metadata.
-// 	 - copyID: the copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
+//   - copyID: the copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/abort-copy-file.
 func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCopyOptions) (AbortCopyResponse, error) {
 	return AbortCopyResponse{}, nil
@@ -127,24 +127,24 @@ func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions)
 }
 
 // UploadRange operation uploads a range of bytes to a file.
-// 	 - contentRange: Specifies the range of bytes to be written.
-// 	 - body: Specifies the data to be uploaded.
+//   - contentRange: Specifies the range of bytes to be written.
+//   - body: Specifies the data to be uploaded.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
 func (f *Client) UploadRange(ctx context.Context, contentRange HTTPRange, body io.ReadSeekCloser, options *UploadRangeOptions) (UploadRangeResponse, error) {
 	return UploadRangeResponse{}, nil
 }
 
 // ClearRange operation clears the specified range and releases the space used in storage for that range.
-// 	 - contentRange: Specifies the range of bytes to be cleared.
+//   - contentRange: Specifies the range of bytes to be cleared.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
 func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options *ClearRangeOptions) (ClearRangeResponse, error) {
 	return ClearRangeResponse{}, nil
 }
 
 // UploadRangeFromURL operation uploads a range of bytes to a file where the contents are read from a URL.
-// 	 - copySource: Specifies the URL of the source file or blob, up to 2 KB in length.
-//	 - destinationRange: Specifies the range of bytes in the file to be written.
-//	 - sourceRange: Bytes of source data in the specified range.
+//   - copySource: Specifies the URL of the source file or blob, up to 2 KB in length.
+//   - destinationRange: Specifies the range of bytes in the file to be written.
+//   - sourceRange: Bytes of source data in the specified range.
 func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, destinationRange HTTPRange, sourceRange HTTPRange, options *UploadRangeFromURLOptions) (UploadRangeFromURLResponse, error) {
 	return UploadRangeFromURLResponse{}, nil
 }

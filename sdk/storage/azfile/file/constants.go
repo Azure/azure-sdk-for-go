@@ -100,8 +100,8 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 }
 
 // PermissionCopyModeType determines the copy behavior of the security descriptor of the file.
-// 	 - source: The security descriptor on the destination file is copied from the source file.
-// 	 - override: The security descriptor on the destination file is determined via the x-ms-file-permission or x-ms-file-permission-key header.
+//   - source: The security descriptor on the destination file is copied from the source file.
+//   - override: The security descriptor on the destination file is determined via the x-ms-file-permission or x-ms-file-permission-key header.
 type PermissionCopyModeType = generated.PermissionCopyModeType
 
 const (
@@ -115,9 +115,9 @@ func PossiblePermissionCopyModeTypeValues() []PermissionCopyModeType {
 }
 
 // RangeWriteType represents one of the following options.
-// 	 - update: Writes the bytes specified by the request body into the specified range. The Range and Content-Length headers must match to perform the update.
-//	 - clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero,
-//			  and set the Range header to a value that indicates the range to clear, up to maximum file size.
+//   - update: Writes the bytes specified by the request body into the specified range. The Range and Content-Length headers must match to perform the update.
+//   - clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero,
+//     and set the Range header to a value that indicates the range to clear, up to maximum file size.
 type RangeWriteType = generated.FileRangeWriteType
 
 const (

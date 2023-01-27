@@ -31,3 +31,17 @@ directive:
   - from: client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+type Client struct.+\{\s(?:.+\s)+\}\s/, "");
+
+# Update generated type const
+  - from: constants.go
+    where: $
+    transform: return $.replace("type CertificateFileFormat string", "//Possible CertificateFileFormat values\n type CertificateFileFormat string");
+  - from: constants.go
+    where: $
+    transform: return $.replace("type CertificateFormat string", "//Possible CertificateFormat values\n type CertificateFormat string");
+  - from: constants.go
+    where: $
+    transform: return $.replace("type ChainFormat string", "//Possible ChainFormat values\n type ChainFormat string");
+  - from: constants.go
+    where: $
+    transform: return $.replace("type Include string", "//Possible include values\n type Include string");

@@ -9,6 +9,7 @@
 
 package azcertificatemanager
 
+//Possible CertificateFileFormat values
 type CertificateFileFormat string
 
 const (
@@ -29,6 +30,7 @@ func PossibleCertificateFileFormatValues() []CertificateFileFormat {
 	}
 }
 
+//Possible CertificateFormat values
 type CertificateFormat string
 
 const (
@@ -46,6 +48,7 @@ func PossibleCertificateFormatValues() []CertificateFormat {
 	}
 }
 
+//Possible ChainFormat values
 type ChainFormat string
 
 const (
@@ -108,6 +111,7 @@ func PossibleExtendedKeyUsageValues() []ExtendedKeyUsage {
 	}
 }
 
+//Possible include values
 type Include string
 
 const (
@@ -161,6 +165,7 @@ func PossibleKeyUsageValues() []KeyUsage {
 	}
 }
 
+// RevocationReason - Specifies reason for revocation
 type RevocationReason string
 
 const (

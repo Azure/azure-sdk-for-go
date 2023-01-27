@@ -225,6 +225,27 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 			testGetTokenSuccess(t, cred)
 		})
 	}
+	t.Run("disableID", func(t *testing.T) {
+		if liveSP.pemPath == "" {
+			t.Skip("no certificate file specified")
+		}
+		certData, err := os.ReadFile(liveSP.pemPath)
+		if err != nil {
+			t.Fatalf(`failed to read cert: %v`, err)
+		}
+		certs, key, err := ParseCertificates(certData, nil)
+		if err != nil {
+			t.Fatalf(`failed to parse cert: %v`, err)
+		}
+		o, stop := initRecording(t)
+		defer stop()
+		opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
+		cred, err := NewClientCertificateCredential(liveSP.tenantID, liveSP.clientID, certs, key, opts)
+		if err != nil {
+			t.Fatalf("failed to construct credential: %v", err)
+		}
+		testGetTokenSuccess(t, cred)
+	})
 }
 
 func TestClientCertificateCredentialADFS_Live(t *testing.T) {

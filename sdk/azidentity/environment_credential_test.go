@@ -238,14 +238,22 @@ func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
 		azureClientSecret: liveSP.secret,
 		azureTenantID:     liveSP.tenantID,
 	}
-	setEnvironmentVariables(t, vars)
-	opts, stop := initRecording(t)
-	defer stop()
-	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts})
-	if err != nil {
-		t.Fatalf("failed to construct credential: %v", err)
+	for _, disabledID := range []bool{true, false} {
+		name := "default options"
+		if disabledID {
+			name = "instance discovery disabled"
+		}
+		t.Run(name, func(t *testing.T) {
+			setEnvironmentVariables(t, vars)
+			opts, stop := initRecording(t)
+			defer stop()
+			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disabledID})
+			if err != nil {
+				t.Fatalf("failed to construct credential: %v", err)
+			}
+			testGetTokenSuccess(t, cred)
+		})
 	}
-	testGetTokenSuccess(t, cred)
 }
 
 func TestEnvironmentCredentialADFS_ClientSecretLive(t *testing.T) {
@@ -307,13 +315,21 @@ func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
 		azurePassword: liveUser.password,
 	}
 	setEnvironmentVariables(t, vars)
-	opts, stop := initRecording(t)
-	defer stop()
-	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts})
-	if err != nil {
-		t.Fatalf("failed to construct credential: %v", err)
+	for _, disabledID := range []bool{true, false} {
+		name := "default options"
+		if disabledID {
+			name = "instance discovery disabled"
+		}
+		t.Run(name, func(t *testing.T) {
+			opts, stop := initRecording(t)
+			defer stop()
+			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts})
+			if err != nil {
+				t.Fatalf("failed to construct credential: %v", err)
+			}
+			testGetTokenSuccess(t, cred)
+		})
 	}
-	testGetTokenSuccess(t, cred)
 }
 
 func TestEnvironmentCredentialADFS_UserPasswordLive(t *testing.T) {

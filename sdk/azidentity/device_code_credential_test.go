@@ -89,17 +89,25 @@ func TestDeviceCodeCredential_Live(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		t.Skip("this test requires manual recording and can't pass live in CI")
 	}
-	o, stop := initRecording(t)
-	defer stop()
-	opts := DeviceCodeCredentialOptions{TenantID: liveUser.tenantID, ClientOptions: o}
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }
+	for _, disabledID := range []bool{true, false} {
+		name := "default options"
+		if disabledID {
+			name = "instance discovery disabled"
+		}
+		t.Run(name, func(t *testing.T) {
+			o, stop := initRecording(t)
+			defer stop()
+			opts := DeviceCodeCredentialOptions{TenantID: liveUser.tenantID, ClientOptions: o, DisableInstanceDiscovery: disabledID}
+			if recording.GetRecordMode() == recording.PlaybackMode {
+				opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }
+			}
+			cred, err := NewDeviceCodeCredential(&opts)
+			if err != nil {
+				t.Fatal(err)
+			}
+			testGetTokenSuccess(t, cred)
+		})
 	}
-	cred, err := NewDeviceCodeCredential(&opts)
-	if err != nil {
-		t.Fatal(err)
-	}
-	testGetTokenSuccess(t, cred)
 }
 
 func TestDeviceCodeCredentialADFS_Live(t *testing.T) {

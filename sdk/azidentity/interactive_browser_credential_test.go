@@ -92,6 +92,21 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 		}
 		testGetTokenSuccess(t, cred)
 	})
+
+	for _, disabledID := range []bool{true, false} {
+		name := "default options"
+		if disabledID {
+			name = "instance discovery disabled"
+		}
+		t.Run(name, func(t *testing.T) {
+			cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{DisableInstanceDiscovery: disabledID})
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			testGetTokenSuccess(t, cred)
+		})
+	}
 }
 
 func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {

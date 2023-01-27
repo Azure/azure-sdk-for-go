@@ -41,14 +41,22 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestClientSecretCredential_Live(t *testing.T) {
-	opts, stop := initRecording(t)
-	defer stop()
-	o := ClientSecretCredentialOptions{ClientOptions: opts}
-	cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, &o)
-	if err != nil {
-		t.Fatalf("failed to construct credential: %v", err)
+	for _, disabledID := range []bool{true, false} {
+		name := "default options"
+		if disabledID {
+			name = "instance discovery disabled"
+		}
+		t.Run(name, func(t *testing.T) {
+			opts, stop := initRecording(t)
+			defer stop()
+			o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disabledID}
+			cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, &o)
+			if err != nil {
+				t.Fatalf("failed to construct credential: %v", err)
+			}
+			testGetTokenSuccess(t, cred)
+		})
 	}
-	testGetTokenSuccess(t, cred)
 }
 
 func TestClientSecretCredentialADFS_Live(t *testing.T) {

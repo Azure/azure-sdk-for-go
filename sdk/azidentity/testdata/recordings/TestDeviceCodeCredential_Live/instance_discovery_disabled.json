@@ -1,0 +1,835 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "max-age=86400, private",
+        "Content-Length": "1589",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:34:38 GMT",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAA; expires=Sun, 26-Feb-2023 00:34:39 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - SCUS ProdSlices",
+        "x-ms-request-id": "ea1c88fd-1511-4fba-ae43-86d6be1f2e00",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "token_endpoint": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+        "token_endpoint_auth_methods_supported": [
+          "client_secret_post",
+          "private_key_jwt",
+          "client_secret_basic"
+        ],
+        "jwks_uri": "https://login.microsoftonline.com/organizations/discovery/v2.0/keys",
+        "response_modes_supported": [
+          "query",
+          "fragment",
+          "form_post"
+        ],
+        "subject_types_supported": [
+          "pairwise"
+        ],
+        "id_token_signing_alg_values_supported": [
+          "RS256"
+        ],
+        "response_types_supported": [
+          "code",
+          "id_token",
+          "code id_token",
+          "id_token token"
+        ],
+        "scopes_supported": [
+          "openid",
+          "profile",
+          "email",
+          "offline_access"
+        ],
+        "issuer": "https://login.microsoftonline.com/{tenantid}/v2.0",
+        "request_uri_parameter_supported": false,
+        "userinfo_endpoint": "https://graph.microsoft.com/oidc/userinfo",
+        "authorization_endpoint": "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize",
+        "device_authorization_endpoint": "https://login.microsoftonline.com/organizations/oauth2/v2.0/devicecode",
+        "http_logout_supported": true,
+        "frontchannel_logout_supported": true,
+        "end_session_endpoint": "https://login.microsoftonline.com/organizations/oauth2/v2.0/logout",
+        "claims_supported": [
+          "sub",
+          "iss",
+          "cloud_instance_name",
+          "cloud_instance_host_name",
+          "cloud_graph_host_name",
+          "msgraph_host",
+          "aud",
+          "exp",
+          "iat",
+          "auth_time",
+          "acr",
+          "nonce",
+          "preferred_username",
+          "name",
+          "tid",
+          "ver",
+          "at_hash",
+          "c_hash",
+          "email"
+        ],
+        "kerberos_endpoint": "https://login.microsoftonline.com/organizations/kerberos",
+        "tenant_region_scope": null,
+        "cloud_instance_name": "microsoftonline.com",
+        "cloud_graph_host_name": "graph.windows.net",
+        "msgraph_host": "graph.microsoft.com",
+        "rbac_url": "https://pas.windows.net"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/devicecode",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "155",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:34:38 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:34:39 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - SCUS ProdSlices",
+        "x-ms-request-id": "26622b62-a99c-4391-b23c-02c3793c3100",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "user_code": "redacted",
+        "device_code": "redacted",
+        "verification_uri": "https://microsoft.com/devicelogin",
+        "expires_in": 900,
+        "interval": 5,
+        "message": "redacted"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:34:39 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:34:39 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - WUS2 ProdSlices",
+        "x-ms-request-id": "0de1f318-d11a-492e-a658-eb2de70b0e01",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: 0de1f318-d11a-492e-a658-eb2de70b0e01\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:34:39Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:34:39Z",
+        "trace_id": "0de1f318-d11a-492e-a658-eb2de70b0e01",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:34:39 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:34:40 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - WUS2 ProdSlices",
+        "x-ms-request-id": "0de1f318-d11a-492e-a658-eb2df80b0e01",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: 0de1f318-d11a-492e-a658-eb2df80b0e01\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:34:40Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:34:40Z",
+        "trace_id": "0de1f318-d11a-492e-a658-eb2df80b0e01",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:34:40 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:34:41 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - SCUS ProdSlices",
+        "x-ms-request-id": "aadc2dd2-3f41-4ace-9bb1-73e4befc2d00",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: aadc2dd2-3f41-4ace-9bb1-73e4befc2d00\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:34:41Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:34:41Z",
+        "trace_id": "aadc2dd2-3f41-4ace-9bb1-73e4befc2d00",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:34:41 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:34:42 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - EUS ProdSlices",
+        "x-ms-request-id": "cfe15df3-7e53-4953-9d2a-4436158c9800",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: cfe15df3-7e53-4953-9d2a-4436158c9800\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:34:42Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:34:42Z",
+        "trace_id": "cfe15df3-7e53-4953-9d2a-4436158c9800",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:34:46 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:34:47 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - EUS ProdSlices",
+        "x-ms-request-id": "7128d1db-545e-4441-9921-86bf31efec00",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: 7128d1db-545e-4441-9921-86bf31efec00\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:34:47Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:34:47Z",
+        "trace_id": "7128d1db-545e-4441-9921-86bf31efec00",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:34:51 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:34:52 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - SCUS ProdSlices",
+        "x-ms-request-id": "10a5398d-eab9-4779-8bc2-696258093000",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: 10a5398d-eab9-4779-8bc2-696258093000\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:34:52Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:34:52Z",
+        "trace_id": "10a5398d-eab9-4779-8bc2-696258093000",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:34:56 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:34:57 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - EUS ProdSlices",
+        "x-ms-request-id": "e2e1b4bc-3e53-4d6a-9c6e-57c034826600",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: e2e1b4bc-3e53-4d6a-9c6e-57c034826600\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:34:57Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:34:57Z",
+        "trace_id": "e2e1b4bc-3e53-4d6a-9c6e-57c034826600",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:01 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:35:02 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14526.6 - SCUS ProdSlices",
+        "x-ms-request-id": "6a6314ea-d896-48a8-bc00-d19804733300",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: 6a6314ea-d896-48a8-bc00-d19804733300\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:35:02Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:35:02Z",
+        "trace_id": "6a6314ea-d896-48a8-bc00-d19804733300",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:07 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:35:07 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - SCUS ProdSlices",
+        "x-ms-request-id": "78ad031c-5a96-44cb-ac00-49d0eabf3800",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: 78ad031c-5a96-44cb-ac00-49d0eabf3800\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:35:07Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:35:07Z",
+        "trace_id": "78ad031c-5a96-44cb-ac00-49d0eabf3800",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:13 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:35:12 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - NCUS ProdSlices",
+        "x-ms-request-id": "3e55b955-950a-4fbe-952b-67d5e89bf500",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: 3e55b955-950a-4fbe-952b-67d5e89bf500\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:35:12Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:35:12Z",
+        "trace_id": "3e55b955-950a-4fbe-952b-67d5e89bf500",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:18 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:35:18 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - EUS ProdSlices",
+        "x-ms-request-id": "e9151095-6872-4737-90f2-975d31bf0100",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: e9151095-6872-4737-90f2-975d31bf0100\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:35:18Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:35:18Z",
+        "trace_id": "e9151095-6872-4737-90f2-975d31bf0100",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:23 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:35:23 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14526.6 - EUS ProdSlices",
+        "x-ms-request-id": "b2f682a7-a5a8-4d41-97ed-6ab4b17b3900",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: b2f682a7-a5a8-4d41-97ed-6ab4b17b3900\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:35:23Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:35:23Z",
+        "trace_id": "b2f682a7-a5a8-4d41-97ed-6ab4b17b3900",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:28 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:35:28 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - EUS ProdSlices",
+        "x-ms-request-id": "67cbbf25-8ef9-4de1-a543-f88becc58900",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: 67cbbf25-8ef9-4de1-a543-f88becc58900\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:35:28Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:35:28Z",
+        "trace_id": "67cbbf25-8ef9-4de1-a543-f88becc58900",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:33 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:35:33 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - NCUS ProdSlices",
+        "x-ms-request-id": "fc4321fa-0b55-41f0-b271-a00aff2db500",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: fc4321fa-0b55-41f0-b271-a00aff2db500\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:35:33Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:35:33Z",
+        "trace_id": "fc4321fa-0b55-41f0-b271-a00aff2db500",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:38 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:35:38 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - EUS ProdSlices",
+        "x-ms-request-id": "e2e1b4bc-3e53-4d6a-9c6e-57c03c876600",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: e2e1b4bc-3e53-4d6a-9c6e-57c03c876600\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:35:38Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:35:38Z",
+        "trace_id": "e2e1b4bc-3e53-4d6a-9c6e-57c03c876600",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "510",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:43 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAAA; expires=Sun, 26-Feb-2023 00:35:43 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14357.8 - EUS ProdSlices",
+        "x-ms-request-id": "376adbd3-be86-4c20-ad4e-e4525400af00",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "error": "authorization_pending",
+        "error_description": "AADSTS70016: OAuth 2.0 device flow error. Authorization is pending. Continue polling.\r\nTrace ID: 376adbd3-be86-4c20-ad4e-e4525400af00\r\nCorrelation ID: 509fbe1a-ea99-4420-8831-e3b9b2c92f65\r\nTimestamp: 2023-01-27 00:35:43Z",
+        "error_codes": [
+          70016
+        ],
+        "timestamp": "2023-01-27 00:35:43Z",
+        "trace_id": "376adbd3-be86-4c20-ad4e-e4525400af00",
+        "correlation_id": "509fbe1a-ea99-4420-8831-e3b9b2c92f65",
+        "error_uri": "https://login.microsoftonline.com/error?code=70016"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Content-Length": "2",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; Windows_NT)"
+      },
+      "RequestBody": {},
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "Content-Length": "1753",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 27 Jan 2023 00:35:49 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtldTtlEjTNPhKsSvKLZB72uN0zNAwAAAKkSZdsOAAAAdXkq2AEAAAAeE2XbDgAAALtMnBABAAAAZRNl2w4AAAA; expires=Sun, 26-Feb-2023 00:35:49 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.14526.6 - EUS ProdSlices",
+        "x-ms-request-id": "fb7abb33-b616-4bcf-9b1c-80b61edf3000",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "token_type": "Bearer",
+        "scope": "https://management.core.windows.net//user_impersonation https://management.core.windows.net//.default",
+        "expires_in": 4812,
+        "ext_expires_in": 4812,
+        "access_token": "redacted",
+        "refresh_token": "redacted",
+        "foci": "1",
+        "id_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyJ9.eyJhdWQiOiIwNGIwNzc5NS04ZGRiLTQ2MWEtYmJlZS0wMmY5ZTFiZjdiNDYiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3L3YyLjAiLCJpYXQiOjE2NzQ3Nzk0NDksIm5iZiI6MTY3NDc3OTQ0OSwiZXhwIjoxNjc0NzgzMzQ5LCJhaW8iOiJBWFFBaS84VEFBQUFiSURHbm9zb013cVFKbk82UGJmdzFaWWFHK1hVZU1GN25lVUNaN2o2OUpMWjZpYkF0cU13Z0lOTkVNclVjdElmdzUvbkxqNUZlQ2w3RjJ5a04rSFRVTzNCL1ZCTTg1VXRZbSthS2NpWm93Q3dzeXlSaFJwMjRvSEZ4ZXBsMHFzdDlHR2JDNDVOa1d4VVE4eDdtYzduMEE9PSIsIm5hbWUiOiJKb25hdGhhbiBOZ3V5ZW4iLCJvaWQiOiJjYjg2MjRhNi1iZWFjLTRlOGYtOTg3Zi05NzY5ZWFjZWEyZjgiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqb25uZ3V5ZW5AbWljcm9zb2Z0LmNvbSIsInB1aWQiOiIxMDAzMjAwMjI0MTEyNjc2IiwicmgiOiIwLkFSb0F2NGo1Y3ZHR3IwR1JxeTE4MEJIYlI1VjNzQVRialJwR3UtNEMtZUdfZTBZYUFFRS4iLCJzdWIiOiJaeWVJZ25PUENuX2JUWnJzSTJmc2xWckI2aDhmNGx4WlhtdHJSdDRMNXprIiwidGlkIjoiNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3IiwidXRpIjoiTTd0Ni14YTJ6MHViSElDMkh0OHdBQSIsInZlciI6IjIuMCJ9.aZHnlHfFgN4GSS1ioTvg0Ab4mY6kJ4p7d60bGB3LAk8h3JIlNgnnmY7ZRUzI-CMhtUaIGQtqPfptC0tJohpB58_xpWNrUntOlf0UIBp0u5GYmMl91wP0QN-LGjfjw2X1gYvb0QG3suvAReQXyvWoMTFU1apB8dERqv2wCx175x6TI3FNwOJhY3UpPlGlEMVBYqsOdvlrM4vrn1ANV_JyvxXT-0Og8L-UjCtQ04vE4GKdlf5v_maasIlA7EFuIFecEiZ4xT24eJ-Fl-ZpYgqEHpvL_hqDXR1fWKWH8jpoySUy_qnbKr8RlMioP7h0tCCvWXCG6KkuEs7BFQHgIV9p7Q",
+        "client_info": "eyJ1aWQiOiJjYjg2MjRhNi1iZWFjLTRlOGYtOTg3Zi05NzY5ZWFjZWEyZjgiLCJ1dGlkIjoiNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3In0"
+      }
+    }
+  ],
+  "Variables": {}
+}

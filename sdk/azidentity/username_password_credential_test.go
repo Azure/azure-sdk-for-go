@@ -39,14 +39,22 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestUsernamePasswordCredential_Live(t *testing.T) {
-	o, stop := initRecording(t)
-	defer stop()
-	opts := UsernamePasswordCredentialOptions{ClientOptions: o}
-	cred, err := NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
+	for _, disabledID := range []bool{true, false} {
+		name := "default options"
+		if disabledID {
+			name = "instance discovery disabled"
+		}
+		t.Run(name, func(t *testing.T) {
+			o, stop := initRecording(t)
+			defer stop()
+			opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: disabledID}
+			cred, err := NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
+			if err != nil {
+				t.Fatalf("Unable to create credential. Received: %v", err)
+			}
+			testGetTokenSuccess(t, cred)
+		})
 	}
-	testGetTokenSuccess(t, cred)
 }
 
 func TestUsernamePasswordCredentialADFS_Live(t *testing.T) {

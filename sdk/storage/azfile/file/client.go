@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"io"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -69,7 +70,7 @@ func (f *Client) URL() string {
 }
 
 // Create operation creates a new file or replaces a file. Note it only initializes the file with no content.
-// 	 - fileContentLength - Specifies the maximum size for the file, up to 4 TB.
+// 	 - fileContentLength: Specifies the maximum size for the file, up to 4 TB.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
 	return CreateResponse{}, nil
@@ -87,10 +88,10 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 	return GetPropertiesResponse{}, nil
 }
 
-// SetProperties operation sets system properties on the file.
+// SetHTTPHeaders operation sets HTTP headers on the file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
-func (f *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
-	return SetPropertiesResponse{}, nil
+func (f *Client) SetHTTPHeaders(ctx context.Context, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
+	return SetHTTPHeadersResponse{}, nil
 }
 
 // SetMetadata operation sets user-defined metadata for the specified file.
@@ -100,14 +101,14 @@ func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 }
 
 // StartCopyFromURL operation copies the data at the source URL to a file.
-// 	 - copySource - specifies the URL of the source file or blob, up to 2KiB in length.
+// 	 - copySource: specifies the URL of the source file or blob, up to 2KiB in length.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/copy-file.
 func (f *Client) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyFromURLOptions) (StartCopyFromURLResponse, error) {
 	return StartCopyFromURLResponse{}, nil
 }
 
 // AbortCopy operation cancels a pending Copy File operation, and leaves a destination file with zero length and full metadata.
-// 	 - copyID - the copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
+// 	 - copyID: the copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/abort-copy-file.
 func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCopyOptions) (AbortCopyResponse, error) {
 	return AbortCopyResponse{}, nil
@@ -117,6 +118,41 @@ func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCop
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
 func (f *Client) Download(ctx context.Context, options *DownloadOptions) (DownloadResponse, error) {
 	return DownloadResponse{}, nil
+}
+
+// Resize operation resizes the file to the specified size.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
+func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions) (ResizeResponse, error) {
+	return ResizeResponse{}, nil
+}
+
+// UploadRange operation uploads a range of bytes to a file.
+// 	 - contentRange: Specifies the range of bytes to be written.
+// 	 - body: Specifies the data to be uploaded.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
+func (f *Client) UploadRange(ctx context.Context, contentRange HTTPRange, body io.ReadSeekCloser, options *UploadRangeOptions) (UploadRangeResponse, error) {
+	return UploadRangeResponse{}, nil
+}
+
+// ClearRange operation clears the specified range and releases the space used in storage for that range.
+// 	 - contentRange: Specifies the range of bytes to be cleared.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
+func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options *ClearRangeOptions) (ClearRangeResponse, error) {
+	return ClearRangeResponse{}, nil
+}
+
+// UploadRangeFromURL operation uploads a range of bytes to a file where the contents are read from a URL.
+// 	 - copySource: Specifies the URL of the source file or blob, up to 2 KB in length.
+//	 - destinationRange: Specifies the range of bytes in the file to be written.
+//	 - sourceRange: Bytes of source data in the specified range.
+func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, destinationRange HTTPRange, sourceRange HTTPRange, options *UploadRangeFromURLOptions) (UploadRangeFromURLResponse, error) {
+	return UploadRangeFromURLResponse{}, nil
+}
+
+// GetRangeList operation returns the list of valid ranges for a file.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-ranges.
+func (f *Client) GetRangeList(ctx context.Context, options *GetRangeListOptions) (GetRangeListResponse, error) {
+	return GetRangeListResponse{}, nil
 }
 
 // AcquireLease operation can be used to request a new lease.

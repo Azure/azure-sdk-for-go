@@ -44,6 +44,9 @@ type HTTPHeaders = generated.ShareFileHTTPHeaders
 // LeaseAccessConditions contains optional parameters to access leased entity.
 type LeaseAccessConditions = generated.LeaseAccessConditions
 
+// SourceModifiedAccessConditions contains a group of parameters for the FileClient.UploadRangeFromURL method.
+type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
+
 // CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
 type CopyFileSmbInfo = generated.CopyFileSmbInfo
 
@@ -54,6 +57,15 @@ type HTTPRange struct {
 	Offset int64
 	Count  int64
 }
+
+// ShareFileRangeList - The list of file ranges.
+type ShareFileRangeList = generated.ShareFileRangeList
+
+// ClearRange - Ranges there were cleared.
+type ClearRange = generated.ClearRange
+
+// ShareFileRange - An Azure Storage file range.
+type ShareFileRange = generated.FileRange
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -90,8 +102,8 @@ type GetPropertiesOptions struct {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// SetPropertiesOptions contains the optional parameters for the Client.SetProperties method.
-type SetPropertiesOptions struct {
+// SetHTTPHeadersOptions contains the optional parameters for the Client.SetHTTPHeaders method.
+type SetHTTPHeadersOptions struct {
 	// Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges
 	// above the specified byte value are cleared.
 	FileContentLength *int64
@@ -131,6 +143,15 @@ type StartCopyFromURLOptions struct {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// AbortCopyOptions contains the optional parameters for the Client.AbortCopy method.
+type AbortCopyOptions struct {
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	// Required if the destination file has an active lease.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // DownloadOptions contains the optional parameters for the Client.Download method.
 type DownloadOptions struct {
 	// Return file data only from the specified byte range.
@@ -147,10 +168,59 @@ type DownloadOptions struct {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// AbortCopyOptions contains the optional parameters for the Client.AbortCopy method.
-type AbortCopyOptions struct {
+// ResizeOptions contains the optional parameters for the Client.Resize method.
+type ResizeOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
-	// Required if the destination file has an active lease.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// UploadRangeOptions contains the optional parameters for the Client.UploadRange method.
+type UploadRangeOptions struct {
+	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
+	// header is specified, the File service compares the hash of the content that has
+	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400 (Bad Request).
+	ContentMD5 []byte
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ClearRangeOptions contains the optional parameters for the Client.ClearRange method.
+type ClearRangeOptions struct {
+	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
+	// header is specified, the File service compares the hash of the content that has
+	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400 (Bad Request).
+	ContentMD5 []byte
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// UploadRangeFromURLOptions contains the optional parameters for the Client.UploadRangeFromURL method.
+type UploadRangeFromURLOptions struct {
+	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
+	CopySourceAuthorization *string
+	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
+	SourceContentCRC64             []byte
+	SourceModifiedAccessConditions *SourceModifiedAccessConditions
+	LeaseAccessConditions          *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetRangeListOptions contains the optional parameters for the Client.GetRangeList method.
+type GetRangeListOptions struct {
+	// The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
+	PrevShareSnapshot *string
+	// Specifies the range of bytes over which to list ranges, inclusively.
+	Range *HTTPRange
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	ShareSnapshot *string
+	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 }
 

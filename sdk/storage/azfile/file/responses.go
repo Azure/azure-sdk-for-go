@@ -20,17 +20,32 @@ type GetPropertiesResponse = generated.FileClientGetPropertiesResponse
 // SetMetadataResponse contains the response from method Client.SetMetadata.
 type SetMetadataResponse = generated.FileClientSetMetadataResponse
 
-// SetPropertiesResponse contains the response from method Client.SetProperties.
-type SetPropertiesResponse = generated.FileClientSetHTTPHeadersResponse
+// SetHTTPHeadersResponse contains the response from method Client.SetHTTPHeaders.
+type SetHTTPHeadersResponse = generated.FileClientSetHTTPHeadersResponse
 
 // StartCopyFromURLResponse contains the response from method Client.StartCopyFromURL.
 type StartCopyFromURLResponse = generated.FileClientStartCopyResponse
 
+// AbortCopyResponse contains the response from method Client.AbortCopy.
+type AbortCopyResponse = generated.FileClientAbortCopyResponse
+
 // DownloadResponse contains the response from method Client.Download.
 type DownloadResponse = generated.FileClientDownloadResponse
 
-// AbortCopyResponse contains the response from method Client.AbortCopy.
-type AbortCopyResponse = generated.FileClientAbortCopyResponse
+// ResizeResponse contains the response from method Client.Resize.
+type ResizeResponse = generated.FileClientSetHTTPHeadersResponse
+
+// UploadRangeResponse contains the response from method Client.UploadRange.
+type UploadRangeResponse = generated.FileClientUploadRangeResponse
+
+// ClearRangeResponse contains the response from method Client.ClearRange.
+type ClearRangeResponse = generated.FileClientUploadRangeResponse
+
+// UploadRangeFromURLResponse contains the response from method Client.UploadRangeFromURL.
+type UploadRangeFromURLResponse = generated.FileClientUploadRangeFromURLResponse
+
+// GetRangeListResponse contains the response from method Client.GetRangeList.
+type GetRangeListResponse = generated.FileClientGetRangeListResponse
 
 // AcquireLeaseResponse contains the response from method Client.AcquireLease.
 type AcquireLeaseResponse = generated.FileClientAcquireLeaseResponse

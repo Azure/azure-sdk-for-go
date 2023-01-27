@@ -62,6 +62,15 @@ type StorageServiceStats = generated.StorageServiceStats
 // SignedIdentifier - signed identifier
 type SignedIdentifier = generated.SignedIdentifier
 
+// EnqueuedMessage - enqueued message
+type EnqueuedMessage = generated.EnqueuedMessage
+
+// DequeuedMessageItem - dequeued message
+type DequeuedMessageItem = generated.DequeuedMessageItem
+
+// PeekedMessageItem - peeked message
+type PeekedMessageItem = generated.PeekedMessageItem
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ListQueuesOptions provides set of configurations for ListQueues operation

@@ -1,71 +1,9 @@
 # Azure Template Package client library for Go
 
-Azure Template Package client library for Go (`azpki`)  matches necessary patterns that the development team has established to create a unified SDK written in the Go programming language. These libraries follow the Azure SDK Design Guidelines for Go.
+The azpki API is a new Azure service which provides the concept of Private CA to customers. It will allow customers to: 
 
-The library allows client libraries to expose common functionality in a consistent fashion.  Once you learn how to use these APIs in one client library, you will know how to use them in other client libraries.
+## Describe their own CA (Certificate Authorities) in the Azure cloud. 
+## Use that CA to issue and revoke certificates. 
+## Host CRLs (Certificate Revocation Lists) and OCSP responses.
 
-## Getting started
-
-For a rich example of a well formatted readme, please check [here.](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-TEMPLATE.md) In addition, this is an [example readme](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-EXAMPLE.md) that should be emulated. Note that the top-level sections in this template align with that of the [template.](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-TEMPLATE.md)
-
-### Key concepts
-
-Bullet point list of your library's main concepts.
-
-### Examples
-
-Examples of some of the key concepts for your library.
-
-### Troubleshooting
-
-Running into issues? This section should contain details as to what to do there.
-
-### Next steps
-
-More sample code should go here, along with links out to the appropriate example tests.
-
-#### Contributing
-
-For details on contributing to this repository, see the [contributing guide][azure_sdk_for_go_contributing].
-
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit <https://cla.microsoft.com>.
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-##### Additional Helpful Links for Contributors
-
-Many people all over the world have helped make this project better.  You'll want to check out:
-
-* [What are some good first issues for new contributors to the repo?](https://github.com/azure/azure-sdk-for-go/issues?q=is%3Aopen+is%3Aissue+label%3A%22up+for+grabs%22)
-* [How to build and test your change][azure_sdk_for_go_contributing_developer_guide]
-* [How you can make a change happen!][azure_sdk_for_go_contributing_pull_requests]
-* Frequently Asked Questions (FAQ) and Conceptual Topics in the detailed [Azure SDK for Go wiki](https://github.com/azure/azure-sdk-for-go/wiki).
-
-<!-- ### Community-->
-##### Reporting security issues and security bugs
-
-Security issues and bugs should be reported privately, via email, to the Microsoft Security Response Center (MSRC) <secure@microsoft.com>. You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message. Further information, including the MSRC PGP key, can be found in the [Security TechCenter](https://www.microsoft.com/msrc/faqs-report-an-issue).
-
-##### License
-
-Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/identity/azpki/LICENSE.txt) license.
-
-<!-- LINKS -->
-[azure_sdk_for_go_contributing]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
-[azure_sdk_for_go_contributing_developer_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md#developer-guide
-[azure_sdk_for_go_contributing_pull_requests]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md#pull-requests
-[//]: # (https://docs.microsoft.com/cli/azure)
-[//]: # (https://docs.microsoft.com/azure/architecture/patterns/circuit-breaker)
-[//]: # (https://docs.microsoft.com/azure/architecture/patterns/retry)
-[//]: # (https://portal.azure.com)
-[//]: # (https://azure.microsoft.com/free/)
-[//]: # (https://docs.microsoft.com/azure/cloud-shell/overview)
-[//]: # (https://shell.azure.com/bash)
+Please find additional details for the API [here.](https://microsoft.sharepoint.com/:w:/t/PKIaaS/EVnYiASHsyBFjD72tLLv6VIBRIq1q5nPiitAC4apyNcTRw?e=FcvYsd&nav=eyJoIjoiMTcwMjg0MzMwNCJ9&wdOrigin=TEAMS-ELECTRON.p2p.bim&wdExp=TEAMS-TREATMENT&wdhostclicktime=1673615940893&web=1&xsdata=MDV8MDF8fDNhYjBlODhlOWYwMjQxZWRiZDBhMDhkYWZmZGY3ZWZifDcyZjk4OGJmODZmMTQxYWY5MWFiMmQ3Y2QwMTFkYjQ3fDB8MHw2MzgxMDM2MzI1OTk1NjM1MzB8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT18MXxNVFkzTkRjMk5qUTFPRGd4TkRzeE5qYzBOelkyTkRVNE9ERTBPekU1T2pBek5UUTFZMlkwTFRCaE9HTXRORE5rWWkwNFptWXdMVGd3WWprd1ptUmhZVEZsTWw4elptVTFOVFUwTnkweFltTTVMVFEzTTJJdE9UZ3dNeTB3TVRrMU1XVmpPVGM0T1RWQWRXNXhMbWRpYkM1emNHRmpaWE09fGFlMWI5MjE4NjdmNzQ2M2ZiZDBhMDhkYWZmZGY3ZWZifDA2NWFkYjU1Y2Y0MTQ5OGU4NTJhY2Y4MDhhYjk5YmYw&sdata=VjNrY2V4elJiYmxZdjhCWjNwV1FtZHNxT3VOZ1NTR0lFcmVwNnRHd2RJRT0%3D&ovuser=72f988bf-86f1-41af-91ab-2d7cd011db47%2Carpitsaxena%40microsoft.com&OR=Teams-HL&CT=1674780808458&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiIyNy8yMzAxMDEwMDkxMSIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D)

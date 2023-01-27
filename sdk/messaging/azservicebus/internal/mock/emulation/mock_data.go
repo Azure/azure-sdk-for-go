@@ -339,8 +339,6 @@ func (md *MockData) cbsRouter(ctx context.Context, in *Queue, getQueue func(name
 
 		out := getQueue(replyTo)
 
-		log.Printf("Sending CBS reply to %s", replyTo)
-
 		// assume auth is valid.
 		err = out.Send(ctx, &amqp.Message{
 			Properties: &amqp.MessageProperties{

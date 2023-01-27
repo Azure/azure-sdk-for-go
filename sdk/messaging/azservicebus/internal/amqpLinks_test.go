@@ -833,7 +833,7 @@ func TestAMQPCloseLinkTimeout(t *testing.T) {
 
 	md = emulation.NewMockData(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(orig *mock.MockAMQPReceiverCloser, ctx context.Context, source string, opts *amqp.ReceiverOptions, connID string) (*mock.MockAMQPReceiverCloser, error) {
-			if source != "$cbs" {
+			if source == "entity path" {
 				orig.EXPECT().Close(&mock.ContextCreatedForTest{}).DoAndReturn(func(ctx context.Context) error {
 					md.Events.CloseLink(emulation.LinkEvent{
 						ConnID: connID,

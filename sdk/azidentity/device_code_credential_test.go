@@ -87,8 +87,8 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 
 func TestDeviceCodeCredential_Live(t *testing.T) {
 	mode := recording.GetRecordMode()
-	if mode != recording.PlaybackMode {
-		t.Skip("this test requires manual recording and can't pass live in CI")
+	if mode != recording.PlaybackMode && !runManualTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
 	}
 	for _, test := range []struct {
 		clientID, desc, tenantID string
@@ -123,8 +123,8 @@ func TestDeviceCodeCredential_Live(t *testing.T) {
 }
 
 func TestDeviceCodeCredentialADFS_Live(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		t.Skip("this test requires manual recording and can't pass live in CI")
+	if recording.GetRecordMode() != recording.PlaybackMode && !runManualTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
 	}
 	if adfsLiveSP.clientID == "" {
 		t.Skip("set ADFS_SP_* environment variables to run this test")

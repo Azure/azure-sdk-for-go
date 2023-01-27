@@ -114,11 +114,11 @@ func (client *BlobClient) abortCopyFromURLHandleResponse(resp *http.Response) (B
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-10-02
-// duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
-// lease can be between 15 and 60 seconds. A lease duration cannot be changed using
-// renew or change.
-// options - BlobClientAcquireLeaseOptions contains the optional parameters for the BlobClient.AcquireLease method.
-// ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
+//   - duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
+//     lease can be between 15 and 60 seconds. A lease duration cannot be changed using
+//     renew or change.
+//   - options - BlobClientAcquireLeaseOptions contains the optional parameters for the BlobClient.AcquireLease method.
+//   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
 func (client *BlobClient) AcquireLease(ctx context.Context, duration int32, options *BlobClientAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (BlobClientAcquireLeaseResponse, error) {
 	req, err := client.acquireLeaseCreateRequest(ctx, duration, options, modifiedAccessConditions)
 	if err != nil {
@@ -574,11 +574,11 @@ func (client *BlobClient) copyFromURLHandleResponse(resp *http.Response) (BlobCl
 //
 // Generated from API version 2020-10-02
 //   - options - BlobClientCreateSnapshotOptions contains the optional parameters for the BlobClient.CreateSnapshot method.
-//   - CpkInfo - CpkInfo contains a group of parameters for the BlobClient.Download method.
-//   - CpkScopeInfo - CpkScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
+//   - CPKInfo - CPKInfo contains a group of parameters for the BlobClient.Download method.
+//   - CPKScopeInfo - CPKScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
-func (client *BlobClient) CreateSnapshot(ctx context.Context, options *BlobClientCreateSnapshotOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (BlobClientCreateSnapshotResponse, error) {
+func (client *BlobClient) CreateSnapshot(ctx context.Context, options *BlobClientCreateSnapshotOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, modifiedAccessConditions *ModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (BlobClientCreateSnapshotResponse, error) {
 	req, err := client.createSnapshotCreateRequest(ctx, options, cpkInfo, cpkScopeInfo, modifiedAccessConditions, leaseAccessConditions)
 	if err != nil {
 		return BlobClientCreateSnapshotResponse{}, err
@@ -594,7 +594,7 @@ func (client *BlobClient) CreateSnapshot(ctx context.Context, options *BlobClien
 }
 
 // createSnapshotCreateRequest creates the CreateSnapshot request.
-func (client *BlobClient) createSnapshotCreateRequest(ctx context.Context, options *BlobClientCreateSnapshotOptions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *BlobClient) createSnapshotCreateRequest(ctx context.Context, options *BlobClientCreateSnapshotOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, modifiedAccessConditions *ModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -868,9 +868,9 @@ func (client *BlobClient) deleteImmutabilityPolicyHandleResponse(resp *http.Resp
 // Generated from API version 2020-10-02
 //   - options - BlobClientDownloadOptions contains the optional parameters for the BlobClient.Download method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
-//   - CpkInfo - CpkInfo contains a group of parameters for the BlobClient.Download method.
+//   - CPKInfo - CPKInfo contains a group of parameters for the BlobClient.Download method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-func (client *BlobClient) Download(ctx context.Context, options *BlobClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobClientDownloadResponse, error) {
+func (client *BlobClient) Download(ctx context.Context, options *BlobClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobClientDownloadResponse, error) {
 	req, err := client.downloadCreateRequest(ctx, options, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
 	if err != nil {
 		return BlobClientDownloadResponse{}, err
@@ -886,7 +886,7 @@ func (client *BlobClient) Download(ctx context.Context, options *BlobClientDownl
 }
 
 // downloadCreateRequest creates the Download request.
-func (client *BlobClient) downloadCreateRequest(ctx context.Context, options *BlobClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
+func (client *BlobClient) downloadCreateRequest(ctx context.Context, options *BlobClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1230,9 +1230,9 @@ func (client *BlobClient) getAccountInfoHandleResponse(resp *http.Response) (Blo
 // Generated from API version 2020-10-02
 //   - options - BlobClientGetPropertiesOptions contains the optional parameters for the BlobClient.GetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
-//   - CpkInfo - CpkInfo contains a group of parameters for the BlobClient.Download method.
+//   - CPKInfo - CPKInfo contains a group of parameters for the BlobClient.Download method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-func (client *BlobClient) GetProperties(ctx context.Context, options *BlobClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobClientGetPropertiesResponse, error) {
+func (client *BlobClient) GetProperties(ctx context.Context, options *BlobClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
 	if err != nil {
 		return BlobClientGetPropertiesResponse{}, err
@@ -1248,7 +1248,7 @@ func (client *BlobClient) GetProperties(ctx context.Context, options *BlobClient
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
-func (client *BlobClient) getPropertiesCreateRequest(ctx context.Context, options *BlobClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
+func (client *BlobClient) getPropertiesCreateRequest(ctx context.Context, options *BlobClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodHead, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1624,9 +1624,9 @@ func (client *BlobClient) getTagsHandleResponse(resp *http.Response) (BlobClient
 // Generated from API version 2020-10-02
 //   - options - BlobClientQueryOptions contains the optional parameters for the BlobClient.Query method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
-//   - CpkInfo - CpkInfo contains a group of parameters for the BlobClient.Download method.
+//   - CPKInfo - CPKInfo contains a group of parameters for the BlobClient.Download method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-func (client *BlobClient) Query(ctx context.Context, options *BlobClientQueryOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobClientQueryResponse, error) {
+func (client *BlobClient) Query(ctx context.Context, options *BlobClientQueryOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobClientQueryResponse, error) {
 	req, err := client.queryCreateRequest(ctx, options, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
 	if err != nil {
 		return BlobClientQueryResponse{}, err
@@ -1642,7 +1642,7 @@ func (client *BlobClient) Query(ctx context.Context, options *BlobClientQueryOpt
 }
 
 // queryCreateRequest creates the Query request.
-func (client *BlobClient) queryCreateRequest(ctx context.Context, options *BlobClientQueryOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
+func (client *BlobClient) queryCreateRequest(ctx context.Context, options *BlobClientQueryOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPost, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -2387,10 +2387,10 @@ func (client *BlobClient) setLegalHoldHandleResponse(resp *http.Response) (BlobC
 // Generated from API version 2020-10-02
 //   - options - BlobClientSetMetadataOptions contains the optional parameters for the BlobClient.SetMetadata method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
-//   - CpkInfo - CpkInfo contains a group of parameters for the BlobClient.Download method.
-//   - CpkScopeInfo - CpkScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
+//   - CPKInfo - CPKInfo contains a group of parameters for the BlobClient.Download method.
+//   - CPKScopeInfo - CPKScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
-func (client *BlobClient) SetMetadata(ctx context.Context, options *BlobClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobClientSetMetadataResponse, error) {
+func (client *BlobClient) SetMetadata(ctx context.Context, options *BlobClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlobClientSetMetadataResponse, error) {
 	req, err := client.setMetadataCreateRequest(ctx, options, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 	if err != nil {
 		return BlobClientSetMetadataResponse{}, err
@@ -2406,7 +2406,7 @@ func (client *BlobClient) SetMetadata(ctx context.Context, options *BlobClientSe
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
-func (client *BlobClient) setMetadataCreateRequest(ctx context.Context, options *BlobClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
+func (client *BlobClient) setMetadataCreateRequest(ctx context.Context, options *BlobClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err

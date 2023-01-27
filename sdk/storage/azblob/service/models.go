@@ -53,11 +53,11 @@ type ContainerItem = generated.ContainerItem
 // ContainerProperties - Properties of a container
 type ContainerProperties = generated.ContainerProperties
 
-// CpkInfo contains a group of parameters for the BlobClient.Download method.
-type CpkInfo = generated.CpkInfo
+// CPKInfo contains a group of parameters for the BlobClient.Download method.
+type CPKInfo = generated.CPKInfo
 
-// CpkScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
-type CpkScopeInfo = generated.CpkScopeInfo
+// CPKScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
+type CPKScopeInfo = generated.CPKScopeInfo
 
 // CreateContainerOptions contains the optional parameters for the container.Client.Create method.
 type CreateContainerOptions = container.CreateOptions

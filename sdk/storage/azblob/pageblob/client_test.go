@@ -86,12 +86,12 @@ func createNewPageBlobWithSize(ctx context.Context, _require *require.Assertions
 	return pbClient
 }
 
-func createNewPageBlobWithCPK(ctx context.Context, _require *require.Assertions, pageBlobName string, container *container.Client, sizeInBytes int64, cpkInfo *blob.CpkInfo, cpkScopeInfo *blob.CpkScopeInfo) (pbClient *pageblob.Client) {
+func createNewPageBlobWithCPK(ctx context.Context, _require *require.Assertions, pageBlobName string, container *container.Client, sizeInBytes int64, cpkInfo *blob.CPKInfo, cpkScopeInfo *blob.CPKScopeInfo) (pbClient *pageblob.Client) {
 	pbClient = getPageBlobClient(pageBlobName, container)
 
 	_, err := pbClient.Create(ctx, sizeInBytes, &pageblob.CreateOptions{
-		CpkInfo:      cpkInfo,
-		CpkScopeInfo: cpkScopeInfo,
+		CPKInfo:      cpkInfo,
+		CPKScopeInfo: cpkScopeInfo,
 	})
 	_require.Nil(err)
 	// _require.Equal(resp.RawResponse.StatusCode, 201)
@@ -3742,7 +3742,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	pbClient := createNewPageBlobWithCPK(context.Background(), _require, pbName, containerClient, int64(contentSize), &testcommon.TestCPKByValue, nil)
 
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		CpkInfo: &testcommon.TestCPKByValue,
+		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	uploadResp, err := pbClient.UploadPages(context.Background(), r, blob.HTTPRange{
 		Count: int64(contentSize),
@@ -3770,14 +3770,14 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	_require.NotNil(err)
 
 	downloadBlobOptions := blob.DownloadStreamOptions{
-		CpkInfo: &testcommon.TestInvalidCPKByValue,
+		CPKInfo: &testcommon.TestInvalidCPKByValue,
 	}
 	_, err = pbClient.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.NotNil(err)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions = blob.DownloadStreamOptions{
-		CpkInfo: &testcommon.TestCPKByValue,
+		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	downloadResp, err := pbClient.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.Nil(err)
@@ -3803,7 +3803,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 	pbClient := createNewPageBlobWithCPK(context.Background(), _require, pbName, containerClient, int64(contentSize), nil, &encryptionScope)
 
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		CpkScopeInfo: &encryptionScope,
+		CPKScopeInfo: &encryptionScope,
 	}
 	uploadResp, err := pbClient.UploadPages(context.Background(), r, blob.HTTPRange{
 		Count: int64(contentSize),
@@ -3828,7 +3828,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := blob.DownloadStreamOptions{
-		CpkScopeInfo: &encryptionScope,
+		CPKScopeInfo: &encryptionScope,
 	}
 	downloadResp, err := pbClient.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.Nil(err)
@@ -3993,13 +3993,13 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeWithCPK() {
 	pbClient := createNewPageBlobWithCPK(context.Background(), _require, pbName, containerClient, pageblob.PageBytes*10, &testcommon.TestCPKByValue, nil)
 
 	resizePageBlobOptions := pageblob.ResizeOptions{
-		CpkInfo: &testcommon.TestCPKByValue,
+		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	_, err = pbClient.Resize(context.Background(), pageblob.PageBytes, &resizePageBlobOptions)
 	_require.Nil(err)
 
 	getBlobPropertiesOptions := blob.GetPropertiesOptions{
-		CpkInfo: &testcommon.TestCPKByValue,
+		CPKInfo: &testcommon.TestCPKByValue,
 	}
 	resp, _ := pbClient.GetProperties(context.Background(), &getBlobPropertiesOptions)
 	_require.Equal(*resp.ContentLength, int64(pageblob.PageBytes))
@@ -4253,7 +4253,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 //	srcBlobURLWithSAS := srcBlobParts.URL()
 //	uploadPagesFromURLOptions := pageblob.UploadPagesFromURLOptions{
 //		SourceContentMD5: contentMD5,
-//		CpkInfo:          &testcommon.TestCPKByValue,
+//		CPKInfo:          &testcommon.TestCPKByValue,
 //	}
 //	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 //	_require.Nil(err)
@@ -4274,20 +4274,20 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 //	_require.NotNil(err)
 //
 //	downloadBlobOptions := blob.downloadWriterAtOptions{
-//		CpkInfo: &testcommon.TestInvalidCPKByValue,
+//		CPKInfo: &testcommon.TestInvalidCPKByValue,
 //	}
 //	_, err = destBlob.DownloadStream(ctx, &downloadBlobOptions)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = blob.downloadWriterAtOptions{
-//		CpkInfo: &testcommon.TestCPKByValue,
+//		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	downloadResp, err := destBlob.DownloadStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
 //
-//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CPKInfo: &testcommon.TestCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 // }
@@ -4337,7 +4337,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 //	srcBlobURLWithSAS := srcBlobParts.URL()
 //	uploadPagesFromURLOptions := pageblob.UploadPagesFromURLOptions{
 //		SourceContentMD5: contentMD5,
-//		CpkScopeInfo:     &testcommon.TestCPKByScope,
+//		CPKScopeInfo:     &testcommon.TestCPKByScope,
 //	}
 //	resp, err := dstPBBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 //	_require.Nil(err)
@@ -4356,13 +4356,13 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions := blob.downloadWriterAtOptions{
-//		CpkScopeInfo: &testcommon.TestCPKByScope,
+//		CPKScopeInfo: &testcommon.TestCPKByScope,
 //	}
 //	downloadResp, err := dstPBBlob.DownloadStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
 //
-//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CPKInfo: &testcommon.TestCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 // }
@@ -4412,7 +4412,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 //	destPBClient := createNewPageBlobWithCPK(_require, dstPBName, containerClient, int64(contentSize), &testcommon.TestCPKByValue, nil)
 //	uploadPagesFromURLOptions := pageblob.UploadPagesFromURLOptions{
 //		SourceContentMD5: contentMD5,
-//		CpkInfo:          &testcommon.TestCPKByValue,
+//		CPKInfo:          &testcommon.TestCPKByValue,
 //	}
 //	resp, err := destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 //	_require.Nil(err)
@@ -4433,20 +4433,20 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 //	_require.NotNil(err)
 //
 //	downloadBlobOptions := blob.downloadWriterAtOptions{
-//		CpkInfo: &testcommon.TestInvalidCPKByValue,
+//		CPKInfo: &testcommon.TestInvalidCPKByValue,
 //	}
 //	_, err = destPBClient.DownloadStream(ctx, &downloadBlobOptions)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = blob.downloadWriterAtOptions{
-//		CpkInfo: &testcommon.TestCPKByValue,
+//		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	downloadResp, err := destPBClient.DownloadStream(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
 //
-//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testcommon.TestCPKByValue}))
+//	destData, err := io.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CPKInfo: &testcommon.TestCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 //
@@ -4477,18 +4477,18 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 //	contentSize := 2 * 1024
 //	r := getReaderToGeneratedBytes(contentSize)
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-//	uploadPagesOptions := pageblob.UploadPagesOptions{Range: &HttpRange{offset, count}, CpkInfo: &testcommon.TestCPKByValue}
+//	uploadPagesOptions := pageblob.UploadPagesOptions{Range: &HttpRange{offset, count}, CPKInfo: &testcommon.TestCPKByValue}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 //	_require.Nil(err)
 //
 //	createBlobSnapshotOptions := blob.CreateSnapshotOptions{
-//		CpkInfo: &testcommon.TestCPKByValue,
+//		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	snapshotResp, err := pbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
 //	_require.Nil(err)
 //
 //	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
-//	uploadPagesOptions1 := pageblob.UploadPagesOptions{Range: &HttpRange{offset1, count1}, CpkInfo: &testcommon.TestCPKByValue}
+//	uploadPagesOptions1 := pageblob.UploadPagesOptions{Range: &HttpRange{offset1, count1}, CPKInfo: &testcommon.TestCPKByValue}
 //	_, err = pbClient.UploadPages(ctx, getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
 //	_require.Nil(err)
 //
@@ -4502,7 +4502,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 //	_require.Equal(rawEnd, end1)
 //
 //	clearPagesOptions := PageBlobClearPagesOptions{
-//		CpkInfo: &testcommon.TestCPKByValue,
+//		CPKInfo: &testcommon.TestCPKByValue,
 //	}
 //	clearResp, err := pbClient.ClearPages(ctx, HttpRange{2048, 2048}, &clearPagesOptions)
 //	_require.Nil(err)

@@ -24,8 +24,8 @@ type DownloadStreamResponse struct {
 
 	client   *Client
 	getInfo  httpGetterInfo
-	cpkInfo  *CpkInfo
-	cpkScope *CpkScopeInfo
+	cpkInfo  *CPKInfo
+	cpkScope *CPKScopeInfo
 }
 
 // NewRetryReader constructs new RetryReader stream for reading data. If a connection fails while
@@ -44,8 +44,8 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 		options := DownloadStreamOptions{
 			Range:            getInfo.Range,
 			AccessConditions: accessConditions,
-			CpkInfo:          r.cpkInfo,
-			CpkScopeInfo:     r.cpkScope,
+			CPKInfo:          r.cpkInfo,
+			CPKScopeInfo:     r.cpkScope,
 		}
 		resp, err := r.client.DownloadStream(ctx, &options)
 		if err != nil {

@@ -45,8 +45,8 @@ func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-10-02
-// where - Filters the results to return only to return only blobs whose tags match the specified expression.
-// options - ServiceClientFilterBlobsOptions contains the optional parameters for the ServiceClient.FilterBlobs method.
+//   - where - Filters the results to return only to return only blobs whose tags match the specified expression.
+//   - options - ServiceClientFilterBlobsOptions contains the optional parameters for the ServiceClient.FilterBlobs method.
 func (client *ServiceClient) FilterBlobs(ctx context.Context, where string, options *ServiceClientFilterBlobsOptions) (ServiceClientFilterBlobsResponse, error) {
 	req, err := client.filterBlobsCreateRequest(ctx, where, options)
 	if err != nil {

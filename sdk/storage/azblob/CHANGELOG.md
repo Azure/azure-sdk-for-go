@@ -18,6 +18,11 @@
   * `service.FilterBlobs()`
   * `lease.AcquireLease()` (blobs and containers)
   * `lease.ChangeLease()` (blobs and containers)
+* Type name changes:
+  * `CpkInfo` -> `CPKInfo`
+  * `CpkScopeInfo` -> `CPKScopeInfo`
+  * `RuleId` -> `RuleID`
+  * `PolicyId` -> `PolicyID`
 
 ### Other Changes
 

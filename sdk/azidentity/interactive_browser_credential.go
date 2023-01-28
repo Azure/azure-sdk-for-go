@@ -15,7 +15,7 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
-const credNameBrowser = "InteractiveBrowserCredentiall"
+const credNameBrowser = "InteractiveBrowserCredential"
 
 // InteractiveBrowserCredentialOptions contains optional parameters for InteractiveBrowserCredential.
 type InteractiveBrowserCredentialOptions struct {

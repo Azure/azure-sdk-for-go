@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed a bug polling on `Azure-AsyncOperation` LRO endpoints that could cause an inadvertent final GET which fails.
 
 ### Other Changes
 

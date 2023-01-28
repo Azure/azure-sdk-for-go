@@ -127,20 +127,21 @@ func (p *Poller[T]) Result(ctx context.Context, out *T) error {
 	}
 	var req *exported.Request
 	var err error
-	if p.Method == http.MethodPatch || p.Method == http.MethodPut {
+
+	// explicit final-state-via takes precedence
+	if p.FinalState == pollers.FinalStateViaAzureAsyncOp {
+		// no final GET required
+	} else if p.FinalState == pollers.FinalStateViaOriginalURI {
+		req, err = exported.NewRequest(ctx, http.MethodGet, p.OrigURL)
+	} else if p.FinalState == pollers.FinalStateViaLocation {
+		req, err = exported.NewRequest(ctx, http.MethodGet, p.LocURL)
+	} else if p.Method == http.MethodPatch || p.Method == http.MethodPut {
 		// for PATCH and PUT, the final GET is on the original resource URL
 		req, err = exported.NewRequest(ctx, http.MethodGet, p.OrigURL)
-	} else if p.Method == http.MethodPost {
-		if p.FinalState == pollers.FinalStateViaAzureAsyncOp {
-			// no final GET required
-		} else if p.FinalState == pollers.FinalStateViaOriginalURI {
-			req, err = exported.NewRequest(ctx, http.MethodGet, p.OrigURL)
-		} else if p.LocURL != "" {
-			// ideally FinalState would be set to "location" but it isn't always.
-			// must check last due to more permissive condition.
-			req, err = exported.NewRequest(ctx, http.MethodGet, p.LocURL)
-		}
+	} else if p.Method == http.MethodPost && p.LocURL != "" {
+		req, err = exported.NewRequest(ctx, http.MethodGet, p.LocURL)
 	}
+
 	if err != nil {
 		return err
 	}

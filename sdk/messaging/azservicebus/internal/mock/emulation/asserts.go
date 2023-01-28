@@ -13,6 +13,6 @@ func RequireNoLeaks(t *testing.T, events *Events) {
 	links := events.GetOpenLinks()
 	require.Empty(t, links, "No leaked links")
 
-	conns := events.GetOpenLinks()
+	conns := events.GetOpenConns()
 	require.Empty(t, conns, "No leaked connections")
 }

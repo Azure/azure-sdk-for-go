@@ -10,6 +10,7 @@ package armcosmos_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestTableresourcesTestSuite(t *testing.T) {
 func (testsuite *TableresourcesTestSuite) Prepare() {
 	var err error
 	// From step DatabaseAccount_Create
+	fmt.Println("Call operation: DatabaseAccounts_CreateOrUpdate")
 	databaseAccountsClient, err := armcosmos.NewDatabaseAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databaseAccountsClientCreateOrUpdateResponsePoller, err := databaseAccountsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armcosmos.DatabaseAccountCreateUpdateParameters{
@@ -90,6 +92,7 @@ func (testsuite *TableresourcesTestSuite) TestTableresources() {
 	tableName := "cosmos_table"
 	var err error
 	// From step TableResources_CreateTable
+	fmt.Println("Call operation: TableResources_CreateUpdateTable")
 	tableResourcesClient, err := armcosmos.NewTableResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	tableResourcesClientCreateUpdateTableResponsePoller, err := tableResourcesClient.BeginCreateUpdateTable(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, armcosmos.TableCreateUpdateParameters{
@@ -107,10 +110,12 @@ func (testsuite *TableresourcesTestSuite) TestTableresources() {
 	testsuite.Require().NoError(err)
 
 	// From step TableResources_GetTable
+	fmt.Println("Call operation: TableResources_GetTable")
 	_, err = tableResourcesClient.GetTable(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TableResources_ListTables
+	fmt.Println("Call operation: TableResources_ListTables")
 	tableResourcesClientNewListTablesPager := tableResourcesClient.NewListTablesPager(testsuite.resourceGroupName, testsuite.accountName, nil)
 	for tableResourcesClientNewListTablesPager.More() {
 		_, err := tableResourcesClientNewListTablesPager.NextPage(testsuite.ctx)
@@ -119,6 +124,7 @@ func (testsuite *TableresourcesTestSuite) TestTableresources() {
 	}
 
 	// From step TableResources_UpdateTableThroughput
+	fmt.Println("Call operation: TableResources_UpdateTableThroughput")
 	tableResourcesClientUpdateTableThroughputResponsePoller, err := tableResourcesClient.BeginUpdateTableThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -133,22 +139,26 @@ func (testsuite *TableresourcesTestSuite) TestTableresources() {
 	testsuite.Require().NoError(err)
 
 	// From step TableResources_GetTableThroughput
+	fmt.Println("Call operation: TableResources_GetTableThroughput")
 	_, err = tableResourcesClient.GetTableThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step TableResources_MigrateTableToAutoscale
+	fmt.Println("Call operation: TableResources_MigrateTableToAutoscale")
 	tableResourcesClientMigrateTableToAutoscaleResponsePoller, err := tableResourcesClient.BeginMigrateTableToAutoscale(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, tableResourcesClientMigrateTableToAutoscaleResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step TableResources_MigrateTableToManualThroughput
+	fmt.Println("Call operation: TableResources_MigrateTableToManualThroughput")
 	tableResourcesClientMigrateTableToManualThroughputResponsePoller, err := tableResourcesClient.BeginMigrateTableToManualThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, tableResourcesClientMigrateTableToManualThroughputResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step TableResources_DeleteTable
+	fmt.Println("Call operation: TableResources_DeleteTable")
 	tableResourcesClientDeleteTableResponsePoller, err := tableResourcesClient.BeginDeleteTable(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, tableResourcesClientDeleteTableResponsePoller)

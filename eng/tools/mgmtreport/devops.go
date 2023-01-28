@@ -149,7 +149,7 @@ func getOperation(buildClient build.Client, buildId, mockTestLogId int) (map[str
 	for _, o := range all {
 		_, after, b := strings.Cut(o, "/")
 		if b {
-			operation := strings.TrimLeft(after, "Test")
+			operation := strings.TrimPrefix(after, "Test")
 			if _, ok := allOperation[operation]; !ok {
 				allOperation[operation] = v
 			}

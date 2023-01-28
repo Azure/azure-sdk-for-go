@@ -152,6 +152,7 @@ func execute(sdkPath, personalAccessToken, storageAccountKey string) error {
 					p, ok = pipelinesMap[fmt.Sprintf("go - %s", arm.Name())]
 				}
 				if ok {
+					log.Printf("Processing %s ...", arm.Name())
 					mInfo := mgmtInfo{
 						version: version,
 						tag:     tag,
@@ -243,6 +244,7 @@ func readAutorestMD(path string) (string, string, error) {
 
 	lines := strings.Split(string(b), "\n")
 	for _, line := range lines {
+		line = strings.TrimRight(line, "\r")
 		if strings.Contains(line, "tag:") {
 			tag = line[len("tag:"):]
 		} else if strings.Contains(line, "readme.md") {

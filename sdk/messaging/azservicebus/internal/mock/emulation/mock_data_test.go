@@ -38,3 +38,29 @@ func TestNewConnection(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, []byte("hello"), msg.Value)
 }
+
+func TestClosingConnectionClosesChildren(t *testing.T) {
+	md := emulation.NewMockData(t, nil)
+	client, err := md.NewConnection(context.Background())
+	require.NoError(t, err)
+
+	sess, err := client.NewSession(context.Background(), nil)
+	require.NoError(t, err)
+
+	rcvr, err := sess.NewReceiver(context.Background(), "testqueue", nil)
+	require.NoError(t, err)
+
+	sender, err := sess.NewSender(context.Background(), "testqueue", nil)
+	require.NoError(t, err)
+
+	err = client.Close()
+	require.NoError(t, err)
+
+	// TODO: non-deterministic
+	msg, err := rcvr.Receive(context.Background())
+	require.Nil(t, msg)
+	require.Error(t, err)
+
+	err = sender.Send(context.Background(), &amqp.Message{})
+	require.Error(t, err)
+}

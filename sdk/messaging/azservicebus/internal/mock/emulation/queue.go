@@ -54,62 +54,96 @@ func NewQueue(name string, events *Events) *Queue {
 	}
 }
 
-func (q *Queue) Send(ctx context.Context, msg *amqp.Message, evt LinkEvent) error {
+func (q *Queue) Send(ctx context.Context, msg *amqp.Message, evt LinkEvent, status *Status) error {
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
-	case q.src <- msg:
+	case <-status.Done():
+		return status.Err()
+	default:
+		q.src <- msg
 		q.events.Send(SendEvent{
 			LinkEvent: evt,
 			Message:   msg,
+		})
+	}
+
+	return nil
+}
+
+func (q *Queue) IssueCredit(credit uint32, evt LinkEvent, status *Status) error {
+	select {
+	case <-status.Done():
+		return status.Err()
+	default:
+		q.creditsCh <- int(credit)
+		q.events.IssueCredit(CreditEvent{
+			Credit:    credit,
+			LinkEvent: evt,
 		})
 		return nil
 	}
 }
 
-func (q *Queue) IssueCredit(credit uint32, evt LinkEvent) error {
-	q.creditsCh <- int(credit)
-	q.events.IssueCredit(CreditEvent{
-		Credit:    credit,
-		LinkEvent: evt,
-	})
-	return nil
-}
-
-func (q *Queue) Receive(ctx context.Context, evt LinkEvent) (*amqp.Message, error) {
+func (q *Queue) Receive(ctx context.Context, evt LinkEvent, status *Status) (*amqp.Message, error) {
 	q.pumpFn.Do(q.pumpMessages)
 
 	select {
 	case <-ctx.Done():
 		return nil, ctx.Err()
-	case msg := <-q.dest:
-		q.events.Receive(ReceiveEvent{
-			LinkEvent: evt,
-			Message:   msg,
-		})
-		return msg, nil
+	case <-status.Done():
+		return nil, status.Err()
+	default:
+		// only attempt to receive if we've guaranteed that we weren't closed at the start.
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		case <-status.Done():
+			return nil, status.Err()
+		case msg := <-q.dest:
+			q.events.Receive(ReceiveEvent{
+				LinkEvent: evt,
+				Message:   msg,
+			})
+			return msg, nil
+		}
 	}
 }
 
-func (q *Queue) AcceptMessage(ctx context.Context, msg *amqp.Message, evt LinkEvent) error {
-	q.events.Disposition(DispositionEvent{
-		evt,
-		DispositionTypeAccept,
-		msg,
-	})
-	return nil
+func (q *Queue) AcceptMessage(ctx context.Context, msg *amqp.Message, evt LinkEvent, status *Status) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-status.Done():
+		return status.Err()
+	default:
+		q.events.Disposition(DispositionEvent{
+			evt,
+			DispositionTypeAccept,
+			msg,
+		})
+		return nil
+	}
 }
 
-func (q *Queue) RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error, evt LinkEvent) error {
-	q.events.Disposition(DispositionEvent{
-		evt,
-		DispositionTypeReject,
-		msg,
-	})
+func (q *Queue) RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error, evt LinkEvent, status *Status) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-status.Done():
+		return status.Err()
+	default:
+		q.events.Disposition(DispositionEvent{
+			evt,
+			DispositionTypeReject,
+			msg,
+		})
 
-	msg.Header.DeliveryCount++
-	q.dest <- msg
-	return nil
+		msg.Header.DeliveryCount++
+		q.dest <- msg
+		return nil
+	}
+
 }
 
 func (q *Queue) ReleaseMessage(ctx context.Context, msg *amqp.Message, evt LinkEvent) error {

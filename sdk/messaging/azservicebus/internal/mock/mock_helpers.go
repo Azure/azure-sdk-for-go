@@ -123,6 +123,6 @@ func NewContextWithTimeoutForTests(parent context.Context, timeout time.Duration
 	return ctx, cancel
 }
 
-func GetCancellerForTestContext(ctx context.Context) context.CancelFunc {
+func CancelTestContext(ctx context.Context) context.CancelFunc {
 	return *ctx.Value(testContextKey(0)).(*context.CancelFunc)
 }

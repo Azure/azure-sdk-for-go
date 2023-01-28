@@ -22,28 +22,28 @@ func TestMockQueue(t *testing.T) {
 	defer cancel()
 
 	// no messages exist yet
-	msg, err := mq.Receive(ctx, emulation.LinkEvent{})
+	msg, err := mq.Receive(ctx, emulation.LinkEvent{}, nil)
 	require.Nil(t, msg)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 
 	err = mq.Send(context.Background(), &amqp.Message{
 		Value: []byte("first message"),
-	}, emulation.LinkEvent{})
+	}, emulation.LinkEvent{}, nil)
 	require.NoError(t, err)
 
 	// messages exist, but no credits have been added yet.
 	ctx, cancel = context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	msg, err = mq.Receive(ctx, emulation.LinkEvent{})
+	msg, err = mq.Receive(ctx, emulation.LinkEvent{}, nil)
 	require.Nil(t, msg)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 
 	// now issue credit
-	err = mq.IssueCredit(1, emulation.LinkEvent{})
+	err = mq.IssueCredit(1, emulation.LinkEvent{}, nil)
 	require.NoError(t, err)
 
-	msg, err = mq.Receive(context.Background(), emulation.LinkEvent{})
+	msg, err = mq.Receive(context.Background(), emulation.LinkEvent{}, nil)
 	require.NoError(t, err)
 	require.Equal(t, []byte("first message"), msg.Value)
 
@@ -51,18 +51,18 @@ func TestMockQueue(t *testing.T) {
 	ctx, cancel = context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	msg, err = mq.Receive(ctx, emulation.LinkEvent{})
+	msg, err = mq.Receive(ctx, emulation.LinkEvent{}, nil)
 	require.Nil(t, msg)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 
 	// reissue credit
-	err = mq.IssueCredit(1, emulation.LinkEvent{})
+	err = mq.IssueCredit(1, emulation.LinkEvent{}, nil)
 	require.NoError(t, err)
 
-	err = mq.Send(context.Background(), &amqp.Message{Value: []byte("second message")}, emulation.LinkEvent{})
+	err = mq.Send(context.Background(), &amqp.Message{Value: []byte("second message")}, emulation.LinkEvent{}, nil)
 	require.NoError(t, err)
 
-	msg, err = mq.Receive(context.Background(), emulation.LinkEvent{})
+	msg, err = mq.Receive(context.Background(), emulation.LinkEvent{}, nil)
 	require.NoError(t, err)
 	require.Equal(t, []byte("second message"), msg.Value)
 }

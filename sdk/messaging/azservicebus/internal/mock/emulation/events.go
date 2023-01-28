@@ -40,6 +40,7 @@ const (
 
 type LinkEvent struct {
 	ConnID        string
+	SessID        string
 	Entity        string
 	Name          string
 	Role          LinkRole

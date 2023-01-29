@@ -398,6 +398,7 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo, path string) error {
 
 		mt := "/"
 		mto := "/"
+		mtc := "/"
 		if m.mockTestTotal != 0 {
 			coverage := float64(m.mockTestPass) / float64(m.mockTestTotal)
 			average[0].sum += coverage
@@ -408,16 +409,16 @@ func generateHTMLReport(mgmtReport map[string]mgmtInfo, path string) error {
 			average[4].sum += mtoCoverage
 			average[4].count++
 			mto = fmt.Sprintf("%.2f%%(%d/%d)", mtoCoverage*100, m.mockTestTotal-m.mockTestSkip, m.mockTestTotal)
-		}
 
-		mtc := defaultPlaceholder(m.mockTestCoverage)
-		if mtc != "/" {
-			f, err := strconv.ParseFloat(strings.TrimRight(mtc, "%"), 64)
-			if err != nil {
-				return err
+			if m.mockTestCoverage != "" {
+				mtc = m.mockTestCoverage
+				f, err := strconv.ParseFloat(strings.TrimRight(mtc, "%"), 64)
+				if err != nil {
+					return err
+				}
+				average[1].sum += f
+				average[1].count++
 			}
-			average[1].sum += f
-			average[1].count++
 		}
 
 		lt := "/"

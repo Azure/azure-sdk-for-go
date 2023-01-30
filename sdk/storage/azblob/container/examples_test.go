@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"io"
 	"log"
 	"net/http"
@@ -392,4 +393,51 @@ func Example_container_ClientSetMetadata() {
 	handleError(err)
 
 	// NOTE: SetMetadata & SetProperties methods update the container's ETag & LastModified properties
+}
+
+// ExampleContainerSubmitBatch shows blob batch operations for delete and set tier.
+func Example_container_SubmitBatch() {
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	const containerName = "testcontainer"
+
+	// create shared key credential
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	// create container batch client
+	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
+	cntBatchClient, err := container.NewClientWithSharedKeyCredential(containerURL, cred, nil)
+	handleError(err)
+
+	// create new batch builder
+	bb := cntBatchClient.NewBatchBuilderWithSharedKeyCredential(cred, nil)
+
+	// add operations to the batch builder
+	bb.Delete("testBlob0", nil)
+	bb.Delete("testBlob1", &container.BatchDeleteOptions{
+		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"), // version id for deletion
+	})
+	bb.Delete("testBlob2", &container.BatchDeleteOptions{
+		Snapshot: to.Ptr("2023-01-03T11:57:25.6515618Z"), // snapshot for deletion
+	})
+	bb.Delete("testBlob3", &container.BatchDeleteOptions{
+		DeleteOptions: &blob.DeleteOptions{
+			DeleteSnapshots: to.Ptr(blob.DeleteSnapshotsOptionTypeOnly),
+			BlobDeleteType:  to.Ptr(blob.DeleteTypeNone),
+		},
+	})
+
+	bb.SetTier("testBlob4", blob.AccessTierHot, nil)
+	bb.SetTier("testBlob5", blob.AccessTierCool, &container.BatchSetTierOptions{
+		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"),
+	})
+
+	resp, err := cntBatchClient.SubmitBatch(context.TODO(), bb)
+	handleError(err)
+
+	// print response body
+	p := make([]byte, 10000)
+	_, err = resp.Body.Read(p)
+	handleError(err)
+	fmt.Println(string(p))
 }

@@ -365,3 +365,49 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	blobURLParts, _ = blob.ParseURL(serviceClient.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }
+
+// ExampleServiceSubmitBatch shows blob batch operations for delete and set tier.
+func Example_service_SubmitBatch() {
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+
+	// create shared key credential
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	// create service batch client
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	svcBatchClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	handleError(err)
+
+	// create new batch builder
+	bb := svcBatchClient.NewBatchBuilderWithSharedKeyCredential(cred, nil)
+
+	// add operations to the batch builder
+	bb.Delete("cnt1", "testBlob0", nil)
+	bb.Delete("cnt1", "testBlob1", &service.BatchDeleteOptions{
+		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"), // version id for deletion
+	})
+	bb.Delete("cnt2", "testBlob2", &service.BatchDeleteOptions{
+		Snapshot: to.Ptr("2023-01-03T11:57:25.6515618Z"), // snapshot for deletion
+	})
+	bb.Delete("cnt2", "testBlob3", &service.BatchDeleteOptions{
+		DeleteOptions: &blob.DeleteOptions{
+			DeleteSnapshots: to.Ptr(blob.DeleteSnapshotsOptionTypeOnly),
+			BlobDeleteType:  to.Ptr(blob.DeleteTypeNone),
+		},
+	})
+
+	bb.SetTier("cnt3", "testBlob4", blob.AccessTierHot, nil)
+	bb.SetTier("cnt4", "testBlob5", blob.AccessTierCool, &service.BatchSetTierOptions{
+		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"),
+	})
+
+	resp, err := svcBatchClient.SubmitBatch(context.TODO(), bb)
+	handleError(err)
+
+	// print response body
+	p := make([]byte, 10000)
+	_, err = resp.Body.Read(p)
+	handleError(err)
+	fmt.Println(string(p))
+}

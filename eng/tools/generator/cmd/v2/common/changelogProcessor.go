@@ -351,3 +351,19 @@ func LROFilter(changelog *model.Changelog) {
 		}
 	}
 }
+
+func InterfaceToAnyFilter(changelog *model.Changelog) {
+	if changelog.HasBreakingChanges() {
+		for structName, s := range changelog.Modified.BreakingChanges.Structs {
+			for k, v := range s.Fields {
+				if v.From == "interface{}" && v.To == "any" {
+					delete(s.Fields, k)
+				}
+			}
+
+			if len(s.Fields) == 0 {
+				delete(changelog.Modified.BreakingChanges.Structs, structName)
+			}
+		}
+	}
+}

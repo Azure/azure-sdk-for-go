@@ -329,3 +329,40 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Tim
 
 	return endpoint, nil
 }
+
+// NewBatchBuilder creates an instance of BatchBuilder with the specified values.
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
+func (c *Client) NewBatchBuilder(cred azcore.TokenCredential, options *ClientOptions) *BatchBuilder {
+	return nil
+}
+
+// NewBatchBuilderWithSharedKeyCredential creates an instance of BatchBuilder with the specified values.
+//   - cred - a SharedKeyCredential created with the matching container's storage account and access key
+//   - options - client options; pass nil to accept the default values
+func (c *Client) NewBatchBuilderWithSharedKeyCredential(cred *SharedKeyCredential, options *ClientOptions) *BatchBuilder {
+	return nil
+}
+
+// NewBatchBuilderWithNoCredential creates an instance of BatchBuilder with the specified values.
+// This is used to perform batch operations anonymously or with a shared access signature (SAS) token.
+//   - options - client options; pass nil to accept the default values
+func (c *Client) NewBatchBuilderWithNoCredential(options *ClientOptions) *BatchBuilder {
+	return nil
+}
+
+// Delete operation is used to add delete sub-request to the batch builder.
+func (bb *BatchBuilder) Delete(blobName string, options *BatchDeleteOptions) {
+}
+
+// SetTier operation is used to add set tier sub-request to the batch builder.
+func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, options *BatchSetTierOptions) {
+}
+
+// SubmitBatch operation allows multiple API calls to be embedded into a single HTTP request.
+// It builds the request body using the BatchBuilder object passed.
+// BatchBuilder contains the list of operations to be submitted. It supports up to 256 sub-requests in a single batch.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/blob-batch.
+func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder) (SubmitBatchResponse, error) {
+	return SubmitBatchResponse{}, nil
+}

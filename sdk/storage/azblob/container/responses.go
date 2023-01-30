@@ -42,3 +42,6 @@ type GetAccessPolicyResponse = generated.ContainerClientGetAccessPolicyResponse
 
 // SetAccessPolicyResponse contains the response from method Client.SetAccessPolicy.
 type SetAccessPolicyResponse = generated.ContainerClientSetAccessPolicyResponse
+
+// SubmitBatchResponse contains the response from method Client.SubmitBatch.
+type SubmitBatchResponse = generated.ContainerClientSubmitBatchResponse

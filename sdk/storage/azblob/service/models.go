@@ -7,7 +7,10 @@
 package service
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
@@ -294,4 +297,26 @@ func (o *FilterBlobsOptions) format() *generated.ServiceClientFilterBlobsOptions
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
 	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BatchBuilder is used for creating the batch operations list. It contains the list of delete and set tier sub-requests.
+type BatchBuilder struct {
+	endpoint    string
+	pipeline    runtime.Pipeline
+	subRequests []*policy.Request
+}
+
+// BatchDeleteOptions contains the optional parameters for the BatchBuilder.Delete method.
+type BatchDeleteOptions struct {
+	VersionID *string
+	Snapshot  *string
+	*blob.DeleteOptions
+}
+
+type BatchSetTierOptions struct {
+	VersionID *string
+	Snapshot  *string
+	*blob.SetTierOptions
 }

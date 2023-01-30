@@ -42,3 +42,6 @@ type FilterBlobsResponse = generated.ServiceClientFilterBlobsResponse
 
 // GetUserDelegationKeyResponse contains the response from method ServiceClient.GetUserDelegationKey.
 type GetUserDelegationKeyResponse = generated.ServiceClientGetUserDelegationKeyResponse
+
+// SubmitBatchResponse contains the response from method Client.SubmitBatch.
+type SubmitBatchResponse = generated.ServiceClientSubmitBatchResponse

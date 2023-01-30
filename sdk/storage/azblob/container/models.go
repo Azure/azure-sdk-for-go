@@ -7,6 +7,9 @@
 package container
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"reflect"
 	"time"
 
@@ -324,4 +327,27 @@ func formatTime(c *SignedIdentifier) error {
 	}
 
 	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// BatchBuilder is used for creating the batch operations list. It contains the list of delete and set tier sub-requests.
+type BatchBuilder struct {
+	endpoint    string
+	pipeline    runtime.Pipeline
+	subRequests []*policy.Request
+}
+
+// BatchDeleteOptions contains the optional parameters for the BatchBuilder.Delete method.
+type BatchDeleteOptions struct {
+	VersionID *string
+	Snapshot  *string
+	*blob.DeleteOptions
+}
+
+// BatchSetTierOptions contains the optional parameters for the BatchBuilder.SetTier method.
+type BatchSetTierOptions struct {
+	VersionID *string
+	Snapshot  *string
+	*blob.SetTierOptions
 }

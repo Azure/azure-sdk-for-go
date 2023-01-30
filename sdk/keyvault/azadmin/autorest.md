@@ -62,6 +62,29 @@ directive:
       from: UpdateSetting
       to: Settings_UpdateSetting
 
+  # rename restore operation from BeginFullRestoreOperation to BeginFullRestore
+  - rename-operation:
+      from: FullRestoreOperation
+      to: FullRestore
+  - rename-operation:
+      from: SelectiveKeyRestoreOperation
+      to: SelectiveKeyRestore
+
+  # make SASToken parameter required
+  - from: swagger-document
+    where: $.paths["/backup"].post.parameters[0]
+    transform: $["required"] = true
+
+  # delete backup and restore status methods
+  - from: swagger-document
+    where: $["paths"]
+    transform: >
+        delete $["/backup/{jobId}/pending"];
+  - from: swagger-document
+    where: $["paths"]
+    transform: >
+        delete $["/restore/{jobId}/pending"];
+
   # delete generated client constructor
   - from: accesscontrol_client.go
     where: $
@@ -73,7 +96,14 @@ directive:
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewSettingsClient.+\{\s(?:.+\s)+\}\s/, "");
 
- 
+  # delete unused error models
+  - from: models.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+type (?:Error|KeyVaultError).+\{(?:\s.+\s)+\}\s/g, "");
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:Error|KeyVaultError)\).*\{\s(?:.+\s)+\}\s/g, "");
+
   # change type of scope parameter from string to RoleScope
   - from: accesscontrol_client.go
     where: $

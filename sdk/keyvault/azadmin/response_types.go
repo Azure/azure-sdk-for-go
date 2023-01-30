@@ -54,23 +54,13 @@ type BackupClientFullBackupResponse struct {
 	FullBackupOperation
 }
 
-// BackupClientFullBackupStatusResponse contains the response from method BackupClient.FullBackupStatus.
-type BackupClientFullBackupStatusResponse struct {
-	FullBackupOperation
-}
-
-// BackupClientFullRestoreOperationResponse contains the response from method BackupClient.FullRestoreOperation.
-type BackupClientFullRestoreOperationResponse struct {
+// BackupClientFullRestoreResponse contains the response from method BackupClient.FullRestore.
+type BackupClientFullRestoreResponse struct {
 	RestoreOperation
 }
 
-// BackupClientRestoreStatusResponse contains the response from method BackupClient.RestoreStatus.
-type BackupClientRestoreStatusResponse struct {
-	RestoreOperation
-}
-
-// BackupClientSelectiveKeyRestoreOperationResponse contains the response from method BackupClient.SelectiveKeyRestoreOperation.
-type BackupClientSelectiveKeyRestoreOperationResponse struct {
+// BackupClientSelectiveKeyRestoreResponse contains the response from method BackupClient.SelectiveKeyRestore.
+type BackupClientSelectiveKeyRestoreResponse struct {
 	SelectiveKeyRestoreOperation
 }
 

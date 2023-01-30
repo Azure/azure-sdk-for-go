@@ -65,48 +65,21 @@ type AccessControlClientListRoleDefinitionsOptions struct {
 
 // BackupClientBeginFullBackupOptions contains the optional parameters for the BackupClient.BeginFullBackup method.
 type BackupClientBeginFullBackupOptions struct {
-	// Azure blob shared access signature token pointing to a valid Azure blob container where full backup needs to be stored.
-	// This token needs to be valid for at least next 24 hours from the time of making
-	// this call
-	AzureStorageBlobContainerURI *SASTokenParameter
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// BackupClientBeginFullRestoreOperationOptions contains the optional parameters for the BackupClient.BeginFullRestoreOperation
+// BackupClientBeginFullRestoreOptions contains the optional parameters for the BackupClient.BeginFullRestore method.
+type BackupClientBeginFullRestoreOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupClientBeginSelectiveKeyRestoreOptions contains the optional parameters for the BackupClient.BeginSelectiveKeyRestore
 // method.
-type BackupClientBeginFullRestoreOperationOptions struct {
+type BackupClientBeginSelectiveKeyRestoreOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
-}
-
-// BackupClientBeginSelectiveKeyRestoreOperationOptions contains the optional parameters for the BackupClient.BeginSelectiveKeyRestoreOperation
-// method.
-type BackupClientBeginSelectiveKeyRestoreOperationOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// BackupClientFullBackupStatusOptions contains the optional parameters for the BackupClient.FullBackupStatus method.
-type BackupClientFullBackupStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BackupClientRestoreStatusOptions contains the optional parameters for the BackupClient.RestoreStatus method.
-type BackupClientRestoreStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// Error - The key vault server error.
-type Error struct {
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The key vault server error.
-	InnerError *Error `json:"innererror,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
 // FullBackupOperation - Full backup operation
@@ -131,12 +104,6 @@ type FullBackupOperation struct {
 
 	// The status details of backup operation.
 	StatusDetails *string `json:"statusDetails,omitempty"`
-}
-
-// KeyVaultError - The key vault error exception.
-type KeyVaultError struct {
-	// READ-ONLY; The key vault server error.
-	Error *Error `json:"error,omitempty" azure:"ro"`
 }
 
 // Permission - Role definition permissions.

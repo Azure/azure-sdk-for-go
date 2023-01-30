@@ -1,12 +1,14 @@
 //go:build go1.18
 // +build go1.18
 
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azadmin_test
 
 import (
 	"context"
 	"math/rand"
-	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -133,7 +135,7 @@ func TestRoleAssignment(t *testing.T) {
 
 	scope := azadmin.RoleScopeGlobal
 	name := uuid.New().String()
-	principalID := os.Getenv("KEYVAULT_CLIENT_ID")
+	principalID := uuid.New().String()
 
 	// get random role definition to use for their service principal
 	pager := client.NewListRoleDefinitionsPager(scope, nil)
@@ -147,15 +149,48 @@ func TestRoleAssignment(t *testing.T) {
 	// create role assignment
 	createdAssignment, err := client.CreateRoleAssignment(context.Background(), scope, name, roleAssignment, nil)
 	require.NoError(t, err)
-	require.Equal(t, name, createdAssignment.Name)
+	require.Equal(t, name, *createdAssignment.Name)
+	require.Equal(t, scope, *createdAssignment.Properties.Scope)
+	require.Equal(t, principalID, *createdAssignment.Properties.PrincipalID)
+	require.Equal(t, *roleDefinition.ID, *createdAssignment.Properties.RoleDefinitionID)
 
 	// test if able to get role assignment
-	res, err := client.GetRoleAssignment(context.Background(), scope, name, nil)
+	gotAssignment, err := client.GetRoleAssignment(context.Background(), scope, name, nil)
 	require.NoError(t, err)
-	_ = res
+	require.Equal(t, *createdAssignment.ID, *gotAssignment.ID)
 
 	// test if new role assignment is in list of all assignments
 	assignmentsPager := client.NewListRoleAssignmentsPager(scope, nil)
+	require.True(t, assignmentsPager.More())
+	var assignmentCheck bool
+
+	for assignmentsPager.More() {
+		res, err := assignmentsPager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.NotNil(t, res)
+
+		require.NotNil(t, res.Value)
+		for _, roleAssignment := range res.Value {
+			require.NotNil(t, roleAssignment.Properties)
+			require.NotNil(t, roleAssignment.ID)
+			require.NotNil(t, roleAssignment.Name)
+			require.NotNil(t, roleAssignment.Type)
+
+			if *roleAssignment.ID == *createdAssignment.ID {
+				assignmentCheck = true
+			}
+		}
+
+		testSerde(t, &res)
+	}
+	require.True(t, assignmentCheck)
+
+	// delete role assignment and check that role assignment is no longer in list
+	deletedAssignment, err := client.DeleteRoleAssignment(context.Background(), scope, name, nil)
+	require.NoError(t, err)
+	require.Equal(t, *createdAssignment.ID, *deletedAssignment.ID)
+
+	assignmentsPager = client.NewListRoleAssignmentsPager(scope, nil)
 	require.True(t, assignmentsPager.More())
 
 	for assignmentsPager.More() {
@@ -169,18 +204,15 @@ func TestRoleAssignment(t *testing.T) {
 			require.NotNil(t, roleAssignment.ID)
 			require.NotNil(t, roleAssignment.Name)
 			require.NotNil(t, roleAssignment.Type)
+
+			require.NotEqual(t, *roleAssignment.ID, *createdAssignment.ID)
 		}
 
 		testSerde(t, &res)
 	}
-
-	// delete role assignment
-	delete, err := client.DeleteRoleAssignment(context.Background(), scope, name, nil)
-	require.NoError(t, err)
-	_ = delete
 }
 
-/*func TestDeleteRoleAssignment_FailureInvalidRole(t *testing.T) {
+func TestDeleteRoleAssignment_FailureInvalidRole(t *testing.T) {
 	client := startAccessControlTest(t)
 	var httpErr *azcore.ResponseError
 
@@ -195,41 +227,4 @@ func TestRoleAssignment(t *testing.T) {
 	require.Nil(t, res.Type)
 
 	testSerde(t, &res)
-}*/
-
-/*func TestCreateRoleAssignment(t *testing.T) {
-	client := startAccessControlTest(t)
-	roleDefinitionID := "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/7b127d3c-77bd-4e3e-bbe0-dbb8971fa7f8"
-	roleAssignmentID := uuid.New()
-
-	roleAssignment := azadmin.RoleAssignmentCreateParameters{Properties: &azadmin.RoleAssignmentProperties{PrincipalID: to.Ptr(servicePrincipalId), RoleDefinitionID: to.Ptr(roleDefinitionID)}}
-
-	res, err := client.CreateRoleAssignment(context.Background(), "/", roleAssignmentID.String(), roleAssignment, nil)
-	require.NoError(t, err)
-	_ = res
-
-}*/
-
-/*
-func TestNewListRoleAssignmentsPager(t *testing.T) {
-	client := startAccessControlTest(t)
-
-	pager := client.NewListRoleAssignmentsPager("", nil)
-	require.True(t, pager.More())
-
-	for pager.More() {
-		res, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		require.NotNil(t, res)
-
-		require.NotNil(t, res.Value)
-		for _, roleAssignment := range res.Value {
-			require.NotNil(t, roleAssignment.Properties)
-			require.NotNil(t, roleAssignment.ID)
-			require.NotNil(t, roleAssignment.Name)
-			require.NotNil(t, roleAssignment.Type)
-		}
-
-		testSerde(t, &res)
-	}
-}*/
+}

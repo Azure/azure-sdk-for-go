@@ -87,6 +87,17 @@ func startAccessControlTest(t *testing.T) *azadmin.AccessControlClient {
 	return client
 }
 
+func startBackupTest(t *testing.T) *azadmin.BackupClient {
+	startRecording(t)
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	opts := &azadmin.BackupClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	client, err := azadmin.NewBackupClient(hsmURL, credential, opts)
+	require.NoError(t, err)
+	return client
+
+}
+
 func startSettingsTest(t *testing.T) *azadmin.SettingsClient {
 	startRecording(t)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)

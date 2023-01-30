@@ -356,7 +356,7 @@ func InterfaceToAnyFilter(changelog *model.Changelog) {
 	if changelog.HasBreakingChanges() {
 		for structName, s := range changelog.Modified.BreakingChanges.Structs {
 			for k, v := range s.Fields {
-				if v.From == "interface{}" && v.To == "any" {
+				if strings.Contains(v.From, "interface{}") && strings.Contains(v.To, "any") {
 					delete(s.Fields, k)
 				}
 			}

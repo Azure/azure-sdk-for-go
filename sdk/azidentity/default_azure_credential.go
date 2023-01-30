@@ -23,12 +23,12 @@ import (
 type DefaultAzureCredentialOptions struct {
 	azcore.ClientOptions
 
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
+
 	// TenantID identifies the tenant the Azure CLI should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
 	TenantID string
-
-	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
-	DisableInstanceDiscovery bool
 }
 
 // DefaultAzureCredential is a default credential chain for applications that will deploy to Azure.

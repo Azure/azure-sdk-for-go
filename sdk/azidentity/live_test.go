@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -56,10 +57,12 @@ var liveUser = struct {
 }
 
 const (
-	fakeClientID   = "fake-client-id"
-	fakeResourceID = "/fake/resource/ID"
-	fakeTenantID   = "fake-tenant"
-	fakeUsername   = "fake@user"
+	fakeClientID      = "fake-client-id"
+	fakeResourceID    = "/fake/resource/ID"
+	fakeTenantID      = "fake-tenant"
+	fakeUsername      = "fake@user"
+	fakeAdfsAuthority = "fake.adfs.local"
+	fakeAdfsScope     = "fake.adfs.local/fake-scope/.default"
 )
 
 var adfsAuthority = os.Getenv("ADFS_AUTHORITY_HOST")
@@ -111,6 +114,8 @@ func init() {
 		adfsLiveUser.username = fakeUsername
 		adfsLiveUser.password = "fake-password"
 		adfsLiveUser.clientID = fakeClientID
+		adfsLiveSP.scope = "https://" + fakeAdfsScope
+		adfsAuthority = "https://" + fakeAdfsAuthority
 	}
 }
 
@@ -145,6 +150,8 @@ func TestMain(m *testing.M) {
 			liveSP.tenantID:                                 fakeTenantID,
 			liveUser.tenantID:                               fakeTenantID,
 			liveUser.username:                               fakeUsername,
+			strings.TrimLeft(adfsLiveSP.scope, "htps:/"):    fakeAdfsScope,
+			strings.TrimLeft(adfsAuthority, "htps:/"):       fakeAdfsAuthority,
 		}
 		for target, replacement := range pathVars {
 			if target != "" {

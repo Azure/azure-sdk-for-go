@@ -24,6 +24,10 @@ type InteractiveBrowserCredentialOptions struct {
 	// ClientID is the ID of the application users will authenticate to.
 	// Defaults to the ID of an Azure development application.
 	ClientID string
+
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
+
 	// LoginHint pre-populates the account prompt with a username. Users may choose to authenticate a different account.
 	LoginHint string
 	// RedirectURL is the URL Azure Active Directory will redirect to with the access token. This is required
@@ -31,8 +35,6 @@ type InteractiveBrowserCredentialOptions struct {
 	// Applications which have registered "http://localhost" as a redirect URI need not set this option.
 	RedirectURL string
 
-	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
-	DisableInstanceDiscovery bool
 	// TenantID is the Azure Active Directory tenant the credential authenticates in. Defaults to the
 	// "organizations" tenant, which can authenticate work and school accounts.
 	TenantID string

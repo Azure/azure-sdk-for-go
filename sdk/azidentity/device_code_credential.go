@@ -22,20 +22,22 @@ const credNameDeviceCode = "DeviceCodeCredential"
 type DeviceCodeCredentialOptions struct {
 	azcore.ClientOptions
 
+	// ClientID is the ID of the application users will authenticate to.
+	// Defaults to the ID of an Azure development application.
+	ClientID string
+
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
+
 	// TenantID is the Azure Active Directory tenant the credential authenticates in. Defaults to the
 	// "organizations" tenant, which can authenticate work and school accounts. Required for single-tenant
 	// applications.
 	TenantID string
-	// ClientID is the ID of the application users will authenticate to.
-	// Defaults to the ID of an Azure development application.
-	ClientID string
+
 	// UserPrompt controls how the credential presents authentication instructions. The credential calls
 	// this function with authentication details when it receives a device code. By default, the credential
 	// prints these details to stdout.
 	UserPrompt func(context.Context, DeviceCodeMessage) error
-
-	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
-	DisableInstanceDiscovery bool
 }
 
 func (o *DeviceCodeCredentialOptions) init() {

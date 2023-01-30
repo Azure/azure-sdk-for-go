@@ -328,14 +328,20 @@ func generateMDReport(mgmtReport map[string]mgmtInfo, path string) error {
 	for _, module := range sortMgmt {
 		m := mgmtReport[module]
 		mt := "/"
+		mtc := "/"
 		mto := "/"
 		if m.mockTestTotal != 0 {
 			mt = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.mockTestPass)/float64(m.mockTestTotal)*100, m.mockTestPass, m.mockTestTotal)
 			operations := m.mockTestTotal - m.mockTestSkip
 			mto = fmt.Sprintf("%.2f%%(%d/%d)", float64(operations)/float64(m.mockTestTotal)*100, operations, m.mockTestTotal)
+
+			if m.mockTestCoverage != "" {
+				mtc = m.mockTestCoverage
+			}
 		}
 
 		lt := "/"
+		ltc := "/"
 		lto := "/"
 		if m.liveTestTotal != 0 {
 			lt = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.liveTestPass)/float64(m.liveTestTotal)*100, m.liveTestPass, m.liveTestTotal)
@@ -343,9 +349,13 @@ func generateMDReport(mgmtReport map[string]mgmtInfo, path string) error {
 			if m.liveTestCallOperations != 0 {
 				lto = fmt.Sprintf("%.2f%%(%d/%d)", float64(m.liveTestCallOperations)/float64(m.mockTestTotal)*100, m.liveTestCallOperations, m.mockTestTotal)
 			}
+
+			if m.liveTestCoverage != "" {
+				ltc = m.liveTestCoverage
+			}
 		}
 
-		f := fmt.Sprintf("|%s | %s | %s | %s | %s | %s | %s | %s | %s |\n", module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), lt, defaultPlaceholder(m.liveTestCoverage), lto, mt, defaultPlaceholder(m.mockTestCoverage), mto)
+		f := fmt.Sprintf("|%s | %s | %s | %s | %s | %s | %s | %s | %s |\n", module, fmt.Sprintf("v%s", m.version), defaultPlaceholder(strings.TrimRight(m.tag, "\r")), lt, ltc, lto, mt, mtc, mto)
 		_, err = mgmtFile.Write([]byte(f))
 		if err != nil {
 			return err

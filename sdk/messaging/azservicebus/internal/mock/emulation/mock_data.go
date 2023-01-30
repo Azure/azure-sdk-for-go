@@ -349,13 +349,14 @@ func (md *MockData) NewSender(ctx context.Context, target string, opts *amqp.Sen
 	}).AnyTimes()
 
 	sender.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
+		md.Events.CloseLink(linkEvent)
+
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
 		case <-sess.Status.Done():
 			return sess.Status.Err()
 		default:
-			md.Events.CloseLink(linkEvent)
 			sender.Status.CloseWithError(amqp.ErrLinkClosed)
 		}
 

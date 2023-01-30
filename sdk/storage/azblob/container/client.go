@@ -331,23 +331,24 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Tim
 }
 
 // NewBatchBuilder creates an instance of BatchBuilder with the specified values.
+// BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
-//   - options - client options; pass nil to accept the default values
-func (c *Client) NewBatchBuilder(cred azcore.TokenCredential, options *ClientOptions) *BatchBuilder {
+func (c *Client) NewBatchBuilder(cred azcore.TokenCredential) *BatchBuilder {
 	return nil
 }
 
 // NewBatchBuilderWithSharedKeyCredential creates an instance of BatchBuilder with the specified values.
+// BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
 //   - cred - a SharedKeyCredential created with the matching container's storage account and access key
-//   - options - client options; pass nil to accept the default values
-func (c *Client) NewBatchBuilderWithSharedKeyCredential(cred *SharedKeyCredential, options *ClientOptions) *BatchBuilder {
+func (c *Client) NewBatchBuilderWithSharedKeyCredential(cred *SharedKeyCredential) *BatchBuilder {
 	return nil
 }
 
-// NewBatchBuilderWithNoCredential creates an instance of BatchBuilder with the specified values.
-// This is used to perform batch operations anonymously or with a shared access signature (SAS) token.
-//   - options - client options; pass nil to accept the default values
-func (c *Client) NewBatchBuilderWithNoCredential(options *ClientOptions) *BatchBuilder {
+// NewBatchBuilderWithSAS creates an instance of BatchBuilder.
+// The Client must be created using a shared access signature (SAS) token.
+// BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
+// This is used to perform batch operations with SAS token.
+func (c *Client) NewBatchBuilderWithSAS() *BatchBuilder {
 	return nil
 }
 
@@ -363,6 +364,6 @@ func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, opt
 // It builds the request body using the BatchBuilder object passed.
 // BatchBuilder contains the list of operations to be submitted. It supports up to 256 sub-requests in a single batch.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/blob-batch.
-func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder) (SubmitBatchResponse, error) {
+func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *SubmitBatchOptions) (SubmitBatchResponse, error) {
 	return SubmitBatchResponse{}, nil
 }

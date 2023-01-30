@@ -380,7 +380,7 @@ func Example_service_SubmitBatch() {
 	handleError(err)
 
 	// create new batch builder
-	bb := svcBatchClient.NewBatchBuilderWithSharedKeyCredential(cred, nil)
+	bb := svcBatchClient.NewBatchBuilderWithSharedKeyCredential(cred)
 
 	// add operations to the batch builder
 	bb.Delete("cnt1", "testBlob0", nil)
@@ -402,7 +402,7 @@ func Example_service_SubmitBatch() {
 		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"),
 	})
 
-	resp, err := svcBatchClient.SubmitBatch(context.TODO(), bb)
+	resp, err := svcBatchClient.SubmitBatch(context.TODO(), bb, nil)
 	handleError(err)
 
 	// print response body

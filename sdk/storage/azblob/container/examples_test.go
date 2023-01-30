@@ -410,7 +410,7 @@ func Example_container_SubmitBatch() {
 	handleError(err)
 
 	// create new batch builder
-	bb := cntBatchClient.NewBatchBuilderWithSharedKeyCredential(cred, nil)
+	bb := cntBatchClient.NewBatchBuilderWithSharedKeyCredential(cred)
 
 	// add operations to the batch builder
 	bb.Delete("testBlob0", nil)
@@ -432,7 +432,7 @@ func Example_container_SubmitBatch() {
 		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"),
 	})
 
-	resp, err := cntBatchClient.SubmitBatch(context.TODO(), bb)
+	resp, err := cntBatchClient.SubmitBatch(context.TODO(), bb, nil)
 	handleError(err)
 
 	// print response body

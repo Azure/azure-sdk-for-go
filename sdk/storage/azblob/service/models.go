@@ -320,3 +320,8 @@ type BatchSetTierOptions struct {
 	Snapshot  *string
 	*blob.SetTierOptions
 }
+
+// SubmitBatchOptions contains the optional parameters for the Client.SubmitBatch method.
+type SubmitBatchOptions struct {
+	// placeholder for future options
+}

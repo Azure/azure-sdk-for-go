@@ -225,7 +225,7 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 			testGetTokenSuccess(t, cred)
 		})
 	}
-	t.Run("disable instance discovery", func(t *testing.T) {
+	t.Run("instance discovery disabled", func(t *testing.T) {
 		if liveSP.pemPath == "" {
 			t.Skip("no certificate file specified")
 		}

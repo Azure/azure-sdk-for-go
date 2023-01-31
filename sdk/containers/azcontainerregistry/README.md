@@ -42,7 +42,7 @@ This document demonstrates using [azidentity.NewDefaultAzureCredential](https://
 This credential type works in both local development and production environments. 
 We recommend using a [managed identity](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) in production.
 
-[Client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#Client) and [BlobClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#BlobClient) accepts any [azidentity][https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity] credential. 
+Client and BlobClient accepts any [azidentity][https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity] credential. 
 See the [azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity) documentation for more information about other credential types.
 
 #### Create a client
@@ -82,7 +82,7 @@ For more information please see [Container Registry Concepts](https://docs.micro
 
 ## Examples
 
-Get started with our [examples](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#pkg-examples).
+Get started with our examples in pkg.go.dev.
 
 ## Troubleshooting
 

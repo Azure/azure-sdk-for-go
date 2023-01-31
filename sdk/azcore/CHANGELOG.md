@@ -3,6 +3,8 @@
 ## 1.3.1 (Unreleased)
 
 ### Features Added
+* Added support for ARM cross-tenant authentication. Set the `AuxiliaryTenants` field of `arm.ClientOptions` to enable.
+* Added `TenantID` field to `policy.TokenRequestOptions`.
 
 ### Breaking Changes
 

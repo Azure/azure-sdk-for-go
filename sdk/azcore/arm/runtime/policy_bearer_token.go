@@ -14,9 +14,13 @@ import (
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
+const headerAuxiliaryAuthorization = "x-ms-authorization-auxiliary"
+
+// acquiringResourceState holds data for an auxiliary token request
 type acquiringResourceState struct {
 	ctx    context.Context
 	p      *BearerTokenPolicy
@@ -26,7 +30,10 @@ type acquiringResourceState struct {
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
 func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
-	tk, err := state.p.cred.GetToken(state.ctx, azpolicy.TokenRequestOptions{Scopes: state.p.options.Scopes})
+	tk, err := state.p.cred.GetToken(state.ctx, azpolicy.TokenRequestOptions{
+		Scopes:   state.p.scopes,
+		TenantID: state.tenant,
+	})
 	if err != nil {
 		return azcore.AccessToken{}, time.Time{}, err
 	}
@@ -35,13 +42,10 @@ func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newE
 
 // BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
-	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
-	// auxResources are additional resources that are required for cross-tenant applications
 	auxResources map[string]*temporal.Resource[azcore.AccessToken, acquiringResourceState]
-	// the following fields are read-only
-	cred    azcore.TokenCredential
-	options armpolicy.BearerTokenOptions
+	btp          *azruntime.BearerTokenPolicy
+	cred         azcore.TokenCredential
+	scopes       []string
 }
 
 // NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
@@ -51,36 +55,47 @@ func NewBearerTokenPolicy(cred azcore.TokenCredential, opts *armpolicy.BearerTok
 	if opts == nil {
 		opts = &armpolicy.BearerTokenOptions{}
 	}
-	p := &BearerTokenPolicy{
-		cred:         cred,
-		options:      *opts,
-		mainResource: temporal.NewResource(acquire),
+	p := &BearerTokenPolicy{cred: cred}
+	p.auxResources = make(map[string]*temporal.Resource[azcore.AccessToken, acquiringResourceState], len(opts.AuxiliaryTenants))
+	for _, t := range opts.AuxiliaryTenants {
+		p.auxResources[t] = temporal.NewResource(acquire)
 	}
+	p.scopes = make([]string, len(opts.Scopes))
+	copy(p.scopes, opts.Scopes)
+	p.btp = azruntime.NewBearerTokenPolicy(cred, opts.Scopes, &azpolicy.BearerTokenOptions{
+		AuthorizationHandler: azpolicy.AuthorizationHandler{
+			OnRequest: p.onRequest,
+		},
+	})
 	return p
 }
 
-// Do authorizes a request with a bearer token
-func (b *BearerTokenPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
+// onRequest authorizes requests with one or more bearer tokens
+func (b *BearerTokenPolicy) onRequest(req *azpolicy.Request, authNZ func(azpolicy.TokenRequestOptions) error) error {
+	// authorize the request with a token for the primary tenant
+	err := authNZ(azpolicy.TokenRequestOptions{Scopes: b.scopes})
+	if err != nil || len(b.auxResources) == 0 {
+		return err
+	}
+	// add tokens for auxiliary tenants
 	as := acquiringResourceState{
 		ctx: req.Raw().Context(),
 		p:   b,
 	}
-	tk, err := b.mainResource.Get(as)
-	if err != nil {
-		return nil, err
-	}
-	req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
-	auxTokens := []string{}
+	auxTokens := make([]string, 0, len(b.auxResources))
 	for tenant, er := range b.auxResources {
 		as.tenant = tenant
 		auxTk, err := er.Get(as)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		auxTokens = append(auxTokens, fmt.Sprintf("%s%s", shared.BearerTokenPrefix, auxTk.Token))
 	}
-	if len(auxTokens) > 0 {
-		req.Raw().Header.Set(shared.HeaderAuxiliaryAuthorization, strings.Join(auxTokens, ", "))
-	}
-	return req.Next()
+	req.Raw().Header.Set(headerAuxiliaryAuthorization, strings.Join(auxTokens, ", "))
+	return nil
+}
+
+// Do authorizes a request with a bearer token
+func (b *BearerTokenPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
+	return b.btp.Do(req)
 }

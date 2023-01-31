@@ -48,4 +48,12 @@ func TestReceiver_Simulated(t *testing.T) {
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, messages)
+
+	require.Equal(t, 1, len(md.Events.GetOpenConns()))
+	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")
+
+	err = client.Close(context.Background())
+	require.NoError(t, err)
+
+	emulation.RequireNoLeaks(t, md.Events)
 }

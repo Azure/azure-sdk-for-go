@@ -6,6 +6,7 @@ trigger:
     - feature/*
     - hotfix/*
     - release/*
+    - privatepreview/*
   paths:
     include:
     - sdk/identity/azpki
@@ -17,6 +18,7 @@ pr:
     - feature/*
     - hotfix/*
     - release/*
+    - privatepreview/*
   paths:
     include:
     - sdk/identity/azpki

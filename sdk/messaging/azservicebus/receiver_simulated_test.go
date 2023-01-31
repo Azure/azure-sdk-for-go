@@ -12,25 +12,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
 
 func TestReceiver_Simulated(t *testing.T) {
-	md := emulation.NewMockData(t, nil)
-
-	client, err := newClientImpl(clientCreds{
-		connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
-	}, struct {
-		Client *ClientOptions
-		NS     []internal.NamespaceOption
-	}{
-		NS: []internal.NamespaceOption{
-			internal.NamespaceWithNewClientFn(md.NewConnection),
-		},
-	})
-
-	require.NoError(t, err)
-	require.NotNil(t, client)
+	md, client := newClientWithMockedConn(t, nil)
+	defer test.RequireClose(t, client)
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
 	require.NoError(t, err)
@@ -69,21 +57,8 @@ func TestReceiver_Simulated(t *testing.T) {
 }
 
 func TestReceiver_Simulated_CloseTopLevelClientClosesChildren(t *testing.T) {
-	md := emulation.NewMockData(t, nil)
-
-	client, err := newClientImpl(clientCreds{
-		connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
-	}, struct {
-		Client *ClientOptions
-		NS     []internal.NamespaceOption
-	}{
-		NS: []internal.NamespaceOption{
-			internal.NamespaceWithNewClientFn(md.NewConnection),
-		},
-	})
-
-	require.NoError(t, err)
-	require.NotNil(t, client)
+	md, client := newClientWithMockedConn(t, nil)
+	defer test.RequireClose(t, client)
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
 	require.NoError(t, err)
@@ -112,21 +87,8 @@ func TestReceiver_Simulated_CloseTopLevelClientClosesChildren(t *testing.T) {
 }
 
 func TestReceiver_Simulated_Recovery(t *testing.T) {
-	md := emulation.NewMockData(t, nil)
-
-	client, err := newClientImpl(clientCreds{
-		connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
-	}, struct {
-		Client *ClientOptions
-		NS     []internal.NamespaceOption
-	}{
-		NS: []internal.NamespaceOption{
-			internal.NamespaceWithNewClientFn(md.NewConnection),
-		},
-	})
-
-	require.NoError(t, err)
-	require.NotNil(t, client)
+	md, client := newClientWithMockedConn(t, nil)
+	defer test.RequireClose(t, client)
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
 	require.NoError(t, err)
@@ -178,23 +140,8 @@ func TestReceiver_Simulated_Recovery(t *testing.T) {
 func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
 	for _, mode := range receiveModesForTests {
 		t.Run(mode.Name, func(t *testing.T) {
-			md := emulation.NewMockData(t, nil)
-
-			client, err := newClientImpl(clientCreds{
-				connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
-			}, struct {
-				Client *ClientOptions
-				NS     []internal.NamespaceOption
-			}{
-				NS: []internal.NamespaceOption{
-					internal.NamespaceWithNewClientFn(md.NewConnection),
-				},
-			})
-
+			md, client := newClientWithMockedConn(t, nil)
 			defer test.RequireClose(t, client)
-
-			require.NoError(t, err)
-			require.NotNil(t, client)
 
 			sender, err := client.NewSender("queue", nil)
 			require.NoError(t, err)
@@ -236,8 +183,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 			md := emulation.NewMockData(t, &emulation.MockDataOptions{
 				PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 					if mr.Source == "queue" {
-						mr.EXPECT().Receive(context.Background()).Return(nil, args.InternalErr)
-
+						mr.EXPECT().Receive(gomock.Any()).Return(nil, args.InternalErr)
 					}
 
 					return nil
@@ -246,11 +192,8 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 
 			client, err := newClientImpl(clientCreds{
 				connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
-			}, struct {
-				Client *ClientOptions
-				NS     []internal.NamespaceOption
-			}{
-				NS: []internal.NamespaceOption{
+			}, clientImplArgs{
+				NSOptions: []internal.NamespaceOption{
 					internal.NamespaceWithNewClientFn(md.NewConnection),
 				},
 			})
@@ -311,4 +254,54 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 		ConnAlive:   true,
 		LinkAlive:   false,
 	})
+}
+
+func TestReceiver_ReceiveMessages_AllMessagesReceived(t *testing.T) {
+	fn := func(receiveMode ReceiveMode) {
+		t.Run(ReceiveModeString(receiveMode), func(t *testing.T) {
+			md, client := newClientWithMockedConn(t, nil)
+			defer test.RequireClose(t, client)
+
+			sender, err := client.NewSender("queue", nil)
+			require.NoError(t, err)
+
+			err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+			require.NoError(t, err)
+
+			err = sender.SendMessage(context.Background(), &Message{Body: []byte("world")}, nil)
+			require.NoError(t, err)
+
+			test.RequireClose(t, sender)
+
+			receiver, err := client.NewReceiverForQueue("queue", &ReceiverOptions{
+				ReceiveMode: receiveMode,
+			})
+			require.NoError(t, err)
+
+			messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
+			require.NoError(t, err)
+			require.Equal(t, []string{"hello", "world"}, getSortedBodies(messages))
+
+			require.Equal(t, 1, len(md.Events.GetOpenConns()))
+			require.Equal(t, 3, len(md.Events.GetOpenLinks()), "Receive links are still open")
+		})
+	}
+
+	fn(ReceiveModePeekLock)
+	fn(ReceiveModeReceiveAndDelete)
+}
+
+func newClientWithMockedConn(t *testing.T, options *emulation.MockDataOptions) (*emulation.MockData, *Client) {
+	md := emulation.NewMockData(t, nil)
+
+	client, err := newClientImpl(clientCreds{
+		connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
+	}, clientImplArgs{
+		NSOptions: []internal.NamespaceOption{
+			internal.NamespaceWithNewClientFn(md.NewConnection),
+		},
+	})
+	require.NoError(t, err)
+
+	return md, client
 }

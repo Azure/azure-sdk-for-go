@@ -46,37 +46,14 @@ var receiveModesForTests = []struct {
 	{Name: "receiveAndDelete", Val: ReceiveModeReceiveAndDelete},
 }
 
-func TestReceiver_ReceiveMessages_AllMessagesReceived(t *testing.T) {
-	for _, mode := range receiveModesForTests {
-		t.Run(mode.Name, func(t *testing.T) {
-			fakeAMQPReceiver := &internal.FakeAMQPReceiver{
-				ReceiveResults: []struct {
-					M *amqp.Message
-					E error
-				}{
-					{M: &amqp.Message{Data: [][]byte{[]byte("hello")}}},
-					{M: &amqp.Message{Data: [][]byte{[]byte("world")}}},
-				},
-			}
-
-			fakeAMQPLinks := &internal.FakeAMQPLinks{
-				Receiver: fakeAMQPReceiver,
-			}
-
-			receiver, err := newReceiver(newReceiverArgs{
-				ns:     &internal.FakeNS{AMQPLinks: fakeAMQPLinks},
-				entity: entity{Queue: "queue"},
-			}, &ReceiverOptions{ReceiveMode: mode.Val})
-			require.NoError(t, err)
-
-			messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-			require.NoError(t, err)
-			require.Equal(t, []string{"hello", "world"}, getSortedBodies(messages))
-
-			// and the links did not need to be closed for a cancellation
-			require.Equal(t, 0, fakeAMQPLinks.Closed)
-			require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled, "called, but with a benign error")
-		})
+func ReceiveModeString(mode ReceiveMode) string {
+	switch mode {
+	case ReceiveModePeekLock:
+		return "peekLock"
+	case ReceiveModeReceiveAndDelete:
+		return "receiveAndDelete"
+	default:
+		panic(fmt.Sprintf("No string for receive mode %d", mode))
 	}
 }
 

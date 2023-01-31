@@ -81,11 +81,8 @@ func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential
 	return newClientImpl(clientCreds{
 		credential:              credential,
 		fullyQualifiedNamespace: fullyQualifiedNamespace,
-	}, struct {
-		Client *ClientOptions
-		NS     []internal.NamespaceOption
-	}{
-		Client: options,
+	}, clientImplArgs{
+		ClientOptions: options,
 	})
 }
 
@@ -106,11 +103,8 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 	return newClientImpl(clientCreds{
 		connectionString: connectionString,
-	}, struct {
-		Client *ClientOptions
-		NS     []internal.NamespaceOption
-	}{
-		Client: options,
+	}, clientImplArgs{
+		ClientOptions: options,
 	})
 }
 
@@ -126,10 +120,12 @@ type clientCreds struct {
 	credential              azcore.TokenCredential
 }
 
-func newClientImpl(creds clientCreds, options struct {
-	Client *ClientOptions
-	NS     []internal.NamespaceOption
-}) (*Client, error) {
+type clientImplArgs struct {
+	ClientOptions *ClientOptions
+	NSOptions     []internal.NamespaceOption
+}
+
+func newClientImpl(creds clientCreds, args clientImplArgs) (*Client, error) {
 	client := &Client{
 		linksMu: &sync.Mutex{},
 		creds:   creds,
@@ -149,25 +145,25 @@ func newClientImpl(creds clientCreds, options struct {
 		nsOptions = append(nsOptions, option)
 	}
 
-	if options.Client != nil {
-		client.retryOptions = options.Client.RetryOptions
+	if args.ClientOptions != nil {
+		client.retryOptions = args.ClientOptions.RetryOptions
 
-		if options.Client.TLSConfig != nil {
-			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(options.Client.TLSConfig))
+		if args.ClientOptions.TLSConfig != nil {
+			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(args.ClientOptions.TLSConfig))
 		}
 
-		if options.Client.NewWebSocketConn != nil {
-			nsOptions = append(nsOptions, internal.NamespaceWithWebSocket(options.Client.NewWebSocketConn))
+		if args.ClientOptions.NewWebSocketConn != nil {
+			nsOptions = append(nsOptions, internal.NamespaceWithWebSocket(args.ClientOptions.NewWebSocketConn))
 		}
 
-		if options.Client.ApplicationID != "" {
-			nsOptions = append(nsOptions, internal.NamespaceWithUserAgent(options.Client.ApplicationID))
+		if args.ClientOptions.ApplicationID != "" {
+			nsOptions = append(nsOptions, internal.NamespaceWithUserAgent(args.ClientOptions.ApplicationID))
 		}
 
-		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(options.Client.RetryOptions))
+		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(args.ClientOptions.RetryOptions))
 	}
 
-	nsOptions = append(nsOptions, options.NS...)
+	nsOptions = append(nsOptions, args.NSOptions...)
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
 	return client, err

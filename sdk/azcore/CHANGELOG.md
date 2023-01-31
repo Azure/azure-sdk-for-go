@@ -1,16 +1,11 @@
 # Release History
 
-## 1.3.1 (Unreleased)
+## 1.4.0-beta.1 (2023-02-02)
 
 ### Features Added
 * Added support for ARM cross-tenant authentication. Set the `AuxiliaryTenants` field of `arm.ClientOptions` to enable.
-* Added `TenantID` field to `policy.TokenRequestOptions`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Added `Claims` and `TenantID` fields to `policy.TokenRequestOptions`.
+* ARM bearer token policy handles CAE challenges.
 
 ## 1.3.0 (2023-01-06)
 

@@ -284,23 +284,23 @@ func (s *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOp
 
 // NewBatchBuilder creates an instance of BatchBuilder with the specified values.
 // BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
-//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - cred - an Azure AD credential, typically obtained via the azidentity module.
 func (s *Client) NewBatchBuilder(cred azcore.TokenCredential) *BatchBuilder {
 	return nil
 }
 
 // NewBatchBuilderWithSharedKeyCredential creates an instance of BatchBuilder with the specified values.
 // BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
-//   - cred - a SharedKeyCredential created with the matching container's storage account and access key
+//   - cred - a SharedKeyCredential created with the matching container's storage account and access key.
 func (s *Client) NewBatchBuilderWithSharedKeyCredential(cred *SharedKeyCredential) *BatchBuilder {
 	return nil
 }
 
-// NewBatchBuilderWithSAS creates an instance of BatchBuilder.
-// The Client must be created using account shared access signature (SAS) token.
+// NewBatchBuilderWithSAS creates an instance of BatchBuilder with the specified values.
 // BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
 // This is used to perform batch operations with SAS token.
-func (s *Client) NewBatchBuilderWithSAS() *BatchBuilder {
+//   - sasQp - SAS query parameters used for authorizing the batch sub-requests.
+func (s *Client) NewBatchBuilderWithSAS(sasQp sas.QueryParameters) *BatchBuilder {
 	return nil
 }
 

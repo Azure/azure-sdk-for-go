@@ -315,6 +315,7 @@ type BatchDeleteOptions struct {
 	*blob.DeleteOptions
 }
 
+// BatchSetTierOptions contains the optional parameters for the BatchBuilder.SetTier method.
 type BatchSetTierOptions struct {
 	VersionID *string
 	Snapshot  *string

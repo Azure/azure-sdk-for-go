@@ -6,6 +6,7 @@ package emulation
 import (
 	"context"
 	"fmt"
+	"log"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -61,6 +62,8 @@ func (q *Queue) Send(ctx context.Context, msg *amqp.Message, evt LinkEvent, stat
 	case <-status.Done():
 		return status.Err()
 	default:
+		log.Printf("[%s] send...", q.name)
+
 		q.src <- msg
 		q.events.Send(SendEvent{
 			LinkEvent: evt,
@@ -76,6 +79,8 @@ func (q *Queue) IssueCredit(credit uint32, evt LinkEvent, status *Status) error 
 	case <-status.Done():
 		return status.Err()
 	default:
+		log.Printf("[%s] Issuing credits %d", q.name, credit)
+
 		q.creditsCh <- int(credit)
 		q.events.IssueCredit(CreditEvent{
 			Credit:    credit,
@@ -94,6 +99,8 @@ func (q *Queue) Receive(ctx context.Context, evt LinkEvent, status *Status) (*am
 	case <-status.Done():
 		return nil, status.Err()
 	default:
+		log.Printf("[%s] Receiving on queue of length src: %d, dest: %d", q.name, len(q.src), len(q.dest))
+
 		// only attempt to receive if we've guaranteed that we weren't closed at the start.
 		select {
 		case <-ctx.Done():
@@ -162,21 +169,29 @@ func (q *Queue) ModifyMessage(ctx context.Context, msg *amqp.Message, options *a
 }
 
 func (q *Queue) pumpMessages() {
+	defer log.Printf("[%s] pumpMessages starting...", q.name)
+
 	go func() {
+		defer log.Printf("[%s] pumpMessages stopping...", q.name)
+
 		for {
 			credit := <-q.creditsCh
+
+			log.Printf("[%s] pumpMessages issued %d credits...", q.name, credit)
 
 			if credit == 0 {
 				break
 			}
 
 			for i := 0; i < credit; i++ {
+				log.Printf("[%s] waiting for message...", q.name)
 				msg := <-q.src
 
 				if msg == nil {
 					break
 				}
 
+				log.Printf("[%s] pumped single message...", q.name)
 				q.dest <- msg
 			}
 		}

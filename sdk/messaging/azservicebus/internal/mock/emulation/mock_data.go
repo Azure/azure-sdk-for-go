@@ -41,15 +41,15 @@ type MockDataOptions struct {
 
 	// PreReceiverMock is called with the mock Receiver instance before we instrument it with
 	// our defaults.
-	PreReceiverMock func(orig *MockReceiver, ctx context.Context, source string, opts *amqp.ReceiverOptions) error
+	PreReceiverMock func(mr *MockReceiver, ctx context.Context) error
 
 	// PreSenderMock is called with the mock Sender instance before we instrument it with
 	// our defaults.
-	PreSenderMock func(orig *MockSender, ctx context.Context, target string, opts *amqp.SenderOptions) error
+	PreSenderMock func(ms *MockSender, ctx context.Context) error
 
 	// PreSessionMock is called with the mock Session instance before we instrument it with
 	// our defaults.
-	PreSessionMock func(orig *MockSession, ctx context.Context, opts *amqp.SessionOptions) error
+	PreSessionMock func(msess *MockSession, ctx context.Context, opts *amqp.SessionOptions) error
 }
 
 func NewMockData(t *testing.T, options *MockDataOptions) *MockData {
@@ -58,13 +58,13 @@ func NewMockData(t *testing.T, options *MockDataOptions) *MockData {
 	}
 
 	if options.PreReceiverMock == nil {
-		options.PreReceiverMock = func(orig *MockReceiver, ctx context.Context, source string, opts *amqp.ReceiverOptions) error {
+		options.PreReceiverMock = func(orig *MockReceiver, ctx context.Context) error {
 			return nil
 		}
 	}
 
 	if options.PreSenderMock == nil {
-		options.PreSenderMock = func(orig *MockSender, ctx context.Context, target string, opts *amqp.SenderOptions) error {
+		options.PreSenderMock = func(orig *MockSender, ctx context.Context) error {
 			return nil
 		}
 	}
@@ -115,35 +115,6 @@ func (sess *MockSession) Done() <-chan error {
 	}()
 
 	return errCh
-}
-
-type MockReceiver struct {
-	Session *MockSession
-	Status  *Status
-
-	*mock.MockAMQPReceiverCloser
-}
-
-func (rcvr *MockReceiver) Done() <-chan error {
-	errCh := make(chan error)
-
-	go func() {
-		select {
-		case <-rcvr.Session.Done():
-			errCh <- rcvr.Session.Status.Err()
-		case <-rcvr.Status.Done():
-			errCh <- rcvr.Status.Err()
-		}
-	}()
-
-	return errCh
-}
-
-type MockSender struct {
-	Session *MockSession
-	Status  *Status
-
-	*mock.MockAMQPSenderCloser
 }
 
 func (md *MockData) NewConnection(ctx context.Context) (amqpwrap.AMQPClient, error) {
@@ -214,156 +185,6 @@ func (md *MockData) newSession(ctx context.Context, opts *amqp.SessionOptions, c
 	}).AnyTimes()
 
 	return sess, nil
-}
-
-func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions, sess *MockSession) (amqpwrap.AMQPReceiverCloser, error) {
-	select {
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	case <-sess.Status.Done():
-		return nil, sess.Status.Err()
-	default:
-	}
-
-	if opts == nil {
-		opts = &amqp.ReceiverOptions{}
-	}
-
-	rcvr := &MockReceiver{
-		MockAMQPReceiverCloser: mock.NewMockAMQPReceiverCloser(md.Ctrl),
-		Status:                 NewStatus(sess.Status),
-		Session:                sess,
-	}
-
-	id := fmt.Sprintf("%s|%s|%s|e:%s", sess.Conn.Name(), sess.ID, md.nextUniqueName("r"), source)
-	rcvr.EXPECT().LinkName().Return(id).AnyTimes()
-	targetAddress := opts.TargetAddress
-
-	linkEvent := LinkEvent{
-		ConnID:        sess.Conn.Name(),
-		SessID:        sess.ID,
-		Entity:        source,
-		Name:          rcvr.LinkName(),
-		Role:          LinkRoleReceiver,
-		TargetAddress: targetAddress,
-	}
-
-	md.Events.OpenLink(linkEvent)
-
-	if err := md.options.PreReceiverMock(rcvr, ctx, source, opts); err != nil {
-		return nil, err
-	}
-
-	q := md.upsertQueue(targetAddress)
-	cbs := md.upsertQueue(source)
-
-	if source == "$cbs" {
-		md.cbsRouterOnce.Do(func() {
-			go func() { md.cbsRouter(context.Background(), cbs, md.getQueue) }()
-		})
-	}
-
-	rcvr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
-		return q.Receive(ctx, linkEvent, rcvr.Status)
-	}).AnyTimes()
-
-	rcvr.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
-		md.Events.CloseLink(linkEvent)
-
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-sess.Status.Done():
-			return sess.Status.Err()
-		default:
-			rcvr.Status.CloseWithError(amqp.ErrLinkClosed)
-		}
-
-		return nil
-	}).AnyTimes()
-
-	rcvr.EXPECT().AcceptMessage(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message) error {
-		return q.AcceptMessage(ctx, msg, linkEvent, rcvr.Status)
-	}).AnyTimes()
-
-	rcvr.EXPECT().RejectMessage(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message, e *amqp.Error) error {
-		return q.RejectMessage(ctx, msg, e, linkEvent, rcvr.Status)
-	}).AnyTimes()
-
-	rcvr.EXPECT().ReleaseMessage(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message) error {
-		return q.ReleaseMessage(ctx, msg, linkEvent)
-	}).AnyTimes()
-
-	rcvr.EXPECT().ModifyMessage(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error {
-		return q.ModifyMessage(ctx, msg, options, linkEvent)
-	}).AnyTimes()
-
-	if opts.ManualCredits {
-		rcvr.EXPECT().IssueCredit(gomock.Any()).DoAndReturn(func(credit uint32) error {
-			return q.IssueCredit(credit, linkEvent, rcvr.Status)
-		}).AnyTimes()
-	} else {
-		// assume unlimited credits for this receiver - the AMQP stack is going to take care of replenishing credits.
-		_ = q.IssueCredit(math.MaxUint32, linkEvent, rcvr.Status)
-	}
-
-	return rcvr, nil
-}
-
-func (md *MockData) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions, sess *MockSession) (amqpwrap.AMQPSenderCloser, error) {
-	select {
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	case <-sess.Status.Done():
-		return nil, sess.Status.Err()
-	default:
-	}
-
-	sender := &MockSender{
-		MockAMQPSenderCloser: mock.NewMockAMQPSenderCloser(md.Ctrl),
-		Session:              sess,
-		Status:               NewStatus(sess.Status),
-	}
-
-	id := fmt.Sprintf("%s|%s|%s|e:%s", sess.Conn.Name(), sess.ID, md.nextUniqueName("s"), target)
-	sender.EXPECT().LinkName().Return(id).AnyTimes()
-
-	linkEvent := LinkEvent{
-		ConnID: sess.Conn.Name(),
-		SessID: sess.ID,
-		Entity: target,
-		Name:   sender.LinkName(),
-		Role:   LinkRoleSender,
-	}
-
-	md.Events.OpenLink(linkEvent)
-
-	if err := md.options.PreSenderMock(sender, ctx, target, opts); err != nil {
-		return nil, err
-	}
-
-	// this should work fine even for RPC links like $cbs or $management
-	q := md.upsertQueue(target)
-	sender.EXPECT().Send(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message) error {
-		return q.Send(ctx, msg, linkEvent, sender.Status)
-	}).AnyTimes()
-
-	sender.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
-		md.Events.CloseLink(linkEvent)
-
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-sess.Status.Done():
-			return sess.Status.Err()
-		default:
-			sender.Status.CloseWithError(amqp.ErrLinkClosed)
-		}
-
-		return nil
-	}).AnyTimes()
-
-	return sender, nil
 }
 
 func (md *MockData) upsertQueue(name string) *Queue {

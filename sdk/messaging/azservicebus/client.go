@@ -81,7 +81,12 @@ func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential
 	return newClientImpl(clientCreds{
 		credential:              credential,
 		fullyQualifiedNamespace: fullyQualifiedNamespace,
-	}, options)
+	}, struct {
+		Client *ClientOptions
+		NS     []internal.NamespaceOption
+	}{
+		Client: options,
+	})
 }
 
 // NewClientFromConnectionString creates a new Client for a Service Bus namespace using a connection string.
@@ -101,7 +106,12 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 	return newClientImpl(clientCreds{
 		connectionString: connectionString,
-	}, options)
+	}, struct {
+		Client *ClientOptions
+		NS     []internal.NamespaceOption
+	}{
+		Client: options,
+	})
 }
 
 // Next overloads (ie, credential sticks with the client)
@@ -116,7 +126,10 @@ type clientCreds struct {
 	credential              azcore.TokenCredential
 }
 
-func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
+func newClientImpl(creds clientCreds, options struct {
+	Client *ClientOptions
+	NS     []internal.NamespaceOption
+}) (*Client, error) {
 	client := &Client{
 		linksMu: &sync.Mutex{},
 		creds:   creds,
@@ -136,23 +149,25 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 		nsOptions = append(nsOptions, option)
 	}
 
-	if options != nil {
-		client.retryOptions = options.RetryOptions
+	if options.Client != nil {
+		client.retryOptions = options.Client.RetryOptions
 
-		if options.TLSConfig != nil {
-			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(options.TLSConfig))
+		if options.Client.TLSConfig != nil {
+			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(options.Client.TLSConfig))
 		}
 
-		if options.NewWebSocketConn != nil {
-			nsOptions = append(nsOptions, internal.NamespaceWithWebSocket(options.NewWebSocketConn))
+		if options.Client.NewWebSocketConn != nil {
+			nsOptions = append(nsOptions, internal.NamespaceWithWebSocket(options.Client.NewWebSocketConn))
 		}
 
-		if options.ApplicationID != "" {
-			nsOptions = append(nsOptions, internal.NamespaceWithUserAgent(options.ApplicationID))
+		if options.Client.ApplicationID != "" {
+			nsOptions = append(nsOptions, internal.NamespaceWithUserAgent(options.Client.ApplicationID))
 		}
 
-		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(options.RetryOptions))
+		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(options.Client.RetryOptions))
 	}
+
+	nsOptions = append(nsOptions, options.NS...)
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
 	return client, err

@@ -137,10 +137,17 @@ func NamespaceWithRetryOptions(retryOptions exported.RetryOptions) NamespaceOpti
 	}
 }
 
+// NamespaceWithNewClientFn lets you inject a construction function to create new AMQP clients. Useful for tests.
+func NamespaceWithNewClientFn(fn func(ctx context.Context) (amqpwrap.AMQPClient, error)) NamespaceOption {
+	return func(ns *Namespace) error {
+		ns.newClientFn = fn
+		return nil
+	}
+}
+
 // NewNamespace creates a new namespace configured through NamespaceOption(s)
 func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	ns := &Namespace{}
-
 	ns.newClientFn = ns.newClientImpl
 
 	for _, opt := range opts {

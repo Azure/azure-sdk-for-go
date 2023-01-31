@@ -820,23 +820,17 @@ func TestAMQPLinksCreditTracking(t *testing.T) {
 	})
 }
 
-func TestAMQPCloseLinkTimeout_Receiver(t *testing.T) {
+func TestAMQPCloseLinkTimeout_Receiver_ExternalCancellation(t *testing.T) {
 	userCtx, cancelUserCtx := context.WithCancel(context.Background())
 	defer cancelUserCtx()
 
 	var md *emulation.MockData
 	var links *AMQPLinksImpl
 
-	preReceiverMock := func(orig *emulation.MockReceiver, ctx context.Context, source string, opts *amqp.ReceiverOptions) error {
-		if source == "entity path" {
+	preReceiverMock := func(orig *emulation.MockReceiver, ctx context.Context) error {
+		if orig.Source == "entity path" {
 			orig.EXPECT().Close(&mock.ContextCreatedForTest{}).DoAndReturn(func(ctx context.Context) error {
-				md.Events.CloseLink(emulation.LinkEvent{
-					ConnID: orig.Session.Conn.Name(),
-					SessID: orig.Session.ID,
-					Entity: source,
-					Name:   orig.LinkName(),
-					Role:   emulation.LinkRoleReceiver,
-				})
+				md.Events.CloseLink(orig.LinkEvent())
 
 				// this simulates as if the user cancelled their outer context
 				cancelUserCtx()
@@ -920,22 +914,17 @@ func TestAMQPCloseLinkTimeout_Sender(t *testing.T) {
 	var links *AMQPLinksImpl
 	var ns *Namespace
 
-	preSenderMock := func(orig *emulation.MockSender, ctx context.Context, target string, opts *amqp.SenderOptions) error {
-		if target == "entity path" {
+	preSenderMock := func(ms *emulation.MockSender, ctx context.Context) error {
+		if ms.Target == "entity path" {
 			// adjust the sender mock so when it closes it acts as if it were cancelled.
 			// when the closing process is interrupted in our recovery it automatically upgrades
 			// us to "connection level recovery" instead.
-			orig.EXPECT().Close(&mock.ContextCreatedForTest{}).DoAndReturn(func(ctx context.Context) error {
-				md.Events.CloseLink(emulation.LinkEvent{
-					ConnID: orig.Session.Conn.Name(),
-					SessID: orig.Session.ID,
-					Entity: target,
-					Name:   orig.LinkName(),
-					Role:   emulation.LinkRoleSender,
-				})
+			ms.EXPECT().Close(&mock.ContextCreatedForTest{}).DoAndReturn(func(ctx context.Context) error {
+				md.Events.CloseLink(ms.LinkEvent())
 
 				// this simulates as if the user cancelled their outer context
 				cancelUserCtx()
+
 				return ctx.Err()
 			})
 		}
@@ -998,26 +987,26 @@ func TestAMQPCloseLinkTimeout_Sender(t *testing.T) {
 	emulation.RequireNoLeaks(t, md.Events)
 }
 
-func simpleReceive(t *testing.T, ctx context.Context, links *AMQPLinksImpl) (string, error) {
-	// receive has a pretty simple pattern
+func newAMQPLinksForTest(t *testing.T, mockDataOptions emulation.MockDataOptions, createLinkFunc CreateLinkFunc) (*emulation.MockData, *AMQPLinksImpl, *Namespace) {
+	ns, err := NewNamespace(
+		NamespaceWithConnectionString("Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF"),
+	)
+	require.NoError(t, err)
 
-	// acquire the link
-	var lwid *LinksWithID
+	md := emulation.NewMockData(t, &mockDataOptions)
+	ns.newClientFn = md.NewConnection
 
-	err := links.Retry(ctx, "retry", "retry", func(ctx context.Context, tempLwid *LinksWithID, args *utils.RetryFnArgs) error {
-		lwid = tempLwid
-		return nil
-	}, exported.RetryOptions{})
+	tmpLinks := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:                  ns,
+		EntityPath:          "entity path",
+		CreateLinkFunc:      createLinkFunc,
+		GetRecoveryKindFunc: GetRecoveryKind,
+	})
 
-	if err != nil {
-		return "links.retry", err
-	}
+	links := tmpLinks.(*AMQPLinksImpl)
+	links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
 
-	if _, err := lwid.Receiver.Receive(ctx); err != nil {
-		return "receive", err
-	}
-
-	return "no error", nil
+	return md, links, ns
 }
 
 // newLinksForAMQPLinksTest creates a amqpwrap.AMQPSenderCloser and a amqpwrap.AMQPReceiverCloser linkwith the same options
@@ -1049,26 +1038,4 @@ func newLinksForAMQPLinksTest(entityPath string, session amqpwrap.AMQPSession) (
 	}
 
 	return sender, receiver, nil
-}
-
-func newAMQPLinksForTest(t *testing.T, mockDataOptions emulation.MockDataOptions, createLinkFunc CreateLinkFunc) (*emulation.MockData, *AMQPLinksImpl, *Namespace) {
-	ns, err := NewNamespace(
-		NamespaceWithConnectionString("Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF"),
-	)
-	require.NoError(t, err)
-
-	md := emulation.NewMockData(t, &mockDataOptions)
-	ns.newClientFn = md.NewConnection
-
-	tmpLinks := NewAMQPLinks(NewAMQPLinksArgs{
-		NS:                  ns,
-		EntityPath:          "entity path",
-		CreateLinkFunc:      createLinkFunc,
-		GetRecoveryKindFunc: GetRecoveryKind,
-	})
-
-	links := tmpLinks.(*AMQPLinksImpl)
-	links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
-
-	return md, links, ns
 }

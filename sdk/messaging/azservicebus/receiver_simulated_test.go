@@ -17,7 +17,7 @@ import (
 )
 
 func TestReceiver_Simulated(t *testing.T) {
-	md, client := newClientWithMockedConn(t, nil)
+	md, client := newClientWithMockedConn(t, nil, nil)
 	defer test.RequireClose(t, client)
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
@@ -57,7 +57,7 @@ func TestReceiver_Simulated(t *testing.T) {
 }
 
 func TestReceiver_Simulated_CloseTopLevelClientClosesChildren(t *testing.T) {
-	md, client := newClientWithMockedConn(t, nil)
+	md, client := newClientWithMockedConn(t, nil, nil)
 	defer test.RequireClose(t, client)
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
@@ -87,7 +87,7 @@ func TestReceiver_Simulated_CloseTopLevelClientClosesChildren(t *testing.T) {
 }
 
 func TestReceiver_Simulated_Recovery(t *testing.T) {
-	md, client := newClientWithMockedConn(t, nil)
+	md, client := newClientWithMockedConn(t, nil, nil)
 	defer test.RequireClose(t, client)
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
@@ -140,7 +140,7 @@ func TestReceiver_Simulated_Recovery(t *testing.T) {
 func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
 	for _, mode := range receiveModesForTests {
 		t.Run(mode.Name, func(t *testing.T) {
-			md, client := newClientWithMockedConn(t, nil)
+			md, client := newClientWithMockedConn(t, nil, nil)
 			defer test.RequireClose(t, client)
 
 			sender, err := client.NewSender("queue", nil)
@@ -259,7 +259,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 func TestReceiver_ReceiveMessages_AllMessagesReceived(t *testing.T) {
 	fn := func(receiveMode ReceiveMode) {
 		t.Run(ReceiveModeString(receiveMode), func(t *testing.T) {
-			md, client := newClientWithMockedConn(t, nil)
+			md, client := newClientWithMockedConn(t, nil, nil)
 			defer test.RequireClose(t, client)
 
 			sender, err := client.NewSender("queue", nil)
@@ -291,12 +291,13 @@ func TestReceiver_ReceiveMessages_AllMessagesReceived(t *testing.T) {
 	fn(ReceiveModeReceiveAndDelete)
 }
 
-func newClientWithMockedConn(t *testing.T, options *emulation.MockDataOptions) (*emulation.MockData, *Client) {
-	md := emulation.NewMockData(t, nil)
+func newClientWithMockedConn(t *testing.T, mockDataOptions *emulation.MockDataOptions, clientOptions *ClientOptions) (*emulation.MockData, *Client) {
+	md := emulation.NewMockData(t, mockDataOptions)
 
 	client, err := newClientImpl(clientCreds{
 		connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
 	}, clientImplArgs{
+		ClientOptions: clientOptions,
 		NSOptions: []internal.NamespaceOption{
 			internal.NamespaceWithNewClientFn(md.NewConnection),
 		},

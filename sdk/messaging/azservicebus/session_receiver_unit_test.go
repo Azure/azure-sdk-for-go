@@ -88,7 +88,7 @@ func TestSessionReceiverUserFacingErrors(t *testing.T) {
 }
 
 var noRetriesNeeded = exported.RetryOptions{
-	MaxRetries:    0,
+	MaxRetries:    -1,
 	RetryDelay:    0,
 	MaxRetryDelay: 0,
 }

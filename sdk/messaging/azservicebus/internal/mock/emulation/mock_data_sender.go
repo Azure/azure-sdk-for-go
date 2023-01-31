@@ -61,6 +61,8 @@ func (md *MockData) NewSender(ctx context.Context, target string, opts *amqp.Sen
 		return nil, err
 	}
 
+	sender.EXPECT().MaxMessageSize().Return(uint64(1024 * 1024 * 100)).AnyTimes()
+
 	// this should work fine even for RPC links like $cbs or $management
 	q := md.upsertQueue(target)
 	sender.EXPECT().Send(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message) error {

@@ -6,6 +6,7 @@ package emulation_test
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
@@ -20,7 +21,9 @@ func TestNewConnection(t *testing.T) {
 	sess, err := client.NewSession(context.Background(), nil)
 	require.NoError(t, err)
 
-	rcvr, err := sess.NewReceiver(context.Background(), "testqueue", nil)
+	rcvr, err := sess.NewReceiver(context.Background(), "testqueue", &amqp.ReceiverOptions{
+		ManualCredits: true,
+	})
 	require.NoError(t, err)
 
 	sender, err := sess.NewSender(context.Background(), "testqueue", nil)
@@ -57,10 +60,14 @@ func TestClosingConnectionClosesChildren(t *testing.T) {
 	require.NoError(t, err)
 
 	// TODO: non-deterministic
+	time.Sleep(time.Second)
+
 	msg, err := rcvr.Receive(context.Background())
 	require.Nil(t, msg)
-	require.Error(t, err)
+
+	var connErr *amqp.ConnectionError
+	require.ErrorAs(t, err, &connErr)
 
 	err = sender.Send(context.Background(), &amqp.Message{})
-	require.Error(t, err)
+	require.ErrorAs(t, err, &connErr)
 }

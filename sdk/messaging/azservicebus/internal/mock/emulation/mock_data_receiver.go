@@ -75,6 +75,10 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 
 	md.Events.OpenLink(rcvr.LinkEvent())
 
+	md.mocksMu.Lock()
+	md.receivers[source] = append(md.receivers[source], rcvr)
+	md.mocksMu.Unlock()
+
 	if err := md.options.PreReceiverMock(rcvr, ctx); err != nil {
 		return nil, err
 	}
@@ -138,6 +142,8 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 	rcvr.EXPECT().ModifyMessage(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error {
 		return q.ModifyMessage(ctx, msg, options, rcvr.LinkEvent())
 	}).AnyTimes()
+
+	rcvr.EXPECT().Prefetched().Return((*amqp.Message)(nil)).AnyTimes()
 
 	if opts.ManualCredits {
 		rcvr.EXPECT().IssueCredit(gomock.Any()).DoAndReturn(func(credit uint32) error {

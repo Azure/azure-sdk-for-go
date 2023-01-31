@@ -6,9 +6,9 @@ package emulation
 import (
 	"context"
 	"fmt"
-	"log"
 	"sync"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
@@ -21,6 +21,10 @@ type Operation struct {
 	Credits uint32
 	M       *amqp.Message
 }
+
+const (
+	EventEmulator azlog.Event = "emulator"
+)
 
 func (op *Operation) String() string {
 	data := ""
@@ -62,7 +66,7 @@ func (q *Queue) Send(ctx context.Context, msg *amqp.Message, evt LinkEvent, stat
 	case <-status.Done():
 		return status.Err()
 	default:
-		log.Printf("[%s] send...", q.name)
+		azlog.Writef(EventEmulator, "[%s] send...", q.name)
 
 		q.src <- msg
 		q.events.Send(SendEvent{
@@ -75,19 +79,17 @@ func (q *Queue) Send(ctx context.Context, msg *amqp.Message, evt LinkEvent, stat
 }
 
 func (q *Queue) IssueCredit(credit uint32, evt LinkEvent, status *Status) error {
-	select {
-	case <-status.Done():
-		return status.Err()
-	default:
-		log.Printf("[%s] Issuing credits %d", q.name, credit)
+	azlog.Writef(EventEmulator, "[%s] Issuing credits %d", q.name, credit)
 
-		q.creditsCh <- int(credit)
-		q.events.IssueCredit(CreditEvent{
-			Credit:    credit,
-			LinkEvent: evt,
-		})
-		return nil
-	}
+	q.creditsCh <- int(credit)
+	q.events.IssueCredit(CreditEvent{
+		Credit:    credit,
+		LinkEvent: evt,
+	})
+
+	// TODO: the only time we ever get an error is if you chose manual
+	// credits and attempted to add credits.
+	return nil
 }
 
 func (q *Queue) Receive(ctx context.Context, evt LinkEvent, status *Status) (*amqp.Message, error) {
@@ -99,7 +101,7 @@ func (q *Queue) Receive(ctx context.Context, evt LinkEvent, status *Status) (*am
 	case <-status.Done():
 		return nil, status.Err()
 	default:
-		log.Printf("[%s] Receiving on queue of length src: %d, dest: %d", q.name, len(q.src), len(q.dest))
+		azlog.Writef(EventEmulator, "[%s] Receiving on queue of length src: %d, dest: %d", q.name, len(q.src), len(q.dest))
 
 		// only attempt to receive if we've guaranteed that we weren't closed at the start.
 		select {
@@ -169,29 +171,29 @@ func (q *Queue) ModifyMessage(ctx context.Context, msg *amqp.Message, options *a
 }
 
 func (q *Queue) pumpMessages() {
-	defer log.Printf("[%s] pumpMessages starting...", q.name)
+	defer azlog.Writef(EventEmulator, "[%s] pumpMessages starting...", q.name)
 
 	go func() {
-		defer log.Printf("[%s] pumpMessages stopping...", q.name)
+		defer azlog.Writef(EventEmulator, "[%s] pumpMessages stopping...", q.name)
 
 		for {
 			credit := <-q.creditsCh
 
-			log.Printf("[%s] pumpMessages issued %d credits...", q.name, credit)
+			azlog.Writef(EventEmulator, "[%s] pumpMessages issued %d credits...", q.name, credit)
 
 			if credit == 0 {
 				break
 			}
 
 			for i := 0; i < credit; i++ {
-				log.Printf("[%s] waiting for message...", q.name)
+				azlog.Writef(EventEmulator, "[%s] waiting for message...", q.name)
 				msg := <-q.src
 
 				if msg == nil {
 					break
 				}
 
-				log.Printf("[%s] pumped single message...", q.name)
+				azlog.Writef(EventEmulator, "[%s] pumped single message...", q.name)
 				q.dest <- msg
 			}
 		}

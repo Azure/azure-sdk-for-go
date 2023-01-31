@@ -34,6 +34,10 @@ type MockData struct {
 
 	queuesMu sync.Mutex
 	queues   map[string]*Queue
+
+	mocksMu   sync.Mutex
+	receivers map[string][]*MockReceiver
+	senders   map[string][]*MockSender
 }
 
 type MockDataOptions struct {
@@ -82,39 +86,18 @@ func NewMockData(t *testing.T, options *MockDataOptions) *MockData {
 	}
 
 	return &MockData{
-		Ctrl:    gomock.NewController(t),
-		queues:  map[string]*Queue{},
-		Events:  &Events{},
-		options: options,
+		Ctrl:      gomock.NewController(t),
+		queues:    map[string]*Queue{},
+		Events:    &Events{},
+		options:   options,
+		receivers: map[string][]*MockReceiver{},
+		senders:   map[string][]*MockSender{},
 	}
 }
 
 type MockConnection struct {
 	Status *Status
 	*mock.MockAMQPClient
-}
-
-type MockSession struct {
-	Status *Status
-	*mock.MockAMQPSession
-
-	ID   string
-	Conn *MockConnection
-}
-
-func (sess *MockSession) Done() <-chan error {
-	errCh := make(chan error)
-
-	go func() {
-		select {
-		case <-sess.Conn.Status.Done():
-			errCh <- sess.Conn.Status.Err()
-		case <-sess.Status.Done():
-			errCh <- sess.Status.Err()
-		}
-	}()
-
-	return errCh
 }
 
 func (md *MockData) NewConnection(ctx context.Context) (amqpwrap.AMQPClient, error) {
@@ -146,45 +129,26 @@ func (md *MockData) NewConnection(ctx context.Context) (amqpwrap.AMQPClient, err
 	return conn, nil
 }
 
-func (md *MockData) newSession(ctx context.Context, opts *amqp.SessionOptions, conn *MockConnection) (amqpwrap.AMQPSession, error) {
-	select {
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	case <-conn.Status.Done():
-		return nil, conn.Status.Err()
-	default:
+func (md *MockData) DetachSenders(entityName string) {
+	md.mocksMu.Lock()
+	defer md.mocksMu.Unlock()
+
+	for _, ms := range md.senders[entityName] {
+		ms.Status.CloseWithError(&amqp.DetachError{})
 	}
 
-	sess := &MockSession{
-		Status:          NewStatus(conn.Status),
-		ID:              md.nextUniqueName("sess"),
-		Conn:            conn,
-		MockAMQPSession: mock.NewMockAMQPSession(md.Ctrl),
+	md.senders[entityName] = nil
+}
+
+func (md *MockData) DetachReceivers(entityName string) {
+	md.mocksMu.Lock()
+	defer md.mocksMu.Unlock()
+
+	for _, mr := range md.receivers[entityName] {
+		mr.Status.CloseWithError(&amqp.DetachError{})
 	}
 
-	if err := md.options.PreSessionMock(sess, ctx, opts); err != nil {
-		return nil, err
-	}
-
-	sess.EXPECT().NewReceiver(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, source string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
-		return md.NewReceiver(ctx, source, opts, sess)
-	}).AnyTimes()
-
-	sess.EXPECT().NewSender(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, target string, opts *amqp.SenderOptions) (amqpwrap.AMQPSenderCloser, error) {
-		return md.NewSender(ctx, target, opts, sess)
-	}).AnyTimes()
-
-	sess.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
-		select {
-		case <-conn.Status.Done():
-			return conn.Status.Err()
-		default:
-			sess.Status.CloseWithError(amqp.ErrSessionClosed)
-			return nil
-		}
-	}).AnyTimes()
-
-	return sess, nil
+	md.receivers[entityName] = nil
 }
 
 func (md *MockData) upsertQueue(name string) *Queue {

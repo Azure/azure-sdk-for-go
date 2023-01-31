@@ -53,6 +53,10 @@ func (md *MockData) NewSender(ctx context.Context, target string, opts *amqp.Sen
 
 	md.Events.OpenLink(sender.LinkEvent())
 
+	md.mocksMu.Lock()
+	md.senders[target] = append(md.senders[target], sender)
+	md.mocksMu.Unlock()
+
 	if err := md.options.PreSenderMock(sender, ctx); err != nil {
 		return nil, err
 	}

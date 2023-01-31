@@ -83,6 +83,7 @@ func PossibleArtifactManifestOrderByValues() []ArtifactManifestOrderBy {
 	}
 }
 
+// ArtifactOperatingSystem - The artifact platform's operating system.
 type ArtifactOperatingSystem string
 
 const (

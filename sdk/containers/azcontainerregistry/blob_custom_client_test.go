@@ -27,6 +27,7 @@ func TestBlobClient_CompleteUpload(t *testing.T) {
 	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
+	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
@@ -47,6 +48,7 @@ func TestBlobClient_UploadChunk(t *testing.T) {
 	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
+	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
@@ -67,6 +69,7 @@ func TestBlobClient_CompleteUpload_uploadByChunk(t *testing.T) {
 	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
+	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
 	calculator := NewBlobDigestCalculator()
@@ -91,6 +94,6 @@ func TestNewBlobClient(t *testing.T) {
 	wrongCloudConfig := cloud.Configuration{
 		ActiveDirectoryAuthorityHost: "test", Services: map[cloud.ServiceName]cloud.ServiceConfiguration{},
 	}
-	client, err = NewBlobClient("test", nil, &BlobClientOptions{ClientOptions: azcore.ClientOptions{Cloud: wrongCloudConfig}})
+	_, err = NewBlobClient("test", nil, &BlobClientOptions{ClientOptions: azcore.ClientOptions{Cloud: wrongCloudConfig}})
 	require.Errorf(t, err, "provided Cloud field is missing Azure Container Registry configuration")
 }

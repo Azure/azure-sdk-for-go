@@ -447,3 +447,13 @@ directive:
     where: $
     transform: return $.replaceAll(/BlobClientUploadChunkOptions/g, "blobClientUploadChunkOptions").replace(/BlobClient\.UploadChunk/, "BlobClient.uploadChunk");
 ```
+
+### Add description for ArtifactOperatingSystem
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+        $.ArtifactOperatingSystem.description = "The artifact platform's operating system.";
+```

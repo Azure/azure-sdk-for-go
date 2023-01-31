@@ -20,6 +20,6 @@ func TestNewClient(t *testing.T) {
 	wrongCloudConfig := cloud.Configuration{
 		ActiveDirectoryAuthorityHost: "test", Services: map[cloud.ServiceName]cloud.ServiceConfiguration{},
 	}
-	client, err = NewClient("test", nil, &ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: wrongCloudConfig}})
+	_, err = NewClient("test", nil, &ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: wrongCloudConfig}})
 	require.Errorf(t, err, "provided Cloud field is missing Azure Container Registry configuration")
 }

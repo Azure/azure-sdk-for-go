@@ -23,6 +23,9 @@ func ExampleNewBlobClient() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	blobClient, err = azcontainerregistry.NewBlobClient("https://example.azurecr.io", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create blob client: %v", err)
+	}
 	_ = blobClient
 }
 

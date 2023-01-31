@@ -61,6 +61,7 @@ func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
 	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
 	require.NoError(t, err)
 	blob, err := io.ReadAll(getRes.BlobData)
+	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
 	uploadResp, err := client.uploadChunk(ctx, *startRes.Location, streaming.NopCloser(bytes.NewReader(blob)), nil)

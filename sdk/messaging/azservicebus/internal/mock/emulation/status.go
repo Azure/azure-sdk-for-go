@@ -49,6 +49,7 @@ func (s *Status) CloseWithError(err error) {
 		close(s.done)
 	}
 }
+
 func (s *Status) Err() error {
 	return *s.errVal.Load().(*error)
 }

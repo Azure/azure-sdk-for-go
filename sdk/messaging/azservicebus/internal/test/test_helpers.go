@@ -173,3 +173,10 @@ func EnableStdoutLogging() func() {
 		<-doneCh
 	}
 }
+
+func RequireClose(t *testing.T, closeable interface {
+	Close(ctx context.Context) error
+}) {
+	err := closeable.Close(context.Background())
+	require.NoError(t, err)
+}

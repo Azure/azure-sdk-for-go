@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
@@ -49,33 +50,46 @@ var receiveModesForTests = []struct {
 func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
 	for _, mode := range receiveModesForTests {
 		t.Run(mode.Name, func(t *testing.T) {
-			fakeAMQPReceiver := &internal.FakeAMQPReceiver{
-				ReceiveResults: []struct {
-					M *amqp.Message
-					E error
-				}{
-					{M: &amqp.Message{Data: [][]byte{[]byte("hello")}}},
-					// after this the context will block until the cancellation context's deadline fires.
+			md := emulation.NewMockData(t, nil)
+
+			client, err := newClientImpl(clientCreds{
+				connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
+			}, struct {
+				Client *ClientOptions
+				NS     []internal.NamespaceOption
+			}{
+				NS: []internal.NamespaceOption{
+					internal.NamespaceWithNewClientFn(md.NewConnection),
 				},
-			}
+			})
 
-			fakeAMQPLinks := &internal.FakeAMQPLinks{
-				Receiver: fakeAMQPReceiver,
-			}
+			defer test.RequireClose(t, client)
 
-			receiver, err := newReceiver(newReceiverArgs{
-				ns:     &internal.FakeNS{AMQPLinks: fakeAMQPLinks},
-				entity: entity{Queue: "queue"},
-			}, &ReceiverOptions{ReceiveMode: mode.Val})
+			require.NoError(t, err)
+			require.NotNil(t, client)
+
+			sender, err := client.NewSender("queue", nil)
 			require.NoError(t, err)
 
-			messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
+			err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+			require.NoError(t, err)
+
+			test.RequireClose(t, sender)
+
+			receiver, err := client.NewReceiverForQueue("queue", &ReceiverOptions{ReceiveMode: mode.Val})
+			require.NoError(t, err)
+
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+			defer cancel()
+
+			messages, err := receiver.ReceiveMessages(ctx, 2, nil)
 			require.NoError(t, err)
 			require.Equal(t, []string{"hello"}, getSortedBodies(messages))
 
-			// and the links did not need to be closed for a cancellation
-			require.Equal(t, 0, fakeAMQPLinks.Closed)
-			require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled)
+			sender.Close(context.Background())
+
+			require.Equal(t, 3, len(md.Events.GetOpenLinks()))
+			require.Equal(t, 1, len(md.Events.GetOpenConns()))
 		})
 	}
 }

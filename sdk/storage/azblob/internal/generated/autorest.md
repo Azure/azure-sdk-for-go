@@ -372,5 +372,16 @@ directive:
     where: $
     transform: >-
       return $.
-        replace(/CORS/g, "CORS");
+        replace(/Cors/g, "CORS");
+```
+
+### Change cors xml to be correct
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/xml:"CORS>CORSRule"/g, "xml:\"Cors>CorsRule\"");
 ```

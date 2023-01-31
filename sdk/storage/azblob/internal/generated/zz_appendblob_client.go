@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewAppendBlobClient() instead.
 type AppendBlobClient struct {
 	endpoint string
-	pl       runtime.Pipeline
+	pl runtime.Pipeline
 }
 
 // NewAppendBlobClient creates a new instance of AppendBlobClient with the specified values.
@@ -34,7 +34,7 @@ type AppendBlobClient struct {
 func NewAppendBlobClient(endpoint string, pl runtime.Pipeline) *AppendBlobClient {
 	client := &AppendBlobClient{
 		endpoint: endpoint,
-		pl:       pl,
+		pl: pl,
 	}
 	return client
 }
@@ -445,7 +445,7 @@ func (client *AppendBlobClient) createCreateRequest(ctx context.Context, content
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-			}
+		}
 		}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
@@ -657,3 +657,4 @@ func (client *AppendBlobClient) sealHandleResponse(resp *http.Response) (AppendB
 	}
 	return result, nil
 }
+

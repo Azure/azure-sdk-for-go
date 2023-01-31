@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
 	endpoint string
-	pl       runtime.Pipeline
+	pl runtime.Pipeline
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
@@ -34,7 +34,7 @@ type ServiceClient struct {
 func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 	client := &ServiceClient{
 		endpoint: endpoint,
-		pl:       pl,
+		pl: pl,
 	}
 	return client
 }
@@ -386,7 +386,6 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 // Generated from API version 2020-10-02
 //   - options - ServiceClientListContainersSegmentOptions contains the optional parameters for the ServiceClient.NewListContainersSegmentPager
 //     method.
-//
 // listContainersSegmentCreateRequest creates the ListContainersSegment request.
 func (client *ServiceClient) ListContainersSegmentCreateRequest(ctx context.Context, options *ServiceClientListContainersSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
@@ -556,3 +555,4 @@ func (client *ServiceClient) submitBatchHandleResponse(resp *http.Response) (Ser
 	}
 	return result, nil
 }
+

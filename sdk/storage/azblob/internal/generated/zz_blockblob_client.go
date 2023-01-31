@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewBlockBlobClient() instead.
 type BlockBlobClient struct {
 	endpoint string
-	pl       runtime.Pipeline
+	pl runtime.Pipeline
 }
 
 // NewBlockBlobClient creates a new instance of BlockBlobClient with the specified values.
@@ -34,7 +34,7 @@ type BlockBlobClient struct {
 func NewBlockBlobClient(endpoint string, pl runtime.Pipeline) *BlockBlobClient {
 	client := &BlockBlobClient{
 		endpoint: endpoint,
-		pl:       pl,
+		pl: pl,
 	}
 	return client
 }
@@ -109,7 +109,7 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-			}
+		}
 		}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
@@ -399,7 +399,7 @@ func (client *BlockBlobClient) putBlobFromURLCreateRequest(ctx context.Context, 
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-			}
+		}
 		}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
@@ -857,7 +857,7 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, contentL
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-			}
+		}
 		}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
@@ -970,3 +970,4 @@ func (client *BlockBlobClient) uploadHandleResponse(resp *http.Response) (BlockB
 	}
 	return result, nil
 }
+

@@ -84,6 +84,7 @@ func (s *RecordedTestSuite) TestQueueSetMetadata() {
 
 	resp, err := queueClient.GetProperties(context.Background(), nil)
 	_require.Equal(resp.Metadata, testcommon.BasicMetadata)
+	_require.Nil(err)
 }
 
 func (s *RecordedTestSuite) TestQueueSetEmptyACL() {
@@ -485,7 +486,6 @@ func (s *RecordedTestSuite) TestQueueSetPermissionsSignedIdentifierTooLong() {
 	testcommon.ValidateQueueErrorCode(_require, err, queueerror.InvalidXMLDocument)
 }
 
-//TODO: TestGetQueueACL
 //TODO: TestPutMessage
 //TODO: TestGetMessages
 //TODO: TestPeekMessages

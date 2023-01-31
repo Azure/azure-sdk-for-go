@@ -11,14 +11,14 @@ import (
 	"fmt"
 )
 
-// AccessPolicyPermission type simplifies creating the permissions string for an Azure Storage Queue SAS.
-// Initialize an instance of this type and then call its String method to set QueueSASSignatureValues' Permissions field.
+// AccessPolicyPermission type simplifies creating the permissions string for a queue's access policy.
+// Initialize an instance of this type and then call its String method to set AccessPolicy's Permission field.
 type AccessPolicyPermission struct {
 	Read, Add, Update, Process bool
 }
 
-// String produces the SAS permissions string for an Azure Storage Queue.
-// Call this method to set QueueSASSignatureValues' Permissions field.
+// String produces the access policy permission string for an Azure Storage queue.
+// Call this method to set AccessPolicy's Permission field.
 func (p *AccessPolicyPermission) String() string {
 	var b bytes.Buffer
 	if p.Read {

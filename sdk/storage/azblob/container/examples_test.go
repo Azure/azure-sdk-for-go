@@ -410,7 +410,8 @@ func Example_container_SubmitBatch() {
 	handleError(err)
 
 	// create new batch builder
-	bb := cntBatchClient.NewBatchBuilderWithSharedKeyCredential(cred)
+	bb, err := cntBatchClient.NewBatchBuilderWithSharedKeyCredential(cred)
+	handleError(err)
 
 	// add operations to the batch builder
 	bb.Delete("testBlob0", nil)

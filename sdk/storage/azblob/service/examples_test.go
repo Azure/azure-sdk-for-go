@@ -380,7 +380,8 @@ func Example_service_SubmitBatch() {
 	handleError(err)
 
 	// create new batch builder
-	bb := svcBatchClient.NewBatchBuilderWithSharedKeyCredential(cred)
+	bb, err := svcBatchClient.NewBatchBuilderWithSharedKeyCredential(cred)
+	handleError(err)
 
 	// add operations to the batch builder
 	bb.Delete("cnt1", "testBlob0", nil)

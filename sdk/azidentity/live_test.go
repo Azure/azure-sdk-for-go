@@ -66,20 +66,17 @@ const (
 )
 
 var adfsAuthority = os.Getenv("ADFS_AUTHORITY_HOST")
+var adfsScope = os.Getenv("ADFS_SCOPE")
 
 var adfsLiveSP = struct {
-	tenantID    string
 	clientID    string
 	secret      string
-	pemPath     string
-	scope       string
+	certPath    string
 	redirectURL string
 }{
-	tenantID:    "adfs",
 	clientID:    os.Getenv("ADFS_SP_CLIENT_ID"),
 	secret:      os.Getenv("ADFS_SP_CLIENT_SECRET"),
-	pemPath:     os.Getenv("ADFS_SP_CERT_PEM"),
-	scope:       os.Getenv("ADFS_SCOPE"),
+	certPath:    os.Getenv("ADFS_SP_CERT_PATH"),
 	redirectURL: os.Getenv("ADFS_SP_REDIRECT_URL"),
 }
 
@@ -110,11 +107,11 @@ func init() {
 		liveUser.password = "fake-password"
 		adfsLiveSP.secret = "fake-secret"
 		adfsLiveSP.clientID = fakeClientID
-		adfsLiveSP.pemPath = "testdata/certificate.pem"
+		adfsLiveSP.certPath = "testdata/certificate.pem"
 		adfsLiveUser.username = fakeUsername
 		adfsLiveUser.password = "fake-password"
 		adfsLiveUser.clientID = fakeClientID
-		adfsLiveSP.scope = "https://" + fakeAdfsScope
+		adfsScope = "https://" + fakeAdfsScope
 		adfsAuthority = "https://" + fakeAdfsAuthority
 	}
 }
@@ -150,8 +147,8 @@ func TestMain(m *testing.M) {
 			liveSP.tenantID:                                 fakeTenantID,
 			liveUser.tenantID:                               fakeTenantID,
 			liveUser.username:                               fakeUsername,
-			strings.TrimLeft(adfsLiveSP.scope, "htps:/"):    fakeAdfsScope,
-			strings.TrimLeft(adfsAuthority, "htps:/"):       fakeAdfsAuthority,
+			strings.TrimPrefix(adfsScope, "https://"):       fakeAdfsScope,
+			strings.TrimPrefix(adfsAuthority, "https://"):   fakeAdfsAuthority,
 		}
 		for target, replacement := range pathVars {
 			if target != "" {
@@ -258,6 +255,6 @@ func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential, customScope 
 		t.Fatal(err)
 	}
 	if tk2.Token != tk.Token || tk2.ExpiresOn != tk.ExpiresOn {
-		t.Fatalf("expected a cached token")
+		t.Fatal("expected a cached token")
 	}
 }

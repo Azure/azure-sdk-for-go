@@ -4,9 +4,8 @@
       "RequestUri": "https://login.microsoftonline.com/fake-tenant/v2.0/.well-known/openid-configuration",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        ":method": "GET",
         "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-azidentity/v0.13.1 azsdk-go-azcore/v0.21.0 (go1.17.6; linux)"
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -16,17 +15,17 @@
         "Cache-Control": "max-age=86400, private",
         "Content-Length": "1578",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 24 Jan 2022 22:41:13 GMT",
+        "Date": "Tue, 31 Jan 2023 00:44:57 GMT",
         "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
         "Set-Cookie": [
-          "fpc=Ak0y6QLJ6d1DnAxcmiQedwBKXQmMCAAAAAUigdkOAAAA; expires=Wed, 23-Feb-2022 22:41:13 GMT; path=/; secure; HttpOnly; SameSite=None",
-          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly",
-          "stsservicecookie=estsfd; path=/; secure; samesite=none; httponly"
+          "fpc=Ais9pGCFGF9Ft4kncpqhZpU; expires=Thu, 02-Mar-2023 00:44:57 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
         ],
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-ests-server": "2.1.12261.22 - NCUS ProdSlices",
-        "x-ms-request-id": "c482b4f6-560f-4681-9a5f-fb1e1bee9600"
+        "x-ms-ests-server": "2.1.14526.6 - WUS2 ProdSlices",
+        "x-ms-request-id": "eaf946b1-4fc5-48ac-a04f-f4e692091500",
+        "X-XSS-Protection": "0"
       },
       "ResponseBody": {
         "token_endpoint": "https://login.microsoftonline.com/fake-tenant/oauth2/v2.0/token",
@@ -100,9 +99,8 @@
       "RequestUri": "https://login.microsoftonline.com/common/UserRealm/fake@user?api-version=1.0",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        ":method": "GET",
         "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-azidentity/v0.13.1 azsdk-go-azcore/v0.21.0 (go1.17.6; linux)"
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -111,19 +109,19 @@
         "Content-Disposition": "inline; filename=userrealm.json",
         "Content-Length": "184",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 24 Jan 2022 22:41:13 GMT",
+        "Date": "Tue, 31 Jan 2023 00:44:57 GMT",
         "Expires": "-1",
         "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
         "Pragma": "no-cache",
         "Set-Cookie": [
-          "fpc=Ak0y6QLJ6d1DnAxcmiQedwBKXQmMCAAAAAUigdkOAAAA; expires=Wed, 23-Feb-2022 22:41:14 GMT; path=/; secure; HttpOnly; SameSite=None",
-          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly",
-          "stsservicecookie=estsfd; path=/; secure; samesite=none; httponly"
+          "fpc=Ais9pGCFGF9Ft4kncpqhZpU; expires=Thu, 02-Mar-2023 00:44:57 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
         ],
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-ests-server": "2.1.12261.22 - EUS ProdSlices",
-        "x-ms-request-id": "3f05cebe-06a6-44f9-a3b9-93c4e624a400"
+        "x-ms-ests-server": "2.1.14526.6 - WUS2 ProdSlices",
+        "x-ms-request-id": "eaf946b1-4fc5-48ac-a04f-f4e697091500",
+        "X-XSS-Protection": "0"
       },
       "ResponseBody": {
         "ver": "1.0",
@@ -137,11 +135,10 @@
       "RequestUri": "https://login.microsoftonline.com/fake-tenant/oauth2/v2.0/token",
       "RequestMethod": "POST",
       "RequestHeaders": {
-        ":method": "POST",
         "Accept-Encoding": "gzip",
         "Content-Length": "2",
         "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-        "User-Agent": "azsdk-go-azidentity/v0.13.1 azsdk-go-azcore/v0.21.0 (go1.17.6; linux)"
+        "User-Agent": "azsdk-go-azidentity/v1.3.0-beta.3 (go1.19.3; linux)"
       },
       "RequestBody": {},
       "StatusCode": 200,
@@ -149,29 +146,29 @@
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "1673",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 24 Jan 2022 22:41:13 GMT",
+        "Date": "Tue, 31 Jan 2023 00:44:57 GMT",
         "Expires": "-1",
         "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
         "Pragma": "no-cache",
         "Set-Cookie": [
-          "fpc=Ak0y6QLJ6d1DnAxcmiQedwBKXQmMCAAAAAUigdkOAAAAT6t2KAEAAAAJIoHZDgAAAA; expires=Wed, 23-Feb-2022 22:41:14 GMT; path=/; secure; HttpOnly; SameSite=None",
-          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly",
-          "stsservicecookie=estsfd; path=/; secure; samesite=none; httponly"
+          "fpc=Ais9pGCFGF9Ft4kncpqhZpVPq3YoAQAAAIlbatsOAAAA; expires=Thu, 02-Mar-2023 00:44:58 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly"
         ],
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-ests-server": "2.1.12261.22 - NCUS ProdSlices",
-        "x-ms-request-id": "a4be07f0-9bbb-43a2-8435-3ac04cbf5300"
+        "x-ms-ests-server": "2.1.14357.8 - SCUS ProdSlices",
+        "x-ms-request-id": "767fe140-950b-475d-82c3-495050418b01",
+        "X-XSS-Protection": "0"
       },
       "ResponseBody": {
         "token_type": "Bearer",
         "scope": "https://management.core.windows.net//user_impersonation https://management.core.windows.net//.default",
-        "expires_in": 5101,
-        "ext_expires_in": 5101,
+        "expires_in": 5162,
+        "ext_expires_in": 5162,
         "access_token": "redacted",
         "refresh_token": "redacted",
         "foci": "1",
-        "id_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imwzc1EtNTBjQ0g0eEJWWkxIVEd3blNSNzY4MCJ9.eyJhdWQiOiIwNGIwNzc5NS04ZGRiLTQ2MWEtYmJlZS0wMmY5ZTFiZjdiNDYiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vYzU0ZmFjODgtM2RkMy00NjFmLWE3YzQtOGEzNjhlMDM0MGIzL3YyLjAiLCJpYXQiOjE2Mzc2MDYxMzAsIm5iZiI6MTYzNzYwNjEzMCwiZXhwIjoxNjM3NjEwMDMwLCJhaW8iOiJBVVFBdS84VEFBQUFSWGljK0VsYzA4NTZDSnR0S1RDYTdqNGh5ZVJscjhUbms3VDIzR1Jld3ZoZy84KzYvem5CRW1wVDFwaFk1YnVXY3dlUk50VEFJM1c4Q1dhY1R0aGd3UT09IiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTBiZDIzMjEtMDdmYS00Y2YwLTg3YjgtMDBhYTJhNzQ3MzI5LyIsIm5hbWUiOiJJZGVudGl0eSBUZXN0IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJpZGVudGl0eXRlc3R1c2VyQGF6dXJlc2Rrb3V0bG9vay5vbm1pY3Jvc29mdC5jb20iLCJyaCI6IjAuQVMwQWlLeFB4ZE05SDBhbnhJbzJqZ05BczVWM3NBVGJqUnBHdS00Qy1lR19lMFl0QUxFLiIsInN1YiI6ImMxYTBsY2xtbWxCYW9wc0MwVmlaLVpPMjFCT2dSUXE3SG9HRUtOOXloZnMiLCJ0aWQiOiJjNTRmYWM4OC0zZGQzLTQ2MWYtYTdjNC04YTM2OGUwMzQwYjMiLCJ1dGkiOiI0WjJ2Rm1EMF9rU1BUTTZhcXFpUEFBIiwidmVyIjoiMi4wIn0.PfTaFdt0K1Kd3H1zNBrRpSDbf3Bu-JKwR-rpUNi6L6gOtHA6ixJUjkPtRMa2iwF9GCert_9K8Pzu8kqY0Y_fYZhTiI2a2G1BlR134JoWZJsoPZOxOiuHNBMDBwgkprRSOcIGLn7X_hwSNc8FBKC21ob9eRHFBGRIuSO9QQMd1EiW19F4Fj15u6Wqcg0L8_ucbnElS3hI-hkaodeaV9cwEqFc3yHHTz19pJyjnK52KH1YI5mTe3ThRlsqxWdH7ildiViGTflBbtCLtgcP-aTMozIggd1mtK0GEPfww6RGDhUESiGYXy2sMlkdPniwMf05dJ3nL4TVx-PVyF7aXbuFXA",
+        "id_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyJ9.eyJhdWQiOiIwNGIwNzc5NS04ZGRiLTQ2MWEtYmJlZS0wMmY5ZTFiZjdiNDYiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vZTBiZDIzMjEtMDdmYS00Y2YwLTg3YjgtMDBhYTJhNzQ3MzI5L3YyLjAiLCJpYXQiOjE2NzUxMjU1OTcsIm5iZiI6MTY3NTEyNTU5NywiZXhwIjoxNjc1MTI5NDk3LCJhaW8iOiJBVFFBeS84VEFBQUF1TVliellTOWgzOU5nN3YxV2wzOXhOdGxRWUtNejUvNjhNSHE1VXI3VUVTck14NnB3WFZsdTRmblJJZlZsanVGIiwibmFtZSI6IklkZW50aXR5IFRlc3QgVXNlciIsIm9pZCI6ImM3M2M2ZjI4LWFlNWYtNDEzZC1hOWEyLWUxMWU1YWY2NjhmOCIsInByZWZlcnJlZF91c2VybmFtZSI6ImlkZW50aXR5dGVzdHVzZXJAYXp1cmVzZGtvdXRsb29rLm9ubWljcm9zb2Z0LmNvbSIsInB1aWQiOiIxMDAzMjAwMTY1QzkwODU2IiwicmgiOiIwLkFWQUFJU085NFBvSDhFeUh1QUNxS25SektaVjNzQVRialJwR3UtNEMtZUdfZTBaUUFMRS4iLCJzdWIiOiJqUk5kRVZ2b0t4YW1GdzFoZEF4WHQzR216UXlOdU5YM3U5eEFyMFJqTDZnIiwidGlkIjoiZTBiZDIzMjEtMDdmYS00Y2YwLTg3YjgtMDBhYTJhNzQ3MzI5IiwidXRpIjoiUU9GX2RndVZYVWVDdzBsUVVFR0xBUSIsInZlciI6IjIuMCJ9.P2QWT0omgERZzaTt54Y7juKB3nmJIQ4Ixq0umMFYKeV1VvOQC52Uf9NBzQgVM_60bVwn8A9I2b6Jhg2HyKoR6n6yfIPKB4SjeZC2EtYVRCX0c1CpSNaXLzxMk5lFGIC-CJW_dNu_twjkrlwhS_5Oz_qiNQIaRicUm_sdprSXbsi1IhGvrkA0mnZOUIPpoquyZMxU1QjDMgp5rnGPUtMJ-02i1HA275yU1p0rd0x0q_kxB-u9i-fw58ScPI3UpUr_811LVsJkA_UFal_jcdZqHbwqm7x8SheOUG48AqkB5vMlA264k_X-jrQh_8xp9qmsnLI2V_91RE_nBFNOyEh5Fw",
         "client_info": "eyJ1aWQiOiJjNzNjNmYyOC1hZTVmLTQxM2QtYTlhMi1lMTFlNWFmNjY4ZjgiLCJ1dGlkIjoiZTBiZDIzMjEtMDdmYS00Y2YwLTg3YjgtMDBhYTJhNzQ3MzI5In0"
       }
     }

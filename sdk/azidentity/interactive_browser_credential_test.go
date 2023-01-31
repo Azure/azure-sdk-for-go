@@ -122,9 +122,9 @@ func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
 		azureAuthorityHost: adfsAuthority,
 	}
 	setEnvironmentVariables(t, vars)
-	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{ClientID: adfsLiveUser.clientID, TenantID: adfsLiveSP.tenantID, RedirectURL: url, DisableInstanceDiscovery: true})
+	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{ClientID: adfsLiveUser.clientID, TenantID: "adfs", RedirectURL: url, DisableInstanceDiscovery: true})
 	if err != nil {
 		t.Fatal(err)
 	}
-	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
+	testGetTokenSuccess(t, cred, adfsScope)
 }

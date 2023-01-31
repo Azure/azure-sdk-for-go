@@ -265,7 +265,7 @@ func TestEnvironmentCredentialADFS_ClientSecretLive(t *testing.T) {
 	vars := map[string]string{
 		azureClientID:      adfsLiveSP.clientID,
 		azureClientSecret:  adfsLiveSP.secret,
-		azureTenantID:      adfsLiveSP.tenantID,
+		azureTenantID:      "adfs",
 		azureAuthorityHost: adfsAuthority,
 	}
 	setEnvironmentVariables(t, vars)
@@ -275,7 +275,7 @@ func TestEnvironmentCredentialADFS_ClientSecretLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
+	testGetTokenSuccess(t, cred, adfsScope)
 }
 
 func TestEnvironmentCredential_InvalidClientSecretLive(t *testing.T) {
@@ -323,7 +323,7 @@ func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			opts, stop := initRecording(t)
 			defer stop()
-			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts})
+			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disabledID})
 			if err != nil {
 				t.Fatalf("failed to construct credential: %v", err)
 			}
@@ -340,7 +340,7 @@ func TestEnvironmentCredentialADFS_UserPasswordLive(t *testing.T) {
 	}
 	vars := map[string]string{
 		azureClientID:      adfsLiveUser.clientID,
-		azureTenantID:      adfsLiveSP.tenantID,
+		azureTenantID:      "adfs",
 		azureUsername:      adfsLiveUser.username,
 		azurePassword:      adfsLiveUser.password,
 		azureAuthorityHost: adfsAuthority,
@@ -352,7 +352,7 @@ func TestEnvironmentCredentialADFS_UserPasswordLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
+	testGetTokenSuccess(t, cred, adfsScope)
 }
 
 func TestEnvironmentCredential_InvalidPasswordLive(t *testing.T) {

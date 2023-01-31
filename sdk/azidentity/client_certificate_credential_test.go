@@ -225,7 +225,7 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 			testGetTokenSuccess(t, cred)
 		})
 	}
-	t.Run("disableID", func(t *testing.T) {
+	t.Run("disable instance discovery", func(t *testing.T) {
 		if liveSP.pemPath == "" {
 			t.Skip("no certificate file specified")
 		}
@@ -250,12 +250,11 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 
 func TestClientCertificateCredentialADFS_Live(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		if adfsLiveSP.clientID == "" || adfsLiveSP.pemPath == "" || adfsLiveSP.scope == "" {
-			t.Skip("this test requires manual recording and access to ADFS instance, and can't pass live in CI")
+		if adfsLiveSP.clientID == "" || adfsLiveSP.certPath == "" || adfsScope == "" {
+			t.Skip("set ADFS_SP_* to run this test live")
 		}
 	}
-	//Set authority host to be ADFS authority
-	certData, err := os.ReadFile(adfsLiveSP.pemPath)
+	certData, err := os.ReadFile(adfsLiveSP.certPath)
 	if err != nil {
 		t.Fatalf(`failed to read cert: %v`, err)
 	}
@@ -267,11 +266,11 @@ func TestClientCertificateCredentialADFS_Live(t *testing.T) {
 	defer stop()
 	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
 	opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
-	cred, err := NewClientCertificateCredential(adfsLiveSP.tenantID, adfsLiveSP.clientID, certs, key, opts)
+	cred, err := NewClientCertificateCredential("adfs", adfsLiveSP.clientID, certs, key, opts)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
+	testGetTokenSuccess(t, cred, adfsScope)
 }
 
 func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {

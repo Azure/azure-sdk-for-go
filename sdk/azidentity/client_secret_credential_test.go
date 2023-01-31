@@ -61,7 +61,7 @@ func TestClientSecretCredential_Live(t *testing.T) {
 
 func TestClientSecretCredentialADFS_Live(t *testing.T) {
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		if adfsLiveSP.clientID == "" || adfsLiveSP.secret == "" || adfsLiveSP.scope == "" {
+		if adfsLiveSP.clientID == "" || adfsLiveSP.secret == "" || adfsScope == "" {
 			t.Skip("set ADFS_SP_* environment variables to run this test live")
 		}
 	}
@@ -69,11 +69,11 @@ func TestClientSecretCredentialADFS_Live(t *testing.T) {
 	defer stop()
 	opts.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
 	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true}
-	cred, err := NewClientSecretCredential(adfsLiveSP.tenantID, adfsLiveSP.clientID, adfsLiveSP.secret, &o)
+	cred, err := NewClientSecretCredential("adfs", adfsLiveSP.clientID, adfsLiveSP.secret, &o)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
-	testGetTokenSuccess(t, cred, adfsLiveSP.scope)
+	testGetTokenSuccess(t, cred, adfsScope)
 }
 
 func TestClientSecretCredential_InvalidSecretLive(t *testing.T) {

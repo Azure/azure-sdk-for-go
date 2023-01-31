@@ -10,7 +10,7 @@ Use the client library for Azure Container Registry to:
 - Delete images and artifacts, repositories and tags
 - Upload and download images
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containers/azcontainerregistry) | [Package (pkg.go.dev)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry) | [REST API documentation](https://docs.microsoft.com/rest/api/containerregistry/) | [Product documentation](https://docs.microsoft.com/azure/container-registry/)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containers/azcontainerregistry) | [REST API documentation](https://docs.microsoft.com/rest/api/containerregistry/) | [Product documentation](https://docs.microsoft.com/azure/container-registry/)
 
 ## Getting started
 

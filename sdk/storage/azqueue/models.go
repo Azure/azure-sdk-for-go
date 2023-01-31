@@ -77,6 +77,13 @@ type ListQueuesSegmentResponse = generated.ListQueuesSegmentResponse
 // QueueItem - queue item
 type QueueItem = generated.QueueItem
 
+// AccessPolicy - An Access policy
+type AccessPolicy = generated.AccessPolicy
+
+// AccessPolicyPermission type simplifies creating the permissions string for a queue's access policy.
+// Initialize an instance of this type and then call its String method to set AccessPolicy's Permission field.
+type AccessPolicyPermission = exported.AccessPolicyPermission
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ListQueuesOptions provides set of configurations for ListQueues operation
@@ -406,9 +413,8 @@ type PeekMessagesOptions struct {
 }
 
 func (o *PeekMessagesOptions) format() *generated.MessagesClientPeekOptions {
-	numberOfMessages := int32(1)
 	if o == nil {
-		return &generated.MessagesClientPeekOptions{NumberOfMessages: &numberOfMessages}
+		return nil
 	}
 
 	return &generated.MessagesClientPeekOptions{NumberOfMessages: o.NumberOfMessages}

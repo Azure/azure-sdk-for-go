@@ -26,7 +26,7 @@ import (
 // Don't use this type directly, use NewBlobClient() instead.
 type BlobClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewBlobClient creates a new instance of BlobClient with the specified values.
@@ -35,7 +35,7 @@ type BlobClient struct {
 func NewBlobClient(endpoint string, pl runtime.Pipeline) *BlobClient {
 	client := &BlobClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -451,7 +451,7 @@ func (client *BlobClient) copyFromURLCreateRequest(ctx context.Context, copySour
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-		}
+			}
 		}
 	}
 	if options != nil && options.Tier != nil {
@@ -609,7 +609,7 @@ func (client *BlobClient) createSnapshotCreateRequest(ctx context.Context, optio
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-		}
+			}
 		}
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKey != nil {
@@ -2421,7 +2421,7 @@ func (client *BlobClient) setMetadataCreateRequest(ctx context.Context, options 
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-		}
+			}
 		}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
@@ -2709,7 +2709,7 @@ func (client *BlobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-		}
+			}
 		}
 	}
 	if options != nil && options.Tier != nil {
@@ -2877,4 +2877,3 @@ func (client *BlobClient) undeleteHandleResponse(resp *http.Response) (BlobClien
 	}
 	return result, nil
 }
-

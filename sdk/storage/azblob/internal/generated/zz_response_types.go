@@ -1385,7 +1385,7 @@ type ContainerClientGetPropertiesResponse struct {
 	HasLegalHold *bool
 
 	// IsImmutableStorageWithVersioningEnabled contains the information returned from the x-ms-immutable-storage-with-versioning-enabled
-// header response.
+	// header response.
 	IsImmutableStorageWithVersioningEnabled *bool
 
 	// LastModified contains the information returned from the Last-Modified header response.
@@ -1970,4 +1970,3 @@ type ServiceClientSubmitBatchResponse struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
-

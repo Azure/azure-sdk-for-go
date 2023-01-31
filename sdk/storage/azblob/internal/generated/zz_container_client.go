@@ -28,7 +28,7 @@ import (
 // Don't use this type directly, use NewContainerClient() instead.
 type ContainerClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewContainerClient creates a new instance of ContainerClient with the specified values.
@@ -37,7 +37,7 @@ type ContainerClient struct {
 func NewContainerClient(endpoint string, pl runtime.Pipeline) *ContainerClient {
 	client := &ContainerClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -356,7 +356,7 @@ func (client *ContainerClient) createCreateRequest(ctx context.Context, options 
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-		}
+			}
 		}
 	}
 	if options != nil && options.Access != nil {
@@ -833,7 +833,7 @@ func (client *ContainerClient) ListBlobFlatSegmentHandleResponse(resp *http.Resp
 //     appearance of the delimiter character. The delimiter may be a single character or a string.
 //   - options - ContainerClientListBlobHierarchySegmentOptions contains the optional parameters for the ContainerClient.NewListBlobHierarchySegmentPager
 //     method.
-func (client *ContainerClient) NewListBlobHierarchySegmentPager(delimiter string, options *ContainerClientListBlobHierarchySegmentOptions) (*runtime.Pager[ContainerClientListBlobHierarchySegmentResponse]) {
+func (client *ContainerClient) NewListBlobHierarchySegmentPager(delimiter string, options *ContainerClientListBlobHierarchySegmentOptions) *runtime.Pager[ContainerClientListBlobHierarchySegmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContainerClientListBlobHierarchySegmentResponse]{
 		More: func(page ContainerClientListBlobHierarchySegmentResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -1287,7 +1287,7 @@ func (client *ContainerClient) setAccessPolicyCreateRequest(ctx context.Context,
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName      xml.Name             `xml:"SignedIdentifiers"`
 		ContainerACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	return req, runtime.MarshalAsXML(req, wrapper{ContainerACL: &containerACL})
@@ -1367,7 +1367,7 @@ func (client *ContainerClient) setMetadataCreateRequest(ctx context.Context, opt
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-		}
+			}
 		}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
@@ -1475,4 +1475,3 @@ func (client *ContainerClient) submitBatchHandleResponse(resp *http.Response) (C
 	}
 	return result, nil
 }
-

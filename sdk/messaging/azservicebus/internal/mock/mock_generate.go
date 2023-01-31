@@ -7,4 +7,6 @@
 
 //go:generate mockgen -source ../amqpwrap/rpc.go -package mock -copyright_file ./testdata/copyright.txt -destination mock_rpc.go
 
+//go:generate mockgen -source ../amqpLinks.go -package mock -copyright_file ./testdata/copyright.txt -destination mock_amqp_links.go AMQPLinks
+
 package mock

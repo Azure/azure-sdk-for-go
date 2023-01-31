@@ -24,6 +24,7 @@ type Client struct {
 	pl                    runtime.Pipeline
 }
 
+// ClientOptions - Acceptable values of ClientOptions.
 type ClientOptions struct {
 	azcore.ClientOptions
 	CertificateFormat     *string

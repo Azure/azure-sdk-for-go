@@ -2,8 +2,8 @@
 
 The azpki API is a new Azure service which provides the concept of Private CA to customers. It will allow customers to: 
 
-## Describe their own CA (Certificate Authorities) in the Azure cloud. 
-## Use that CA to issue and revoke certificates. 
-## Host CRLs (Certificate Revocation Lists) and OCSP responses.
+### Describe their own CA (Certificate Authorities) in the Azure cloud. 
+### Use that CA to issue and revoke certificates. 
+### Host CRLs (Certificate Revocation Lists) and OCSP responses.
 
 Please find additional details for the API [here.](https://microsoft.sharepoint.com/:w:/t/PKIaaS/EVnYiASHsyBFjD72tLLv6VIBRIq1q5nPiitAC4apyNcTRw?e=FcvYsd&nav=eyJoIjoiMTcwMjg0MzMwNCJ9&wdOrigin=TEAMS-ELECTRON.p2p.bim&wdExp=TEAMS-TREATMENT&wdhostclicktime=1673615940893&web=1&xsdata=MDV8MDF8fDNhYjBlODhlOWYwMjQxZWRiZDBhMDhkYWZmZGY3ZWZifDcyZjk4OGJmODZmMTQxYWY5MWFiMmQ3Y2QwMTFkYjQ3fDB8MHw2MzgxMDM2MzI1OTk1NjM1MzB8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT18MXxNVFkzTkRjMk5qUTFPRGd4TkRzeE5qYzBOelkyTkRVNE9ERTBPekU1T2pBek5UUTFZMlkwTFRCaE9HTXRORE5rWWkwNFptWXdMVGd3WWprd1ptUmhZVEZsTWw4elptVTFOVFUwTnkweFltTTVMVFEzTTJJdE9UZ3dNeTB3TVRrMU1XVmpPVGM0T1RWQWRXNXhMbWRpYkM1emNHRmpaWE09fGFlMWI5MjE4NjdmNzQ2M2ZiZDBhMDhkYWZmZGY3ZWZifDA2NWFkYjU1Y2Y0MTQ5OGU4NTJhY2Y4MDhhYjk5YmYw&sdata=VjNrY2V4elJiYmxZdjhCWjNwV1FtZHNxT3VOZ1NTR0lFcmVwNnRHd2RJRT0%3D&ovuser=72f988bf-86f1-41af-91ab-2d7cd011db47%2Carpitsaxena%40microsoft.com&OR=Teams-HL&CT=1674780808458&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiIyNy8yMzAxMDEwMDkxMSIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D)

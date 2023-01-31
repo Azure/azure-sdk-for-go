@@ -95,51 +95,94 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
 }
 
 func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
-	var errors = []struct {
-		Err      error
-		Expected error
-	}{
-		// a fatal error is always returned in peekLock mode
-		{Err: internal.NewErrNonRetriable("non retriable error"), Expected: internal.NewErrNonRetriable("non retriable error")},
-		// non-fatal errors are "erased" and the error will be caught on the next iteration of the loop
-		{Err: amqp.ErrLinkClosed, Expected: nil},
+	type args struct {
+		Name        string
+		InternalErr error
+		ReturnedErr error
+		ConnAlive   bool
+		LinkAlive   bool
 	}
 
-	// all the receive modes work the same when there are no messages
-	for _, mode := range receiveModesForTests {
-		for i, data := range errors {
-			t.Run(fmt.Sprintf("%s [%d] %s", mode.Name, i, data.Err), func(t *testing.T) {
-				fakeAMQPReceiver := &internal.FakeAMQPReceiver{
-					ReceiveResults: []struct {
-						M *amqp.Message
-						E error
-					}{
-						{E: data.Err},
-					},
-				}
+	fn := func(args args) {
+		t.Run(args.Name, func(t *testing.T) {
+			md := emulation.NewMockData(t, &emulation.MockDataOptions{
+				PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+					if mr.Source == "queue" {
+						mr.EXPECT().Receive(context.Background()).Return(nil, args.InternalErr)
 
-				fakeAMQPLinks := &internal.FakeAMQPLinks{
-					Receiver: fakeAMQPReceiver,
-				}
+					}
 
-				receiver, err := newReceiver(newReceiverArgs{
-					ns:     &internal.FakeNS{AMQPLinks: fakeAMQPLinks},
-					entity: entity{Queue: "queue"},
-				}, &ReceiverOptions{ReceiveMode: mode.Val})
-				require.NoError(t, err)
-
-				messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-				require.EqualValues(t, data.Expected, err)
-				require.Empty(t, messages)
-
-				require.Equal(t, 1, fakeAMQPReceiver.PrefetchedCalled, "prefetched before throwing away the broken link")
-
-				// a fatal error happened, links should be closed.
-				require.Equal(t, 0, fakeAMQPLinks.Closed, "links are closed using CloseIfNeeded")
-				require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled, "links are closed on receive errors")
+					return nil
+				},
 			})
-		}
+
+			client, err := newClientImpl(clientCreds{
+				connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
+			}, struct {
+				Client *ClientOptions
+				NS     []internal.NamespaceOption
+			}{
+				NS: []internal.NamespaceOption{
+					internal.NamespaceWithNewClientFn(md.NewConnection),
+				},
+			})
+
+			defer test.RequireClose(t, client)
+
+			require.NoError(t, err)
+			require.NotNil(t, client)
+
+			receiver, err := client.NewReceiverForQueue("queue", nil)
+			require.NoError(t, err)
+
+			messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
+			require.EqualValues(t, args.ReturnedErr, err)
+			require.Empty(t, messages)
+
+			if args.ConnAlive {
+				require.Equal(t, 1, len(md.Events.GetOpenConns()), "Connection is still alive")
+			} else {
+				require.Equal(t, 0, len(md.Events.GetOpenConns()), "Connection has been closed")
+			}
+
+			if args.LinkAlive {
+				require.Equal(t, 3, len(md.Events.GetOpenLinks()), "Links are still alive")
+			} else {
+				require.Equal(t, 0, len(md.Events.GetOpenLinks()), "Links have been closed")
+			}
+		})
 	}
+
+	fn(args{
+		Name:        "Non-retriable errors shut down the connection",
+		InternalErr: internal.NewErrNonRetriable("non retriable error"),
+		ReturnedErr: internal.NewErrNonRetriable("non retriable error"),
+		ConnAlive:   false,
+	})
+
+	fn(args{
+		Name:        "Cancel errors don't close the connection",
+		InternalErr: context.Canceled,
+		ReturnedErr: context.Canceled,
+		ConnAlive:   true,
+		LinkAlive:   true,
+	})
+
+	fn(args{
+		Name:        "Connection level errors close link and connection",
+		InternalErr: &amqp.ConnectionError{},
+		ReturnedErr: nil,
+		ConnAlive:   false,
+		LinkAlive:   false,
+	})
+
+	fn(args{
+		Name:        "Link level errors close the link",
+		InternalErr: amqp.ErrLinkClosed,
+		ReturnedErr: nil,
+		ConnAlive:   true,
+		LinkAlive:   false,
+	})
 }
 
 func TestReceiver_ReceiveMessages_AllMessagesReceived(t *testing.T) {

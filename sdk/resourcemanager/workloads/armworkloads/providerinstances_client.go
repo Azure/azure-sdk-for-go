@@ -32,9 +32,9 @@ type ProviderInstancesClient struct {
 }
 
 // NewProviderInstancesClient creates a new instance of ProviderInstancesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewProviderInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderInstancesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewProviderInstancesClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreate - Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Name of the SAP monitor resource.
-// providerInstanceName - Name of the provider instance.
-// providerInstanceParameter - Request body representing a provider instance
-// options - ProviderInstancesClientBeginCreateOptions contains the optional parameters for the ProviderInstancesClient.BeginCreate
-// method.
+//
+// Generated from API version 2022-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Name of the SAP monitor resource.
+//   - providerInstanceName - Name of the provider instance.
+//   - providerInstanceParameter - Request body representing a provider instance
+//   - options - ProviderInstancesClientBeginCreateOptions contains the optional parameters for the ProviderInstancesClient.BeginCreate
+//     method.
 func (client *ProviderInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, monitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesClientBeginCreateOptions) (*runtime.Poller[ProviderInstancesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, options)
@@ -81,7 +82,8 @@ func (client *ProviderInstancesClient) BeginCreate(ctx context.Context, resource
 
 // Create - Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01-preview
+//
+// Generated from API version 2022-11-01-preview
 func (client *ProviderInstancesClient) create(ctx context.Context, resourceGroupName string, monitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, providerInstanceParameter)
@@ -130,19 +132,22 @@ func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, 
 // BeginDelete - Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Name of the SAP monitor resource.
-// providerInstanceName - Name of the provider instance.
-// options - ProviderInstancesClientBeginDeleteOptions contains the optional parameters for the ProviderInstancesClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Name of the SAP monitor resource.
+//   - providerInstanceName - Name of the provider instance.
+//   - options - ProviderInstancesClientBeginDeleteOptions contains the optional parameters for the ProviderInstancesClient.BeginDelete
+//     method.
 func (client *ProviderInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, providerInstanceName string, options *ProviderInstancesClientBeginDeleteOptions) (*runtime.Poller[ProviderInstancesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, monitorName, providerInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ProviderInstancesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ProviderInstancesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ProviderInstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
@@ -150,7 +155,8 @@ func (client *ProviderInstancesClient) BeginDelete(ctx context.Context, resource
 
 // Delete - Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01-preview
+//
+// Generated from API version 2022-11-01-preview
 func (client *ProviderInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, providerInstanceName string, options *ProviderInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, providerInstanceName, options)
 	if err != nil {
@@ -190,7 +196,7 @@ func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,11 +205,12 @@ func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, 
 // Get - Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Name of the SAP monitor resource.
-// providerInstanceName - Name of the provider instance.
-// options - ProviderInstancesClientGetOptions contains the optional parameters for the ProviderInstancesClient.Get method.
+//
+// Generated from API version 2022-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Name of the SAP monitor resource.
+//   - providerInstanceName - Name of the provider instance.
+//   - options - ProviderInstancesClientGetOptions contains the optional parameters for the ProviderInstancesClient.Get method.
 func (client *ProviderInstancesClient) Get(ctx context.Context, resourceGroupName string, monitorName string, providerInstanceName string, options *ProviderInstancesClientGetOptions) (ProviderInstancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, monitorName, providerInstanceName, options)
 	if err != nil {
@@ -243,7 +250,7 @@ func (client *ProviderInstancesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,11 +267,12 @@ func (client *ProviderInstancesClient) getHandleResponse(resp *http.Response) (P
 
 // NewListPager - Gets a list of provider instances in the specified SAP monitor. The operations returns various properties
 // of each provider instances.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Name of the SAP monitor resource.
-// options - ProviderInstancesClientListOptions contains the optional parameters for the ProviderInstancesClient.List method.
+//
+// Generated from API version 2022-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Name of the SAP monitor resource.
+//   - options - ProviderInstancesClientListOptions contains the optional parameters for the ProviderInstancesClient.NewListPager
+//     method.
 func (client *ProviderInstancesClient) NewListPager(resourceGroupName string, monitorName string, options *ProviderInstancesClientListOptions) *runtime.Pager[ProviderInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderInstancesClientListResponse]{
 		More: func(page ProviderInstancesClientListResponse) bool {
@@ -313,7 +321,7 @@ func (client *ProviderInstancesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

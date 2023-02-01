@@ -154,7 +154,8 @@ func processEvents(partitionClient *azeventhubs.ProcessorPartitionClient) error 
 	// [CONTINUOUS] loop until you lose ownership or your own criteria, checkpointing
 	// as needed using UpdateCheckpoint.
 	for {
-		// Wait for a minute (controlled by the receiveCtx) or for 100 events to arrive.
+		// Using a context with a timeout will allow ReceiveEvents() to return with events it
+		// collected in a minute, or earlier if it actually gets all 100 events we requested.
 		receiveCtx, receiveCtxCancel := context.WithTimeout(context.TODO(), time.Minute)
 		events, err := partitionClient.ReceiveEvents(receiveCtx, 100, nil)
 		receiveCtxCancel()

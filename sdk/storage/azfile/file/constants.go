@@ -8,27 +8,27 @@ package file
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 
-// NtfsFileAttributes for Files and Directories.
+// NTFSFileAttributes for Files and Directories.
 // The subset of attributes is listed at: https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties#file-system-attributes.
 // Their respective values are listed at: https://learn.microsoft.com/en-us/windows/win32/fileio/file-attribute-constants.
-type NtfsFileAttributes uint32
+type NTFSFileAttributes uint32
 
 const (
-	Readonly          NtfsFileAttributes = 1
-	Hidden            NtfsFileAttributes = 2
-	System            NtfsFileAttributes = 4
-	Directory         NtfsFileAttributes = 16
-	Archive           NtfsFileAttributes = 32
-	None              NtfsFileAttributes = 128
-	Temporary         NtfsFileAttributes = 256
-	Offline           NtfsFileAttributes = 4096
-	NotContentIndexed NtfsFileAttributes = 8192
-	NoScrubData       NtfsFileAttributes = 131072
+	Readonly          NTFSFileAttributes = 1
+	Hidden            NTFSFileAttributes = 2
+	System            NTFSFileAttributes = 4
+	Directory         NTFSFileAttributes = 16
+	Archive           NTFSFileAttributes = 32
+	None              NTFSFileAttributes = 128
+	Temporary         NTFSFileAttributes = 256
+	Offline           NTFSFileAttributes = 4096
+	NotContentIndexed NTFSFileAttributes = 8192
+	NoScrubData       NTFSFileAttributes = 131072
 )
 
-// PossibleNtfsFileAttributesValues returns the possible values for the NtfsFileAttributes const type.
-func PossibleNtfsFileAttributesValues() []NtfsFileAttributes {
-	return []NtfsFileAttributes{
+// PossibleNtfsFileAttributesValues returns the possible values for the NTFSFileAttributes const type.
+func PossibleNtfsFileAttributesValues() []NTFSFileAttributes {
+	return []NTFSFileAttributes{
 		Readonly,
 		Hidden,
 		System,

@@ -152,3 +152,15 @@ directive:
       replace(/"github\.com\/Azure\/azure\-sdk\-for\-go\/sdk\/azcore\/policy"/, `"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"`).
       replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`);
 ```
+
+### Capitalise SMB field
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/ShareSmbSettings/g, `ShareSMBSettings`).
+      replace(/SmbMultichannel/g, `SMBMultichannel`);
+```

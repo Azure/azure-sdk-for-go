@@ -70,11 +70,11 @@ type ShareRetentionPolicy = generated.ShareRetentionPolicy
 // ShareProtocolSettings - Protocol settings
 type ShareProtocolSettings = generated.ShareProtocolSettings
 
-// ShareSmbSettings - Settings for SMB protocol.
-type ShareSmbSettings = generated.ShareSmbSettings
+// ShareSMBSettings - Settings for SMB protocol.
+type ShareSMBSettings = generated.ShareSMBSettings
 
-// SmbMultichannel - Settings for SMB multichannel
-type SmbMultichannel = generated.SmbMultichannel
+// SMBMultichannel - Settings for SMB multichannel
+type SMBMultichannel = generated.SMBMultichannel
 
 // ---------------------------------------------------------------------------------------------------------------------
 

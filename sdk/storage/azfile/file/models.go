@@ -17,9 +17,9 @@ type SharedKeyCredential = exported.SharedKeyCredential
 
 // SMBProperties contains the optional parameters regarding the SMB/NTFS properties for a file.
 type SMBProperties struct {
-	// NtfsFileAttributes for Files and Directories. Default value is ‘None’ for file and ‘Directory’
+	// NTFSFileAttributes for Files and Directories. Default value is ‘None’ for file and ‘Directory’
 	// for directory. ‘None’ can also be specified as default.
-	Attributes *NtfsFileAttributes
+	Attributes *NTFSFileAttributes
 	// The Coordinated Universal Time (UTC) creation time for the file/directory. Default value is 'now'.
 	CreationTime *time.Time
 	// The Coordinated Universal Time (UTC) last write time for the file/directory. Default value is 'now'.

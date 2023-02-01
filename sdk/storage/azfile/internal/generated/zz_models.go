@@ -870,7 +870,7 @@ type SharePropertiesInternal struct {
 // ShareProtocolSettings - Protocol settings
 type ShareProtocolSettings struct {
 	// Settings for SMB protocol.
-	Smb *ShareSmbSettings `xml:"SMB"`
+	Smb *ShareSMBSettings `xml:"SMB"`
 }
 
 // ShareRetentionPolicy - The retention policy.
@@ -899,10 +899,10 @@ type ShareServiceProperties struct {
 	Protocol *ShareProtocolSettings `xml:"ProtocolSettings"`
 }
 
-// ShareSmbSettings - Settings for SMB protocol.
-type ShareSmbSettings struct {
+// ShareSMBSettings - Settings for SMB protocol.
+type ShareSMBSettings struct {
 	// Settings for SMB Multichannel.
-	Multichannel *SmbMultichannel `xml:"Multichannel"`
+	Multichannel *SMBMultichannel `xml:"Multichannel"`
 }
 
 // ShareStats - Stats for the share.
@@ -921,8 +921,8 @@ type SignedIdentifier struct {
 	AccessPolicy *AccessPolicy `xml:"AccessPolicy"`
 }
 
-// SmbMultichannel - Settings for SMB multichannel
-type SmbMultichannel struct {
+// SMBMultichannel - Settings for SMB multichannel
+type SMBMultichannel struct {
 	// If SMB multichannel is enabled.
 	Enabled *bool `xml:"Enabled"`
 }

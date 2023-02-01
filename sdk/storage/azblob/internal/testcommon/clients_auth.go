@@ -101,7 +101,7 @@ func GetClient(t *testing.T, accountType TestAccountType, options *azblob.Client
 
 	setClientOptions(t, &options.ClientOptions)
 
-	cred, err := GetGenericCredential(accountType)
+	cred, err := GetGenericSharedKeyCredential(accountType)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 
 	setClientOptions(t, &options.ClientOptions)
 
-	cred, err := GetGenericCredential(accountType)
+	cred, err := GetGenericSharedKeyCredential(accountType)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,10 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 	return serviceClient, err
 }
 
-func GetAccountInfo(accountType TestAccountType) (string, string) {
+func GetGenericAccountInfo(accountType TestAccountType) (string, string) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return FakeStorageAccount, "ZmFrZQ=="
+	}
 	accountNameEnvVar := string(accountType) + AccountNameEnvVar
 	accountKeyEnvVar := string(accountType) + AccountKeyEnvVar
 	accountName, _ := GetRequiredEnv(accountNameEnvVar)
@@ -136,40 +139,39 @@ func GetAccountInfo(accountType TestAccountType) (string, string) {
 	return accountName, accountKey
 }
 
-func GetGenericCredential(accountType TestAccountType) (*azblob.SharedKeyCredential, error) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return azblob.NewSharedKeyCredential(FakeStorageAccount, "ZmFrZQ==")
-	}
-
-	accountName, accountKey := GetAccountInfo(accountType)
+func GetGenericSharedKeyCredential(accountType TestAccountType) (*azblob.SharedKeyCredential, error) {
+	accountName, accountKey := GetGenericAccountInfo(accountType)
 	if accountName == "" || accountKey == "" {
 		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
 	}
 	return azblob.NewSharedKeyCredential(accountName, accountKey)
 }
 
-func GetConnectionString(accountType TestAccountType) string {
-	accountName, accountKey := GetAccountInfo(accountType)
+func GetGenericConnectionString(accountType TestAccountType) (*string, error) {
+	accountName, accountKey := GetGenericAccountInfo(accountType)
+	if accountName == "" || accountKey == "" {
+		return nil, errors.New(string(accountType) + AccountNameEnvVar + " and/or " + string(accountType) + AccountKeyEnvVar + " environment variables not specified.")
+	}
 	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
 		accountName, accountKey)
-	return connectionString
+	return &connectionString, nil
 }
 
 func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {
 	if options == nil {
 		options = &service.ClientOptions{}
 	}
+	setClientOptions(t, &options.ClientOptions)
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	options.Transport = transport
 
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return service.NewClientWithNoCredential(FakeStorageURL, options)
+	cred, err := GetGenericConnectionString(accountType)
+	if err != nil {
+		return nil, err
 	}
-
-	connectionString := GetConnectionString(accountType)
-	svcClient, err := service.NewClientFromConnectionString(connectionString, options)
+	svcClient, err := service.NewClientFromConnectionString(*cred, options)
 	return svcClient, err
 }
 

@@ -8,10 +8,13 @@ package azidentity
 
 import (
 	"context"
+	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
@@ -63,10 +66,22 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 	}
 }
 
-func TestInteractiveBrowserCredential_Live(t *testing.T) {
-	if !runManualBrowserTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
+// instanceDiscoveryPolicy fails the test when the client requests instance metadata
+type instanceDiscoveryPolicy struct {
+	t *testing.T
+}
+
+func (p *instanceDiscoveryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
+	if strings.Contains(req.Raw().URL.Path, "discovery/instance") {
+		p.t.Fatal("client requested instance metadata")
 	}
+	return req.Next()
+}
+
+func TestInteractiveBrowserCredential_Live(t *testing.T) {
+	// if !runManualBrowserTests {
+	// 	t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
+	// }
 	t.Run("defaults", func(t *testing.T) {
 		cred, err := NewInteractiveBrowserCredential(nil)
 		if err != nil {
@@ -93,20 +108,19 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 		testGetTokenSuccess(t, cred)
 	})
 
-	for _, disabledID := range []bool{true, false} {
-		name := "default options"
-		if disabledID {
-			name = "instance discovery disabled"
-		}
-		t.Run(name, func(t *testing.T) {
-			cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{DisableInstanceDiscovery: disabledID})
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			testGetTokenSuccess(t, cred)
+	t.Run("instance discovery disabled", func(t *testing.T) {
+		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+			ClientOptions: policy.ClientOptions{
+				PerCallPolicies: []policy.Policy{
+					&instanceDiscoveryPolicy{t},
+				}},
+			DisableInstanceDiscovery: true,
 		})
-	}
+		if err != nil {
+			t.Fatal(err)
+		}
+		testGetTokenSuccess(t, cred)
+	})
 }
 
 func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
@@ -118,11 +132,12 @@ func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
 	}
 	//Redirect URL is necessary
 	url := adfsLiveSP.redirectURL
-	vars := map[string]string{
-		azureAuthorityHost: adfsAuthority,
-	}
-	setEnvironmentVariables(t, vars)
-	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{ClientID: adfsLiveUser.clientID, TenantID: "adfs", RedirectURL: url, DisableInstanceDiscovery: true})
+
+	cloudConfig := cloud.Configuration{ActiveDirectoryAuthorityHost: adfsAuthority}
+
+	clientOptions := policy.ClientOptions{Cloud: cloudConfig}
+
+	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{ClientOptions: clientOptions, ClientID: adfsLiveUser.clientID, TenantID: "adfs", RedirectURL: url, DisableInstanceDiscovery: true})
 	if err != nil {
 		t.Fatal(err)
 	}

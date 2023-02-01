@@ -32,9 +32,9 @@ type CommitmentPlansClient struct {
 }
 
 // NewCommitmentPlansClient creates a new instance of CommitmentPlansClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCommitmentPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommitmentPlansClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,13 +57,14 @@ func NewCommitmentPlansClient(subscriptionID string, credential azcore.TokenCred
 
 // CreateOrUpdate - Update the state of specified commitmentPlans associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
-// commitmentPlan - The commitmentPlan properties.
-// options - CommitmentPlansClientCreateOrUpdateOptions contains the optional parameters for the CommitmentPlansClient.CreateOrUpdate
-// method.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - commitmentPlan - The commitmentPlan properties.
+//   - options - CommitmentPlansClientCreateOrUpdateOptions contains the optional parameters for the CommitmentPlansClient.CreateOrUpdate
+//     method.
 func (client *CommitmentPlansClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, commitmentPlan CommitmentPlan, options *CommitmentPlansClientCreateOrUpdateOptions) (CommitmentPlansClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, commitmentPlanName, commitmentPlan, options)
 	if err != nil {
@@ -103,7 +104,7 @@ func (client *CommitmentPlansClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, commitmentPlan)
@@ -118,14 +119,156 @@ func (client *CommitmentPlansClient) createOrUpdateHandleResponse(resp *http.Res
 	return result, nil
 }
 
+// BeginCreateOrUpdateAssociation - Create or update the association of the Cognitive Services commitment plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - commitmentPlanAssociationName - The name of the commitment plan association with the Cognitive Services Account
+//   - association - The commitmentPlan properties.
+//   - options - CommitmentPlansClientBeginCreateOrUpdateAssociationOptions contains the optional parameters for the CommitmentPlansClient.BeginCreateOrUpdateAssociation
+//     method.
+func (client *CommitmentPlansClient) BeginCreateOrUpdateAssociation(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, association CommitmentPlanAccountAssociation, options *CommitmentPlansClientBeginCreateOrUpdateAssociationOptions) (*runtime.Poller[CommitmentPlansClientCreateOrUpdateAssociationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdateAssociation(ctx, resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, association, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientCreateOrUpdateAssociationResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientCreateOrUpdateAssociationResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// CreateOrUpdateAssociation - Create or update the association of the Cognitive Services commitment plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+func (client *CommitmentPlansClient) createOrUpdateAssociation(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, association CommitmentPlanAccountAssociation, options *CommitmentPlansClientBeginCreateOrUpdateAssociationOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateAssociationCreateRequest(ctx, resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, association, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// createOrUpdateAssociationCreateRequest creates the CreateOrUpdateAssociation request.
+func (client *CommitmentPlansClient) createOrUpdateAssociationCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, association CommitmentPlanAccountAssociation, options *CommitmentPlansClientBeginCreateOrUpdateAssociationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if commitmentPlanName == "" {
+		return nil, errors.New("parameter commitmentPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
+	if commitmentPlanAssociationName == "" {
+		return nil, errors.New("parameter commitmentPlanAssociationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanAssociationName}", url.PathEscape(commitmentPlanAssociationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, association)
+}
+
+// BeginCreateOrUpdatePlan - Create Cognitive Services commitment plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - commitmentPlan - The parameters to provide for the created commitment plan.
+//   - options - CommitmentPlansClientBeginCreateOrUpdatePlanOptions contains the optional parameters for the CommitmentPlansClient.BeginCreateOrUpdatePlan
+//     method.
+func (client *CommitmentPlansClient) BeginCreateOrUpdatePlan(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan CommitmentPlan, options *CommitmentPlansClientBeginCreateOrUpdatePlanOptions) (*runtime.Poller[CommitmentPlansClientCreateOrUpdatePlanResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdatePlan(ctx, resourceGroupName, commitmentPlanName, commitmentPlan, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientCreateOrUpdatePlanResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientCreateOrUpdatePlanResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// CreateOrUpdatePlan - Create Cognitive Services commitment plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+func (client *CommitmentPlansClient) createOrUpdatePlan(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan CommitmentPlan, options *CommitmentPlansClientBeginCreateOrUpdatePlanOptions) (*http.Response, error) {
+	req, err := client.createOrUpdatePlanCreateRequest(ctx, resourceGroupName, commitmentPlanName, commitmentPlan, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// createOrUpdatePlanCreateRequest creates the CreateOrUpdatePlan request.
+func (client *CommitmentPlansClient) createOrUpdatePlanCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan CommitmentPlan, options *CommitmentPlansClientBeginCreateOrUpdatePlanOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if commitmentPlanName == "" {
+		return nil, errors.New("parameter commitmentPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, commitmentPlan)
+}
+
 // BeginDelete - Deletes the specified commitmentPlan associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
-// options - CommitmentPlansClientBeginDeleteOptions contains the optional parameters for the CommitmentPlansClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - options - CommitmentPlansClientBeginDeleteOptions contains the optional parameters for the CommitmentPlansClient.BeginDelete
+//     method.
 func (client *CommitmentPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (*runtime.Poller[CommitmentPlansClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, commitmentPlanName, options)
@@ -140,7 +283,8 @@ func (client *CommitmentPlansClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Deletes the specified commitmentPlan associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
+//
+// Generated from API version 2022-12-01
 func (client *CommitmentPlansClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, commitmentPlanName, options)
 	if err != nil {
@@ -180,7 +324,146 @@ func (client *CommitmentPlansClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginDeleteAssociation - Deletes the association of the Cognitive Services commitment plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - commitmentPlanAssociationName - The name of the commitment plan association with the Cognitive Services Account
+//   - options - CommitmentPlansClientBeginDeleteAssociationOptions contains the optional parameters for the CommitmentPlansClient.BeginDeleteAssociation
+//     method.
+func (client *CommitmentPlansClient) BeginDeleteAssociation(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, options *CommitmentPlansClientBeginDeleteAssociationOptions) (*runtime.Poller[CommitmentPlansClientDeleteAssociationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteAssociation(ctx, resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientDeleteAssociationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientDeleteAssociationResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// DeleteAssociation - Deletes the association of the Cognitive Services commitment plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+func (client *CommitmentPlansClient) deleteAssociation(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, options *CommitmentPlansClientBeginDeleteAssociationOptions) (*http.Response, error) {
+	req, err := client.deleteAssociationCreateRequest(ctx, resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// deleteAssociationCreateRequest creates the DeleteAssociation request.
+func (client *CommitmentPlansClient) deleteAssociationCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, options *CommitmentPlansClientBeginDeleteAssociationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if commitmentPlanName == "" {
+		return nil, errors.New("parameter commitmentPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
+	if commitmentPlanAssociationName == "" {
+		return nil, errors.New("parameter commitmentPlanAssociationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanAssociationName}", url.PathEscape(commitmentPlanAssociationName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginDeletePlan - Deletes a Cognitive Services commitment plan from the resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - options - CommitmentPlansClientBeginDeletePlanOptions contains the optional parameters for the CommitmentPlansClient.BeginDeletePlan
+//     method.
+func (client *CommitmentPlansClient) BeginDeletePlan(ctx context.Context, resourceGroupName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeletePlanOptions) (*runtime.Poller[CommitmentPlansClientDeletePlanResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deletePlan(ctx, resourceGroupName, commitmentPlanName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientDeletePlanResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientDeletePlanResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// DeletePlan - Deletes a Cognitive Services commitment plan from the resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+func (client *CommitmentPlansClient) deletePlan(ctx context.Context, resourceGroupName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeletePlanOptions) (*http.Response, error) {
+	req, err := client.deletePlanCreateRequest(ctx, resourceGroupName, commitmentPlanName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// deletePlanCreateRequest creates the DeletePlan request.
+func (client *CommitmentPlansClient) deletePlanCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, options *CommitmentPlansClientBeginDeletePlanOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if commitmentPlanName == "" {
+		return nil, errors.New("parameter commitmentPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,11 +471,12 @@ func (client *CommitmentPlansClient) deleteCreateRequest(ctx context.Context, re
 
 // Get - Gets the specified commitmentPlans associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
-// options - CommitmentPlansClientGetOptions contains the optional parameters for the CommitmentPlansClient.Get method.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - options - CommitmentPlansClientGetOptions contains the optional parameters for the CommitmentPlansClient.Get method.
 func (client *CommitmentPlansClient) Get(ctx context.Context, resourceGroupName string, accountName string, commitmentPlanName string, options *CommitmentPlansClientGetOptions) (CommitmentPlansClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, commitmentPlanName, options)
 	if err != nil {
@@ -232,7 +516,7 @@ func (client *CommitmentPlansClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,11 +531,133 @@ func (client *CommitmentPlansClient) getHandleResponse(resp *http.Response) (Com
 	return result, nil
 }
 
+// GetAssociation - Gets the association of the Cognitive Services commitment plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - commitmentPlanAssociationName - The name of the commitment plan association with the Cognitive Services Account
+//   - options - CommitmentPlansClientGetAssociationOptions contains the optional parameters for the CommitmentPlansClient.GetAssociation
+//     method.
+func (client *CommitmentPlansClient) GetAssociation(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, options *CommitmentPlansClientGetAssociationOptions) (CommitmentPlansClientGetAssociationResponse, error) {
+	req, err := client.getAssociationCreateRequest(ctx, resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, options)
+	if err != nil {
+		return CommitmentPlansClientGetAssociationResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return CommitmentPlansClientGetAssociationResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return CommitmentPlansClientGetAssociationResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getAssociationHandleResponse(resp)
+}
+
+// getAssociationCreateRequest creates the GetAssociation request.
+func (client *CommitmentPlansClient) getAssociationCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlanAssociationName string, options *CommitmentPlansClientGetAssociationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if commitmentPlanName == "" {
+		return nil, errors.New("parameter commitmentPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
+	if commitmentPlanAssociationName == "" {
+		return nil, errors.New("parameter commitmentPlanAssociationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanAssociationName}", url.PathEscape(commitmentPlanAssociationName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getAssociationHandleResponse handles the GetAssociation response.
+func (client *CommitmentPlansClient) getAssociationHandleResponse(resp *http.Response) (CommitmentPlansClientGetAssociationResponse, error) {
+	result := CommitmentPlansClientGetAssociationResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanAccountAssociation); err != nil {
+		return CommitmentPlansClientGetAssociationResponse{}, err
+	}
+	return result, nil
+}
+
+// GetPlan - Returns a Cognitive Services commitment plan specified by the parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - options - CommitmentPlansClientGetPlanOptions contains the optional parameters for the CommitmentPlansClient.GetPlan method.
+func (client *CommitmentPlansClient) GetPlan(ctx context.Context, resourceGroupName string, commitmentPlanName string, options *CommitmentPlansClientGetPlanOptions) (CommitmentPlansClientGetPlanResponse, error) {
+	req, err := client.getPlanCreateRequest(ctx, resourceGroupName, commitmentPlanName, options)
+	if err != nil {
+		return CommitmentPlansClientGetPlanResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return CommitmentPlansClientGetPlanResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return CommitmentPlansClientGetPlanResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getPlanHandleResponse(resp)
+}
+
+// getPlanCreateRequest creates the GetPlan request.
+func (client *CommitmentPlansClient) getPlanCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, options *CommitmentPlansClientGetPlanOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if commitmentPlanName == "" {
+		return nil, errors.New("parameter commitmentPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getPlanHandleResponse handles the GetPlan response.
+func (client *CommitmentPlansClient) getPlanHandleResponse(resp *http.Response) (CommitmentPlansClientGetPlanResponse, error) {
+	result := CommitmentPlansClientGetPlanResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlan); err != nil {
+		return CommitmentPlansClientGetPlanResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets the commitmentPlans associated with the Cognitive Services account.
-// Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// options - CommitmentPlansClientListOptions contains the optional parameters for the CommitmentPlansClient.List method.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - options - CommitmentPlansClientListOptions contains the optional parameters for the CommitmentPlansClient.NewListPager
+//     method.
 func (client *CommitmentPlansClient) NewListPager(resourceGroupName string, accountName string, options *CommitmentPlansClientListOptions) *runtime.Pager[CommitmentPlansClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CommitmentPlansClientListResponse]{
 		More: func(page CommitmentPlansClientListResponse) bool {
@@ -300,7 +706,7 @@ func (client *CommitmentPlansClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -313,4 +719,267 @@ func (client *CommitmentPlansClient) listHandleResponse(resp *http.Response) (Co
 		return CommitmentPlansClientListResponse{}, err
 	}
 	return result, nil
+}
+
+// NewListAssociationsPager - Gets the associations of the Cognitive Services commitment plan.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - options - CommitmentPlansClientListAssociationsOptions contains the optional parameters for the CommitmentPlansClient.NewListAssociationsPager
+//     method.
+func (client *CommitmentPlansClient) NewListAssociationsPager(resourceGroupName string, commitmentPlanName string, options *CommitmentPlansClientListAssociationsOptions) *runtime.Pager[CommitmentPlansClientListAssociationsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CommitmentPlansClientListAssociationsResponse]{
+		More: func(page CommitmentPlansClientListAssociationsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *CommitmentPlansClientListAssociationsResponse) (CommitmentPlansClientListAssociationsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAssociationsCreateRequest(ctx, resourceGroupName, commitmentPlanName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CommitmentPlansClientListAssociationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CommitmentPlansClientListAssociationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CommitmentPlansClientListAssociationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAssociationsHandleResponse(resp)
+		},
+	})
+}
+
+// listAssociationsCreateRequest creates the ListAssociations request.
+func (client *CommitmentPlansClient) listAssociationsCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, options *CommitmentPlansClientListAssociationsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if commitmentPlanName == "" {
+		return nil, errors.New("parameter commitmentPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listAssociationsHandleResponse handles the ListAssociations response.
+func (client *CommitmentPlansClient) listAssociationsHandleResponse(resp *http.Response) (CommitmentPlansClientListAssociationsResponse, error) {
+	result := CommitmentPlansClientListAssociationsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanAccountAssociationListResult); err != nil {
+		return CommitmentPlansClientListAssociationsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPlansByResourceGroupPager - Returns all the resources of a particular type belonging to a resource group
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - CommitmentPlansClientListPlansByResourceGroupOptions contains the optional parameters for the CommitmentPlansClient.NewListPlansByResourceGroupPager
+//     method.
+func (client *CommitmentPlansClient) NewListPlansByResourceGroupPager(resourceGroupName string, options *CommitmentPlansClientListPlansByResourceGroupOptions) *runtime.Pager[CommitmentPlansClientListPlansByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CommitmentPlansClientListPlansByResourceGroupResponse]{
+		More: func(page CommitmentPlansClientListPlansByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *CommitmentPlansClientListPlansByResourceGroupResponse) (CommitmentPlansClientListPlansByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listPlansByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CommitmentPlansClientListPlansByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CommitmentPlansClientListPlansByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CommitmentPlansClientListPlansByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listPlansByResourceGroupHandleResponse(resp)
+		},
+	})
+}
+
+// listPlansByResourceGroupCreateRequest creates the ListPlansByResourceGroup request.
+func (client *CommitmentPlansClient) listPlansByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CommitmentPlansClientListPlansByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listPlansByResourceGroupHandleResponse handles the ListPlansByResourceGroup response.
+func (client *CommitmentPlansClient) listPlansByResourceGroupHandleResponse(resp *http.Response) (CommitmentPlansClientListPlansByResourceGroupResponse, error) {
+	result := CommitmentPlansClientListPlansByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanListResult); err != nil {
+		return CommitmentPlansClientListPlansByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPlansBySubscriptionPager - Returns all the resources of a particular type belonging to a subscription.
+//
+// Generated from API version 2022-12-01
+//   - options - CommitmentPlansClientListPlansBySubscriptionOptions contains the optional parameters for the CommitmentPlansClient.NewListPlansBySubscriptionPager
+//     method.
+func (client *CommitmentPlansClient) NewListPlansBySubscriptionPager(options *CommitmentPlansClientListPlansBySubscriptionOptions) *runtime.Pager[CommitmentPlansClientListPlansBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CommitmentPlansClientListPlansBySubscriptionResponse]{
+		More: func(page CommitmentPlansClientListPlansBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *CommitmentPlansClientListPlansBySubscriptionResponse) (CommitmentPlansClientListPlansBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listPlansBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CommitmentPlansClientListPlansBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CommitmentPlansClientListPlansBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CommitmentPlansClientListPlansBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listPlansBySubscriptionHandleResponse(resp)
+		},
+	})
+}
+
+// listPlansBySubscriptionCreateRequest creates the ListPlansBySubscription request.
+func (client *CommitmentPlansClient) listPlansBySubscriptionCreateRequest(ctx context.Context, options *CommitmentPlansClientListPlansBySubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/commitmentPlans"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listPlansBySubscriptionHandleResponse handles the ListPlansBySubscription response.
+func (client *CommitmentPlansClient) listPlansBySubscriptionHandleResponse(resp *http.Response) (CommitmentPlansClientListPlansBySubscriptionResponse, error) {
+	result := CommitmentPlansClientListPlansBySubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CommitmentPlanListResult); err != nil {
+		return CommitmentPlansClientListPlansBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginUpdatePlan - Create Cognitive Services commitment plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - commitmentPlanName - The name of the commitmentPlan associated with the Cognitive Services Account
+//   - commitmentPlan - The parameters to provide for the created commitment plan.
+//   - options - CommitmentPlansClientBeginUpdatePlanOptions contains the optional parameters for the CommitmentPlansClient.BeginUpdatePlan
+//     method.
+func (client *CommitmentPlansClient) BeginUpdatePlan(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan PatchResourceTagsAndSKU, options *CommitmentPlansClientBeginUpdatePlanOptions) (*runtime.Poller[CommitmentPlansClientUpdatePlanResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updatePlan(ctx, resourceGroupName, commitmentPlanName, commitmentPlan, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CommitmentPlansClientUpdatePlanResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[CommitmentPlansClientUpdatePlanResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// UpdatePlan - Create Cognitive Services commitment plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-12-01
+func (client *CommitmentPlansClient) updatePlan(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan PatchResourceTagsAndSKU, options *CommitmentPlansClientBeginUpdatePlanOptions) (*http.Response, error) {
+	req, err := client.updatePlanCreateRequest(ctx, resourceGroupName, commitmentPlanName, commitmentPlan, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// updatePlanCreateRequest creates the UpdatePlan request.
+func (client *CommitmentPlansClient) updatePlanCreateRequest(ctx context.Context, resourceGroupName string, commitmentPlanName string, commitmentPlan PatchResourceTagsAndSKU, options *CommitmentPlansClientBeginUpdatePlanOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if commitmentPlanName == "" {
+		return nil, errors.New("parameter commitmentPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{commitmentPlanName}", url.PathEscape(commitmentPlanName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, commitmentPlan)
 }

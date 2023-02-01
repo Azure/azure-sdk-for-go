@@ -32,9 +32,9 @@ type ResourceSKUsClient struct {
 }
 
 // NewResourceSKUsClient creates a new instance of ResourceSKUsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceSKUsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -56,8 +56,9 @@ func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredent
 }
 
 // NewListPager - Gets the list of Microsoft.CognitiveServices SKUs available for your Subscription.
-// Generated from API version 2022-10-01
-// options - ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.List method.
+//
+// Generated from API version 2022-12-01
+//   - options - ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.NewListPager method.
 func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourceSKUsClientListResponse]{
 		More: func(page ResourceSKUsClientListResponse) bool {
@@ -98,7 +99,7 @@ func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, options
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -8,8 +8,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/golang/mock/gomock"
@@ -327,6 +330,85 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 
 	require.Equal(t, 0, len(md.Events.GetOpenConns()))
 	require.Equal(t, 0, len(md.Events.GetOpenLinks()), "Receive links are still open")
+}
+
+func TestReceiver_UserFacingErrors(t *testing.T) {
+	var receiveErr error
+
+	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source != "$cbs" {
+				mr.EXPECT().Receive(mock.NotCancelled).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+					return nil, receiveErr
+				}).AnyTimes()
+			}
+
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: noRetriesNeeded,
+	})
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.NoError(t, err)
+
+	var asSBError *Error
+
+	receiveErr = amqp.ErrLinkClosed
+	messages, err := receiver.PeekMessages(context.Background(), 1, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeConnectionLost, asSBError.Code)
+
+	receiveErr = &amqp.ConnectionError{}
+	messages, err = receiver.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeConnectionLost, asSBError.Code)
+
+	receiveErr = &amqp.ConnectionError{}
+	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Empty(t, messages)
+	// require.ErrorAs(t, err, &asSBError)
+	// require.Equal(t, CodeConnectionLost, asSBError.Code)
+
+	receiveErr = internal.RPCError{Resp: &amqpwrap.RPCResponse{Code: internal.RPCResponseCodeLockLost}}
+
+	id, err := uuid.New()
+	require.NoError(t, err)
+
+	msg := &ReceivedMessage{
+		LockToken: id,
+		RawAMQPMessage: &AMQPAnnotatedMessage{
+			linkName: "linkName",
+		},
+	}
+
+	err = receiver.AbandonMessage(context.Background(), msg, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.CompleteMessage(context.Background(), msg, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.DeadLetterMessage(context.Background(), msg, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.DeferMessage(context.Background(), msg, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.RenewMessageLock(context.Background(), msg, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
 }
 
 func newClientWithMockedConn(t *testing.T, mockDataOptions *emulation.MockDataOptions, clientOptions *ClientOptions) (*emulation.MockData, *Client) {

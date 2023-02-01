@@ -72,13 +72,26 @@ const (
 
 type DispositionEvent struct {
 	LinkEvent
-	Type DispositionType
+	DispType DispositionType
 	*amqp.Message
 }
 
 type Events struct {
 	mu  sync.Mutex
 	all []Event
+	ch  chan Event
+}
+
+func NewEvents() *Events {
+	return &Events{
+		ch: make(chan Event, 10000),
+	}
+}
+
+func (e *Events) Chan() <-chan Event {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	return e.ch
 }
 
 func (e *Events) All() []Event {
@@ -93,91 +106,72 @@ func (e *Events) Clear() {
 	e.all = nil
 }
 
-func (e *Events) Custom(name string, data any) {
+func (e *Events) addEvent(evt Event) {
 	e.mu.Lock()
-	defer e.mu.Unlock()
+	e.all = append(e.all, evt)
+	e.mu.Unlock()
 
-	e.all = append(e.all, Event{
+	e.ch <- evt
+}
+
+func (e *Events) Custom(name string, data any) {
+	e.addEvent(Event{
 		Type: EventType(name),
 		Data: data,
 	})
 }
 
 func (e *Events) OpenLink(args LinkEvent) {
-	e.mu.Lock()
-	defer e.mu.Unlock()
-
-	e.all = append(e.all, Event{
+	e.addEvent(Event{
 		Type: EventTypeLinkOpen,
 		Data: args,
 	})
 }
 
 func (e *Events) CloseLink(args LinkEvent) {
-	e.mu.Lock()
-	defer e.mu.Unlock()
-
-	e.all = append(e.all, Event{
+	e.addEvent(Event{
 		Type: EventTypeLinkClose,
 		Data: args,
 	})
 }
 
 func (e *Events) IssueCredit(args CreditEvent) {
-	e.mu.Lock()
-	defer e.mu.Unlock()
-
-	e.all = append(e.all, Event{
+	e.addEvent(Event{
 		Type: EventTypeLinkCredit,
 		Data: args,
 	})
 }
 
 func (e *Events) Send(args SendEvent) {
-	e.mu.Lock()
-	defer e.mu.Unlock()
-
-	e.all = append(e.all, Event{
+	e.addEvent(Event{
 		Type: EventTypeSend,
 		Data: args,
 	})
 }
 
 func (e *Events) Receive(args ReceiveEvent) {
-	e.mu.Lock()
-	defer e.mu.Unlock()
-
-	e.all = append(e.all, Event{
+	e.addEvent(Event{
 		Type: EventTypeReceive,
 		Data: args,
 	})
 }
 
 func (e *Events) Disposition(args DispositionEvent) {
-	e.mu.Lock()
-	defer e.mu.Unlock()
-
-	e.all = append(e.all, Event{
+	e.addEvent(Event{
 		Type: EventTypeLinkDisposition,
 		Data: args,
 	})
 }
 
 func (e *Events) OpenConnection(name string) {
-	e.mu.Lock()
-	defer e.mu.Unlock()
-
-	e.all = append(e.all, Event{
+	e.addEvent(Event{
 		Type: EventTypeConnOpen,
 		Data: name,
 	})
 }
 
 func (e *Events) CloseConnection(name string) {
-	e.mu.Lock()
-	defer e.mu.Unlock()
-
-	e.all = append(e.all, Event{
+	e.addEvent(Event{
 		Type: EventTypeConnClose,
 		Data: name,
 	})

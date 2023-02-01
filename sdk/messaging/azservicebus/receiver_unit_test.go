@@ -439,69 +439,6 @@ func TestReceiver_fetchMessages_UserCancelsAfterFirstMessage(t *testing.T) {
 		amqpReceiver.PrefetchedResults)
 }
 
-func TestReceiver_ReceiveMessages_MessagesArrivingBetweenReceiveMessagesCallsAreReleased(t *testing.T) {
-	released := make(chan *amqp.Message, 2)
-
-	amqpReceiver := &internal.FakeAMQPReceiver{
-		ReceiveResults: []struct {
-			M *amqp.Message
-			E error
-		}{
-			{M: &amqp.Message{Data: [][]byte{[]byte(("received message 1"))}}},
-			{M: &amqp.Message{Data: [][]byte{[]byte(("received message 2"))}}},
-
-			// our expectation is that the messageReleaser will pick these up
-			{M: &amqp.Message{Data: [][]byte{[]byte(("will be released 1"))}}},
-			{M: &amqp.Message{Data: [][]byte{[]byte(("will be released 2"))}}},
-		},
-		ReleaseMessageFn: func(ctx context.Context, msg *amqp.Message) error {
-			select {
-			case released <- msg:
-			default:
-				require.Fail(t, "More messages were released than expected")
-			}
-			return nil
-		},
-	}
-
-	args := defaultNewReceiverArgsForTest()
-
-	ns := args.ns.(*internal.FakeNS)
-	ns.AMQPLinks = &internal.FakeAMQPLinks{
-		Receiver: amqpReceiver,
-	}
-
-	receiver, err := newReceiver(args, &ReceiverOptions{
-		ReceiveMode: ReceiveModePeekLock,
-	})
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-	require.NoError(t, err)
-	require.Equal(t, []string{"received message 1", "received message 2"}, getSortedBodies(messages))
-
-	// now, we can just wait - the messages will be drained by the background goroutine.
-	for i := 0; i < 2; i++ {
-		msg := <-released
-		require.Equal(t, fmt.Sprintf("will be released %d", i+1), string(msg.Data[0]))
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-
-	// there aren't any messages in there now since they were all released by
-	// the messageReleaser.
-	messages, err = receiver.ReceiveMessages(ctx, 1, nil)
-	require.ErrorIs(t, err, context.DeadlineExceeded)
-	require.Empty(t, messages)
-
-	// closing also shuts down the releaser
-	err = receiver.Close(context.Background())
-	require.NoError(t, err)
-	require.Empty(t, amqpReceiver.ReceiveResults)
-	require.Equal(t, 2, amqpReceiver.ReleaseMessageCalled)
-}
-
 func defaultNewReceiverArgsForTest() newReceiverArgs {
 	return newReceiverArgs{
 		entity: entity{

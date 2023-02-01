@@ -10,6 +10,7 @@ import (
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 )
 
 type Operation struct {
@@ -59,7 +60,7 @@ func NewQueue(name string, events *Events) *Queue {
 	}
 }
 
-func (q *Queue) Send(ctx context.Context, msg *amqp.Message, evt LinkEvent, status *Status) error {
+func (q *Queue) Send(ctx context.Context, tempMsg *amqp.Message, evt LinkEvent, status *Status) error {
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
@@ -67,11 +68,17 @@ func (q *Queue) Send(ctx context.Context, msg *amqp.Message, evt LinkEvent, stat
 		return status.Err()
 	default:
 		azlog.Writef(EventEmulator, "[%s] send...", q.name)
+		msg := *tempMsg
 
-		q.src <- msg
+		// this is a bit silly because it's not 1:1 but we just
+		// need _some_ bytes that are unique for the lock token.
+		id := test.MustAMQPUUID()
+		msg.DeliveryTag = id[:16]
+
+		q.src <- &msg
 		q.events.Send(SendEvent{
 			LinkEvent: evt,
-			Message:   msg,
+			Message:   &msg,
 		})
 	}
 

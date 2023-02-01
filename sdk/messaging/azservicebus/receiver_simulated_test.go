@@ -509,6 +509,61 @@ func TestReceive_ReuseExistingCredits(t *testing.T) {
 	require.Equal(t, uint32(1001-1), links.Receiver.Credits(), "We re-used our already issued credits")
 }
 
+func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
+	md, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source == "queue" {
+				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+					return mr.InternalReceive(ctx)
+				}).AnyTimes()
+			}
+
+			return nil
+		},
+	}, nil)
+	defer test.RequireClose(t, client)
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("received message 1"),
+	}, nil)
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 3, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"received message 1"}, getSortedBodies(messages))
+
+	// We were able to get one message during this ReceiveMessages() call
+	// which means we still have 2 active credits. If messages arrive in
+	// between they'll be consumed and released.
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("message available again after being released by releaser"),
+	}, nil)
+	require.NoError(t, err)
+
+	// keep running until the releaser receives and releases the message, since
+	// we're in between ReceiveMessages() calls.
+	for evt := range md.Events.Chan() {
+		if evt.Type == emulation.EventTypeLinkDisposition {
+			dispEvt := evt.Data.(emulation.DispositionEvent)
+
+			if dispEvt.LinkEvent.Entity == "queue" && string(dispEvt.Data[0]) == "message available again after being released by releaser" {
+				break
+			}
+		}
+	}
+
+	// we can receive now - the message will be consumed again (.Release() just lets the broker serve it up again)
+	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"message available again after being released by releaser"}, getSortedBodies(messages))
+}
+
 func newClientWithMockedConn(t *testing.T, mockDataOptions *emulation.MockDataOptions, clientOptions *ClientOptions) (*emulation.MockData, *Client) {
 	md := emulation.NewMockData(t, mockDataOptions)
 

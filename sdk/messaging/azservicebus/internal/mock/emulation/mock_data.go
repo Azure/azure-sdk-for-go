@@ -88,7 +88,7 @@ func NewMockData(t *testing.T, options *MockDataOptions) *MockData {
 	return &MockData{
 		Ctrl:      gomock.NewController(t),
 		queues:    map[string]*Queue{},
-		Events:    &Events{},
+		Events:    NewEvents(),
 		options:   options,
 		receivers: map[string][]*MockReceiver{},
 		senders:   map[string][]*MockSender{},

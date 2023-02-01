@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Update dependencies to latest versions.
 
 ## 1.3.0 (2023-01-06)
 

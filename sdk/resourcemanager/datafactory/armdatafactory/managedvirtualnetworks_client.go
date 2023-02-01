@@ -32,9 +32,9 @@ type ManagedVirtualNetworksClient struct {
 }
 
 // NewManagedVirtualNetworksClient creates a new instance of ManagedVirtualNetworksClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewManagedVirtualNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedVirtualNetworksClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,13 +57,14 @@ func NewManagedVirtualNetworksClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Creates or updates a managed Virtual Network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// managedVirtualNetworkName - Managed virtual network name
-// managedVirtualNetwork - Managed Virtual Network resource definition.
-// options - ManagedVirtualNetworksClientCreateOrUpdateOptions contains the optional parameters for the ManagedVirtualNetworksClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - managedVirtualNetworkName - Managed virtual network name
+//   - managedVirtualNetwork - Managed Virtual Network resource definition.
+//   - options - ManagedVirtualNetworksClientCreateOrUpdateOptions contains the optional parameters for the ManagedVirtualNetworksClient.CreateOrUpdate
+//     method.
 func (client *ManagedVirtualNetworksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedVirtualNetwork ManagedVirtualNetworkResource, options *ManagedVirtualNetworksClientCreateOrUpdateOptions) (ManagedVirtualNetworksClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, options)
 	if err != nil {
@@ -123,12 +124,13 @@ func (client *ManagedVirtualNetworksClient) createOrUpdateHandleResponse(resp *h
 
 // Get - Gets a managed Virtual Network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// managedVirtualNetworkName - Managed virtual network name
-// options - ManagedVirtualNetworksClientGetOptions contains the optional parameters for the ManagedVirtualNetworksClient.Get
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - managedVirtualNetworkName - Managed virtual network name
+//   - options - ManagedVirtualNetworksClientGetOptions contains the optional parameters for the ManagedVirtualNetworksClient.Get
+//     method.
 func (client *ManagedVirtualNetworksClient) Get(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, options *ManagedVirtualNetworksClientGetOptions) (ManagedVirtualNetworksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, managedVirtualNetworkName, options)
 	if err != nil {
@@ -187,11 +189,12 @@ func (client *ManagedVirtualNetworksClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByFactoryPager - Lists managed Virtual Networks.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - ManagedVirtualNetworksClientListByFactoryOptions contains the optional parameters for the ManagedVirtualNetworksClient.ListByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - ManagedVirtualNetworksClientListByFactoryOptions contains the optional parameters for the ManagedVirtualNetworksClient.NewListByFactoryPager
+//     method.
 func (client *ManagedVirtualNetworksClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *ManagedVirtualNetworksClientListByFactoryOptions) *runtime.Pager[ManagedVirtualNetworksClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ManagedVirtualNetworksClientListByFactoryResponse]{
 		More: func(page ManagedVirtualNetworksClientListByFactoryResponse) bool {

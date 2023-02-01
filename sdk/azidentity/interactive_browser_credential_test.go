@@ -79,9 +79,9 @@ func (p *instanceDiscoveryPolicy) Do(req *policy.Request) (resp *http.Response, 
 }
 
 func TestInteractiveBrowserCredential_Live(t *testing.T) {
-	// if !runManualBrowserTests {
-	// 	t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
-	// }
+	if !runManualBrowserTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
+	}
 	t.Run("defaults", func(t *testing.T) {
 		cred, err := NewInteractiveBrowserCredential(nil)
 		if err != nil {

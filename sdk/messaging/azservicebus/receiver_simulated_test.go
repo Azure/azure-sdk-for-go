@@ -23,7 +23,7 @@ import (
 
 func TestReceiver_Simulated(t *testing.T) {
 	md, client := newClientWithMockedConn(t, nil, nil)
-	defer test.RequireClose(t, client)
+	defer md.Close()
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
 	require.NoError(t, err)
@@ -63,7 +63,7 @@ func TestReceiver_Simulated(t *testing.T) {
 
 func TestReceiver_Simulated_CloseTopLevelClientClosesChildren(t *testing.T) {
 	md, client := newClientWithMockedConn(t, nil, nil)
-	defer test.RequireClose(t, client)
+	defer md.Close()
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
 	require.NoError(t, err)
@@ -93,7 +93,7 @@ func TestReceiver_Simulated_CloseTopLevelClientClosesChildren(t *testing.T) {
 
 func TestReceiver_Simulated_Recovery(t *testing.T) {
 	md, client := newClientWithMockedConn(t, nil, nil)
-	defer test.RequireClose(t, client)
+	defer md.Close()
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
 	require.NoError(t, err)
@@ -146,7 +146,7 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
 	for _, mode := range receiveModesForTests {
 		t.Run(mode.Name, func(t *testing.T) {
 			md, client := newClientWithMockedConn(t, nil, nil)
-			defer test.RequireClose(t, client)
+			defer md.Close()
 
 			sender, err := client.NewSender("queue", nil)
 			require.NoError(t, err)
@@ -185,7 +185,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 
 	fn := func(args args) {
 		t.Run(args.Name, func(t *testing.T) {
-			md := emulation.NewMockData(t, &emulation.MockDataOptions{
+			md, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
 				PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 					if mr.Source == "queue" {
 						mr.EXPECT().Receive(gomock.Any()).Return(nil, args.InternalErr)
@@ -193,20 +193,8 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 
 					return nil
 				},
-			})
-
-			client, err := newClientImpl(clientCreds{
-				connectionString: "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF",
-			}, clientImplArgs{
-				NSOptions: []internal.NamespaceOption{
-					internal.NamespaceWithNewClientFn(md.NewConnection),
-				},
-			})
-
-			defer test.RequireClose(t, client)
-
-			require.NoError(t, err)
-			require.NotNil(t, client)
+			}, nil)
+			defer md.Close()
 
 			receiver, err := client.NewReceiverForQueue("queue", nil)
 			require.NoError(t, err)
@@ -265,7 +253,7 @@ func TestReceiver_ReceiveMessages_AllMessagesReceived(t *testing.T) {
 	fn := func(receiveMode ReceiveMode) {
 		t.Run(ReceiveModeString(receiveMode), func(t *testing.T) {
 			md, client := newClientWithMockedConn(t, nil, nil)
-			defer test.RequireClose(t, client)
+			defer md.Close()
 
 			sender, err := client.NewSender("queue", nil)
 			require.NoError(t, err)
@@ -312,8 +300,7 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 			return nil
 		},
 	}, &ClientOptions{})
-
-	defer test.RequireClose(t, client)
+	defer md.Close()
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
 	require.NoError(t, err)
@@ -337,7 +324,7 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 func TestReceiver_UserFacingErrors(t *testing.T) {
 	var receiveErr error
 
-	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+	md, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source != "$cbs" {
 				mr.EXPECT().Receive(mock.NotCancelled).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
@@ -350,6 +337,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 	}, &ClientOptions{
 		RetryOptions: noRetriesNeeded,
 	})
+	defer md.Close()
 
 	receiver, err := client.NewReceiverForQueue("queue", nil)
 	require.NoError(t, err)
@@ -414,8 +402,8 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 }
 
 func TestReceiver_ReceiveMessages(t *testing.T) {
-	_, client := newClientWithMockedConn(t, nil, nil)
-	defer test.RequireClose(t, client)
+	md, client := newClientWithMockedConn(t, nil, nil)
+	defer md.Close()
 
 	receiver, err := client.NewReceiverForQueue("queue", &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
@@ -444,7 +432,7 @@ func TestReceive_ReuseExistingCredits(t *testing.T) {
 	type contextKey string
 	const key = contextKey("CalledFromReceiveMessages")
 
-	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+	md, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source == "queue" {
 				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
@@ -463,7 +451,7 @@ func TestReceive_ReuseExistingCredits(t *testing.T) {
 			return nil
 		},
 	}, nil)
-	defer test.RequireClose(t, client)
+	defer md.Close()
 
 	// we want to end up in a situation where we have excess credits.
 	sender, err := client.NewSender("queue", nil)
@@ -522,7 +510,7 @@ func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
 			return nil
 		},
 	}, nil)
-	defer test.RequireClose(t, client)
+	defer md.Close()
 
 	sender, err := client.NewSender("queue", nil)
 	require.NoError(t, err)
@@ -566,7 +554,7 @@ func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
 }
 
 func TestSessionReceiver_ConnectionDeadForAccept(t *testing.T) {
-	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+	md, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source != "$cbs" {
 				return &amqp.ConnectionError{}
@@ -577,7 +565,7 @@ func TestSessionReceiver_ConnectionDeadForAccept(t *testing.T) {
 	}, &ClientOptions{
 		RetryOptions: noRetriesNeeded,
 	})
-	defer test.RequireClose(t, client)
+	defer md.Close()
 
 	receiver, err := client.AcceptSessionForQueue(context.Background(), "queue", "session ID", nil)
 	var sbErr *Error
@@ -611,7 +599,7 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 		}, nil
 	}
 
-	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+	md, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source == "queue/$management" {
 				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
@@ -630,7 +618,7 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 	}, &ClientOptions{
 		RetryOptions: noRetriesNeeded,
 	})
-	defer test.RequireClose(t, client)
+	defer md.Close()
 
 	// we'll return valid responses for the mgmt link since we need
 	// that to get a session receiver.

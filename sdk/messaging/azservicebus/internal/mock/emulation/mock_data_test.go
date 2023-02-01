@@ -15,6 +15,8 @@ import (
 
 func TestNewConnection(t *testing.T) {
 	md := emulation.NewMockData(t, nil)
+	defer md.Close()
+
 	client, err := md.NewConnection(context.Background())
 	require.NoError(t, err)
 
@@ -44,6 +46,8 @@ func TestNewConnection(t *testing.T) {
 
 func TestClosingConnectionClosesChildren(t *testing.T) {
 	md := emulation.NewMockData(t, nil)
+	defer md.Close()
+
 	client, err := md.NewConnection(context.Background())
 	require.NoError(t, err)
 

@@ -35,7 +35,9 @@ type MockData struct {
 	queuesMu sync.Mutex
 	queues   map[string]*Queue
 
-	mocksMu   sync.Mutex
+	mocksMu sync.Mutex
+
+	conns     []*MockConnection
 	receivers map[string][]*MockReceiver
 	senders   map[string][]*MockSender
 }
@@ -95,6 +97,19 @@ func NewMockData(t *testing.T, options *MockDataOptions) *MockData {
 	}
 }
 
+func (md *MockData) Close() {
+	md.mocksMu.Lock()
+	defer md.mocksMu.Unlock()
+
+	for _, conn := range md.conns {
+		err := conn.Close()
+
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
 type MockConnection struct {
 	Status *Status
 	*mock.MockAMQPClient
@@ -111,6 +126,10 @@ func (md *MockData) NewConnection(ctx context.Context) (amqpwrap.AMQPClient, err
 		MockAMQPClient: mock.NewMockAMQPClient(md.Ctrl),
 		Status:         NewStatus(nil),
 	}
+
+	md.mocksMu.Lock()
+	md.conns = append(md.conns, conn)
+	md.mocksMu.Unlock()
 
 	connID := md.nextUniqueName("c")
 

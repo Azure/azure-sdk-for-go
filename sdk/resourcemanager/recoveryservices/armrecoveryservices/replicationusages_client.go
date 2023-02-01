@@ -32,9 +32,9 @@ type ReplicationUsagesClient struct {
 }
 
 // NewReplicationUsagesClient creates a new instance of ReplicationUsagesClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewReplicationUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationUsagesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -56,11 +56,12 @@ func NewReplicationUsagesClient(subscriptionID string, credential azcore.TokenCr
 }
 
 // NewListPager - Fetches the replication usages of the vault.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// vaultName - The name of the recovery services vault.
-// options - ReplicationUsagesClientListOptions contains the optional parameters for the ReplicationUsagesClient.List method.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the recovery services vault.
+//   - options - ReplicationUsagesClientListOptions contains the optional parameters for the ReplicationUsagesClient.NewListPager
+//     method.
 func (client *ReplicationUsagesClient) NewListPager(resourceGroupName string, vaultName string, options *ReplicationUsagesClientListOptions) *runtime.Pager[ReplicationUsagesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationUsagesClientListResponse]{
 		More: func(page ReplicationUsagesClientListResponse) bool {
@@ -103,7 +104,7 @@ func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

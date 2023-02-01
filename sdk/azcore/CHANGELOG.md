@@ -7,6 +7,11 @@
 * Added `Claims` and `TenantID` fields to `policy.TokenRequestOptions`.
 * ARM bearer token policy handles CAE challenges.
 
+## 1.3.1 (2023-02-02)
+
+### Other Changes
+* Update dependencies to latest versions.
+
 ## 1.3.0 (2023-01-06)
 
 ### Features Added

@@ -32,9 +32,9 @@ type OperationStatusBackupVaultContextClient struct {
 }
 
 // NewOperationStatusBackupVaultContextClient creates a new instance of OperationStatusBackupVaultContextClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationStatusBackupVaultContextClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusBackupVaultContextClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewOperationStatusBackupVaultContextClient(subscriptionID string, credentia
 
 // Get - Gets the operation status for an operation over a BackupVault's context.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// options - OperationStatusBackupVaultContextClientGetOptions contains the optional parameters for the OperationStatusBackupVaultContextClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - options - OperationStatusBackupVaultContextClientGetOptions contains the optional parameters for the OperationStatusBackupVaultContextClient.Get
+//     method.
 func (client *OperationStatusBackupVaultContextClient) Get(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *OperationStatusBackupVaultContextClientGetOptions) (OperationStatusBackupVaultContextClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, operationID, options)
 	if err != nil {

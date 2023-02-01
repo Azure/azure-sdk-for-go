@@ -31,8 +31,8 @@ type BackupInstancesExtensionRoutingClient struct {
 }
 
 // NewBackupInstancesExtensionRoutingClient creates a new instance of BackupInstancesExtensionRoutingClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewBackupInstancesExtensionRoutingClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstancesExtensionRoutingClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -53,10 +53,11 @@ func NewBackupInstancesExtensionRoutingClient(credential azcore.TokenCredential,
 }
 
 // NewListPager - Gets a list backup instances associated with a tracked resource
+//
 // Generated from API version 2022-11-01-preview
-// resourceID - ARM path of the resource to be protected using Microsoft.DataProtection
-// options - BackupInstancesExtensionRoutingClientListOptions contains the optional parameters for the BackupInstancesExtensionRoutingClient.List
-// method.
+//   - resourceID - ARM path of the resource to be protected using Microsoft.DataProtection
+//   - options - BackupInstancesExtensionRoutingClientListOptions contains the optional parameters for the BackupInstancesExtensionRoutingClient.NewListPager
+//     method.
 func (client *BackupInstancesExtensionRoutingClient) NewListPager(resourceID string, options *BackupInstancesExtensionRoutingClientListOptions) *runtime.Pager[BackupInstancesExtensionRoutingClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BackupInstancesExtensionRoutingClientListResponse]{
 		More: func(page BackupInstancesExtensionRoutingClientListResponse) bool {

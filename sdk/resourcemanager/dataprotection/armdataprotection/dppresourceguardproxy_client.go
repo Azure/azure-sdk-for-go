@@ -32,9 +32,9 @@ type DppResourceGuardProxyClient struct {
 }
 
 // NewDppResourceGuardProxyClient creates a new instance of DppResourceGuardProxyClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDppResourceGuardProxyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DppResourceGuardProxyClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewDppResourceGuardProxyClient(subscriptionID string, credential azcore.Tok
 
 // Delete -
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// options - DppResourceGuardProxyClientDeleteOptions contains the optional parameters for the DppResourceGuardProxyClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - options - DppResourceGuardProxyClientDeleteOptions contains the optional parameters for the DppResourceGuardProxyClient.Delete
+//     method.
 func (client *DppResourceGuardProxyClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, resourceGuardProxyName string, options *DppResourceGuardProxyClientDeleteOptions) (DppResourceGuardProxyClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, resourceGuardProxyName, options)
 	if err != nil {
@@ -109,11 +110,12 @@ func (client *DppResourceGuardProxyClient) deleteCreateRequest(ctx context.Conte
 
 // Get -
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// options - DppResourceGuardProxyClientGetOptions contains the optional parameters for the DppResourceGuardProxyClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - options - DppResourceGuardProxyClientGetOptions contains the optional parameters for the DppResourceGuardProxyClient.Get
+//     method.
 func (client *DppResourceGuardProxyClient) Get(ctx context.Context, resourceGroupName string, vaultName string, resourceGuardProxyName string, options *DppResourceGuardProxyClientGetOptions) (DppResourceGuardProxyClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, resourceGuardProxyName, options)
 	if err != nil {
@@ -168,10 +170,10 @@ func (client *DppResourceGuardProxyClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// options - DppResourceGuardProxyClientListOptions contains the optional parameters for the DppResourceGuardProxyClient.List
-// method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - options - DppResourceGuardProxyClientListOptions contains the optional parameters for the DppResourceGuardProxyClient.NewListPager
+//     method.
 func (client *DppResourceGuardProxyClient) NewListPager(resourceGroupName string, vaultName string, options *DppResourceGuardProxyClientListOptions) *runtime.Pager[DppResourceGuardProxyClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DppResourceGuardProxyClientListResponse]{
 		More: func(page DppResourceGuardProxyClientListResponse) bool {
@@ -237,12 +239,13 @@ func (client *DppResourceGuardProxyClient) listHandleResponse(resp *http.Respons
 
 // Put -
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// parameters - Request body for operation
-// options - DppResourceGuardProxyClientPutOptions contains the optional parameters for the DppResourceGuardProxyClient.Put
-// method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - parameters - Request body for operation
+//   - options - DppResourceGuardProxyClientPutOptions contains the optional parameters for the DppResourceGuardProxyClient.Put
+//     method.
 func (client *DppResourceGuardProxyClient) Put(ctx context.Context, resourceGroupName string, vaultName string, resourceGuardProxyName string, parameters ResourceGuardProxyBaseResource, options *DppResourceGuardProxyClientPutOptions) (DppResourceGuardProxyClientPutResponse, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroupName, vaultName, resourceGuardProxyName, parameters, options)
 	if err != nil {
@@ -299,12 +302,13 @@ func (client *DppResourceGuardProxyClient) putHandleResponse(resp *http.Response
 
 // UnlockDelete -
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// parameters - Request body for operation
-// options - DppResourceGuardProxyClientUnlockDeleteOptions contains the optional parameters for the DppResourceGuardProxyClient.UnlockDelete
-// method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - parameters - Request body for operation
+//   - options - DppResourceGuardProxyClientUnlockDeleteOptions contains the optional parameters for the DppResourceGuardProxyClient.UnlockDelete
+//     method.
 func (client *DppResourceGuardProxyClient) UnlockDelete(ctx context.Context, resourceGroupName string, vaultName string, resourceGuardProxyName string, parameters UnlockDeleteRequest, options *DppResourceGuardProxyClientUnlockDeleteOptions) (DppResourceGuardProxyClientUnlockDeleteResponse, error) {
 	req, err := client.unlockDeleteCreateRequest(ctx, resourceGroupName, vaultName, resourceGuardProxyName, parameters, options)
 	if err != nil {

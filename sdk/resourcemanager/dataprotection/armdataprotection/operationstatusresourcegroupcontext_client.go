@@ -32,9 +32,9 @@ type OperationStatusResourceGroupContextClient struct {
 }
 
 // NewOperationStatusResourceGroupContextClient creates a new instance of OperationStatusResourceGroupContextClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationStatusResourceGroupContextClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusResourceGroupContextClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,10 +57,11 @@ func NewOperationStatusResourceGroupContextClient(subscriptionID string, credent
 
 // Get - Gets the operation status for an operation over a ResourceGroup's context.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// options - OperationStatusResourceGroupContextClientGetOptions contains the optional parameters for the OperationStatusResourceGroupContextClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - options - OperationStatusResourceGroupContextClientGetOptions contains the optional parameters for the OperationStatusResourceGroupContextClient.Get
+//     method.
 func (client *OperationStatusResourceGroupContextClient) Get(ctx context.Context, resourceGroupName string, operationID string, options *OperationStatusResourceGroupContextClientGetOptions) (OperationStatusResourceGroupContextClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, operationID, options)
 	if err != nil {

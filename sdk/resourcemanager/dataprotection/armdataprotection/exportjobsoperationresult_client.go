@@ -32,9 +32,9 @@ type ExportJobsOperationResultClient struct {
 }
 
 // NewExportJobsOperationResultClient creates a new instance of ExportJobsOperationResultClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewExportJobsOperationResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExportJobsOperationResultClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -59,12 +59,13 @@ func NewExportJobsOperationResultClient(subscriptionID string, credential azcore
 // contains URL of a Blob and a SAS key to access the same. The blob contains exported
 // jobs in JSON serialized format.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// operationID - OperationID which represents the export job.
-// options - ExportJobsOperationResultClientGetOptions contains the optional parameters for the ExportJobsOperationResultClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - operationID - OperationID which represents the export job.
+//   - options - ExportJobsOperationResultClientGetOptions contains the optional parameters for the ExportJobsOperationResultClient.Get
+//     method.
 func (client *ExportJobsOperationResultClient) Get(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *ExportJobsOperationResultClientGetOptions) (ExportJobsOperationResultClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, operationID, options)
 	if err != nil {

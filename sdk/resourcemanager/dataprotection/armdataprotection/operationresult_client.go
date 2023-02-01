@@ -33,9 +33,9 @@ type OperationResultClient struct {
 }
 
 // NewOperationResultClient creates a new instance of OperationResultClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationResultClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,8 +58,9 @@ func NewOperationResultClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Gets the operation result for a resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// options - OperationResultClientGetOptions contains the optional parameters for the OperationResultClient.Get method.
+//   - options - OperationResultClientGetOptions contains the optional parameters for the OperationResultClient.Get method.
 func (client *OperationResultClient) Get(ctx context.Context, operationID string, location string, options *OperationResultClientGetOptions) (OperationResultClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, operationID, location, options)
 	if err != nil {

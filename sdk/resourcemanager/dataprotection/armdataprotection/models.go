@@ -766,12 +766,12 @@ type BackupInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupInstancesClientListOptions contains the optional parameters for the BackupInstancesClient.List method.
+// BackupInstancesClientListOptions contains the optional parameters for the BackupInstancesClient.NewListPager method.
 type BackupInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupInstancesExtensionRoutingClientListOptions contains the optional parameters for the BackupInstancesExtensionRoutingClient.List
+// BackupInstancesExtensionRoutingClientListOptions contains the optional parameters for the BackupInstancesExtensionRoutingClient.NewListPager
 // method.
 type BackupInstancesExtensionRoutingClientListOptions struct {
 	// placeholder for future optional parameters
@@ -811,7 +811,7 @@ type BackupPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
+// BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.NewListPager method.
 type BackupPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -938,13 +938,13 @@ type BackupVaultsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupVaultsClientGetInResourceGroupOptions contains the optional parameters for the BackupVaultsClient.GetInResourceGroup
+// BackupVaultsClientGetInResourceGroupOptions contains the optional parameters for the BackupVaultsClient.NewGetInResourceGroupPager
 // method.
 type BackupVaultsClientGetInResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupVaultsClientGetInSubscriptionOptions contains the optional parameters for the BackupVaultsClient.GetInSubscription
+// BackupVaultsClientGetInSubscriptionOptions contains the optional parameters for the BackupVaultsClient.NewGetInSubscriptionPager
 // method.
 type BackupVaultsClientGetInSubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1367,7 +1367,8 @@ type DeletedBackupInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedBackupInstancesClientListOptions contains the optional parameters for the DeletedBackupInstancesClient.List method.
+// DeletedBackupInstancesClientListOptions contains the optional parameters for the DeletedBackupInstancesClient.NewListPager
+// method.
 type DeletedBackupInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1463,7 +1464,8 @@ type DppResourceGuardProxyClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DppResourceGuardProxyClientListOptions contains the optional parameters for the DppResourceGuardProxyClient.List method.
+// DppResourceGuardProxyClientListOptions contains the optional parameters for the DppResourceGuardProxyClient.NewListPager
+// method.
 type DppResourceGuardProxyClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1551,7 +1553,7 @@ type Error struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1815,7 +1817,7 @@ type JobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+// JobsClientListOptions contains the optional parameters for the JobsClient.NewListPager method.
 type JobsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2022,7 +2024,7 @@ type OperationStatusResourceGroupContextClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2119,7 +2121,7 @@ type RecoveryPointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.List method.
+// RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.NewListPager method.
 type RecoveryPointsClientListOptions struct {
 	// OData filter options.
 	Filter *string
@@ -2243,7 +2245,7 @@ type ResourceGuardsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetBackupSecurityPINRequestsObjects
+// ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager
 // method.
 type ResourceGuardsClientGetBackupSecurityPINRequestsObjectsOptions struct {
 	// placeholder for future optional parameters
@@ -2285,19 +2287,19 @@ type ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectOptions s
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetDeleteProtectedItemRequestsObjects
+// ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.NewGetDeleteProtectedItemRequestsObjectsPager
 // method.
 type ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetDeleteResourceGuardProxyRequestsObjects
+// ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.NewGetDeleteResourceGuardProxyRequestsObjectsPager
 // method.
 type ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetDisableSoftDeleteRequestsObjects
+// ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.NewGetDisableSoftDeleteRequestsObjectsPager
 // method.
 type ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsOptions struct {
 	// placeholder for future optional parameters
@@ -2308,25 +2310,25 @@ type ResourceGuardsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardsClientGetResourcesInResourceGroupOptions contains the optional parameters for the ResourceGuardsClient.GetResourcesInResourceGroup
+// ResourceGuardsClientGetResourcesInResourceGroupOptions contains the optional parameters for the ResourceGuardsClient.NewGetResourcesInResourceGroupPager
 // method.
 type ResourceGuardsClientGetResourcesInResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardsClientGetResourcesInSubscriptionOptions contains the optional parameters for the ResourceGuardsClient.GetResourcesInSubscription
+// ResourceGuardsClientGetResourcesInSubscriptionOptions contains the optional parameters for the ResourceGuardsClient.NewGetResourcesInSubscriptionPager
 // method.
 type ResourceGuardsClientGetResourcesInSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetUpdateProtectedItemRequestsObjects
+// ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.NewGetUpdateProtectedItemRequestsObjectsPager
 // method.
 type ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.GetUpdateProtectionPolicyRequestsObjects
+// ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsOptions contains the optional parameters for the ResourceGuardsClient.NewGetUpdateProtectionPolicyRequestsObjectsPager
 // method.
 type ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsOptions struct {
 	// placeholder for future optional parameters

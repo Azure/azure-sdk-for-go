@@ -32,9 +32,9 @@ type RecoveryPointsClient struct {
 }
 
 // NewRecoveryPointsClient creates a new instance of RecoveryPointsClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Gets a Recovery Point using recoveryPointId for a Datasource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// backupInstanceName - The name of the backup instance
-// options - RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - backupInstanceName - The name of the backup instance
+//   - options - RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
 func (client *RecoveryPointsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, recoveryPointID string, options *RecoveryPointsClientGetOptions) (RecoveryPointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, recoveryPointID, options)
 	if err != nil {
@@ -121,11 +122,12 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 }
 
 // NewListPager - Returns a list of Recovery Points for a DataSource in a vault.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// backupInstanceName - The name of the backup instance
-// options - RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.List method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - backupInstanceName - The name of the backup instance
+//   - options - RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.NewListPager method.
 func (client *RecoveryPointsClient) NewListPager(resourceGroupName string, vaultName string, backupInstanceName string, options *RecoveryPointsClientListOptions) *runtime.Pager[RecoveryPointsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecoveryPointsClientListResponse]{
 		More: func(page RecoveryPointsClientListResponse) bool {

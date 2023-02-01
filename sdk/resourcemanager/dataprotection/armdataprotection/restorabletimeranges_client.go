@@ -32,9 +32,9 @@ type RestorableTimeRangesClient struct {
 }
 
 // NewRestorableTimeRangesClient creates a new instance of RestorableTimeRangesClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRestorableTimeRangesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTimeRangesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,13 +57,14 @@ func NewRestorableTimeRangesClient(subscriptionID string, credential azcore.Toke
 
 // Find -
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// backupInstanceName - The name of the backup instance
-// parameters - Request body for operation
-// options - RestorableTimeRangesClientFindOptions contains the optional parameters for the RestorableTimeRangesClient.Find
-// method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - backupInstanceName - The name of the backup instance
+//   - parameters - Request body for operation
+//   - options - RestorableTimeRangesClientFindOptions contains the optional parameters for the RestorableTimeRangesClient.Find
+//     method.
 func (client *RestorableTimeRangesClient) Find(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupFindRestorableTimeRangesRequest, options *RestorableTimeRangesClientFindOptions) (RestorableTimeRangesClientFindResponse, error) {
 	req, err := client.findCreateRequest(ctx, resourceGroupName, vaultName, backupInstanceName, parameters, options)
 	if err != nil {

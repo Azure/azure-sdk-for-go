@@ -32,9 +32,9 @@ type JobsClient struct {
 }
 
 // NewJobsClient creates a new instance of JobsClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // Get - Gets a job with id in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// jobID - The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - jobID - The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
 func (client *JobsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, jobID string, options *JobsClientGetOptions) (JobsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, jobID, options)
 	if err != nil {
@@ -117,10 +118,11 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 }
 
 // NewListPager - Returns list of jobs belonging to a backup vault
+//
 // Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// vaultName - The name of the backup vault.
-// options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+//   - resourceGroupName - The name of the resource group where the backup vault is present.
+//   - vaultName - The name of the backup vault.
+//   - options - JobsClientListOptions contains the optional parameters for the JobsClient.NewListPager method.
 func (client *JobsClient) NewListPager(resourceGroupName string, vaultName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {

@@ -32,9 +32,9 @@ type Client struct {
 }
 
 // NewClient creates a new instance of Client with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,9 +57,10 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // CheckFeatureSupport - Validates if a feature is supported
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01-preview
-// parameters - Feature support request object
-// options - ClientCheckFeatureSupportOptions contains the optional parameters for the Client.CheckFeatureSupport method.
+//   - parameters - Feature support request object
+//   - options - ClientCheckFeatureSupportOptions contains the optional parameters for the Client.CheckFeatureSupport method.
 func (client *Client) CheckFeatureSupport(ctx context.Context, location string, parameters FeatureValidationRequestBaseClassification, options *ClientCheckFeatureSupportOptions) (ClientCheckFeatureSupportResponse, error) {
 	req, err := client.checkFeatureSupportCreateRequest(ctx, location, parameters, options)
 	if err != nil {

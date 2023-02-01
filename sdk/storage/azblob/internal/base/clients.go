@@ -7,14 +7,16 @@
 package base
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
 type Client[T any] struct {
-	inner     *T
-	sharedKey *exported.SharedKeyCredential
+	inner      *T
+	sharedKey  *exported.SharedKeyCredential
+	authPolicy policy.Policy
 }
 
 func InnerClient[T any](client *Client[T]) *T {
@@ -25,21 +27,27 @@ func SharedKey[T any](client *Client[T]) *exported.SharedKeyCredential {
 	return client.sharedKey
 }
 
+func AuthPolicy[T any](client *Client[T]) policy.Policy {
+	return client.authPolicy
+}
+
 func NewClient[T any](inner *T) *Client[T] {
 	return &Client[T]{inner: inner}
 }
 
-func NewServiceClient(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ServiceClient] {
+func NewServiceClient(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential, authPolicy policy.Policy) *Client[generated.ServiceClient] {
 	return &Client[generated.ServiceClient]{
-		inner:     generated.NewServiceClient(containerURL, pipeline),
-		sharedKey: sharedKey,
+		inner:      generated.NewServiceClient(containerURL, pipeline),
+		sharedKey:  sharedKey,
+		authPolicy: authPolicy,
 	}
 }
 
-func NewContainerClient(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.ContainerClient] {
+func NewContainerClient(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential, authPolicy policy.Policy) *Client[generated.ContainerClient] {
 	return &Client[generated.ContainerClient]{
-		inner:     generated.NewContainerClient(containerURL, pipeline),
-		sharedKey: sharedKey,
+		inner:      generated.NewContainerClient(containerURL, pipeline),
+		sharedKey:  sharedKey,
+		authPolicy: authPolicy,
 	}
 }
 

@@ -380,7 +380,7 @@ func Example_service_SubmitBatch() {
 	handleError(err)
 
 	// create new batch builder
-	bb, err := svcBatchClient.NewBatchBuilderWithSharedKeyCredential(cred)
+	bb, err := svcBatchClient.NewBatchBuilder()
 	handleError(err)
 
 	// add operations to the batch builder

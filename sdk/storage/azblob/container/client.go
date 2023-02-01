@@ -45,7 +45,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewContainerClient(containerURL, pl, nil)), nil
+	return (*Client)(base.NewContainerClient(containerURL, pl, nil, authPolicy)), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -56,7 +56,7 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewContainerClient(containerURL, pl, nil)), nil
+	return (*Client)(base.NewContainerClient(containerURL, pl, nil, nil)), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -69,7 +69,7 @@ func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCreden
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewContainerClient(containerURL, pl, cred)), nil
+	return (*Client)(base.NewContainerClient(containerURL, pl, cred, authPolicy)), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -100,6 +100,10 @@ func (c *Client) generated() *generated.ContainerClient {
 
 func (c *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ContainerClient])(c))
+}
+
+func (c *Client) authPolicy() policy.Policy {
+	return base.AuthPolicy((*base.Client[generated.ContainerClient])(c))
 }
 
 // URL returns the URL endpoint used by the Client object.
@@ -330,34 +334,33 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Tim
 	return endpoint, nil
 }
 
-// NewBatchBuilder creates an instance of BatchBuilder with the specified values.
+// NewBatchBuilder creates an instance of BatchBuilder using the same auth policy as the client.
 // BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
-//   - cred - an Azure AD credential, typically obtained via the azidentity module.
-func (c *Client) NewBatchBuilder(cred azcore.TokenCredential) (*BatchBuilder, error) {
-	return nil, nil
-}
+func (c *Client) NewBatchBuilder() (*BatchBuilder, error) {
+	conOptions := new(ClientOptions)
+	if c.authPolicy() != nil {
+		conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, c.authPolicy())
+	}
 
-// NewBatchBuilderWithSharedKeyCredential creates an instance of BatchBuilder with the specified values.
-// BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
-//   - cred - a SharedKeyCredential created with the matching container's storage account and access key.
-func (c *Client) NewBatchBuilderWithSharedKeyCredential(cred *SharedKeyCredential) (*BatchBuilder, error) {
-	return nil, nil
-}
+	// TODO: Use an empty transport so requests aren't sent
+	conOptions.Transport = nil
 
-// NewBatchBuilderWithSAS creates an instance of BatchBuilder with the specified values.
-// BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
-// This is used to perform batch operations with SAS token.
-//   - sasQp - SAS query parameters used for authorizing the batch sub-requests.
-func (c *Client) NewBatchBuilderWithSAS(sasQp sas.QueryParameters) (*BatchBuilder, error) {
-	return nil, nil
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return &BatchBuilder{
+		endpoint: c.URL(),
+		pipeline: pl,
+	}, nil
 }
 
 // Delete operation is used to add delete sub-request to the batch builder.
-func (bb *BatchBuilder) Delete(blobName string, options *BatchDeleteOptions) {
+func (bb *BatchBuilder) Delete(blobName string, options *BatchDeleteOptions) error {
+	return nil
 }
 
 // SetTier operation is used to add set tier sub-request to the batch builder.
-func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, options *BatchSetTierOptions) {
+func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, options *BatchSetTierOptions) error {
+	return nil
 }
 
 // SubmitBatch operation allows multiple API calls to be embedded into a single HTTP request.

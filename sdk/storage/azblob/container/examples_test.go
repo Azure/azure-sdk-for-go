@@ -410,7 +410,7 @@ func Example_container_SubmitBatch() {
 	handleError(err)
 
 	// create new batch builder
-	bb, err := cntBatchClient.NewBatchBuilderWithSharedKeyCredential(cred)
+	bb, err := cntBatchClient.NewBatchBuilder()
 	handleError(err)
 
 	// add operations to the batch builder

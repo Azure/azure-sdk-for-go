@@ -10,9 +10,9 @@
 package generated
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"time"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AppendBlobClientAppendBlockFromURLResponse contains the response from method AppendBlobClient.AppendBlockFromURL.

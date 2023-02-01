@@ -692,14 +692,12 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 		Update: true,
 		Delete: true,
 	}
-	services := sas.AccountServices{
-		Blob: true,
-	}
+
 	start := time.Now().Add(-time.Hour)
 	expiry := start.Add(time.Hour)
 
 	opts := service.GetSASURLOptions{StartTime: &start}
-	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, expiry, &opts)
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, &opts)
 	_require.Nil(err)
 
 	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
@@ -733,15 +731,12 @@ func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 		Update: true,
 		Delete: true,
 	}
-	services := sas.AccountServices{
-		Blob: true,
-	}
 	start := time.Now().Add(-time.Hour)
 	expiry := start.Add(time.Hour)
 	opts := service.GetSASURLOptions{StartTime: &start}
 
 	// GetSASURL fails (with MissingSharedKeyCredential) because service client is created without credentials
-	_, err = serviceClient.GetSASURL(resources, permissions, services, expiry, &opts)
+	_, err = serviceClient.GetSASURL(resources, permissions, expiry, &opts)
 	_require.Equal(err, bloberror.MissingSharedKeyCredential)
 
 }

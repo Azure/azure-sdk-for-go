@@ -10,8 +10,8 @@
 package generated
 
 import (
-	"time"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
 )
 
 // AccessPolicy - An Access policy

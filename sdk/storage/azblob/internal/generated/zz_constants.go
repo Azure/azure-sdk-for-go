@@ -13,6 +13,7 @@ type AccessTier string
 
 const (
 	AccessTierArchive AccessTier = "Archive"
+	AccessTierCold    AccessTier = "Cold"
 	AccessTierCool    AccessTier = "Cool"
 	AccessTierHot     AccessTier = "Hot"
 	AccessTierP10     AccessTier = "P10"
@@ -33,6 +34,7 @@ const (
 func PossibleAccessTierValues() []AccessTier {
 	return []AccessTier{
 		AccessTierArchive,
+		AccessTierCold,
 		AccessTierCool,
 		AccessTierHot,
 		AccessTierP10,
@@ -83,6 +85,21 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 	return []ArchiveStatus{
 		ArchiveStatusRehydratePendingToCool,
 		ArchiveStatusRehydratePendingToHot,
+	}
+}
+
+type BlobCopySourceTags string
+
+const (
+	BlobCopySourceTagsREPLACE BlobCopySourceTags = "REPLACE"
+	BlobCopySourceTagsCOPY    BlobCopySourceTags = "COPY"
+)
+
+// PossibleBlobCopySourceTagsValues returns the possible values for the BlobCopySourceTags const type.
+func PossibleBlobCopySourceTagsValues() []BlobCopySourceTags {
+	return []BlobCopySourceTags{
+		BlobCopySourceTagsREPLACE,
+		BlobCopySourceTagsCOPY,
 	}
 }
 
@@ -218,6 +235,21 @@ func PossibleExpiryOptionsValues() []ExpiryOptions {
 		ExpiryOptionsNeverExpire,
 		ExpiryOptionsRelativeToCreation,
 		ExpiryOptionsRelativeToNow,
+	}
+}
+
+type FilterBlobsIncludeItem string
+
+const (
+	FilterBlobsIncludeItemNone     FilterBlobsIncludeItem = "none"
+	FilterBlobsIncludeItemVersions FilterBlobsIncludeItem = "versions"
+)
+
+// PossibleFilterBlobsIncludeItemValues returns the possible values for the FilterBlobsIncludeItem const type.
+func PossibleFilterBlobsIncludeItemValues() []FilterBlobsIncludeItem {
+	return []FilterBlobsIncludeItem{
+		FilterBlobsIncludeItemNone,
+		FilterBlobsIncludeItemVersions,
 	}
 }
 

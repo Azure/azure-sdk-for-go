@@ -87,10 +87,11 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		m, err := q.Receive(ctx, rcvr.LinkEvent(), rcvr.Status)
 
 		if err != nil {
-			credits--
+			return nil, err
 		}
 
-		return m, err
+		credits--
+		return m, nil
 	}
 
 	if err := md.options.PreReceiverMock(rcvr, ctx); err != nil {

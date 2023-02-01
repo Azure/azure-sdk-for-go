@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"context"
+	"log"
 	"testing"
 	"time"
 
@@ -409,6 +410,103 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
+}
+
+func TestReceiver_ReceiveMessages(t *testing.T) {
+	_, client := newClientWithMockedConn(t, nil, nil)
+	defer test.RequireClose(t, client)
+
+	receiver, err := client.NewReceiverForQueue("queue", &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+	defer test.RequireClose(t, receiver)
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+	defer test.RequireClose(t, sender)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("Received message 1"),
+	}, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 10, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"Received message 1"}, getSortedBodies(messages))
+
+	links := receiver.amqpLinks.(*internal.AMQPLinksImpl)
+	require.Equal(t, uint32(9), links.Receiver.Credits())
+}
+
+func TestReceive_ReuseExistingCredits(t *testing.T) {
+	type contextKey string
+	const key = contextKey("CalledFromReceiveMessages")
+
+	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source == "queue" {
+				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+					if ctx.Value(key) != nil {
+						log.Printf("Doing receive, called from ReceiveMessages")
+						return mr.InternalReceive(ctx)
+					} else {
+						log.Printf("Waiting for cancellation, called from Releaser loop")
+						<-ctx.Done()
+						log.Printf("Cancellation, we should exit from Releaser loop")
+						return nil, ctx.Err()
+					}
+				}).AnyTimes()
+			}
+
+			return nil
+		},
+	}, nil)
+	defer test.RequireClose(t, client)
+
+	// we want to end up in a situation where we have excess credits.
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("message 1"),
+	}, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.WithValue(context.Background(), key, ""), 5, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"message 1"}, getSortedBodies(messages))
+
+	links := receiver.amqpLinks.(*internal.AMQPLinksImpl)
+	require.Equal(t, uint32(4), links.Receiver.Credits())
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("message 2"),
+	}, nil)
+	require.NoError(t, err)
+
+	// now we've got credits left over so we won't have to issue _more_ credits
+	messages, err = receiver.ReceiveMessages(context.WithValue(context.Background(), key, ""), 1, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"message 2"}, getSortedBodies(messages))
+
+	require.Equal(t, uint32(3), links.Receiver.Credits(), "We re-used our already issued credits")
+
+	// now let's request _more_ than what we have. We'll issue enough credits, taking into account what
+	// we already have.
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("message 3"),
+	}, nil)
+	require.NoError(t, err)
+
+	messages, err = receiver.ReceiveMessages(context.WithValue(context.Background(), key, ""), 1001, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"message 3"}, getSortedBodies(messages))
+
+	require.Equal(t, uint32(1001-1), links.Receiver.Credits(), "We re-used our already issued credits")
 }
 
 func newClientWithMockedConn(t *testing.T, mockDataOptions *emulation.MockDataOptions, clientOptions *ClientOptions) (*emulation.MockData, *Client) {

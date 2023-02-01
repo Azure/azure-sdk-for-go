@@ -84,7 +84,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	connectionString, _ := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
 
-	parsedConnStr, err := shared.ParseConnectionString(connectionString)
+	parsedConnStr, err := shared.ParseConnectionString(*connectionString)
 	_require.Nil(err)
 	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".blob.core.windows.net/")
 

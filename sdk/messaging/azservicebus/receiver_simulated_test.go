@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
@@ -564,6 +565,97 @@ func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
 	require.Equal(t, []string{"message available again after being released by releaser"}, getSortedBodies(messages))
 }
 
+func TestSessionReceiver_ConnectionDeadForAccept(t *testing.T) {
+	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source != "$cbs" {
+				return &amqp.ConnectionError{}
+			}
+
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: noRetriesNeeded,
+	})
+	defer test.RequireClose(t, client)
+
+	receiver, err := client.AcceptSessionForQueue(context.Background(), "queue", "session ID", nil)
+	var sbErr *Error
+	require.ErrorAs(t, err, &sbErr)
+	require.Nil(t, receiver)
+}
+
+func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
+	lockLost := false
+
+	mgmtStub := func(ctx context.Context, mr *emulation.MockReceiver) (*amqp.Message, error) {
+		msg, _ := mr.InternalReceive(ctx)
+
+		if lockLost {
+			return nil, &amqp.Error{
+				Condition: amqp.ErrorCondition("com.microsoft:message-lock-lost"),
+			}
+		}
+
+		// TODO: this is hacky - we don't have a full mgmt link like we do with $cbs.
+		return &amqp.Message{
+			Properties: &amqp.MessageProperties{
+				CorrelationID: msg.Properties.MessageID,
+			},
+			ApplicationProperties: map[string]any{
+				"status-code": int32(200),
+			},
+			Value: map[string]any{
+				"expiration": time.Now().Add(time.Hour),
+			},
+		}, nil
+	}
+
+	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source == "queue/$management" {
+				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+					return mgmtStub(ctx, mr)
+				}).AnyTimes()
+			} else if mr.Source != "$cbs" {
+				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+					return nil, &amqp.ConnectionError{}
+				}).AnyTimes()
+
+				mr.EXPECT().LinkSourceFilterValue("com.microsoft:session-filter").Return("session ID").AnyTimes()
+			}
+
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: noRetriesNeeded,
+	})
+	defer test.RequireClose(t, client)
+
+	// we'll return valid responses for the mgmt link since we need
+	// that to get a session receiver.
+	receiver, err := client.AcceptSessionForQueue(context.Background(), "queue", "session ID", nil)
+	require.NoError(t, err)
+
+	// now replace it so we get connection errors.
+	var asSBError *Error
+
+	lockLost = true
+
+	state, err := receiver.GetSessionState(context.Background(), nil)
+	require.Nil(t, state)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.SetSessionState(context.Background(), []byte{}, nil)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.RenewSessionLock(context.Background(), nil)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+}
+
 func newClientWithMockedConn(t *testing.T, mockDataOptions *emulation.MockDataOptions, clientOptions *ClientOptions) (*emulation.MockData, *Client) {
 	md := emulation.NewMockData(t, mockDataOptions)
 
@@ -578,4 +670,10 @@ func newClientWithMockedConn(t *testing.T, mockDataOptions *emulation.MockDataOp
 	require.NoError(t, err)
 
 	return md, client
+}
+
+var noRetriesNeeded = exported.RetryOptions{
+	MaxRetries:    -1,
+	RetryDelay:    0,
+	MaxRetryDelay: 0,
 }

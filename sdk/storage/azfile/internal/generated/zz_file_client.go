@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"encoding/base64"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -154,7 +155,7 @@ func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, options
 func (client *FileClient) acquireLeaseHandleResponse(resp *http.Response) (FileClientAcquireLeaseResponse, error) {
 	result := FileClientAcquireLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -234,7 +235,7 @@ func (client *FileClient) breakLeaseCreateRequest(ctx context.Context, options *
 func (client *FileClient) breakLeaseHandleResponse(resp *http.Response) (FileClientBreakLeaseResponse, error) {
 	result := FileClientBreakLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -315,7 +316,7 @@ func (client *FileClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileClientChangeLeaseResponse, error) {
 	result := FileClientChangeLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -432,7 +433,7 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientCreateResponse, error) {
 	result := FileClientCreateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -635,7 +636,7 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 		result.ContentRange = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
@@ -913,7 +914,7 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.ContentType = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
@@ -1082,7 +1083,7 @@ func (client *FileClient) getRangeListHandleResponse(resp *http.Response) (FileC
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("x-ms-content-length"); val != "" {
 		fileContentLength, err := strconv.ParseInt(val, 10, 64)
@@ -1228,7 +1229,7 @@ func (client *FileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileClientReleaseLeaseResponse, error) {
 	result := FileClientReleaseLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1336,7 +1337,7 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (FileClientSetHTTPHeadersResponse, error) {
 	result := FileClientSetHTTPHeadersResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1453,7 +1454,7 @@ func (client *FileClient) setMetadataCreateRequest(ctx context.Context, options 
 func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileClientSetMetadataResponse, error) {
 	result := FileClientSetMetadataResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
@@ -1568,7 +1569,7 @@ func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource
 func (client *FileClient) startCopyHandleResponse(resp *http.Response) (FileClientStartCopyResponse, error) {
 	result := FileClientStartCopyResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1663,7 +1664,7 @@ func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangePar
 func (client *FileClient) uploadRangeHandleResponse(resp *http.Response) (FileClientUploadRangeResponse, error) {
 	result := FileClientUploadRangeResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1777,7 +1778,7 @@ func (client *FileClient) uploadRangeFromURLCreateRequest(ctx context.Context, r
 func (client *FileClient) uploadRangeFromURLHandleResponse(resp *http.Response) (FileClientUploadRangeFromURLResponse, error) {
 	result := FileClientUploadRangeFromURLResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

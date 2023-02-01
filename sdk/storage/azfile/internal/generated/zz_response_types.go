@@ -10,6 +10,7 @@
 package generated
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"time"
 )
@@ -20,7 +21,7 @@ type DirectoryClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -95,7 +96,7 @@ type DirectoryClientGetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -172,7 +173,7 @@ type DirectoryClientSetMetadataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -190,7 +191,7 @@ type DirectoryClientSetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -247,7 +248,7 @@ type FileClientAcquireLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -271,7 +272,7 @@ type FileClientBreakLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -295,7 +296,7 @@ type FileClientChangeLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -316,7 +317,7 @@ type FileClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -418,7 +419,7 @@ type FileClientDownloadResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -535,7 +536,7 @@ type FileClientGetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -593,7 +594,7 @@ type FileClientGetRangeListResponse struct {
 	Date *time.Time `xml:"Date"`
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string `xml:"ETag"`
+	ETag *azcore.ETag `xml:"ETag"`
 
 	// FileContentLength contains the information returned from the x-ms-content-length header response.
 	FileContentLength *int64 `xml:"FileContentLength"`
@@ -633,7 +634,7 @@ type FileClientReleaseLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -651,7 +652,7 @@ type FileClientSetHTTPHeadersResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// FileAttributes contains the information returned from the x-ms-file-attributes header response.
 	FileAttributes *string
@@ -693,7 +694,7 @@ type FileClientSetMetadataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -720,7 +721,7 @@ type FileClientStartCopyResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -741,7 +742,7 @@ type FileClientUploadRangeFromURLResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -768,7 +769,7 @@ type FileClientUploadRangeResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
@@ -821,7 +822,7 @@ type ShareClientAcquireLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -845,7 +846,7 @@ type ShareClientBreakLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -872,7 +873,7 @@ type ShareClientChangeLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -908,7 +909,7 @@ type ShareClientCreateResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -926,7 +927,7 @@ type ShareClientCreateSnapshotResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -959,7 +960,7 @@ type ShareClientGetAccessPolicyResponse struct {
 	Date *time.Time `xml:"Date"`
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string `xml:"ETag"`
+	ETag *azcore.ETag `xml:"ETag"`
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time `xml:"LastModified"`
@@ -1002,7 +1003,7 @@ type ShareClientGetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EnabledProtocols contains the information returned from the x-ms-enabled-protocols header response.
 	EnabledProtocols *string
@@ -1055,7 +1056,7 @@ type ShareClientGetStatisticsResponse struct {
 	Date *time.Time `xml:"Date"`
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string `xml:"ETag"`
+	ETag *azcore.ETag `xml:"ETag"`
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time `xml:"LastModified"`
@@ -1076,7 +1077,7 @@ type ShareClientReleaseLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1097,7 +1098,7 @@ type ShareClientRenewLeaseResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1121,7 +1122,7 @@ type ShareClientRestoreResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1139,7 +1140,7 @@ type ShareClientSetAccessPolicyResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1157,7 +1158,7 @@ type ShareClientSetMetadataResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
@@ -1175,7 +1176,7 @@ type ShareClientSetPropertiesResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time

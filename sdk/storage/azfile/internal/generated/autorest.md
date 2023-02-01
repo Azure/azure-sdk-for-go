@@ -123,3 +123,32 @@ directive:
     $.FileContentType["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileContentType["x-ms-client-name"] = "contentType";
 ```
+
+### use azcore.ETag
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/import "time"/, `import (\n\t"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n)`).
+      replace(/Etag\s+\*string/g, `ETag *azcore.ETag`);
+
+- from: zz_response_types.go
+  where: $
+  transform: >-
+    return $.
+      replace(/"time"/, `"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"`).
+      replace(/ETag\s+\*string/g, `ETag *azcore.ETag`);
+
+- from:
+  - zz_directory_client.go
+  - zz_file_client.go
+  - zz_share_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/"github\.com\/Azure\/azure\-sdk\-for\-go\/sdk\/azcore\/policy"/, `"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"`).
+      replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`);
+```

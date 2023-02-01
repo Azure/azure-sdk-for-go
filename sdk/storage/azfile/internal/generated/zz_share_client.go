@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"encoding/xml"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -95,7 +96,7 @@ func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, option
 func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response) (ShareClientAcquireLeaseResponse, error) {
 	result := ShareClientAcquireLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -183,7 +184,7 @@ func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, options 
 func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareClientBreakLeaseResponse, error) {
 	result := ShareClientBreakLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -277,7 +278,7 @@ func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response) (ShareClientChangeLeaseResponse, error) {
 	result := ShareClientChangeLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -369,7 +370,7 @@ func (client *ShareClient) createCreateRequest(ctx context.Context, options *Sha
 func (client *ShareClient) createHandleResponse(resp *http.Response) (ShareClientCreateResponse, error) {
 	result := ShareClientCreateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -507,7 +508,7 @@ func (client *ShareClient) createSnapshotHandleResponse(resp *http.Response) (Sh
 		result.Snapshot = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -645,7 +646,7 @@ func (client *ShareClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 func (client *ShareClient) getAccessPolicyHandleResponse(resp *http.Response) (ShareClientGetAccessPolicyResponse, error) {
 	result := ShareClientGetAccessPolicyResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -792,7 +793,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -930,7 +931,7 @@ func (client *ShareClient) getStatisticsCreateRequest(ctx context.Context, optio
 func (client *ShareClient) getStatisticsHandleResponse(resp *http.Response) (ShareClientGetStatisticsResponse, error) {
 	result := ShareClientGetStatisticsResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1010,7 +1011,7 @@ func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response) (ShareClientReleaseLeaseResponse, error) {
 	result := ShareClientReleaseLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1090,7 +1091,7 @@ func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response) (ShareClientRenewLeaseResponse, error) {
 	result := ShareClientRenewLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1172,7 +1173,7 @@ func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *Sh
 func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClientRestoreResponse, error) {
 	result := ShareClientRestoreResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1251,7 +1252,7 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 func (client *ShareClient) setAccessPolicyHandleResponse(resp *http.Response) (ShareClientSetAccessPolicyResponse, error) {
 	result := ShareClientSetAccessPolicyResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1329,7 +1330,7 @@ func (client *ShareClient) setMetadataCreateRequest(ctx context.Context, options
 func (client *ShareClient) setMetadataHandleResponse(resp *http.Response) (ShareClientSetMetadataResponse, error) {
 	result := ShareClientSetMetadataResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1409,7 +1410,7 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 func (client *ShareClient) setPropertiesHandleResponse(resp *http.Response) (ShareClientSetPropertiesResponse, error) {
 	result := ShareClientSetPropertiesResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

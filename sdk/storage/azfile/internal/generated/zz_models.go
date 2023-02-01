@@ -9,7 +9,10 @@
 
 package generated
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
+)
 
 // AccessPolicy - An Access policy.
 type AccessPolicy struct {
@@ -414,13 +417,13 @@ type FileProperty struct {
 	// REQUIRED; Content length of the file. This value may not be up-to-date since an SMB client may have modified the file locally.
 	// The value of Content-Length may not reflect that fact until the handle is closed or
 	// the op-lock is broken. To retrieve current property values, call Get File Properties.
-	ContentLength  *int64     `xml:"Content-Length"`
-	ChangeTime     *time.Time `xml:"ChangeTime"`
-	CreationTime   *time.Time `xml:"CreationTime"`
-	Etag           *string    `xml:"Etag"`
-	LastAccessTime *time.Time `xml:"LastAccessTime"`
-	LastModified   *time.Time `xml:"Last-Modified"`
-	LastWriteTime  *time.Time `xml:"LastWriteTime"`
+	ContentLength  *int64       `xml:"Content-Length"`
+	ChangeTime     *time.Time   `xml:"ChangeTime"`
+	CreationTime   *time.Time   `xml:"CreationTime"`
+	ETag           *azcore.ETag `xml:"Etag"`
+	LastAccessTime *time.Time   `xml:"LastAccessTime"`
+	LastModified   *time.Time   `xml:"Last-Modified"`
+	LastWriteTime  *time.Time   `xml:"LastWriteTime"`
 }
 
 // FileRange - An Azure Storage file range.
@@ -835,7 +838,7 @@ type SharePermission struct {
 // SharePropertiesInternal - Properties of a share.
 type SharePropertiesInternal struct {
 	// REQUIRED
-	Etag *string `xml:"Etag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED
 	LastModified *time.Time `xml:"Last-Modified"`

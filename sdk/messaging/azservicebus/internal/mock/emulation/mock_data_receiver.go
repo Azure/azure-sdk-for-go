@@ -16,11 +16,12 @@ import (
 
 type MockReceiver struct {
 	*mock.MockAMQPReceiverCloser
-	Opts          *amqp.ReceiverOptions
-	Session       *MockSession
-	Source        string
-	Status        *Status
-	TargetAddress string
+	Opts            *amqp.ReceiverOptions
+	Session         *MockSession
+	Source          string
+	Status          *Status
+	TargetAddress   string
+	InternalReceive func(ctx context.Context) (*amqp.Message, error)
 }
 
 func (rcvr *MockReceiver) Done() <-chan error {
@@ -79,11 +80,22 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 	md.receivers[source] = append(md.receivers[source], rcvr)
 	md.mocksMu.Unlock()
 
+	var credits uint32
+	var q *Queue
+
+	rcvr.InternalReceive = func(ctx context.Context) (*amqp.Message, error) {
+		m, err := q.Receive(ctx, rcvr.LinkEvent(), rcvr.Status)
+
+		if err != nil {
+			credits--
+		}
+
+		return m, err
+	}
+
 	if err := md.options.PreReceiverMock(rcvr, ctx); err != nil {
 		return nil, err
 	}
-
-	var q *Queue
 
 	if source == "$cbs" {
 		q = md.upsertQueue(opts.TargetAddress)
@@ -96,17 +108,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		q = md.upsertQueue(source)
 	}
 
-	var credits uint32
-
-	rcvr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
-		m, err := q.Receive(ctx, rcvr.LinkEvent(), rcvr.Status)
-
-		if err != nil {
-			credits--
-		}
-
-		return m, err
-	}).AnyTimes()
+	rcvr.EXPECT().Receive(gomock.Any()).DoAndReturn(rcvr.InternalReceive).AnyTimes()
 
 	rcvr.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
 		md.Events.CloseLink(rcvr.LinkEvent())

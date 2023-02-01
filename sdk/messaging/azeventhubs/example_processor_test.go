@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
 // Example_consumingEventsUsingProcessor shows how to use the [Processor] type.
@@ -50,7 +51,13 @@ func Example_consumingEventsUsingProcessor() {
 	// Create the checkpoint store
 	//
 	// NOTE: the Blob container must exist before the checkpoint store can be used.
-	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(storageCS, containerName, nil)
+	azBlobContainerClient, err := container.NewClientFromConnectionString(storageCS, containerName, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	checkpointStore, err := checkpoints.NewBlobStore(azBlobContainerClient, nil)
 
 	if err != nil {
 		panic(err)
@@ -129,7 +136,7 @@ func processEvents(partitionClient *azeventhubs.ProcessorPartitionClient) error 
 	// In other models of the Processor we have broken up the partition
 	// lifecycle model.
 	//
-	// In Go, we model this as a function call with a loop, using this structure:
+	// In Go, we model this as a function call, with a loop, using this structure:
 	//
 	// 1. [BEGIN] Initialize any partition specific resources.
 	// 2. [CONTINUOUS] Run a loop, calling ReceiveEvents() and UpdateCheckpoint().

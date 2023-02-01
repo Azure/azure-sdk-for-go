@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/stretchr/testify/require"
@@ -55,7 +56,7 @@ func Test_InMemoryCheckpointStore_Ownership(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, ownerships)
 
-	previousETag := ""
+	previousETag := azcore.ETag("")
 
 	for i := int64(0); i < 5; i++ {
 		ownerships, err = store.ClaimOwnership(context.Background(), []Ownership{
@@ -218,7 +219,7 @@ func (cps *testCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwn
 				return nil, err
 			}
 
-			newOwnership.ETag = uuid.String()
+			newOwnership.ETag = azcore.ETag(uuid.String())
 			newOwnership.LastModifiedTime = time.Now().UTC()
 			cps.ownerships[key] = newOwnership
 

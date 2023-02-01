@@ -10,6 +10,8 @@
 ### Breaking Changes
 
 - ProcessorOptions.OwnerLevel has been removed. The Processor uses 0 as the owner level.
+- Uses the public release of `github.com/Azure/azure-sdk-for-go/sdk/storage/azblob` package rather than using an internal copy. 
+  See the [example_processor_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go).
 
 ### Bugs Fixed
 

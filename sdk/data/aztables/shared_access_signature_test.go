@@ -50,8 +50,9 @@ func TestSASServiceClient(t *testing.T) {
 		Update: true,
 		Delete: true,
 	}
-	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
-	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
+
+	start := time.Now().Add(-1 * time.Hour).UTC()
+	expiry := time.Now().Add(24 * time.Hour).UTC()
 
 	sasUrl, err := serviceClient.GetAccountSASURL(resources, permissions, start, expiry)
 	require.NoError(t, err)
@@ -95,8 +96,9 @@ func TestSASClient(t *testing.T) {
 		Read: true,
 		Add:  true,
 	}
-	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
-	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
+
+	start := time.Now().Add(-1 * time.Hour).UTC()
+	expiry := time.Now().Add(24 * time.Hour).UTC()
 
 	c := serviceClient.NewClient(tableName)
 	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
@@ -149,8 +151,9 @@ func TestSASClientReadOnly(t *testing.T) {
 	permissions := SASPermissions{
 		Read: true,
 	}
-	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
-	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
+
+	start := time.Now().Add(-1 * time.Hour).UTC()
+	expiry := time.Now().Add(24 * time.Hour).UTC()
 
 	c := serviceClient.NewClient(tableName)
 	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
@@ -218,8 +221,9 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	permissions := SASPermissions{
 		Read: true,
 	}
-	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
-	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
+
+	start := time.Now().Add(-1 * time.Hour).UTC()
+	expiry := time.Now().Add(24 * time.Hour).UTC()
 
 	c := serviceClient.NewClient(tableName)
 	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)

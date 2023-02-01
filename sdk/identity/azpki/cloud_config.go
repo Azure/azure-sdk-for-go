@@ -10,19 +10,19 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 // Cloud Service Names for Monitor Query Logs and Metrics, used to identify the respective cloud.ServiceConfiguration
 const (
-	ServiceNameLogs cloud.ServiceName = "pki"
+	ServiceNamePKI cloud.ServiceName = "pki"
 )
 
 func init() {
-	cloud.AzureChina.Services[ServiceNameLogs] = cloud.ServiceConfiguration{
+	cloud.AzureChina.Services[ServiceNamePKI] = cloud.ServiceConfiguration{
 		Audience: "https://api.loganalytics.azure.cn",
 		Endpoint: "https://api.loganalytics.azure.cn/v1",
 	}
-	cloud.AzureGovernment.Services[ServiceNameLogs] = cloud.ServiceConfiguration{
+	cloud.AzureGovernment.Services[ServiceNamePKI] = cloud.ServiceConfiguration{
 		Audience: "https://api.loganalytics.us",
 		Endpoint: "https://api.loganalytics.us/v1",
 	}
-	cloud.AzurePublic.Services[ServiceNameLogs] = cloud.ServiceConfiguration{
+	cloud.AzurePublic.Services[ServiceNamePKI] = cloud.ServiceConfiguration{
 		Audience: "https://api.loganalytics.io",
 		Endpoint: "https://api.loganalytics.io/v1",
 	}

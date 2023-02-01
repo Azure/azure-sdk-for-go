@@ -39,7 +39,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 	if reflect.ValueOf(options.Cloud).IsZero() {
 		options.Cloud = cloud.AzurePublic
 	}
-	c, ok := options.Cloud.Services[ServiceNameLogs]
+	c, ok := options.Cloud.Services[ServiceNamePKI]
 	if !ok || c.Audience == "" || c.Endpoint == "" {
 		return nil, errors.New("provided Cloud field is missing Azure Identity Certificate Manager endpoint configuration")
 	}

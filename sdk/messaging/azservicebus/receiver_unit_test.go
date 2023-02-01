@@ -57,36 +57,6 @@ func ReceiveModeString(mode ReceiveMode) string {
 	}
 }
 
-func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
-	fakeAMQPReceiver := &internal.FakeAMQPReceiver{
-		ReceiveResults: []struct {
-			M *amqp.Message
-			E error
-		}{
-			{M: &amqp.Message{Data: [][]byte{[]byte("hello")}}},
-			{E: internal.NewErrNonRetriable("non-retriable error on second message")},
-		},
-	}
-
-	fakeAMQPLinks := &internal.FakeAMQPLinks{
-		Receiver: fakeAMQPReceiver,
-	}
-
-	receiver, err := newReceiver(newReceiverArgs{
-		ns:     &internal.FakeNS{AMQPLinks: fakeAMQPLinks},
-		entity: entity{Queue: "queue"},
-	}, nil)
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-	require.Equal(t, []string{"hello"}, getSortedBodies(messages))
-	require.NoError(t, err, "error is 'erased' when there are some messages to return")
-
-	// a fatal error happened, links should be closed.
-	require.Equal(t, 0, fakeAMQPLinks.Closed, "links are closed using CloseIfNeeded")
-	require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled, "prefetch is called")
-}
-
 func TestReceiverCancellationUnitTests(t *testing.T) {
 	t.Run("ImmediatelyCancelled", func(t *testing.T) {
 		r := &Receiver{

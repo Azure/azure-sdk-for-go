@@ -291,6 +291,44 @@ func TestReceiver_ReceiveMessages_AllMessagesReceived(t *testing.T) {
 	fn(ReceiveModeReceiveAndDelete)
 }
 
+func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
+	md, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source == "queue" {
+				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+					return mr.InternalReceive(ctx)
+				})
+				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+					require.NoError(t, ctx.Err())
+					return nil, internal.NewErrNonRetriable("non-retriable error on second message")
+				})
+			}
+
+			return nil
+		},
+	}, &ClientOptions{})
+
+	defer test.RequireClose(t, client)
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+	require.NoError(t, err)
+
+	test.RequireClose(t, sender)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
+	require.Equal(t, []string{"hello"}, getSortedBodies(messages))
+	require.NoError(t, err, "error is 'erased' when there are some messages to return")
+
+	require.Equal(t, 0, len(md.Events.GetOpenConns()))
+	require.Equal(t, 0, len(md.Events.GetOpenLinks()), "Receive links are still open")
+}
+
 func newClientWithMockedConn(t *testing.T, mockDataOptions *emulation.MockDataOptions, clientOptions *ClientOptions) (*emulation.MockData, *Client) {
 	md := emulation.NewMockData(t, mockDataOptions)
 

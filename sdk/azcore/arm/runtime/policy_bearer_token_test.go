@@ -205,7 +205,7 @@ func TestAuxiliaryTenants(t *testing.T) {
 func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 	for _, test := range []struct {
 		challenge, desc, expectedClaims string
-		err                             bool
+		err                             error
 	}{
 		{
 			desc: "no challenge",
@@ -213,9 +213,14 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 		{
 			desc:      "no claims",
 			challenge: `Bearer authorization_uri="https://login.windows.net/", error="invalid_token", error_description="The authentication failed because of missing 'Authorization' header."`,
-			err:       true,
+			err:       (*azcore.ResponseError)(nil),
 		},
-
+		{
+			desc:      "parsing error",
+			challenge: `Bearer claims="invalid"`,
+			// the specific error type isn't important but it must be nonretriable
+			err: (errorinfo.NonRetriable)(nil),
+		},
 		// CAE claims challenges. Position of the "claims" parameter within the challenge shouldn't affect parsing.
 		{
 			desc:           "insufficient claims",
@@ -256,7 +261,7 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 			cred := mockCredential{
 				getTokenImpl: func(ctx context.Context, actual azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
 					calls += 1
-					if calls == 2 {
+					if calls == 2 && test.expectedClaims != "" {
 						require.Equal(t, test.expectedClaims, actual.Claims)
 					}
 					return azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
@@ -267,9 +272,8 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 			req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 			require.NoError(t, err)
 			_, err = pipeline.Do(req)
-			if test.err {
-				require.Error(t, err)
-				require.Implements(t, (*errorinfo.NonRetriable)(nil), err)
+			if test.err != nil {
+				require.ErrorAs(t, err, &test.err)
 			} else {
 				require.NoError(t, err)
 			}

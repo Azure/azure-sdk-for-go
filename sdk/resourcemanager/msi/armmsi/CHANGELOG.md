@@ -4,9 +4,6 @@
 ### Breaking Changes
 
 - Function `*UserAssignedIdentitiesClient.NewListAssociatedResourcesPager` has been removed
-- Struct `AssociatedResourcesListResult` has been removed
-- Struct `AzureResource` has been removed
-- Struct `UserAssignedIdentitiesClientListAssociatedResourcesResponse` has been removed
 
 ### Features Added
 
@@ -18,10 +15,7 @@
 - New field `SystemData` in struct `FederatedIdentityCredential`
 - New field `SystemData` in struct `Identity`
 - New field `SystemData` in struct `IdentityUpdate`
-- New field `SystemData` in struct `ProxyResource`
-- New field `SystemData` in struct `Resource`
 - New field `SystemData` in struct `SystemAssignedIdentity`
-- New field `SystemData` in struct `TrackedResource`
 
 
 ## 0.7.0 (2022-06-27)

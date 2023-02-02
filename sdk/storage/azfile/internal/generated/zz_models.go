@@ -34,8 +34,8 @@ type ClearRange struct {
 	Start *int64 `xml:"Start"`
 }
 
-// CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
-type CopyFileSmbInfo struct {
+// CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.
+type CopyFileSMBInfo struct {
 	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes
 	// to set on a target file.
 	FileAttributes *string
@@ -870,7 +870,7 @@ type SharePropertiesInternal struct {
 // ShareProtocolSettings - Protocol settings
 type ShareProtocolSettings struct {
 	// Settings for SMB protocol.
-	Smb *ShareSMBSettings `xml:"SMB"`
+	SMB *ShareSMBSettings `xml:"SMB"`
 }
 
 // ShareRetentionPolicy - The retention policy.

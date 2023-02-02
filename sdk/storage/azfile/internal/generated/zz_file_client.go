@@ -1497,10 +1497,10 @@ func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileCl
 //     access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in
 //     a share snapshot can also be specified as a copy source.
 //   - options - FileClientStartCopyOptions contains the optional parameters for the FileClient.StartCopy method.
-//   - CopyFileSmbInfo - CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
+//   - CopyFileSMBInfo - CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) StartCopy(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (FileClientStartCopyResponse, error) {
-	req, err := client.startCopyCreateRequest(ctx, copySource, options, copyFileSmbInfo, leaseAccessConditions)
+func (client *FileClient) StartCopy(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSMBInfo *CopyFileSMBInfo, leaseAccessConditions *LeaseAccessConditions) (FileClientStartCopyResponse, error) {
+	req, err := client.startCopyCreateRequest(ctx, copySource, options, copyFileSMBInfo, leaseAccessConditions)
 	if err != nil {
 		return FileClientStartCopyResponse{}, err
 	}
@@ -1515,7 +1515,7 @@ func (client *FileClient) StartCopy(ctx context.Context, copySource string, opti
 }
 
 // startCopyCreateRequest creates the StartCopy request.
-func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSMBInfo *CopyFileSMBInfo, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1540,23 +1540,23 @@ func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.FilePermissionCopyMode != nil {
-		req.Raw().Header["x-ms-file-permission-copy-mode"] = []string{string(*copyFileSmbInfo.FilePermissionCopyMode)}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FilePermissionCopyMode != nil {
+		req.Raw().Header["x-ms-file-permission-copy-mode"] = []string{string(*copyFileSMBInfo.FilePermissionCopyMode)}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.IgnoreReadOnly != nil {
-		req.Raw().Header["x-ms-file-copy-ignore-readonly"] = []string{strconv.FormatBool(*copyFileSmbInfo.IgnoreReadOnly)}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.IgnoreReadOnly != nil {
+		req.Raw().Header["x-ms-file-copy-ignore-readonly"] = []string{strconv.FormatBool(*copyFileSMBInfo.IgnoreReadOnly)}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*copyFileSmbInfo.FileAttributes}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*copyFileSMBInfo.FileAttributes}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.FileCreationTime != nil {
-		req.Raw().Header["x-ms-file-creation-time"] = []string{*copyFileSmbInfo.FileCreationTime}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileCreationTime != nil {
+		req.Raw().Header["x-ms-file-creation-time"] = []string{*copyFileSMBInfo.FileCreationTime}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.FileLastWriteTime != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{*copyFileSmbInfo.FileLastWriteTime}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileLastWriteTime != nil {
+		req.Raw().Header["x-ms-file-last-write-time"] = []string{*copyFileSMBInfo.FileLastWriteTime}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.SetArchiveAttribute != nil {
-		req.Raw().Header["x-ms-file-copy-set-archive"] = []string{strconv.FormatBool(*copyFileSmbInfo.SetArchiveAttribute)}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.SetArchiveAttribute != nil {
+		req.Raw().Header["x-ms-file-copy-set-archive"] = []string{strconv.FormatBool(*copyFileSMBInfo.SetArchiveAttribute)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}

@@ -47,8 +47,8 @@ type LeaseAccessConditions = generated.LeaseAccessConditions
 // SourceModifiedAccessConditions contains a group of parameters for the FileClient.UploadRangeFromURL method.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
-// CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
-type CopyFileSmbInfo = generated.CopyFileSmbInfo
+// CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.
+type CopyFileSMBInfo = generated.CopyFileSMBInfo
 
 // HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
 // ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
@@ -135,7 +135,7 @@ type StartCopyFromURLOptions struct {
 	Metadata map[string]*string
 	// required if x-ms-file-permission-copy-mode is specified as override
 	Permissions     *Permissions
-	CopyFileSmbInfo *CopyFileSmbInfo
+	CopyFileSMBInfo *CopyFileSMBInfo
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	// Required if the destination file has an active lease.
 	LeaseAccessConditions *LeaseAccessConditions

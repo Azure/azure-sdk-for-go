@@ -157,10 +157,15 @@ directive:
 
 ``` yaml
 directive:
-- from: zz_models.go
+- from:
+  - zz_file_client.go
+  - zz_models.go
   where: $
   transform: >-
     return $.
       replace(/ShareSmbSettings/g, `ShareSMBSettings`).
-      replace(/SmbMultichannel/g, `SMBMultichannel`);
+      replace(/SmbMultichannel/g, `SMBMultichannel`).
+      replace(/copyFileSmbInfo/g, `copyFileSMBInfo`).
+      replace(/CopyFileSmbInfo/g, `CopyFileSMBInfo`).
+      replace(/Smb\s+\*ShareSMBSettings/g, `SMB *ShareSMBSettings`);
 ```

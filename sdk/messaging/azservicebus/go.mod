@@ -24,10 +24,7 @@ require (
 	nhooyr.io/websocket v1.8.6
 )
 
-require (
-	github.com/golang/mock v1.6.0
-	github.com/google/uuid v1.1.1
-)
+require github.com/golang/mock v1.6.0
 
 require (
 	code.cloudfoundry.org/clock v0.0.0-20180518195852-02e53af36e6c // indirect
@@ -36,6 +33,7 @@ require (
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/golang-jwt/jwt v3.2.1+incompatible // indirect
 	github.com/google/go-cmp v0.5.1 // indirect
+	github.com/google/uuid v1.1.1 // indirect
 	github.com/klauspost/compress v1.10.3 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pkg/browser v0.0.0-20210115035449-ce105d075bb4 // indirect

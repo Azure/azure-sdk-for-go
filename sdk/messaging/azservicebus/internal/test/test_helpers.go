@@ -16,9 +16,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
 
@@ -198,7 +198,7 @@ func RequireNSClose(t *testing.T, closeable interface {
 }
 
 func MustAMQPUUID() amqp.UUID {
-	id, err := uuid.NewUUID()
+	id, err := uuid.New()
 
 	if err != nil {
 		panic(err)

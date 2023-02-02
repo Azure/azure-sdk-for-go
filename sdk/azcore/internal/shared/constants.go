@@ -21,6 +21,7 @@ const (
 	HeaderOperationLocation      = "Operation-Location"
 	HeaderRetryAfter             = "Retry-After"
 	HeaderUserAgent              = "User-Agent"
+	HeaderWWWAuthenticate        = "WWW-Authenticate"
 )
 
 const BearerTokenPrefix = "Bearer "

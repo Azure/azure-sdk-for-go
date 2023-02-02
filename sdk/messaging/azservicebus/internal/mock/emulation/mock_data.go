@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -104,6 +105,9 @@ func NewMockData(t *testing.T, options *MockDataOptions) *MockData {
 }
 
 func (md *MockData) Close() {
+	log.Writef(EventEmulator, "MockData, shutting down")
+	defer log.Writef(EventEmulator, "MockData shut down")
+
 	md.cancelCbsContext()
 
 	md.mocksMu.Lock()
@@ -242,6 +246,9 @@ func (md *MockData) NewTokenProvider() auth.TokenProvider {
 }
 
 func (md *MockData) cbsRouter(ctx context.Context, in *Queue, getQueue func(name string) *Queue) {
+	log.Writef(EventEmulator, "cbsRouter starting...")
+	defer log.Writef(EventEmulator, "cbsRouter done")
+
 	_ = in.IssueCredit(math.MaxUint32, LinkEvent{
 		ConnID: "none",
 		Entity: in.name,
@@ -258,6 +265,7 @@ func (md *MockData) cbsRouter(ctx context.Context, in *Queue, getQueue func(name
 		}, nil)
 
 		if err != nil {
+			log.Writef(EventEmulator, "cbsRouter exiting due to error from receive: %s", err)
 			break
 		}
 
@@ -282,6 +290,7 @@ func (md *MockData) cbsRouter(ctx context.Context, in *Queue, getQueue func(name
 		}, nil)
 
 		if err != nil {
+			log.Writef(EventEmulator, "cbsRouter exiting due to error from send : %s", err)
 			break
 		}
 	}

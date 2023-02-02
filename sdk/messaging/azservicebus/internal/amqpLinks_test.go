@@ -991,7 +991,6 @@ func newAMQPLinksForTest(t *testing.T, mockDataOptions emulation.MockDataOptions
 	require.NoError(t, err)
 
 	md := emulation.NewMockData(t, &mockDataOptions)
-	defer md.Close()
 	ns.newClientFn = md.NewConnection
 
 	tmpLinks := NewAMQPLinks(NewAMQPLinksArgs{

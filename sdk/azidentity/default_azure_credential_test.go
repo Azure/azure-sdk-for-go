@@ -25,7 +25,7 @@ import (
 )
 
 func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
-	env := map[string]string{azureTenantID: fakeTenantID, azureClientID: fakeClientID, azureClientSecret: secret}
+	env := map[string]string{azureTenantID: fakeTenantID, azureClientID: fakeClientID, azureClientSecret: fakeSecret}
 	setEnvironmentVariables(t, env)
 	cred, err := NewDefaultAzureCredential(nil)
 	if err != nil {

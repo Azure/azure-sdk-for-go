@@ -6,8 +6,6 @@
 - Function `*UserAssignedIdentitiesClient.NewListAssociatedResourcesPager` has been removed
 - Struct `AssociatedResourcesListResult` has been removed
 - Struct `AzureResource` has been removed
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
 - Struct `UserAssignedIdentitiesClientListAssociatedResourcesResponse` has been removed
 
 ### Features Added

@@ -358,17 +358,16 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 					return NewDeviceCodeCredential(&o)
 				},
 			},
-			// TODO: https://github.com/AzureAD/microsoft-authentication-library-for-go/pull/366
-			// {
-			// 	name: credNameOBO,
-			// 	ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
-			// 		o := OnBehalfOfCredentialOptions{
-			// 			AdditionallyAllowedTenants: test.allowed,
-			// 			ClientOptions:              co,
-			// 		}
-			// 		return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
-			// 	},
-			// },
+			{
+				name: credNameOBO,
+				ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+					o := OnBehalfOfCredentialOptions{
+						AdditionallyAllowedTenants: test.allowed,
+						ClientOptions:              co,
+					}
+					return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
+				},
+			},
 			{
 				name: credNameSecret,
 				ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {

@@ -103,7 +103,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 
 		md.cbsRouterOnce.Do(func() {
 			cbs := md.upsertQueue(source)
-			go func() { md.cbsRouter(context.Background(), cbs, md.getQueue) }()
+			go func() { md.cbsRouter(md.cbsContext, cbs, md.getQueue) }()
 		})
 	} else {
 		q = md.upsertQueue(source)

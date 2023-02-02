@@ -853,15 +853,13 @@ func TestAMQPCloseLinkTimeout_Receiver_ExternalCancellation(t *testing.T) {
 		return nil, receiver, err
 	}
 
-	var ns *Namespace
-	md, links, ns = newAMQPLinksForTest(t, emulation.MockDataOptions{
+	tempMD, tempLinks, ns, cleanup := newAMQPLinksForTest(t, emulation.MockDataOptions{
 		PreReceiverMock: preReceiverMock,
 	}, createLinkFn)
+	defer cleanup()
 
-	defer func() {
-		err := links.Close(context.Background(), true)
-		require.NoError(t, err)
-	}()
+	md = tempMD
+	links = tempLinks
 
 	var lwid *LinksWithID
 
@@ -937,12 +935,11 @@ func TestAMQPCloseLinkTimeout_Sender(t *testing.T) {
 		return sender, nil, err
 	}
 
-	md, links, ns = newAMQPLinksForTest(t, emulation.MockDataOptions{PreSenderMock: preSenderMock}, createLinkFn)
+	md, tempLinks, tempNS, cleanup := newAMQPLinksForTest(t, emulation.MockDataOptions{PreSenderMock: preSenderMock}, createLinkFn)
+	defer cleanup()
 
-	defer func() {
-		err := links.Close(context.Background(), true)
-		require.NoError(t, err)
-	}()
+	links = tempLinks
+	ns = tempNS
 
 	var lwid *LinksWithID
 
@@ -987,7 +984,7 @@ func TestAMQPCloseLinkTimeout_Sender(t *testing.T) {
 	emulation.RequireNoLeaks(t, md.Events)
 }
 
-func newAMQPLinksForTest(t *testing.T, mockDataOptions emulation.MockDataOptions, createLinkFunc CreateLinkFunc) (*emulation.MockData, *AMQPLinksImpl, *Namespace) {
+func newAMQPLinksForTest(t *testing.T, mockDataOptions emulation.MockDataOptions, createLinkFunc CreateLinkFunc) (*emulation.MockData, *AMQPLinksImpl, *Namespace, func()) {
 	ns, err := NewNamespace(
 		NamespaceWithConnectionString("Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=DEADBEEF"),
 	)
@@ -1007,7 +1004,11 @@ func newAMQPLinksForTest(t *testing.T, mockDataOptions emulation.MockDataOptions
 	links := tmpLinks.(*AMQPLinksImpl)
 	links.contextWithTimeoutFn = mock.NewContextWithTimeoutForTests
 
-	return md, links, ns
+	return md, links, ns, func() {
+		test.RequireLinksClose(t, links)
+		test.RequireNSClose(t, ns)
+		md.Close()
+	}
 }
 
 // newLinksForAMQPLinksTest creates a amqpwrap.AMQPSenderCloser and a amqpwrap.AMQPReceiverCloser linkwith the same options

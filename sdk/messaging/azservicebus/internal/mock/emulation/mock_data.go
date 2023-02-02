@@ -6,7 +6,6 @@ package emulation
 import (
 	"context"
 	"fmt"
-	"log"
 	"math"
 	"sync"
 	"sync/atomic"
@@ -29,8 +28,11 @@ type MockData struct {
 
 	Events *Events
 
-	cbsRouterOnce sync.Once
-	options       *MockDataOptions
+	cbsRouterOnce    sync.Once
+	cbsContext       context.Context
+	cancelCbsContext context.CancelFunc
+
+	options *MockDataOptions
 
 	queuesMu sync.Mutex
 	queues   map[string]*Queue
@@ -87,17 +89,23 @@ func NewMockData(t *testing.T, options *MockDataOptions) *MockData {
 		}
 	}
 
+	cbsContext, cancelCbsContext := context.WithCancel(context.Background())
+
 	return &MockData{
-		Ctrl:      gomock.NewController(t),
-		queues:    map[string]*Queue{},
-		Events:    NewEvents(),
-		options:   options,
-		receivers: map[string][]*MockReceiver{},
-		senders:   map[string][]*MockSender{},
+		Ctrl:             gomock.NewController(t),
+		queues:           map[string]*Queue{},
+		cbsContext:       cbsContext,
+		cancelCbsContext: cancelCbsContext,
+		Events:           NewEvents(),
+		options:          options,
+		receivers:        map[string][]*MockReceiver{},
+		senders:          map[string][]*MockSender{},
 	}
 }
 
 func (md *MockData) Close() {
+	md.cancelCbsContext()
+
 	md.mocksMu.Lock()
 	defer md.mocksMu.Unlock()
 
@@ -107,6 +115,13 @@ func (md *MockData) Close() {
 		if err != nil {
 			panic(err)
 		}
+	}
+
+	md.queuesMu.Lock()
+	defer md.queuesMu.Unlock()
+
+	for k := range md.queues {
+		md.queues[k].Close()
 	}
 }
 
@@ -243,7 +258,6 @@ func (md *MockData) cbsRouter(ctx context.Context, in *Queue, getQueue func(name
 		}, nil)
 
 		if err != nil {
-			log.Printf("CBS router closed: %s", err.Error())
 			break
 		}
 
@@ -268,7 +282,6 @@ func (md *MockData) cbsRouter(ctx context.Context, in *Queue, getQueue func(name
 		}, nil)
 
 		if err != nil {
-			log.Printf("CBS router closed: %s", err.Error())
 			break
 		}
 	}

@@ -48,15 +48,21 @@ type Queue struct {
 	dest      chan *amqp.Message
 	pumpFn    sync.Once
 	events    *Events
+	ctx       context.Context
+	cancel    context.CancelFunc
 }
 
 func NewQueue(name string, events *Events) *Queue {
+	ctx, cancel := context.WithCancel(context.Background())
+
 	return &Queue{
 		creditsCh: make(chan int, 1000),
 		dest:      make(chan *amqp.Message, 1000),
 		name:      name,
 		src:       make(chan *amqp.Message, 1000),
 		events:    events,
+		ctx:       ctx,
+		cancel:    cancel,
 	}
 }
 
@@ -183,32 +189,46 @@ func (q *Queue) pumpMessages() {
 	go func() {
 		defer azlog.Writef(EventEmulator, "[%s] pumpMessages stopping...", q.name)
 
+		defer func() {
+			close(q.creditsCh)
+			close(q.src)
+			close(q.dest)
+		}()
+
 		for {
-			credit := <-q.creditsCh
+			select {
+			case credit := <-q.creditsCh:
+				azlog.Writef(EventEmulator, "[%s] pumpMessages issued %d credits...", q.name, credit)
 
-			azlog.Writef(EventEmulator, "[%s] pumpMessages issued %d credits...", q.name, credit)
-
-			if credit == 0 {
-				break
-			}
-
-			for i := 0; i < credit; i++ {
-				azlog.Writef(EventEmulator, "[%s] waiting for message...", q.name)
-				msg := <-q.src
-
-				if msg == nil {
+				if credit == 0 {
 					break
 				}
 
-				azlog.Writef(EventEmulator, "[%s] pumped single message...", q.name)
-				q.dest <- msg
+				for i := 0; i < credit; i++ {
+					azlog.Writef(EventEmulator, "[%s] waiting for message...", q.name)
+					msg := <-q.src
+
+					if msg == nil {
+						break
+					}
+
+					azlog.Writef(EventEmulator, "[%s] pumped single message...", q.name)
+
+					select {
+					case <-q.ctx.Done():
+						return
+					default:
+						q.dest <- msg
+					}
+
+				}
+			case <-q.ctx.Done():
+				return
 			}
 		}
 	}()
 }
 
 func (q *Queue) Close() {
-	close(q.creditsCh)
-	close(q.src)
-	close(q.dest)
+	q.cancel()
 }

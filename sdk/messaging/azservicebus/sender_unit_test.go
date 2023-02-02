@@ -10,13 +10,12 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSender_UserFacingError(t *testing.T) {
-	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source != "$cbs" {
 				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
@@ -39,7 +38,7 @@ func TestSender_UserFacingError(t *testing.T) {
 		RetryOptions: noRetriesNeeded,
 	})
 
-	defer test.RequireClose(t, client)
+	defer cleanup()
 
 	sender, err := client.NewSender("queue", nil)
 	require.NoError(t, err)
@@ -74,7 +73,7 @@ func TestSender_UserFacingError(t *testing.T) {
 }
 
 func TestSenderNewMessageBatch_ConnectionClosed(t *testing.T) {
-	_, client := newClientWithMockedConn(t, &emulation.MockDataOptions{
+	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source != "$cbs" {
 				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
@@ -95,7 +94,7 @@ func TestSenderNewMessageBatch_ConnectionClosed(t *testing.T) {
 		RetryOptions: noRetriesNeeded,
 	})
 
-	defer test.RequireClose(t, client)
+	defer cleanup()
 
 	sender, err := client.NewSender("queue", nil)
 	require.NoError(t, err)

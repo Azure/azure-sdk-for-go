@@ -183,6 +183,20 @@ func RequireClose(t *testing.T, closeable interface {
 	require.NoError(t, err)
 }
 
+func RequireLinksClose(t *testing.T, closeable interface {
+	Close(ctx context.Context, permanent bool) error
+}) {
+	err := closeable.Close(context.Background(), true)
+	require.NoError(t, err)
+}
+
+func RequireNSClose(t *testing.T, closeable interface {
+	Close(permanent bool) error
+}) {
+	err := closeable.Close(true)
+	require.NoError(t, err)
+}
+
 func MustAMQPUUID() amqp.UUID {
 	id, err := uuid.NewUUID()
 

@@ -1,10 +1,6 @@
 # Release History
 
-## 2.0.0 (2023-02-24)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-
+## 1.2.0 (2023-02-24)
 ### Features Added
 
 - New type alias `ImmutabilityState` with values `ImmutabilityStateDisabled`, `ImmutabilityStateLocked`, `ImmutabilityStateUnlocked`

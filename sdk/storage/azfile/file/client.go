@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"io"
+	"os"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -117,10 +118,21 @@ func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCop
 	return AbortCopyResponse{}, nil
 }
 
-// Download operation reads or downloads a file from the system, including its metadata and properties.
+// DownloadStream operation reads or downloads a file from the system, including its metadata and properties.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
-func (f *Client) Download(ctx context.Context, options *DownloadOptions) (DownloadResponse, error) {
-	return DownloadResponse{}, nil
+func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOptions) (DownloadStreamResponse, error) {
+	return DownloadStreamResponse{}, nil
+}
+
+// DownloadBuffer downloads an Azure blob to a buffer with parallel.
+func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
+	return 0, nil
+}
+
+// DownloadFile downloads an Azure blob to a local file.
+// The file would be truncated if the size doesn't match.
+func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
+	return 0, nil
 }
 
 // Resize operation resizes the file to the specified size.

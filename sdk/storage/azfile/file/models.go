@@ -152,9 +152,9 @@ type AbortCopyOptions struct {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DownloadOptions contains the optional parameters for the Client.Download method.
-type DownloadOptions struct {
-	// Return file data only from the specified byte range.
+// DownloadStreamOptions contains the optional parameters for the Client.DownloadStream method.
+type DownloadStreamOptions struct {
+	// Range specifies a range of bytes. The default value is all bytes.
 	Range HTTPRange
 	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the
 	// range, as long as the range is less than or equal to 4 MB in size.
@@ -164,6 +164,60 @@ type DownloadOptions struct {
 	// the lease ID that's specified in the request matches the lease ID of the file.
 	// Otherwise, the operation fails with status code 412 (Precondition Failed).
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DownloadBufferOptions contains the optional parameters for the Client.DownloadBuffer method.
+type DownloadBufferOptions struct {
+	// Range specifies a range of bytes. The default value is all bytes.
+	Range HTTPRange
+
+	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the
+	// range, as long as the range is less than or equal to 4 MB in size.
+	RangeGetContentMD5 *bool
+
+	// ChunkSize specifies the block size to use for each parallel download; the default size is 4MB.
+	ChunkSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	Concurrency uint16
+
+	// RetryReaderOptionsPerBlock is used when downloading each block.
+	RetryReaderOptionsPerBlock RetryReaderOptions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DownloadFileOptions contains the optional parameters for the Client.DownloadFile method.
+type DownloadFileOptions struct {
+	// Range specifies a range of bytes. The default value is all bytes.
+	Range HTTPRange
+
+	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the
+	// range, as long as the range is less than or equal to 4 MB in size.
+	RangeGetContentMD5 *bool
+
+	// ChunkSize specifies the block size to use for each parallel download; the default size is 4MB.
+	ChunkSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	Concurrency uint16
+
+	// RetryReaderOptionsPerBlock is used when downloading each block.
+	RetryReaderOptionsPerBlock RetryReaderOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

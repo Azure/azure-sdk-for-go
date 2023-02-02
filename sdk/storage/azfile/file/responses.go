@@ -29,8 +29,16 @@ type StartCopyFromURLResponse = generated.FileClientStartCopyResponse
 // AbortCopyResponse contains the response from method Client.AbortCopy.
 type AbortCopyResponse = generated.FileClientAbortCopyResponse
 
-// DownloadResponse contains the response from method Client.Download.
+// DownloadResponse contains the response from method FileClient.Download.
 type DownloadResponse = generated.FileClientDownloadResponse
+
+// DownloadStreamResponse contains the response from method Client.DownloadStream.
+// To read from the stream, read from the Body field, or call the NewRetryReader method.
+type DownloadStreamResponse struct {
+	DownloadResponse
+	client  *Client
+	getInfo httpGetterInfo
+}
 
 // ResizeResponse contains the response from method Client.Resize.
 type ResizeResponse = generated.FileClientSetHTTPHeadersResponse

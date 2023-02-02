@@ -112,25 +112,6 @@ func TestAccountPermissions_ParseNegative(t *testing.T) {
 	require.Contains(t, err.Error(), "122")
 }
 
-func TestAccountServices_String(t *testing.T) {
-	testdata := []struct {
-		input    AccountServices
-		expected string
-	}{
-		{input: AccountServices{Blob: true}, expected: "b"},
-		{input: AccountServices{Queue: true}, expected: "q"},
-		{input: AccountServices{File: true}, expected: "f"},
-		{input: AccountServices{
-			Blob:  true,
-			Queue: true,
-			File:  true,
-		}, expected: "bqf"},
-	}
-	for _, c := range testdata {
-		require.Equal(t, c.expected, c.input.String())
-	}
-}
-
 func TestAccountResourceTypes_String(t *testing.T) {
 	testdata := []struct {
 		input    AccountResourceTypes

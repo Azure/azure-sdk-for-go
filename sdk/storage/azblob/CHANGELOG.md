@@ -23,6 +23,8 @@
   * `CpkScopeInfo` -> `CPKScopeInfo`
   * `RuleId` -> `RuleID`
   * `PolicyId` -> `PolicyID`
+  * `CorsRule` -> `CORSRule`
+* Remove `AccountServices` it is now hardcoded to blobs
 
 ### Other Changes
 

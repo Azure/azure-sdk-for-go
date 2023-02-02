@@ -1316,7 +1316,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    expiryTime,
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -2861,7 +2860,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 //		Protocol:      SASProtocolHTTPS,
 //		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
 //		Permissions:   AccountSASPermissions{Read: true, List: true, Write: true, DeletePreviousVersion: true, Tag: true, FilterByTags: true, Create: true}.String(),
-//		Services:      AccountSASServices{Blob: true}.String(),
 //		ResourceTypes: AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
 //	}.Sign(credential)
 //	if err != nil {

@@ -8,10 +8,13 @@ package azidentity
 
 import (
 	"context"
+	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
@@ -63,6 +66,18 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 	}
 }
 
+// instanceDiscoveryPolicy fails the test when the client requests instance metadata
+type instanceDiscoveryPolicy struct {
+	t *testing.T
+}
+
+func (p *instanceDiscoveryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
+	if strings.Contains(req.Raw().URL.Path, "discovery/instance") {
+		p.t.Fatal("client requested instance metadata")
+	}
+	return req.Next()
+}
+
 func TestInteractiveBrowserCredential_Live(t *testing.T) {
 	if !runManualBrowserTests {
 		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
@@ -92,4 +107,39 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 		}
 		testGetTokenSuccess(t, cred)
 	})
+
+	t.Run("instance discovery disabled", func(t *testing.T) {
+		cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+			ClientOptions: policy.ClientOptions{
+				PerCallPolicies: []policy.Policy{
+					&instanceDiscoveryPolicy{t},
+				}},
+			DisableInstanceDiscovery: true,
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		testGetTokenSuccess(t, cred)
+	})
+}
+
+func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
+	if !runManualBrowserTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
+	}
+	if adfsLiveUser.clientID == fakeClientID {
+		t.Skip("set ADFS_IDENTITY_TEST_CLIENT_ID environment variables to run this test live")
+	}
+	//Redirect URL is necessary
+	url := adfsLiveSP.redirectURL
+
+	cloudConfig := cloud.Configuration{ActiveDirectoryAuthorityHost: adfsAuthority}
+
+	clientOptions := policy.ClientOptions{Cloud: cloudConfig}
+
+	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{ClientOptions: clientOptions, ClientID: adfsLiveUser.clientID, TenantID: "adfs", RedirectURL: url, DisableInstanceDiscovery: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	testGetTokenSuccess(t, cred, adfsScope)
 }

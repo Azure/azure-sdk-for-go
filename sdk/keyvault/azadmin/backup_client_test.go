@@ -48,7 +48,7 @@ func TestBackupRestore(t *testing.T) {
 	restoreResults, err := restorePoller.PollUntilDone(context.Background(), nil)
 	require.NoError(t, err)
 	require.Nil(t, restoreResults.Error)
-	require.Equal(t, "Succeeded", restoreResults.Status)
+	require.Equal(t, "Succeeded", *restoreResults.Status)
 	require.NotNil(t, restoreResults.StartTime)
 	require.NotNil(t, restoreResults.EndTime)
 	require.NotNil(t, restoreResults.JobID)

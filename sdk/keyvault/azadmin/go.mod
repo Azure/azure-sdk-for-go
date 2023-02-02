@@ -3,9 +3,9 @@ module github.com/Azure/azure-sdk-for-go/sdk/keyvault/azadmin
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.2.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.3.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.0.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.3-0.20230201001603-01633acee879
 	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.7.1
 	github.com/google/uuid v1.1.1
 	github.com/stretchr/testify v1.7.0

@@ -14,7 +14,7 @@ import (
 )
 
 func TestMockQueue(t *testing.T) {
-	events := &emulation.Events{}
+	events := emulation.NewEvents()
 	q := emulation.NewQueue("entity", events)
 	defer q.Close()
 

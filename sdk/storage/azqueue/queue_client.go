@@ -20,20 +20,20 @@ import (
 )
 
 // QueueClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
-type QueueClient base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient]
+type QueueClient base.CompositeClient[generated.QueueClient, generated.MessagesClient]
 
 func (q *QueueClient) queueClient() *generated.QueueClient {
-	queue, _, _ := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+	queue, _ := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient])(q))
 	return queue
 }
 
 func (q *QueueClient) messagesClient() *generated.MessagesClient {
-	_, messages, _ := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+	_, messages := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient])(q))
 	return messages
 }
 
 func (q *QueueClient) sharedKey() *SharedKeyCredential {
-	return base.SharedKeyComposite((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
+	return base.SharedKeyComposite((*base.CompositeClient[generated.QueueClient, generated.MessagesClient])(q))
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.

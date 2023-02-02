@@ -52,7 +52,7 @@ func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
 
 type newSessionReceiverArgs struct {
 	sessionID         *string
-	ns                internal.NamespaceWithNewAMQPLinks
+	ns                internal.NamespaceForAMQPLinks
 	entity            entity
 	cleanupOnClose    func()
 	retryOptions      RetryOptions
@@ -90,7 +90,7 @@ func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, option
 	return sessionReceiver, nil
 }
 
-func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
 	const sessionFilterName = "com.microsoft:session-filter"
 	const code = uint64(0x00000137000000C)
 

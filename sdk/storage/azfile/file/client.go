@@ -173,30 +173,3 @@ func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, dest
 func (f *Client) GetRangeList(ctx context.Context, options *GetRangeListOptions) (GetRangeListResponse, error) {
 	return GetRangeListResponse{}, nil
 }
-
-// AcquireLease operation can be used to request a new lease.
-// The lease duration must be between 15 and 60 seconds, or infinite (-1).
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
-func (f *Client) AcquireLease(ctx context.Context, duration int32, options *AcquireLeaseOptions) (AcquireLeaseResponse, error) {
-	// TODO: update generated code to make duration as required parameter
-	return AcquireLeaseResponse{}, nil
-}
-
-// BreakLease operation can be used to break the lease, if the file has an active lease. Once a lease is broken, it cannot be renewed.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
-func (f *Client) BreakLease(ctx context.Context, options *BreakLeaseOptions) (BreakLeaseResponse, error) {
-	return BreakLeaseResponse{}, nil
-}
-
-// ChangeLease operation can be used to change the lease ID of an active lease.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
-func (f *Client) ChangeLease(ctx context.Context, leaseID string, proposedLeaseID string, options *ChangeLeaseOptions) (ChangeLeaseResponse, error) {
-	// TODO: update generated code to make proposedLeaseID as required parameter
-	return ChangeLeaseResponse{}, nil
-}
-
-// ReleaseLease operation can be used to free the lease if it is no longer needed so that another client may immediately acquire a lease against the file.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
-func (f *Client) ReleaseLease(ctx context.Context, leaseID string, options *ReleaseLeaseOptions) (ReleaseLeaseResponse, error) {
-	return ReleaseLeaseResponse{}, nil
-}

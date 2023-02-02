@@ -277,34 +277,3 @@ type GetRangeListOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 }
-
-// ---------------------------------------------------------------------------------------------------------------------
-
-// AcquireLeaseOptions contains the optional parameters for the Client.AcquireLease method.
-type AcquireLeaseOptions struct {
-	// Proposed lease ID, in a GUID string format.
-	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
-	ProposedLeaseID *string
-}
-
-// ---------------------------------------------------------------------------------------------------------------------
-
-// BreakLeaseOptions contains the optional parameters for the Client.BreakLease method.
-type BreakLeaseOptions struct {
-	// LeaseAccessConditions contains optional parameters to access leased entity.
-	LeaseAccessConditions *LeaseAccessConditions
-}
-
-// ---------------------------------------------------------------------------------------------------------------------
-
-// ChangeLeaseOptions contains the optional parameters for the Client.ChangeLease method.
-type ChangeLeaseOptions struct {
-	// placeholder for future options
-}
-
-// ---------------------------------------------------------------------------------------------------------------------
-
-// ReleaseLeaseOptions contains the optional parameters for the Client.ReleaseLease method.
-type ReleaseLeaseOptions struct {
-	// placeholder for future options
-}

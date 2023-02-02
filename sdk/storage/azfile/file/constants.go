@@ -57,48 +57,6 @@ func PossibleCopyStatusTypeValues() []CopyStatusType {
 	return generated.PossibleCopyStatusTypeValues()
 }
 
-// LeaseDurationType - When a share is leased, specifies whether the lease is of infinite or fixed duration.
-type LeaseDurationType = generated.LeaseDurationType
-
-const (
-	LeaseDurationTypeInfinite LeaseDurationType = generated.LeaseDurationTypeInfinite
-	LeaseDurationTypeFixed    LeaseDurationType = generated.LeaseDurationTypeFixed
-)
-
-// PossibleLeaseDurationTypeValues returns the possible values for the LeaseDurationType const type.
-func PossibleLeaseDurationTypeValues() []LeaseDurationType {
-	return generated.PossibleLeaseDurationTypeValues()
-}
-
-// LeaseStateType - Lease state of the share.
-type LeaseStateType = generated.LeaseStateType
-
-const (
-	LeaseStateTypeAvailable LeaseStateType = generated.LeaseStateTypeAvailable
-	LeaseStateTypeLeased    LeaseStateType = generated.LeaseStateTypeLeased
-	LeaseStateTypeExpired   LeaseStateType = generated.LeaseStateTypeExpired
-	LeaseStateTypeBreaking  LeaseStateType = generated.LeaseStateTypeBreaking
-	LeaseStateTypeBroken    LeaseStateType = generated.LeaseStateTypeBroken
-)
-
-// PossibleLeaseStateTypeValues returns the possible values for the LeaseStateType const type.
-func PossibleLeaseStateTypeValues() []LeaseStateType {
-	return generated.PossibleLeaseStateTypeValues()
-}
-
-// LeaseStatusType - The current lease status of the share.
-type LeaseStatusType = generated.LeaseStatusType
-
-const (
-	LeaseStatusTypeLocked   LeaseStatusType = generated.LeaseStatusTypeLocked
-	LeaseStatusTypeUnlocked LeaseStatusType = generated.LeaseStatusTypeUnlocked
-)
-
-// PossibleLeaseStatusTypeValues returns the possible values for the LeaseStatusType const type.
-func PossibleLeaseStatusTypeValues() []LeaseStatusType {
-	return generated.PossibleLeaseStatusTypeValues()
-}
-
 // PermissionCopyModeType determines the copy behavior of the security descriptor of the file.
 //   - source: The security descriptor on the destination file is copied from the source file.
 //   - override: The security descriptor on the destination file is determined via the x-ms-file-permission or x-ms-file-permission-key header.

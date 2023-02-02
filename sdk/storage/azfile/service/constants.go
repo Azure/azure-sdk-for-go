@@ -22,48 +22,6 @@ func PossibleListSharesIncludeTypeValues() []ListSharesIncludeType {
 	return generated.PossibleListSharesIncludeTypeValues()
 }
 
-// LeaseDurationType - When a share is leased, specifies whether the lease is of infinite or fixed duration.
-type LeaseDurationType = generated.LeaseDurationType
-
-const (
-	LeaseDurationTypeInfinite LeaseDurationType = generated.LeaseDurationTypeInfinite
-	LeaseDurationTypeFixed    LeaseDurationType = generated.LeaseDurationTypeFixed
-)
-
-// PossibleLeaseDurationTypeValues returns the possible values for the LeaseDurationType const type.
-func PossibleLeaseDurationTypeValues() []LeaseDurationType {
-	return generated.PossibleLeaseDurationTypeValues()
-}
-
-// LeaseStateType - Lease state of the share.
-type LeaseStateType = generated.LeaseStateType
-
-const (
-	LeaseStateTypeAvailable LeaseStateType = generated.LeaseStateTypeAvailable
-	LeaseStateTypeLeased    LeaseStateType = generated.LeaseStateTypeLeased
-	LeaseStateTypeExpired   LeaseStateType = generated.LeaseStateTypeExpired
-	LeaseStateTypeBreaking  LeaseStateType = generated.LeaseStateTypeBreaking
-	LeaseStateTypeBroken    LeaseStateType = generated.LeaseStateTypeBroken
-)
-
-// PossibleLeaseStateTypeValues returns the possible values for the LeaseStateType const type.
-func PossibleLeaseStateTypeValues() []LeaseStateType {
-	return generated.PossibleLeaseStateTypeValues()
-}
-
-// LeaseStatusType - The current lease status of the share.
-type LeaseStatusType = generated.LeaseStatusType
-
-const (
-	LeaseStatusTypeLocked   LeaseStatusType = generated.LeaseStatusTypeLocked
-	LeaseStatusTypeUnlocked LeaseStatusType = generated.LeaseStatusTypeUnlocked
-)
-
-// PossibleLeaseStatusTypeValues returns the possible values for the LeaseStatusType const type.
-func PossibleLeaseStatusTypeValues() []LeaseStatusType {
-	return generated.PossibleLeaseStatusTypeValues()
-}
-
 // ShareRootSquash defines values for the root squashing behavior on the share when NFS is enabled. If it's not specified, the default is NoRootSquash.
 type ShareRootSquash = generated.ShareRootSquash
 

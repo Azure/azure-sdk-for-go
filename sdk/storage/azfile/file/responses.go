@@ -54,15 +54,3 @@ type UploadRangeFromURLResponse = generated.FileClientUploadRangeFromURLResponse
 
 // GetRangeListResponse contains the response from method Client.GetRangeList.
 type GetRangeListResponse = generated.FileClientGetRangeListResponse
-
-// AcquireLeaseResponse contains the response from method Client.AcquireLease.
-type AcquireLeaseResponse = generated.FileClientAcquireLeaseResponse
-
-// BreakLeaseResponse contains the response from method Client.BreakLease.
-type BreakLeaseResponse = generated.FileClientBreakLeaseResponse
-
-// ChangeLeaseResponse contains the response from method Client.ChangeLease.
-type ChangeLeaseResponse = generated.FileClientChangeLeaseResponse
-
-// ReleaseLeaseResponse contains the response from method Client.ReleaseLease.
-type ReleaseLeaseResponse = generated.FileClientReleaseLeaseResponse

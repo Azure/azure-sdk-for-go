@@ -19,8 +19,8 @@ type DeleteQueueResponse = generated.QueueClientDeleteResponse
 // ListQueuesResponse contains the response from method ServiceClient.ListQueuesSegment.
 type ListQueuesResponse = generated.ServiceClientListQueuesSegmentResponse
 
-// GetPropertiesResponse contains the response from method ServiceClient.GetProperties.
-type GetPropertiesResponse = generated.ServiceClientGetPropertiesResponse
+// GetServicePropertiesResponse contains the response from method ServiceClient.GetServiceProperties.
+type GetServicePropertiesResponse = generated.ServiceClientGetPropertiesResponse
 
 // SetPropertiesResponse contains the response from method ServiceClient.SetProperties.
 type SetPropertiesResponse = generated.ServiceClientSetPropertiesResponse

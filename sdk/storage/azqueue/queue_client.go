@@ -22,7 +22,7 @@ import (
 // QueueClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
 type QueueClient base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient]
 
-func (q *QueueClient) generated() *generated.QueueClient {
+func (q *QueueClient) queueClient() *generated.QueueClient {
 	queue, _, _ := base.InnerClients((*base.CompositeClient[generated.QueueClient, generated.MessagesClient, generated.MessageIDClient])(q))
 	return queue
 }
@@ -38,7 +38,7 @@ func (q *QueueClient) sharedKey() *SharedKeyCredential {
 
 // URL returns the URL endpoint used by the ServiceClient object.
 func (q *QueueClient) URL() string {
-	return q.generated().Endpoint()
+	return q.queueClient().Endpoint()
 }
 
 // NewQueueClient creates an instance of ServiceClient with the specified values.
@@ -102,7 +102,7 @@ func NewQueueClientFromConnectionString(connectionString string, queueName strin
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-queue4.
 func (q *QueueClient) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	opts := options.format()
-	resp, err := q.generated().Create(ctx, opts)
+	resp, err := q.queueClient().Create(ctx, opts)
 	return resp, err
 }
 
@@ -110,7 +110,7 @@ func (q *QueueClient) Create(ctx context.Context, options *CreateOptions) (Creat
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-queue3.
 func (q *QueueClient) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
 	opts := options.format()
-	resp, err := q.generated().Delete(ctx, opts)
+	resp, err := q.queueClient().Delete(ctx, opts)
 	return resp, err
 }
 
@@ -118,7 +118,7 @@ func (q *QueueClient) Delete(ctx context.Context, options *DeleteOptions) (Delet
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata.
 func (q *QueueClient) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	opts := options.format()
-	resp, err := q.generated().SetMetadata(ctx, opts)
+	resp, err := q.queueClient().SetMetadata(ctx, opts)
 	return resp, err
 }
 
@@ -126,7 +126,7 @@ func (q *QueueClient) SetMetadata(ctx context.Context, options *SetMetadataOptio
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-queue-metadata.
 func (q *QueueClient) GetProperties(ctx context.Context, options *GetQueuePropertiesOptions) (GetQueuePropertiesResponse, error) {
 	opts := options.format()
-	resp, err := q.generated().GetProperties(ctx, opts)
+	resp, err := q.queueClient().GetProperties(ctx, opts)
 	return resp, err
 }
 
@@ -134,7 +134,7 @@ func (q *QueueClient) GetProperties(ctx context.Context, options *GetQueueProper
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-queue-acl.
 func (q *QueueClient) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
 	options := o.format()
-	resp, err := q.generated().GetAccessPolicy(ctx, options)
+	resp, err := q.queueClient().GetAccessPolicy(ctx, options)
 	return resp, err
 }
 
@@ -145,7 +145,7 @@ func (q *QueueClient) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOpt
 	if err != nil {
 		return SetAccessPolicyResponse{}, err
 	}
-	resp, err := q.generated().SetAccessPolicy(ctx, acl, opts)
+	resp, err := q.queueClient().SetAccessPolicy(ctx, acl, opts)
 	return resp, err
 }
 
@@ -171,8 +171,8 @@ func (q *QueueClient) DequeueMessage(ctx context.Context, o *DequeueMessageOptio
 func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popReceipt string, content string, o *UpdateMessageOptions) (UpdateMessageResponse, error) {
 	opts := o.format()
 	message := generated.QueueMessage{MessageText: &content}
-	messageURL := runtime.JoinPaths(q.generated().Endpoint(), messageID)
-	messageClient := generated.NewMessageIDClient(messageURL, q.generated().Pipeline())
+	messageURL := runtime.JoinPaths(q.queueClient().Endpoint(), messageID)
+	messageClient := generated.NewMessageIDClient(messageURL, q.queueClient().Pipeline())
 	resp, err := messageClient.Update(ctx, popReceipt, message, opts)
 	return resp, err
 }
@@ -181,8 +181,8 @@ func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popRe
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-message2.
 func (q *QueueClient) DeleteMessage(ctx context.Context, messageID string, popReceipt string, o *DeleteMessageOptions) (DeleteMessageResponse, error) {
 	opts := o.format()
-	messageURL := runtime.JoinPaths(q.generated().Endpoint(), messageID)
-	messageClient := generated.NewMessageIDClient(messageURL, q.generated().Pipeline())
+	messageURL := runtime.JoinPaths(q.queueClient().Endpoint(), messageID)
+	messageClient := generated.NewMessageIDClient(messageURL, q.queueClient().Pipeline())
 	resp, err := messageClient.Delete(ctx, popReceipt, opts)
 	return resp, err
 }

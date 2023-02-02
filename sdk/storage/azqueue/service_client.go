@@ -101,9 +101,9 @@ func (s *ServiceClient) URL() string {
 	return s.generated().Endpoint()
 }
 
-// GetProperties - gets the properties of a storage account's Queue service, including properties for Storage Analytics
+// GetServiceProperties - gets the properties of a storage account's Queue service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
-func (s *ServiceClient) GetProperties(ctx context.Context, o *GetPropertiesOptions) (GetPropertiesResponse, error) {
+func (s *ServiceClient) GetServiceProperties(ctx context.Context, o *GetServicePropertiesOptions) (GetServicePropertiesResponse, error) {
 	getPropertiesOptions := o.format()
 	resp, err := s.generated().GetProperties(ctx, getPropertiesOptions)
 	return resp, err
@@ -176,7 +176,7 @@ func (s *ServiceClient) NewQueueClient(queueName string) *QueueClient {
 
 // CreateQueue creates a new queue within a storage account. If a queue with the same name already exists, the operation fails.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-queue4.
-func (s *ServiceClient) CreateQueue(ctx context.Context, queueName string, options *CreateOptions) (generated.QueueClientCreateResponse, error) {
+func (s *ServiceClient) CreateQueue(ctx context.Context, queueName string, options *CreateOptions) (CreateResponse, error) {
 	queueName = url.PathEscape(queueName)
 	queueURL := runtime.JoinPaths(s.URL(), queueName)
 	qC := (*QueueClient)(base.NewQueueClient(queueURL, s.generated().Pipeline(), s.sharedKey()))

@@ -181,12 +181,12 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// GetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
-type GetPropertiesOptions struct {
+// GetServicePropertiesOptions contains the optional parameters for the ServiceClient.GetServiceProperties method.
+type GetServicePropertiesOptions struct {
 	// placeholder for future options
 }
 
-func (o *GetPropertiesOptions) format() *generated.ServiceClientGetPropertiesOptions {
+func (o *GetServicePropertiesOptions) format() *generated.ServiceClientGetPropertiesOptions {
 	return nil
 }
 

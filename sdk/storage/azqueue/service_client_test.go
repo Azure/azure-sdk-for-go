@@ -72,7 +72,7 @@ func (s *UnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	svcClient, err := azqueue.NewServiceClientWithSharedKeyCredential(parsedConnStr.ServiceURL, sharedKeyCred, nil)
 	_require.Nil(err)
 
-	sProps, err := svcClient.GetProperties(context.Background(), nil)
+	sProps, err := svcClient.GetServiceProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotZero(sProps)
 }
@@ -94,7 +94,7 @@ func (s *RecordedTestSuite) TestSetPropertiesLogging() {
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
 	_require.Nil(err)
-	resp1, err := svcClient.GetProperties(context.Background(), nil)
+	resp1, err := svcClient.GetServiceProperties(context.Background(), nil)
 
 	_require.Nil(err)
 	_require.Equal(resp1.Logging.Write, enabled)
@@ -118,7 +118,7 @@ func (s *RecordedTestSuite) TestSetPropertiesHourMetrics() {
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
 	_require.Nil(err)
-	resp1, err := svcClient.GetProperties(context.Background(), nil)
+	resp1, err := svcClient.GetServiceProperties(context.Background(), nil)
 
 	_require.Nil(err)
 	_require.Equal(resp1.HourMetrics.Enabled, enabled)
@@ -141,7 +141,7 @@ func (s *RecordedTestSuite) TestSetPropertiesMinuteMetrics() {
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
 	_require.Nil(err)
-	resp1, err := svcClient.GetProperties(context.Background(), nil)
+	resp1, err := svcClient.GetServiceProperties(context.Background(), nil)
 
 	_require.Nil(err)
 	_require.Equal(resp1.MinuteMetrics.Enabled, enabled)
@@ -178,7 +178,7 @@ func (s *RecordedTestSuite) TestSetPropertiesSetCors() {
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
 	_require.Nil(err)
-	resp, err := svcClient.GetProperties(context.Background(), nil)
+	resp, err := svcClient.GetServiceProperties(context.Background(), nil)
 	for i := 0; i < len(resp.Cors); i++ {
 		if resp.Cors[i].AllowedOrigins == &allowedOrigins1 {
 			_require.Equal(resp.Cors[i].AllowedMethods, &allowedMethods1)
@@ -202,7 +202,7 @@ func (s *RecordedTestSuite) TestServiceGetProperties() {
 	_require.NoError(err)
 
 	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
-	sProps, err := svcClient.GetProperties(context.Background(), nil)
+	sProps, err := svcClient.GetServiceProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotZero(sProps)
 }

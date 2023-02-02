@@ -97,6 +97,9 @@ type AzureBackupDiscreteRecoveryPoint struct {
 	RecoveryPointType              *string                          `json:"recoveryPointType,omitempty"`
 	RetentionTagName               *string                          `json:"retentionTagName,omitempty"`
 	RetentionTagVersion            *string                          `json:"retentionTagVersion,omitempty"`
+
+	// READ-ONLY
+	ExpiryTime *time.Time `json:"expiryTime,omitempty" azure:"ro"`
 }
 
 // GetAzureBackupRecoveryPoint implements the AzureBackupRecoveryPointClassification interface for type AzureBackupDiscreteRecoveryPoint.
@@ -771,12 +774,6 @@ type BackupInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupInstancesExtensionRoutingClientListOptions contains the optional parameters for the BackupInstancesExtensionRoutingClient.NewListPager
-// method.
-type BackupInstancesExtensionRoutingClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // BackupParametersClassification provides polymorphic access to related types.
 // Call the interface's GetBackupParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -850,6 +847,9 @@ type BackupVault struct {
 	// REQUIRED; Storage Settings
 	StorageSettings []*StorageSetting `json:"storageSettings,omitempty"`
 
+	// Feature Settings
+	FeatureSettings *FeatureSettings `json:"featureSettings,omitempty"`
+
 	// Monitoring Settings
 	MonitoringSettings *MonitoringSettings `json:"monitoringSettings,omitempty"`
 
@@ -921,6 +921,12 @@ type BackupVaultsClientBeginCreateOrUpdateOptions struct {
 	ResumeToken string
 }
 
+// BackupVaultsClientBeginDeleteOptions contains the optional parameters for the BackupVaultsClient.BeginDelete method.
+type BackupVaultsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // BackupVaultsClientBeginUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginUpdate method.
 type BackupVaultsClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -930,11 +936,6 @@ type BackupVaultsClientBeginUpdateOptions struct {
 // BackupVaultsClientCheckNameAvailabilityOptions contains the optional parameters for the BackupVaultsClient.CheckNameAvailability
 // method.
 type BackupVaultsClientCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BackupVaultsClientDeleteOptions contains the optional parameters for the BackupVaultsClient.Delete method.
-type BackupVaultsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1162,6 +1163,12 @@ type CopyOption struct {
 
 // GetCopyOption implements the CopyOptionClassification interface for type CopyOption.
 func (c *CopyOption) GetCopyOption() *CopyOption { return c }
+
+// CrossSubscriptionRestoreSettings - CrossSubscriptionRestore Settings
+type CrossSubscriptionRestoreSettings struct {
+	// CrossSubscriptionRestore state
+	State *CrossSubscriptionRestoreState `json:"state,omitempty"`
+}
 
 // CustomCopyOption - Duration based custom options to copy
 type CustomCopyOption struct {
@@ -1409,6 +1416,29 @@ type DppBaseResourceList struct {
 	Value []*DppBaseResource `json:"value,omitempty"`
 }
 
+type DppBaseTrackedResource struct {
+	// Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name associated with the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
 // DppIdentityDetails - Identity details
 type DppIdentityDetails struct {
 	// The identityType which can be either SystemAssigned or None
@@ -1452,33 +1482,6 @@ type DppResource struct {
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// DppResourceGuardProxyClientDeleteOptions contains the optional parameters for the DppResourceGuardProxyClient.Delete method.
-type DppResourceGuardProxyClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DppResourceGuardProxyClientGetOptions contains the optional parameters for the DppResourceGuardProxyClient.Get method.
-type DppResourceGuardProxyClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DppResourceGuardProxyClientListOptions contains the optional parameters for the DppResourceGuardProxyClient.NewListPager
-// method.
-type DppResourceGuardProxyClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DppResourceGuardProxyClientPutOptions contains the optional parameters for the DppResourceGuardProxyClient.Put method.
-type DppResourceGuardProxyClientPutOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DppResourceGuardProxyClientUnlockDeleteOptions contains the optional parameters for the DppResourceGuardProxyClient.UnlockDelete
-// method.
-type DppResourceGuardProxyClientUnlockDeleteOptions struct {
-	// placeholder for future optional parameters
 }
 
 // DppResourceList - ListResource
@@ -1584,6 +1587,12 @@ type ExportJobsResult struct {
 
 	// READ-ONLY; URL of the blob into which the ExcelFile is uploaded.
 	ExcelFileBlobURL *string `json:"excelFileBlobUrl,omitempty" azure:"ro"`
+}
+
+// FeatureSettings - Class containing feature settings of vault
+type FeatureSettings struct {
+	// CrossSubscriptionRestore Settings
+	CrossSubscriptionRestoreSettings *CrossSubscriptionRestoreSettings `json:"crossSubscriptionRestoreSettings,omitempty"`
 }
 
 // FeatureValidationRequest - Base class for feature object
@@ -1889,7 +1898,7 @@ type KubernetesClusterRestoreCriteria struct {
 	// Gets or sets the Namespace Mappings property. This property sets if namespace needs to be change during restore.
 	NamespaceMappings map[string]*string `json:"namespaceMappings,omitempty"`
 
-	// Gets or sets the PV Restore Mode property. This property sets whether volumes needs to be restored.
+	// Gets or sets the PV (Persistent Volume) Restore Mode property. This property sets whether volumes needs to be restored.
 	PersistentVolumeRestoreMode *PersistentVolumeRestoreMode `json:"persistentVolumeRestoreMode,omitempty"`
 }
 
@@ -2031,11 +2040,20 @@ type OperationsClientListOptions struct {
 
 // PatchBackupVaultInput - Backup Vault Contract for Patch Backup Vault API.
 type PatchBackupVaultInput struct {
+	// Feature Settings
+	FeatureSettings *FeatureSettings `json:"featureSettings,omitempty"`
+
 	// Monitoring Settings
 	MonitoringSettings *MonitoringSettings `json:"monitoringSettings,omitempty"`
 
 	// Security Settings
 	SecuritySettings *SecuritySettings `json:"securitySettings,omitempty"`
+}
+
+// PatchResourceGuardInput - Patch Request content for Microsoft.DataProtection Resource Guard resources
+type PatchResourceGuardInput struct {
+	// Resource Guard tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // PatchResourceRequestInput - Patch Request content for Microsoft.DataProtection resources
@@ -2149,7 +2167,7 @@ type ResourceGuard struct {
 	Description *string `json:"description,omitempty" azure:"ro"`
 
 	// READ-ONLY; Provisioning state of the BackupVault resource
-	ProvisioningState *ResourceGuardProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; {readonly} List of operation details those are protected by the ResourceGuard resource
 	ResourceGuardOperations []*ResourceGuardOperation `json:"resourceGuardOperations,omitempty" azure:"ro"`
@@ -2164,50 +2182,9 @@ type ResourceGuardOperation struct {
 	VaultCriticalOperation *string `json:"vaultCriticalOperation,omitempty" azure:"ro"`
 }
 
-type ResourceGuardOperationDetail struct {
-	DefaultResourceRequest *string `json:"defaultResourceRequest,omitempty"`
-	VaultCriticalOperation *string `json:"vaultCriticalOperation,omitempty"`
-}
-
-type ResourceGuardProxyBase struct {
-	Description                   *string                         `json:"description,omitempty"`
-	LastUpdatedTime               *string                         `json:"lastUpdatedTime,omitempty"`
-	ResourceGuardOperationDetails []*ResourceGuardOperationDetail `json:"resourceGuardOperationDetails,omitempty"`
-	ResourceGuardResourceID       *string                         `json:"resourceGuardResourceId,omitempty"`
-}
-
-type ResourceGuardProxyBaseResource struct {
-	// ResourceGuardProxyBaseResource properties
-	Properties *ResourceGuardProxyBase `json:"properties,omitempty"`
-
-	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ResourceGuardProxyBaseResourceList - List of ResourceGuardProxyBase resources
-type ResourceGuardProxyBaseResourceList struct {
-	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// List of resources.
-	Value []*ResourceGuardProxyBaseResource `json:"value,omitempty"`
-}
-
 type ResourceGuardResource struct {
 	// Optional ETag.
 	ETag *string `json:"eTag,omitempty"`
-
-	// Input Managed Identity Details
-	Identity *DppIdentityDetails `json:"identity,omitempty"`
 
 	// Resource location.
 	Location *string `json:"location,omitempty"`
@@ -2616,7 +2593,7 @@ type SystemData struct {
 	// The type of identity that created the resource.
 	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
 
-	// The type of identity that last modified the resource.
+	// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
 
 	// The identity that last modified the resource.
@@ -2661,6 +2638,11 @@ type TargetDetails struct {
 
 	// REQUIRED; Url denoting the restore destination. It can point to container / file share etc
 	URL *string `json:"url,omitempty"`
+
+	// Full ARM Id denoting the restore destination. It is the ARM Id pointing to container / file share This is optional if the
+	// target subscription can be identified with the URL field. If not then this is
+	// needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states
+	TargetResourceArmID *string `json:"targetResourceArmId,omitempty"`
 }
 
 // TriggerBackupRequest - Trigger backup request
@@ -2686,18 +2668,6 @@ type TriggerContext struct {
 
 // GetTriggerContext implements the TriggerContextClassification interface for type TriggerContext.
 func (t *TriggerContext) GetTriggerContext() *TriggerContext { return t }
-
-// UnlockDeleteRequest - Request body of unlock delete API.
-type UnlockDeleteRequest struct {
-	ResourceGuardOperationRequests []*string `json:"resourceGuardOperationRequests,omitempty"`
-	ResourceToBeDeleted            *string   `json:"resourceToBeDeleted,omitempty"`
-}
-
-// UnlockDeleteResponse - Response of Unlock Delete API.
-type UnlockDeleteResponse struct {
-	// This is the time when unlock delete privileges will get expired.
-	UnlockDeleteExpiryTime *string `json:"unlockDeleteExpiryTime,omitempty"`
-}
 
 // UserFacingError - Error object used by layers that have access to localized content, and propagate that to user
 type UserFacingError struct {

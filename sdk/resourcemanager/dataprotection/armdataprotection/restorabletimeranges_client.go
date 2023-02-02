@@ -32,7 +32,7 @@ type RestorableTimeRangesClient struct {
 }
 
 // NewRestorableTimeRangesClient creates a new instance of RestorableTimeRangesClient with the specified values.
-//   - subscriptionID - The subscription Id.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRestorableTimeRangesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTimeRangesClient, error) {
@@ -58,10 +58,10 @@ func NewRestorableTimeRangesClient(subscriptionID string, credential azcore.Toke
 // Find -
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
-//   - resourceGroupName - The name of the resource group where the backup vault is present.
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
-//   - backupInstanceName - The name of the backup instance
+//   - backupInstanceName - The name of the backup instance.
 //   - parameters - Request body for operation
 //   - options - RestorableTimeRangesClientFindOptions contains the optional parameters for the RestorableTimeRangesClient.Find
 //     method.
@@ -83,9 +83,6 @@ func (client *RestorableTimeRangesClient) Find(ctx context.Context, resourceGrou
 // findCreateRequest creates the Find request.
 func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters AzureBackupFindRestorableTimeRangesRequest, options *RestorableTimeRangesClientFindOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/findRestorableTimeRanges"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -104,7 +101,7 @@ func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
 func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 		// 			Properties: &armdataprotection.ResourceGuard{
 		// 				Description: to.Ptr("Please take JIT access before performing any of the critical operation"),
 		// 				AllowAutoApprovals: to.Ptr(true),
-		// 				ProvisioningState: to.Ptr(armdataprotection.ResourceGuardProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armdataprotection.ProvisioningStateSucceeded),
 		// 				ResourceGuardOperations: []*armdataprotection.ResourceGuardOperation{
 		// 					{
 		// 						RequestResourceType: to.Ptr("Microsoft.DataProtection/resourceGuards/deleteResourceGuardProxyRequests"),
@@ -71,7 +71,7 @@ func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetResourceGuardsInResourceGroup.json
 func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 		// 			Properties: &armdataprotection.ResourceGuard{
 		// 				Description: to.Ptr("Please take JIT access before performing any of the critical operation"),
 		// 				AllowAutoApprovals: to.Ptr(true),
-		// 				ProvisioningState: to.Ptr(armdataprotection.ResourceGuardProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armdataprotection.ProvisioningStateSucceeded),
 		// 				ResourceGuardOperations: []*armdataprotection.ResourceGuardOperation{
 		// 					{
 		// 						RequestResourceType: to.Ptr("Microsoft.DataProtection/resourceGuards/deleteResourceGuardProxyRequests"),
@@ -124,7 +124,7 @@ func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/PutResourceGuard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/PutResourceGuard.json
 func ExampleResourceGuardsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleResourceGuardsClient_Put() {
 	// 	Properties: &armdataprotection.ResourceGuard{
 	// 		Description: to.Ptr("Please take JIT access before performing any of the critical operation"),
 	// 		AllowAutoApprovals: to.Ptr(true),
-	// 		ProvisioningState: to.Ptr(armdataprotection.ResourceGuardProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armdataprotection.ProvisioningStateSucceeded),
 	// 		ResourceGuardOperations: []*armdataprotection.ResourceGuardOperation{
 	// 			{
 	// 				RequestResourceType: to.Ptr("Microsoft.DataProtection/resourceGuards/deleteResourceGuardProxyRequests"),
@@ -174,7 +174,7 @@ func ExampleResourceGuardsClient_Put() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetResourceGuard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetResourceGuard.json
 func ExampleResourceGuardsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +203,7 @@ func ExampleResourceGuardsClient_Get() {
 	// 	Properties: &armdataprotection.ResourceGuard{
 	// 		Description: to.Ptr("Please take JIT access before performing any of the critical operation"),
 	// 		AllowAutoApprovals: to.Ptr(true),
-	// 		ProvisioningState: to.Ptr(armdataprotection.ResourceGuardProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armdataprotection.ProvisioningStateSucceeded),
 	// 		ResourceGuardOperations: []*armdataprotection.ResourceGuardOperation{
 	// 			{
 	// 				RequestResourceType: to.Ptr("Microsoft.DataProtection/resourceGuards/deleteResourceGuardProxyRequests"),
@@ -219,7 +219,7 @@ func ExampleResourceGuardsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/DeleteResourceGuard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/DeleteResourceGuard.json
 func ExampleResourceGuardsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExampleResourceGuardsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/PatchResourceGuard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/PatchResourceGuard.json
 func ExampleResourceGuardsClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleResourceGuardsClient_Patch() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Patch(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.PatchResourceRequestInput{
+	res, err := client.Patch(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.PatchResourceGuardInput{
 		Tags: map[string]*string{
 			"newKey": to.Ptr("newVal"),
 		},
@@ -269,7 +269,7 @@ func ExampleResourceGuardsClient_Patch() {
 	// 	Properties: &armdataprotection.ResourceGuard{
 	// 		Description: to.Ptr("Please take JIT access before performing any of the critical operation"),
 	// 		AllowAutoApprovals: to.Ptr(true),
-	// 		ProvisioningState: to.Ptr(armdataprotection.ResourceGuardProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armdataprotection.ProvisioningStateSucceeded),
 	// 		ResourceGuardOperations: []*armdataprotection.ResourceGuardOperation{
 	// 			{
 	// 				RequestResourceType: to.Ptr("Microsoft.DataProtection/resourceGuards/deleteResourceGuardProxyRequests"),
@@ -283,7 +283,7 @@ func ExampleResourceGuardsClient_Patch() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListDisableSoftDeleteRequests.json
 func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListDeleteResourceGuardProxyRequests.json
 func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,7 +349,7 @@ func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPa
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListBackupSecurityPINRequests.json
 func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,7 +382,7 @@ func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListDeleteProtectedItemRequests.json
 func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,7 +415,7 @@ func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager()
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListUpdateProtectionPolicyRequests.json
 func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,7 +448,7 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPage
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/ListUpdateProtectedItemRequests.json
 func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,7 +481,7 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager()
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetDefaultDisableSoftDeleteRequests.json
 func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -506,7 +506,7 @@ func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetDefaultDeleteResourceGuardProxyRequests.json
 func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -531,7 +531,7 @@ func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObjec
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
 func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -556,7 +556,7 @@ func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetDefaultDeleteProtectedItemRequests.json
 func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -581,7 +581,7 @@ func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectionPolicyRequests.json
 func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -606,7 +606,7 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
 func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

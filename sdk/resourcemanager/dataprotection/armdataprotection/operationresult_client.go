@@ -33,7 +33,7 @@ type OperationResultClient struct {
 }
 
 // NewOperationResultClient creates a new instance of OperationResultClient with the specified values.
-//   - subscriptionID - The subscription Id.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOperationResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationResultClient, error) {
@@ -59,7 +59,7 @@ func NewOperationResultClient(subscriptionID string, credential azcore.TokenCred
 // Get - Gets the operation result for a resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-01-01
 //   - options - OperationResultClientGetOptions contains the optional parameters for the OperationResultClient.Get method.
 func (client *OperationResultClient) Get(ctx context.Context, operationID string, location string, options *OperationResultClientGetOptions) (OperationResultClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, operationID, location, options)
@@ -79,9 +79,6 @@ func (client *OperationResultClient) Get(ctx context.Context, operationID string
 // getCreateRequest creates the Get request.
 func (client *OperationResultClient) getCreateRequest(ctx context.Context, operationID string, location string, options *OperationResultClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/operationResults/{operationId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
@@ -96,7 +93,7 @@ func (client *OperationResultClient) getCreateRequest(ctx context.Context, opera
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

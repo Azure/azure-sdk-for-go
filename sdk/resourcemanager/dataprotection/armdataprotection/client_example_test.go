@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/CheckfeatureSupport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3035214dea933cd02b1ecfa982c185a572f84b8a/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/CheckfeatureSupport.json
 func ExampleClient_CheckFeatureSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

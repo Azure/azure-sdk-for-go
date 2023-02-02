@@ -47,7 +47,7 @@ See the [azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/az
 
 #### Create a client
 
-Constructing the client requires your Container Registry's endpoint URL, which you can get from the Azure CLI or the Azure Portal.
+Constructing the client requires your Container Registry's endpoint URL, which you can get from the Azure CLI (`loginServer` value returned by `az acr list`) or the Azure Portal (`Login server` value on registry overview page).
 
 ```go
 import (

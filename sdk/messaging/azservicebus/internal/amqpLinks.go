@@ -203,6 +203,8 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 	if rk == RecoveryKindLink {
 		if err := links.recoverLink(ctx, theirID); err != nil {
 			if errors.Is(err, errConnResetNeeded) {
+				log.Writef(exported.EventConn, "Connection reset for recovery instead of link. Link closing has timed out.")
+
 				if err := links.recoverConnection(ctx, theirID); err != nil {
 					log.Writef(exported.EventConn, "failed to recreate connection: %s", err.Error())
 				}
@@ -418,6 +420,8 @@ func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) RecoveryKi
 			//    and we'll do the normal recovery logic from there.
 
 			if errors.Is(err, errConnResetNeeded) {
+				log.Writef(exported.EventConn, "Connection closed instead. Link closing has timed out.")
+
 				// if closing leaves us in an indeterminate state we'll go ahead
 				// and close the old connection, forcing recovery.
 				_ = l.ns.Close(false)
@@ -447,9 +451,11 @@ func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) RecoveryKi
 func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	// shut down any links we have
 	if err := l.closeWithoutLocking(ctx, false); err != nil {
-		if IsCancelError(err) {
-			return errConnResetNeeded
+		// connection is destabilized since we can't close the link.
+		if errors.Is(err, errConnResetNeeded) {
+			return err
 		}
+		// any other error won't affect future links so we can ignore it.
 	}
 
 	tmpCancelAuthRefreshLink, _, err := l.ns.NegotiateClaim(ctx, l.entityPath)
@@ -511,7 +517,15 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	return nil
 }
 
-// close closes the link.
+// closeWithoutLocking closes the links ($management and normal entity links) and cancels the
+// background authentication goroutines.
+//
+// If the context argument is cancelled we return errConnResetNeeded, rather than
+// context.Err(), as failing to close can leave our connection in an indeterminate
+// state.
+//
+// Regardless of cancellation or Close() call failures, all local state will be cleaned up.
+//
 // NOTE: No locking is done in this function, call `Close` if you require locking.
 func (l *AMQPLinksImpl) closeWithoutLocking(ctx context.Context, permanent bool) error {
 	if l.closedPermanently {

@@ -63,6 +63,8 @@ func MustCreateStressContext(testName string) *StressContext {
 		"TestRunId": testRunID,
 	}
 
+	log.Printf("Common properties\n:%#v", telemetryClient.Context().CommonProperties)
+
 	ctx, cancel := NewCtrlCContext()
 
 	azlog.SetEvents(azservicebus.EventSender, azservicebus.EventReceiver, azservicebus.EventConn)

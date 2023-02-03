@@ -150,7 +150,7 @@ func (s *RecordedTestSuite) TestSetPropertiesMinuteMetrics() {
 	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Enabled, enabled)
 }
 
-func (s *RecordedTestSuite) TestSetPropertiesSetCors() {
+func (s *RecordedTestSuite) TestSetPropertiesSetCORS() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -160,7 +160,7 @@ func (s *RecordedTestSuite) TestSetPropertiesSetCors() {
 
 	allowedOrigins1 := "www.xyz.com"
 	allowedMethods1 := "GET"
-	corsOpts1 := &azqueue.CorsRule{AllowedOrigins: &allowedOrigins1, AllowedMethods: &allowedMethods1}
+	CORSOpts1 := &azqueue.CORSRule{AllowedOrigins: &allowedOrigins1, AllowedMethods: &allowedMethods1}
 
 	allowedOrigins2 := "www.xyz.com,www.ab.com,www.bc.com"
 	allowedMethods2 := "GET, PUT"
@@ -168,29 +168,29 @@ func (s *RecordedTestSuite) TestSetPropertiesSetCors() {
 	exposedHeaders2 := "x-ms-meta-data*,x-ms-meta-source*,x-ms-meta-abc,x-ms-meta-bcd"
 	allowedHeaders2 := "x-ms-meta-data*,x-ms-meta-target*,x-ms-meta-xyz,x-ms-meta-foo"
 
-	corsOpts2 := &azqueue.CorsRule{
+	CORSOpts2 := &azqueue.CORSRule{
 		AllowedOrigins: &allowedOrigins2, AllowedMethods: &allowedMethods2,
 		MaxAgeInSeconds: maxAge2, ExposedHeaders: &exposedHeaders2, AllowedHeaders: &allowedHeaders2}
 
-	corsRules := []*azqueue.CorsRule{corsOpts1, corsOpts2}
+	CORSRules := []*azqueue.CORSRule{CORSOpts1, CORSOpts2}
 
-	opts := azqueue.SetPropertiesOptions{Cors: corsRules}
+	opts := azqueue.SetPropertiesOptions{CORS: CORSRules}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
 	_require.Nil(err)
 	resp, err := svcClient.GetServiceProperties(context.Background(), nil)
-	for i := 0; i < len(resp.Cors); i++ {
-		if resp.Cors[i].AllowedOrigins == &allowedOrigins1 {
-			_require.Equal(resp.Cors[i].AllowedMethods, &allowedMethods1)
-			_require.Equal(resp.Cors[i].MaxAgeInSeconds, defaultAge)
-			_require.Equal(resp.Cors[i].ExposedHeaders, defaultStr)
-			_require.Equal(resp.Cors[i].AllowedHeaders, defaultStr)
+	for i := 0; i < len(resp.CORS); i++ {
+		if resp.CORS[i].AllowedOrigins == &allowedOrigins1 {
+			_require.Equal(resp.CORS[i].AllowedMethods, &allowedMethods1)
+			_require.Equal(resp.CORS[i].MaxAgeInSeconds, defaultAge)
+			_require.Equal(resp.CORS[i].ExposedHeaders, defaultStr)
+			_require.Equal(resp.CORS[i].AllowedHeaders, defaultStr)
 
-		} else if resp.Cors[i].AllowedOrigins == &allowedOrigins2 {
-			_require.Equal(resp.Cors[i].AllowedMethods, &allowedMethods2)
-			_require.Equal(resp.Cors[i].MaxAgeInSeconds, &maxAge2)
-			_require.Equal(resp.Cors[i].ExposedHeaders, &exposedHeaders2)
-			_require.Equal(resp.Cors[i].AllowedHeaders, &allowedHeaders2)
+		} else if resp.CORS[i].AllowedOrigins == &allowedOrigins2 {
+			_require.Equal(resp.CORS[i].AllowedMethods, &allowedMethods2)
+			_require.Equal(resp.CORS[i].MaxAgeInSeconds, &maxAge2)
+			_require.Equal(resp.CORS[i].ExposedHeaders, &exposedHeaders2)
+			_require.Equal(resp.CORS[i].AllowedHeaders, &allowedHeaders2)
 		}
 	}
 	_require.NoError(err)

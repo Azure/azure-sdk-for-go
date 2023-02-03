@@ -35,11 +35,11 @@ func ParseURL(u string) (URLParts, error) {
 
 // ================================================================
 
-// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
+// CORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
 // domain. Web browsers implement a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
 // domain) to call APIs in another domain
-type CorsRule = generated.CorsRule
+type CORSRule = generated.CORSRule
 
 // GeoReplication - Geo-Replication information for the Secondary Storage Service
 type GeoReplication = generated.GeoReplication
@@ -117,7 +117,7 @@ type ListQueuesInclude struct {
 // SetPropertiesOptions provides set of options for ServiceClient.SetProperties
 type SetPropertiesOptions struct {
 	// The set of CORS rules.
-	Cors []*CorsRule
+	CORS []*CORSRule
 
 	// a summary of request statistics grouped by API in hour or minute aggregates for queues
 	HourMetrics *Metrics
@@ -138,16 +138,16 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 	defaultAge := to.Ptr[int32](0)
 	emptyStr := to.Ptr[string]("")
 
-	if o.Cors != nil {
-		for i := 0; i < len(o.Cors); i++ {
-			if o.Cors[i].AllowedHeaders == nil {
-				o.Cors[i].AllowedHeaders = emptyStr
+	if o.CORS != nil {
+		for i := 0; i < len(o.CORS); i++ {
+			if o.CORS[i].AllowedHeaders == nil {
+				o.CORS[i].AllowedHeaders = emptyStr
 			}
-			if o.Cors[i].ExposedHeaders == nil {
-				o.Cors[i].ExposedHeaders = emptyStr
+			if o.CORS[i].ExposedHeaders == nil {
+				o.CORS[i].ExposedHeaders = emptyStr
 			}
-			if o.Cors[i].MaxAgeInSeconds == nil {
-				o.Cors[i].MaxAgeInSeconds = defaultAge
+			if o.CORS[i].MaxAgeInSeconds == nil {
+				o.CORS[i].MaxAgeInSeconds = defaultAge
 			}
 		}
 	}
@@ -172,7 +172,7 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 	}
 
 	return generated.StorageServiceProperties{
-		Cors:          o.Cors,
+		CORS:          o.CORS,
 		HourMetrics:   o.HourMetrics,
 		Logging:       o.Logging,
 		MinuteMetrics: o.MinuteMetrics,

@@ -86,8 +86,7 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_Live(t *testing.T) {
-	mode := recording.GetRecordMode()
-	if mode != recording.PlaybackMode && !runManualTests {
+	if recording.GetRecordMode() != recording.PlaybackMode && !runManualTests {
 		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
 	}
 	for _, test := range []struct {

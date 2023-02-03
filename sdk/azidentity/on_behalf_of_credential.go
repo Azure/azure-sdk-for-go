@@ -96,7 +96,10 @@ func (o *OnBehalfOfCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
-	ar, err := o.client.AcquireTokenOnBehalfOf(ctx, o.assertion, opts.Scopes, confidential.WithTenantID(tenant))
+	ar, err := o.client.AcquireTokenOnBehalfOf(ctx, o.assertion, opts.Scopes,
+		confidential.WithClaims(opts.Claims),
+		confidential.WithTenantID(tenant),
+	)
 	if err != nil {
 		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameOBO, err)
 	}

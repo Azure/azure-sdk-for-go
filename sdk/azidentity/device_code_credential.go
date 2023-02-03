@@ -108,11 +108,15 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account), public.WithTenantID(tenant))
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
+		public.WithClaims(opts.Claims),
+		public.WithSilentAccount(c.account),
+		public.WithTenantID(tenant),
+	)
 	if err == nil {
 		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
-	dc, err := c.client.AcquireTokenByDeviceCode(ctx, opts.Scopes, public.WithTenantID(tenant))
+	dc, err := c.client.AcquireTokenByDeviceCode(ctx, opts.Scopes, public.WithClaims(opts.Claims), public.WithTenantID(tenant))
 	if err != nil {
 		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameDeviceCode, err)
 	}

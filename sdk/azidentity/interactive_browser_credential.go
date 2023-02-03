@@ -87,13 +87,18 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account), public.WithTenantID(tenant))
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
+		public.WithClaims(opts.Claims),
+		public.WithSilentAccount(c.account),
+		public.WithTenantID(tenant),
+	)
 	if err == nil {
 		logGetTokenSuccess(c, opts)
 		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
 	ar, err = c.client.AcquireTokenInteractive(ctx, opts.Scopes,
+		public.WithClaims(opts.Claims),
 		public.WithLoginHint(c.options.LoginHint),
 		public.WithRedirectURI(c.options.RedirectURL),
 		public.WithTenantID(tenant),

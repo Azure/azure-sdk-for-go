@@ -160,8 +160,9 @@ type LogsQueryOptions struct {
 	Wait *int
 }
 
-// String implements the fmt.Stringer interface for type LogsQueryOptions.
-func (l LogsQueryOptions) String() string {
+// preferHeader converts LogsQueryOptions from struct to properly formatting sting
+// to be used in the request Prefer Header
+func (l LogsQueryOptions) preferHeader() string {
 	var options []string
 	if l.Statistics != nil && *l.Statistics {
 		options = append(options, "include-statistics=true")
@@ -180,7 +181,7 @@ func NewBatchQueryRequest(workspaceID string, query string, timespan TimeInterva
 	var optionsMap map[string]*string
 	if options.Statistics != nil || options.Visualization != nil || options.Wait != nil {
 		optionsMap = make(map[string]*string)
-		optionsString := options.String()
+		optionsString := options.preferHeader()
 		optionsMap["prefer"] = &optionsString
 	}
 

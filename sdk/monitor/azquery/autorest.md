@@ -103,7 +103,7 @@ directive:
     transform: return $.replace(/Options \*string/g, "Options *LogsQueryOptions");
   - from: logs_client.go
     where: $
-    transform: return $.replace(/\*options\.Options/, "options.Options.String()");
+    transform: return $.replace(/\*options\.Options/, "options.Options.preferHeader()");
   
   # add default values for batch request path and method attributes
   - from: swagger-document

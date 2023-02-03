@@ -9,6 +9,7 @@ package testcommon
 import (
 	"errors"
 	"fmt"
+
 	"os"
 	"runtime"
 	"strconv"
@@ -18,6 +19,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/queueerror"
 	"github.com/stretchr/testify/require"
 )
 
@@ -89,4 +91,15 @@ func BeforeTest(t *testing.T, suite string, test string) {
 
 func AfterTest(t *testing.T, suite string, test string) {
 	require.NoError(t, recording.Stop(t, nil))
+}
+
+func ValidateQueueErrorCode(_require *require.Assertions, err error, code queueerror.Code) {
+	_require.NotNil(err)
+	var responseErr *azcore.ResponseError
+	errors.As(err, &responseErr)
+	if responseErr != nil {
+		_require.Equal(string(code), responseErr.ErrorCode)
+	} else {
+		_require.Contains(err.Error(), code)
+	}
 }

@@ -23,11 +23,11 @@ type AccessPolicy struct {
 	Start *time.Time `xml:"Start"`
 }
 
-// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
+// CORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
 // domain. Web browsers implement a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
 // domain) to call APIs in another domain
-type CorsRule struct {
+type CORSRule struct {
 	// REQUIRED; the request headers that the origin domain may specify on the CORS request.
 	AllowedHeaders *string `xml:"AllowedHeaders"`
 
@@ -153,6 +153,11 @@ type MessageIDClientUpdateOptions struct {
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
+	// Optional. Specifies the new visibility timeout value, in seconds, relative to server time. The default value is 30 seconds.
+	// A specified value must be larger than or equal to 1 second, and cannot be
+	// larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout
+	// of a message can be set to a value later than the expiry time.
+	Visibilitytimeout *int32
 }
 
 // MessagesClientClearOptions contains the optional parameters for the MessagesClient.Clear method.
@@ -406,7 +411,7 @@ type StorageError struct {
 // StorageServiceProperties - Storage Service Properties.
 type StorageServiceProperties struct {
 	// The set of CORS rules.
-	Cors []*CorsRule `xml:"Cors>CorsRule"`
+	CORS []*CORSRule `xml:"Cors>CorsRule"`
 
 	// A summary of request statistics grouped by API in hourly aggregates for queues
 	HourMetrics *Metrics `xml:"HourMetrics"`

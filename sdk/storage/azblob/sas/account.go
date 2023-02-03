@@ -80,7 +80,7 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 		ipRange:     v.IPRange,
 
 		// Account-specific SAS parameters
-		services:      "b",
+		services:      v.services,
 		resourceTypes: v.ResourceTypes,
 
 		// Calculated SAS signature

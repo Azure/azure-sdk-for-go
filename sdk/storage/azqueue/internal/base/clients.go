@@ -36,9 +36,10 @@ func NewServiceClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exp
 	}
 }
 
-func NewQueueClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *Client[generated.QueueClient] {
-	return &Client[generated.QueueClient]{
-		inner:     generated.NewQueueClient(queueURL, pipeline),
+func NewQueueClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.QueueClient, generated.MessagesClient] {
+	return &CompositeClient[generated.QueueClient, generated.MessagesClient]{
+		innerT:    generated.NewQueueClient(queueURL, pipeline),
+		innerU:    generated.NewMessagesClient(queueURL, pipeline),
 		sharedKey: sharedKey,
 	}
 }
@@ -49,8 +50,8 @@ type CompositeClient[T, U any] struct {
 	sharedKey *exported.SharedKeyCredential
 }
 
-func InnerClients[T, U any](client *CompositeClient[T, U]) (*Client[T], *U) {
-	return &Client[T]{inner: client.innerT}, client.innerU
+func InnerClients[T, U any](client *CompositeClient[T, U]) (*T, *U) {
+	return client.innerT, client.innerU
 }
 
 func SharedKeyComposite[T, U any](client *CompositeClient[T, U]) *exported.SharedKeyCredential {

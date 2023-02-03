@@ -5,12 +5,15 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 // Contains common helpers for TESTS ONLY
+
 package testcommon
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
 	"github.com/stretchr/testify/require"
@@ -38,7 +41,7 @@ const (
 	FakeStorageURL     = "https://fakestorage.queue.core.windows.net"
 )
 
-var BasicMetadata = map[string]string{"Foo": "bar"}
+var BasicMetadata = map[string]*string{"Foo": to.Ptr("bar")}
 
 func setClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Logging.AllowedHeaders = append(opts.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
@@ -48,7 +51,7 @@ func setClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Transport = transport
 }
 
-func GetServiceClient(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.Client, error) {
+func GetServiceClient(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.ServiceClient, error) {
 	if options == nil {
 		options = &azqueue.ClientOptions{}
 	}
@@ -60,7 +63,7 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *azqueu
 		return nil, err
 	}
 
-	serviceClient, err := azqueue.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".queue.core.windows.net/", cred, options)
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential("https://"+cred.AccountName()+".queue.core.windows.net/", cred, options)
 
 	return serviceClient, err
 }
@@ -92,7 +95,7 @@ func GetConnectionString(accountType TestAccountType) string {
 	return connectionString
 }
 
-func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.Client, error) {
+func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *azqueue.ClientOptions) (*azqueue.ServiceClient, error) {
 	if options == nil {
 		options = &azqueue.ClientOptions{}
 	}
@@ -102,14 +105,27 @@ func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountT
 	options.Transport = transport
 
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		return azqueue.NewClientWithNoCredential(FakeStorageURL, options)
+		return azqueue.NewServiceClientWithNoCredential(FakeStorageURL, options)
 	}
 
 	connectionString := GetConnectionString(accountType)
-	svcClient, err := azqueue.NewClientFromConnectionString(connectionString, options)
+	svcClient, err := azqueue.NewServiceClientFromConnectionString(connectionString, options)
 	return svcClient, err
 }
 
-// TODO: GetQueueClient()
-// TODO: CreateNewQueue()
-// TODO: DeleteQueue()
+func GetQueueClient(queueName string, serviceClient *azqueue.ServiceClient) *azqueue.QueueClient {
+	return serviceClient.NewQueueClient(queueName)
+}
+
+func CreateNewQueue(ctx context.Context, _require *require.Assertions, queueName string, serviceClient *azqueue.ServiceClient) *azqueue.QueueClient {
+	queueClient := GetQueueClient(queueName, serviceClient)
+
+	_, err := queueClient.Create(ctx, nil)
+	_require.Nil(err)
+	return queueClient
+}
+
+func DeleteQueue(ctx context.Context, _require *require.Assertions, queueClient *azqueue.QueueClient) {
+	_, err := queueClient.Delete(ctx, nil)
+	_require.Nil(err)
+}

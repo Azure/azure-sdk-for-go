@@ -22,8 +22,8 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.45"
 ```
 
-
 ### Remove QueueName from parameter list since it is not needed
+
 ``` yaml
 directive:
 - from: swagger-document
@@ -67,4 +67,36 @@ directive:
         replace(/func \(client \*ServiceClient\) NewListQueuesSegmentPager\(.+\/\/ listQueuesSegmentCreateRequest creates the ListQueuesSegment request/s, `// ListQueuesSegmentCreateRequest creates the ListQueuesFlatSegment ListQueuesSegment`).
         replace(/\(client \*ServiceClient\) listQueuesSegmentCreateRequest\(/, `(client *ServiceClient) ListQueuesSegmentCreateRequest(`).
         replace(/\(client \*ServiceClient\) listQueuesSegmentHandleResponse\(/, `(client *ServiceClient) ListQueuesSegmentHandleResponse(`);
+```
+
+### Change `VisibilityTimeout` parameter in queues to be options
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.VisibilityTimeoutRequired
+  transform: >
+    $.required = false;
+```
+
+### Change CORS acronym to be all caps
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/Cors/g, "CORS");
+```
+
+### Change cors xml to be correct
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/xml:"CORS>CORSRule"/g, "xml:\"Cors>CorsRule\"");
 ```

@@ -3561,12 +3561,10 @@ func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
 		Create: true,
 		Delete: true,
 	}
-	start := time.Now().Add(-time.Hour)
-	expiry := start.Add(time.Hour)
-	opts := blob.GetSASURLOptions{StartTime: &start}
+	expiry := time.Now().Add(5 * time.Minute)
 
 	// BlobSASURL is created with GetSASURL
-	sasUrl, err := blobClient.GetSASURL(permissions, expiry, &opts)
+	sasUrl, err := blobClient.GetSASURL(permissions, expiry, nil)
 	_require.Nil(err)
 
 	// Get new blob client with sasUrl and attempt GetProperties

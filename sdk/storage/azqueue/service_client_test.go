@@ -150,7 +150,7 @@ func (s *RecordedTestSuite) TestSetPropertiesMinuteMetrics() {
 	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Enabled, enabled)
 }
 
-func (s *RecordedTestSuite) TestSetPropertiesSetCORS() {
+func (s *RecordedTestSuite) TestSetPropertiesSetQueueCORS() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)

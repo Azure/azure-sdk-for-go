@@ -32,9 +32,9 @@ type LoadTestsClient struct {
 }
 
 // NewLoadTestsClient creates a new instance of LoadTestsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLoadTestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadTestsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewLoadTestsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Create or update LoadTest resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-12-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// loadTestName - Load Test name.
-// loadTestResource - LoadTest resource data
-// options - LoadTestsClientBeginCreateOrUpdateOptions contains the optional parameters for the LoadTestsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - loadTestName - Load Test name.
+//   - loadTestResource - LoadTest resource data
+//   - options - LoadTestsClientBeginCreateOrUpdateOptions contains the optional parameters for the LoadTestsClient.BeginCreateOrUpdate
+//     method.
 func (client *LoadTestsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResource LoadTestResource, options *LoadTestsClientBeginCreateOrUpdateOptions) (*runtime.Poller[LoadTestsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, loadTestName, loadTestResource, options)
@@ -79,6 +80,7 @@ func (client *LoadTestsClient) BeginCreateOrUpdate(ctx context.Context, resource
 
 // CreateOrUpdate - Create or update LoadTest resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-12-01
 func (client *LoadTestsClient) createOrUpdate(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResource LoadTestResource, options *LoadTestsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, loadTestName, loadTestResource, options)
@@ -123,10 +125,11 @@ func (client *LoadTestsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // BeginDelete - Delete a LoadTest resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-12-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// loadTestName - Load Test name.
-// options - LoadTestsClientBeginDeleteOptions contains the optional parameters for the LoadTestsClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - loadTestName - Load Test name.
+//   - options - LoadTestsClientBeginDeleteOptions contains the optional parameters for the LoadTestsClient.BeginDelete method.
 func (client *LoadTestsClient) BeginDelete(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsClientBeginDeleteOptions) (*runtime.Poller[LoadTestsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, loadTestName, options)
@@ -143,6 +146,7 @@ func (client *LoadTestsClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Delete a LoadTest resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-12-01
 func (client *LoadTestsClient) deleteOperation(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, loadTestName, options)
@@ -187,10 +191,11 @@ func (client *LoadTestsClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Get a LoadTest resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-12-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// loadTestName - Load Test name.
-// options - LoadTestsClientGetOptions contains the optional parameters for the LoadTestsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - loadTestName - Load Test name.
+//   - options - LoadTestsClientGetOptions contains the optional parameters for the LoadTestsClient.Get method.
 func (client *LoadTestsClient) Get(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsClientGetOptions) (LoadTestsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadTestName, options)
 	if err != nil {
@@ -242,10 +247,11 @@ func (client *LoadTestsClient) getHandleResponse(resp *http.Response) (LoadTests
 }
 
 // NewListByResourceGroupPager - Lists loadtest resources in a resource group.
+//
 // Generated from API version 2022-12-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - LoadTestsClientListByResourceGroupOptions contains the optional parameters for the LoadTestsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - LoadTestsClientListByResourceGroupOptions contains the optional parameters for the LoadTestsClient.NewListByResourceGroupPager
+//     method.
 func (client *LoadTestsClient) NewListByResourceGroupPager(resourceGroupName string, options *LoadTestsClientListByResourceGroupOptions) *runtime.Pager[LoadTestsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LoadTestsClientListByResourceGroupResponse]{
 		More: func(page LoadTestsClientListByResourceGroupResponse) bool {
@@ -306,9 +312,10 @@ func (client *LoadTestsClient) listByResourceGroupHandleResponse(resp *http.Resp
 }
 
 // NewListBySubscriptionPager - Lists loadtests resources in a subscription.
+//
 // Generated from API version 2022-12-01
-// options - LoadTestsClientListBySubscriptionOptions contains the optional parameters for the LoadTestsClient.ListBySubscription
-// method.
+//   - options - LoadTestsClientListBySubscriptionOptions contains the optional parameters for the LoadTestsClient.NewListBySubscriptionPager
+//     method.
 func (client *LoadTestsClient) NewListBySubscriptionPager(options *LoadTestsClientListBySubscriptionOptions) *runtime.Pager[LoadTestsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LoadTestsClientListBySubscriptionResponse]{
 		More: func(page LoadTestsClientListBySubscriptionResponse) bool {
@@ -365,11 +372,12 @@ func (client *LoadTestsClient) listBySubscriptionHandleResponse(resp *http.Respo
 }
 
 // NewListOutboundNetworkDependenciesEndpointsPager - Lists the endpoints that agents may call as part of load testing.
+//
 // Generated from API version 2022-12-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// loadTestName - Load Test name.
-// options - LoadTestsClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the LoadTestsClient.ListOutboundNetworkDependenciesEndpoints
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - loadTestName - Load Test name.
+//   - options - LoadTestsClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the LoadTestsClient.NewListOutboundNetworkDependenciesEndpointsPager
+//     method.
 func (client *LoadTestsClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, loadTestName string, options *LoadTestsClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[LoadTestsClientListOutboundNetworkDependenciesEndpointsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LoadTestsClientListOutboundNetworkDependenciesEndpointsResponse]{
 		More: func(page LoadTestsClientListOutboundNetworkDependenciesEndpointsResponse) bool {
@@ -435,11 +443,12 @@ func (client *LoadTestsClient) listOutboundNetworkDependenciesEndpointsHandleRes
 
 // BeginUpdate - Update a loadtest resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-12-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// loadTestName - Load Test name.
-// loadTestResourcePatchRequestBody - LoadTest resource update data
-// options - LoadTestsClientBeginUpdateOptions contains the optional parameters for the LoadTestsClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - loadTestName - Load Test name.
+//   - loadTestResourcePatchRequestBody - LoadTest resource update data
+//   - options - LoadTestsClientBeginUpdateOptions contains the optional parameters for the LoadTestsClient.BeginUpdate method.
 func (client *LoadTestsClient) BeginUpdate(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResourcePatchRequestBody LoadTestResourcePatchRequestBody, options *LoadTestsClientBeginUpdateOptions) (*runtime.Poller[LoadTestsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, options)
@@ -456,6 +465,7 @@ func (client *LoadTestsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 
 // Update - Update a loadtest resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-12-01
 func (client *LoadTestsClient) update(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResourcePatchRequestBody LoadTestResourcePatchRequestBody, options *LoadTestsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, options)

@@ -23,6 +23,9 @@ const envVarSendCertChain = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN"
 // EnvironmentCredentialOptions contains optional parameters for EnvironmentCredential
 type EnvironmentCredentialOptions struct {
 	azcore.ClientOptions
+
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
 }
 
 // EnvironmentCredential authenticates a service principal with a secret or certificate, or a user with a password, depending
@@ -74,7 +77,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if clientSecret := os.Getenv(azureClientSecret); clientSecret != "" {
 		log.Write(EventAuthentication, "EnvironmentCredential will authenticate with ClientSecretCredential")
-		o := &ClientSecretCredentialOptions{ClientOptions: options.ClientOptions}
+		o := &ClientSecretCredentialOptions{ClientOptions: options.ClientOptions, DisableInstanceDiscovery: options.DisableInstanceDiscovery}
 		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, o)
 		if err != nil {
 			return nil, err
@@ -95,7 +98,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}
-		o := &ClientCertificateCredentialOptions{ClientOptions: options.ClientOptions}
+		o := &ClientCertificateCredentialOptions{ClientOptions: options.ClientOptions, DisableInstanceDiscovery: options.DisableInstanceDiscovery}
 		if v, ok := os.LookupEnv(envVarSendCertChain); ok {
 			o.SendCertificateChain = v == "1" || strings.ToLower(v) == "true"
 		}
@@ -108,7 +111,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if username := os.Getenv(azureUsername); username != "" {
 		if password := os.Getenv(azurePassword); password != "" {
 			log.Write(EventAuthentication, "EnvironmentCredential will authenticate with UsernamePasswordCredential")
-			o := &UsernamePasswordCredentialOptions{ClientOptions: options.ClientOptions}
+			o := &UsernamePasswordCredentialOptions{ClientOptions: options.ClientOptions, DisableInstanceDiscovery: options.DisableInstanceDiscovery}
 			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, o)
 			if err != nil {
 				return nil, err

@@ -78,3 +78,25 @@ func TestLROFilter(t *testing.T) {
 	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.CreateOrUpdate` has been changed to LRO, use `*Client.BeginCreateOrUpdate` instead.\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
+
+func TestInterfaceToAnyFilter(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/interfacetoany")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/interfacetoany")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	common.FilterChangelog(changelog, common.InterfaceToAnyFilter)
+
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Interface2Any.NewType` has been changed from `interface{}` to `string`\n")
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}

@@ -5,8 +5,11 @@
 ### Features Added
 
 - Adds ProcessorOptions.Prefetch field, allowing configuration of Prefetch values for PartitionClients created using the Processor. (PR#19786)
+- Added new function to parse connection string into values using `ParseConnectionString` and `ConnectionStringProperties`. (PR#19855)
 
 ### Breaking Changes
+
+- ProcessorOptions.OwnerLevel has been removed. The Processor uses 0 as the owner level.
 
 ### Bugs Fixed
 

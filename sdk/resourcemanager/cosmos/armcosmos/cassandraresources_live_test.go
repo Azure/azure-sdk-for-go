@@ -10,6 +10,7 @@ package armcosmos_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -61,6 +62,7 @@ func TestCassandraresourcesTestSuite(t *testing.T) {
 func (testsuite *CassandraresourcesTestSuite) Prepare() {
 	var err error
 	// From step DatabaseAccount_Create
+	fmt.Println("Call operation: DatabaseAccounts_CreateOrUpdate")
 	databaseAccountsClient, err := armcosmos.NewDatabaseAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databaseAccountsClientCreateOrUpdateResponsePoller, err := databaseAccountsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armcosmos.DatabaseAccountCreateUpdateParameters{
@@ -89,6 +91,7 @@ func (testsuite *CassandraresourcesTestSuite) Prepare() {
 func (testsuite *CassandraresourcesTestSuite) TestCassandraresources() {
 	var err error
 	// From step CassandraResources_CreateCassandraKeyspace
+	fmt.Println("Call operation: CassandraResources_CreateUpdateCassandraKeyspace")
 	cassandraResourcesClient, err := armcosmos.NewCassandraResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	cassandraResourcesClientCreateUpdateCassandraKeyspaceResponsePoller, err := cassandraResourcesClient.BeginCreateUpdateCassandraKeyspace(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, armcosmos.CassandraKeyspaceCreateUpdateParameters{
@@ -108,10 +111,12 @@ func (testsuite *CassandraresourcesTestSuite) TestCassandraresources() {
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_GetCassandraKeyspace
+	fmt.Println("Call operation: CassandraResources_GetCassandraKeyspace")
 	_, err = cassandraResourcesClient.GetCassandraKeyspace(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_ListCassandraKeyspaces
+	fmt.Println("Call operation: CassandraResources_ListCassandraKeyspaces")
 	cassandraResourcesClientNewListCassandraKeyspacesPager := cassandraResourcesClient.NewListCassandraKeyspacesPager(testsuite.resourceGroupName, testsuite.accountName, nil)
 	for cassandraResourcesClientNewListCassandraKeyspacesPager.More() {
 		_, err := cassandraResourcesClientNewListCassandraKeyspacesPager.NextPage(testsuite.ctx)
@@ -120,6 +125,7 @@ func (testsuite *CassandraresourcesTestSuite) TestCassandraresources() {
 	}
 
 	// From step CassandraResources_UpdateCassandraKeyspaceThroughput
+	fmt.Println("Call operation: CassandraResources_UpdateCassandraKeyspaceThroughput")
 	cassandraResourcesClientUpdateCassandraKeyspaceThroughputResponsePoller, err := cassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -134,22 +140,26 @@ func (testsuite *CassandraresourcesTestSuite) TestCassandraresources() {
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_GetCassandraKeyspaceThroughput
+	fmt.Println("Call operation: CassandraResources_GetCassandraKeyspaceThroughput")
 	_, err = cassandraResourcesClient.GetCassandraKeyspaceThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_MigrateCassandraKeyspaceToAutoscale
+	fmt.Println("Call operation: CassandraResources_MigrateCassandraKeyspaceToAutoscale")
 	cassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponsePoller, err := cassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, cassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_MigrateCassandraKeyspaceToManualThroughput
+	fmt.Println("Call operation: CassandraResources_MigrateCassandraKeyspaceToManualThroughput")
 	cassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponsePoller, err := cassandraResourcesClient.BeginMigrateCassandraKeyspaceToManualThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, cassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_CreateCassandraTable
+	fmt.Println("Call operation: CassandraResources_CreateUpdateCassandraTable")
 	cassandraResourcesClientCreateUpdateCassandraTableResponsePoller, err := cassandraResourcesClient.BeginCreateUpdateCassandraTable(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, "tableName", armcosmos.CassandraTableCreateUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -179,10 +189,12 @@ func (testsuite *CassandraresourcesTestSuite) TestCassandraresources() {
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_GetCassandraTable
+	fmt.Println("Call operation: CassandraResources_GetCassandraTable")
 	_, err = cassandraResourcesClient.GetCassandraTable(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, "tableName", nil)
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_ListCassandraTables
+	fmt.Println("Call operation: CassandraResources_ListCassandraTables")
 	cassandraResourcesClientNewListCassandraTablesPager := cassandraResourcesClient.NewListCassandraTablesPager(testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, nil)
 	for cassandraResourcesClientNewListCassandraTablesPager.More() {
 		_, err := cassandraResourcesClientNewListCassandraTablesPager.NextPage(testsuite.ctx)
@@ -191,6 +203,7 @@ func (testsuite *CassandraresourcesTestSuite) TestCassandraresources() {
 	}
 
 	// From step CassandraResources_UpdateCassandraTableThroughput
+	fmt.Println("Call operation: CassandraResources_UpdateCassandraTableThroughput")
 	cassandraResourcesClientUpdateCassandraTableThroughputResponsePoller, err := cassandraResourcesClient.BeginUpdateCassandraTableThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, "tableName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -205,22 +218,26 @@ func (testsuite *CassandraresourcesTestSuite) TestCassandraresources() {
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_GetCassandraTableThroughput
+	fmt.Println("Call operation: CassandraResources_GetCassandraTableThroughput")
 	_, err = cassandraResourcesClient.GetCassandraTableThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, "tableName", nil)
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_MigrateCassandraTableToAutoscale
+	fmt.Println("Call operation: CassandraResources_MigrateCassandraTableToAutoscale")
 	cassandraResourcesClientMigrateCassandraTableToAutoscaleResponsePoller, err := cassandraResourcesClient.BeginMigrateCassandraTableToAutoscale(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, "tableName", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, cassandraResourcesClientMigrateCassandraTableToAutoscaleResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_MigrateCassandraTableToManualThroughput
+	fmt.Println("Call operation: CassandraResources_MigrateCassandraTableToManualThroughput")
 	cassandraResourcesClientMigrateCassandraTableToManualThroughputResponsePoller, err := cassandraResourcesClient.BeginMigrateCassandraTableToManualThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, "tableName", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, cassandraResourcesClientMigrateCassandraTableToManualThroughputResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step CassandraResources_DeleteCassandraTable
+	fmt.Println("Call operation: CassandraResources_DeleteCassandraTable")
 	cassandraResourcesClientDeleteCassandraTableResponsePoller, err := cassandraResourcesClient.BeginDeleteCassandraTable(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.keyspaceName, "tableName", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, cassandraResourcesClientDeleteCassandraTableResponsePoller)

@@ -86,7 +86,7 @@ func Example_blob_Client_SetMetadata() {
 	_, err = blobClient.Upload(
 		context.TODO(),
 		streaming.NopCloser(strings.NewReader("Some text")),
-		&blockblob.UploadOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}},
+		&blockblob.UploadOptions{Metadata: map[string]*string{"author": to.Ptr("Jeffrey"), "app": to.Ptr(creatingApp)}},
 	)
 	handleError(err)
 
@@ -103,11 +103,11 @@ func Example_blob_Client_SetMetadata() {
 	}
 
 	for k, v := range get.Metadata {
-		fmt.Print(k + "=" + v + "\n")
+		fmt.Print(k + "=" + *v + "\n")
 	}
 
 	// Update the blob's metadata and write it back to the blob
-	get.Metadata["editor"] = "Grant"
+	get.Metadata["editor"] = to.Ptr("Grant")
 	_, err = blobClient.SetMetadata(context.TODO(), get.Metadata, nil)
 	handleError(err)
 }

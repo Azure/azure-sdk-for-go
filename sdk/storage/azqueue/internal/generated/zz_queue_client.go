@@ -25,7 +25,7 @@ import (
 // Don't use this type directly, use NewQueueClient() instead.
 type QueueClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewQueueClient creates a new instance of QueueClient with the specified values.
@@ -34,7 +34,7 @@ type QueueClient struct {
 func NewQueueClient(endpoint string, pl runtime.Pipeline) *QueueClient {
 	client := &QueueClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -74,7 +74,7 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, options *Que
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-		}
+			}
 		}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2018-03-28"}
@@ -340,7 +340,7 @@ func (client *QueueClient) setAccessPolicyCreateRequest(ctx context.Context, que
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		QueueACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	return req, runtime.MarshalAsXML(req, wrapper{QueueACL: &queueACL})
@@ -401,7 +401,7 @@ func (client *QueueClient) setMetadataCreateRequest(ctx context.Context, options
 		for k, v := range options.Metadata {
 			if v != nil {
 				req.Raw().Header["x-ms-meta-"+k] = []string{*v}
-		}
+			}
 		}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2018-03-28"}
@@ -430,4 +430,3 @@ func (client *QueueClient) setMetadataHandleResponse(resp *http.Response) (Queue
 	}
 	return result, nil
 }
-

@@ -22,7 +22,7 @@ import (
 // Don't use this type directly, use NewMessagesClient() instead.
 type MessagesClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewMessagesClient creates a new instance of MessagesClient with the specified values.
@@ -31,7 +31,7 @@ type MessagesClient struct {
 func NewMessagesClient(endpoint string, pl runtime.Pipeline) *MessagesClient {
 	client := &MessagesClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -297,4 +297,3 @@ func (client *MessagesClient) peekHandleResponse(resp *http.Response) (MessagesC
 	}
 	return result, nil
 }
-

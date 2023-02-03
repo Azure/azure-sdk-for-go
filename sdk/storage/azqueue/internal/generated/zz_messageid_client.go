@@ -22,7 +22,7 @@ import (
 // Don't use this type directly, use NewMessageIDClient() instead.
 type MessageIDClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewMessageIDClient creates a new instance of MessageIDClient with the specified values.
@@ -31,7 +31,7 @@ type MessageIDClient struct {
 func NewMessageIDClient(endpoint string, pl runtime.Pipeline) *MessageIDClient {
 	client := &MessageIDClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -174,4 +174,3 @@ func (client *MessageIDClient) updateHandleResponse(resp *http.Response) (Messag
 	}
 	return result, nil
 }
-

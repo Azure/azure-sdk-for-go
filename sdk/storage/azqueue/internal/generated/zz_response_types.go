@@ -223,4 +223,3 @@ type ServiceClientSetPropertiesResponse struct {
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
 }
-

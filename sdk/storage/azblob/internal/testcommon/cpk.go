@@ -23,7 +23,7 @@ const (
 var testEncryptedKey = "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc="
 var testEncryptedHash = "3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE="
 var testEncryptionAlgorithm = blob.EncryptionAlgorithmTypeAES256
-var TestCPKByValue = blob.CpkInfo{
+var TestCPKByValue = blob.CPKInfo{
 	EncryptionKey:       &testEncryptedKey,
 	EncryptionKeySHA256: &testEncryptedHash,
 	EncryptionAlgorithm: &testEncryptionAlgorithm,
@@ -31,23 +31,23 @@ var TestCPKByValue = blob.CpkInfo{
 
 var testInvalidEncryptedKey = "mumbojumbo"
 var testInvalidEncryptedHash = "mumbojumbohash"
-var TestInvalidCPKByValue = blob.CpkInfo{
+var TestInvalidCPKByValue = blob.CPKInfo{
 	EncryptionKey:       &testInvalidEncryptedKey,
 	EncryptionKeySHA256: &testInvalidEncryptedHash,
 	EncryptionAlgorithm: &testEncryptionAlgorithm,
 }
 
-func GetCPKScopeInfo(t *testing.T) blob.CpkScopeInfo {
+func GetCPKScopeInfo(t *testing.T) blob.CPKScopeInfo {
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		return blob.CpkScopeInfo{EncryptionScope: to.Ptr("blobgokeytestscope")}
+		return blob.CPKScopeInfo{EncryptionScope: to.Ptr("blobgokeytestscope")}
 	}
 
 	encryptionScope, err := GetRequiredEnv(EncryptionScopeEnvVar)
 	require.NoError(t, err)
-	return blob.CpkScopeInfo{EncryptionScope: &encryptionScope}
+	return blob.CPKScopeInfo{EncryptionScope: &encryptionScope}
 }
 
 var testInvalidEncryptedScope = "mumbojumboscope"
-var TestInvalidCPKByScope = blob.CpkScopeInfo{
+var TestInvalidCPKByScope = blob.CPKScopeInfo{
 	EncryptionScope: &testInvalidEncryptedScope,
 }

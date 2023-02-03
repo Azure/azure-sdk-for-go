@@ -1024,8 +1024,8 @@ type ContainerClientSubmitBatchOptions struct {
 	Timeout *int32
 }
 
-// ContainerCpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
-type ContainerCpkScopeInfo struct {
+// ContainerCPKScopeInfo contains a group of parameters for the ContainerClient.Create method.
+type ContainerCPKScopeInfo struct {
 	// Optional. Version 2019-07-07 and later. Specifies the default encryption scope to set on the container and use for all
 	// future writes.
 	DefaultEncryptionScope *string
@@ -1070,11 +1070,11 @@ type ContainerProperties struct {
 	RemainingRetentionDays                  *int32             `xml:"RemainingRetentionDays"`
 }
 
-// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
+// CORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
 // domain. Web browsers implement a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
 // domain) to call APIs in another domain
-type CorsRule struct {
+type CORSRule struct {
 	// REQUIRED; the request headers that the origin domain may specify on the CORS request.
 	AllowedHeaders *string `xml:"AllowedHeaders"`
 
@@ -1095,8 +1095,8 @@ type CorsRule struct {
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
-// CpkInfo contains a group of parameters for the BlobClient.Download method.
-type CpkInfo struct {
+// CPKInfo contains a group of parameters for the BlobClient.Download method.
+type CPKInfo struct {
 	// The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided
 	// if the x-ms-encryption-key header is provided.
 	EncryptionAlgorithm *EncryptionAlgorithmType
@@ -1108,8 +1108,8 @@ type CpkInfo struct {
 	EncryptionKeySHA256 *string
 }
 
-// CpkScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
-type CpkScopeInfo struct {
+// CPKScopeInfo contains a group of parameters for the BlobClient.SetMetadata method.
+type CPKScopeInfo struct {
 	// Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data provided
 	// in the request. If not specified, encryption is performed with the default
 	// account encryption scope. For more information, see Encryption at Rest for Azure Storage Services.
@@ -1680,7 +1680,7 @@ type StorageError struct {
 // StorageServiceProperties - Storage Service Properties.
 type StorageServiceProperties struct {
 	// The set of CORS rules.
-	Cors []*CorsRule `xml:"Cors>CorsRule"`
+	CORS []*CORSRule `xml:"Cors>CorsRule"`
 
 	// The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible
 	// values include version 2008-10-27 and all more recent versions

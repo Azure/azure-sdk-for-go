@@ -47,11 +47,11 @@ func NewContainerClient(endpoint string, pl runtime.Pipeline) *ContainerClient {
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-10-02
-// duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
-// lease can be between 15 and 60 seconds. A lease duration cannot be changed using
-// renew or change.
-// options - ContainerClientAcquireLeaseOptions contains the optional parameters for the ContainerClient.AcquireLease method.
-// ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
+//   - duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
+//     lease can be between 15 and 60 seconds. A lease duration cannot be changed using
+//     renew or change.
+//   - options - ContainerClientAcquireLeaseOptions contains the optional parameters for the ContainerClient.AcquireLease method.
+//   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
 func (client *ContainerClient) AcquireLease(ctx context.Context, duration int32, options *ContainerClientAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (ContainerClientAcquireLeaseResponse, error) {
 	req, err := client.acquireLeaseCreateRequest(ctx, duration, options, modifiedAccessConditions)
 	if err != nil {
@@ -324,9 +324,9 @@ func (client *ContainerClient) changeLeaseHandleResponse(resp *http.Response) (C
 //
 // Generated from API version 2020-10-02
 //   - options - ContainerClientCreateOptions contains the optional parameters for the ContainerClient.Create method.
-//   - ContainerCpkScopeInfo - ContainerCpkScopeInfo contains a group of parameters for the ContainerClient.Create method.
-func (client *ContainerClient) Create(ctx context.Context, options *ContainerClientCreateOptions, containerCpkScopeInfo *ContainerCpkScopeInfo) (ContainerClientCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, options, containerCpkScopeInfo)
+//   - ContainerCPKScopeInfo - ContainerCPKScopeInfo contains a group of parameters for the ContainerClient.Create method.
+func (client *ContainerClient) Create(ctx context.Context, options *ContainerClientCreateOptions, containerCPKScopeInfo *ContainerCPKScopeInfo) (ContainerClientCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, options, containerCPKScopeInfo)
 	if err != nil {
 		return ContainerClientCreateResponse{}, err
 	}
@@ -341,7 +341,7 @@ func (client *ContainerClient) Create(ctx context.Context, options *ContainerCli
 }
 
 // createCreateRequest creates the Create request.
-func (client *ContainerClient) createCreateRequest(ctx context.Context, options *ContainerClientCreateOptions, containerCpkScopeInfo *ContainerCpkScopeInfo) (*policy.Request, error) {
+func (client *ContainerClient) createCreateRequest(ctx context.Context, options *ContainerClientCreateOptions, containerCPKScopeInfo *ContainerCPKScopeInfo) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -366,11 +366,11 @@ func (client *ContainerClient) createCreateRequest(ctx context.Context, options 
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	if containerCpkScopeInfo != nil && containerCpkScopeInfo.DefaultEncryptionScope != nil {
-		req.Raw().Header["x-ms-default-encryption-scope"] = []string{*containerCpkScopeInfo.DefaultEncryptionScope}
+	if containerCPKScopeInfo != nil && containerCPKScopeInfo.DefaultEncryptionScope != nil {
+		req.Raw().Header["x-ms-default-encryption-scope"] = []string{*containerCPKScopeInfo.DefaultEncryptionScope}
 	}
-	if containerCpkScopeInfo != nil && containerCpkScopeInfo.PreventEncryptionScopeOverride != nil {
-		req.Raw().Header["x-ms-deny-encryption-scope-override"] = []string{strconv.FormatBool(*containerCpkScopeInfo.PreventEncryptionScopeOverride)}
+	if containerCPKScopeInfo != nil && containerCPKScopeInfo.PreventEncryptionScopeOverride != nil {
+		req.Raw().Header["x-ms-deny-encryption-scope-override"] = []string{strconv.FormatBool(*containerCPKScopeInfo.PreventEncryptionScopeOverride)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil

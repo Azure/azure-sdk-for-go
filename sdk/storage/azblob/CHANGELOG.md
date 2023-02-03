@@ -5,6 +5,7 @@
 ### Features Added
 
 * Add support to log calculated block size and count during uploads
+* Added MissingSharedKeyCredential error type for cleaner UX. Related to [#19864](https://github.com/Azure/azure-sdk-for-go/issues/19864).
 
 ### Breaking Changes
 
@@ -17,6 +18,13 @@
   * `service.FilterBlobs()`
   * `lease.AcquireLease()` (blobs and containers)
   * `lease.ChangeLease()` (blobs and containers)
+* Type name changes:
+  * `CpkInfo` -> `CPKInfo`
+  * `CpkScopeInfo` -> `CPKScopeInfo`
+  * `RuleId` -> `RuleID`
+  * `PolicyId` -> `PolicyID`
+  * `CorsRule` -> `CORSRule`
+* Remove `AccountServices` it is now hardcoded to blobs
 
 ### Other Changes
 

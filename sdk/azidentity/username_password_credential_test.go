@@ -13,6 +13,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 func TestUsernamePasswordCredential_InvalidTenantID(t *testing.T) {
@@ -38,14 +39,39 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestUsernamePasswordCredential_Live(t *testing.T) {
+	for _, disabledID := range []bool{true, false} {
+		name := "default options"
+		if disabledID {
+			name = "instance discovery disabled"
+		}
+		t.Run(name, func(t *testing.T) {
+			o, stop := initRecording(t)
+			defer stop()
+			opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: disabledID}
+			cred, err := NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
+			if err != nil {
+				t.Fatalf("Unable to create credential. Received: %v", err)
+			}
+			testGetTokenSuccess(t, cred)
+		})
+	}
+}
+
+func TestUsernamePasswordCredentialADFS_Live(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		if adfsLiveUser.clientID == "" || adfsLiveUser.username == "" || adfsLiveUser.password == "" {
+			t.Skip("set ADFS_IDENTITY_TEST_* environment variables to run this test live")
+		}
+	}
 	o, stop := initRecording(t)
+	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
 	defer stop()
-	opts := UsernamePasswordCredentialOptions{ClientOptions: o}
-	cred, err := NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
+	opts := UsernamePasswordCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
+	cred, err := NewUsernamePasswordCredential("adfs", adfsLiveUser.clientID, adfsLiveUser.username, adfsLiveUser.password, &opts)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	testGetTokenSuccess(t, cred)
+	testGetTokenSuccess(t, cred, adfsScope)
 }
 
 func TestUsernamePasswordCredential_InvalidPasswordLive(t *testing.T) {

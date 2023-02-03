@@ -314,7 +314,7 @@ func (p *ContainerPermissions) String() string {
 	return b.String()
 }
 
-// Parse initializes the ContainerPermissions' fields from a string.
+// Parse initializes ContainerPermissions' fields from a string.
 func parseContainerPermissions(s string) (ContainerPermissions, error) {
 	p := ContainerPermissions{} // Clear the flags
 	for _, r := range s {
@@ -407,7 +407,7 @@ func (p *BlobPermissions) String() string {
 	return b.String()
 }
 
-// Parse initializes the BlobPermissions's fields from a string.
+// Parse initializes BlobPermissions' fields from a string.
 func parseBlobPermissions(s string) (BlobPermissions, error) {
 	p := BlobPermissions{} // Clear the flags
 	for _, r := range s {

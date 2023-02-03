@@ -10,6 +10,7 @@ package armcosmos_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestMongodbresourcesTestSuite(t *testing.T) {
 func (testsuite *MongodbresourcesTestSuite) Prepare() {
 	var err error
 	// From step DatabaseAccount_Create
+	fmt.Println("Call operation: DatabaseAccounts_CreateOrUpdate")
 	databaseAccountsClient, err := armcosmos.NewDatabaseAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databaseAccountsClientCreateOrUpdateResponsePoller, err := databaseAccountsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armcosmos.DatabaseAccountCreateUpdateParameters{
@@ -87,6 +89,7 @@ func (testsuite *MongodbresourcesTestSuite) TestMongodbresources() {
 	databaseName := "scenario_mongodb"
 	var err error
 	// From step MongoDBResources_CreateMongoDBDatabase
+	fmt.Println("Call operation: MongoDBResources_CreateUpdateMongoDBDatabase")
 	mongoDBResourcesClient, err := armcosmos.NewMongoDBResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	mongoDBResourcesClientCreateUpdateMongoDBDatabaseResponsePoller, err := mongoDBResourcesClient.BeginCreateUpdateMongoDBDatabase(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, armcosmos.MongoDBDatabaseCreateUpdateParameters{
@@ -106,10 +109,12 @@ func (testsuite *MongodbresourcesTestSuite) TestMongodbresources() {
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_GetMongoDBDatabase
+	fmt.Println("Call operation: MongoDBResources_GetMongoDBDatabase")
 	_, err = mongoDBResourcesClient.GetMongoDBDatabase(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_ListMongoDBDatabases
+	fmt.Println("Call operation: MongoDBResources_ListMongoDBDatabases")
 	mongoDBResourcesClientNewListMongoDBDatabasesPager := mongoDBResourcesClient.NewListMongoDBDatabasesPager(testsuite.resourceGroupName, testsuite.accountName, nil)
 	for mongoDBResourcesClientNewListMongoDBDatabasesPager.More() {
 		_, err := mongoDBResourcesClientNewListMongoDBDatabasesPager.NextPage(testsuite.ctx)
@@ -118,6 +123,7 @@ func (testsuite *MongodbresourcesTestSuite) TestMongodbresources() {
 	}
 
 	// From step MongoDBResources_UpdateMongoDBDatabaseThroughput
+	fmt.Println("Call operation: MongoDBResources_UpdateMongoDBDatabaseThroughput")
 	mongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponsePoller, err := mongoDBResourcesClient.BeginUpdateMongoDBDatabaseThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -132,22 +138,26 @@ func (testsuite *MongodbresourcesTestSuite) TestMongodbresources() {
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_GetMongoDBDatabaseThroughput
+	fmt.Println("Call operation: MongoDBResources_GetMongoDBDatabaseThroughput")
 	_, err = mongoDBResourcesClient.GetMongoDBDatabaseThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_MigrateMongoDBDatabaseToAutoscale
+	fmt.Println("Call operation: MongoDBResources_MigrateMongoDBDatabaseToAutoscale")
 	mongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponsePoller, err := mongoDBResourcesClient.BeginMigrateMongoDBDatabaseToAutoscale(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, mongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_MigrateMongoDBDatabaseToManualThroughput
+	fmt.Println("Call operation: MongoDBResources_MigrateMongoDBDatabaseToManualThroughput")
 	mongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponsePoller, err := mongoDBResourcesClient.BeginMigrateMongoDBDatabaseToManualThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, mongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_CreateMongoDBCollection
+	fmt.Println("Call operation: MongoDBResources_CreateUpdateMongoDBCollection")
 	mongoDBResourcesClientCreateUpdateMongoDBCollectionResponsePoller, err := mongoDBResourcesClient.BeginCreateUpdateMongoDBCollection(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, collectionName, armcosmos.MongoDBCollectionCreateUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -168,10 +178,12 @@ func (testsuite *MongodbresourcesTestSuite) TestMongodbresources() {
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_GetMongoDBCollection
+	fmt.Println("Call operation: MongoDBResources_GetMongoDBCollection")
 	_, err = mongoDBResourcesClient.GetMongoDBCollection(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, collectionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_ListMongoDBCollections
+	fmt.Println("Call operation: MongoDBResources_ListMongoDBCollections")
 	mongoDBResourcesClientNewListMongoDBCollectionsPager := mongoDBResourcesClient.NewListMongoDBCollectionsPager(testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	for mongoDBResourcesClientNewListMongoDBCollectionsPager.More() {
 		_, err := mongoDBResourcesClientNewListMongoDBCollectionsPager.NextPage(testsuite.ctx)
@@ -180,6 +192,7 @@ func (testsuite *MongodbresourcesTestSuite) TestMongodbresources() {
 	}
 
 	// From step MongoDBResources_UpdateMongoDBCollectionThroughput
+	fmt.Println("Call operation: MongoDBResources_UpdateMongoDBCollectionThroughput")
 	mongoDBResourcesClientUpdateMongoDBCollectionThroughputResponsePoller, err := mongoDBResourcesClient.BeginUpdateMongoDBCollectionThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, collectionName, armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -194,28 +207,33 @@ func (testsuite *MongodbresourcesTestSuite) TestMongodbresources() {
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_GetMongoDBCollectionThroughput
+	fmt.Println("Call operation: MongoDBResources_GetMongoDBCollectionThroughput")
 	_, err = mongoDBResourcesClient.GetMongoDBCollectionThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, collectionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_MigrateMongoDBCollectionToAutoscale
+	fmt.Println("Call operation: MongoDBResources_MigrateMongoDBCollectionToAutoscale")
 	mongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponsePoller, err := mongoDBResourcesClient.BeginMigrateMongoDBCollectionToAutoscale(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, collectionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, mongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_MigrateMongoDBCollectionToManualThroughput
+	fmt.Println("Call operation: MongoDBResources_MigrateMongoDBCollectionToManualThroughput")
 	mongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponsePoller, err := mongoDBResourcesClient.BeginMigrateMongoDBCollectionToManualThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, collectionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, mongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_DeleteMongoDBCollection
+	fmt.Println("Call operation: MongoDBResources_DeleteMongoDBCollection")
 	mongoDBResourcesClientDeleteMongoDBCollectionResponsePoller, err := mongoDBResourcesClient.BeginDeleteMongoDBCollection(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, collectionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, mongoDBResourcesClientDeleteMongoDBCollectionResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step MongoDBResources_DeleteMongoDBDatabase
+	fmt.Println("Call operation: MongoDBResources_DeleteMongoDBDatabase")
 	mongoDBResourcesClientDeleteMongoDBDatabaseResponsePoller, err := mongoDBResourcesClient.BeginDeleteMongoDBDatabase(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, mongoDBResourcesClientDeleteMongoDBDatabaseResponsePoller)

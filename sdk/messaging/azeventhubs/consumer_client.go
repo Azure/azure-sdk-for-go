@@ -96,7 +96,7 @@ func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, consumer
 //
 //	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>;
 func NewConsumerClientFromConnectionString(connectionString string, eventHub string, consumerGroup string, options *ConsumerClientOptions) (*ConsumerClient, error) {
-	parsedConn, err := parseConn(connectionString, eventHub)
+	props, err := parseConn(connectionString, eventHub)
 
 	if err != nil {
 		return nil, err
@@ -105,7 +105,7 @@ func NewConsumerClientFromConnectionString(connectionString string, eventHub str
 	return newConsumerClient(consumerClientArgs{
 		consumerGroup:    consumerGroup,
 		connectionString: connectionString,
-		eventHub:         parsedConn.HubName,
+		eventHub:         *props.EntityPath,
 	}, options)
 }
 

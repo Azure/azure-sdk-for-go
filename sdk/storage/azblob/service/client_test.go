@@ -157,6 +157,123 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
+func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	days := to.Ptr[int32](5)
+	enabled := to.Ptr(true)
+
+	loggingOpts := service.Logging{
+		Read: enabled, Write: enabled, Delete: enabled,
+		RetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}}
+	opts := service.SetPropertiesOptions{Logging: &loggingOpts}
+	_, err = svcClient.SetProperties(context.Background(), &opts)
+
+	_require.Nil(err)
+	resp1, err := svcClient.GetProperties(context.Background(), nil)
+
+	_require.Nil(err)
+	_require.Equal(resp1.Logging.Write, enabled)
+	_require.Equal(resp1.Logging.Read, enabled)
+	_require.Equal(resp1.Logging.Delete, enabled)
+	_require.Equal(resp1.Logging.RetentionPolicy.Days, days)
+	_require.Equal(resp1.Logging.RetentionPolicy.Enabled, enabled)
+}
+
+func (s *ServiceRecordedTestsSuite) TestSetPropertiesHourMetrics() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	days := to.Ptr[int32](5)
+	enabled := to.Ptr(true)
+
+	metricsOpts := service.Metrics{
+		Enabled: enabled, IncludeAPIs: enabled, RetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}}
+	opts := service.SetPropertiesOptions{HourMetrics: &metricsOpts}
+	_, err = svcClient.SetProperties(context.Background(), &opts)
+
+	_require.Nil(err)
+	resp1, err := svcClient.GetProperties(context.Background(), nil)
+
+	_require.Nil(err)
+	_require.Equal(resp1.HourMetrics.Enabled, enabled)
+	_require.Equal(resp1.HourMetrics.IncludeAPIs, enabled)
+	_require.Equal(resp1.HourMetrics.RetentionPolicy.Days, days)
+	_require.Equal(resp1.HourMetrics.RetentionPolicy.Enabled, enabled)
+}
+
+func (s *ServiceRecordedTestsSuite) TestSetPropertiesMinuteMetrics() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	days := to.Ptr[int32](5)
+	enabled := to.Ptr(true)
+
+	metricsOpts := service.Metrics{
+		Enabled: enabled, IncludeAPIs: enabled, RetentionPolicy: &service.RetentionPolicy{Enabled: enabled, Days: days}}
+	opts := service.SetPropertiesOptions{MinuteMetrics: &metricsOpts}
+	_, err = svcClient.SetProperties(context.Background(), &opts)
+
+	_require.Nil(err)
+	resp1, err := svcClient.GetProperties(context.Background(), nil)
+
+	_require.Nil(err)
+	_require.Equal(resp1.MinuteMetrics.Enabled, enabled)
+	_require.Equal(resp1.MinuteMetrics.IncludeAPIs, enabled)
+	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Days, days)
+	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Enabled, enabled)
+}
+
+func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCORSMultiple() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	defaultAge := to.Ptr[int32](500)
+	defaultStr := to.Ptr[string]("")
+
+	allowedOrigins1 := "www.xyz.com"
+	allowedMethods1 := "GET"
+	CORSOpts1 := &service.CORSRule{AllowedOrigins: &allowedOrigins1, AllowedMethods: &allowedMethods1}
+
+	allowedOrigins2 := "www.xyz.com,www.ab.com,www.bc.com"
+	allowedMethods2 := "GET, PUT"
+	maxAge2 := to.Ptr[int32](500)
+	exposedHeaders2 := "x-ms-meta-data*,x-ms-meta-source*,x-ms-meta-abc,x-ms-meta-bcd"
+	allowedHeaders2 := "x-ms-meta-data*,x-ms-meta-target*,x-ms-meta-xyz,x-ms-meta-foo"
+
+	CORSOpts2 := &service.CORSRule{
+		AllowedOrigins: &allowedOrigins2, AllowedMethods: &allowedMethods2,
+		MaxAgeInSeconds: maxAge2, ExposedHeaders: &exposedHeaders2, AllowedHeaders: &allowedHeaders2}
+
+	CORSRules := []*service.CORSRule{CORSOpts1, CORSOpts2}
+
+	opts := service.SetPropertiesOptions{CORS: CORSRules}
+	_, err = svcClient.SetProperties(context.Background(), &opts)
+
+	_require.Nil(err)
+	resp, err := svcClient.GetProperties(context.Background(), nil)
+	for i := 0; i < len(resp.CORS); i++ {
+		if resp.CORS[i].AllowedOrigins == &allowedOrigins1 {
+			_require.Equal(resp.CORS[i].AllowedMethods, &allowedMethods1)
+			_require.Equal(resp.CORS[i].MaxAgeInSeconds, defaultAge)
+			_require.Equal(resp.CORS[i].ExposedHeaders, defaultStr)
+			_require.Equal(resp.CORS[i].AllowedHeaders, defaultStr)
+
+		} else if resp.CORS[i].AllowedOrigins == &allowedOrigins2 {
+			_require.Equal(resp.CORS[i].AllowedMethods, &allowedMethods2)
+			_require.Equal(resp.CORS[i].MaxAgeInSeconds, &maxAge2)
+			_require.Equal(resp.CORS[i].ExposedHeaders, &exposedHeaders2)
+			_require.Equal(resp.CORS[i].AllowedHeaders, &allowedHeaders2)
+		}
+	}
+	_require.Nil(err)
+}
+
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -575,14 +692,12 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 		Update: true,
 		Delete: true,
 	}
-	services := sas.AccountServices{
-		Blob: true,
-	}
+
 	start := time.Now().Add(-time.Hour)
 	expiry := start.Add(time.Hour)
 
 	opts := service.GetSASURLOptions{StartTime: &start}
-	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, expiry, &opts)
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, &opts)
 	_require.Nil(err)
 
 	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
@@ -592,6 +707,38 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	_, err = svcClient.CreateContainer(context.Background(), containerName+"002", nil)
 	_require.Error(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
+	_require := require.New(s.T())
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	// Creating service client without credentials
+	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), nil)
+	_require.Nil(err)
+
+	// Adding SAS and options
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Update: true,
+		Delete: true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
+	opts := service.GetSASURLOptions{StartTime: &start}
+
+	// GetSASURL fails (with MissingSharedKeyCredential) because service client is created without credentials
+	_, err = serviceClient.GetSASURL(resources, permissions, expiry, &opts)
+	_require.Equal(err, bloberror.MissingSharedKeyCredential)
+
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {

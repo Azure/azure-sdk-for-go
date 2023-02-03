@@ -11,8 +11,11 @@ import (
 	"context"
 	"crypto/md5"
 	"errors"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"io"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -115,7 +118,6 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    currentTime,
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -156,7 +158,6 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSASUsingCo
 		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    currentTime,
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -3029,7 +3030,6 @@ func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
 		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -3140,7 +3140,6 @@ func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -3397,8 +3396,8 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 //		injectedError:          err,
 //		NotifyFailedRead:       nil,
 //		TreatEarlyCloseAsError: false,
-//		CpkInfo:                nil,
-//		CpkScopeInfo:           nil,
+//		CPKInfo:                nil,
+//		CPKScopeInfo:           nil,
 //	}
 //}
 
@@ -3529,4 +3528,82 @@ func (s *BlobRecordedTestsSuite) TestSetLegalHold() {
 	_, err = bbClient.Delete(context.Background(), nil)
 	_require.Nil(err)
 
+}
+
+func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	// Creating service client with credentials
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, serviceClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Creating blob client with credentials
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+	blobClient, err := blob.NewClientWithSharedKeyCredential(bbClient.URL(), cred, nil)
+	_require.NoError(err)
+
+	// Adding SAS and options
+	permissions := sas.BlobPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
+	opts := blob.GetSASURLOptions{StartTime: &start}
+
+	// BlobSASURL is created with GetSASURL
+	sasUrl, err := blobClient.GetSASURL(permissions, expiry, &opts)
+	_require.Nil(err)
+
+	// Get new blob client with sasUrl and attempt GetProperties
+	_, err = blob.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+}
+
+func (s *BlobUnrecordedTestsSuite) TestNoSharedKeyCredError() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	// Creating service client
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Creating blob client without credentials
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.BlobPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
+	opts := blob.GetSASURLOptions{StartTime: &start}
+
+	// GetSASURL fails (with MissingSharedKeyCredential) because blob client is created without credentials
+	_, err = bbClient.BlobClient().GetSASURL(permissions, expiry, &opts)
+	_require.Equal(err, bloberror.MissingSharedKeyCredential)
 }

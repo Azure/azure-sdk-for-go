@@ -8,13 +8,13 @@ package azqueue
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/queueerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
 	"time"
 )
@@ -224,7 +224,7 @@ func (q *QueueClient) ClearMessages(ctx context.Context, o *ClearMessagesOptions
 // This validity can be checked with CanGetAccountSASToken().
 func (q *QueueClient) GetSASURL(permissions sas.QueuePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if q.sharedKey() == nil {
-		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+		return "", queueerror.MissingSharedKeyCredential
 	}
 
 	st := o.format()

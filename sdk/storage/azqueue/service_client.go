@@ -8,7 +8,6 @@ package azqueue
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -16,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/queueerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
 	"net/http"
 	"net/url"
@@ -195,16 +195,15 @@ func (s *ServiceClient) DeleteQueue(ctx context.Context, queueName string, optio
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s *ServiceClient) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, expiry time.Time, o *GetSASURLOptions) (string, error) {
+func (s *ServiceClient) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if s.sharedKey() == nil {
-		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+		return "", queueerror.MissingSharedKeyCredential
 	}
 	st := o.format()
 	qps, err := sas.AccountSignatureValues{
 		Version:       sas.Version,
 		Protocol:      sas.ProtocolHTTPS,
 		Permissions:   permissions.String(),
-		Services:      services.String(),
 		ResourceTypes: resources.String(),
 		StartTime:     st,
 		ExpiryTime:    expiry.UTC(),

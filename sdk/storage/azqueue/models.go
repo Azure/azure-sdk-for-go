@@ -442,11 +442,12 @@ type GetSASURLOptions struct {
 }
 
 func (o *GetSASURLOptions) format() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
 	var st time.Time
 	if o.StartTime != nil {
 		st = o.StartTime.UTC()
-	} else {
-		st = time.Time{}
 	}
 	return st
 }

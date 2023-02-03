@@ -528,6 +528,98 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 	}
 }
 
+func TestClaims(t *testing.T) {
+	claim := `"test":"pass"`
+	for _, test := range []struct {
+		ctor func(azcore.ClientOptions) (azcore.TokenCredential, error)
+		name string
+	}{
+		{
+			name: credNameAssertion,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := ClientAssertionCredentialOptions{ClientOptions: co}
+				return NewClientAssertionCredential(fakeTenantID, fakeClientID, func(context.Context) (string, error) { return "...", nil }, &o)
+			},
+		},
+		{
+			name: credNameCert,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := ClientCertificateCredentialOptions{ClientOptions: co}
+				return NewClientCertificateCredential(fakeTenantID, fakeClientID, allCertTests[0].certs, allCertTests[0].key, &o)
+			},
+		},
+		{
+			name: credNameDeviceCode,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := DeviceCodeCredentialOptions{
+					ClientOptions: co,
+					UserPrompt:    func(context.Context, DeviceCodeMessage) error { return nil },
+				}
+				return NewDeviceCodeCredential(&o)
+			},
+		},
+		{
+			name: credNameOBO,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := OnBehalfOfCredentialOptions{ClientOptions: co}
+				return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
+			},
+		},
+		{
+			name: credNameSecret,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := ClientSecretCredentialOptions{ClientOptions: co}
+				return NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, &o)
+			},
+		},
+		{
+			name: credNameUserPassword,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := UsernamePasswordCredentialOptions{ClientOptions: co}
+				return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", &o)
+			},
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			reqs := 0
+			sts := mockSTS{
+				tokenRequestCallback: func(r *http.Request) {
+					if err := r.ParseForm(); err != nil {
+						t.Error(err)
+					}
+					reqs += 1
+					// Both requests should specify CP1. The second GetToken call specifies claims we should
+					// find in the token request. We check only for the expected substring because MSAL is
+					// responsible for formatting claims.
+					actual := r.Form["claims"]
+					if len(actual) != 1 || !strings.Contains(actual[0], "CP1") {
+						t.Fatalf(`unexpected claims "%v"`, actual)
+					}
+					if reqs == 2 {
+						if !strings.Contains(strings.ReplaceAll(actual[0], " ", ""), claim) {
+							t.Fatalf(`unexpected claims "%v"`, actual)
+						}
+					}
+				},
+			}
+			o := azcore.ClientOptions{Transport: &sts}
+			cred, err := test.ctor(o)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
+				t.Fatal(err)
+			}
+			if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
+				t.Fatal(err)
+			}
+			if reqs != 2 {
+				t.Fatalf("expected %d token requests, got %d", 2, reqs)
+			}
+		})
+	}
+}
+
 func TestResolveTenant(t *testing.T) {
 	defaultTenant := "default-tenant"
 	otherTenant := "other-tenant"

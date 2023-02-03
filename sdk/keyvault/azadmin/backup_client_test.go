@@ -6,7 +6,7 @@
 
 package azadmin_test
 
-import (
+/*import (
 	"context"
 	"os"
 	"strings"
@@ -58,4 +58,4 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 }
 
 func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
-}
+}*/

@@ -8,6 +8,8 @@ package service
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"net/http"
 	"strings"
@@ -43,7 +45,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, nil, authPolicy)), nil
+	return (*Client)(base.NewServiceClient(serviceURL, pl, &cred)), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -54,7 +56,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, nil, nil)), nil
+	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -67,7 +69,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewServiceClient(serviceURL, pl, cred, authPolicy)), nil
+	return (*Client)(base.NewServiceClient(serviceURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -115,8 +117,8 @@ func (s *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ServiceClient])(s))
 }
 
-func (s *Client) authPolicy() policy.Policy {
-	return base.AuthPolicy((*base.Client[generated.ServiceClient])(s))
+func (s *Client) credential() any {
+	return base.Credential((*base.Client[generated.ServiceClient])(s))
 }
 
 // URL returns the URL endpoint used by the Client object.
@@ -128,7 +130,7 @@ func (s *Client) URL() string {
 // this Client's URL. The new container.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewContainerClient(containerName string) *container.Client {
 	containerURL := runtime.JoinPaths(s.generated().Endpoint(), containerName)
-	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().Pipeline(), s.sharedKey(), s.authPolicy()))
+	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().Pipeline(), s.credential()))
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.
@@ -290,8 +292,26 @@ func (s *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOp
 // BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
 func (s *Client) NewBatchBuilder() (*BatchBuilder, error) {
 	conOptions := new(ClientOptions)
-	if s.authPolicy() != nil {
-		conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, s.authPolicy())
+	var authPolicy policy.Policy
+	var err error
+
+	switch cred := s.credential().(type) {
+	case *azcore.TokenCredential:
+		authPolicy, err = getTokenCredentialPolicy()
+	case *SharedKeyCredential:
+		authPolicy, err = getSharedKeyCredentialPolicy(cred)
+	case nil:
+		// for authentication using SAS
+		authPolicy, err = nil, nil
+	default:
+		panic(fmt.Sprintf("unrecognised authentication type %T", cred))
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	if authPolicy != nil {
+		conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	}
 
 	// TODO: Use an empty transport so requests aren't sent
@@ -303,6 +323,14 @@ func (s *Client) NewBatchBuilder() (*BatchBuilder, error) {
 		endpoint: s.URL(),
 		pipeline: pl,
 	}, nil
+}
+
+func getTokenCredentialPolicy() (policy.Policy, error) {
+	return nil, errors.New("bad auth: Azure Active Directory credential can't be used to authorize batch requests. Use shared key or account SAS")
+}
+
+func getSharedKeyCredentialPolicy(cred *SharedKeyCredential) (policy.Policy, error) {
+	return exported.NewSharedKeyCredPolicy(cred), nil
 }
 
 // Delete operation is used to add delete sub-request to the batch builder.

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package tests
 
 import (
@@ -18,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/joho/godotenv"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -118,13 +119,13 @@ func newStressTestData(name string, verbose bool, baggage map[string]string) (*s
 
 	log.Printf("Name: %s, TestRunID: %s", td.name, td.runID)
 
-	parsedConn, err := conn.ParsedConnectionFromStr(td.ConnectionString)
+	props, err := exported.ParseConnectionString(td.ConnectionString)
 
 	if err != nil {
 		return nil, err
 	}
 
-	td.Namespace = parsedConn.Namespace
+	td.Namespace = props.FullyQualifiedNamespace
 
 	startBaggage := map[string]string{
 		"Namespace": td.Namespace,

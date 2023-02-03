@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -56,11 +57,38 @@ var liveUser = struct {
 }
 
 const (
-	fakeClientID   = "fake-client-id"
-	fakeResourceID = "/fake/resource/ID"
-	fakeTenantID   = "fake-tenant"
-	fakeUsername   = "fake@user"
+	fakeClientID      = "fake-client-id"
+	fakeResourceID    = "/fake/resource/ID"
+	fakeTenantID      = "fake-tenant"
+	fakeUsername      = "fake@user"
+	fakeAdfsAuthority = "fake.adfs.local"
+	fakeAdfsScope     = "fake.adfs.local/fake-scope/.default"
 )
+
+var adfsAuthority = os.Getenv("ADFS_AUTHORITY_HOST")
+var adfsScope = os.Getenv("ADFS_SCOPE")
+
+var adfsLiveSP = struct {
+	clientID    string
+	secret      string
+	certPath    string
+	redirectURL string
+}{
+	clientID:    os.Getenv("ADFS_SP_CLIENT_ID"),
+	secret:      os.Getenv("ADFS_SP_CLIENT_SECRET"),
+	certPath:    os.Getenv("ADFS_SP_CERT_PATH"),
+	redirectURL: os.Getenv("ADFS_SP_REDIRECT_URL"),
+}
+
+var adfsLiveUser = struct {
+	clientID string
+	username string
+	password string
+}{
+	username: os.Getenv("ADFS_IDENTITY_TEST_USERNAME"),
+	password: os.Getenv("ADFS_IDENTITY_TEST_PASSWORD"),
+	clientID: os.Getenv("ADFS_IDENTITY_TEST_CLIENT_ID"),
+}
 
 var liveTestScope = "https://management.core.windows.net//.default"
 
@@ -77,6 +105,14 @@ func init() {
 		liveUser.tenantID = fakeTenantID
 		liveUser.username = fakeUsername
 		liveUser.password = "fake-password"
+		adfsLiveSP.secret = "fake-secret"
+		adfsLiveSP.clientID = fakeClientID
+		adfsLiveSP.certPath = "testdata/certificate.pem"
+		adfsLiveUser.username = fakeUsername
+		adfsLiveUser.password = "fake-password"
+		adfsLiveUser.clientID = fakeClientID
+		adfsScope = "https://" + fakeAdfsScope
+		adfsAuthority = "https://" + fakeAdfsAuthority
 	}
 }
 
@@ -111,6 +147,8 @@ func TestMain(m *testing.M) {
 			liveSP.tenantID:                                 fakeTenantID,
 			liveUser.tenantID:                               fakeTenantID,
 			liveUser.username:                               fakeUsername,
+			strings.TrimPrefix(adfsScope, "https://"):       fakeAdfsScope,
+			strings.TrimPrefix(adfsAuthority, "https://"):   fakeAdfsAuthority,
 		}
 		for target, replacement := range pathVars {
 			if target != "" {
@@ -192,8 +230,14 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 }
 
 // testGetTokenSuccess is a helper for happy path tests that acquires, and validates, a token from a credential
-func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential) {
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential, customScope ...string) {
+	var scopes []string
+	if customScope == nil {
+		scopes = append(scopes, liveTestScope)
+	} else {
+		scopes = append(scopes, customScope...)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: scopes})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -206,7 +250,7 @@ func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential) {
 	if tk.ExpiresOn.Location() != time.UTC {
 		t.Fatal("ExpiresOn isn't UTC")
 	}
-	tk2, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk2, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: scopes})
 	if err != nil {
 		t.Fatal(err)
 	}

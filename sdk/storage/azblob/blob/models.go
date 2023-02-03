@@ -34,11 +34,11 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
-// CpkInfo contains a group of parameters for client provided encryption key.
-type CpkInfo = generated.CpkInfo
+// CPKInfo contains a group of parameters for client provided encryption key.
+type CPKInfo = generated.CPKInfo
 
-// CpkScopeInfo contains a group of parameters for client provided encryption scope.
-type CpkScopeInfo = generated.CpkScopeInfo
+// CPKScopeInfo contains a group of parameters for client provided encryption scope.
+type CPKScopeInfo = generated.CPKScopeInfo
 
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
@@ -66,11 +66,11 @@ type DownloadStreamOptions struct {
 	Range HTTPRange
 
 	AccessConditions *AccessConditions
-	CpkInfo          *CpkInfo
-	CpkScopeInfo     *CpkScopeInfo
+	CPKInfo          *CPKInfo
+	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
+func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
@@ -81,7 +81,7 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, leaseAccessConditions, o.CpkInfo, modifiedAccessConditions
+	return &basics, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -101,10 +101,10 @@ type downloadOptions struct {
 	AccessConditions *AccessConditions
 
 	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
-	CpkInfo      *CpkInfo
-	CpkScopeInfo *CpkScopeInfo
+	CPKInfo      *CPKInfo
+	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -117,7 +117,7 @@ func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
 	}
 	return &GetPropertiesOptions{
 		AccessConditions: o.AccessConditions,
-		CpkInfo:          o.CpkInfo,
+		CPKInfo:          o.CPKInfo,
 	}
 }
 
@@ -127,8 +127,8 @@ func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContent
 	}
 	return &DownloadStreamOptions{
 		AccessConditions:   o.AccessConditions,
-		CpkInfo:            o.CpkInfo,
-		CpkScopeInfo:       o.CpkScopeInfo,
+		CPKInfo:            o.CPKInfo,
+		CPKScopeInfo:       o.CPKScopeInfo,
 		Range:              rnge,
 		RangeGetContentMD5: rangeGetContentMD5,
 	}
@@ -148,13 +148,13 @@ type DownloadBufferOptions struct {
 	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
 	AccessConditions *AccessConditions
 
-	// CpkInfo contains a group of parameters for client provided encryption key.
-	CpkInfo *CpkInfo
+	// CPKInfo contains a group of parameters for client provided encryption key.
+	CPKInfo *CPKInfo
 
-	// CpkScopeInfo contains a group of parameters for client provided encryption scope.
-	CpkScopeInfo *CpkScopeInfo
+	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
+	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -176,8 +176,8 @@ type DownloadFileOptions struct {
 	AccessConditions *AccessConditions
 
 	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
-	CpkInfo      *CpkInfo
-	CpkScopeInfo *CpkScopeInfo
+	CPKInfo      *CPKInfo
+	CPKScopeInfo *CPKScopeInfo
 
 	// Concurrency indicates the maximum number of blocks to download in parallel.  The default value is 5.
 	Concurrency uint16
@@ -191,7 +191,7 @@ type DownloadFileOptions struct {
 // DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
-	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
+	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself.
 	DeleteSnapshots  *DeleteSnapshotsOptionType
 	AccessConditions *AccessConditions
 	// Setting DeleteType to DeleteTypePermanent will permanently delete soft-delete snapshot and/or version blobs.
@@ -253,17 +253,17 @@ func (o *SetTierOptions) format() (*generated.BlobClientSetTierOptions, *generat
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions struct {
 	AccessConditions *AccessConditions
-	CpkInfo          *CpkInfo
+	CPKInfo          *CPKInfo
 }
 
 func (o *GetPropertiesOptions) format() (*generated.BlobClientGetPropertiesOptions,
-	*generated.LeaseAccessConditions, *generated.CpkInfo, *generated.ModifiedAccessConditions) {
+	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return nil, leaseAccessConditions, o.CpkInfo, modifiedAccessConditions
+	return nil, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -287,18 +287,18 @@ func (o *SetHTTPHeadersOptions) format() (*generated.BlobClientSetHTTPHeadersOpt
 // SetMetadataOptions provides set of configurations for Set Metadata on blob operation
 type SetMetadataOptions struct {
 	AccessConditions *AccessConditions
-	CpkInfo          *CpkInfo
-	CpkScopeInfo     *CpkScopeInfo
+	CPKInfo          *CPKInfo
+	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *SetMetadataOptions) format() (*generated.LeaseAccessConditions, *CpkInfo,
-	*CpkScopeInfo, *ModifiedAccessConditions) {
+func (o *SetMetadataOptions) format() (*generated.LeaseAccessConditions, *CPKInfo,
+	*CPKScopeInfo, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
+	return leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -307,12 +307,12 @@ func (o *SetMetadataOptions) format() (*generated.LeaseAccessConditions, *CpkInf
 type CreateSnapshotOptions struct {
 	Metadata         map[string]*string
 	AccessConditions *AccessConditions
-	CpkInfo          *CpkInfo
-	CpkScopeInfo     *CpkScopeInfo
+	CPKInfo          *CPKInfo
+	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *CreateSnapshotOptions) format() (*generated.BlobClientCreateSnapshotOptions, *generated.CpkInfo,
-	*generated.CpkScopeInfo, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
+func (o *CreateSnapshotOptions) format() (*generated.BlobClientCreateSnapshotOptions, *generated.CPKInfo,
+	*generated.CPKScopeInfo, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil
 	}
@@ -321,7 +321,7 @@ func (o *CreateSnapshotOptions) format() (*generated.BlobClientCreateSnapshotOpt
 
 	return &generated.BlobClientCreateSnapshotOptions{
 		Metadata: o.Metadata,
-	}, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions, leaseAccessConditions
+	}, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions, leaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

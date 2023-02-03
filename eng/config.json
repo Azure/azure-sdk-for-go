@@ -9,6 +9,10 @@
             "CoverageGoal": 0.30
         },
         {
+            "Name": "azcontainerregistry",
+            "CoverageGoal": 0.60
+        },
+        {
             "Name": "azcore",
             "CoverageGoal": 0.92
         },

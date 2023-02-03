@@ -14,17 +14,17 @@ import (
 
 // ObjectReplicationRules struct
 type ObjectReplicationRules struct {
-	RuleId string
+	RuleID string
 	Status string
 }
 
-// ObjectReplicationPolicy are deserialized attributes
+// ObjectReplicationPolicy are deserialized attributes.
 type ObjectReplicationPolicy struct {
-	PolicyId *string
+	PolicyID *string
 	Rules    *[]ObjectReplicationRules
 }
 
-// deserializeORSPolicies is utility function to deserialize ORS Policies
+// deserializeORSPolicies is utility function to deserialize ORS Policies.
 func deserializeORSPolicies(policies map[string]*string) (objectReplicationPolicies []ObjectReplicationPolicy) {
 	if policies == nil {
 		return nil
@@ -44,19 +44,19 @@ func deserializeORSPolicies(policies map[string]*string) (objectReplicationPolic
 		policyAndRuleIDs := strings.Split(strings.Split(key, "or-")[1], "_")
 		policyId, ruleId := policyAndRuleIDs[0], policyAndRuleIDs[1]
 
-		parsedResult[policyId] = append(parsedResult[policyId], ObjectReplicationRules{RuleId: ruleId, Status: *value})
+		parsedResult[policyId] = append(parsedResult[policyId], ObjectReplicationRules{RuleID: ruleId, Status: *value})
 	}
 
 	for policyId, rules := range parsedResult {
 		objectReplicationPolicies = append(objectReplicationPolicies, ObjectReplicationPolicy{
-			PolicyId: &policyId,
+			PolicyID: &policyId,
 			Rules:    &rules,
 		})
 	}
 	return
 }
 
-// ParseHTTPHeaders parses GetPropertiesResponse and returns HTTPHeaders
+// ParseHTTPHeaders parses GetPropertiesResponse and returns HTTPHeaders.
 func ParseHTTPHeaders(resp GetPropertiesResponse) HTTPHeaders {
 	return HTTPHeaders{
 		BlobContentType:        resp.ContentType,

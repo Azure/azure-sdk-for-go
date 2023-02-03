@@ -3,6 +3,8 @@
 ## 1.3.0-beta.3 (Unreleased)
 
 ### Features Added
+* `InteractiveBrowserCredentialOptions.LoginHint` enables pre-populating the login
+  prompt with a username ([#15599](https://github.com/Azure/azure-sdk-for-go/pull/15599))
 
 ### Breaking Changes
 

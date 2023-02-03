@@ -31,25 +31,25 @@ func TestDeserializeORSPolicies(t *testing.T) {
 	require.Len(t, rules0, 2)
 	require.Len(t, rules1, 2)
 
-	if rules0[0].RuleId == "111" {
+	if rules0[0].RuleID == "111" {
 		require.Equal(t, rules0[0].Status, "Completed")
 	} else {
 		require.Equal(t, rules0[0].Status, "Failed")
 	}
 
-	if rules0[1].RuleId == "222" {
+	if rules0[1].RuleID == "222" {
 		require.Equal(t, rules0[1].Status, "Failed")
 	} else {
 		require.Equal(t, rules0[1].Status, "Completed")
 	}
 
-	if rules1[0].RuleId == "111" {
+	if rules1[0].RuleID == "111" {
 		require.Equal(t, rules1[0].Status, "Completed")
 	} else {
 		require.Equal(t, rules1[0].Status, "Failed")
 	}
 
-	if rules1[1].RuleId == "222" {
+	if rules1[1].RuleID == "222" {
 		require.Equal(t, rules1[1].Status, "Failed")
 	} else {
 		require.Equal(t, rules1[1].Status, "Completed")

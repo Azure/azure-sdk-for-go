@@ -84,7 +84,6 @@ var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions, 
 	}
 	o := []public.Option{
 		public.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
-		public.WithClientCapabilities(cp1),
 		public.WithHTTPClient(newPipelineAdapter(co)),
 	}
 	if !disableCP1 {

@@ -529,6 +529,8 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 }
 
 func TestClaims(t *testing.T) {
+	realCP1 := disableCP1
+	t.Cleanup(func() { disableCP1 = realCP1 })
 	claim := `"test":"pass"`
 	for _, test := range []struct {
 		ctor func(azcore.ClientOptions) (azcore.TokenCredential, error)
@@ -580,43 +582,50 @@ func TestClaims(t *testing.T) {
 			},
 		},
 	} {
-		t.Run(test.name, func(t *testing.T) {
-			reqs := 0
-			sts := mockSTS{
-				tokenRequestCallback: func(r *http.Request) {
-					if err := r.ParseForm(); err != nil {
-						t.Error(err)
-					}
-					reqs += 1
-					// Both requests should specify CP1. The second GetToken call specifies claims we should
-					// find in the token request. We check only for the expected substring because MSAL is
-					// responsible for formatting claims.
-					actual := r.Form["claims"]
-					if len(actual) != 1 || !strings.Contains(actual[0], "CP1") {
-						t.Fatalf(`unexpected claims "%v"`, actual)
-					}
-					if reqs == 2 {
-						if !strings.Contains(strings.ReplaceAll(actual[0], " ", ""), claim) {
+		for _, d := range []bool{true, false} {
+			name := test.name
+			if d {
+				name += " disableCP1"
+			}
+			t.Run(name, func(t *testing.T) {
+				disableCP1 = d
+				reqs := 0
+				sts := mockSTS{
+					tokenRequestCallback: func(r *http.Request) {
+						if err := r.ParseForm(); err != nil {
+							t.Error(err)
+						}
+						reqs++
+						// If the disableCP1 flag isn't set, both requests should specify CP1. The second
+						// GetToken call specifies claims we should find in the following token request.
+						// We check only for substrings because MSAL is responsible for formatting claims.
+						actual := fmt.Sprint(r.Form["claims"])
+						if strings.Contains(actual, "CP1") == disableCP1 {
 							t.Fatalf(`unexpected claims "%v"`, actual)
 						}
-					}
-				},
-			}
-			o := azcore.ClientOptions{Transport: &sts}
-			cred, err := test.ctor(o)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
-				t.Fatal(err)
-			}
-			if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
-				t.Fatal(err)
-			}
-			if reqs != 2 {
-				t.Fatalf("expected %d token requests, got %d", 2, reqs)
-			}
-		})
+						if reqs == 2 {
+							if !strings.Contains(strings.ReplaceAll(actual, " ", ""), claim) {
+								t.Fatalf(`unexpected claims "%v"`, actual)
+							}
+						}
+					},
+				}
+				o := azcore.ClientOptions{Transport: &sts}
+				cred, err := test.ctor(o)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
+					t.Fatal(err)
+				}
+				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
+					t.Fatal(err)
+				}
+				if reqs != 2 {
+					t.Fatalf("expected %d token requests, got %d", 2, reqs)
+				}
+			})
+		}
 	}
 }
 

@@ -2,10 +2,8 @@
 
 The Azure Monitor Query client library is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
 
-- [Logs](https://docs.microsoft.com/azure/azure-monitor/logs/data-platform-logs) - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace](https://docs.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces). The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language]. See the [Kusto to SQL cheat sheet][kusto_to_sql] for more information.
-- [Metrics][metrics] - Collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
-
-**NOTE**: This library is currently a beta. There may be breaking changes until it reaches semantic version `v1.0.0`.
+- [Logs][logs_overview] - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace][log_workspaces]. The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language]. See the [Kusto to SQL cheat sheet][kusto_to_sql] for more information.
+- [Metrics][metrics_overview] - Collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
 
 ## Getting started
 
@@ -33,21 +31,21 @@ The clients default to the Azure Public Cloud. See the [cloud][cloud_documentati
 
 #### Create a logs client
 
-Example logs client: [link][example_logs_client]
+Example [logs client][example_logs_client]
 
 #### Create a metrics client
 
-Example metrics client: [link][example_metrics_client]
+Example [metrics client][example_metrics_client]
 
 ### Execute the query
 
-For examples of Logs and Metrics queries, see the [Examples](#examples) section of this readme or in the example_test.go file of our GitHub repo for [azquery](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery).
+For examples of Logs and Metrics queries, see the [Examples](#examples) section of this readme or in the example_test.go file of our GitHub repo for [azquery][azquery].
 
 ## Key concepts
 
 ### Logs query rate limits and throttling
 
-The Log Analytics service applies throttling when the request rate is too high. Limits, such as the maximum number of rows returned, are also applied on the Kusto queries. For more information, see [Query API](https://docs.microsoft.com/azure/azure-monitor/service-limits#la-query-api).
+The Log Analytics service applies throttling when the request rate is too high. Limits, such as the maximum number of rows returned, are also applied on the Kusto queries. For more information, see [Query API][service_limits].
 
 If you're executing a batch logs query, a throttled request will return a `ErrorInfo` object. That object's `code` value will be `ThrottledError`.
 
@@ -64,11 +62,11 @@ Each set of metric values is a time series with the following characteristics:
 
 ### Timespan
 
-It's best practice to always query with a timespan (type `TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Logs uses the ISO8601 Time Interval Standard. All time should be represented in UTC. If the timespan  is included in both the kusto query string and `Timespan` field, the timespan will be the intersection of the two values.
+It's best practice to always query with a timespan (type `TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Log queries uses the ISO8601 Time Interval Standard. All time should be represented in UTC. If the timespan is included in both the Kusto query string and `Timespan` field, the timespan will be the intersection of the two values.
 
 Use the `NewTimeInterval()` method for easy creation.
 
-Example timespan: [link][example_query_workspace]
+Example [timespan][example_query_workspace]
 
 ## Examples
 
@@ -93,9 +91,9 @@ A workspace ID is required to query logs. To find the workspace ID:
 
 1. If not already made, [create a Log Analytics workspace][create_workspace].
 1. Navigate to your workspace's page in the Azure portal.
-2. From the **Overview** blade, copy the value of the `Workspace ID` property.
+2. From the **Overview** blade, copy the value of the ***Workspace ID*** property.
 
-Example QueryWorkspace: [link][example_query_workspace]
+Example [QueryWorkspace][example_query_workspace]
 
 #### Logs query body structure
 ```
@@ -121,9 +119,11 @@ Results
 ```
 
 ### Batch query
-`QueryBatch` is an advanced method allowing users to execute multiple logs queries in a single request. The method accepts a [BatchRequest](#batch-query-request-structure) and returns a [BatchResponse](#batch-query-result-structure). `QueryBatch` can return results in any order (usually in order of completion/success). Use the `CorrelationID` field to identify the correct response. 
+`QueryBatch` is an advanced method allowing users to execute multiple logs queries in a single request. The method accepts a `BatchRequest` and returns a `BatchResponse`. `QueryBatch` can return results in any order, usually by time it takes each individual query to complete. Use the `CorrelationID` field to identify the correct response. 
 
-Example QueryBatch: [link][example_batch]
+For help formatting a `BatchRequest`, please use the method `NewBatchQueryRequest`.
+
+Example [QueryBatch][example_batch]
 
 #### Batch query request structure
 
@@ -169,13 +169,13 @@ To run the same query against multiple Log Analytics workspaces, add the additio
 
 When multiple workspaces are included in the query, the logs in the result table are not grouped according to the workspace from which it was retrieved.
 
-Example additional workspaces: [link][example_queryworkspace_2]
+Example [additional workspaces][example_queryworkspace_2]
 
 #### Increase wait time, include statistics, include render (visualization)
 
 The `LogsQueryOptions` type is used for advanced logs options.
 
-By default, the Azure Monitor Query service will run your query for up to three minutes. To increase the default timeout, set `LogsQueryOptions.Wait` to desired number of seconds. Max wait time the service will allow is ten minutes (600 seconds).
+By default, your query will run for up to three minutes. To increase the default timeout, set `LogsQueryOptions.Wait` to the desired number of seconds. The maximum wait time the service will allow is ten minutes (600 seconds).
 
 To get logs query execution statistics, such as CPU and memory consumption, set `LogsQueryOptions.Statistics` to `true`.
 
@@ -191,7 +191,7 @@ azquery.LogsClientQueryWorkspaceOptions{
 		}
 ```
 
-Example QueryWorkspace options: [link][example_queryworkspace_2]
+Example [QueryWorkspace options][example_queryworkspace_2]
 
 To do the same with `QueryBatch`, set the values in the `BatchQueryRequest.Headers` map with a key of "prefer".
 
@@ -205,7 +205,7 @@ A resource ID is required to query metrics. To find the resource ID:
 2. From the **Overview** blade, select the **JSON View** link.
 3. In the resulting JSON, copy the value of the `id` property.
 
-Example QueryResource example: [link][example_metrics_queryresource]
+Example [QueryResource][example_metrics_queryresource]
 
 #### Metrics result structure
 ```
@@ -240,13 +240,13 @@ Response
 
 To list the metric definitions for the resource, use the `NewListDefinitionsPager` method.
 
-Example NewListDefinitionsPager: [link][example_metrics_listdefinitions]
+Example [NewListDefinitionsPager][example_metrics_listdefinitions]
 
 #### List Metric Namespaces
 
 To list the metric namespaces for the resource, use the `NewListNamespacesPager` method.
 
-Example NewListNamespacesPager: [link][example_metrics_listnamespaces]
+Example [NewListNamespacesPager][example_metrics_listnamespaces]
 
 ## Troubleshooting
 
@@ -269,12 +269,11 @@ the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_conta
 comments.
 
 <!-- LINKS -->
-[managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [azquery]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
-[azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
-[azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
+[azure_monitor_create_using_portal]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
+[azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/overview
 [context]: https://pkg.go.dev/context
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [create_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
@@ -289,10 +288,12 @@ comments.
 [example_metrics_queryresource]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-MetricsClient.QueryResource
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [kusto_to_sql]: https://learn.microsoft.com/azure/data-explorer/kusto/query/sqlcheatsheet
-https://docs.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces
+[log_workspaces]: https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces
 [log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview
 [log_analytics_workspace_create]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace?tabs=azure-portal
-[metrics]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
+[logs_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs
+[metrics_overview]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
+[service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api
 [time_go]: https://pkg.go.dev/time
 [time_intervals]: https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
 [troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/monitor/azquery/TROUBLESHOOTING.md

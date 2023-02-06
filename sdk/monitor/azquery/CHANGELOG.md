@@ -5,6 +5,9 @@
 ### Breaking Changes
 * Removed `LogsQueryOptions.String()`
 
+### Other Changes
+* Doc and example updates
+
 ## 0.4.0 (2023-01-12)
 
 ### Features Added

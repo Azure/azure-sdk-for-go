@@ -512,7 +512,7 @@ func (client *ServiceClient) SubmitBatch(ctx context.Context, contentLength int6
 	if err != nil {
 		return ServiceClientSubmitBatchResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
 		return ServiceClientSubmitBatchResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.submitBatchHandleResponse(resp)

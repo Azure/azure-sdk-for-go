@@ -10,7 +10,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"net/http"
 	"strconv"
@@ -18,15 +17,19 @@ import (
 	"time"
 )
 
+type BlobBatchOperationType string
+
 const (
-	BatchIdPrefix = "batch_"
-	HttpVersion   = "HTTP/1.1"
-	HttpNewline   = "\r\n"
+	BatchIdPrefix                                    = "batch_"
+	HttpVersion                                      = "HTTP/1.1"
+	HttpNewline                                      = "\r\n"
+	BatchDeleteOperationType  BlobBatchOperationType = "delete"
+	BatchSetTierOperationType BlobBatchOperationType = "set tier"
 )
 
 type BlobBatchBuilder struct {
 	Endpoint    *string
-	Pl          *runtime.Pipeline
+	AuthPolicy  policy.Policy
 	SubRequests []*policy.Request
 }
 
@@ -125,9 +128,11 @@ func CreateBatchRequest(ctx context.Context, bb *BlobBatchBuilder) (string, stri
 	var batchRequest strings.Builder
 
 	for _, req := range bb.SubRequests {
-		resp, err := bb.Pl.Do(req)
-		if err != nil && resp != nil {
-			// TODO: handle error
+		if bb.AuthPolicy != nil {
+			resp, err := bb.AuthPolicy.Do(req)
+			if err != nil && resp != nil {
+				// TODO: handle error
+			}
 		}
 
 		batchRequest.WriteString(createSubReqHeader(&batchID, &contentID))

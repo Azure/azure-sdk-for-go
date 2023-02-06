@@ -363,7 +363,7 @@ directive:
         replace(/Cpk/g, "CPK");
 ```
 
-### Fix up Content-Type header in submit batch request
+### Fix Content-Type header in submit batch request
 
 ``` yaml
 directive:
@@ -374,4 +374,16 @@ directive:
   transform: >-
     return $.
       replace (/req.SetBody\(body\,\s+\"application\/xml\"\)/g, `req.SetBody(body, multipartContentType)`);
+```
+
+### Fix response status code check in submit batch request
+
+``` yaml
+directive:
+- from: zz_service_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/if\s+!runtime\.HasStatusCode\(resp,\s+http\.StatusOK\)\s+\{\n\t\treturn\s+ServiceClientSubmitBatchResponse\{\}\,\s+runtime\.NewResponseError\(resp\)\n\t\}/g, 
+      `if !runtime.HasStatusCode(resp, http.StatusAccepted) {\n\t\treturn ServiceClientSubmitBatchResponse{}, runtime.NewResponseError(resp)\n\t}`);
 ```

@@ -2224,3 +2224,104 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 	_, err = container.NewClientWithNoCredential(sasUrl, nil)
 	_require.Nil(err)
 }
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingSharedKey() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.Delete(bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 10)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotEmpty(resp.RequestID)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingSharedKey() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	var ctrHot, ctrCool = 0, 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 10)
+	_require.Equal(ctrCool, 0)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotEmpty(resp.RequestID)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctrHot = 0
+	ctrCool = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 0)
+	_require.Equal(ctrCool, 10)
+}

@@ -297,10 +297,10 @@ func (s *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOp
 }
 
 // NewBatchBuilder creates an instance of BatchBuilder using the same auth policy as the client.
-// BatchBuilder is used to build the batch consisting of delete or set tier sub-requests or both.
+// BatchBuilder is used to build the batch consisting of either delete or set tier sub-requests.
+// All sub-requests in the batch must be of the same type, either delete or set tier.
 // NOTE: Service level Blob Batch operation is supported only when the Client was created using SharedKeyCredential and Account SAS.
 func (s *Client) NewBatchBuilder() (*BatchBuilder, error) {
-	conOptions := new(ClientOptions)
 	var authPolicy policy.Policy
 
 	switch cred := s.credential().(type) {
@@ -315,23 +315,19 @@ func (s *Client) NewBatchBuilder() (*BatchBuilder, error) {
 		panic(fmt.Sprintf("unrecognised authentication type %T", cred))
 	}
 
-	if authPolicy != nil {
-		conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	}
-
-	// Use an empty transport so requests aren't sent
-	conOptions.Transport = shared.NewEmptyTransportPolicy()
-
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
-
 	return &BatchBuilder{
-		endpoint: s.URL(),
-		pipeline: pl,
+		endpoint:   s.URL(),
+		authPolicy: authPolicy,
 	}, nil
 }
 
 // Delete operation is used to add delete sub-request to the batch builder.
 func (bb *BatchBuilder) Delete(containerName string, blobName string, options *BatchDeleteOptions) error {
+	err := bb.checkOperationType(shared.BatchDeleteOperationType)
+	if err != nil {
+		return err
+	}
+
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(bb.endpoint, containerName, blobName)
 
@@ -355,6 +351,11 @@ func (bb *BatchBuilder) Delete(containerName string, blobName string, options *B
 
 // SetTier operation is used to add set tier sub-request to the batch builder.
 func (bb *BatchBuilder) SetTier(containerName string, blobName string, accessTier blob.AccessTier, options *BatchSetTierOptions) error {
+	err := bb.checkOperationType(shared.BatchSetTierOperationType)
+	if err != nil {
+		return err
+	}
+
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(bb.endpoint, containerName, blobName)
 
@@ -388,7 +389,7 @@ func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	// create the request body
 	batchReq, batchID, err := shared.CreateBatchRequest(ctx, &shared.BlobBatchBuilder{
 		Endpoint:    &bb.endpoint,
-		Pl:          &bb.pipeline,
+		AuthPolicy:  bb.authPolicy,
 		SubRequests: bb.subRequests,
 	})
 	if err != nil {

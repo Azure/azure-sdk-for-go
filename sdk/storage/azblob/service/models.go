@@ -7,13 +7,15 @@
 package service
 
 import (
+	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"time"
 )
 
@@ -301,11 +303,24 @@ func (o *FilterBlobsOptions) format() *generated.ServiceClientFilterBlobsOptions
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// BatchBuilder is used for creating the batch operations list. It contains the list of delete and set tier sub-requests.
+// BatchBuilder is used for creating the batch operations list. It contains the list of either delete or set tier sub-requests.
+// NOTE: All sub-requests in the batch must be of the same type, either delete or set tier.
 type BatchBuilder struct {
-	endpoint    string
-	pipeline    runtime.Pipeline
-	subRequests []*policy.Request
+	endpoint      string
+	authPolicy    policy.Policy
+	subRequests   []*policy.Request
+	operationType *shared.BlobBatchOperationType
+}
+
+func (bb *BatchBuilder) checkOperationType(operationType shared.BlobBatchOperationType) error {
+	if bb.operationType == nil {
+		bb.operationType = &operationType
+		return nil
+	}
+	if *bb.operationType != operationType {
+		return errors.New(fmt.Sprintf("BlobBatch only supports one operation type per batch and is already being used for %s operations.", *bb.operationType))
+	}
+	return nil
 }
 
 // BatchDeleteOptions contains the optional parameters for the BatchBuilder.Delete method.

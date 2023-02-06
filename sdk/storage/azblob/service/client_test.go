@@ -666,7 +666,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
+func (s *ServiceRecordedTestsSuite) TestSASServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -720,7 +720,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
+func (s *ServiceRecordedTestsSuite) TestSASServiceClientNoKey() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 
@@ -756,7 +756,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
 	_require.Error(err, "SAS can only be signed with a SharedKeyCredential")
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
+func (s *ServiceRecordedTestsSuite) TestSASServiceClientSignNegative() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 
@@ -789,7 +789,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
 	start := time.Now().Add(-time.Hour)
 	expiry := time.Time{}
 	_, err = serviceClient.GetSASURL(resources, permissions, services, expiry, &service.GetSASURLOptions{StartTime: &start})
-	_require.Error(err, "account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
+	_require.Equal(err, "account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
@@ -1038,7 +1038,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 	_require.Nil(err)
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestAccountGetStatistics() {
+func (s *ServiceRecordedTestsSuite) TestAccountGetStatistics() {
 	_require := require.New(s.T())
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")

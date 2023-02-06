@@ -16,7 +16,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -172,4 +174,35 @@ func EnableStdoutLogging() func() {
 		_ = cleanupLogs()
 		<-doneCh
 	}
+}
+
+func RequireClose(t *testing.T, closeable interface {
+	Close(ctx context.Context) error
+}) {
+	err := closeable.Close(context.Background())
+	require.NoError(t, err)
+}
+
+func RequireLinksClose(t *testing.T, closeable interface {
+	Close(ctx context.Context, permanent bool) error
+}) {
+	err := closeable.Close(context.Background(), true)
+	require.NoError(t, err)
+}
+
+func RequireNSClose(t *testing.T, closeable interface {
+	Close(permanent bool) error
+}) {
+	err := closeable.Close(true)
+	require.NoError(t, err)
+}
+
+func MustAMQPUUID() amqp.UUID {
+	id, err := uuid.New()
+
+	if err != nil {
+		panic(err)
+	}
+
+	return amqp.UUID(id)
 }

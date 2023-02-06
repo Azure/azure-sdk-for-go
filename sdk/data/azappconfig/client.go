@@ -150,6 +150,7 @@ func fromGeneratedAdd(g generated.AzureAppConfigurationClientPutKeyValueResponse
 type AddSettingOptions struct {
 	// Configuration setting label.
 	Label *string
+
 	// Configuration setting content type.
 	ContentType *string
 }
@@ -397,6 +398,7 @@ func fromGeneratedSet(g generated.AzureAppConfigurationClientPutKeyValueResponse
 type SetSettingOptions struct {
 	// Configuration setting label.
 	Label *string
+
 	// Configuration setting content type.
 	ContentType *string
 

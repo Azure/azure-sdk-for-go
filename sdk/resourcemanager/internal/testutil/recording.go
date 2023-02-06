@@ -131,9 +131,9 @@ func GenerateAlphaNumericID(t *testing.T, prefix string, length int) string {
 				recordingRandomSeed = time.Now().Unix()
 			}
 		}
-		rand.Seed(recordingRandomSeed)
+		rand.NewSource(recordingRandomSeed)
 	} else {
-		rand.Seed(time.Now().Unix())
+		rand.NewSource(time.Now().Unix())
 	}
 	b := make([]rune, length)
 	for i := range b {

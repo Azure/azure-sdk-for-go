@@ -764,7 +764,6 @@ func (client *ContainerClient) getPropertiesHandleResponse(resp *http.Response) 
 // Generated from API version 2020-10-02
 //   - options - ContainerClientListBlobFlatSegmentOptions contains the optional parameters for the ContainerClient.NewListBlobFlatSegmentPager
 //     method.
-//
 // listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request.
 func (client *ContainerClient) ListBlobFlatSegmentCreateRequest(ctx context.Context, options *ContainerClientListBlobFlatSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
@@ -1459,7 +1458,7 @@ func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, con
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, req.SetBody(body, "application/xml")
+	return req, req.SetBody(body, multipartContentType)
 }
 
 // submitBatchHandleResponse handles the SubmitBatch response.

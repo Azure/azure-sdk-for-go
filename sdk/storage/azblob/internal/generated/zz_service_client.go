@@ -386,7 +386,6 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 // Generated from API version 2020-10-02
 //   - options - ServiceClientListContainersSegmentOptions contains the optional parameters for the ServiceClient.NewListContainersSegmentPager
 //     method.
-//
 // listContainersSegmentCreateRequest creates the ListContainersSegment request.
 func (client *ServiceClient) ListContainersSegmentCreateRequest(ctx context.Context, options *ServiceClientListContainersSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
@@ -539,7 +538,7 @@ func (client *ServiceClient) submitBatchCreateRequest(ctx context.Context, conte
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, req.SetBody(body, "application/xml")
+	return req, req.SetBody(body, multipartContentType)
 }
 
 // submitBatchHandleResponse handles the SubmitBatch response.

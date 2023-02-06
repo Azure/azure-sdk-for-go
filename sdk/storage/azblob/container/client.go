@@ -7,8 +7,11 @@
 package container
 
 import (
+	"bytes"
 	"context"
+	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"net/http"
 	"net/url"
@@ -105,6 +108,11 @@ func (c *Client) sharedKey() *SharedKeyCredential {
 
 func (c *Client) credential() any {
 	return base.Credential((*base.Client[generated.ContainerClient])(c))
+}
+
+// helper method to return the generated.BlobClient which is used for creating the sub-requests
+func getGeneratedBlobClient(b *blob.Client) *generated.BlobClient {
+	return base.InnerClient((*base.Client[generated.BlobClient])(b))
 }
 
 // URL returns the URL endpoint used by the Client object.
@@ -340,29 +348,25 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Tim
 func (c *Client) NewBatchBuilder() (*BatchBuilder, error) {
 	conOptions := new(ClientOptions)
 	var authPolicy policy.Policy
-	var err error
 
 	switch cred := c.credential().(type) {
 	case *azcore.TokenCredential:
-		authPolicy, err = getTokenCredentialPolicy(cred)
+		authPolicy = runtime.NewBearerTokenPolicy(*cred, []string{shared.TokenScope}, nil)
 	case *SharedKeyCredential:
-		authPolicy, err = getSharedKeyCredentialPolicy(cred)
+		authPolicy = exported.NewSharedKeyCredPolicy(cred)
 	case nil:
 		// for authentication using SAS
-		authPolicy, err = nil, nil
+		authPolicy = nil
 	default:
 		panic(fmt.Sprintf("unrecognised authentication type %T", cred))
 	}
 
-	if err != nil {
-		return nil, err
-	}
 	if authPolicy != nil {
 		conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	}
 
-	// TODO: Use an empty transport so requests aren't sent
-	conOptions.Transport = nil
+	// Use an empty transport so requests aren't sent
+	conOptions.Transport = shared.NewEmptyTransportPolicy()
 
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
@@ -372,21 +376,49 @@ func (c *Client) NewBatchBuilder() (*BatchBuilder, error) {
 	}, nil
 }
 
-func getTokenCredentialPolicy(cred *azcore.TokenCredential) (policy.Policy, error) {
-	return runtime.NewBearerTokenPolicy(*cred, []string{shared.TokenScope}, nil), nil
-}
-
-func getSharedKeyCredentialPolicy(cred *SharedKeyCredential) (policy.Policy, error) {
-	return exported.NewSharedKeyCredPolicy(cred), nil
-}
-
 // Delete operation is used to add delete sub-request to the batch builder.
 func (bb *BatchBuilder) Delete(blobName string, options *BatchDeleteOptions) error {
+	blobName = url.PathEscape(blobName)
+	blobURL := runtime.JoinPaths(bb.endpoint, blobName)
+
+	blobClient, err := blob.NewClientWithNoCredential(blobURL, nil)
+	if err != nil {
+		return err
+	}
+
+	deleteOptions, leaseInfo, accessConditions := options.format()
+	req, err := getGeneratedBlobClient(blobClient).DeleteCreateRequest(context.TODO(), deleteOptions, leaseInfo, accessConditions)
+	if err != nil {
+		return err
+	}
+
+	// update the sub-request headers. Add x-ms-date and remove x-ms-version header
+	shared.UpdateSubRequestHeaders(req)
+
+	bb.subRequests = append(bb.subRequests, req)
 	return nil
 }
 
 // SetTier operation is used to add set tier sub-request to the batch builder.
 func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, options *BatchSetTierOptions) error {
+	blobName = url.PathEscape(blobName)
+	blobURL := runtime.JoinPaths(bb.endpoint, blobName)
+
+	blobClient, err := blob.NewClientWithNoCredential(blobURL, nil)
+	if err != nil {
+		return err
+	}
+
+	setTierOptions, leaseInfo, accessConditions := options.format()
+	req, err := getGeneratedBlobClient(blobClient).SetTierCreateRequest(context.TODO(), accessTier, setTierOptions, leaseInfo, accessConditions)
+	if err != nil {
+		return err
+	}
+
+	// update the sub-request headers. Add x-ms-date and remove x-ms-version header
+	shared.UpdateSubRequestHeaders(req)
+
+	bb.subRequests = append(bb.subRequests, req)
 	return nil
 }
 
@@ -395,5 +427,25 @@ func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, opt
 // BatchBuilder contains the list of operations to be submitted. It supports up to 256 sub-requests in a single batch.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/blob-batch.
 func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *SubmitBatchOptions) (SubmitBatchResponse, error) {
-	return SubmitBatchResponse{}, nil
+	if bb == nil {
+		return SubmitBatchResponse{}, errors.New("batch builder is empty")
+	}
+
+	// create the request body
+	batchReq, batchID, err := shared.CreateBatchRequest(ctx, &shared.BlobBatchBuilder{
+		Endpoint:    &bb.endpoint,
+		Pl:          &bb.pipeline,
+		SubRequests: bb.subRequests,
+	})
+	if err != nil {
+		return SubmitBatchResponse{}, err
+	}
+
+	reader := bytes.NewReader([]byte(batchReq))
+	rsc := streaming.NopCloser(reader)
+	multipartContentType := "multipart/mixed; boundary=" + batchID
+	resp, err := c.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
+
+	// TODO: parse the response body to map individual operations to their responses
+	return resp, err
 }

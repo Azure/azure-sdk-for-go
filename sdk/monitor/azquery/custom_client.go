@@ -160,7 +160,7 @@ type LogsQueryOptions struct {
 	Wait *int
 }
 
-// preferHeader converts LogsQueryOptions from struct to properly formatting sting
+// preferHeader converts LogsQueryOptions from struct to properly formatted sting
 // to be used in the request Prefer Header
 func (l LogsQueryOptions) preferHeader() string {
 	var options []string

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2-7-23)
+## 1.0.0 (2023-02-07)
 
 ### Breaking Changes
 * Removed `LogsQueryOptions.String()`

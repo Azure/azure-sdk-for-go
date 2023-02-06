@@ -6,7 +6,7 @@
 
 package azadmin_test
 
-/*import (
+import (
 	"context"
 	"os"
 	"strings"
@@ -40,10 +40,12 @@ func TestBackupRestore(t *testing.T) {
 	// restore the backup
 	s := *backupResults.AzureStorageBlobContainerURI
 	folderURI := s[strings.LastIndex(s, "/")+1:]
-	restorePoller, err := client.BeginFullRestore(context.Background(), azadmin.RestoreOperationParameters{
+	restoreOperationParameters := azadmin.RestoreOperationParameters{
 		FolderToRestore:    &folderURI,
 		SasTokenParameters: &sasToken,
-	}, nil)
+	}
+	testSerde(t, &restoreOperationParameters)
+	restorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
 	require.NoError(t, err)
 	restoreResults, err := restorePoller.PollUntilDone(context.Background(), nil)
 	require.NoError(t, err)
@@ -52,10 +54,11 @@ func TestBackupRestore(t *testing.T) {
 	require.NotNil(t, restoreResults.StartTime)
 	require.NotNil(t, restoreResults.EndTime)
 	require.NotNil(t, restoreResults.JobID)
+	testSerde(t, &restoreResults)
 }
 
 func TestBackupRestoreWithResumeToken(t *testing.T) {
 }
 
 func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
-}*/
+}

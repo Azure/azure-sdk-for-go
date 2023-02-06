@@ -122,27 +122,9 @@ A `BeginFullRestoreOperation` represents a long running operation for both a ful
 
 ## Examples
 
-The following section provides several code snippets using the `client` created above for either [access control](#create-keyvaultaccesscontrolclient) or [backup](#create-keyvaultbackupclient) clients, covering some of the most common Azure Key Vault access control related tasks:
-
-* Access control
-  * [Listing All Role Definitions]
-  * [Listing All Role Assignments]
-  * [Creating a Role Assignment]
-  * [Getting a Role Assignment]
-  * [Deleting a Role Assignment]
-
-* Backup
-  * [Performing a full key backup]
-  * [Performing a full key restore]
-
-* Settings
-  * [Getting a Setting]
-  * [Getting all settings]
-  * [Update a Setting]
+Get started with our [examples][azadmin_examples].
 
 ## Troubleshooting
-
-See our [troubleshooting guide] for details on how to diagnose various failure scenarios.
 
 ### Error Handling
 
@@ -211,6 +193,7 @@ additional questions or comments.
 <!-- LINKS -->
 [access_control]: https://learn.microsoft.com/azure/key-vault/managed-hsm/access-control
 [access_policy]: https://learn.microsoft.com/azure/key-vault/general/assign-access-policy
+[azadmin_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin#pkg-examples
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [rbac_guide]: https://learn.microsoft.com/azure/key-vault/general/rbac-guide
 [azure_cli]: https://learn.microsoft.com/cli/azure

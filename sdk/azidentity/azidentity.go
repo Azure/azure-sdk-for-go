@@ -45,6 +45,12 @@ const (
 	tenantIDValidationErr   = "invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"
 )
 
+var (
+	// capability CP1 indicates the client application is capable of handling CAE claims challenges
+	cp1        = []string{"CP1"}
+	disableCP1 = strings.ToLower(os.Getenv("AZURE_IDENTITY_DISABLE_CP1")) == "true"
+)
+
 var getConfidentialClient = func(clientID, tenantID string, cred confidential.Credential, co *azcore.ClientOptions, additionalOpts ...confidential.Option) (confidentialClient, error) {
 	if !validTenantID(tenantID) {
 		return confidential.Client{}, errors.New(tenantIDValidationErr)
@@ -57,6 +63,9 @@ var getConfidentialClient = func(clientID, tenantID string, cred confidential.Cr
 		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
 		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
 		confidential.WithHTTPClient(newPipelineAdapter(co)),
+	}
+	if !disableCP1 {
+		o = append(o, confidential.WithClientCapabilities(cp1))
 	}
 	o = append(o, additionalOpts...)
 	if strings.ToLower(tenantID) == "adfs" {
@@ -73,10 +82,12 @@ var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions, 
 	if err != nil {
 		return public.Client{}, err
 	}
-
 	o := []public.Option{
 		public.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
 		public.WithHTTPClient(newPipelineAdapter(co)),
+	}
+	if !disableCP1 {
+		o = append(o, public.WithClientCapabilities(cp1))
 	}
 	o = append(o, additionalOpts...)
 	if strings.ToLower(tenantID) == "adfs" {

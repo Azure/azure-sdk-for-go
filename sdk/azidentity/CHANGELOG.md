@@ -3,6 +3,10 @@
 ## 1.3.0-beta.3 (Unreleased)
 
 ### Features Added
+* By default, credentials set client capability "CP1" to enable support for
+  [Continuous Access Evaluation (CAE)](https://docs.microsoft.com/azure/active-directory/develop/app-resilience-continuous-access-evaluation).
+  This indicates to Azure Active Directory that your application can handle CAE claims challenges.
+  You can disable this behavior by setting the environment variable "AZURE_IDENTITY_DISABLE_CP1" to "true".
 * `InteractiveBrowserCredentialOptions.LoginHint` enables pre-populating the login
   prompt with a username ([#15599](https://github.com/Azure/azure-sdk-for-go/pull/15599))
 

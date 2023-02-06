@@ -81,13 +81,13 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, confidential.WithTenantID(tenant))
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, confidential.WithClaims(opts.Claims), confidential.WithTenantID(tenant))
 	if err == nil {
 		logGetTokenSuccess(c, opts)
 		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
-	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes, confidential.WithTenantID(tenant))
+	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes, confidential.WithClaims(opts.Claims), confidential.WithTenantID(tenant))
 	if err != nil {
 		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameCert, err)
 	}

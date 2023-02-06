@@ -68,12 +68,16 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.T
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account), public.WithTenantID(tenant))
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
+		public.WithClaims(opts.Claims),
+		public.WithSilentAccount(c.account),
+		public.WithTenantID(tenant),
+	)
 	if err == nil {
 		logGetTokenSuccess(c, opts)
 		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
-	ar, err = c.client.AcquireTokenByUsernamePassword(ctx, opts.Scopes, c.username, c.password, public.WithTenantID(tenant))
+	ar, err = c.client.AcquireTokenByUsernamePassword(ctx, opts.Scopes, c.username, c.password, public.WithClaims(opts.Claims), public.WithTenantID(tenant))
 	if err != nil {
 		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameUserPassword, err)
 	}

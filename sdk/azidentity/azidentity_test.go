@@ -11,7 +11,6 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -136,16 +135,20 @@ func getTenantDiscoveryResponse(tenant string) []byte {
 
 func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate {
 	return func(req *http.Request) bool {
-		body, err := io.ReadAll(req.Body)
+		err := req.ParseForm()
 		if err != nil {
-			t.Fatal("Expected a request with the JWT in the body.")
+			t.Fatal("expected a form body")
 		}
-		bodystr := string(body)
-		kvps := strings.Split(bodystr, "&")
-		assertion := strings.Split(kvps[0], "=")
-		token, _ := jwt.Parse(assertion[1], nil)
+		assertion, ok := req.PostForm["client_assertion"]
+		if !ok {
+			t.Fatal("expected a client_assertion field")
+		}
+		if len(assertion) != 1 {
+			t.Fatalf(`unexpected client_assertion "%v"`, assertion)
+		}
+		token, _ := jwt.Parse(assertion[0], nil)
 		if token == nil {
-			t.Fatalf("Failed to parse the JWT token: %s.", assertion[1])
+			t.Fatalf("failed to parse the assertion: %s", assertion)
 		}
 		if v, ok := token.Header["x5c"].([]any); !ok {
 			t.Fatal("missing x5c header")
@@ -522,6 +525,107 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				t.Fatal("AzureCLICredential wasn't invoked")
 			}
 		})
+	}
+}
+
+func TestClaims(t *testing.T) {
+	realCP1 := disableCP1
+	t.Cleanup(func() { disableCP1 = realCP1 })
+	claim := `"test":"pass"`
+	for _, test := range []struct {
+		ctor func(azcore.ClientOptions) (azcore.TokenCredential, error)
+		name string
+	}{
+		{
+			name: credNameAssertion,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := ClientAssertionCredentialOptions{ClientOptions: co}
+				return NewClientAssertionCredential(fakeTenantID, fakeClientID, func(context.Context) (string, error) { return "...", nil }, &o)
+			},
+		},
+		{
+			name: credNameCert,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := ClientCertificateCredentialOptions{ClientOptions: co}
+				return NewClientCertificateCredential(fakeTenantID, fakeClientID, allCertTests[0].certs, allCertTests[0].key, &o)
+			},
+		},
+		{
+			name: credNameDeviceCode,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := DeviceCodeCredentialOptions{
+					ClientOptions: co,
+					UserPrompt:    func(context.Context, DeviceCodeMessage) error { return nil },
+				}
+				return NewDeviceCodeCredential(&o)
+			},
+		},
+		{
+			name: credNameOBO,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := OnBehalfOfCredentialOptions{ClientOptions: co}
+				return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
+			},
+		},
+		{
+			name: credNameSecret,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := ClientSecretCredentialOptions{ClientOptions: co}
+				return NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, &o)
+			},
+		},
+		{
+			name: credNameUserPassword,
+			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+				o := UsernamePasswordCredentialOptions{ClientOptions: co}
+				return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", &o)
+			},
+		},
+	} {
+		for _, d := range []bool{true, false} {
+			name := test.name
+			if d {
+				name += " disableCP1"
+			}
+			t.Run(name, func(t *testing.T) {
+				disableCP1 = d
+				reqs := 0
+				sts := mockSTS{
+					tokenRequestCallback: func(r *http.Request) {
+						if err := r.ParseForm(); err != nil {
+							t.Error(err)
+						}
+						reqs++
+						// If the disableCP1 flag isn't set, both requests should specify CP1. The second
+						// GetToken call specifies claims we should find in the following token request.
+						// We check only for substrings because MSAL is responsible for formatting claims.
+						actual := fmt.Sprint(r.Form["claims"])
+						if strings.Contains(actual, "CP1") == disableCP1 {
+							t.Fatalf(`unexpected claims "%v"`, actual)
+						}
+						if reqs == 2 {
+							if !strings.Contains(strings.ReplaceAll(actual, " ", ""), claim) {
+								t.Fatalf(`unexpected claims "%v"`, actual)
+							}
+						}
+					},
+				}
+				o := azcore.ClientOptions{Transport: &sts}
+				cred, err := test.ctor(o)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"A"}}); err != nil {
+					t.Fatal(err)
+				}
+				if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Claims: fmt.Sprintf("{%s}", claim), Scopes: []string{"B"}}); err != nil {
+					t.Fatal(err)
+				}
+				if reqs != 2 {
+					t.Fatalf("expected %d token requests, got %d", 2, reqs)
+				}
+			})
+		}
 	}
 }
 

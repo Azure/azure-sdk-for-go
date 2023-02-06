@@ -414,24 +414,34 @@ func Example_container_SubmitBatch() {
 	handleError(err)
 
 	// add operations to the batch builder
-	bb.Delete("testBlob0", nil)
-	bb.Delete("testBlob1", &container.BatchDeleteOptions{
+	err = bb.Delete("testBlob0", nil)
+	handleError(err)
+
+	err = bb.Delete("testBlob1", &container.BatchDeleteOptions{
 		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"), // version id for deletion
 	})
-	bb.Delete("testBlob2", &container.BatchDeleteOptions{
+	handleError(err)
+
+	err = bb.Delete("testBlob2", &container.BatchDeleteOptions{
 		Snapshot: to.Ptr("2023-01-03T11:57:25.6515618Z"), // snapshot for deletion
 	})
-	bb.Delete("testBlob3", &container.BatchDeleteOptions{
+	handleError(err)
+
+	err = bb.Delete("testBlob3", &container.BatchDeleteOptions{
 		DeleteOptions: &blob.DeleteOptions{
 			DeleteSnapshots: to.Ptr(blob.DeleteSnapshotsOptionTypeOnly),
 			BlobDeleteType:  to.Ptr(blob.DeleteTypeNone),
 		},
 	})
+	handleError(err)
 
-	bb.SetTier("testBlob4", blob.AccessTierHot, nil)
-	bb.SetTier("testBlob5", blob.AccessTierCool, &container.BatchSetTierOptions{
+	err = bb.SetTier("testBlob4", blob.AccessTierHot, nil)
+	handleError(err)
+
+	err = bb.SetTier("testBlob5", blob.AccessTierCool, &container.BatchSetTierOptions{
 		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"),
 	})
+	handleError(err)
 
 	resp, err := cntBatchClient.SubmitBatch(context.TODO(), bb, nil)
 	handleError(err)

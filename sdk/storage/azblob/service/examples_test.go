@@ -384,24 +384,34 @@ func Example_service_SubmitBatch() {
 	handleError(err)
 
 	// add operations to the batch builder
-	bb.Delete("cnt1", "testBlob0", nil)
-	bb.Delete("cnt1", "testBlob1", &service.BatchDeleteOptions{
+	err = bb.Delete("cnt1", "testBlob0", nil)
+	handleError(err)
+
+	err = bb.Delete("cnt1", "testBlob1", &service.BatchDeleteOptions{
 		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"), // version id for deletion
 	})
-	bb.Delete("cnt2", "testBlob2", &service.BatchDeleteOptions{
+	handleError(err)
+
+	err = bb.Delete("cnt2", "testBlob2", &service.BatchDeleteOptions{
 		Snapshot: to.Ptr("2023-01-03T11:57:25.6515618Z"), // snapshot for deletion
 	})
-	bb.Delete("cnt2", "testBlob3", &service.BatchDeleteOptions{
+	handleError(err)
+
+	err = bb.Delete("cnt2", "testBlob3", &service.BatchDeleteOptions{
 		DeleteOptions: &blob.DeleteOptions{
 			DeleteSnapshots: to.Ptr(blob.DeleteSnapshotsOptionTypeOnly),
 			BlobDeleteType:  to.Ptr(blob.DeleteTypeNone),
 		},
 	})
+	handleError(err)
 
-	bb.SetTier("cnt3", "testBlob4", blob.AccessTierHot, nil)
-	bb.SetTier("cnt4", "testBlob5", blob.AccessTierCool, &service.BatchSetTierOptions{
+	err = bb.SetTier("cnt3", "testBlob4", blob.AccessTierHot, nil)
+	handleError(err)
+
+	err = bb.SetTier("cnt4", "testBlob5", blob.AccessTierCool, &service.BatchSetTierOptions{
 		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"),
 	})
+	handleError(err)
 
 	resp, err := svcBatchClient.SubmitBatch(context.TODO(), bb, nil)
 	handleError(err)

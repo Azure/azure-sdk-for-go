@@ -4,6 +4,7 @@
 
 ### Breaking Changes
 * Removed `LogsQueryOptions.String()`
+* Fix casing on some metrics fields
 
 ### Other Changes
 * Doc and example updates

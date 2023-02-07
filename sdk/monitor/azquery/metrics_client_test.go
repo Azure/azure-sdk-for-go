@@ -44,13 +44,13 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	res, err := client.QueryResource(context.Background(), resourceURI,
 		&azquery.MetricsClientQueryResourceOptions{Timespan: to.Ptr(timespan),
 			Interval:        to.Ptr("PT1M"),
-			Metricnames:     nil,
+			MetricNames:     nil,
 			Aggregation:     to.Ptr("Average,count"),
 			Top:             nil,
-			Orderby:         to.Ptr("Average asc"),
+			OrderBy:         to.Ptr("Average asc"),
 			Filter:          nil,
 			ResultType:      nil,
-			Metricnamespace: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
+			MetricNamespace: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 		})
 	require.NoError(t, err)
 	require.NotNil(t, res.Response.Timespan)
@@ -60,7 +60,7 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	testSerde(t, &res)
 	testSerde(t, res.Value[0])
 	testSerde(t, res.Value[0].Name)
-	testSerde(t, res.Value[0].Timeseries[0])
+	testSerde(t, res.Value[0].TimeSeries[0])
 	//testSerde(t, res.Response.Value[0].Timeseries[0].Metadatavalues[0])
 }
 
@@ -80,7 +80,7 @@ func TestQueryResource_BasicQueryFailure(t *testing.T) {
 	require.Nil(t, res.Cost)
 	require.Nil(t, res.Interval)
 	require.Nil(t, res.Namespace)
-	require.Nil(t, res.Resourceregion)
+	require.Nil(t, res.ResourceRegion)
 
 	testSerde(t, &res)
 }

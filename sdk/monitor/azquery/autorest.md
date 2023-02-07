@@ -68,6 +68,26 @@ directive:
       from: MetricNamespaces_List
       to: Metrics_ListNamespaces
 
+  # rename some metrics fields
+  - from: swagger-document
+    where: $.definitions.Metric.properties.timeseries
+    transform: $["x-ms-client-name"] = "TimeSeries"
+  - from: swagger-document
+    where: $.definitions.TimeSeriesElement.properties.metadatavalues
+    transform: $["x-ms-client-name"] = "MetadataValues"
+  - from: swagger-document
+    where: $.definitions.Response.properties.resourceregion
+    transform: $["x-ms-client-name"] = "ResourceRegion"
+  - from: swagger-document
+    where: $.parameters.MetricNamespaceParameter
+    transform: $["x-ms-client-name"] = "MetricNamespace"
+  - from: swagger-document
+    where: $.parameters.MetricNamesParameter
+    transform: $["x-ms-client-name"] = "MetricNames"
+  - from: swagger-document
+    where: $.parameters.OrderByParameter
+    transform: $["x-ms-client-name"] = "OrderBy"
+
   # rename Body.Workspaces to Body.AdditionalWorkspaces
   - from: swagger-document
     where: $.definitions.queryBody.properties.workspaces

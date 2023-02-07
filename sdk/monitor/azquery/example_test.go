@@ -193,13 +193,13 @@ func ExampleMetricsClient_QueryResource() {
 		&azquery.MetricsClientQueryResourceOptions{
 			Timespan:        to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
 			Interval:        to.Ptr("PT1M"),
-			Metricnames:     nil,
+			MetricNames:     nil,
 			Aggregation:     to.Ptr("Average,count"),
 			Top:             to.Ptr[int32](3),
-			Orderby:         to.Ptr("Average asc"),
+			OrderBy:         to.Ptr("Average asc"),
 			Filter:          to.Ptr("BlobType eq '*'"),
 			ResultType:      nil,
-			Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+			MetricNamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 		})
 	if err != nil {
 		//TODO: handle error
@@ -208,7 +208,7 @@ func ExampleMetricsClient_QueryResource() {
 }
 
 func ExampleMetricsClient_NewListDefinitionsPager() {
-	pager := metricsClient.NewListDefinitionsPager(resourceURI, &azquery.MetricsClientListDefinitionsOptions{Metricnamespace: to.Ptr("microsoft.insights/components")})
+	pager := metricsClient.NewListDefinitionsPager(resourceURI, &azquery.MetricsClientListDefinitionsOptions{MetricNamespace: to.Ptr("microsoft.insights/components")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(context.TODO())
 		if err != nil {

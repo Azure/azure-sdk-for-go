@@ -561,7 +561,7 @@ func (s *UnrecordedTestSuite) TestSASQueueClient2() {
 	start := time.Now().Add(-5 * time.Minute).UTC()
 	opts := azqueue.GetSASURLOptions{StartTime: &start}
 
-	sasUrlReadAdd, err := queueClient.GetSASURL(sas.QueuePermissions{Read: true, Add: true}, time.Now().Add(time.Hour), &opts)
+	sasUrlReadAdd, err := queueClient.GetSASURL(sas.QueuePermissions{Add: true}, time.Now().Add(time.Hour), &opts)
 	_require.Nil(err)
 	_, err = queueClient.Create(context.Background(), &azqueue.CreateOptions{Metadata: testcommon.BasicMetadata})
 	_require.Nil(err)

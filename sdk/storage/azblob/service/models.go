@@ -73,11 +73,11 @@ type DeleteContainerOptions = container.DeleteOptions
 // RestoreContainerOptions contains the optional parameters for the container.Client.Restore method.
 type RestoreContainerOptions = container.RestoreOptions
 
-// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
+// CORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
 // domain. Web browsers implement a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
 // domain) to call APIs in another domain.
-type CorsRule = generated.CorsRule
+type CORSRule = generated.CORSRule
 
 // FilterBlobSegment - The result of a Filter Blobs API call.
 type FilterBlobSegment = generated.FilterBlobSegment
@@ -167,7 +167,7 @@ type ListContainersInclude struct {
 // SetPropertiesOptions provides set of options for Client.SetProperties
 type SetPropertiesOptions struct {
 	// The set of CORS rules.
-	Cors []*CorsRule
+	CORS []*CORSRule
 
 	// The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible
 	// values include version 2008-10-27 and all more recent versions.
@@ -201,16 +201,16 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 	defaultAge := to.Ptr[int32](0)
 	emptyStr := to.Ptr[string]("")
 
-	if o.Cors != nil {
-		for i := 0; i < len(o.Cors); i++ {
-			if o.Cors[i].AllowedHeaders == nil {
-				o.Cors[i].AllowedHeaders = emptyStr
+	if o.CORS != nil {
+		for i := 0; i < len(o.CORS); i++ {
+			if o.CORS[i].AllowedHeaders == nil {
+				o.CORS[i].AllowedHeaders = emptyStr
 			}
-			if o.Cors[i].ExposedHeaders == nil {
-				o.Cors[i].ExposedHeaders = emptyStr
+			if o.CORS[i].ExposedHeaders == nil {
+				o.CORS[i].ExposedHeaders = emptyStr
 			}
-			if o.Cors[i].MaxAgeInSeconds == nil {
-				o.Cors[i].MaxAgeInSeconds = defaultAge
+			if o.CORS[i].MaxAgeInSeconds == nil {
+				o.CORS[i].MaxAgeInSeconds = defaultAge
 			}
 		}
 	}
@@ -235,7 +235,7 @@ func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *ge
 	}
 
 	return generated.StorageServiceProperties{
-		Cors:                  o.Cors,
+		CORS:                  o.CORS,
 		DefaultServiceVersion: o.DefaultServiceVersion,
 		DeleteRetentionPolicy: o.DeleteRetentionPolicy,
 		HourMetrics:           o.HourMetrics,
@@ -253,6 +253,10 @@ type GetSASURLOptions struct {
 }
 
 func (o *GetSASURLOptions) format() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+
 	var st time.Time
 	if o.StartTime != nil {
 		st = o.StartTime.UTC()

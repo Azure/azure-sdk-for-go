@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.3 (Unreleased)
+## 1.3.0-beta.3 (2023-02-07)
 
 ### Features Added
 * By default, credentials set client capability "CP1" to enable support for
@@ -9,12 +9,14 @@
   You can disable this behavior by setting the environment variable "AZURE_IDENTITY_DISABLE_CP1" to "true".
 * `InteractiveBrowserCredentialOptions.LoginHint` enables pre-populating the login
   prompt with a username ([#15599](https://github.com/Azure/azure-sdk-for-go/pull/15599))
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Service principal and user credentials support ADFS authentication on Azure Stack.
+  Specify "adfs" as the credential's tenant.
+* Applications running in private or disconnected clouds can prevent credentials from
+  requesting Azure AD instance metadata by setting the `DisableInstanceDiscovery`
+  field on credential options.
+* Many credentials can now be configured to authenticate in multiple tenants. The
+  options types for these credentials have an `AdditionallyAllowedTenants` field
+  that specifies additional tenants in which the credential may authenticate.
 
 ## 1.3.0-beta.2 (2023-01-10)
 

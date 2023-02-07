@@ -149,6 +149,18 @@ directive:
 
   # update doc comments
   - from: swagger-document
+    where: $.paths["/workspaces/{workspaceId}/query"].post
+    transform: $["description"] = "Executes an Analytics query for data."
+  - from: swagger-document
+    where: $.paths["/$batch"].post
+    transform: $["description"] = "Executes a batch of Analytics queries for data."
+  - from: swagger-document
+    where: $.definitions.queryResults.properties.tables
+    transform: $["description"] = "The results of the query in tabular format."
+  - from: swagger-document
+    where: $.definitions.batchQueryResults.properties.tables
+    transform: $["description"] = "The results of the query in tabular format."
+  - from: swagger-document
     where: $.definitions.queryBody.properties.workspaces
     transform: $["description"] = "A list of workspaces to query in addition to the primary workspace."
   - from: swagger-document

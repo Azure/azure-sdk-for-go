@@ -53,7 +53,7 @@ type BatchQueryResults struct {
 	// Statistics represented in JSON format.
 	Statistics []byte `json:"statistics,omitempty"`
 
-	// The list of tables, columns and rows.
+	// The results of the query in tabular format.
 	Tables []*Table `json:"tables,omitempty"`
 
 	// Visualization data in JSON format.
@@ -332,7 +332,7 @@ type Response struct {
 
 // Results - Contains the tables, columns & rows resulting from a query.
 type Results struct {
-	// REQUIRED; The list of tables, columns and rows.
+	// REQUIRED; The results of the query in tabular format.
 	Tables []*Table `json:"tables,omitempty"`
 
 	// The code and message for an error.

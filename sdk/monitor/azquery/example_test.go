@@ -143,10 +143,10 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	fmt.Println(QueryResults)
 
 	// Print out Statistics
-	fmt.Printf("Statistics: %s", res.Statistics)
+	fmt.Printf("Statistics: %s", string(res.Statistics))
 
 	// Print out Visualization information
-	fmt.Printf("Visualization: %s", res.Visualization)
+	fmt.Printf("Visualization: %s", string(res.Visualization))
 
 }
 
@@ -204,7 +204,16 @@ func ExampleMetricsClient_QueryResource() {
 	if err != nil {
 		//TODO: handle error
 	}
-	_ = res
+
+	// Print out metric name and the time stamps of each metric data point
+	for _, metric := range res.Value {
+		fmt.Println(*metric.Name.Value)
+		for _, timeSeriesElement := range metric.TimeSeries {
+			for _, metricValue := range timeSeriesElement.Data {
+				fmt.Println(metricValue.TimeStamp)
+			}
+		}
+	}
 }
 
 func ExampleMetricsClient_NewListDefinitionsPager() {

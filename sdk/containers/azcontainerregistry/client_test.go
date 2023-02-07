@@ -367,13 +367,13 @@ func TestClient_UpdateRepositoryProperties(t *testing.T) {
 	ctx := context.Background()
 	client, err := NewClient(endpoint, cred, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
-	res, err := client.UpdateRepositoryProperties(ctx, "alpine", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
+	res, err := client.UpdateRepositoryProperties(ctx, "ubuntu", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
 		CanWrite: to.Ptr(false),
 	},
 	})
 	require.NoError(t, err)
 	require.Equal(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite, false)
-	res, err = client.UpdateRepositoryProperties(ctx, "alpine", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
+	res, err = client.UpdateRepositoryProperties(ctx, "ubuntu", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})

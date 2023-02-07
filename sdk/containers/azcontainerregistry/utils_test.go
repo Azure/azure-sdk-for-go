@@ -9,6 +9,7 @@ package azcontainerregistry
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -107,7 +108,16 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 	}
-	if recording.GetRecordMode() != recording.PlaybackMode {
+	if recording.GetRecordMode() == recording.LiveMode {
+		var clientCloud cloud.Configuration
+		if cloudEnv, ok := os.LookupEnv("AZQUERY_ENVIRONMENT"); ok {
+			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
+				clientCloud = cloud.AzureGovernment
+			}
+			if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
+				clientCloud = cloud.AzureChina
+			}
+		}
 		cred, err := azidentity.NewDefaultAzureCredential(nil)
 		if err != nil {
 			panic(err)
@@ -126,8 +136,10 @@ func TestMain(m *testing.M) {
 		}
 
 		ctx := context.Background()
-
-		client, err := armcontainerregistry.NewRegistriesClient(subID, cred, nil)
+		client, err := armcontainerregistry.NewRegistriesClient(subID, cred, &arm.ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: clientCloud}})
+		if err != nil {
+			panic(err)
+		}
 		images := []string{"hello-world:latest", "alpine:3.17.1", "alpine:3.16.3", "alpine:3.15.6", "alpine:3.14.8", "ubuntu:20.04", "nginx:latest"}
 		for _, image := range images {
 			poller, err := client.BeginImportImage(ctx, rg, registryName, armcontainerregistry.ImportImageParameters{
@@ -138,11 +150,9 @@ func TestMain(m *testing.M) {
 				TargetTags: []*string{to.Ptr(image)},
 				Mode:       to.Ptr(armcontainerregistry.ImportModeForce),
 			}, nil)
-
 			if err != nil {
 				panic(err)
 			}
-
 			_, err = poller.PollUntilDone(ctx, nil)
 			if err != nil {
 				panic(err)

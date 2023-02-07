@@ -49,7 +49,7 @@ func getEndpointCredAndClientOptions(t *testing.T) (string, azcore.TokenCredenti
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		cred, err = azidentity.NewDefaultAzureCredential(nil)
 		require.NoError(t, err)
-		if cloudEnv, ok := os.LookupEnv("AZURE_ENVIRONMENT"); ok {
+		if cloudEnv, ok := os.LookupEnv("AZCONTAINERREGISTRY_ENVIRONMENT"); ok {
 			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
 				options.Cloud = cloud.AzureGovernment
 			}
@@ -110,7 +110,7 @@ func TestMain(m *testing.M) {
 	}
 	if recording.GetRecordMode() == recording.LiveMode {
 		var clientCloud cloud.Configuration
-		if cloudEnv, ok := os.LookupEnv("AZQUERY_ENVIRONMENT"); ok {
+		if cloudEnv, ok := os.LookupEnv("AZCONTAINERREGISTRY_ENVIRONMENT"); ok {
 			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
 				clientCloud = cloud.AzureGovernment
 			}

@@ -1359,3 +1359,114 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingAccountSAS
 		_require.Equal(ctrCool, 2)
 	}
 }
+
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingServiceSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClientSharedKey, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClientSharedKey := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClientSharedKey)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClientSharedKey)
+
+	serviceSAS, err := testcommon.GetServiceSAS(containerName, sas.BlobPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true})
+	_require.NoError(err)
+
+	svcClientSAS, err := service.NewClientWithNoCredential(svcClientSharedKey.URL()+"?"+serviceSAS, nil)
+	_require.NoError(err)
+	cntClientSAS := svcClientSAS.NewContainerClient(containerName)
+
+	bb, err := svcClientSAS.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
+		err = bb.Delete(containerName, bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := cntClientSAS.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 10)
+
+	resp, err := svcClientSAS.SubmitBatch(context.Background(), bb, nil)
+	_require.Error(err)
+	_require.Nil(resp.RequestID)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingUserDelegationSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_TENANT_ID could not be found")
+	}
+	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_ID could not be found")
+	}
+	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
+	}
+
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	_require.NoError(err)
+
+	svcClientTokenCred, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClientTokenCred := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClientTokenCred)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClientTokenCred)
+
+	udSAS, err := testcommon.GetUserDelegationSAS(svcClientTokenCred, containerName, sas.BlobPermissions{Read: true, Create: true, Write: true, List: true})
+	_require.NoError(err)
+
+	svcClientSAS, err := service.NewClientWithNoCredential(svcClientTokenCred.URL()+"?"+udSAS, nil)
+	_require.NoError(err)
+	cntClientSAS := svcClientSAS.NewContainerClient(containerName)
+
+	bb, err := svcClientSAS.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
+		err = bb.SetTier(containerName, bbName, blob.AccessTierCool, nil)
+		_require.NoError(err)
+	}
+
+	pager := cntClientSAS.NewListBlobsFlatPager(nil)
+	var ctrHot, ctrCool = 0, 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 10)
+	_require.Equal(ctrCool, 0)
+
+	resp, err := svcClientSAS.SubmitBatch(context.Background(), bb, nil)
+	_require.Error(err)
+	_require.Nil(resp.RequestID)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}

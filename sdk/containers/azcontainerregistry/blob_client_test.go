@@ -17,9 +17,9 @@ import (
 
 func TestBlobClient_CancelUpload(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
@@ -29,9 +29,9 @@ func TestBlobClient_CancelUpload(t *testing.T) {
 
 func TestBlobClient_CheckBlobExists(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
 	res, err := client.CheckBlobExists(ctx, "hello-world", digest, nil)
@@ -41,9 +41,9 @@ func TestBlobClient_CheckBlobExists(t *testing.T) {
 
 func TestBlobClient_CheckChunkExists(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
 	res, err := client.CheckChunkExists(ctx, "hello-world", digest, "bytes=0-299", nil)
@@ -53,9 +53,9 @@ func TestBlobClient_CheckChunkExists(t *testing.T) {
 
 func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
 	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
@@ -72,9 +72,9 @@ func TestBlobClient_completeUpload_wrongDigest(t *testing.T) {
 
 func TestBlobClient_DeleteBlob(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
 	_, err = client.DeleteBlob(ctx, "hello-world-test", digest, nil)
@@ -83,9 +83,9 @@ func TestBlobClient_DeleteBlob(t *testing.T) {
 
 func TestBlobClient_GetBlob(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
 	res, err := client.GetBlob(ctx, "hello-world", digest, nil)
@@ -95,9 +95,9 @@ func TestBlobClient_GetBlob(t *testing.T) {
 
 func TestBlobClient_GetChunk(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:feac5306138255e28a9862d3f3d29025d0a4d0648855afe1acd6131af07138ac"
 	res, err := client.GetChunk(ctx, "ubuntu", digest, "bytes=0-1000", nil)
@@ -107,9 +107,9 @@ func TestBlobClient_GetChunk(t *testing.T) {
 
 func TestBlobClient_GetUploadStatus(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)
@@ -122,9 +122,9 @@ func TestBlobClient_GetUploadStatus(t *testing.T) {
 
 func TestBlobClient_MountBlob(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
 	res, err := client.MountBlob(ctx, "hello-world", "hello-world-test", digest, nil)
@@ -134,9 +134,9 @@ func TestBlobClient_MountBlob(t *testing.T) {
 
 func TestBlobClient_StartUpload(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	startRes, err := client.StartUpload(ctx, "hello-world-test", nil)
 	require.NoError(t, err)

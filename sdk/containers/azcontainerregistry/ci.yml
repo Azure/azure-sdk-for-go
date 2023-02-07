@@ -26,3 +26,9 @@ stages:
   parameters:
     ServiceDirectory: 'containers/azcontainerregistry'
     RunLiveTests: true
+    SupportedClouds: 'Public,UsGov,China'
+    EnvVars:
+      AZURE_CLIENT_ID: $(AZCONTAINERREGISTRY_CLIENT_ID)
+      AZURE_TENANT_ID: $(AZCONTAINERREGISTRY_TENANT_ID)
+      AZURE_CLIENT_SECRET: $(AZCONTAINERREGISTRY_CLIENT_SECRET)
+      AZURE_SUBSCRIPTION_ID: $(AZCONTAINERREGISTRY_SUBSCRIPTION_ID)

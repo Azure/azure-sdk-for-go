@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/stretchr/testify/require"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 )
@@ -109,14 +110,14 @@ func Test_authenticationPolicy_findServiceAndScope(t *testing.T) {
 
 func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
-	authClient := newAuthenticationClient("https://azacrlivetest.azurecr.io", &authenticationClientOptions{options})
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
+	authClient := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	p := &authenticationPolicy{
 		temporal.NewResource(acquire),
 		cred,
-		[]string{"https://management.core.windows.net/.default"},
+		[]string{options.Cloud.Services[ServiceName].Audience + "/.default"},
 		"registry:catalog:*",
-		"azacrlivetest.azurecr.io",
+		strings.TrimPrefix(endpoint, "https://"),
 		authClient,
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
@@ -128,14 +129,14 @@ func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 
 func Test_authenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
 	startRecording(t)
-	_, options := getCredAndClientOptions(t)
-	authClient := newAuthenticationClient("https://azacrlivetest.azurecr.io", &authenticationClientOptions{options})
+	endpoint, _, options := getEndpointCredAndClientOptions(t)
+	authClient := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	p := &authenticationPolicy{
 		temporal.NewResource(acquire),
 		nil,
 		nil,
 		"registry:catalog:*",
-		"azacrlivetest.azurecr.io",
+		strings.TrimPrefix(endpoint, "https://"),
 		authClient,
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
@@ -147,8 +148,8 @@ func Test_authenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
 
 func Test_authenticationPolicy_anonymousAccess(t *testing.T) {
 	startRecording(t)
-	_, options := getCredAndClientOptions(t)
-	client, err := NewClient("https://azacrlivetest.azurecr.io", nil, &ClientOptions{ClientOptions: options})
+	endpoint, _, options := getEndpointCredAndClientOptions(t)
+	client, err := NewClient(endpoint, nil, &ClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	ctx := context.Background()
 	pager := client.NewListRepositoriesPager(nil)

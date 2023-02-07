@@ -9,11 +9,13 @@ package azcontainerregistry
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 	"os"
+	"strings"
 	"testing"
 	"time"
 )
@@ -27,11 +29,11 @@ func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestO
 	return azcore.AccessToken{Token: "Sanitized", ExpiresOn: time.Now().Add(time.Hour * 24).UTC()}, nil
 }
 
-// getCredAndClientOptions will create a credential and a client options for test application.
+// getEndpointCredAndClientOptions will create a credential and a client options for test application.
 // The client options will initialize the transport for recording client add recording policy to the pipeline.
 // In the record mode, the credential will be a DefaultAzureCredential which combines several common credentials.
 // In the playback mode, the credential will be a fake credential which will bypass truly authorization.
-func getCredAndClientOptions(t *testing.T) (azcore.TokenCredential, azcore.ClientOptions) {
+func getEndpointCredAndClientOptions(t *testing.T) (string, azcore.TokenCredential, azcore.ClientOptions) {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -40,14 +42,26 @@ func getCredAndClientOptions(t *testing.T) (azcore.TokenCredential, azcore.Clien
 	}
 
 	var cred azcore.TokenCredential
+	endpoint := "https://azacrlivetest.azurecr.io"
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		cred, err = azidentity.NewDefaultAzureCredential(nil)
 		require.NoError(t, err)
+		if cloudEnv, ok := os.LookupEnv("AZURE_ENVIRONMENT"); ok {
+			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
+				options.Cloud = cloud.AzureGovernment
+			}
+			if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
+				options.Cloud = cloud.AzureChina
+			}
+		}
+		if loginServer, ok := os.LookupEnv("LOGIN_SERVER"); ok {
+			endpoint = "https://" + loginServer
+		}
 	} else {
 		cred = &FakeCredential{}
 	}
 
-	return cred, options
+	return endpoint, cred, options
 }
 
 // startRecording starts the recording.

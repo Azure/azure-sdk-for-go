@@ -19,9 +19,9 @@ import (
 
 func TestBlobClient_CompleteUpload(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
 	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
@@ -40,9 +40,9 @@ func TestBlobClient_CompleteUpload(t *testing.T) {
 
 func TestBlobClient_UploadChunk(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
 	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)
@@ -61,9 +61,9 @@ func TestBlobClient_UploadChunk(t *testing.T) {
 
 func TestBlobClient_CompleteUpload_uploadByChunk(t *testing.T) {
 	startRecording(t)
-	cred, options := getCredAndClientOptions(t)
+	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	ctx := context.Background()
-	client, err := NewBlobClient("https://azacrlivetest.azurecr.io", cred, &BlobClientOptions{ClientOptions: options})
+	client, err := NewBlobClient(endpoint, cred, &BlobClientOptions{ClientOptions: options})
 	require.NoError(t, err)
 	digest := "sha256:2db29710123e3e53a794f2694094b9b4338aa9ee5c40b930cb8063a1be392c54"
 	getRes, err := client.GetBlob(ctx, "hello-world", digest, nil)

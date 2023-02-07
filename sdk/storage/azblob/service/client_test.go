@@ -693,20 +693,20 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 		Delete: true,
 	}
 
-	start := time.Now().Add(-time.Hour)
-	expiry := start.Add(time.Hour)
+	expiry := time.Now().Add(time.Hour)
 
-	opts := service.GetSASURLOptions{StartTime: &start}
-	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, &opts)
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
 	_require.Nil(err)
 
 	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
 	_require.Nil(err)
 
-	// mismatched container name
-	_, err = svcClient.CreateContainer(context.Background(), containerName+"002", nil)
-	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+	// create container using SAS
+	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {

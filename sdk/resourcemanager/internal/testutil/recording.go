@@ -24,7 +24,6 @@ const recordingRandomSeedVariableName = "recordingRandomSeed"
 var (
 	recordingSeed         int64
 	recordingRandomSource rand.Source
-	letterRunes           = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 )
 
 const (

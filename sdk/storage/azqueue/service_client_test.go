@@ -573,7 +573,7 @@ func (s *UnrecordedTestSuite) TestSASQueueClient2() {
 	// queue metadata and properties can't be read or written with SAS auth
 	_, err = queueClient1.GetProperties(context.Background(), nil)
 	_require.Error(err)
-	testcommon.ValidateQueueErrorCode(_require, err, queueerror.AuthorizationFailure)
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.AuthorizationPermissionMismatch)
 
 	start = time.Now().Add(-5 * time.Minute).UTC()
 	opts = azqueue.GetSASURLOptions{StartTime: &start}

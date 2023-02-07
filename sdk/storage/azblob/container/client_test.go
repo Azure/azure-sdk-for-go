@@ -2212,12 +2212,10 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 		Create: true,
 		Delete: true,
 	}
-	start := time.Now().Add(-time.Hour)
-	expiry := start.Add(time.Hour)
-	opts := container.GetSASURLOptions{StartTime: &start}
+	expiry := time.Now().Add(time.Hour)
 
 	// ContainerSASURL is created with GetSASURL
-	sasUrl, err := containerClient.GetSASURL(permissions, expiry, &opts)
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
 	_require.Nil(err)
 
 	// Create container client with sasUrl

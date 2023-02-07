@@ -65,9 +65,6 @@ const (
 	fakeAdfsScope     = "fake.adfs.local/fake-scope/.default"
 )
 
-var adfsAuthority = os.Getenv("ADFS_AUTHORITY_HOST")
-var adfsScope = os.Getenv("ADFS_SCOPE")
-
 var adfsLiveSP = struct {
 	clientID    string
 	secret      string
@@ -90,7 +87,12 @@ var adfsLiveUser = struct {
 	clientID: os.Getenv("ADFS_IDENTITY_TEST_CLIENT_ID"),
 }
 
-var liveTestScope = "https://management.core.windows.net//.default"
+var (
+	adfsAuthority     = os.Getenv("ADFS_AUTHORITY_HOST")
+	adfsScope         = os.Getenv("ADFS_SCOPE")
+	liveTestScope     = "https://management.core.windows.net//.default"
+	_, runManualTests = os.LookupEnv("AZIDENTITY_RUN_MANUAL_TESTS")
+)
 
 func init() {
 	if recording.GetRecordMode() == recording.PlaybackMode {

@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
@@ -134,7 +135,7 @@ func TestBlobStore_Ownership(t *testing.T) {
 			FullyQualifiedNamespace: "ns.servicebus.windows.net",
 			PartitionID:             "partition-id",
 			OwnerID:                 "owner-id",
-			ETag:                    "non-matching-etag",
+			ETag:                    to.Ptr(azcore.ETag("non-matching-etag")),
 		},
 	}, nil)
 	require.NoError(t, err)

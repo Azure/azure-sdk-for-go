@@ -54,14 +54,7 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 		if err != nil {
 			return nil, err
 		}
-
-		var expectedETag *azcore.ETag
-
-		if po.ETag != "" {
-			expectedETag = &po.ETag
-		}
-
-		lastModified, etag, err := b.setMetadata(ctx, blobName, newOwnershipBlobMetadata(po), expectedETag)
+		lastModified, etag, err := b.setMetadata(ctx, blobName, newOwnershipBlobMetadata(po), po.ETag)
 
 		if err != nil {
 			if bloberror.HasCode(err, bloberror.ConditionNotMet) {
@@ -75,7 +68,7 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 		}
 
 		newOwnership := po
-		newOwnership.ETag = etag
+		newOwnership.ETag = &etag
 		newOwnership.LastModifiedTime = *lastModified
 
 		ownerships = append(ownerships, newOwnership)
@@ -336,7 +329,7 @@ func updateOwnership(b *container.BlobItem, destOwnership *azeventhubs.Ownership
 
 	destOwnership.OwnerID = *ownerID
 	destOwnership.LastModifiedTime = *b.Properties.LastModified
-	destOwnership.ETag = *b.Properties.ETag
+	destOwnership.ETag = b.Properties.ETag
 	return nil
 }
 

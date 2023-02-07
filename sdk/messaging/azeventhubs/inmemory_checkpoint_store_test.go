@@ -56,7 +56,7 @@ func Test_InMemoryCheckpointStore_Ownership(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, ownerships)
 
-	previousETag := azcore.ETag("")
+	previousETag := to.Ptr[azcore.ETag]("")
 
 	for i := int64(0); i < 5; i++ {
 		ownerships, err = store.ClaimOwnership(context.Background(), []Ownership{
@@ -129,7 +129,7 @@ func Test_InMemoryCheckpointStore_OwnershipLoss(t *testing.T) {
 			PartitionID:             "100",
 			OwnerID:                 "new-owner-id",
 			LastModifiedTime:        time.Time{},
-			ETag:                    "non-matching-etag",
+			ETag:                    to.Ptr[azcore.ETag]("non-matching-etag"),
 		}}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ownerships, "we weren't able to claim any partitions because our etag didn't match")
@@ -206,7 +206,7 @@ func (cps *testCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwn
 
 			current, exists := cps.ownerships[key]
 
-			if exists && po.ETag != "" && current.ETag != po.ETag {
+			if exists && po.ETag != nil && *current.ETag != *po.ETag {
 				// can't own it, didn't have the expected etag
 				return nil, nil
 			}
@@ -219,7 +219,7 @@ func (cps *testCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwn
 				return nil, err
 			}
 
-			newOwnership.ETag = azcore.ETag(uuid.String())
+			newOwnership.ETag = to.Ptr(azcore.ETag(uuid.String()))
 			newOwnership.LastModifiedTime = time.Now().UTC()
 			cps.ownerships[key] = newOwnership
 

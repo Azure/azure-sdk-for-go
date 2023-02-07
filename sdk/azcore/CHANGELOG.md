@@ -1,12 +1,17 @@
 # Release History
 
-## 1.3.1 (Unreleased)
+## 1.3.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* ARM's RP registration policy will no longer swallow unrecognized errors.
+
+### Other Changes
+
+## 1.3.1 (2023-02-02)
 
 ### Other Changes
 * Update dependencies to latest versions.

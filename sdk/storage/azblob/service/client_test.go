@@ -228,7 +228,7 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesMinuteMetrics() {
 	_require.Equal(resp1.MinuteMetrics.RetentionPolicy.Enabled, enabled)
 }
 
-func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCors() {
+func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCORSMultiple() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -238,7 +238,7 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCors() {
 
 	allowedOrigins1 := "www.xyz.com"
 	allowedMethods1 := "GET"
-	corsOpts1 := &service.CorsRule{AllowedOrigins: &allowedOrigins1, AllowedMethods: &allowedMethods1}
+	CORSOpts1 := &service.CORSRule{AllowedOrigins: &allowedOrigins1, AllowedMethods: &allowedMethods1}
 
 	allowedOrigins2 := "www.xyz.com,www.ab.com,www.bc.com"
 	allowedMethods2 := "GET, PUT"
@@ -246,29 +246,29 @@ func (s *ServiceRecordedTestsSuite) TestSetPropertiesSetCors() {
 	exposedHeaders2 := "x-ms-meta-data*,x-ms-meta-source*,x-ms-meta-abc,x-ms-meta-bcd"
 	allowedHeaders2 := "x-ms-meta-data*,x-ms-meta-target*,x-ms-meta-xyz,x-ms-meta-foo"
 
-	corsOpts2 := &service.CorsRule{
+	CORSOpts2 := &service.CORSRule{
 		AllowedOrigins: &allowedOrigins2, AllowedMethods: &allowedMethods2,
 		MaxAgeInSeconds: maxAge2, ExposedHeaders: &exposedHeaders2, AllowedHeaders: &allowedHeaders2}
 
-	corsRules := []*service.CorsRule{corsOpts1, corsOpts2}
+	CORSRules := []*service.CORSRule{CORSOpts1, CORSOpts2}
 
-	opts := service.SetPropertiesOptions{Cors: corsRules}
+	opts := service.SetPropertiesOptions{CORS: CORSRules}
 	_, err = svcClient.SetProperties(context.Background(), &opts)
 
 	_require.Nil(err)
 	resp, err := svcClient.GetProperties(context.Background(), nil)
-	for i := 0; i < len(resp.Cors); i++ {
-		if resp.Cors[i].AllowedOrigins == &allowedOrigins1 {
-			_require.Equal(resp.Cors[i].AllowedMethods, &allowedMethods1)
-			_require.Equal(resp.Cors[i].MaxAgeInSeconds, defaultAge)
-			_require.Equal(resp.Cors[i].ExposedHeaders, defaultStr)
-			_require.Equal(resp.Cors[i].AllowedHeaders, defaultStr)
+	for i := 0; i < len(resp.CORS); i++ {
+		if resp.CORS[i].AllowedOrigins == &allowedOrigins1 {
+			_require.Equal(resp.CORS[i].AllowedMethods, &allowedMethods1)
+			_require.Equal(resp.CORS[i].MaxAgeInSeconds, defaultAge)
+			_require.Equal(resp.CORS[i].ExposedHeaders, defaultStr)
+			_require.Equal(resp.CORS[i].AllowedHeaders, defaultStr)
 
-		} else if resp.Cors[i].AllowedOrigins == &allowedOrigins2 {
-			_require.Equal(resp.Cors[i].AllowedMethods, &allowedMethods2)
-			_require.Equal(resp.Cors[i].MaxAgeInSeconds, &maxAge2)
-			_require.Equal(resp.Cors[i].ExposedHeaders, &exposedHeaders2)
-			_require.Equal(resp.Cors[i].AllowedHeaders, &allowedHeaders2)
+		} else if resp.CORS[i].AllowedOrigins == &allowedOrigins2 {
+			_require.Equal(resp.CORS[i].AllowedMethods, &allowedMethods2)
+			_require.Equal(resp.CORS[i].MaxAgeInSeconds, &maxAge2)
+			_require.Equal(resp.CORS[i].ExposedHeaders, &exposedHeaders2)
+			_require.Equal(resp.CORS[i].AllowedHeaders, &allowedHeaders2)
 		}
 	}
 	_require.Nil(err)
@@ -692,23 +692,21 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 		Update: true,
 		Delete: true,
 	}
-	services := sas.AccountServices{
-		Blob: true,
-	}
-	start := time.Now().Add(-time.Hour)
-	expiry := start.Add(time.Hour)
 
-	opts := service.GetSASURLOptions{StartTime: &start}
-	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, expiry, &opts)
+	expiry := time.Now().Add(time.Hour)
+
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
 	_require.Nil(err)
 
 	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
 	_require.Nil(err)
 
-	// mismatched container name
-	_, err = svcClient.CreateContainer(context.Background(), containerName+"002", nil)
-	_require.Error(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+	// create container using SAS
+	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
@@ -733,15 +731,12 @@ func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
 		Update: true,
 		Delete: true,
 	}
-	services := sas.AccountServices{
-		Blob: true,
-	}
 	start := time.Now().Add(-time.Hour)
 	expiry := start.Add(time.Hour)
 	opts := service.GetSASURLOptions{StartTime: &start}
 
 	// GetSASURL fails (with MissingSharedKeyCredential) because service client is created without credentials
-	_, err = serviceClient.GetSASURL(resources, permissions, services, expiry, &opts)
+	_, err = serviceClient.GetSASURL(resources, permissions, expiry, &opts)
 	_require.Equal(err, bloberror.MissingSharedKeyCredential)
 
 }

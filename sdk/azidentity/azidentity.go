@@ -15,6 +15,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -56,10 +57,13 @@ var getConfidentialClient = func(clientID, tenantID string, cred confidential.Cr
 		confidential.WithHTTPClient(newPipelineAdapter(co)),
 	}
 	o = append(o, additionalOpts...)
+	if strings.ToLower(tenantID) == "adfs" {
+		o = append(o, confidential.WithInstanceDiscovery(false))
+	}
 	return confidential.New(clientID, cred, o...)
 }
 
-var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions) (public.Client, error) {
+var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions, additionalOpts ...public.Option) (public.Client, error) {
 	if !validTenantID(tenantID) {
 		return public.Client{}, errors.New(tenantIDValidationErr)
 	}
@@ -67,9 +71,17 @@ var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions) 
 	if err != nil {
 		return public.Client{}, err
 	}
-	return public.New(clientID,
+
+	o := []public.Option{
 		public.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
 		public.WithHTTPClient(newPipelineAdapter(co)),
+	}
+	o = append(o, additionalOpts...)
+	if strings.ToLower(tenantID) == "adfs" {
+		o = append(o, public.WithInstanceDiscovery(false))
+	}
+	return public.New(clientID,
+		o...,
 	)
 }
 

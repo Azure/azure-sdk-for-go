@@ -86,7 +86,7 @@ var SpecialCharBlobTagsMap = map[string]string{
 	"GO ":             ".Net",
 }
 
-func setClientOptions(t *testing.T, opts *azcore.ClientOptions) {
+func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Logging.AllowedHeaders = append(opts.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
@@ -99,7 +99,7 @@ func GetClient(t *testing.T, accountType TestAccountType, options *azblob.Client
 		options = &azblob.ClientOptions{}
 	}
 
-	setClientOptions(t, &options.ClientOptions)
+	SetClientOptions(t, &options.ClientOptions)
 
 	cred, err := GetGenericSharedKeyCredential(accountType)
 	if err != nil {
@@ -116,7 +116,7 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 		options = &service.ClientOptions{}
 	}
 
-	setClientOptions(t, &options.ClientOptions)
+	SetClientOptions(t, &options.ClientOptions)
 
 	cred, err := GetGenericSharedKeyCredential(accountType)
 	if err != nil {
@@ -124,6 +124,18 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 	}
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".blob.core.windows.net/", cred, options)
+
+	return serviceClient, err
+}
+
+func GetServiceClientNoCredential(t *testing.T, sasUrl string, options *service.ClientOptions) (*service.Client, error) {
+	if options == nil {
+		options = &service.ClientOptions{}
+	}
+
+	SetClientOptions(t, &options.ClientOptions)
+
+	serviceClient, err := service.NewClientWithNoCredential(sasUrl, options)
 
 	return serviceClient, err
 }
@@ -161,7 +173,7 @@ func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountT
 	if options == nil {
 		options = &service.ClientOptions{}
 	}
-	setClientOptions(t, &options.ClientOptions)
+	SetClientOptions(t, &options.ClientOptions)
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)

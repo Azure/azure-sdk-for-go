@@ -170,6 +170,6 @@ As documented in the error message, the supported granularity for metrics querie
 [azidentity_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azidentity_troubleshooting]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/TROUBLESHOOTING.md
 [default_azure_cred]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
-[kusto]: https://docs.microsoft.com/azure/data-explorer/kusto/query
+[kusto]: https://learn.microsoft.com/azure/data-explorer/kusto/query
 [readme_authentication]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery#authentication
-[workspace_access]: https://docs.microsoft.com/azure/azure-monitor/logs/manage-access#manage-access-using-workspace-permissions
+[workspace_access]: https://learn.microsoft.com/azure/azure-monitor/logs/manage-access#manage-access-using-workspace-permissions

@@ -181,7 +181,7 @@ func ExampleLogsClient_QueryBatch() {
 
 func ExampleMetricsClient_QueryResource() {
 	// QueryResource is used to query metrics on an Azure resource.
-	// For each requested metric, a set of aggregated values is returned inside the `Timeseries` collection.
+	// For each requested metric, a set of aggregated values is returned inside the `TimeSeries` collection.
 
 	// resource ID is required to query metrics. To find the resource ID:
 	// 1. Navigate to your resource's page in the Azure portal.

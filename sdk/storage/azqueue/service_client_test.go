@@ -451,9 +451,9 @@ func (s *UnrecordedTestSuite) TestSASServiceClient() {
 	queueName := testcommon.GenerateQueueName(testName)
 
 	resources := sas.AccountResourceTypes{
-		Object:  true,
-		Service: true,
-		queue:   true,
+		Object:    true,
+		Service:   true,
+		Container: true,
 	}
 	permissions := sas.AccountPermissions{
 		Read:   true,
@@ -490,9 +490,9 @@ func (s *UnrecordedTestSuite) TestNoSharedKeyCredError() {
 
 	// Adding SAS and options
 	resources := sas.AccountResourceTypes{
-		Object:  true,
-		Service: true,
-		queue:   true,
+		Object:    true,
+		Service:   true,
+		Container: true,
 	}
 	permissions := sas.AccountPermissions{
 		Read:   true,

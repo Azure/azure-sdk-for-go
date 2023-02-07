@@ -15,11 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
 )
 
-// test metrics
-const (
-	MetricMessageSent = "MessageSent"
-)
-
 func InfiniteSendAndReceiveRun(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("InfiniteSendAndReceiveRun")
 	defer sc.End()
@@ -106,7 +101,7 @@ func continuallySend(sc *shared.StressContext, queueName string) {
 		}, nil)
 
 		atomic.AddInt32(&senderStats.Sent, 1)
-		sc.TrackMetric(MetricMessageSent, 1)
+		sc.TrackMetric(string(MetricNameMessageSent), 1)
 
 		if err != nil {
 			if err == context.Canceled || err == context.DeadlineExceeded {

@@ -11,8 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 	"github.com/stretchr/testify/require"
 	"os"
 	"strings"
@@ -103,6 +105,48 @@ func TestMain(m *testing.M) {
 		err = recording.AddBodyRegexSanitizer("refresh_token=.eyJqdGkiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJuYmYiOjQ2NzA0MTEyMTIsImV4cCI6NDY3MDQyMjkxMiwiaWF0Ijo0NjcwNDExMjEyLCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhemFjcmxpdmV0ZXN0LmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiMDAwMCIsImdyYW50X3R5cGUiOiJyZWZyZXNoX3Rva2VuIiwiYXBwaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJwZXJtaXNzaW9ucyI6eyJBY3Rpb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSIsImRlbGV0ZWQvcmVhZCIsImRlbGV0ZWQvcmVzdG9yZS9hY3Rpb24iXSwiTm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0%3D.&", "refresh_token=[^&]+&", nil)
 		if err != nil {
 			panic(err)
+		}
+	}
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		cred, err := azidentity.NewDefaultAzureCredential(nil)
+		if err != nil {
+			panic(err)
+		}
+		subID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+		if subID == "" {
+			panic("can not get subscription ID")
+		}
+		rg := os.Getenv("AZCONTAINERREGISTRY_RESOURCE_GROUP")
+		if rg == "" {
+			panic("can not get resource group name")
+		}
+		registryName := os.Getenv("REGISTRY_NAME")
+		if rg == "" {
+			panic("can not get registry name")
+		}
+
+		ctx := context.Background()
+
+		client, err := armcontainerregistry.NewRegistriesClient(subID, cred, nil)
+		images := []string{"hello-world:latest", "alpine:3.17.1", "alpine:3.16.3", "alpine:3.15.6", "alpine:3.14.8", "ubuntu:20.04", "nginx:latest"}
+		for _, image := range images {
+			poller, err := client.BeginImportImage(ctx, rg, registryName, armcontainerregistry.ImportImageParameters{
+				Source: &armcontainerregistry.ImportSource{
+					SourceImage: to.Ptr("library/" + image),
+					RegistryURI: to.Ptr("docker.io"),
+				},
+				TargetTags: []*string{to.Ptr(image)},
+				Mode:       to.Ptr(armcontainerregistry.ImportModeForce),
+			}, nil)
+
+			if err != nil {
+				panic(err)
+			}
+
+			_, err = poller.PollUntilDone(ctx, nil)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 	code := m.Run()

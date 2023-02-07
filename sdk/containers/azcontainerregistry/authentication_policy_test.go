@@ -9,11 +9,13 @@ package azcontainerregistry
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/stretchr/testify/require"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -111,6 +113,9 @@ func Test_authenticationPolicy_findServiceAndScope(t *testing.T) {
 func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
+	if reflect.ValueOf(options.Cloud).IsZero() {
+		options.Cloud = cloud.AzurePublic
+	}
 	authClient := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	p := &authenticationPolicy{
 		temporal.NewResource(acquire),

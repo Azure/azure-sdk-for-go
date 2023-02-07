@@ -8,9 +8,11 @@ package azcontainerregistry
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -20,6 +22,9 @@ func Test_authenticationClient_ExchangeAADAccessTokenForACRRefreshToken(t *testi
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	client := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
 	ctx := context.Background()
+	if reflect.ValueOf(options.Cloud).IsZero() {
+		options.Cloud = cloud.AzurePublic
+	}
 	accessToken, err := cred.GetToken(
 		ctx,
 		policy.TokenRequestOptions{
@@ -38,6 +43,9 @@ func Test_authenticationClient_ExchangeACRRefreshTokenForACRAccessToken(t *testi
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
 	client := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
 	ctx := context.Background()
+	if reflect.ValueOf(options.Cloud).IsZero() {
+		options.Cloud = cloud.AzurePublic
+	}
 	accessToken, err := cred.GetToken(
 		ctx,
 		policy.TokenRequestOptions{

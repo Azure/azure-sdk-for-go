@@ -28,7 +28,6 @@ type AccountSignatureValues struct {
 	ExpiryTime    time.Time `param:"se"`  // Not specified if IsZero
 	Permissions   string    `param:"sp"`  // Create by initializing a AccountSASPermissions and then call String()
 	IPRange       IPRange   `param:"sip"`
-	services      string    `param:"ss"`  // Create by initializing AccountSASServices and then call String()
 	ResourceTypes string    `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 

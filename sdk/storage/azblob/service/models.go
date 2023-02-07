@@ -7,7 +7,6 @@
 package service
 
 import (
-	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -322,7 +321,7 @@ func (bb *BatchBuilder) checkOperationType(operationType shared.BlobBatchOperati
 		return nil
 	}
 	if *bb.operationType != operationType {
-		return errors.New(fmt.Sprintf("BlobBatch only supports one operation type per batch and is already being used for %s operations.", *bb.operationType))
+		return fmt.Errorf("BlobBatch only supports one operation type per batch and is already being used for %s operations", *bb.operationType)
 	}
 	return nil
 }

@@ -132,6 +132,7 @@ func CreateBatchRequest(ctx context.Context, bb *BlobBatchBuilder) (string, stri
 			resp, err := bb.AuthPolicy.Do(req)
 			if err != nil && resp != nil {
 				// TODO: handle error
+				continue
 			}
 		}
 

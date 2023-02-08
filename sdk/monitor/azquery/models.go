@@ -274,8 +274,8 @@ type MetricsClientListNamespacesOptions struct {
 
 // MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
 type MetricsClientQueryResourceOptions struct {
-	// The list of aggregation types (comma separated) to retrieve.
-	Aggregation *string
+	// The list of aggregation types to retrieve
+	Aggregation []*AggregationType
 	// The $filter is used to reduce the set of metric data returned. Example: Metric contains metadata A, B and C. - Return all
 	// time series of C where A = a1 and B = b1 or b2 $filter=A eq 'a1' and B eq 'b1'
 	// or B eq 'b2' and C eq '' - Invalid variant: $filter=A eq 'a1' and B eq 'b1' and C eq '' or B = 'b2' This is invalid because

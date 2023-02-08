@@ -194,7 +194,7 @@ func ExampleMetricsClient_QueryResource() {
 			Timespan:        to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
 			Interval:        to.Ptr("PT1M"),
 			MetricNames:     nil,
-			Aggregation:     to.Ptr("Average,count"),
+			Aggregation:     to.SliceOfPtrs(azquery.AggregationTypeAverage, azquery.AggregationTypeCount),
 			Top:             to.Ptr[int32](3),
 			OrderBy:         to.Ptr("Average asc"),
 			Filter:          to.Ptr("BlobType eq '*'"),

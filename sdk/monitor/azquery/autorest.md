@@ -251,3 +251,14 @@ directive:
   - from: metrics_client.go
     where: $
     transform: return $.replace(/reqQP\.Set\(\"timespan\", \*options\.Timespan\)/g, "reqQP.Set(\"timespan\", string(*options.Timespan))");
+
+  # change type of MetricsClientQueryResourceOptions.Aggregation from *string to []*AggregationType
+  - from: models.go
+    where: $
+    transform: return $.replace(/Aggregation \*string/g, "Aggregation []*AggregationType");
+  - from: metrics_client.go
+    where: $
+    transform: return $.replace(/\*options.Aggregation/g, "aggregationTypeToString(options.Aggregation)");
+  - from: swagger-document
+    where: $.parameters.AggregationsParameter
+    transform: $["description"] = "The list of aggregation types to retrieve"

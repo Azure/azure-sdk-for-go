@@ -163,7 +163,7 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 		reqQP.Set("metricnames", *options.MetricNames)
 	}
 	if options != nil && options.Aggregation != nil {
-		reqQP.Set("aggregation", *options.Aggregation)
+		reqQP.Set("aggregation", aggregationTypeToString(options.Aggregation))
 	}
 	if options != nil && options.Top != nil {
 		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))

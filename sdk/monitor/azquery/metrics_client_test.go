@@ -42,10 +42,11 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	client := startMetricsTest(t)
 	timespan := azquery.TimeInterval("PT12H")
 	res, err := client.QueryResource(context.Background(), resourceURI,
-		&azquery.MetricsClientQueryResourceOptions{Timespan: to.Ptr(timespan),
+		&azquery.MetricsClientQueryResourceOptions{
+			Timespan:        to.Ptr(timespan),
 			Interval:        to.Ptr("PT1M"),
 			MetricNames:     nil,
-			Aggregation:     to.Ptr("Average,count"),
+			Aggregation:     to.SliceOfPtrs(azquery.AggregationTypeAverage, azquery.AggregationTypeCount),
 			Top:             nil,
 			OrderBy:         to.Ptr("Average asc"),
 			Filter:          nil,

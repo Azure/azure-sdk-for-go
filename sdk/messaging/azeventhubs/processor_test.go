@@ -15,9 +15,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/stretchr/testify/require"
 )
 
@@ -41,7 +41,7 @@ func TestProcessor_Contention(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
 	containerName := test.RandomString("proctest", 10)
-	cc, err := blob.NewContainerClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
 	require.NoError(t, err)
 
 	_, err = cc.Create(context.Background(), nil)
@@ -65,7 +65,7 @@ func TestProcessor_Contention(t *testing.T) {
 	ehProps, err := producerClient.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
 
-	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
 	require.NoError(t, err)
 
 	type testData struct {
@@ -195,7 +195,7 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 	testParams := test.GetConnectionParamsForTest(t)
 
 	containerName := test.RandomString("proctest", 10)
-	cc, err := blob.NewContainerClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
 	require.NoError(t, err)
 
 	t.Logf("Creating storage container %s", containerName)
@@ -211,7 +211,7 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 	// Create the checkpoint store
 	// NOTE: the container must exist before the checkpoint store can be used.
 	t.Logf("Checkpoint store created")
-	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
 	require.NoError(t, err)
 
 	t.Logf("Consumer client created")
@@ -264,7 +264,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	testParams := test.GetConnectionParamsForTest(t)
 
 	containerName := test.RandomString("proctest", 10)
-	cc, err := blob.NewContainerClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClientFromConnectionString(testParams.StorageConnectionString, containerName, nil)
 	require.NoError(t, err)
 
 	t.Logf("Creating storage container %s", containerName)
@@ -280,7 +280,7 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	// Create the checkpoint store
 	// NOTE: the container must exist before the checkpoint store can be used.
 	t.Logf("Checkpoint store created")
-	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(testParams.StorageConnectionString, containerName, nil)
+	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
 	require.NoError(t, err)
 
 	t.Logf("Consumer client created")

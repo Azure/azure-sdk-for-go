@@ -31,7 +31,6 @@ type AccountSignatureValues struct {
 	ExpiryTime    time.Time `param:"se"`  // Not specified if IsZero
 	Permissions   string    `param:"sp"`  // Create by initializing a AccountSASPermissions and then call String()
 	IPRange       IPRange   `param:"sip"`
-	services      string    `param:"ss"`  // will always be "b"
 	ResourceTypes string    `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 
@@ -80,7 +79,7 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 		ipRange:     v.IPRange,
 
 		// Account-specific SAS parameters
-		services:      v.services,
+		services:      "b", // will always be "b"
 		resourceTypes: v.ResourceTypes,
 
 		// Calculated SAS signature

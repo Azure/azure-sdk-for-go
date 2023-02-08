@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.5 (Unreleased)
+## 1.2.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2023-02-07)
+
+### Bugs Fixed
+
+- Links could hang when closing, preventing recovery from completing and making a link appear stalled. (PR#19886)
 
 ## 1.1.4 (2023-01-10)
 

@@ -9,7 +9,6 @@ package azidentity
 import (
 	"context"
 	"net/http"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -18,8 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
-
-var _, runManualBrowserTests = os.LookupEnv("AZIDENTITY_RUN_MANUAL_BROWSER_TESTS")
 
 func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
 	options := InteractiveBrowserCredentialOptions{}
@@ -79,8 +76,8 @@ func (p *instanceDiscoveryPolicy) Do(req *policy.Request) (resp *http.Response, 
 }
 
 func TestInteractiveBrowserCredential_Live(t *testing.T) {
-	if !runManualBrowserTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
+	if !runManualTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
 	}
 	t.Run("defaults", func(t *testing.T) {
 		cred, err := NewInteractiveBrowserCredential(nil)
@@ -124,8 +121,8 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 }
 
 func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
-	if !runManualBrowserTests {
-		t.Skip("set AZIDENTITY_RUN_MANUAL_BROWSER_TESTS to run this test")
+	if !runManualTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
 	}
 	if adfsLiveUser.clientID == fakeClientID {
 		t.Skip("set ADFS_IDENTITY_TEST_CLIENT_ID environment variables to run this test live")

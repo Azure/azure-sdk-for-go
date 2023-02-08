@@ -304,7 +304,7 @@ func TestNamespaceStaleConnection(t *testing.T) {
 	ns.client = fakeClient
 	ns.connID = 101
 
-	require.NoError(t, ns.Close(context.Background(), false))
+	require.NoError(t, ns.Close(false))
 	require.Equal(t, 1, fakeClient.closeCalled)
 	require.Nil(t, ns.client)
 

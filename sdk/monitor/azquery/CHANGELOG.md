@@ -1,14 +1,13 @@
 # Release History
 
-## 0.4.1 (Unreleased)
-
-### Features Added
+## 1.0.0 (2023-02-08)
 
 ### Breaking Changes
-
-### Bugs Fixed
+* Removed `LogsQueryOptions.String()`
+* Fix casing on some metrics fields
 
 ### Other Changes
+* Doc and example updates
 
 ## 0.4.0 (2023-01-12)
 

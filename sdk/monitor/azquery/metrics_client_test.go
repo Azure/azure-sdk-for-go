@@ -46,7 +46,7 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 			Timespan:        to.Ptr(timespan),
 			Interval:        to.Ptr("PT1M"),
 			MetricNames:     nil,
-			Aggregation:     []*azquery.AggregationType{to.Ptr(azquery.AggregationTypeAverage), to.Ptr(azquery.AggregationTypeCount)},
+			Aggregation:     to.SliceOfPtrs(azquery.AggregationTypeAverage, azquery.AggregationTypeCount),
 			Top:             nil,
 			OrderBy:         to.Ptr("Average asc"),
 			Filter:          nil,

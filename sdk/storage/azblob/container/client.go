@@ -388,7 +388,7 @@ func (bb *BatchBuilder) Delete(blobName string, options *BatchDeleteOptions) err
 		return err
 	}
 
-	// update the sub-request headers. Add x-ms-date and remove x-ms-version header
+	// remove x-ms-version header
 	shared.UpdateSubRequestHeaders(req)
 
 	bb.subRequests = append(bb.subRequests, req)
@@ -416,7 +416,7 @@ func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, opt
 		return err
 	}
 
-	// update the sub-request headers. Add x-ms-date and remove x-ms-version header
+	// remove x-ms-version header
 	shared.UpdateSubRequestHeaders(req)
 
 	bb.subRequests = append(bb.subRequests, req)

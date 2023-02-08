@@ -11,10 +11,8 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"net/http"
 	"strconv"
 	"strings"
-	"time"
 )
 
 type BlobBatchOperationType string
@@ -149,31 +147,12 @@ func CreateBatchRequest(ctx context.Context, bb *BlobBatchBuilder) (string, stri
 }
 
 // UpdateSubRequestHeaders updates the sub-request headers.
-// Adds x-ms-date and removes x-ms-version header
+// Removes x-ms-version header.
 func UpdateSubRequestHeaders(req *policy.Request) {
-	// setting x-ms-date header
-	dt := time.Now().UTC().Format(http.TimeFormat)
-	req.Raw().Header[HeaderXmsDate] = []string{dt}
-
 	// remove x-ms-version header from the request header
 	for k := range req.Raw().Header {
 		if strings.EqualFold(k, HeaderXmsVersion) {
 			delete(req.Raw().Header, k)
 		}
 	}
-}
-
-// EmptyTransportPolicy is an empty transport protocol that never sends
-// anything over the wire. It allows batch sub-requests to run through
-// a pipeline to and have policies like Authentication prepare the Request.
-type EmptyTransportPolicy struct {
-}
-
-// NewEmptyTransportPolicy is used to create EmptyTransportPolicy.
-func NewEmptyTransportPolicy() *EmptyTransportPolicy {
-	return &EmptyTransportPolicy{}
-}
-
-func (s *EmptyTransportPolicy) Do(req *http.Request) (*http.Response, error) {
-	return nil, nil
 }

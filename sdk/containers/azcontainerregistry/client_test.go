@@ -100,7 +100,7 @@ func TestClient_GetManifestProperties(t *testing.T) {
 	require.NoError(t, err)
 	tagRes, err := client.GetManifestProperties(ctx, "alpine", *resp.Tag.Digest, nil)
 	require.NoError(t, err)
-	require.Equal(t, *tagRes.Manifest.Digest, digest)
+	require.Equal(t, digest, *tagRes.Manifest.Digest)
 }
 
 func TestClient_GetManifestProperties_wrongDigest(t *testing.T) {
@@ -184,8 +184,8 @@ func TestClient_NewListManifestsPager(t *testing.T) {
 			items++
 		}
 	}
-	require.Equal(t, pages, 32)
-	require.Equal(t, items, 32)
+	require.Equal(t, 32, pages)
+	require.Equal(t, 32, items)
 
 	pager = client.NewListManifestsPager("alpine", &ClientListManifestsOptions{
 		OrderBy: to.Ptr(ArtifactManifestOrderByLastUpdatedOnDescending),
@@ -253,8 +253,8 @@ func TestClient_NewListRepositoriesPager(t *testing.T) {
 			items++
 		}
 	}
-	require.Equal(t, pages, 3)
-	require.Equal(t, items, 3)
+	require.Equal(t, 3, pages)
+	require.Equal(t, 3, items)
 }
 
 func TestClient_NewListTagsPager(t *testing.T) {
@@ -273,14 +273,14 @@ func TestClient_NewListTagsPager(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, page.Tags)
 		pages++
-		require.Equal(t, len(page.Tags), 1)
+		require.Equal(t, 1, len(page.Tags))
 		for i, v := range page.Tags {
 			fmt.Printf("page %d tag %d: %s\n", pages, i+1, *v.Name)
 			items++
 		}
 	}
-	require.Equal(t, pages, 3)
-	require.Equal(t, items, 3)
+	require.Equal(t, 3, pages)
+	require.Equal(t, 3, items)
 
 	pager = client.NewListTagsPager("alpine", &ClientListTagsOptions{
 		OrderBy: to.Ptr(ArtifactTagOrderByLastUpdatedOnDescending),
@@ -342,13 +342,13 @@ func TestClient_UpdateManifestProperties(t *testing.T) {
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, *res.Manifest.ChangeableAttributes.CanWrite, false)
+	require.Equal(t, false, *res.Manifest.ChangeableAttributes.CanWrite)
 	res, err = client.UpdateManifestProperties(ctx, "alpine", digest, &ClientUpdateManifestPropertiesOptions{Value: &ManifestWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, *res.Manifest.ChangeableAttributes.CanWrite, true)
+	require.Equal(t, true, *res.Manifest.ChangeableAttributes.CanWrite)
 }
 
 func TestClient_UpdateManifestProperties_wrongDigest(t *testing.T) {
@@ -372,13 +372,13 @@ func TestClient_UpdateRepositoryProperties(t *testing.T) {
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite, false)
+	require.Equal(t, false, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
 	res, err = client.UpdateRepositoryProperties(ctx, "ubuntu", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite, true)
+	require.Equal(t, true, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
 }
 
 func TestClient_UpdateRepositoryProperties_wrongRepository(t *testing.T) {
@@ -405,13 +405,13 @@ func TestClient_UpdateTagProperties(t *testing.T) {
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, *res.Tag.ChangeableAttributes.CanWrite, false)
+	require.Equal(t, false, *res.Tag.ChangeableAttributes.CanWrite)
 	res, err = client.UpdateTagProperties(ctx, "alpine", "3.17.1", &ClientUpdateTagPropertiesOptions{Value: &TagWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, *res.Tag.ChangeableAttributes.CanWrite, true)
+	require.Equal(t, true, *res.Tag.ChangeableAttributes.CanWrite)
 }
 
 func TestClient_UpdateTagProperties_wrongTag(t *testing.T) {

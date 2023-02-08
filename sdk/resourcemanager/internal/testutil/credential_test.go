@@ -45,9 +45,9 @@ func TestGetCredAndClientOptions(t *testing.T) {
 	require.NoError(t, err)
 	resp, err := pl.Do(req)
 	require.NoError(t, err)
-	require.Equal(t, resp.StatusCode, http.StatusBadRequest)
+	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		require.Equal(t, resp.Request.Header.Get("Authorization"), "Bearer FakeToken")
+		require.Equal(t, "Bearer FakeToken", resp.Request.Header.Get("Authorization"))
 	}
-	require.Equal(t, resp.Request.URL.String(), testEndpoint)
+	require.Equal(t, testEndpoint, resp.Request.URL.String())
 }

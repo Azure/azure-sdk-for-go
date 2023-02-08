@@ -669,7 +669,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", cred.AccountName()), cred, nil)
 	_require.Nil(err)

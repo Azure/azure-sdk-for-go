@@ -61,7 +61,6 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	testSerde(t, res.Value[0])
 	testSerde(t, res.Value[0].Name)
 	testSerde(t, res.Value[0].TimeSeries[0])
-	//testSerde(t, res.Response.Value[0].Timeseries[0].Metadatavalues[0])
 }
 
 func TestQueryResource_BasicQueryFailure(t *testing.T) {

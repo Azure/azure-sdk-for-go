@@ -169,7 +169,7 @@ func GenerateAlphaNumericID(t *testing.T, prefix string, length int) string {
 	sb := strings.Builder{}
 	sb.Grow(length)
 	sb.WriteString(prefix)
-	i := length - len(prefix) - 1
+	i := length - 1
 	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
 	for cache, remain := recordingRandomSource.Int63(), letterIdxMax; i >= 0; {
 		if remain == 0 {

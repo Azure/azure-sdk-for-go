@@ -666,11 +666,12 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
 }
 
-func (s *ServiceRecordedTestsSuite) TestSASServiceClient() {
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 
-	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", cred.AccountName()), cred, nil)
 	_require.Nil(err)
 
 	containerName := testcommon.GenerateContainerName(testName)

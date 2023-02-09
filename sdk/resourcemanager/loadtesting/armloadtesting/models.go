@@ -173,18 +173,19 @@ type LoadTestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadTestsClientListByResourceGroupOptions contains the optional parameters for the LoadTestsClient.ListByResourceGroup
+// LoadTestsClientListByResourceGroupOptions contains the optional parameters for the LoadTestsClient.NewListByResourceGroupPager
 // method.
 type LoadTestsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadTestsClientListBySubscriptionOptions contains the optional parameters for the LoadTestsClient.ListBySubscription method.
+// LoadTestsClientListBySubscriptionOptions contains the optional parameters for the LoadTestsClient.NewListBySubscriptionPager
+// method.
 type LoadTestsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LoadTestsClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the LoadTestsClient.ListOutboundNetworkDependenciesEndpoints
+// LoadTestsClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the LoadTestsClient.NewListOutboundNetworkDependenciesEndpointsPager
 // method.
 type LoadTestsClientListOutboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters
@@ -259,7 +260,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -374,7 +375,7 @@ type QuotasClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QuotasClientListOptions contains the optional parameters for the QuotasClient.List method.
+// QuotasClientListOptions contains the optional parameters for the QuotasClient.NewListPager method.
 type QuotasClientListOptions struct {
 	// placeholder for future optional parameters
 }

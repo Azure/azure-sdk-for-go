@@ -18,8 +18,8 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/joho/godotenv"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -260,7 +260,7 @@ func sendEventsToPartition(ctx context.Context, args sendEventsToPartitionArgs) 
 // Returns the checkpoints we updated, sorted by partition ID.
 func initCheckpointStore(ctx context.Context, containerName string, testData *stressTestData) ([]azeventhubs.Checkpoint, error) {
 	// create the container first - it shouldn't already exist
-	cc, err := blob.NewContainerClientFromConnectionString(testData.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClientFromConnectionString(testData.StorageConnectionString, containerName, nil)
 
 	if err != nil {
 		return nil, err
@@ -270,7 +270,7 @@ func initCheckpointStore(ctx context.Context, containerName string, testData *st
 		return nil, err
 	}
 
-	cps, err := checkpoints.NewBlobStoreFromConnectionString(testData.StorageConnectionString, containerName, nil)
+	cps, err := checkpoints.NewBlobStore(cc, nil)
 
 	if err != nil {
 		return nil, err

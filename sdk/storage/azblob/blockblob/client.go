@@ -218,8 +218,8 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 	var commitOptions *generated.BlockBlobClientCommitBlockListOptions
 	var headers *generated.BlobHTTPHeaders
 	var leaseAccess *blob.LeaseAccessConditions
-	var cpkInfo *generated.CpkInfo
-	var cpkScope *generated.CpkScopeInfo
+	var cpkInfo *generated.CPKInfo
+	var cpkScope *generated.CPKScopeInfo
 	var modifiedAccess *generated.ModifiedAccessConditions
 
 	if options != nil {
@@ -238,8 +238,8 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 
 		headers = options.HTTPHeaders
 		leaseAccess, modifiedAccess = exported.FormatBlobAccessConditions(options.AccessConditions)
-		cpkInfo = options.CpkInfo
-		cpkScope = options.CpkScopeInfo
+		cpkInfo = options.CPKInfo
+		cpkScope = options.CPKScopeInfo
 	}
 
 	resp, err := bb.generated().CommitBlockList(ctx, blockLookupList, commitOptions, headers, leaseAccess, cpkInfo, cpkScope, modifiedAccess)

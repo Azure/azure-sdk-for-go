@@ -338,7 +338,7 @@ func (m Metric) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "errorMessage", m.ErrorMessage)
 	populate(objectMap, "id", m.ID)
 	populate(objectMap, "name", m.Name)
-	populate(objectMap, "timeseries", m.Timeseries)
+	populate(objectMap, "timeseries", m.TimeSeries)
 	populate(objectMap, "type", m.Type)
 	populate(objectMap, "unit", m.Unit)
 	return json.Marshal(objectMap)
@@ -369,7 +369,7 @@ func (m *Metric) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &m.Name)
 			delete(rawMsg, key)
 		case "timeseries":
-			err = unpopulate(val, "Timeseries", &m.Timeseries)
+			err = unpopulate(val, "TimeSeries", &m.TimeSeries)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &m.Type)
@@ -668,7 +668,7 @@ func (r Response) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "cost", r.Cost)
 	populate(objectMap, "interval", r.Interval)
 	populate(objectMap, "namespace", r.Namespace)
-	populate(objectMap, "resourceregion", r.Resourceregion)
+	populate(objectMap, "resourceregion", r.ResourceRegion)
 	populate(objectMap, "timespan", r.Timespan)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
@@ -693,7 +693,7 @@ func (r *Response) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Namespace", &r.Namespace)
 			delete(rawMsg, key)
 		case "resourceregion":
-			err = unpopulate(val, "Resourceregion", &r.Resourceregion)
+			err = unpopulate(val, "ResourceRegion", &r.ResourceRegion)
 			delete(rawMsg, key)
 		case "timespan":
 			err = unpopulate(val, "Timespan", &r.Timespan)
@@ -787,7 +787,7 @@ func (t *Table) UnmarshalJSON(data []byte) error {
 func (t TimeSeriesElement) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "data", t.Data)
-	populate(objectMap, "metadatavalues", t.Metadatavalues)
+	populate(objectMap, "metadatavalues", t.MetadataValues)
 	return json.Marshal(objectMap)
 }
 
@@ -804,7 +804,7 @@ func (t *TimeSeriesElement) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Data", &t.Data)
 			delete(rawMsg, key)
 		case "metadatavalues":
-			err = unpopulate(val, "Metadatavalues", &t.Metadatavalues)
+			err = unpopulate(val, "MetadataValues", &t.MetadataValues)
 			delete(rawMsg, key)
 		}
 		if err != nil {

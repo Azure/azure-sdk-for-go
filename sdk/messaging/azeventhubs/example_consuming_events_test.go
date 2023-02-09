@@ -99,8 +99,10 @@ func Example_consumingEventsUsingConsumerClient() {
 			fmt.Printf("[Partition: %s] Starting receive loop for partition\n", partitionID)
 
 			for {
-				ctx, cancel := context.WithTimeout(appCtx, time.Minute)
-				events, err := partitionClient.ReceiveEvents(ctx, 100, nil)
+				// Using a context with a timeout will allow ReceiveEvents() to return with events it
+				// collected in a minute, or earlier if it actually gets all 100 events we requested.
+				receiveCtx, cancel := context.WithTimeout(appCtx, time.Minute)
+				events, err := partitionClient.ReceiveEvents(receiveCtx, 100, nil)
 				cancel()
 
 				if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {

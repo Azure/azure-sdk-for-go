@@ -29,8 +29,8 @@ type SystemAssignedIdentitiesClient struct {
 }
 
 // NewSystemAssignedIdentitiesClient creates a new instance of SystemAssignedIdentitiesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSystemAssignedIdentitiesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SystemAssignedIdentitiesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -52,10 +52,11 @@ func NewSystemAssignedIdentitiesClient(credential azcore.TokenCredential, option
 
 // GetByScope - Gets the systemAssignedIdentity available under the specified RP scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-31-preview
-// scope - The resource provider scope of the resource. Parent resource being extended by Managed Identities.
-// options - SystemAssignedIdentitiesClientGetByScopeOptions contains the optional parameters for the SystemAssignedIdentitiesClient.GetByScope
-// method.
+//
+// Generated from API version 2023-01-31
+//   - scope - The resource provider scope of the resource. Parent resource being extended by Managed Identities.
+//   - options - SystemAssignedIdentitiesClientGetByScopeOptions contains the optional parameters for the SystemAssignedIdentitiesClient.GetByScope
+//     method.
 func (client *SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, scope string, options *SystemAssignedIdentitiesClientGetByScopeOptions) (SystemAssignedIdentitiesClientGetByScopeResponse, error) {
 	req, err := client.getByScopeCreateRequest(ctx, scope, options)
 	if err != nil {
@@ -80,7 +81,7 @@ func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-31-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -214,12 +214,12 @@ func CreateNewBlockBlob(ctx context.Context, _require *require.Assertions, block
 	return bbClient
 }
 
-func CreateNewBlockBlobWithCPK(ctx context.Context, _require *require.Assertions, blockBlobName string, containerClient *container.Client, cpkInfo *blob.CpkInfo, cpkScopeInfo *blob.CpkScopeInfo) (bbClient *blockblob.Client) {
+func CreateNewBlockBlobWithCPK(ctx context.Context, _require *require.Assertions, blockBlobName string, containerClient *container.Client, cpkInfo *blob.CPKInfo, cpkScopeInfo *blob.CPKScopeInfo) (bbClient *blockblob.Client) {
 	bbClient = GetBlockBlobClient(blockBlobName, containerClient)
 
 	uploadBlockBlobOptions := blockblob.UploadOptions{
-		CpkInfo:      cpkInfo,
-		CpkScopeInfo: cpkScopeInfo,
+		CPKInfo:      cpkInfo,
+		CPKScopeInfo: cpkScopeInfo,
 	}
 	cResp, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(BlockBlobDefaultData)), &uploadBlockBlobOptions)
 	_require.Nil(err)

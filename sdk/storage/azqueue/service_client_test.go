@@ -286,7 +286,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesWithMetadata() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
-		for _, queue := range resp.QueuesList {
+		for _, queue := range resp.Queues {
 			_require.NotNil(queue.Name)
 			if *queue.Name == queueName {
 				_require.NotNil(queue.Metadata)
@@ -340,7 +340,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesPagination() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
-		for _, queue := range resp.QueuesList {
+		for _, queue := range resp.Queues {
 			_require.NotNil(queue.Name)
 			count += 1
 		}
@@ -370,7 +370,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesPaginationEmptyPrefix() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
 
-		for _, queue := range resp.QueuesList {
+		for _, queue := range resp.Queues {
 			count++
 			_require.NotNil(queue.Name)
 		}
@@ -414,7 +414,7 @@ func (s *RecordedTestSuite) TestServiceListQueuesPaged() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
-		for _, ctnr := range resp.QueuesList {
+		for _, ctnr := range resp.Queues {
 			_require.NotNil(ctnr.Name)
 			results = append(results, *ctnr)
 			count += 1

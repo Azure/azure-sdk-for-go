@@ -159,12 +159,12 @@ func (l ListQueuesSegmentResponse) MarshalXML(enc *xml.Encoder, start xml.StartE
 	type alias ListQueuesSegmentResponse
 	aux := &struct {
 		*alias
-		QueuesList *[]*Queue `xml:"Queues>Queue"`
+		Queues *[]*Queue `xml:"Queues>Queue"`
 	}{
 		alias: (*alias)(&l),
 	}
-	if l.QueuesList != nil {
-		aux.QueuesList = &l.QueuesList
+	if l.Queues != nil {
+		aux.Queues = &l.Queues
 	}
 	return enc.EncodeElement(aux, start)
 }

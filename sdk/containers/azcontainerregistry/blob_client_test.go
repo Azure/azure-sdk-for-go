@@ -102,7 +102,7 @@ func TestBlobClient_GetChunk(t *testing.T) {
 	digest := "sha256:042a816809aac8d0f7d7cacac7965782ee2ecac3f21bcf9f24b1de1a7387b769"
 	res, err := client.GetChunk(ctx, "alpine", digest, "bytes=0-999", nil)
 	require.NoError(t, err)
-	require.Equal(t, *res.ContentLength, int64(1000))
+	require.Equal(t, int64(1000), *res.ContentLength)
 }
 
 func TestBlobClient_GetUploadStatus(t *testing.T) {

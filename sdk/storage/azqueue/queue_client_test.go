@@ -1048,4 +1048,60 @@ func (s *RecordedTestSuite) TestClearMessagesMoreThan32() {
 	_require.Equal(0, len(resp.QueueMessagesList))
 }
 
-//TODO: TestUpdateMessage
+func (s *RecordedTestSuite) TestUpdateMessageBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+	_require.Nil(err)
+	popReceipt := *resp.QueueMessagesList[0].PopReceipt
+	messageID := *resp.QueueMessagesList[0].MessageID
+
+	opts := &azqueue.UpdateMessageOptions{}
+	_, err = queueClient.UpdateMessage(context.Background(), messageID, popReceipt, "new content", opts)
+	_require.Nil(err)
+
+	resp1, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	content := *resp1.QueueMessagesList[0].MessageText
+	_require.Equal("new content", content)
+}
+
+func (s *RecordedTestSuite) TestUpdateMessageWithVisibilityTimeout() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+	_require.Nil(err)
+	popReceipt := *resp.QueueMessagesList[0].PopReceipt
+	messageID := *resp.QueueMessagesList[0].MessageID
+
+	opts := &azqueue.UpdateMessageOptions{VisibilityTimeout: to.Ptr(int32(1))}
+	_, err = queueClient.UpdateMessage(context.Background(), messageID, popReceipt, "new content", opts)
+	_require.Nil(err)
+	time.Sleep(time.Second * 2)
+	resp1, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	content := *resp1.QueueMessagesList[0].MessageText
+	_require.Equal("new content", content)
+}
+
+//TODO: TestSAS

@@ -391,10 +391,13 @@ type UpdateMessageOptions struct {
 }
 
 func (o *UpdateMessageOptions) format() *generated.MessageIDClientUpdateOptions {
+	defaultVT := to.Ptr(int32(0))
 	if o == nil {
-		return nil
+		return &generated.MessageIDClientUpdateOptions{Visibilitytimeout: defaultVT}
 	}
-
+	if o.VisibilityTimeout == nil {
+		o.VisibilityTimeout = defaultVT
+	}
 	return &generated.MessageIDClientUpdateOptions{Visibilitytimeout: o.VisibilityTimeout}
 }
 

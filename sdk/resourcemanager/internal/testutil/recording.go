@@ -11,6 +11,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -21,8 +22,24 @@ import (
 const recordingRandomSeedVariableName = "recordingRandomSeed"
 
 var (
-	recordingRandomSeed int64
-	letterRunes         = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+	recordingSeed         int64
+	recordingRandomSource rand.Source
+)
+
+const (
+	alphanumericBytes           = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	alphanumericLowercaseBytes  = "abcdefghijklmnopqrstuvwxyz1234567890"
+	randomSeedVariableName      = "randomSeed"
+	nowVariableName             = "now"
+	ModeEnvironmentVariableName = "AZURE_TEST_MODE"
+	recordingAssetConfigName    = "assets.json"
+)
+
+// Inspired by https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
+const (
+	letterIdxBits = 6                    // 6 bits to represent a letter index
+	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
+	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
 type recordingPolicy struct {
@@ -107,10 +124,37 @@ func StartRecording(t *testing.T, pathToPackage string) func() {
 
 // StopRecording stops the recording.
 func StopRecording(t *testing.T) {
-	err := recording.Stop(t, &recording.RecordingOptions{Variables: map[string]interface{}{recordingRandomSeedVariableName: strconv.FormatInt(recordingRandomSeed, 10)}})
+	err := recording.Stop(t, &recording.RecordingOptions{Variables: map[string]interface{}{recordingRandomSeedVariableName: strconv.FormatInt(recordingSeed, 10)}})
 	if err != nil {
 		t.Fatalf("Failed to stop recording: %v", err)
 	}
+}
+
+func initRandomSource(t *testing.T) {
+
+	if recordingRandomSource != nil {
+		return
+	}
+
+	var seed int64
+	var err error
+
+	variables := recording.GetVariables(t)
+	seedString, ok := variables[recordingRandomSeedVariableName]
+	if ok {
+		seed, err = strconv.ParseInt(seedString.(string), 10, 64)
+	}
+
+	// We did not have a random seed already stored; create a new one
+	if !ok || err != nil || recording.GetRecordMode() == "live" {
+		seed = time.Now().Unix()
+		val := strconv.FormatInt(seed, 10)
+		variables[recordingRandomSeedVariableName] = &val
+	}
+
+	// create a Source with the seed
+	recordingRandomSource = rand.NewSource(seed)
+	recordingSeed = seed
 }
 
 // GenerateAlphaNumericID will generate a random alpha numeric ID.
@@ -118,26 +162,33 @@ func StopRecording(t *testing.T) {
 // Otherwise, the random seed is stable and will be stored in recording file.
 // The length parameter is the random part length, not include the prefix part.
 func GenerateAlphaNumericID(t *testing.T, prefix string, length int) string {
-	if recording.GetRecordMode() != "live" {
-		if recordingRandomSeed == 0 {
-			variables := recording.GetVariables(t)
-			if seed, ok := variables[recordingRandomSeedVariableName]; ok {
-				seedNum, err := strconv.ParseInt(seed.(string), 10, 64)
-				if err == nil {
-					recordingRandomSeed = seedNum
-				}
+
+	var lowercaseOnly bool = false
+
+	initRandomSource(t)
+	sb := strings.Builder{}
+	sb.Grow(length)
+	sb.WriteString(prefix)
+	i := length - 1
+	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
+	for cache, remain := recordingRandomSource.Int63(), letterIdxMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = recordingRandomSource.Int63(), letterIdxMax
+		}
+		if lowercaseOnly {
+			if idx := int(cache & letterIdxMask); idx < len(alphanumericLowercaseBytes) {
+				sb.WriteByte(alphanumericLowercaseBytes[idx])
+				i--
 			}
-			if recordingRandomSeed == 0 {
-				recordingRandomSeed = time.Now().Unix()
+		} else {
+			if idx := int(cache & letterIdxMask); idx < len(alphanumericBytes) {
+				sb.WriteByte(alphanumericBytes[idx])
+				i--
 			}
 		}
-		rand.Seed(recordingRandomSeed)
-	} else {
-		rand.Seed(time.Now().Unix())
+		cache >>= letterIdxBits
+		remain--
 	}
-	b := make([]rune, length)
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
-	}
-	return prefix + string(b)
+	str := sb.String()
+	return str
 }

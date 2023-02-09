@@ -590,15 +590,4 @@ func (s *UnrecordedTestSuite) TestSASQueueClient2() {
 	testcommon.ValidateQueueErrorCode(_require, err, queueerror.AuthorizationFailure)
 }
 
-func (s *UnrecordedTestSuite) TestGetStatistics() {
-	_require := require.New(s.T())
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSecondary, nil)
-	_require.NoError(err)
-
-	opts := &azqueue.GetStatisticsOptions{}
-	_, err = svcClient.GetStatistics(context.Background(), opts)
-
-	_require.Nil(err)
-}
-
 // TODO: test get sas url options

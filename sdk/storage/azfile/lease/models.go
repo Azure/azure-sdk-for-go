@@ -11,32 +11,32 @@ import "github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 // AccessConditions contains optional parameters to access leased entity.
 type AccessConditions = generated.LeaseAccessConditions
 
-// FileAcquireOptions contains the optional parameters for the FileClient.AcquireLease method.
+// FileAcquireOptions contains the optional parameters for the FileClient.Acquire method.
 type FileAcquireOptions struct {
 	// Proposed lease ID, in a GUID string format.
 	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
 	ProposedLeaseID *string
 }
 
-// FileBreakOptions contains the optional parameters for the FileClient.BreakLease method.
+// FileBreakOptions contains the optional parameters for the FileClient.Break method.
 type FileBreakOptions struct {
 	// AccessConditions contains optional parameters to access leased entity.
 	AccessConditions *AccessConditions
 }
 
-// FileChangeOptions contains the optional parameters for the FileClient.ChangeLease method.
+// FileChangeOptions contains the optional parameters for the FileClient.Change method.
 type FileChangeOptions struct {
 	// placeholder for future options
 }
 
-// FileReleaseOptions contains the optional parameters for the FileClient.ReleaseLease method.
+// FileReleaseOptions contains the optional parameters for the FileClient.Release method.
 type FileReleaseOptions struct {
 	// placeholder for future options
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ShareAcquireOptions contains the optional parameters for the ShareClient.AcquireLease method.
+// ShareAcquireOptions contains the optional parameters for the ShareClient.Acquire method.
 type ShareAcquireOptions struct {
 	// Proposed lease ID, in a GUID string format.
 	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
@@ -46,7 +46,7 @@ type ShareAcquireOptions struct {
 	Snapshot *string
 }
 
-// ShareBreakOptions contains the optional parameters for the ShareClient.BreakLease method.
+// ShareBreakOptions contains the optional parameters for the ShareClient.Break method.
 type ShareBreakOptions struct {
 	// For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This
 	// break period is only used if it is shorter than the time remaining on the
@@ -62,21 +62,21 @@ type ShareBreakOptions struct {
 	AccessConditions *AccessConditions
 }
 
-// ShareChangeOptions contains the optional parameters for the ShareClient.ChangeLease method.
+// ShareChangeOptions contains the optional parameters for the ShareClient.Change method.
 type ShareChangeOptions struct {
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	Snapshot *string
 }
 
-// ShareReleaseOptions contains the optional parameters for the ShareClient.ReleaseLease method.
+// ShareReleaseOptions contains the optional parameters for the ShareClient.Release method.
 type ShareReleaseOptions struct {
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	Snapshot *string
 }
 
-// ShareRenewOptions contains the optional parameters for the ShareClient.RenewLease method.
+// ShareRenewOptions contains the optional parameters for the ShareClient.Renew method.
 type ShareRenewOptions struct {
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.

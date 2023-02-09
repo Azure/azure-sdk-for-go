@@ -8,29 +8,29 @@ package lease
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 
-// FileAcquireResponse contains the response from method FileClient.AcquireLease.
+// FileAcquireResponse contains the response from method FileClient.Acquire.
 type FileAcquireResponse = generated.FileClientAcquireLeaseResponse
 
-// FileBreakResponse contains the response from method FileClient.BreakLease.
+// FileBreakResponse contains the response from method FileClient.Break.
 type FileBreakResponse = generated.FileClientBreakLeaseResponse
 
-// FileChangeResponse contains the response from method FileClient.ChangeLease.
+// FileChangeResponse contains the response from method FileClient.Change.
 type FileChangeResponse = generated.FileClientChangeLeaseResponse
 
-// FileReleaseResponse contains the response from method FileClient.ReleaseLease.
+// FileReleaseResponse contains the response from method FileClient.Release.
 type FileReleaseResponse = generated.FileClientReleaseLeaseResponse
 
-// ShareAcquireResponse contains the response from method ShareClient.AcquireLease.
+// ShareAcquireResponse contains the response from method ShareClient.Acquire.
 type ShareAcquireResponse = generated.ShareClientAcquireLeaseResponse
 
-// ShareBreakResponse contains the response from method ShareClient.BreakLease.
+// ShareBreakResponse contains the response from method ShareClient.Break.
 type ShareBreakResponse = generated.ShareClientBreakLeaseResponse
 
-// ShareChangeResponse contains the response from method ShareClient.ChangeLease.
+// ShareChangeResponse contains the response from method ShareClient.Change.
 type ShareChangeResponse = generated.ShareClientChangeLeaseResponse
 
-// ShareReleaseResponse contains the response from method ShareClient.ReleaseLease.
+// ShareReleaseResponse contains the response from method ShareClient.Release.
 type ShareReleaseResponse = generated.ShareClientReleaseLeaseResponse
 
-// ShareRenewResponse contains the response from method ShareClient.RenewLease.
+// ShareRenewResponse contains the response from method ShareClient.Renew.
 type ShareRenewResponse = generated.ShareClientRenewLeaseResponse

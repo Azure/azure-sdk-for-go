@@ -41,29 +41,29 @@ func (f *FileClient) LeaseID() *string {
 	return f.leaseID
 }
 
-// AcquireLease operation can be used to request a new lease.
+// Acquire operation can be used to request a new lease.
 // The lease duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
-func (f *FileClient) AcquireLease(ctx context.Context, duration int32, options *FileAcquireOptions) (FileAcquireResponse, error) {
+func (f *FileClient) Acquire(ctx context.Context, duration int32, options *FileAcquireOptions) (FileAcquireResponse, error) {
 	// TODO: update generated code to make duration as required parameter
 	return FileAcquireResponse{}, nil
 }
 
-// BreakLease operation can be used to break the lease, if the file has an active lease. Once a lease is broken, it cannot be renewed.
+// Break operation can be used to break the lease, if the file has an active lease. Once a lease is broken, it cannot be renewed.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
-func (f *FileClient) BreakLease(ctx context.Context, options *FileBreakOptions) (FileBreakResponse, error) {
+func (f *FileClient) Break(ctx context.Context, options *FileBreakOptions) (FileBreakResponse, error) {
 	return FileBreakResponse{}, nil
 }
 
-// ChangeLease operation can be used to change the lease ID of an active lease.
+// Change operation can be used to change the lease ID of an active lease.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
-func (f *FileClient) ChangeLease(ctx context.Context, leaseID string, proposedLeaseID string, options *FileChangeOptions) (FileChangeResponse, error) {
+func (f *FileClient) Change(ctx context.Context, leaseID string, proposedLeaseID string, options *FileChangeOptions) (FileChangeResponse, error) {
 	// TODO: update generated code to make proposedLeaseID as required parameter
 	return FileChangeResponse{}, nil
 }
 
-// ReleaseLease operation can be used to free the lease if it is no longer needed so that another client may immediately acquire a lease against the file.
+// Release operation can be used to free the lease if it is no longer needed so that another client may immediately acquire a lease against the file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
-func (f *FileClient) ReleaseLease(ctx context.Context, leaseID string, options *FileReleaseOptions) (FileReleaseResponse, error) {
+func (f *FileClient) Release(ctx context.Context, leaseID string, options *FileReleaseOptions) (FileReleaseResponse, error) {
 	return FileReleaseResponse{}, nil
 }

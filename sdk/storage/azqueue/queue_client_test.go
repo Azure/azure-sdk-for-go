@@ -763,15 +763,165 @@ func (s *RecordedTestSuite) TestDequeueMessagesWithNumMessagesLargerThan32() {
 	_, err = queueClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
-	// enqueue 4 messages
+	// enqueue 33 messages
 	for i := 0; i < 33; i++ {
 		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
 		_require.Nil(err)
 	}
 
-	// dequeue 4 messages
 	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(33))}
 	_, err = queueClient.DequeueMessages(context.Background(), &opts)
+	// should fail
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.OutOfRangeQueryParameterValue)
+}
+
+func (s *RecordedTestSuite) TestDequeueMessagesWithLeftovers() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 10 messages
+	for i := 0; i < 10; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// dequeue 5 messages
+	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(5))}
+	resp, err := queueClient.DequeueMessages(context.Background(), &opts)
+	_require.Nil(err)
+	_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+	_require.Equal(5, len(resp.QueueMessagesList))
+
+	// dequeue other 5 messages
+	resp, err = queueClient.DequeueMessages(context.Background(), &opts)
+	_require.Nil(err)
+	_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+	_require.Equal(5, len(resp.QueueMessagesList))
+}
+
+func (s *RecordedTestSuite) TestPeekMessageBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// peek 4 messages
+	for i := 0; i < 4; i++ {
+		resp, err := queueClient.PeekMessage(context.Background(), nil)
+		_require.Nil(err)
+		_require.Equal(1, len(resp.QueueMessagesList))
+		_require.NotNil(resp.QueueMessagesList[0].MessageID)
+		_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+	}
+
+	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
+	// should all still be there
+	resp, err := queueClient.DequeueMessages(context.Background(), &opts)
+	_require.Equal(4, len(resp.QueueMessagesList))
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestPeekMessagesBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// dequeue 4 messages
+	opts := azqueue.PeekMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
+	resp, err := queueClient.PeekMessages(context.Background(), &opts)
+	_require.Nil(err)
+	_require.Equal(4, len(resp.QueueMessagesList))
+
+	opts1 := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
+	// should all still be there
+	resp1, err := queueClient.DequeueMessages(context.Background(), &opts1)
+	_require.Equal(4, len(resp1.QueueMessagesList))
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestPeekMessagesDefault() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// should peek only 1 message (since default num of messages is 1 when not specified)
+	resp, err := queueClient.PeekMessages(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(1, len(resp.QueueMessagesList))
+	_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+}
+
+func (s *RecordedTestSuite) TestPeekMessagesWithNumMessagesLargerThan32() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 33 messages
+	for i := 0; i < 33; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	opts := azqueue.PeekMessagesOptions{NumberOfMessages: to.Ptr(int32(33))}
+	_, err = queueClient.PeekMessages(context.Background(), &opts)
 	// should fail
 	testcommon.ValidateQueueErrorCode(_require, err, queueerror.OutOfRangeQueryParameterValue)
 }

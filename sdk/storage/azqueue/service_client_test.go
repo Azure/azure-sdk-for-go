@@ -82,7 +82,18 @@ func (s *UnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_require.NotZero(sProps)
 }
 
-//TODO: TestGetSASUrl
+func (s *UnrecordedTestSuite) TestServiceClientFromConnectionString1() {
+	_require := require.New(s.T())
+
+	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
+
+	svcClient, err := azqueue.NewServiceClientFromConnectionString(connectionString, nil)
+	_require.Nil(err)
+
+	sProps, err := svcClient.GetServiceProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotZero(sProps)
+}
 
 func (s *RecordedTestSuite) TestSetPropertiesLogging() {
 	_require := require.New(s.T())

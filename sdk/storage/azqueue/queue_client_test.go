@@ -8,8 +8,10 @@ package azqueue_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/queueerror"
 	"github.com/stretchr/testify/require"
@@ -30,6 +32,50 @@ func (s *RecordedTestSuite) TestQueueCreateQueue() {
 	resp, err := queueClient.Create(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotZero(resp)
+}
+
+func (s *UnrecordedTestSuite) TestQueueClientFromConnectionString() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
+	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
+
+	parsedConnStr, err := shared.ParseConnectionString(connectionString)
+	_require.Nil(err)
+	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".queue.core.windows.net/")
+
+	queueName := testcommon.GenerateQueueName(testName)
+
+	sharedKeyCred, err := azqueue.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
+	_require.Nil(err)
+
+	qClient, err := azqueue.NewQueueClientWithSharedKeyCredential(
+		runtime.JoinPaths(parsedConnStr.ServiceURL, queueName), sharedKeyCred, nil)
+	_require.Nil(err)
+
+	_, err = qClient.Create(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *UnrecordedTestSuite) TestQueueClientFromConnectionString1() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
+	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
+
+	parsedConnStr, err := shared.ParseConnectionString(connectionString)
+	_require.Nil(err)
+	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".queue.core.windows.net/")
+
+	queueName := testcommon.GenerateQueueName(testName)
+
+	qClient, err := azqueue.NewQueueClientFromConnectionString(connectionString, queueName, nil)
+	_require.Nil(err)
+
+	_, err = qClient.Create(context.Background(), nil)
+	_require.Nil(err)
 }
 
 func (s *RecordedTestSuite) TestQueueCreateQueueWithMetadata() {

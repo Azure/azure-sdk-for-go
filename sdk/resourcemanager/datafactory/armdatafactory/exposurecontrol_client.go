@@ -32,9 +32,9 @@ type ExposureControlClient struct {
 }
 
 // NewExposureControlClient creates a new instance of ExposureControlClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewExposureControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExposureControlClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewExposureControlClient(subscriptionID string, credential azcore.TokenCred
 
 // GetFeatureValue - Get exposure control feature for specific location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// locationID - The location identifier.
-// exposureControlRequest - The exposure control request.
-// options - ExposureControlClientGetFeatureValueOptions contains the optional parameters for the ExposureControlClient.GetFeatureValue
-// method.
+//   - locationID - The location identifier.
+//   - exposureControlRequest - The exposure control request.
+//   - options - ExposureControlClientGetFeatureValueOptions contains the optional parameters for the ExposureControlClient.GetFeatureValue
+//     method.
 func (client *ExposureControlClient) GetFeatureValue(ctx context.Context, locationID string, exposureControlRequest ExposureControlRequest, options *ExposureControlClientGetFeatureValueOptions) (ExposureControlClientGetFeatureValueResponse, error) {
 	req, err := client.getFeatureValueCreateRequest(ctx, locationID, exposureControlRequest, options)
 	if err != nil {
@@ -110,12 +111,13 @@ func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Re
 
 // GetFeatureValueByFactory - Get exposure control feature for specific factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// exposureControlRequest - The exposure control request.
-// options - ExposureControlClientGetFeatureValueByFactoryOptions contains the optional parameters for the ExposureControlClient.GetFeatureValueByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - exposureControlRequest - The exposure control request.
+//   - options - ExposureControlClientGetFeatureValueByFactoryOptions contains the optional parameters for the ExposureControlClient.GetFeatureValueByFactory
+//     method.
 func (client *ExposureControlClient) GetFeatureValueByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest, options *ExposureControlClientGetFeatureValueByFactoryOptions) (ExposureControlClientGetFeatureValueByFactoryResponse, error) {
 	req, err := client.getFeatureValueByFactoryCreateRequest(ctx, resourceGroupName, factoryName, exposureControlRequest, options)
 	if err != nil {
@@ -168,12 +170,13 @@ func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp
 
 // QueryFeatureValuesByFactory - Get list of exposure control features for specific factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// exposureControlBatchRequest - The exposure control request for list of features.
-// options - ExposureControlClientQueryFeatureValuesByFactoryOptions contains the optional parameters for the ExposureControlClient.QueryFeatureValuesByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - exposureControlBatchRequest - The exposure control request for list of features.
+//   - options - ExposureControlClientQueryFeatureValuesByFactoryOptions contains the optional parameters for the ExposureControlClient.QueryFeatureValuesByFactory
+//     method.
 func (client *ExposureControlClient) QueryFeatureValuesByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest ExposureControlBatchRequest, options *ExposureControlClientQueryFeatureValuesByFactoryOptions) (ExposureControlClientQueryFeatureValuesByFactoryResponse, error) {
 	req, err := client.queryFeatureValuesByFactoryCreateRequest(ctx, resourceGroupName, factoryName, exposureControlBatchRequest, options)
 	if err != nil {

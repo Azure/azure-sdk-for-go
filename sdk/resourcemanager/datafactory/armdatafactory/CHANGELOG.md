@@ -1,5 +1,44 @@
 # Release History
 
+## 4.0.0 (2023-02-24)
+### Breaking Changes
+
+- Type of `SynapseSparkJobActivityTypeProperties.NumExecutors` has been changed from `*int32` to `any`
+
+### Features Added
+
+- New type alias `AzureStorageAuthenticationType` with values `AzureStorageAuthenticationTypeAccountKey`, `AzureStorageAuthenticationTypeAnonymous`, `AzureStorageAuthenticationTypeMsi`, `AzureStorageAuthenticationTypeSasURI`, `AzureStorageAuthenticationTypeServicePrincipal`
+- New type alias `ConfigurationType` with values `ConfigurationTypeArtifact`, `ConfigurationTypeCustomized`, `ConfigurationTypeDefault`
+- New type alias `SparkConfigurationReferenceType` with values `SparkConfigurationReferenceTypeSparkConfigurationReference`
+- New function `*Credential.GetCredential() *Credential`
+- New function `NewCredentialOperationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CredentialOperationsClient, error)`
+- New function `*CredentialOperationsClient.CreateOrUpdate(context.Context, string, string, string, ManagedIdentityCredentialResource, *CredentialOperationsClientCreateOrUpdateOptions) (CredentialOperationsClientCreateOrUpdateResponse, error)`
+- New function `*CredentialOperationsClient.Delete(context.Context, string, string, string, *CredentialOperationsClientDeleteOptions) (CredentialOperationsClientDeleteResponse, error)`
+- New function `*CredentialOperationsClient.Get(context.Context, string, string, string, *CredentialOperationsClientGetOptions) (CredentialOperationsClientGetResponse, error)`
+- New function `*CredentialOperationsClient.NewListByFactoryPager(string, string, *CredentialOperationsClientListByFactoryOptions) *runtime.Pager[CredentialOperationsClientListByFactoryResponse]`
+- New function `*ManagedIdentityCredential.GetCredential() *Credential`
+- New function `*ServicePrincipalCredential.GetCredential() *Credential`
+- New struct `CopyComputeScaleProperties`
+- New struct `CredentialListResponse`
+- New struct `CredentialOperationsClient`
+- New struct `CredentialOperationsClientListByFactoryResponse`
+- New struct `ManagedIdentityCredential`
+- New struct `ManagedIdentityCredentialResource`
+- New struct `ManagedIdentityTypeProperties`
+- New struct `PipelineExternalComputeScaleProperties`
+- New struct `ServicePrincipalCredential`
+- New struct `ServicePrincipalCredentialTypeProperties`
+- New struct `SparkConfigurationParametrizationReference`
+- New field `AuthenticationType` in struct `AzureBlobStorageLinkedServiceTypeProperties`
+- New field `ContainerURI` in struct `AzureBlobStorageLinkedServiceTypeProperties`
+- New field `CopyComputeScaleProperties` in struct `IntegrationRuntimeComputeProperties`
+- New field `PipelineExternalComputeScaleProperties` in struct `IntegrationRuntimeComputeProperties`
+- New field `ConfigurationType` in struct `SynapseSparkJobActivityTypeProperties`
+- New field `ScanFolder` in struct `SynapseSparkJobActivityTypeProperties`
+- New field `SparkConfig` in struct `SynapseSparkJobActivityTypeProperties`
+- New field `TargetSparkConfiguration` in struct `SynapseSparkJobActivityTypeProperties`
+
+
 ## 3.0.0 (2022-10-27)
 ### Breaking Changes
 

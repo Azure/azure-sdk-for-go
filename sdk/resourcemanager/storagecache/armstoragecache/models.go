@@ -96,7 +96,7 @@ type AscOperation struct {
 // AscOperationProperties - Additional operation-specific output.
 type AscOperationProperties struct {
 	// Additional operation-specific output.
-	Output map[string]interface{} `json:"output,omitempty"`
+	Output map[string]any `json:"output,omitempty"`
 }
 
 // AscOperationsClientGetOptions contains the optional parameters for the AscOperationsClient.Get method.
@@ -104,7 +104,7 @@ type AscOperationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AscUsagesClientListOptions contains the optional parameters for the AscUsagesClient.List method.
+// AscUsagesClientListOptions contains the optional parameters for the AscUsagesClient.NewListPager method.
 type AscUsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -116,6 +116,12 @@ type BlobNfsTarget struct {
 
 	// Identifies the StorageCache usage model to be used for this storage target.
 	UsageModel *string `json:"usageModel,omitempty"`
+
+	// Amount of time (in seconds) the cache waits before it checks the back-end storage for file updates.
+	VerificationTimer *int32 `json:"verificationTimer,omitempty"`
+
+	// Amount of time (in seconds) the cache waits after the last file change before it copies the changed file to back-end storage.
+	WriteBackTimer *int32 `json:"writeBackTimer,omitempty"`
 }
 
 // Cache - A Cache instance. Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
@@ -463,6 +469,12 @@ type CachesClientBeginStopPrimingJobOptions struct {
 	ResumeToken string
 }
 
+// CachesClientBeginUpdateOptions contains the optional parameters for the CachesClient.BeginUpdate method.
+type CachesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // CachesClientBeginUpgradeFirmwareOptions contains the optional parameters for the CachesClient.BeginUpgradeFirmware method.
 type CachesClientBeginUpgradeFirmwareOptions struct {
 	// Resumes the LRO from the provided token.
@@ -474,18 +486,14 @@ type CachesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesClientListByResourceGroupOptions contains the optional parameters for the CachesClient.ListByResourceGroup method.
+// CachesClientListByResourceGroupOptions contains the optional parameters for the CachesClient.NewListByResourceGroupPager
+// method.
 type CachesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CachesClientListOptions contains the optional parameters for the CachesClient.List method.
+// CachesClientListOptions contains the optional parameters for the CachesClient.NewListPager method.
 type CachesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CachesClientUpdateOptions contains the optional parameters for the CachesClient.Update method.
-type CachesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -503,12 +511,6 @@ type CachesListResult struct {
 type ClfsTarget struct {
 	// Resource ID of storage container.
 	Target *string `json:"target,omitempty"`
-}
-
-// CloudError - An error response.
-type CloudError struct {
-	// The body of the error.
-	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response.
@@ -632,6 +634,12 @@ type Nfs3Target struct {
 
 	// Identifies the StorageCache usage model to be used for this storage target.
 	UsageModel *string `json:"usageModel,omitempty"`
+
+	// Amount of time (in seconds) the cache waits before it checks the back-end storage for file updates.
+	VerificationTimer *int32 `json:"verificationTimer,omitempty"`
+
+	// Amount of time (in seconds) the cache waits after the last file change before it copies the changed file to back-end storage.
+	WriteBackTimer *int32 `json:"writeBackTimer,omitempty"`
 }
 
 // NfsAccessPolicy - A set of rules describing access policies applied to NFSv3 clients of the cache.
@@ -674,7 +682,7 @@ type NfsAccessRule struct {
 	Suid *bool `json:"suid,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -809,7 +817,7 @@ type Restriction struct {
 	Values []*string `json:"values,omitempty" azure:"ro"`
 }
 
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -940,12 +948,20 @@ type StorageTargetsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// StorageTargetsClientBeginRestoreDefaultsOptions contains the optional parameters for the StorageTargetsClient.BeginRestoreDefaults
+// method.
+type StorageTargetsClientBeginRestoreDefaultsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // StorageTargetsClientGetOptions contains the optional parameters for the StorageTargetsClient.Get method.
 type StorageTargetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageTargetsClientListByCacheOptions contains the optional parameters for the StorageTargetsClient.ListByCache method.
+// StorageTargetsClientListByCacheOptions contains the optional parameters for the StorageTargetsClient.NewListByCachePager
+// method.
 type StorageTargetsClientListByCacheOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1004,7 +1020,7 @@ type UsageModelDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// UsageModelsClientListOptions contains the optional parameters for the UsageModelsClient.List method.
+// UsageModelsClientListOptions contains the optional parameters for the UsageModelsClient.NewListPager method.
 type UsageModelsClientListOptions struct {
 	// placeholder for future optional parameters
 }

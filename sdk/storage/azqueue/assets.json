@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/storage/azqueue",
-  "Tag": "go/storage/azqueue_ee046b5cc3"
+  "Tag": "go/storage/azqueue_250a75f53b"
 }

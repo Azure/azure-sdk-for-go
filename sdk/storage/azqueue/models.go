@@ -419,10 +419,6 @@ type PeekMessageOptions struct {
 
 func (o *PeekMessageOptions) format() *generated.MessagesClientPeekOptions {
 	numberOfMessages := int32(1)
-	if o == nil {
-		return &generated.MessagesClientPeekOptions{NumberOfMessages: &numberOfMessages}
-	}
-
 	return &generated.MessagesClientPeekOptions{NumberOfMessages: &numberOfMessages}
 }
 

@@ -125,6 +125,23 @@ func (s *RecordedTestSuite) TestQueueSetEmptyACL() {
 	_require.Nil(err)
 }
 
+func (s *RecordedTestSuite) TestQueueSetACLNil() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = queueClient.SetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+}
+
 func (s *RecordedTestSuite) TestQueueSetEmptyACL2() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

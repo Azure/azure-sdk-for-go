@@ -32,6 +32,10 @@ func (q *QueueClient) messagesClient() *generated.MessagesClient {
 	return messages
 }
 
+func (q *QueueClient) getMessageIDURL(messageID string) string {
+	return runtime.JoinPaths(q.queueClient().Endpoint(), "messages", messageID)
+}
+
 func (q *QueueClient) sharedKey() *SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.QueueClient, generated.MessagesClient])(q))
 }
@@ -171,8 +175,7 @@ func (q *QueueClient) DequeueMessage(ctx context.Context, o *DequeueMessageOptio
 func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popReceipt string, content string, o *UpdateMessageOptions) (UpdateMessageResponse, error) {
 	opts := o.format()
 	message := generated.QueueMessage{MessageText: &content}
-	messageURL := runtime.JoinPaths(q.queueClient().Endpoint(), messageID)
-	messageClient := generated.NewMessageIDClient(messageURL, q.queueClient().Pipeline())
+	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), q.queueClient().Pipeline())
 	resp, err := messageClient.Update(ctx, popReceipt, message, opts)
 	return resp, err
 }
@@ -181,8 +184,7 @@ func (q *QueueClient) UpdateMessage(ctx context.Context, messageID string, popRe
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-message2.
 func (q *QueueClient) DeleteMessage(ctx context.Context, messageID string, popReceipt string, o *DeleteMessageOptions) (DeleteMessageResponse, error) {
 	opts := o.format()
-	messageURL := runtime.JoinPaths(q.queueClient().Endpoint(), messageID)
-	messageClient := generated.NewMessageIDClient(messageURL, q.queueClient().Pipeline())
+	messageClient := generated.NewMessageIDClient(q.getMessageIDURL(messageID), q.queueClient().Pipeline())
 	resp, err := messageClient.Delete(ctx, popReceipt, opts)
 	return resp, err
 }

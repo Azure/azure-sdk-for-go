@@ -927,6 +927,125 @@ func (s *RecordedTestSuite) TestPeekMessagesWithNumMessagesLargerThan32() {
 	testcommon.ValidateQueueErrorCode(_require, err, queueerror.OutOfRangeQueryParameterValue)
 }
 
-//TODO: TestDeleteMessage
-//TODO: TestClearMessages
+func (s *RecordedTestSuite) TestDeleteMessageBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var popReceipts []string
+	var messageIDs []string
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+		popReceipts = append(popReceipts, *resp.QueueMessagesList[0].PopReceipt)
+		messageIDs = append(messageIDs, *resp.QueueMessagesList[0].MessageID)
+	}
+
+	// delete 4 messages
+	for i := 0; i < 4; i++ {
+		opts := &azqueue.DeleteMessageOptions{}
+		_, err := queueClient.DeleteMessage(context.Background(), messageIDs[i], popReceipts[i], opts)
+		_require.Nil(err)
+	}
+	// should be 0 now
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestDeleteMessageDoesNotExist() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+	_require.Nil(err)
+	popReceipt := *resp.QueueMessagesList[0].PopReceipt
+	messageID := *resp.QueueMessagesList[0].MessageID
+
+	opts := &azqueue.DeleteMessageOptions{}
+	_, err = queueClient.DeleteMessage(context.Background(), messageID, popReceipt, opts)
+	_require.Nil(err)
+
+	// should fail since we already deleted it
+	_, err = queueClient.DeleteMessage(context.Background(), messageID, popReceipt, opts)
+	_require.NotNil(err)
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.MessageNotFound)
+}
+
+func (s *RecordedTestSuite) TestClearMessagesBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// delete the queue's messages
+	opts := azqueue.ClearMessagesOptions{}
+	_, err = queueClient.ClearMessages(context.Background(), &opts)
+	_require.Nil(err)
+
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(0, len(resp.QueueMessagesList))
+}
+
+func (s *RecordedTestSuite) TestClearMessagesMoreThan32() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 33 messages
+	for i := 0; i < 33; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// delete the queue's messages
+	opts := azqueue.ClearMessagesOptions{}
+	_, err = queueClient.ClearMessages(context.Background(), &opts)
+	_require.Nil(err)
+
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(0, len(resp.QueueMessagesList))
+}
+
 //TODO: TestUpdateMessage

@@ -650,6 +650,7 @@ func (s *RecordedTestSuite) TestDequeueMessageBasic() {
 	// should be 0 now
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Nil(err)
 }
 
 func (s *RecordedTestSuite) TestDequeueMessageWithVisibilityTimeout() {
@@ -926,7 +927,6 @@ func (s *RecordedTestSuite) TestPeekMessagesWithNumMessagesLargerThan32() {
 	testcommon.ValidateQueueErrorCode(_require, err, queueerror.OutOfRangeQueryParameterValue)
 }
 
-//TODO: TestPeekMessages
 //TODO: TestDeleteMessage
 //TODO: TestClearMessages
 //TODO: TestUpdateMessage

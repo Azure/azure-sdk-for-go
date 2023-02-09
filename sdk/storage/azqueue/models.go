@@ -314,7 +314,15 @@ func (o *GetQueuePropertiesOptions) format() *generated.QueueClientGetProperties
 
 // EnqueueMessageOptions contains the optional parameters for the QueueClient.EnqueueMessage method.
 type EnqueueMessageOptions struct {
-	TimeToLive        *int32
+	// Specifies the time-to-live interval for the message, in seconds.
+	// The time-to-live may be any positive number or -1 for infinity.
+	// If this parameter is omitted, the default time-to-live is 7 days.
+	TimeToLive *int32
+	// If not specified, the default value is 0.
+	// Specifies the new visibility timeout value, in seconds, relative to server time.
+	// The value must be larger than or equal to 0, and cannot be larger than 7 days.
+	// The visibility timeout of a message cannot be set to a value later than the expiry time.
+	// VisibilityTimeout should be set to a value smaller than the time-to-live value.
 	VisibilityTimeout *int32
 }
 
@@ -329,8 +337,13 @@ func (o *EnqueueMessageOptions) format() *generated.MessagesClientEnqueueOptions
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DequeueMessageOptions contains the optional parameters for the QueueClient.EnqueueMessage method.
+// DequeueMessageOptions contains the optional parameters for the QueueClient.DequeueMessage method.
 type DequeueMessageOptions struct {
+	// If not specified, the default value is 0. Specifies the new visibility timeout value,
+	// in seconds, relative to server time. The value must be larger than or equal to 0, and cannot be
+	// larger than 7 days. The visibility timeout of a message cannot be
+	// set to a value later than the expiry time. VisibilityTimeout
+	// should be set to a value smaller than the time-to-live value.
 	VisibilityTimeout *int32
 }
 
@@ -348,7 +361,16 @@ func (o *DequeueMessageOptions) format() *generated.MessagesClientDequeueOptions
 
 // DequeueMessagesOptions contains the optional parameters for the QueueClient.DequeueMessages method.
 type DequeueMessagesOptions struct {
-	NumberOfMessages  *int32
+	// Optional. A nonzero integer value that specifies the number of messages to retrieve from the queue,
+	// up to a maximum of 32. If fewer messages are visible, the visible messages are returned.
+	// By default, a single message is retrieved from the queue with this operation.
+	NumberOfMessages *int32
+	// If not specified, the default value is 30. Specifies the
+	// new visibility timeout value, in seconds, relative to server time.
+	// The value must be larger than or equal to 1, and cannot be
+	// larger than 7 days. The visibility timeout of a message cannot be
+	// set to a value later than the expiry time. VisibilityTimeout
+	// should be set to a value smaller than the time-to-live value.
 	VisibilityTimeout *int32
 }
 

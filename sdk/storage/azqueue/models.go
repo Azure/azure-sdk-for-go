@@ -248,10 +248,6 @@ type GetAccessPolicyOptions struct {
 }
 
 func (o *GetAccessPolicyOptions) format() *generated.QueueClientGetAccessPolicyOptions {
-	if o == nil {
-		return nil
-	}
-
 	return nil
 }
 

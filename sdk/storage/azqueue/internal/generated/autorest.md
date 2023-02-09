@@ -100,3 +100,29 @@ directive:
       return $.
         replace(/xml:"CORS>CORSRule"/g, "xml:\"Cors>CorsRule\"");
 ```
+
+### Remove `Item` suffix
+
+``` yaml
+directive:
+- rename-model:
+    from: DequeuedMessageItem
+    to: DequeuedMessage
+- rename-model:
+    from: QueueItem
+    to: Queue
+- rename-model:
+    from: PeekedMessageItem
+    to: PeekedMessage
+```
+
+### Remove `Item` suffix
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/QueueItems/g, "Queues");
+```

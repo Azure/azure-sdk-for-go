@@ -59,7 +59,7 @@ type MessagesClientDequeueResponse struct {
 	Date *time.Time `xml:"Date"`
 
 	// The object returned when calling Get Messages on a Queue
-	QueueMessagesList []*DequeuedMessageItem `xml:"QueueMessage"`
+	QueueMessagesList []*DequeuedMessage `xml:"QueueMessage"`
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
@@ -89,7 +89,7 @@ type MessagesClientPeekResponse struct {
 	Date *time.Time `xml:"Date"`
 
 	// The object returned when calling Peek Messages on a Queue
-	QueueMessagesList []*PeekedMessageItem `xml:"QueueMessage"`
+	QueueMessagesList []*PeekedMessage `xml:"QueueMessage"`
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`

@@ -65,17 +65,17 @@ type SignedIdentifier = generated.SignedIdentifier
 // EnqueuedMessage - enqueued message
 type EnqueuedMessage = generated.EnqueuedMessage
 
-// DequeuedMessageItem - dequeued message
-type DequeuedMessageItem = generated.DequeuedMessageItem
+// DequeuedMessage - dequeued message
+type DequeuedMessage = generated.DequeuedMessage
 
-// PeekedMessageItem - peeked message
-type PeekedMessageItem = generated.PeekedMessageItem
+// PeekedMessage - peeked message
+type PeekedMessage = generated.PeekedMessage
 
 // ListQueuesSegmentResponse - response segment
 type ListQueuesSegmentResponse = generated.ListQueuesSegmentResponse
 
-// QueueItem - queue item
-type QueueItem = generated.QueueItem
+// Queue - queue item
+type Queue = generated.Queue
 
 // AccessPolicy - An Access policy
 type AccessPolicy = generated.AccessPolicy

@@ -48,8 +48,8 @@ type CORSRule struct {
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
-// DequeuedMessageItem - The object returned in the QueueMessageList array when calling Get Messages on a Queue.
-type DequeuedMessageItem struct {
+// DequeuedMessage - The object returned in the QueueMessageList array when calling Get Messages on a Queue.
+type DequeuedMessage struct {
 	// REQUIRED; The number of times the message has been dequeued.
 	DequeueCount *int64 `xml:"DequeueCount"`
 
@@ -114,9 +114,9 @@ type ListQueuesSegmentResponse struct {
 	Prefix *string `xml:"Prefix"`
 
 	// REQUIRED
-	ServiceEndpoint *string      `xml:"ServiceEndpoint,attr"`
-	Marker          *string      `xml:"Marker"`
-	QueueItems      []*QueueItem `xml:"Queues>Queue"`
+	ServiceEndpoint *string  `xml:"ServiceEndpoint,attr"`
+	Marker          *string  `xml:"Marker"`
+	Queues          []*Queue `xml:"Queues>Queue"`
 }
 
 // Logging - Azure Analytics Logging settings.
@@ -235,8 +235,8 @@ type Metrics struct {
 	Version *string `xml:"Version"`
 }
 
-// PeekedMessageItem - The object returned in the QueueMessageList array when calling Peek Messages on a Queue
-type PeekedMessageItem struct {
+// PeekedMessage - The object returned in the QueueMessageList array when calling Peek Messages on a Queue
+type PeekedMessage struct {
 	// REQUIRED; The number of times the message has been dequeued.
 	DequeueCount *int64 `xml:"DequeueCount"`
 
@@ -251,6 +251,15 @@ type PeekedMessageItem struct {
 
 	// REQUIRED; The content of the Message.
 	MessageText *string `xml:"MessageText"`
+}
+
+// Queue - An Azure Storage Queue.
+type Queue struct {
+	// REQUIRED; The name of the Queue.
+	Name *string `xml:"Name"`
+
+	// Dictionary of
+	Metadata map[string]*string `xml:"Metadata"`
 }
 
 // QueueClientCreateOptions contains the optional parameters for the QueueClient.Create method.
@@ -315,15 +324,6 @@ type QueueClientSetMetadataOptions struct {
 	RequestID *string
 	// The The timeout parameter is expressed in seconds. For more information, see
 	Timeout *int32
-}
-
-// QueueItem - An Azure Storage Queue.
-type QueueItem struct {
-	// REQUIRED; The name of the Queue.
-	Name *string `xml:"Name"`
-
-	// Dictionary of
-	Metadata map[string]*string `xml:"Metadata"`
 }
 
 // QueueMessage - A Message object which can be stored in a Queue

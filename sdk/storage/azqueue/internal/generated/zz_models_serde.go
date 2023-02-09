@@ -51,9 +51,9 @@ func (a *AccessPolicy) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) er
 	return nil
 }
 
-// MarshalXML implements the xml.Marshaller interface for type DequeuedMessageItem.
-func (d DequeuedMessageItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias DequeuedMessageItem
+// MarshalXML implements the xml.Marshaller interface for type DequeuedMessage.
+func (d DequeuedMessage) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias DequeuedMessage
 	aux := &struct {
 		*alias
 		ExpirationTime  *timeRFC1123 `xml:"ExpirationTime"`
@@ -68,9 +68,9 @@ func (d DequeuedMessageItem) MarshalXML(enc *xml.Encoder, start xml.StartElement
 	return enc.EncodeElement(aux, start)
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type DequeuedMessageItem.
-func (d *DequeuedMessageItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias DequeuedMessageItem
+// UnmarshalXML implements the xml.Unmarshaller interface for type DequeuedMessage.
+func (d *DequeuedMessage) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias DequeuedMessage
 	aux := &struct {
 		*alias
 		ExpirationTime  *timeRFC1123 `xml:"ExpirationTime"`
@@ -159,19 +159,19 @@ func (l ListQueuesSegmentResponse) MarshalXML(enc *xml.Encoder, start xml.StartE
 	type alias ListQueuesSegmentResponse
 	aux := &struct {
 		*alias
-		QueueItems *[]*QueueItem `xml:"Queues>Queue"`
+		Queues *[]*Queue `xml:"Queues>Queue"`
 	}{
 		alias: (*alias)(&l),
 	}
-	if l.QueueItems != nil {
-		aux.QueueItems = &l.QueueItems
+	if l.Queues != nil {
+		aux.Queues = &l.Queues
 	}
 	return enc.EncodeElement(aux, start)
 }
 
-// MarshalXML implements the xml.Marshaller interface for type PeekedMessageItem.
-func (p PeekedMessageItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias PeekedMessageItem
+// MarshalXML implements the xml.Marshaller interface for type PeekedMessage.
+func (p PeekedMessage) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias PeekedMessage
 	aux := &struct {
 		*alias
 		ExpirationTime *timeRFC1123 `xml:"ExpirationTime"`
@@ -184,9 +184,9 @@ func (p PeekedMessageItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) 
 	return enc.EncodeElement(aux, start)
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type PeekedMessageItem.
-func (p *PeekedMessageItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias PeekedMessageItem
+// UnmarshalXML implements the xml.Unmarshaller interface for type PeekedMessage.
+func (p *PeekedMessage) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias PeekedMessage
 	aux := &struct {
 		*alias
 		ExpirationTime *timeRFC1123 `xml:"ExpirationTime"`
@@ -202,9 +202,9 @@ func (p *PeekedMessageItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElemen
 	return nil
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type QueueItem.
-func (q *QueueItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias QueueItem
+// UnmarshalXML implements the xml.Unmarshaller interface for type Queue.
+func (q *Queue) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias Queue
 	aux := &struct {
 		*alias
 		Metadata additionalProperties `xml:"Metadata"`

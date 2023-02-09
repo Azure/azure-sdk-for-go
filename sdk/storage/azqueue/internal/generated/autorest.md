@@ -124,5 +124,5 @@ directive:
     where: $
     transform: >-
       return $.
-        replace(/QueueItems/g, "QueuesList");
+        replace(/QueueItems/g, "Queues");
 ```

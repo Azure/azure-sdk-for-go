@@ -116,7 +116,7 @@ type ListQueuesSegmentResponse struct {
 	// REQUIRED
 	ServiceEndpoint *string  `xml:"ServiceEndpoint,attr"`
 	Marker          *string  `xml:"Marker"`
-	QueuesList      []*Queue `xml:"Queues>Queue"`
+	Queues          []*Queue `xml:"Queues>Queue"`
 }
 
 // Logging - Azure Analytics Logging settings.

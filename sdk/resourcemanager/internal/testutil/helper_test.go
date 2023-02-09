@@ -36,7 +36,7 @@ func TestCreateDeleteResourceGroup(t *testing.T) {
 	defer stop()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
 	require.NoError(t, err)
-	require.Equal(t, true, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"))
+	require.True(t, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"))
 	_, err = DeleteResourceGroup(ctx, subscriptionID, cred, options, *resourceGroup.Name)
 	require.NoError(t, err)
 }

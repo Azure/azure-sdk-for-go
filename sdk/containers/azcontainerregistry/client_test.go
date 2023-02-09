@@ -342,13 +342,13 @@ func TestClient_UpdateManifestProperties(t *testing.T) {
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, false, *res.Manifest.ChangeableAttributes.CanWrite)
+	require.False(t, *res.Manifest.ChangeableAttributes.CanWrite)
 	res, err = client.UpdateManifestProperties(ctx, "alpine", digest, &ClientUpdateManifestPropertiesOptions{Value: &ManifestWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, true, *res.Manifest.ChangeableAttributes.CanWrite)
+	require.True(t, *res.Manifest.ChangeableAttributes.CanWrite)
 }
 
 func TestClient_UpdateManifestProperties_wrongDigest(t *testing.T) {
@@ -372,13 +372,13 @@ func TestClient_UpdateRepositoryProperties(t *testing.T) {
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, false, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
+	require.False(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
 	res, err = client.UpdateRepositoryProperties(ctx, "ubuntu", &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, true, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
+	require.True(t, *res.ContainerRepositoryProperties.ChangeableAttributes.CanWrite)
 }
 
 func TestClient_UpdateRepositoryProperties_wrongRepository(t *testing.T) {
@@ -405,13 +405,13 @@ func TestClient_UpdateTagProperties(t *testing.T) {
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, false, *res.Tag.ChangeableAttributes.CanWrite)
+	require.False(t, *res.Tag.ChangeableAttributes.CanWrite)
 	res, err = client.UpdateTagProperties(ctx, "alpine", "3.17.1", &ClientUpdateTagPropertiesOptions{Value: &TagWriteableProperties{
 		CanWrite: to.Ptr(true),
 	},
 	})
 	require.NoError(t, err)
-	require.Equal(t, true, *res.Tag.ChangeableAttributes.CanWrite)
+	require.True(t, *res.Tag.ChangeableAttributes.CanWrite)
 }
 
 func TestClient_UpdateTagProperties_wrongTag(t *testing.T) {

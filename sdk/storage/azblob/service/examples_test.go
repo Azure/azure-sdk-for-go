@@ -9,7 +9,9 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"log"
+	"net/http"
 	"os"
 	"time"
 
@@ -365,9 +367,16 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }
 
-// ExampleServiceSubmitBatch shows blob batch operations for delete and set tier.
-func Example_service_SubmitBatch() {
-	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+// ExampleServiceBatchDelete shows blob batch operations for delete and set tier.
+func Example_service_BatchDelete() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
 
 	// create shared key credential
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
@@ -404,20 +413,101 @@ func Example_service_SubmitBatch() {
 	})
 	handleError(err)
 
-	err = bb.SetTier("cnt3", "testBlob4", blob.AccessTierHot, nil)
+	resp, err := svcBatchClient.SubmitBatch(context.TODO(), bb, nil)
 	handleError(err)
 
-	err = bb.SetTier("cnt4", "testBlob5", blob.AccessTierCool, &service.BatchSetTierOptions{
+	// get response for individual sub-requests
+	for _, resp := range resp.Responses {
+		if resp.ContainerName != nil && resp.BlobName != nil {
+			fmt.Println("Container: " + *resp.ContainerName)
+			fmt.Println("Blob: " + *resp.BlobName)
+		}
+		if resp.Response != nil {
+			fmt.Println("Response Status: " + resp.Response.Status)
+		} else {
+			fmt.Println("Error: " + resp.Error.Error())
+		}
+	}
+
+	// print raw response body
+	bodyBytes, err := runtime.Payload(&http.Response{
+		Body: resp.Body,
+	})
+	fmt.Println("Response Body of SubmitBatch:\n" + string(bodyBytes))
+}
+
+// ExampleServiceBatchSetTier shows blob batch operations for delete and set tier.
+func Example_service_BatchSetTier() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_TENANT_ID could not be found")
+	}
+	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_ID could not be found")
+	}
+	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
+	}
+
+	// create client secret credential
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	handleError(err)
+
+	// create service batch client
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	svcBatchClient, err := service.NewClient(serviceURL, cred, nil)
+	handleError(err)
+
+	// create new batch builder
+	bb, err := svcBatchClient.NewBatchBuilder()
+	handleError(err)
+
+	// add operations to the batch builder
+	err = bb.SetTier("cnt1", "testBlob4", blob.AccessTierHot, nil)
+	handleError(err)
+
+	err = bb.SetTier("cnt1", "testBlob5", blob.AccessTierCool, &service.BatchSetTierOptions{
 		VersionID: to.Ptr("2023-01-03T11:57:25.4067017Z"),
+	})
+	handleError(err)
+
+	err = bb.SetTier("cnt2", "testBlob5", blob.AccessTierCool, &service.BatchSetTierOptions{
+		Snapshot: to.Ptr("2023-01-03T11:57:25.6515618Z"),
+	})
+	handleError(err)
+
+	err = bb.SetTier("cnt2", "testBlob4", blob.AccessTierCool, &service.BatchSetTierOptions{
+		SetTierOptions: &blob.SetTierOptions{
+			RehydratePriority: to.Ptr(blob.RehydratePriorityStandard),
+		},
 	})
 	handleError(err)
 
 	resp, err := svcBatchClient.SubmitBatch(context.TODO(), bb, nil)
 	handleError(err)
 
-	// print response body
-	p := make([]byte, 10000)
-	_, err = resp.Body.Read(p)
-	handleError(err)
-	fmt.Println(string(p))
+	// get response for individual sub-requests
+	for _, resp := range resp.Responses {
+		if resp.ContainerName != nil && resp.BlobName != nil {
+			fmt.Println("Container: " + *resp.ContainerName)
+			fmt.Println("Blob: " + *resp.BlobName)
+		}
+		if resp.Response != nil {
+			fmt.Println("Response Status: " + resp.Response.Status)
+		} else {
+			fmt.Println("Error: " + resp.Error.Error())
+		}
+	}
+
+	// print raw response body
+	bodyBytes, err := runtime.Payload(&http.Response{
+		Body: resp.Body,
+	})
+	fmt.Println("Response Body of SubmitBatch:\n" + string(bodyBytes))
 }

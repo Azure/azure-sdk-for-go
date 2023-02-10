@@ -13,7 +13,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"io"
 	"net/http"
 	"strconv"
@@ -134,8 +136,9 @@ func CreateBatchRequest(bb *BlobBatchBuilder) (string, string, error) {
 		if bb.AuthPolicy != nil {
 			resp, err := bb.AuthPolicy.Do(req)
 			if err != nil && resp != nil {
-				// TODO: handle error: log this error
-				continue
+				if log.Should(exported.EventSubmitBatch) {
+					log.Writef(exported.EventSubmitBatch, "failed to authorize sub-request for %v.\nError: %v\nResponse status: %v", req.Raw().URL.Path, err.Error(), resp.Status)
+				}
 			}
 		}
 
@@ -177,7 +180,6 @@ func getResponseBoundary(contentType *string) (string, error) {
 	}
 	boundaryIdx := strings.Index(*contentType, "batchresponse_")
 	if boundaryIdx == -1 {
-		// TODO: add log
 		return "", fmt.Errorf("batch boundary not present in Content-Type header of the SubmitBatch response.\nContent-Type: %v\n", *contentType)
 	}
 	return "--" + (*contentType)[boundaryIdx:], nil
@@ -240,7 +242,9 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 
 		respStringIdx := strings.Index(part, "HTTP/1.1")
 		if respStringIdx == -1 {
-			// TODO: add log
+			if log.Should(exported.EventSubmitBatch) {
+				log.Writef(exported.EventSubmitBatch, "failed to get response for sub-request in:\n%v", part)
+			}
 			continue
 		}
 
@@ -249,16 +253,22 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 		batchResponse.Response = resp
 		batchResponse.Error = err
 		if err != nil {
-			// TODO: add log
 			batchPartialError = true
+			if log.Should(exported.EventSubmitBatch) {
+				log.Writef(exported.EventSubmitBatch, "failed to parse response from:\n%v\n\nError: %v", part, err.Error())
+			}
 		}
 		if resp != nil && (resp.StatusCode < 200 || resp.StatusCode >= 300) {
-			// TODO: add log
 			batchPartialError = true
 			if i == 1 && batchResponse.ContentID == nil {
 				// this case can happen when the parent request fails.
 				// For example, batch request having more than 256 sub-requests.
 				return nil, fmt.Errorf("%v", part[respStringIdx:])
+			}
+			if batchResponse.ContainerName != nil && batchResponse.BlobName != nil {
+				if log.Should(exported.EventSubmitBatch) {
+					log.Writef(exported.EventSubmitBatch, "got status: %v, for %v/%v", resp.Status, batchResponse.ContainerName, batchResponse.BlobName)
+				}
 			}
 		}
 

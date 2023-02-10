@@ -447,7 +447,6 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	multipartContentType := "multipart/mixed; boundary=" + batchID
 	resp, err := c.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
 
-	// TODO: parse the response body to map individual operations to their responses
 	if err != nil {
 		return SubmitBatchResponse{
 			ContainerClientSubmitBatchResponse: resp,

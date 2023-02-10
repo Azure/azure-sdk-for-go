@@ -10,5 +10,6 @@ import (
 // NOTE: these are publicly exported via type-aliasing in azblob/log.go
 const (
 	// EventUpload is used when we compute number of blocks to upload and size of each block.
-	EventUpload log.Event = "azblob.Upload"
+	EventUpload      log.Event = "azblob.Upload"
+	EventSubmitBatch log.Event = "azblob.SubmitBatch"
 )

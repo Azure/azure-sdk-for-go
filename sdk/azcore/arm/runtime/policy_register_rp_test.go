@@ -8,9 +8,7 @@ package runtime
 
 import (
 	"context"
-	"errors"
 	"net/http"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -18,10 +16,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
 
 const rpUnregisteredResp = `{
@@ -53,11 +53,20 @@ const rpRegisteredResp = `{
     "registrationPolicy": "RegistrationRequired"
 }`
 
+const rpEnvsInSubExceeded = `{
+	"code": "MaxNumberOfRegionalEnvironmentsInSubExceeded",
+	"message": "The subscription '00000000-0000-0000-0000-000000000000' cannot have more than 1 environments in East US."
+}`
+
 const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
 
-func newTestRPRegistrationPipeline(t *testing.T, srv *mock.Server) runtime.Pipeline {
-	opts := testRPRegistrationOptions(srv)
-	rp, err := NewRPRegistrationPolicy(mockCredential{}, testRPRegistrationOptions(srv))
+const fakeAPIBody = "success"
+
+func newTestRPRegistrationPipeline(t *testing.T, srv *mock.Server, opts *armpolicy.RegistrationOptions) runtime.Pipeline {
+	if opts == nil {
+		opts = testRPRegistrationOptions(srv)
+	}
+	rp, err := NewRPRegistrationPolicy(mockCredential{}, opts)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -85,13 +94,9 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	srv.RepeatResponse(5, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)))
 	// polling response, successful registration
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
-	// response for original request (different status code than any of the other responses)
-	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	pl := newTestRPRegistrationPipeline(t, srv)
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
-	if err != nil {
-		t.Fatal(err)
-	}
+	// response for original request
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(fakeAPIBody)))
+	client := newFakeClient(t, srv, nil)
 	// log only RP registration
 	log.SetEvents(LogRPRegistration)
 	defer func() {
@@ -102,36 +107,25 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
-	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusAccepted {
-		t.Fatalf("unexpected status code %d:", resp.StatusCode)
-	}
-	if resp.Request.URL.Path != requestEndpoint {
-		t.Fatalf("unexpected path in response %s", resp.Request.URL.Path)
-	}
+	resp, err := client.FakeAPI(context.Background())
+	require.NoError(t, err)
+	require.EqualValues(t, fakeAPIBody, resp.Result)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, requestEndpoint, resp.Path)
 	// should be four entries
 	// 1st is for start
 	// 2nd is for first response to get state
 	// 3rd is when state transitions to success
 	// 4th is for end
-	if logEntries != 4 {
-		t.Fatalf("expected 4 log entries, got %d", logEntries)
-	}
+	require.EqualValues(t, 4, logEntries)
 }
 
 func TestRPRegistrationPolicyNA(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	// response indicates no RP registration is required, policy does nothing
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	pl := newTestRPRegistrationPipeline(t, srv)
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatal(err)
-	}
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(fakeAPIBody)))
+	client := newFakeClient(t, srv, nil)
 	// log only RP registration
 	log.SetEvents(LogRPRegistration)
 	defer func() {
@@ -141,13 +135,11 @@ func TestRPRegistrationPolicyNA(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
 	})
-	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
-	}
+	resp, err := client.FakeAPI(context.Background())
+	require.NoError(t, err)
+	require.EqualValues(t, fakeAPIBody, resp.Result)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, requestEndpoint, resp.Path)
 }
 
 func TestRPRegistrationPolicy409Other(t *testing.T) {
@@ -166,11 +158,7 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 	defer close()
 	// test getting a 409 but not due to registration required
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(failedResp)))
-	pl := newTestRPRegistrationPipeline(t, srv)
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatal(err)
-	}
+	client := newFakeClient(t, srv, nil)
 	// log only RP registration
 	log.SetEvents(LogRPRegistration)
 	defer func() {
@@ -180,13 +168,12 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
 	})
-	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusConflict {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
-	}
+	resp, err := client.FakeAPI(context.Background())
+	require.Error(t, err)
+	require.Zero(t, resp)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.EqualValues(t, "CannotDoTheThing", respErr.ErrorCode)
 }
 
 func TestRPRegistrationPolicyTimesOut(t *testing.T) {
@@ -197,11 +184,7 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	// polling responses to Register() and Get(), in progress but slow
 	// tests registration takes too long, times out
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(400*time.Millisecond))
-	pl := newTestRPRegistrationPipeline(t, srv)
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
-	if err != nil {
-		t.Fatal(err)
-	}
+	client := newFakeClient(t, srv, nil)
 	// log only RP registration
 	log.SetEvents(LogRPRegistration)
 	defer func() {
@@ -212,21 +195,15 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
-	resp, err := pl.Do(req)
-	if !errors.Is(err, context.DeadlineExceeded) {
-		t.Fatalf("expected DeadlineExceeded, got %v", err)
-	}
+	resp, err := client.FakeAPI(context.Background())
+	require.Error(t, err)
+	require.Zero(t, resp)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
 	// should be three entries
 	// 1st is for start
 	// 2nd is for first response to get state
 	// 3rd is the deadline exceeded error
-	if logEntries != 3 {
-		t.Fatalf("expected 3 log entries, got %d", logEntries)
-	}
-	// we should get the response from the original request
-	if resp.StatusCode != http.StatusConflict {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
-	}
+	require.EqualValues(t, 3, logEntries)
 }
 
 func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
@@ -241,11 +218,7 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 		// polling response, successful registration
 		srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
 	}
-	pl := newTestRPRegistrationPipeline(t, srv)
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
-	if err != nil {
-		t.Fatal(err)
-	}
+	client := newFakeClient(t, srv, nil)
 	// log only RP registration
 	log.SetEvents(LogRPRegistration)
 	defer func() {
@@ -256,27 +229,16 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
-	resp, err := pl.Do(req)
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if !strings.HasPrefix(err.Error(), "exceeded attempts to register Microsoft.Storage") {
-		t.Fatalf("unexpected error message %s", err.Error())
-	}
-	if resp.StatusCode != http.StatusConflict {
-		t.Fatalf("unexpected status code %d:", resp.StatusCode)
-	}
-	if resp.Request.URL.Path != requestEndpoint {
-		t.Fatalf("unexpected path in response %s", resp.Request.URL.Path)
-	}
+	resp, err := client.FakeAPI(context.Background())
+	require.Error(t, err)
+	require.Zero(t, resp)
+	require.Contains(t, err.Error(), "exceeded attempts to register Microsoft.Storage")
 	// should be 4 entries for each attempt, total 12 entries
 	// 1st is for start
 	// 2nd is for first response to get state
 	// 3rd is when state transitions to success
 	// 4th is for end
-	if logEntries != 12 {
-		t.Fatalf("expected 12 log entries, got %d", logEntries)
-	}
+	require.EqualValues(t, 12, logEntries)
 }
 
 // test cancelling registration
@@ -287,9 +249,6 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	// polling responses to Register() and Get(), in progress but slow so we have time to cancel
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(300*time.Millisecond))
-	opts := armpolicy.RegistrationOptions{}
-	opts.Transport = srv
-	pl := newTestRPRegistrationPipeline(t, srv)
 	// log only RP registration
 	log.SetEvents(LogRPRegistration)
 	defer func() {
@@ -305,34 +264,23 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	wg.Add(1)
 
 	ctx, cancel := context.WithCancel(context.Background())
-	var resp *http.Response
+	var resp fakeResponse
 	var err error
 	go func() {
 		defer wg.Done()
-		// create request and start pipeline
-		var req *azpolicy.Request
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
-		if err != nil {
-			return
-		}
-		resp, err = pl.Do(req)
+		client := newFakeClient(t, srv, nil)
+		resp, err = client.FakeAPI(ctx)
 	}()
 
 	// wait for a bit then cancel the operation
 	time.Sleep(500 * time.Millisecond)
 	cancel()
 	wg.Wait()
-	if !errors.Is(err, context.Canceled) {
-		t.Fatalf("expected Canceled error, got %v", err)
-	}
+	require.Error(t, err)
+	require.ErrorIs(t, err, context.Canceled)
+	require.Zero(t, resp)
 	// there should be 1 or 2 entries depending on the timing
-	if logEntries == 0 {
-		t.Fatal("didn't get any log entries")
-	}
-	// should have original response
-	if resp.StatusCode != http.StatusConflict {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
-	}
+	require.NotZero(t, logEntries)
 }
 
 func TestRPRegistrationPolicyDisabled(t *testing.T) {
@@ -342,15 +290,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	ops := testRPRegistrationOptions(srv)
 	ops.MaxAttempts = -1
-	rp, err := NewRPRegistrationPolicy(mockCredential{}, ops)
-	if err != nil {
-		t.Fatal(err)
-	}
-	pl := runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []azpolicy.Policy{rp}}, nil)
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
-	if err != nil {
-		t.Fatal(err)
-	}
+	client := newFakeClient(t, srv, ops)
 	// log only RP registration
 	log.SetEvents(LogRPRegistration)
 	defer func() {
@@ -361,17 +301,14 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
-	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusConflict {
-		t.Fatalf("unexpected status code %d:", resp.StatusCode)
-	}
+	resp, err := client.FakeAPI(context.Background())
+	require.Error(t, err)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.EqualValues(t, "MissingSubscriptionRegistration", respErr.ErrorCode)
+	require.Zero(t, resp)
 	// shouldn't be any log entries
-	if logEntries != 0 {
-		t.Fatalf("expected 0 log entries, got %d", logEntries)
-	}
+	require.Zero(t, logEntries)
 }
 
 func TestRPRegistrationPolicyAudience(t *testing.T) {
@@ -396,12 +333,8 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 	getTokenCalled := false
 	cred := mockCredential{getTokenImpl: func(ctx context.Context, options azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
 		getTokenCalled = true
-		if n := len(options.Scopes); n != 1 {
-			t.Fatalf("expected 1 scope, got %d", n)
-		}
-		if options.Scopes[0] != audience+"/.default" {
-			t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
-		}
+		require.Len(t, options.Scopes, 1)
+		require.EqualValues(t, audience+"/.default", options.Scopes[0])
 		return azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 	}}
 	opts := azpolicy.ClientOptions{Cloud: conf, Transport: srv}
@@ -436,8 +369,67 @@ func TestRPRegistrationPolicyWithIncompleteCloudConfig(t *testing.T) {
 	for _, c := range partialConfigs {
 		opts := azpolicy.ClientOptions{Cloud: c}
 		_, err := NewRPRegistrationPolicy(mockCredential{}, &armpolicy.RegistrationOptions{ClientOptions: opts})
-		if err == nil {
-			t.Fatal("expected an error")
-		}
+		require.Error(t, err)
 	}
+}
+
+func TestRPRegistrationPolicyEnvironmentsInSubExceeded(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// test getting a 409 due to exceeded environments in a subscription
+	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpEnvsInSubExceeded)))
+	client := newFakeClient(t, srv, nil)
+	// log only RP registration
+	log.SetEvents(LogRPRegistration)
+	logEntries := 0
+	log.SetListener(func(cls log.Event, msg string) {
+		logEntries++
+	})
+	defer func() {
+		// reset logging
+		log.SetEvents()
+	}()
+	resp, err := client.FakeAPI(context.Background())
+	require.Error(t, err)
+	require.Zero(t, resp)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.EqualValues(t, "MaxNumberOfRegionalEnvironmentsInSubExceeded", respErr.ErrorCode)
+	require.Contains(t, err.Error(), "cannot have more than 1 environments")
+	require.EqualValues(t, 0, logEntries)
+}
+
+type fakeClient struct {
+	ep string
+	pl runtime.Pipeline
+}
+
+func newFakeClient(t *testing.T, srv *mock.Server, opts *armpolicy.RegistrationOptions) *fakeClient {
+	return &fakeClient{ep: srv.URL(), pl: newTestRPRegistrationPipeline(t, srv, opts)}
+}
+
+type fakeResponse struct {
+	Result     string
+	StatusCode int
+	Path       string
+}
+
+// FakeAPI returns fakeResponse with Result "success" on a HTTP 200.
+func (f *fakeClient) FakeAPI(ctx context.Context) (fakeResponse, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(f.ep, requestEndpoint))
+	if err != nil {
+		return fakeResponse{}, err
+	}
+	resp, err := f.pl.Do(req)
+	if err != nil {
+		return fakeResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return fakeResponse{}, runtime.NewResponseError(resp)
+	}
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return fakeResponse{}, err
+	}
+	return fakeResponse{Result: string(body), StatusCode: resp.StatusCode, Path: resp.Request.URL.Path}, nil
 }

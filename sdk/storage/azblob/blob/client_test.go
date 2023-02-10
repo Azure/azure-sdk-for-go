@@ -111,7 +111,7 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	sasQueryParams, err := sas.AccountSignatureValues{
@@ -152,7 +152,7 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSASUsingCo
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 	sasQueryParams, err := sas.AccountSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
@@ -418,7 +418,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 //	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 //
 //	// Create sas values for the source blob
-//	credential, err := testcommon.GetGenericCredential(nil, testcommon.TestAccountDefault)
+//	credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
 //	if err != nil {
 //		s.T().Fatal("Couldn't fetch credential because " + err.Error())
 //	}
@@ -3022,7 +3022,7 @@ func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
 	parts, err := sas.ParseURL(bbClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	// Set Account SAS and set Permanent Delete to true
@@ -3132,7 +3132,7 @@ func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 	parts, err := sas.ParseURL(bbClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	// Set Account SAS
@@ -3561,12 +3561,10 @@ func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
 		Create: true,
 		Delete: true,
 	}
-	start := time.Now().Add(-time.Hour)
-	expiry := start.Add(time.Hour)
-	opts := blob.GetSASURLOptions{StartTime: &start}
+	expiry := time.Now().Add(5 * time.Minute)
 
 	// BlobSASURL is created with GetSASURL
-	sasUrl, err := blobClient.GetSASURL(permissions, expiry, &opts)
+	sasUrl, err := blobClient.GetSASURL(permissions, expiry, nil)
 	_require.Nil(err)
 
 	// Get new blob client with sasUrl and attempt GetProperties

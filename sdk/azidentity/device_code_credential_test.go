@@ -86,22 +86,33 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_Live(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		t.Skip("this test requires manual recording and can't pass live in CI")
+	if recording.GetRecordMode() != recording.PlaybackMode && !runManualTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
 	}
-	for _, disabledID := range []bool{true, false} {
-		name := "default options"
-		if disabledID {
-			name = "instance discovery disabled"
-		}
-		t.Run(name, func(t *testing.T) {
+	for _, test := range []struct {
+		clientID, desc, tenantID string
+		opts                     DeviceCodeCredentialOptions
+	}{
+		{
+			desc: "default options",
+		},
+		{
+			desc: "instance discovery disabled",
+			opts: DeviceCodeCredentialOptions{DisableInstanceDiscovery: true, TenantID: liveSP.tenantID},
+		},
+		{
+			desc: "optional tenant",
+			opts: DeviceCodeCredentialOptions{TenantID: liveSP.tenantID},
+		},
+	} {
+		t.Run(test.desc, func(t *testing.T) {
 			o, stop := initRecording(t)
 			defer stop()
-			opts := DeviceCodeCredentialOptions{TenantID: liveUser.tenantID, ClientOptions: o, DisableInstanceDiscovery: disabledID}
+			test.opts.ClientOptions = o
 			if recording.GetRecordMode() == recording.PlaybackMode {
-				opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }
+				test.opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }
 			}
-			cred, err := NewDeviceCodeCredential(&opts)
+			cred, err := NewDeviceCodeCredential(&test.opts)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -111,8 +122,8 @@ func TestDeviceCodeCredential_Live(t *testing.T) {
 }
 
 func TestDeviceCodeCredentialADFS_Live(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		t.Skip("this test requires manual recording and can't pass live in CI")
+	if recording.GetRecordMode() != recording.PlaybackMode && !runManualTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
 	}
 	if adfsLiveSP.clientID == "" {
 		t.Skip("set ADFS_SP_* environment variables to run this test")

@@ -10,7 +10,7 @@ Use the client library for Azure Container Registry to:
 - Delete images and artifacts, repositories and tags
 - Upload and download images
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containers/azcontainerregistry) | [REST API documentation](https://docs.microsoft.com/rest/api/containerregistry/) | [Product documentation](https://docs.microsoft.com/azure/container-registry/)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containers/azcontainerregistry) | [Package (pkg.go.dev)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry) | [REST API documentation](https://docs.microsoft.com/rest/api/containerregistry/) | [Product documentation](https://docs.microsoft.com/azure/container-registry/)
 
 ## Getting started
 
@@ -38,16 +38,16 @@ az acr create --name MyContainerRegistry --resource-group MyResourceGroup --loca
 ```
 ### Authentication
 
-This document demonstrates using [azidentity.NewDefaultAzureCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential) to authenticate. 
-This credential type works in both local development and production environments. 
+This document demonstrates using [azidentity.NewDefaultAzureCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential) to authenticate.
+This credential type works in both local development and production environments.
 We recommend using a [managed identity](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) in production.
 
-Client and BlobClient accepts any [azidentity][https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity] credential. 
+[Client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#Client) and [BlobClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#BlobClient) accepts any [azidentity][https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity] credential.
 See the [azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity) documentation for more information about other credential types.
 
 #### Create a client
 
-Constructing the client requires your Container Registry's endpoint URL, which you can get from the Azure CLI or the Azure Portal.
+Constructing the client requires your Container Registry's endpoint URL, which you can get from the Azure CLI (`loginServer` value returned by `az acr list`) or the Azure Portal (`Login server` value on registry overview page).
 
 ```go
 import (
@@ -71,18 +71,18 @@ func main() {
 
 ## Key concepts
 
-A **registry** stores Docker images and [OCI Artifacts](https://opencontainers.org/). 
-An image or artifact consists of a **manifest** and **layers**. 
-An image's manifest describes the layers that make up the image, and is uniquely identified by its **digest**. 
-An image can also be "tagged" to give it a human-readable alias. 
-An image or artifact can have zero or more **tags** associated with it, and each tag uniquely identifies the image. 
+A **registry** stores Docker images and [OCI Artifacts](https://opencontainers.org/).
+An image or artifact consists of a **manifest** and **layers**.
+An image's manifest describes the layers that make up the image, and is uniquely identified by its **digest**.
+An image can also be "tagged" to give it a human-readable alias.
+An image or artifact can have zero or more **tags** associated with it, and each tag uniquely identifies the image.
 A collection of images that share the same name but have different tags, is referred to as a **repository**.
 
 For more information please see [Container Registry Concepts](https://docs.microsoft.com/azure/container-registry/container-registry-concepts).
 
 ## Examples
 
-Get started with our examples in pkg.go.dev.
+Get started with our [examples](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry#pkg-examples).
 
 ## Troubleshooting
 
@@ -143,5 +143,4 @@ This project welcomes contributions and suggestions. Most contributions require 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct][https://opensource.microsoft.com/codeofconduct/]. For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
-
 

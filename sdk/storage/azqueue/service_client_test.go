@@ -448,6 +448,43 @@ func (s *RecordedTestSuite) TestServiceListQueuesPaged() {
 	}
 }
 
+// this test ensures that our sas related methods work properly
+func (s *UnrecordedTestSuite) TestServiceSignatureValues() {
+	_require := require.New(s.T())
+
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Update: true,
+		Delete: true,
+	}
+
+	expiry := time.Now().Add(time.Hour)
+
+	qsv := sas.AccountSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Time{},
+		ExpiryTime:    expiry,
+		ResourceTypes: resources.String(),
+		Permissions:   permissions.String(),
+	}
+	_, err = qsv.SignWithSharedKey(cred)
+	_require.Nil(err)
+}
+
 func (s *UnrecordedTestSuite) TestSASServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -521,4 +558,116 @@ func (s *UnrecordedTestSuite) TestNoSharedKeyCredError() {
 	_, err = serviceClient.GetSASURL(resources, permissions, expiry, &opts)
 	_require.Equal(err, queueerror.MissingSharedKeyCredential)
 
+}
+
+func (s *UnrecordedTestSuite) TestAccountSASEnqueueMessage() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	queueName := testcommon.GenerateQueueName(testName)
+
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Update: true,
+		Delete: true,
+	}
+
+	expiry := time.Now().Add(time.Hour)
+
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
+	_require.Nil(err)
+
+	svcClient, err := azqueue.NewServiceClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	// create queue using account SAS
+	_, err = svcClient.CreateQueue(context.Background(), queueName, nil)
+	_require.Nil(err)
+
+	queueClient := svcClient.NewQueueClient(queueName)
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+
+	}
+	_, err = svcClient.DeleteQueue(context.Background(), queueName, nil)
+	_require.Nil(err)
+}
+
+func (s *UnrecordedTestSuite) TestAccountSASDequeueMessage() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	queueName := testcommon.GenerateQueueName(testName)
+
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:    true,
+		Add:     true,
+		Write:   true,
+		Create:  true,
+		Update:  true,
+		Delete:  true,
+		Process: true,
+	}
+
+	expiry := time.Now().Add(time.Hour)
+
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
+	_require.Nil(err)
+
+	svcClient, err := azqueue.NewServiceClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	// create queue using account SAS
+	_, err = svcClient.CreateQueue(context.Background(), queueName, nil)
+	_require.Nil(err)
+
+	queueClient := svcClient.NewQueueClient(queueName)
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// dequeue 4 messages
+	for i := 0; i < 4; i++ {
+		resp, err := queueClient.DequeueMessage(context.Background(), nil)
+		_require.Nil(err)
+		_require.Equal(1, len(resp.QueueMessagesList))
+		_require.NotNil(resp.QueueMessagesList[0].MessageID)
+	}
+	// should be 0 now
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Nil(err)
+	_, err = svcClient.DeleteQueue(context.Background(), queueName, nil)
+	_require.Nil(err)
 }

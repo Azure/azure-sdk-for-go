@@ -81,7 +81,7 @@ type ReceiverOptions struct {
 	SubQueue SubQueue
 }
 
-const defaultLinkRxBuffer = 10000
+const defaultLinkRxBuffer uint32 = 10000
 
 func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverOptions) error {
 	if options == nil {

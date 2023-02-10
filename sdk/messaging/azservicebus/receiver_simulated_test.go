@@ -597,6 +597,8 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 					<-ctx.Done()
 					return nil, ctx.Err()
 				}).AnyTimes()
+
+				require.Equal(t, defaultLinkRxBuffer, mr.Opts.Credit)
 			}
 
 			return nil

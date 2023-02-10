@@ -76,6 +76,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		Source:                 source,
 		Status:                 NewStatus(sess.Status),
 		TargetAddress:          opts.TargetAddress,
+		Opts:                   opts,
 	}
 
 	id := fmt.Sprintf("%s|%s|%s|e:%s", sess.Conn.Name(), sess.ID, md.nextUniqueName("r"), source)

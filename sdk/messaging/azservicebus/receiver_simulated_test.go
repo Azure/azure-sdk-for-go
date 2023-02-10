@@ -554,6 +554,27 @@ func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
 	require.Equal(t, []string{"message available again after being released by releaser"}, getSortedBodies(messages))
 }
 
+func TestReceiver_ReceiveMessages_CreditValidation(t *testing.T) {
+	_, client, cleanup := newClientWithMockedConn(t, nil, nil)
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.NoError(t, err)
+	require.NotNil(t, receiver)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 10001, nil)
+	require.EqualError(t, err, "maxMessages cannot exceed 10000")
+	require.Empty(t, messages)
+
+	messages, err = receiver.ReceiveMessages(context.Background(), -1, nil)
+	require.EqualError(t, err, "maxMessages should be greater than 0")
+	require.Empty(t, messages)
+
+	messages, err = receiver.ReceiveMessages(context.Background(), 0, nil)
+	require.EqualError(t, err, "maxMessages should be greater than 0")
+	require.Empty(t, messages)
+}
+
 func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	type keyType string
 
@@ -590,44 +611,38 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	sender, err := client.NewSender("queue", nil)
 	require.NoError(t, err)
 
-	messages, err := receiver.ReceiveMessages(context.Background(), 10001, nil)
-	require.EqualError(t, err, "maxMessages cannot exceed 10000")
-	require.Empty(t, messages)
+	baseReceiveCtx := context.WithValue(context.Background(), keyType("FromReceive"), true)
 
-	messages, err = receiver.ReceiveMessages(context.Background(), -1, nil)
-	require.EqualError(t, err, "maxMessages should be greater than 0")
-	require.Empty(t, messages)
-
-	messages, err = receiver.ReceiveMessages(context.Background(), 0, nil)
-	require.EqualError(t, err, "maxMessages should be greater than 0")
-	require.Empty(t, messages)
-
-	test.EnableStdoutLogging()
-
-	parentCtx := context.WithValue(context.Background(), keyType("FromReceive"), true)
-
-	ctx, cancel := context.WithTimeout(parentCtx, time.Second)
+	ctx, cancel := context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
 
-	messages, err = receiver.ReceiveMessages(ctx, 10000, nil)
+	messages, err := receiver.ReceiveMessages(ctx, 10000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
 
 	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello world")}, nil)
 	require.NoError(t, err)
 
+	logsFn := test.CaptureLogsForTest()
+
 	// no issue credit needed - we've still got the 10000 from last time since we didn't
 	// receive any messages.
-	messages, err = receiver.ReceiveMessages(parentCtx, 10000, nil)
+	messages, err = receiver.ReceiveMessages(baseReceiveCtx, 10000, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
+	require.Contains(t, logsFn(), "[azsb.Receiver] No additional credits needed, still have 10000 credits active")
 
-	ctx, cancel = context.WithTimeout(parentCtx, time.Second)
+	ctx, cancel = context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
 
+	logsFn = test.CaptureLogsForTest()
+
+	// we ate a credit last time since we received a single message, so this time we'll still
+	// need to issue some more to backfill.
 	messages, err = receiver.ReceiveMessages(ctx, 10000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
+	require.Contains(t, logsFn(), "[azsb.Receiver] Only need to issue 1 additional credits")
 
 	require.Equal(t, 1, len(md.Events.GetOpenConns()))
 	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")

@@ -28,11 +28,12 @@ var (
 
 func init() {
 	addSwappableLogger()
-	rand.Seed(time.Now().Unix())
 }
 
 // RandomString generates a random string with prefix
 func RandomString(prefix string, length int) string {
+	rand := rand.New(rand.NewSource(time.Now().Unix()))
+
 	b := make([]rune, length)
 	for i := range b {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]

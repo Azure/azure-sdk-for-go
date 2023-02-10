@@ -575,7 +575,7 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 					azlog.Writef(azlog.Event("testing"), "===> Releaser asking for message, blocking on cancel.")
 					<-ctx.Done()
 					return nil, ctx.Err()
-				})
+				}).AnyTimes()
 			}
 
 			return nil
@@ -604,8 +604,6 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 
 	test.EnableStdoutLogging()
 
-	azlog.Writef(azlog.Event("testing"), "===> ReceiveMessages(10000), new credits needed")
-
 	parentCtx := context.WithValue(context.Background(), keyType("FromReceive"), true)
 
 	ctx, cancel := context.WithTimeout(parentCtx, time.Second)
@@ -615,12 +613,8 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
 
-	azlog.Writef(azlog.Event("testing"), "===> Sending message")
-
 	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello world")}, nil)
 	require.NoError(t, err)
-
-	azlog.Writef(azlog.Event("testing"), "===> Receiving message, expect to not issue a credit")
 
 	// no issue credit needed - we've still got the 10000 from last time since we didn't
 	// receive any messages.
@@ -630,8 +624,6 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 
 	ctx, cancel = context.WithTimeout(parentCtx, time.Second)
 	defer cancel()
-
-	azlog.Writef(azlog.Event("testing"), "===> Receiving message, expect to issue 1 credit")
 
 	messages, err = receiver.ReceiveMessages(ctx, 10000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)

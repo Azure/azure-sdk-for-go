@@ -81,10 +81,10 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
-	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	connectionString, _ := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
 
-	parsedConnStr, err := shared.ParseConnectionString(connectionString)
+	parsedConnStr, err := shared.ParseConnectionString(*connectionString)
 	_require.Nil(err)
 	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".blob.core.windows.net/")
 
@@ -669,36 +669,38 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(
 func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
-	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
-	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 
-	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", cred.AccountName()), cred, nil)
 	_require.Nil(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
 
+	// Note: Always set all permissions, services, types to true to ensure order of string formed is correct.
 	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,
 		Container: true,
 	}
 	permissions := sas.AccountPermissions{
-		Read:   true,
-		Add:    true,
-		Write:  true,
-		Create: true,
-		Update: true,
-		Delete: true,
+		Read:                  true,
+		Write:                 true,
+		Delete:                true,
+		DeletePreviousVersion: true,
+		List:                  true,
+		Add:                   true,
+		Create:                true,
+		Update:                true,
+		Process:               true,
+		Tag:                   true,
+		FilterByTags:          true,
+		PermanentDelete:       true,
 	}
-
 	expiry := time.Now().Add(time.Hour)
-
 	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
 	_require.Nil(err)
 
-	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
+	svcClient, err := testcommon.GetServiceClientNoCredential(s.T(), sasUrl, nil)
 	_require.Nil(err)
 
 	// create container using SAS
@@ -707,6 +709,70 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 
 	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
 	_require.Nil(err)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
+	_require := require.New(s.T())
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), nil)
+	_require.Nil(err)
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:                  true,
+		Write:                 true,
+		Delete:                true,
+		DeletePreviousVersion: true,
+		List:                  true,
+		Add:                   true,
+		Create:                true,
+		Update:                true,
+		Process:               true,
+		Tag:                   true,
+		FilterByTags:          true,
+		PermanentDelete:       true,
+	}
+
+	expiry := time.Now().Add(time.Hour)
+	_, err = serviceClient.GetSASURL(resources, permissions, expiry, nil)
+	_require.Equal(err.Error(), "SAS can only be signed with a SharedKeyCredential")
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
+	_require := require.New(s.T())
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+	resources := sas.AccountResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := sas.AccountPermissions{
+		Read:                  true,
+		Write:                 true,
+		Delete:                true,
+		DeletePreviousVersion: true,
+		List:                  true,
+		Add:                   true,
+		Create:                true,
+		Update:                true,
+		Process:               true,
+		Tag:                   true,
+		FilterByTags:          true,
+		PermanentDelete:       true,
+	}
+	expiry := time.Time{}
+	_, err = serviceClient.GetSASURL(resources, permissions, expiry, nil)
+	_require.Equal(err.Error(), "account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestNoSharedKeyCredError() {
@@ -904,7 +970,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	sasQueryParams, err := sas.BlobSignatureValues{
@@ -950,4 +1016,43 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 
 	err = reader.Close()
 	_require.Nil(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestAccountGetStatistics() {
+	_require := require.New(s.T())
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s-secondary.blob.core.windows.net/", accountName), cred, options)
+	_require.Nil(err)
+
+	resp, err := serviceClient.GetStatistics(context.Background(), &service.GetStatisticsOptions{})
+	_require.Nil(err)
+	_require.NotNil(resp.Version)
+	_require.NotNil(resp.RequestID)
+	_require.NotNil(resp.Date)
+	_require.NotNil(resp.GeoReplication)
+	_require.NotNil(resp.GeoReplication.Status)
+	if *resp.GeoReplication.Status == service.BlobGeoReplicationStatusLive {
+		_require.NotNil(resp.GeoReplication.LastSyncTime)
+	} else {
+		_require.Nil(resp.GeoReplication.LastSyncTime)
+	}
+}
+
+// Note: Further tests for filterblobs in pageblob and appendblob
+// TODO : Need to add scraping logic to remove any endpoints from Body
+func (s *ServiceRecordedTestsSuite) TestAccountFilterBlobs() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	filter := "\"key\"='value'"
+	resp, err := svcClient.FilterBlobs(context.Background(), filter, &service.FilterBlobsOptions{})
+	_require.Nil(err)
+	_require.Len(resp.FilterBlobSegment.Blobs, 0)
 }

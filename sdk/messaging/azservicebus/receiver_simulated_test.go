@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
@@ -551,6 +552,93 @@ func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"message available again after being released by releaser"}, getSortedBodies(messages))
+}
+
+func TestReceiver_CreditsDontExceedMax(t *testing.T) {
+	type keyType string
+
+	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source == "queue" {
+				// first actual request, 10000 fresh credits.
+				mr.EXPECT().IssueCredit(uint32(10000)).DoAndReturn(mr.InternalIssueCredit)
+
+				// we're going to eat up one credit with a Receive() call and then
+				// issue 10000 again, and should only need to issue 1 new credit.
+				mr.EXPECT().IssueCredit(uint32(1)).DoAndReturn(mr.InternalIssueCredit)
+
+				mr.EXPECT().Receive(mock.NewContextWithValueMatcher(keyType("FromReceive"), true)).DoAndReturn(mr.InternalReceive).AnyTimes()
+
+				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+					// interaction with the releaser just makes this test harder to make predictable and doesn't
+					// add or change anything.
+					azlog.Writef(azlog.Event("testing"), "===> Releaser asking for message, blocking on cancel.")
+					<-ctx.Done()
+					return nil, ctx.Err()
+				})
+			}
+
+			return nil
+		},
+	}, nil)
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.NoError(t, err)
+	require.NotNil(t, receiver)
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 10001, nil)
+	require.EqualError(t, err, "maxMessages cannot exceed 10000")
+	require.Empty(t, messages)
+
+	messages, err = receiver.ReceiveMessages(context.Background(), -1, nil)
+	require.EqualError(t, err, "maxMessages should be greater than 0")
+	require.Empty(t, messages)
+
+	messages, err = receiver.ReceiveMessages(context.Background(), 0, nil)
+	require.EqualError(t, err, "maxMessages should be greater than 0")
+	require.Empty(t, messages)
+
+	test.EnableStdoutLogging()
+
+	azlog.Writef(azlog.Event("testing"), "===> ReceiveMessages(10000), new credits needed")
+
+	parentCtx := context.WithValue(context.Background(), keyType("FromReceive"), true)
+
+	ctx, cancel := context.WithTimeout(parentCtx, time.Second)
+	defer cancel()
+
+	messages, err = receiver.ReceiveMessages(ctx, 10000, nil)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Empty(t, messages)
+
+	azlog.Writef(azlog.Event("testing"), "===> Sending message")
+
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello world")}, nil)
+	require.NoError(t, err)
+
+	azlog.Writef(azlog.Event("testing"), "===> Receiving message, expect to not issue a credit")
+
+	// no issue credit needed - we've still got the 10000 from last time since we didn't
+	// receive any messages.
+	messages, err = receiver.ReceiveMessages(parentCtx, 10000, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
+
+	ctx, cancel = context.WithTimeout(parentCtx, time.Second)
+	defer cancel()
+
+	azlog.Writef(azlog.Event("testing"), "===> Receiving message, expect to issue 1 credit")
+
+	messages, err = receiver.ReceiveMessages(ctx, 10000, nil)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Empty(t, messages)
+
+	require.Equal(t, 1, len(md.Events.GetOpenConns()))
+	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")
 }
 
 func TestSessionReceiver_ConnectionDeadForAccept(t *testing.T) {

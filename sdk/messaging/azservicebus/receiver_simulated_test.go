@@ -562,8 +562,8 @@ func TestReceiver_ReceiveMessages_CreditValidation(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, receiver)
 
-	messages, err := receiver.ReceiveMessages(context.Background(), 10001, nil)
-	require.EqualError(t, err, "maxMessages cannot exceed 10000")
+	messages, err := receiver.ReceiveMessages(context.Background(), 5001, nil)
+	require.EqualError(t, err, "maxMessages cannot exceed 5000")
 	require.Empty(t, messages)
 
 	messages, err = receiver.ReceiveMessages(context.Background(), -1, nil)
@@ -581,11 +581,11 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
 		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
 			if mr.Source == "queue" {
-				// first actual request, 10000 fresh credits.
-				mr.EXPECT().IssueCredit(uint32(10000)).DoAndReturn(mr.InternalIssueCredit)
+				// first actual request, 5000 fresh credits.
+				mr.EXPECT().IssueCredit(uint32(5000)).DoAndReturn(mr.InternalIssueCredit)
 
 				// we're going to eat up one credit with a Receive() call and then
-				// issue 10000 again, and should only need to issue 1 new credit.
+				// issue 5000 again, and should only need to issue 1 new credit.
 				mr.EXPECT().IssueCredit(uint32(1)).DoAndReturn(mr.InternalIssueCredit)
 
 				mr.EXPECT().Receive(mock.NewContextWithValueMatcher(keyType("FromReceive"), true)).DoAndReturn(mr.InternalReceive).AnyTimes()
@@ -618,7 +618,7 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	ctx, cancel := context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
 
-	messages, err := receiver.ReceiveMessages(ctx, 10000, nil)
+	messages, err := receiver.ReceiveMessages(ctx, 5000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
 
@@ -627,12 +627,12 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 
 	logsFn := test.CaptureLogsForTest()
 
-	// no issue credit needed - we've still got the 10000 from last time since we didn't
+	// no issue credit needed - we've still got the 5000 from last time since we didn't
 	// receive any messages.
-	messages, err = receiver.ReceiveMessages(baseReceiveCtx, 10000, nil)
+	messages, err = receiver.ReceiveMessages(baseReceiveCtx, 5000, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
-	require.Contains(t, logsFn(), "[azsb.Receiver] No additional credits needed, still have 10000 credits active")
+	require.Contains(t, logsFn(), "[azsb.Receiver] No additional credits needed, still have 5000 credits active")
 
 	ctx, cancel = context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
@@ -641,7 +641,7 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 
 	// we ate a credit last time since we received a single message, so this time we'll still
 	// need to issue some more to backfill.
-	messages, err = receiver.ReceiveMessages(ctx, 10000, nil)
+	messages, err = receiver.ReceiveMessages(ctx, 5000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
 	require.Contains(t, logsFn(), "[azsb.Receiver] Only need to issue 1 additional credits")

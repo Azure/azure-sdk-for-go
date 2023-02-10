@@ -386,7 +386,7 @@ func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	}
 
 	// create the request body
-	batchReq, batchID, err := shared.CreateBatchRequest(ctx, &shared.BlobBatchBuilder{
+	batchReq, batchID, err := shared.CreateBatchRequest(&shared.BlobBatchBuilder{
 		Endpoint:    &bb.endpoint,
 		AuthPolicy:  bb.authPolicy,
 		SubRequests: bb.subRequests,

@@ -428,12 +428,12 @@ func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, opt
 // BatchBuilder contains the list of operations to be submitted. It supports up to 256 sub-requests in a single batch.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/blob-batch.
 func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *SubmitBatchOptions) (SubmitBatchResponse, error) {
-	if bb == nil {
+	if bb == nil || len(bb.subRequests) == 0 {
 		return SubmitBatchResponse{}, errors.New("batch builder is empty")
 	}
 
 	// create the request body
-	batchReq, batchID, err := shared.CreateBatchRequest(ctx, &shared.BlobBatchBuilder{
+	batchReq, batchID, err := shared.CreateBatchRequest(&shared.BlobBatchBuilder{
 		Endpoint:    &bb.endpoint,
 		AuthPolicy:  bb.authPolicy,
 		SubRequests: bb.subRequests,
@@ -448,5 +448,15 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	resp, err := c.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
 
 	// TODO: parse the response body to map individual operations to their responses
-	return resp, err
+	if err != nil {
+		return SubmitBatchResponse{
+			ContainerClientSubmitBatchResponse: resp,
+		}, err
+	}
+
+	batchResponses, err := shared.ParseBlobBatchResponse(resp.Body, resp.ContentType, bb.subRequests)
+	return SubmitBatchResponse{
+		ContainerClientSubmitBatchResponse: resp,
+		Responses:                          batchResponses,
+	}, err
 }

@@ -8,6 +8,7 @@ package container
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 // CreateResponse contains the response from method Client.Create.
@@ -44,4 +45,10 @@ type GetAccessPolicyResponse = generated.ContainerClientGetAccessPolicyResponse
 type SetAccessPolicyResponse = generated.ContainerClientSetAccessPolicyResponse
 
 // SubmitBatchResponse contains the response from method Client.SubmitBatch.
-type SubmitBatchResponse = generated.ContainerClientSubmitBatchResponse
+type SubmitBatchResponse struct {
+	generated.ContainerClientSubmitBatchResponse
+	Responses []*BatchResponse
+}
+
+// BatchResponse contains the response for the individual sub-requests.
+type BatchResponse = shared.BlobBatchResponse

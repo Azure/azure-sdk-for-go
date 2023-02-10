@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"net/http"
 	"net/url"
 	"os"
 	"sort"
@@ -2225,7 +2226,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 	_require.Nil(err)
 }
 
-func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingSharedKey() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteSuccessUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2258,6 +2259,15 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingSharedK
 	_require.NoError(err)
 	_require.NotEmpty(resp.RequestID)
 
+	ctr = 0
+	for _, subResp := range resp.Responses {
+		_require.NotNil(subResp.Response)
+		if subResp.Response.StatusCode >= 200 && subResp.Response.StatusCode < 300 {
+			ctr++
+		}
+	}
+	_require.Equal(ctr, 10)
+
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctr = 0
 	for pager.More() {
@@ -2268,7 +2278,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingSharedK
 	_require.Equal(ctr, 0)
 }
 
-func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingSharedKey() {
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFailureUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2281,9 +2291,12 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingShared
 	bb, err := containerClient.NewBatchBuilder()
 	_require.NoError(err)
 
-	for i := 0; i < 10; i++ {
+	// add 5 blobs to BatchBuilder which does not exist
+	for i := 0; i < 15; i++ {
 		bbName := fmt.Sprintf("blockblob%v", i)
-		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		if i < 10 {
+			_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		}
 		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
 		_require.NoError(err)
 	}
@@ -2305,8 +2318,20 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingShared
 	_require.Equal(ctrCool, 0)
 
 	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
-	_require.NoError(err)
+	_require.Error(err)
 	_require.NotEmpty(resp.RequestID)
+
+	var ctrSuccess, ctrFailure = 0, 0
+	for _, subResp := range resp.Responses {
+		_require.NotNil(subResp.Response)
+		if subResp.Response.StatusCode >= 200 && subResp.Response.StatusCode < 300 {
+			ctrSuccess++
+		} else {
+			ctrFailure++
+		}
+	}
+	_require.Equal(ctrSuccess, 10)
+	_require.Equal(ctrFailure, 5)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctrHot = 0
@@ -2854,4 +2879,98 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingUserDe
 	}
 	_require.Equal(ctrHot, 0)
 	_require.Equal(ctrCool, 10)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteMoreThan256() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 260; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.Delete(bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 260)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.Error(err)
+	_require.NotEmpty(resp.RequestID)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 260)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteForOneBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	bbName := "blockblob1"
+	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+	err = bb.Delete(bbName, nil)
+	_require.NoError(err)
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 1)
+
+	resp1, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotEmpty(resp1.RequestID)
+	_require.Equal(len(resp1.Responses), 1)
+	_require.NotNil(resp1.Responses[0].Response)
+	_require.Equal(resp1.Responses[0].Response.StatusCode, http.StatusAccepted)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+
+	resp2, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.Error(err)
+	_require.NotEmpty(resp2.RequestID)
+	_require.Equal(len(resp2.Responses), 1)
+	_require.NotNil(resp2.Responses[0].Response)
+	_require.Equal(resp2.Responses[0].Response.StatusCode, http.StatusNotFound)
 }

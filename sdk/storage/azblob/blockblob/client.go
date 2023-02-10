@@ -411,10 +411,10 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 		return uploadFromReaderResponse{}, errors.New("block limit exceeded")
 	}
 
-	if log.Should(exported.EventUpload) {
+	if log.Should(shared.EventUpload) {
 		urlparts, err := blob.ParseURL(bb.generated().Endpoint())
 		if err == nil {
-			log.Writef(exported.EventUpload, "blob name %s actual size %v block-size %v block-count %v",
+			log.Writef(shared.EventUpload, "blob name %s actual size %v block-size %v block-count %v",
 				urlparts.BlobName, actualSize, o.BlockSize, numBlocks)
 		}
 	}

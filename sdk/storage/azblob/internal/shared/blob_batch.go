@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"io"
 	"net/http"
 	"strconv"
@@ -136,8 +135,8 @@ func CreateBatchRequest(bb *BlobBatchBuilder) (string, string, error) {
 		if bb.AuthPolicy != nil {
 			resp, err := bb.AuthPolicy.Do(req)
 			if err != nil && resp != nil {
-				if log.Should(exported.EventSubmitBatch) {
-					log.Writef(exported.EventSubmitBatch, "failed to authorize sub-request for %v.\nError: %v\nResponse status: %v", req.Raw().URL.Path, err.Error(), resp.Status)
+				if log.Should(EventSubmitBatch) {
+					log.Writef(EventSubmitBatch, "failed to authorize sub-request for %v.\nError: %v\nResponse status: %v", req.Raw().URL.Path, err.Error(), resp.Status)
 				}
 			}
 		}
@@ -242,8 +241,8 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 
 		respStringIdx := strings.Index(part, "HTTP/1.1")
 		if respStringIdx == -1 {
-			if log.Should(exported.EventSubmitBatch) {
-				log.Writef(exported.EventSubmitBatch, "failed to get response for sub-request in:\n%v", part)
+			if log.Should(EventSubmitBatch) {
+				log.Writef(EventSubmitBatch, "failed to get response for sub-request in:\n%v", part)
 			}
 			continue
 		}
@@ -254,8 +253,8 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 		batchResponse.Error = err
 		if err != nil {
 			batchPartialError = true
-			if log.Should(exported.EventSubmitBatch) {
-				log.Writef(exported.EventSubmitBatch, "failed to parse response from:\n%v\n\nError: %v", part, err.Error())
+			if log.Should(EventSubmitBatch) {
+				log.Writef(EventSubmitBatch, "failed to parse response from:\n%v\n\nError: %v", part, err.Error())
 			}
 		}
 		if resp != nil && (resp.StatusCode < 200 || resp.StatusCode >= 300) {
@@ -266,8 +265,8 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 				return nil, fmt.Errorf("%v", part[respStringIdx:])
 			}
 			if batchResponse.ContainerName != nil && batchResponse.BlobName != nil {
-				if log.Should(exported.EventSubmitBatch) {
-					log.Writef(exported.EventSubmitBatch, "got status: %v, for %v/%v", resp.Status, batchResponse.ContainerName, batchResponse.BlobName)
+				if log.Should(EventSubmitBatch) {
+					log.Writef(EventSubmitBatch, "got status: %v, for %v/%v", resp.Status, batchResponse.ContainerName, batchResponse.BlobName)
 				}
 			}
 		}

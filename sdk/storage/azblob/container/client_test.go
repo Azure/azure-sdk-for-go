@@ -2974,3 +2974,33 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteForOneBlob()
 	_require.NotNil(resp2.Responses[0].Response)
 	_require.Equal(resp2.Responses[0].Response.StatusCode, http.StatusNotFound)
 }
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchErrors() {
+	_require := require.New(s.T())
+
+	svcClient, err := service.NewClientWithNoCredential("https://fakestorageaccount.blob.core.windows.net/", nil)
+	_require.NoError(err)
+
+	cntClient := svcClient.NewContainerClient("fakecontainer")
+
+	bb1, err := cntClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	// adding multiple operations to BatchBuilder
+	err = bb1.Delete("blob1", nil)
+	_require.NoError(err)
+
+	err = bb1.SetTier("blob2", blob.AccessTierCool, nil)
+	_require.Error(err)
+
+	bb2, err := cntClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	// submitting empty batch
+	_, err = cntClient.SubmitBatch(context.Background(), bb2, nil)
+	_require.Error(err)
+
+	// submitting nil BatchBuilder
+	_, err = cntClient.SubmitBatch(context.Background(), nil, nil)
+	_require.Error(err)
+}

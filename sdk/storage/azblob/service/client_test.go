@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"io"
+	"net/http"
 	"os"
 	"strings"
 	"testing"
@@ -1106,7 +1107,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey(
 	}
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingTokenCredential() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUsingTokenCredential() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -1141,6 +1142,12 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingTokenCreden
 	defer batchClean(cntClients)
 	_require.NoError(err)
 
+	// adding containers and blobs which does not exist
+	for i := 0; i < 5; i++ {
+		err = bb.Delete(fmt.Sprintf("fakecontainer%v", i), fmt.Sprintf("fakeblob%v", i), nil)
+		_require.NoError(err)
+	}
+
 	for _, cntClient := range cntClients {
 		pager := cntClient.NewListBlobsFlatPager(nil)
 		ctr := 0
@@ -1153,8 +1160,20 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingTokenCreden
 	}
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
-	_require.NoError(err)
+	_require.Error(err)
 	_require.NotEmpty(resp.RequestID)
+
+	var ctrSuccess, ctrFailure = 0, 0
+	for _, subResp := range resp.Responses {
+		_require.NotNil(subResp.Response)
+		if subResp.Response.StatusCode >= 200 && subResp.Response.StatusCode < 300 {
+			ctrSuccess++
+		} else {
+			ctrFailure++
+		}
+	}
+	_require.Equal(ctrSuccess, 10)
+	_require.Equal(ctrFailure, 5)
 
 	for _, cntClient := range cntClients {
 		pager := cntClient.NewListBlobsFlatPager(nil)
@@ -1168,7 +1187,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingTokenCreden
 	}
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingTokenCredential() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTokenCredential() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -1224,6 +1243,15 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingTokenCrede
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
 	_require.NotEmpty(resp.RequestID)
+
+	ctr := 0
+	for _, subResp := range resp.Responses {
+		_require.NotNil(subResp.Response)
+		if subResp.Response.StatusCode >= 200 && subResp.Response.StatusCode < 300 {
+			ctr++
+		}
+	}
+	_require.Equal(ctr, 10)
 
 	for _, cntClient := range cntClients {
 		pager := cntClient.NewListBlobsFlatPager(nil)
@@ -1469,4 +1497,127 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingUserDelega
 	_require.Error(err)
 	_require.Nil(resp.RequestID)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteMoreThan256() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := svcClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 260; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.Delete(containerName, bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 260)
+
+	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
+	_require.Error(err)
+	_require.NotEmpty(resp.RequestID)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 260)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := svcClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	bbName := "blockblob1"
+	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+	err = bb.Delete(containerName, bbName, nil)
+	_require.NoError(err)
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 1)
+
+	resp1, err := svcClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotEmpty(resp1.RequestID)
+	_require.Equal(len(resp1.Responses), 1)
+	_require.NotNil(resp1.Responses[0].Response)
+	_require.Equal(resp1.Responses[0].Response.StatusCode, http.StatusAccepted)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+
+	resp2, err := svcClient.SubmitBatch(context.Background(), bb, nil)
+	_require.Error(err)
+	_require.NotEmpty(resp2.RequestID)
+	_require.Equal(len(resp2.Responses), 1)
+	_require.NotNil(resp2.Responses[0].Response)
+	_require.Equal(resp2.Responses[0].Response.StatusCode, http.StatusNotFound)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchErrors() {
+	_require := require.New(s.T())
+
+	svcClient, err := service.NewClientWithNoCredential("https://fakestorageaccount.blob.core.windows.net/", nil)
+	_require.NoError(err)
+
+	bb1, err := svcClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	// adding multiple operations to BatchBuilder
+	err = bb1.Delete("fakecontainer", "blob1", nil)
+	_require.NoError(err)
+
+	err = bb1.SetTier("fakecontainer", "blob2", blob.AccessTierCool, nil)
+	_require.Error(err)
+
+	bb2, err := svcClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	// submitting empty batch
+	_, err = svcClient.SubmitBatch(context.Background(), bb2, nil)
+	_require.Error(err)
+
+	// submitting nil BatchBuilder
+	_, err = svcClient.SubmitBatch(context.Background(), nil, nil)
+	_require.Error(err)
 }

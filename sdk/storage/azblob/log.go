@@ -3,12 +3,14 @@
 
 package azblob
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+)
 
 const (
 	// EventUpload is used for logging events related to upload operation.
-	EventUpload = exported.EventUpload
+	EventUpload = shared.EventUpload
 
 	// EventSubmitBatch is used for logging events related to submit blob batch operation.
-	EventSubmitBatch = exported.EventSubmitBatch
+	EventSubmitBatch = shared.EventSubmitBatch
 )

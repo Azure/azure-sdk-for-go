@@ -6,6 +6,8 @@ package azeventhubs
 import (
 	"context"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // CheckpointStore is used by multiple consumers to coordinate progress and ownership for partitions.
@@ -31,9 +33,9 @@ type Ownership struct {
 	FullyQualifiedNamespace string
 	PartitionID             string
 
-	OwnerID          string    // the owner ID of the Processor
-	LastModifiedTime time.Time // used when calculating if ownership has expired
-	ETag             string    // the ETag, used when attempting to claim or update ownership of a partition.
+	OwnerID          string       // the owner ID of the Processor
+	LastModifiedTime time.Time    // used when calculating if ownership has expired
+	ETag             *azcore.ETag // the ETag, used when attempting to claim or update ownership of a partition.
 }
 
 // Checkpoint tracks the last succesfully processed event in a partition.

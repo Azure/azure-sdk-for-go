@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* ARM's RP registration policy will no longer swallow unrecognized errors.
 
 ### Other Changes
 

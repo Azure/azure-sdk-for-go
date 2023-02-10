@@ -54,8 +54,8 @@ func (client *MetricsClient) listDefinitionsCreateRequest(ctx context.Context, r
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01")
-	if options != nil && options.Metricnamespace != nil {
-		reqQP.Set("metricnamespace", *options.Metricnamespace)
+	if options != nil && options.MetricNamespace != nil {
+		reqQP.Set("metricnamespace", *options.MetricNamespace)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -159,17 +159,17 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 	if options != nil && options.Interval != nil {
 		reqQP.Set("interval", *options.Interval)
 	}
-	if options != nil && options.Metricnames != nil {
-		reqQP.Set("metricnames", *options.Metricnames)
+	if options != nil && options.MetricNames != nil {
+		reqQP.Set("metricnames", *options.MetricNames)
 	}
 	if options != nil && options.Aggregation != nil {
-		reqQP.Set("aggregation", *options.Aggregation)
+		reqQP.Set("aggregation", aggregationTypeToString(options.Aggregation))
 	}
 	if options != nil && options.Top != nil {
 		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	if options != nil && options.Orderby != nil {
-		reqQP.Set("orderby", *options.Orderby)
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("orderby", *options.OrderBy)
 	}
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -178,8 +178,8 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 		reqQP.Set("resultType", string(*options.ResultType))
 	}
 	reqQP.Set("api-version", "2018-01-01")
-	if options != nil && options.Metricnamespace != nil {
-		reqQP.Set("metricnamespace", *options.Metricnamespace)
+	if options != nil && options.MetricNamespace != nil {
+		reqQP.Set("metricnamespace", *options.MetricNamespace)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

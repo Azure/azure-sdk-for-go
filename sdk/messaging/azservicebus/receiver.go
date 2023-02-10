@@ -81,7 +81,10 @@ type ReceiverOptions struct {
 	SubQueue SubQueue
 }
 
-const defaultLinkRxBuffer uint32 = 10000
+// defaultLinkRxBuffer is the maximum number of transfer frames we can handle
+// on the Receiver. This matches the current default window size that go-amqp
+// uses for sessions.
+const defaultLinkRxBuffer uint32 = 5000
 
 func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverOptions) error {
 	if options == nil {

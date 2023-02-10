@@ -24,7 +24,8 @@ import (
 )
 
 const (
-	QueuePrefix = "goq"
+	QueuePrefix      = "goq"
+	QueueDefaultData = "this is some default data"
 )
 
 func GenerateQueueName(testName string) string {

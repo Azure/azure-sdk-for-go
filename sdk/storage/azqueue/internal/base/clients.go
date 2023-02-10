@@ -39,7 +39,7 @@ func NewServiceClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exp
 func NewQueueClient(queueURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential) *CompositeClient[generated.QueueClient, generated.MessagesClient] {
 	return &CompositeClient[generated.QueueClient, generated.MessagesClient]{
 		innerT:    generated.NewQueueClient(queueURL, pipeline),
-		innerU:    generated.NewMessagesClient(queueURL, pipeline),
+		innerU:    generated.NewMessagesClient(runtime.JoinPaths(queueURL, "messages"), pipeline),
 		sharedKey: sharedKey,
 	}
 }

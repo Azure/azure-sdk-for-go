@@ -8,11 +8,16 @@ package azqueue_test
 
 import (
 	"context"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/queueerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
 	"github.com/stretchr/testify/require"
+	"os"
 	"strconv"
 	"time"
 )
@@ -30,6 +35,50 @@ func (s *RecordedTestSuite) TestQueueCreateQueue() {
 	resp, err := queueClient.Create(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotZero(resp)
+}
+
+func (s *UnrecordedTestSuite) TestQueueClientFromConnectionString() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
+	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
+
+	parsedConnStr, err := shared.ParseConnectionString(connectionString)
+	_require.Nil(err)
+	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".queue.core.windows.net/")
+
+	queueName := testcommon.GenerateQueueName(testName)
+
+	sharedKeyCred, err := azqueue.NewSharedKeyCredential(parsedConnStr.AccountName, parsedConnStr.AccountKey)
+	_require.Nil(err)
+
+	qClient, err := azqueue.NewQueueClientWithSharedKeyCredential(
+		runtime.JoinPaths(parsedConnStr.ServiceURL, queueName), sharedKeyCred, nil)
+	_require.Nil(err)
+
+	_, err = qClient.Create(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *UnrecordedTestSuite) TestQueueClientFromConnectionString1() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetAccountInfo(testcommon.TestAccountDefault)
+	connectionString := testcommon.GetConnectionString(testcommon.TestAccountDefault)
+
+	parsedConnStr, err := shared.ParseConnectionString(connectionString)
+	_require.Nil(err)
+	_require.Equal(parsedConnStr.ServiceURL, "https://"+accountName+".queue.core.windows.net/")
+
+	queueName := testcommon.GenerateQueueName(testName)
+
+	qClient, err := azqueue.NewQueueClientFromConnectionString(connectionString, queueName, nil)
+	_require.Nil(err)
+
+	_, err = qClient.Create(context.Background(), nil)
+	_require.Nil(err)
 }
 
 func (s *RecordedTestSuite) TestQueueCreateQueueWithMetadata() {
@@ -87,6 +136,26 @@ func (s *RecordedTestSuite) TestQueueSetMetadata() {
 	_require.Nil(err)
 }
 
+func (s *RecordedTestSuite) TestQueueSetMetadataNilOptions() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = queueClient.SetMetadata(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = queueClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+}
+
 func (s *RecordedTestSuite) TestQueueSetEmptyACL() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -102,6 +171,23 @@ func (s *RecordedTestSuite) TestQueueSetEmptyACL() {
 
 	opts := azqueue.SetAccessPolicyOptions{QueueACL: nil}
 	_, err = queueClient.SetAccessPolicy(context.Background(), &opts)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestQueueSetACLNil() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = queueClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 }
 
@@ -486,9 +572,887 @@ func (s *RecordedTestSuite) TestQueueSetPermissionsSignedIdentifierTooLong() {
 	testcommon.ValidateQueueErrorCode(_require, err, queueerror.InvalidXMLDocument)
 }
 
-//TODO: TestPutMessage
-//TODO: TestGetMessages
-//TODO: TestPeekMessages
-//TODO: TestDeleteMessage
-//TODO: TestClearMessages
-//TODO: TestUpdateMessage
+func (s *RecordedTestSuite) TestEnqueueMessageBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+
+	}
+}
+
+func (s *RecordedTestSuite) TestEnqueueMessageWithTimeToLive() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := azqueue.EnqueueMessageOptions{TimeToLive: to.Ptr(int32(1))}
+	_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, &opts)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestEnqueueMessageWithTimeToLiveExpired() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := azqueue.EnqueueMessageOptions{TimeToLive: to.Ptr(int32(1))}
+	_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, &opts)
+	_require.Nil(err)
+
+	time.Sleep(time.Second * 2)
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(0, len(resp.QueueMessagesList))
+}
+
+func (s *RecordedTestSuite) TestEnqueueMessageWithInfiniteTimeToLive() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := azqueue.EnqueueMessageOptions{TimeToLive: to.Ptr(int32(-1))}
+	_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, &opts)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestEnqueueMessageWithVisibilityTimeout() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := azqueue.EnqueueMessageOptions{VisibilityTimeout: to.Ptr(int32(1))}
+	_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, &opts)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestEnqueueMessageWithVisibilityTimeoutSmallerThanTTL() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := azqueue.EnqueueMessageOptions{TimeToLive: to.Ptr(int32(2)), VisibilityTimeout: to.Ptr(int32(1))}
+	_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, &opts)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestEnqueueMessageWithVisibilityTimeoutLargerThanTTL() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := azqueue.EnqueueMessageOptions{TimeToLive: to.Ptr(int32(1)), VisibilityTimeout: to.Ptr(int32(2))}
+	_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, &opts)
+	// cannot have visibility timeout be greater than ttl
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.InvalidQueryParameterValue)
+}
+
+func (s *RecordedTestSuite) TestDequeueMessageBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// dequeue 4 messages
+	for i := 0; i < 4; i++ {
+		resp, err := queueClient.DequeueMessage(context.Background(), nil)
+		_require.Nil(err)
+		_require.Equal(1, len(resp.QueueMessagesList))
+		_require.NotNil(resp.QueueMessagesList[0].MessageID)
+	}
+	// should be 0 now
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestDequeueMessageWithVisibilityTimeout() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	opts := azqueue.DequeueMessageOptions{VisibilityTimeout: to.Ptr(int32(1))}
+	_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+	_require.Nil(err)
+
+	resp, err := queueClient.DequeueMessage(context.Background(), &opts)
+	_require.Nil(err)
+	_require.NotNil(resp.QueueMessagesList[0].TimeNextVisible)
+}
+
+func (s *RecordedTestSuite) TestDequeueMessagesBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// dequeue 4 messages
+	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
+	resp, err := queueClient.DequeueMessages(context.Background(), &opts)
+	_require.Nil(err)
+	_require.Equal(4, len(resp.QueueMessagesList))
+}
+
+func (s *RecordedTestSuite) TestDequeueMessagesDefault() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// should dequeue only 1 message (since default num of messages is 1 when not specified)
+	resp, err := queueClient.DequeueMessages(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(1, len(resp.QueueMessagesList))
+}
+
+func (s *RecordedTestSuite) TestDequeueMessagesWithVisibilityTimeout() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// dequeue 4 messages
+	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(4)), VisibilityTimeout: to.Ptr(int32(2))}
+	_, err = queueClient.DequeueMessages(context.Background(), &opts)
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestDequeueMessagesWithNumMessagesLargerThan32() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 33 messages
+	for i := 0; i < 33; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(33))}
+	_, err = queueClient.DequeueMessages(context.Background(), &opts)
+	// should fail
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.OutOfRangeQueryParameterValue)
+}
+
+func (s *RecordedTestSuite) TestDequeueMessagesWithLeftovers() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 10 messages
+	for i := 0; i < 10; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// dequeue 5 messages
+	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(5))}
+	resp, err := queueClient.DequeueMessages(context.Background(), &opts)
+	_require.Nil(err)
+	_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+	_require.Equal(5, len(resp.QueueMessagesList))
+
+	// dequeue other 5 messages
+	resp, err = queueClient.DequeueMessages(context.Background(), &opts)
+	_require.Nil(err)
+	_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+	_require.Equal(5, len(resp.QueueMessagesList))
+}
+
+func (s *RecordedTestSuite) TestPeekMessageBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// peek 4 messages
+	for i := 0; i < 4; i++ {
+		resp, err := queueClient.PeekMessage(context.Background(), nil)
+		_require.Nil(err)
+		_require.Equal(1, len(resp.QueueMessagesList))
+		_require.NotNil(resp.QueueMessagesList[0].MessageID)
+		_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+	}
+
+	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
+	// should all still be there
+	resp, err := queueClient.DequeueMessages(context.Background(), &opts)
+	_require.Equal(4, len(resp.QueueMessagesList))
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestPeekMessagesBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// dequeue 4 messages
+	opts := azqueue.PeekMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
+	resp, err := queueClient.PeekMessages(context.Background(), &opts)
+	_require.Nil(err)
+	_require.Equal(4, len(resp.QueueMessagesList))
+
+	opts1 := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
+	// should all still be there
+	resp1, err := queueClient.DequeueMessages(context.Background(), &opts1)
+	_require.Equal(4, len(resp1.QueueMessagesList))
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestPeekMessagesDefault() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// should peek only 1 message (since default num of messages is 1 when not specified)
+	resp, err := queueClient.PeekMessages(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(1, len(resp.QueueMessagesList))
+	_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+}
+
+func (s *RecordedTestSuite) TestPeekMessagesWithNumMessagesLargerThan32() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 33 messages
+	for i := 0; i < 33; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	opts := azqueue.PeekMessagesOptions{NumberOfMessages: to.Ptr(int32(33))}
+	_, err = queueClient.PeekMessages(context.Background(), &opts)
+	// should fail
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.OutOfRangeQueryParameterValue)
+}
+
+func (s *RecordedTestSuite) TestDeleteMessageBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var popReceipts []string
+	var messageIDs []string
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+		popReceipts = append(popReceipts, *resp.QueueMessagesList[0].PopReceipt)
+		messageIDs = append(messageIDs, *resp.QueueMessagesList[0].MessageID)
+	}
+
+	// delete 4 messages
+	for i := 0; i < 4; i++ {
+		opts := &azqueue.DeleteMessageOptions{}
+		_, err := queueClient.DeleteMessage(context.Background(), messageIDs[i], popReceipts[i], opts)
+		_require.Nil(err)
+	}
+	// should be 0 now
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestDeleteMessageNilOptions() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	var popReceipts []string
+	var messageIDs []string
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+		popReceipts = append(popReceipts, *resp.QueueMessagesList[0].PopReceipt)
+		messageIDs = append(messageIDs, *resp.QueueMessagesList[0].MessageID)
+	}
+
+	// delete 4 messages
+	for i := 0; i < 4; i++ {
+		_, err := queueClient.DeleteMessage(context.Background(), messageIDs[i], popReceipts[i], nil)
+		_require.Nil(err)
+	}
+	// should be 0 now
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Nil(err)
+}
+
+func (s *RecordedTestSuite) TestDeleteMessageDoesNotExist() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+	_require.Nil(err)
+	popReceipt := *resp.QueueMessagesList[0].PopReceipt
+	messageID := *resp.QueueMessagesList[0].MessageID
+
+	opts := &azqueue.DeleteMessageOptions{}
+	_, err = queueClient.DeleteMessage(context.Background(), messageID, popReceipt, opts)
+	_require.Nil(err)
+
+	// should fail since we already deleted it
+	_, err = queueClient.DeleteMessage(context.Background(), messageID, popReceipt, opts)
+	_require.NotNil(err)
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.MessageNotFound)
+}
+
+func (s *RecordedTestSuite) TestClearMessagesBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// delete the queue's messages
+	opts := azqueue.ClearMessagesOptions{}
+	_, err = queueClient.ClearMessages(context.Background(), &opts)
+	_require.Nil(err)
+
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(0, len(resp.QueueMessagesList))
+}
+
+func (s *RecordedTestSuite) TestClearMessagesNilOptions() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// delete the queue's messages
+	_, err = queueClient.ClearMessages(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(0, len(resp.QueueMessagesList))
+}
+
+func (s *RecordedTestSuite) TestClearMessagesMoreThan32() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// enqueue 33 messages
+	for i := 0; i < 33; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+	}
+
+	// delete the queue's messages
+	opts := azqueue.ClearMessagesOptions{}
+	_, err = queueClient.ClearMessages(context.Background(), &opts)
+	_require.Nil(err)
+
+	resp, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	_require.Equal(0, len(resp.QueueMessagesList))
+}
+
+func (s *RecordedTestSuite) TestUpdateMessageBasic() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+	_require.Nil(err)
+	popReceipt := *resp.QueueMessagesList[0].PopReceipt
+	messageID := *resp.QueueMessagesList[0].MessageID
+
+	opts := &azqueue.UpdateMessageOptions{}
+	_, err = queueClient.UpdateMessage(context.Background(), messageID, popReceipt, "new content", opts)
+	_require.Nil(err)
+
+	resp1, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	content := *resp1.QueueMessagesList[0].MessageText
+	_require.Equal("new content", content)
+}
+
+func (s *RecordedTestSuite) TestUpdateMessageWithVisibilityTimeout() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := testcommon.GetQueueClient(queueName, svcClient)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+	_require.Nil(err)
+	popReceipt := *resp.QueueMessagesList[0].PopReceipt
+	messageID := *resp.QueueMessagesList[0].MessageID
+
+	opts := &azqueue.UpdateMessageOptions{VisibilityTimeout: to.Ptr(int32(1))}
+	_, err = queueClient.UpdateMessage(context.Background(), messageID, popReceipt, "new content", opts)
+	_require.Nil(err)
+	time.Sleep(time.Second * 2)
+	resp1, err := queueClient.DequeueMessage(context.Background(), nil)
+	_require.Nil(err)
+	content := *resp1.QueueMessagesList[0].MessageText
+	_require.Equal("new content", content)
+}
+
+// this test ensures that our sas related methods work properly
+func (s *UnrecordedTestSuite) TestQueueSignatureValues() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+
+	_require.Nil(err)
+	queueName := testcommon.GenerateQueueName(testName)
+
+	permissions := sas.QueuePermissions{
+		Read:   true,
+		Add:    true,
+		Update: true,
+	}
+
+	expiry := time.Now().Add(time.Hour)
+	qsv := sas.QueueSignatureValues{
+		Version:     sas.Version,
+		Protocol:    sas.ProtocolHTTPS,
+		StartTime:   time.Time{},
+		ExpiryTime:  expiry,
+		Permissions: permissions.String(),
+		QueueName:   queueName,
+	}
+	_, err = qsv.SignWithSharedKey(cred)
+	_require.Nil(err)
+}
+
+func (s *UnrecordedTestSuite) TestQueueGetSASURL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := serviceClient.NewQueueClient(queueName)
+
+	permissions := sas.QueuePermissions{
+		Read: true,
+		Add:  true,
+	}
+	start := time.Now().Add(-5 * time.Minute).UTC()
+	expiry := time.Now().Add(time.Hour)
+
+	opts := azqueue.GetSASURLOptions{StartTime: &start}
+	sasUrl, err := queueClient.GetSASURL(permissions, expiry, &opts)
+	_require.Nil(err)
+
+	queueClient2, err := azqueue.NewQueueClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	_, err = queueClient2.Create(context.Background(), &azqueue.CreateOptions{Metadata: testcommon.BasicMetadata})
+	_require.NotNil(err)
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.AuthorizationFailure)
+}
+
+func (s *UnrecordedTestSuite) TestQueueGetSASURL2() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := serviceClient.NewQueueClient(queueName)
+	start := time.Now().Add(-5 * time.Minute).UTC()
+	opts := azqueue.GetSASURLOptions{StartTime: &start}
+
+	sasUrlReadAdd, err := queueClient.GetSASURL(sas.QueuePermissions{Add: true}, time.Now().Add(time.Hour), &opts)
+	_require.Nil(err)
+	_, err = queueClient.Create(context.Background(), &azqueue.CreateOptions{Metadata: testcommon.BasicMetadata})
+	_require.Nil(err)
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	queueClient1, err := azqueue.NewQueueClientWithNoCredential(sasUrlReadAdd, nil)
+	_require.Nil(err)
+
+	// queue metadata and properties can't be read or written with SAS auth
+	_, err = queueClient1.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.AuthorizationPermissionMismatch)
+
+	start = time.Now().Add(-5 * time.Minute).UTC()
+	opts = azqueue.GetSASURLOptions{StartTime: &start}
+
+	// this should work now
+	sasUrlRCWL, err := queueClient.GetSASURL(sas.QueuePermissions{Add: true,
+		Read: true, Update: true, Process: true}, time.Now().Add(time.Hour), &opts)
+	_require.Nil(err)
+
+	queueClient2, err := azqueue.NewQueueClientWithNoCredential(sasUrlRCWL, nil)
+	_require.Nil(err)
+
+	// queues can't be created, deleted, or listed with service SAS auth
+	_, err = queueClient2.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateQueueErrorCode(_require, err, queueerror.AuthorizationFailure)
+}
+
+func (s *UnrecordedTestSuite) TestServiceSASEnqueueMessage() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(
+		fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := serviceClient.NewQueueClient(queueName)
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	permissions := sas.QueuePermissions{
+		Read:   true,
+		Add:    true,
+		Update: true,
+	}
+
+	expiry := time.Now().Add(time.Hour)
+
+	sasUrl, err := queueClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	queueClient1, err := azqueue.NewQueueClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient1.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+
+	}
+}
+
+func (s *UnrecordedTestSuite) TestServiceSASDequeueMessage() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(
+		fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := serviceClient.NewQueueClient(queueName)
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	defer testcommon.DeleteQueue(context.Background(), _require, queueClient)
+
+	permissions := sas.QueuePermissions{
+		Read:    true,
+		Add:     true,
+		Update:  true,
+		Process: true,
+	}
+
+	expiry := time.Now().Add(time.Hour)
+
+	sasUrl, err := queueClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	queueClient1, err := azqueue.NewQueueClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	// enqueue 4 messages
+	for i := 0; i < 4; i++ {
+		_, err = queueClient1.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
+		_require.Nil(err)
+
+	}
+	// dequeue 4 messages
+	for i := 0; i < 4; i++ {
+		resp, err := queueClient1.DequeueMessage(context.Background(), nil)
+		_require.Nil(err)
+		_require.Equal(1, len(resp.QueueMessagesList))
+		_require.NotNil(resp.QueueMessagesList[0].MessageID)
+	}
+	// should be 0 now
+	resp, err := queueClient1.DequeueMessage(context.Background(), nil)
+	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Nil(err)
+}

@@ -13,3 +13,12 @@ func (client *Client) Update(resourceGroupName string, options *ClientUpdateOpti
 type ClientUpdateOptions struct{}
 
 type ClientUpdateResponse struct{}
+
+func (client *Client) BeginUpdate(resourceGroupName string, options *BeginClientUpdateOptions) (*runtime.Poller[BeginClientUpdateResponse], error) {
+
+	return &runtime.Poller[BeginClientUpdateResponse]{}, nil
+}
+
+type BeginClientUpdateOptions struct{}
+
+type BeginClientUpdateResponse struct{}

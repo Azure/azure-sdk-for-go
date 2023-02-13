@@ -3,7 +3,7 @@
 ## 0.3.4 (Unreleased)
 
 ### Features Added
-* Added `NewPartitionKeyNull` function to create and query documents with no partition key in CosmosDB
+* Added `NewPartitionKeyNull` function to create and query documents with null partition key in CosmosDB
 
 ### Breaking Changes
 

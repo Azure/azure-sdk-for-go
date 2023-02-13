@@ -160,24 +160,27 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 }
 
 // EnableStdoutLogging turns on logging to stdout for diagnostics.
-func EnableStdoutLogging() func() {
+func EnableStdoutLogging(t *testing.T) {
 	ch := make(chan string, 10000)
 	cleanupLogs := CaptureLogsForTestWithChannel(ch)
+	ctx, cancel := context.WithCancel(context.Background())
 
-	doneCh := make(chan struct{})
+	t.Cleanup(func() {
+		cancel()
+	})
 
 	go func() {
-		defer close(doneCh)
-
-		for msg := range ch {
-			log.Printf("%s", msg)
+	Loop:
+		for {
+			select {
+			case <-ctx.Done():
+				_ = cleanupLogs()
+				break Loop
+			case msg := <-ch:
+				log.Printf("%s", msg)
+			}
 		}
 	}()
-
-	return func() {
-		_ = cleanupLogs()
-		<-doneCh
-	}
 }
 
 func RequireClose(t *testing.T, closeable interface {

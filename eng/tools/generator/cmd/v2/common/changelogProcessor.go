@@ -305,7 +305,7 @@ func funcOperation(content *delta.Content) {
 				if funcValue.Returns != nil {
 					rs := strings.Split(*funcValue.Returns, ",")
 					clientFuncResponse := rs[0]
-					if strings.Contains(clientFunc[1], "runtime.Poller") {
+					if strings.Contains(clientFuncResponse, "runtime.Poller") {
 						re := regexp.MustCompile("\\[(?P<response>.*)\\]")
 						clientFuncResponse = re.FindString(clientFuncResponse)
 						clientFuncResponse = re.ReplaceAllString(clientFuncResponse, "${response}")

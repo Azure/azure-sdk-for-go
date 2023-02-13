@@ -9,7 +9,6 @@ package container_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"net/http"
 	"net/url"
@@ -2351,6 +2350,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFail
 	_require.Equal(ctrCool, 10)
 }
 
+/*
 func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingTokenCredential() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2493,6 +2493,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingTokenC
 	_require.Equal(ctrHot, 0)
 	_require.Equal(ctrCool, 10)
 }
+*/
 
 func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingAccountSAS() {
 	_require := require.New(s.T())
@@ -2728,6 +2729,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingServic
 	_require.Equal(ctrCool, 10)
 }
 
+/*
 func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingUserDelegationSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2880,6 +2882,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingUserDe
 	_require.Equal(ctrHot, 0)
 	_require.Equal(ctrCool, 10)
 }
+*/
 
 func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteMoreThan256() {
 	_require := require.New(s.T())

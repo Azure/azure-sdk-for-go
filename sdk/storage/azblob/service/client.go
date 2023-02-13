@@ -32,7 +32,7 @@ import (
 
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions struct {
-	azcore.ClientOptions
+	azcore.ClientOptions //nolint:unused
 }
 
 // Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.

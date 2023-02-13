@@ -466,6 +466,7 @@ func Example_container_BatchDelete() {
 	bodyBytes, err := runtime.Payload(&http.Response{
 		Body: resp.Body,
 	})
+	handleError(err)
 	fmt.Println("Response Body of SubmitBatch:\n" + string(bodyBytes))
 }
 
@@ -546,5 +547,6 @@ func Example_container_BatchSetTier() {
 	bodyBytes, err := runtime.Payload(&http.Response{
 		Body: resp.Body,
 	})
+	handleError(err)
 	fmt.Println("Response Body of SubmitBatch:\n" + string(bodyBytes))
 }

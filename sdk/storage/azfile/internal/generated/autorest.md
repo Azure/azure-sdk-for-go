@@ -74,7 +74,7 @@ directive:
     }
 ```
 
-### ShareServiceProperties, ShareMetrics, ShareCorsRule, and ShareRetentionPolicy
+### ShareServiceProperties, ShareMetrics, ShareCORSRule, and ShareRetentionPolicy
 
 ``` yaml
 directive:
@@ -83,7 +83,7 @@ directive:
     to: ShareMetrics
 - rename-model:
     from: CorsRule
-    to: ShareCorsRule
+    to: ShareCORSRule
 - rename-model:
     from: RetentionPolicy
     to: ShareRetentionPolicy
@@ -96,7 +96,7 @@ directive:
   transform: >
     $.ShareMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
     $.ShareServiceProperties.xml = {"name": "StorageServiceProperties"};
-    $.ShareCorsRule.xml = {"name": "CorsRule"};
+    $.ShareCORSRule.xml = {"name": "CorsRule"};
 - from: swagger-document
   where: $.parameters
   transform: >
@@ -199,4 +199,37 @@ directive:
         replace(/DirectoryItems/g, "Directories").
         replace(/FileItems/g, "Files").
         replace(/ShareItems/g, "Shares");
+```
+
+### Rename `FileID` to `ID` in `Directory` and `File` models
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace (/Attributes\s+\*string\s+\`xml\:\"Attributes\"\`\s*\n\s*FileID\s+\*string\s+\`xml\:\"FileId\"\`/g, `Attributes *string \`xml:"Attributes"\`\n\tID *string \`xml:"FileId"\``);
+```
+
+### Change CORS acronym to be all caps
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/Cors/g, "CORS");
+```
+
+### Change cors xml to be correct
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/xml:"CORS>CORSRule"/g, "xml:\"Cors>CorsRule\"");
 ```

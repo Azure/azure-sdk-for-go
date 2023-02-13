@@ -40,7 +40,7 @@ func (o *GetPropertiesOptions) format() *generated.ServiceClientGetPropertiesOpt
 // SetPropertiesOptions provides set of options for Client.SetProperties
 type SetPropertiesOptions struct {
 	// The set of CORS rules.
-	Cors []*ShareCorsRule
+	CORS []*ShareCORSRule
 
 	// A summary of request statistics grouped by API in hourly aggregates for files.
 	HourMetrics *ShareMetrics
@@ -55,11 +55,11 @@ type SetPropertiesOptions struct {
 // ShareServiceProperties - Storage service properties.
 type ShareServiceProperties = generated.ShareServiceProperties
 
-// ShareCorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in
+// ShareCORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in
 // another domain. Web browsers implement a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
 // domain) to call APIs in another domain.
-type ShareCorsRule = generated.ShareCorsRule
+type ShareCORSRule = generated.ShareCORSRule
 
 // ShareMetrics - Storage Analytics metrics for file service.
 type ShareMetrics = generated.ShareMetrics

@@ -287,12 +287,12 @@ func (s ShareServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartElem
 	type alias ShareServiceProperties
 	aux := &struct {
 		*alias
-		Cors *[]*ShareCorsRule `xml:"Cors>CorsRule"`
+		CORS *[]*ShareCORSRule `xml:"Cors>CorsRule"`
 	}{
 		alias: (*alias)(&s),
 	}
-	if s.Cors != nil {
-		aux.Cors = &s.Cors
+	if s.CORS != nil {
+		aux.CORS = &s.CORS
 	}
 	return enc.EncodeElement(aux, start)
 }

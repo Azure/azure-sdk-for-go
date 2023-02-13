@@ -38,6 +38,14 @@ func NewPartitionKeyNumber(value float64) PartitionKey {
 	}
 }
 
+// NewPartitionKeyNull creates a partition key with a null value.
+func NewPartitionKeyNull() PartitionKey {
+	components := []interface{}{nil}
+	return PartitionKey{
+		values: components,
+	}
+}
+
 func (pk *PartitionKey) toJsonString() (string, error) {
 	var completeJson strings.Builder
 	completeJson.Grow(256)

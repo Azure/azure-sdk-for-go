@@ -84,14 +84,14 @@ type ListFilesAndDirectoriesOptions struct {
 	ShareSnapshot *string
 }
 
-// FilesAndDirectoriesListSegment - Abstract for entries that can be listed from Directory.
+// FilesAndDirectoriesListSegment - Abstract for entries that can be listed from directory.
 type FilesAndDirectoriesListSegment = generated.FilesAndDirectoriesListSegment
 
-// Item - A listed directory item.
-type Item = generated.DirectoryItem
+// Directory - A listed directory item.
+type Directory = generated.Directory
 
-// FileItem - A listed file item.
-type FileItem = generated.FileItem
+// File - A listed file item.
+type File = generated.File
 
 // FileProperty - File properties.
 type FileProperty = generated.FileProperty

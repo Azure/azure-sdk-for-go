@@ -94,8 +94,8 @@ type ListSharesOptions struct {
 	Prefix *string
 }
 
-// ShareItem - A listed Azure Storage share item.
-type ShareItem = generated.ShareItemInternal
+// Share - A listed Azure Storage share item.
+type Share = generated.Share
 
 // ShareProperties - Properties of a share.
-type ShareProperties = generated.SharePropertiesInternal
+type ShareProperties = generated.ShareProperties

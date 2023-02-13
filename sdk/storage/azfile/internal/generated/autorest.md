@@ -169,3 +169,34 @@ directive:
       replace(/CopyFileSmbInfo/g, `CopyFileSMBInfo`).
       replace(/Smb\s+\*ShareSMBSettings/g, `SMB *ShareSMBSettings`);
 ```
+
+### Rename models - remove `Item` and `Internal` suffix
+
+``` yaml
+directive:
+- rename-model:
+    from: DirectoryItem
+    to: Directory
+- rename-model:
+    from: FileItem
+    to: File
+- rename-model:
+    from: ShareItemInternal
+    to: Share
+- rename-model:
+    from: SharePropertiesInternal
+    to: ShareProperties
+```
+
+### Remove `Items` suffix
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/DirectoryItems/g, "Directories").
+        replace(/FileItems/g, "Files").
+        replace(/ShareItems/g, "Shares");
+```

@@ -55,6 +55,18 @@ type CopyFileSMBInfo struct {
 	SetArchiveAttribute *bool
 }
 
+// Directory - A listed directory item.
+type Directory struct {
+	// REQUIRED
+	Name          *string `xml:"Name"`
+	Attributes    *string `xml:"Attributes"`
+	FileID        *string `xml:"FileId"`
+	PermissionKey *string `xml:"PermissionKey"`
+
+	// File properties.
+	Properties *FileProperty `xml:"Properties"`
+}
+
 // DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
 type DirectoryClientCreateOptions struct {
 	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
@@ -171,16 +183,16 @@ type DirectoryClientSetPropertiesOptions struct {
 	Timeout *int32
 }
 
-// DirectoryItem - A listed directory item.
-type DirectoryItem struct {
+// File - A listed file item.
+type File struct {
 	// REQUIRED
-	Name          *string `xml:"Name"`
-	Attributes    *string `xml:"Attributes"`
-	FileID        *string `xml:"FileId"`
-	PermissionKey *string `xml:"PermissionKey"`
+	Name *string `xml:"Name"`
 
-	// File properties.
-	Properties *FileProperty `xml:"Properties"`
+	// REQUIRED; File properties.
+	Properties    *FileProperty `xml:"Properties"`
+	Attributes    *string       `xml:"Attributes"`
+	FileID        *string       `xml:"FileId"`
+	PermissionKey *string       `xml:"PermissionKey"`
 }
 
 // FileClientAbortCopyOptions contains the optional parameters for the FileClient.AbortCopy method.
@@ -400,18 +412,6 @@ type FileClientUploadRangeOptions struct {
 	Timeout *int32
 }
 
-// FileItem - A listed file item.
-type FileItem struct {
-	// REQUIRED
-	Name *string `xml:"Name"`
-
-	// REQUIRED; File properties.
-	Properties    *FileProperty `xml:"Properties"`
-	Attributes    *string       `xml:"Attributes"`
-	FileID        *string       `xml:"FileId"`
-	PermissionKey *string       `xml:"PermissionKey"`
-}
-
 // FileProperty - File properties.
 type FileProperty struct {
 	// REQUIRED; Content length of the file. This value may not be up-to-date since an SMB client may have modified the file locally.
@@ -438,10 +438,10 @@ type FileRange struct {
 // FilesAndDirectoriesListSegment - Abstract for entries that can be listed from Directory.
 type FilesAndDirectoriesListSegment struct {
 	// REQUIRED
-	DirectoryItems []*DirectoryItem `xml:"Directory"`
+	Directories []*Directory `xml:"Directory"`
 
 	// REQUIRED
-	FileItems []*FileItem `xml:"File"`
+	Files []*File `xml:"File"`
 }
 
 // HandleItem - A listed Azure Storage handle item.
@@ -515,11 +515,11 @@ type ListSharesResponse struct {
 	NextMarker *string `xml:"NextMarker"`
 
 	// REQUIRED
-	ServiceEndpoint *string              `xml:"ServiceEndpoint,attr"`
-	Marker          *string              `xml:"Marker"`
-	MaxResults      *int32               `xml:"MaxResults"`
-	Prefix          *string              `xml:"Prefix"`
-	ShareItems      []*ShareItemInternal `xml:"Shares>Share"`
+	ServiceEndpoint *string  `xml:"ServiceEndpoint,attr"`
+	Marker          *string  `xml:"Marker"`
+	MaxResults      *int32   `xml:"MaxResults"`
+	Prefix          *string  `xml:"Prefix"`
+	Shares          []*Share `xml:"Shares>Share"`
 }
 
 // ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
@@ -554,6 +554,21 @@ type ServiceClientSetPropertiesOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
+}
+
+// Share - A listed Azure Storage share item.
+type Share struct {
+	// REQUIRED
+	Name *string `xml:"Name"`
+
+	// REQUIRED; Properties of a share.
+	Properties *ShareProperties `xml:"Properties"`
+	Deleted    *bool            `xml:"Deleted"`
+
+	// Dictionary of
+	Metadata map[string]*string `xml:"Metadata"`
+	Snapshot *string            `xml:"Snapshot"`
+	Version  *string            `xml:"Version"`
 }
 
 // ShareClientAcquireLeaseOptions contains the optional parameters for the ShareClient.AcquireLease method.
@@ -799,21 +814,6 @@ type ShareFileRangeList struct {
 	Ranges      []*FileRange  `xml:"Range"`
 }
 
-// ShareItemInternal - A listed Azure Storage share item.
-type ShareItemInternal struct {
-	// REQUIRED
-	Name *string `xml:"Name"`
-
-	// REQUIRED; Properties of a share.
-	Properties *SharePropertiesInternal `xml:"Properties"`
-	Deleted    *bool                    `xml:"Deleted"`
-
-	// Dictionary of
-	Metadata map[string]*string `xml:"Metadata"`
-	Snapshot *string            `xml:"Snapshot"`
-	Version  *string            `xml:"Version"`
-}
-
 // ShareMetrics - Storage Analytics metrics for file service.
 type ShareMetrics struct {
 	// REQUIRED; Indicates whether metrics are enabled for the File service.
@@ -835,8 +835,8 @@ type SharePermission struct {
 	Permission *string `json:"permission,omitempty"`
 }
 
-// SharePropertiesInternal - Properties of a share.
-type SharePropertiesInternal struct {
+// ShareProperties - Properties of a share.
+type ShareProperties struct {
 	// REQUIRED
 	ETag *azcore.ETag `xml:"Etag"`
 

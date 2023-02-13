@@ -9,9 +9,9 @@
 Package azqueue can access an Azure Queue Storage.
 
 The azqueue package is capable of :-
-    - Creating, deleting, and clearing queues in an account
-    - Enqueuing, dequeuing, and editing blobs in a container
-    - Creating Shared Access Signature for authentication
+   - Creating, deleting, and clearing queues in an account
+   - Enqueuing, dequeuing, and editing messages in a queue
+   - Creating Shared Access Signature for authentication
 
 Types of Resources
 
@@ -63,12 +63,12 @@ To do this, pass the connection string to the service client's `NewServiceClient
 The connection string can be found in your storage account in the Azure Portal under the "Access Keys" section.
 
 	connStr := "DefaultEndpointsProtocol=https;AccountName=<my_account_name>;AccountKey=<my_account_key>;EndpointSuffix=core.windows.net"
-	serviceClient, err := azblob.NewServiceClientFromConnectionString(connStr, nil)
+	serviceClient, err := azqueue.NewServiceClientFromConnectionString(connStr, nil)
 
 Using a Shared Access Signature (SAS) Token
 
 To use a shared access signature (SAS) token, provide the token at the end of your service URL.
-You can generate a SAS token from the Azure Portal under Shared Access Signature or use the ServiceClient.GetSASToken() functions.
+You can generate a SAS token from the Azure Portal under Shared Access Signature or use the ServiceClient.GetSASURL() functions.
 
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
@@ -78,46 +78,39 @@ You can generate a SAS token from the Azure Portal under Shared Access Signature
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
 	}
-	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	serviceURL := fmt.Sprintf("https://%s.queue.core.windows.net/", accountName)
 
-	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
 	handle(err)
-	serviceClient, err := azblob.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+	serviceClient, err := azqueue.NewServiceClientWithSharedKey(serviceURL, cred, nil)
 	handle(err)
 	fmt.Println(serviceClient.URL())
 
 	// Alternatively, you can create SAS on the fly
 
-	resources := azblob.AccountSASResourceTypes{Service: true}
-	permission := azblob.AccountSASPermissions{Read: true}
-	start := time.Now()
+	resources := azqueue.AccountResourceTypes{Service: true}
+	permission := azqueue.AccountSASPermissions{Read: true}
 	expiry := start.AddDate(0, 0, 1)
-	serviceURLWithSAS, err := serviceClient.GetSASURL(resources, permission, start, expiry)
+	serviceURLWithSAS, err := serviceClient.GetSASURL(resources, permission, expiry, nil)
 	handle(err)
 
-	serviceClientWithSAS, err := azblob.NewServiceClientWithNoCredential(serviceURLWithSAS, nil)
+	serviceClientWithSAS, err := azqueue.NewServiceClientWithNoCredential(serviceURLWithSAS, nil)
 	handle(err)
 
 	fmt.Println(serviceClientWithSAS.URL())
 
 Types of Clients
 
-There are three different clients provided to interact with the various components of the Blob Service:
+There are two different clients provided to interact with the various components of the Queue Service:
 
 1. **`ServiceClient`**
-    * Get and set account settings.
-    * Query, create, and delete containers within the account.
+   * Get and set account settings.
+   * Query, create, and delete queues within the account.
 
-2. **`ContainerClient`**
-    * Get and set container access settings, properties, and metadata.
-    * Create, delete, and query blobs within the container.
-    * `ContainerLeaseClient` to support container lease management.
-
-3. **`BlobClient`**
-    * `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`
-    * Get and set blob properties.
-    * Perform CRUD operations on a given blob.
-    * `BlobLeaseClient` to support blob lease management.
+2. **`QueueClient`**
+   * Get and set queue access settings and metadata.
+   * Enqueue, Dequeue and Peek messages within a queue.
+   * Update and Delete messages.
 
 Examples
 
@@ -131,82 +124,44 @@ Examples
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
 	}
-	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
 	handle(err)
 
-	// The service URL for blob endpoints is usually in the form: http(s)://<account>.blob.core.windows.net/
-	serviceClient, err := azblob.NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	// The service URL for queue endpoints is usually in the form: http(s)://<account>.queue.core.windows.net/
+	serviceClient, err := azqueue.NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
 	handle(err)
 
-	// ===== 1. Create a container =====
+	// ===== 1. Create a queue =====
 
-	// First, create a container client, and use the Create method to create a new container in your account
-	containerClient, err := serviceClient.NewContainerClient("testcontainer")
+	// First, create a queue client, and use the Create method to create a new queue in your account
+	queueClient, err := serviceClient.NewQueueClient("testqueue")
 	handle(err)
 
 	// All APIs have an options' bag struct as a parameter.
-	// The options' bag struct allows you to specify optional parameters such as metadata, public access types, etc.
+	// The options' bag struct allows you to specify optional parameters such as metadata, access, etc.
 	// If you want to use the default options, pass in nil.
-	_, err = containerClient.Create(context.TODO(), nil)
+	_, err = queueClient.Create(context.TODO(), nil)
 	handle(err)
 
-	// ===== 2. Upload and Download a block blob =====
-	uploadData := "Hello world!"
+	// ===== 2. Enqueue and Dequeue a message =====
+	message := "Hello world!"
 
-	// Create a new blockBlobClient from the containerClient
-	blockBlobClient, err := containerClient.NewBlockBlobClient("HelloWorld.txt")
+	// send message to queue
+	_, err = queueClient.EnqueueMessage(context.TODO(), message, nil)
 	handle(err)
 
-	// Upload data to the block blob
-	blockBlobUploadOptions := azblob.BlockBlobUploadOptions{
-		Metadata: map[string]string{"Foo": "Bar"},
-		TagsMap:  map[string]string{"Year": "2022"},
-	}
-	_, err = blockBlobClient.Upload(context.TODO(), streaming.NopCloser(strings.NewReader(uploadData)), &blockBlobUploadOptions)
+	// dequeue message from queue, you can also use `DequeueMessage()` to dequeue more than one message (up to 32)
+	_, err = queueClient.DequeueMessage(context.TODO(), nil)
 	handle(err)
 
-	// Download the blob's contents and ensure that the download worked properly
-	blobDownloadResponse, err := blockBlobClient.DownloadStream(context.TODO(), nil)
-	handle(err)
+	// ===== 3. Peek messages =====
+	// You can also peek messages from the queue (without removing them), you can peek a maximum of 32 messages.
 
-	// Use the bytes.Buffer object to read the downloaded data.
-	// RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
-	reader := blobDownloadResponse.Body(nil)
-	downloadData, err := io.ReadAll(reader)
-	handle(err)
-	if string(downloadData) != uploadData {
-		handle(errors.New("Uploaded data should be same as downloaded data"))
-	}
+	opts := azqueue.PeekMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
+	resp, err := queueClient.PeekMessages(context.TODO(), &opts)
 
-
-	if err = reader.Close(); err != nil {
-		handle(err)
-		return
-	}
-
-	// ===== 3. List blobs =====
-	// List methods returns a pager object which can be used to iterate over the results of a paging operation.
-	// To iterate over a page use the NextPage(context.Context) to fetch the next page of results.
-	// PageResponse() can be used to iterate over the results of the specific page.
-	// Always check the Err() method after paging to see if an error was returned by the pager. A pager will return either an error or the page of results.
-	pager := containerClient.ListBlobsFlat(nil)
-	for pager.NextPage(context.TODO()) {
-		resp := pager.PageResponse()
-		for _, v := range resp.Segment.BlobItems {
-			fmt.Println(*v.Name)
-		}
-	}
-
-	if err = pager.Err(); err != nil {
-		handle(err)
-	}
-
-	// Delete the blob.
-	_, err = blockBlobClient.Delete(context.TODO(), nil)
-	handle(err)
-
-	// Delete the container.
-	_, err = containerClient.Delete(context.TODO(), nil)
+	// Delete the queue.
+	_, err = queueClient.Delete(context.TODO(), nil)
 	handle(err)
 */
 

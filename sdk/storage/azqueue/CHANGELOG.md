@@ -1,11 +1,5 @@
-# Release History
-
-## 0.1.0 (Unreleased)
+## 0.1.0 (2023-02-17)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* This is the initial preview release of the `azqueue` library

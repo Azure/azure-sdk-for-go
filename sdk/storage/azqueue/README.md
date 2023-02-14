@@ -61,7 +61,7 @@ The following components make up the Azure Queue Service:
 * A queue within the storage account, which contains a set of messages
 * A message within a queue, in any format, of up to 64 KiB
 
-The Azure Storage Queues client library for Python allows you to interact with each of these components through the
+The Azure Storage Queues client library for GO allows you to interact with each of these components through the
 use of a dedicated client object.
 
 ### Clients

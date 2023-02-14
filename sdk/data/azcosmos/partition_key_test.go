@@ -15,7 +15,7 @@ func TestSerialization(t *testing.T) {
 		"[\"some string\"]": NewPartitionKeyString("some string"),
 		"[true]":            NewPartitionKeyBool(true),
 		"[false]":           NewPartitionKeyBool(false),
-		"[null]":				 NewPartitionKeyNull(),
+		"[null]":            NewPartitionKeyNull(),
 	}
 
 	for expectedSerialization, pk := range validTypes {

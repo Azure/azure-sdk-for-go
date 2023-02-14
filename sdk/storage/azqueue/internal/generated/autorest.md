@@ -116,6 +116,17 @@ directive:
     to: PeekedMessage
 ```
 
+### Remove `List` suffix
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/QueueMessagesList/g, "Messages");
+```
+
 ### Remove `Item` suffix
 
 ``` yaml
@@ -125,4 +136,15 @@ directive:
     transform: >-
       return $.
         replace(/QueueItems/g, "Queues");
+```
+
+### Remove `Queue` prefix
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/QueueGeoReplicationStatus/g, "GeoReplicationStatus");
 ```

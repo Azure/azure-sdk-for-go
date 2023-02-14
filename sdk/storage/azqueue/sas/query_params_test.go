@@ -135,7 +135,7 @@ func TestSAS(t *testing.T) {
 	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
 	_uri, err := url.Parse(_url)
 	require.NoError(t, err)
-	sasQueryParams := NewQueryParameters(_uri.Query(), true)
+	sasQueryParams := newQueryParameters(_uri.Query(), true)
 	validateSAS(t, sas, sasQueryParams)
 }
 
@@ -210,8 +210,8 @@ func TestSASInvalidQueryParameter(t *testing.T) {
 	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
 	_uri, err := url.Parse(_url)
 	require.NoError(t, err)
-	NewQueryParameters(_uri.Query(), true)
-	// NewQueryParameters should not delete signature
+	newQueryParameters(_uri.Query(), true)
+	// newQueryParameters should not delete signature
 	require.Contains(t, _uri.Query(), "signature")
 }
 
@@ -225,7 +225,18 @@ func TestEncode(t *testing.T) {
 		_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
 		_uri, err := url.Parse(_url)
 		require.NoError(t, err)
-		queryParams := NewQueryParameters(_uri.Query(), true)
+		queryParams := newQueryParameters(_uri.Query(), true)
 		require.Equal(t, expected, queryParams.Encode())
 	}
+}
+
+func TestSASInvalidQueryParameterExported(t *testing.T) {
+	// Signature is invalid below
+	const sas = "sv=2019-12-12&signature=clNxbtnkKSHw7f3KMEVVc4agaszoRFdbZr%2FWBmPNsrw%3D&sr=b"
+	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
+	_uri, err := url.Parse(_url)
+	require.NoError(t, err)
+	NewQueryParameters(_uri.Query())
+	// newQueryParameters should not delete signature
+	require.Contains(t, _uri.Query(), "signature")
 }

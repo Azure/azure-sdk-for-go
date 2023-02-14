@@ -53,7 +53,7 @@ func TestFuncFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n")
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.NewListPager` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -75,7 +75,7 @@ func TestLROFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter, common.LROFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.CreateOrUpdate` has been changed to LRO, use `*Client.BeginCreateOrUpdate` instead.\n")
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.BeginDelete` has been changed to non-LRO, use `*Client.Delete` instead.\n- Operation `*Client.CreateOrUpdate` has been changed to LRO, use `*Client.BeginCreateOrUpdate` instead.\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 

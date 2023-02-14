@@ -22,3 +22,11 @@ func (client *Client) BeingDelete(resourceGroupName string, options *ClientBegin
 type ClientBeginDeleteOptions struct{}
 
 type ClientBeginDeleteResponse struct{}
+
+func (client *Client) NewListPager(resourceGroupName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+	return &runtime.Pager[ClientListResponse]
+}
+
+type ClientListOptions struct{}
+
+type ClientListResponse struct{}

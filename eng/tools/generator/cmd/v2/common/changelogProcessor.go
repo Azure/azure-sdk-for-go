@@ -305,7 +305,7 @@ func funcOperation(content *delta.Content) {
 				if funcValue.Returns != nil {
 					rs := strings.Split(*funcValue.Returns, ",")
 					clientFuncResponse := rs[0]
-					if strings.Contains(clientFuncResponse, "runtime.Poller") {
+					if strings.Contains(clientFuncResponse, "runtime") {
 						re := regexp.MustCompile("\\[(?P<response>.*)\\]")
 						clientFuncResponse = re.FindString(clientFuncResponse)
 						clientFuncResponse = re.ReplaceAllString(clientFuncResponse, "${response}")
@@ -337,7 +337,7 @@ func LROFilter(changelog *model.Changelog) {
 			clientFunc := strings.Split(bFunc, ".")
 			if len(clientFunc) == 2 {
 				if strings.Contains(clientFunc[1], "Begin") {
-					clientFunc[1] = strings.ReplaceAll(clientFunc[1], "Being", "")
+					clientFunc[1] = strings.TrimPrefix(clientFunc[1], "Begin")
 					beginFunc = fmt.Sprintf("%s.%s", clientFunc[0], clientFunc[1])
 				} else {
 					beginFunc = fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])

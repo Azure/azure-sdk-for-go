@@ -217,7 +217,7 @@ additional questions or comments.
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue
 [docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue
-[rest_docs]: https://learn.microsoft.com/en-us/rest/api/storageservices/queue-service-rest-api
+[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
 [godevdl]: https://go.dev/dl/
 [goget]: https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
 [storage_account_docs]: https://docs.microsoft.com/azure/storage/common/storage-account-overview

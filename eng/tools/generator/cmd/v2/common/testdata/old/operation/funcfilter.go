@@ -14,11 +14,11 @@ type ClientUpdateOptions struct{}
 
 type ClientUpdateResponse struct{}
 
-func (client *Client) BeginPollerUpdate(resourceGroupName string, options *BeginClientUpdateOptions) (*runtime.Poller[BeginClientUpdateResponse], error) {
+func (client *Client) BeingDelete(resourceGroupName string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientBeginDeleteResponse], error) {
 
-	return &runtime.Poller[BeginClientUpdateResponse]{}, nil
+	return &runtime.Poller[ClientBeginDeleteResponse]{}, nil
 }
 
-type BeginClientUpdateOptions struct{}
+type ClientBeginDeleteOptions struct{}
 
-type BeginClientUpdateResponse struct{}
+type ClientBeginDeleteResponse struct{}

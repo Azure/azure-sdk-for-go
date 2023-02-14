@@ -53,7 +53,7 @@ func TestFuncFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Function `*Client.BeginPollerUpdate` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n")
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 

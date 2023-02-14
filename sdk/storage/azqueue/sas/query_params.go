@@ -19,7 +19,7 @@ const (
 	timeFormat = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
 )
 
-var (
+const (
 	// Version is the default version encoded in the SAS token.
 	Version = "2020-02-10"
 )

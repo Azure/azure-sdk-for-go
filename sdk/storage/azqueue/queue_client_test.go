@@ -631,7 +631,7 @@ func (s *RecordedTestSuite) TestEnqueueMessageWithTimeToLiveExpired() {
 	time.Sleep(time.Second * 2)
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Equal(0, len(resp.Messages))
 }
 
 func (s *RecordedTestSuite) TestEnqueueMessageWithInfiniteTimeToLive() {
@@ -730,12 +730,12 @@ func (s *RecordedTestSuite) TestDequeueMessageBasic() {
 	for i := 0; i < 4; i++ {
 		resp, err := queueClient.DequeueMessage(context.Background(), nil)
 		_require.Nil(err)
-		_require.Equal(1, len(resp.QueueMessagesList))
-		_require.NotNil(resp.QueueMessagesList[0].MessageID)
+		_require.Equal(1, len(resp.Messages))
+		_require.NotNil(resp.Messages[0].MessageID)
 	}
 	// should be 0 now
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
-	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Equal(0, len(resp.Messages))
 	_require.Nil(err)
 }
 
@@ -758,7 +758,7 @@ func (s *RecordedTestSuite) TestDequeueMessageWithVisibilityTimeout() {
 
 	resp, err := queueClient.DequeueMessage(context.Background(), &opts)
 	_require.Nil(err)
-	_require.NotNil(resp.QueueMessagesList[0].TimeNextVisible)
+	_require.NotNil(resp.Messages[0].TimeNextVisible)
 }
 
 func (s *RecordedTestSuite) TestDequeueMessagesBasic() {
@@ -784,7 +784,7 @@ func (s *RecordedTestSuite) TestDequeueMessagesBasic() {
 	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
 	resp, err := queueClient.DequeueMessages(context.Background(), &opts)
 	_require.Nil(err)
-	_require.Equal(4, len(resp.QueueMessagesList))
+	_require.Equal(4, len(resp.Messages))
 }
 
 func (s *RecordedTestSuite) TestDequeueMessagesDefault() {
@@ -809,7 +809,7 @@ func (s *RecordedTestSuite) TestDequeueMessagesDefault() {
 	// should dequeue only 1 message (since default num of messages is 1 when not specified)
 	resp, err := queueClient.DequeueMessages(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(1, len(resp.QueueMessagesList))
+	_require.Equal(1, len(resp.Messages))
 }
 
 func (s *RecordedTestSuite) TestDequeueMessagesWithVisibilityTimeout() {
@@ -885,14 +885,14 @@ func (s *RecordedTestSuite) TestDequeueMessagesWithLeftovers() {
 	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(5))}
 	resp, err := queueClient.DequeueMessages(context.Background(), &opts)
 	_require.Nil(err)
-	_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
-	_require.Equal(5, len(resp.QueueMessagesList))
+	_require.Equal(*resp.Messages[0].MessageText, testcommon.QueueDefaultData)
+	_require.Equal(5, len(resp.Messages))
 
 	// dequeue other 5 messages
 	resp, err = queueClient.DequeueMessages(context.Background(), &opts)
 	_require.Nil(err)
-	_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
-	_require.Equal(5, len(resp.QueueMessagesList))
+	_require.Equal(*resp.Messages[0].MessageText, testcommon.QueueDefaultData)
+	_require.Equal(5, len(resp.Messages))
 }
 
 func (s *RecordedTestSuite) TestPeekMessageBasic() {
@@ -918,15 +918,15 @@ func (s *RecordedTestSuite) TestPeekMessageBasic() {
 	for i := 0; i < 4; i++ {
 		resp, err := queueClient.PeekMessage(context.Background(), nil)
 		_require.Nil(err)
-		_require.Equal(1, len(resp.QueueMessagesList))
-		_require.NotNil(resp.QueueMessagesList[0].MessageID)
-		_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+		_require.Equal(1, len(resp.Messages))
+		_require.NotNil(resp.Messages[0].MessageID)
+		_require.Equal(*resp.Messages[0].MessageText, testcommon.QueueDefaultData)
 	}
 
 	opts := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
 	// should all still be there
 	resp, err := queueClient.DequeueMessages(context.Background(), &opts)
-	_require.Equal(4, len(resp.QueueMessagesList))
+	_require.Equal(4, len(resp.Messages))
 	_require.Nil(err)
 }
 
@@ -953,12 +953,12 @@ func (s *RecordedTestSuite) TestPeekMessagesBasic() {
 	opts := azqueue.PeekMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
 	resp, err := queueClient.PeekMessages(context.Background(), &opts)
 	_require.Nil(err)
-	_require.Equal(4, len(resp.QueueMessagesList))
+	_require.Equal(4, len(resp.Messages))
 
 	opts1 := azqueue.DequeueMessagesOptions{NumberOfMessages: to.Ptr(int32(4))}
 	// should all still be there
 	resp1, err := queueClient.DequeueMessages(context.Background(), &opts1)
-	_require.Equal(4, len(resp1.QueueMessagesList))
+	_require.Equal(4, len(resp1.Messages))
 	_require.Nil(err)
 }
 
@@ -984,8 +984,8 @@ func (s *RecordedTestSuite) TestPeekMessagesDefault() {
 	// should peek only 1 message (since default num of messages is 1 when not specified)
 	resp, err := queueClient.PeekMessages(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(1, len(resp.QueueMessagesList))
-	_require.Equal(*resp.QueueMessagesList[0].MessageText, testcommon.QueueDefaultData)
+	_require.Equal(1, len(resp.Messages))
+	_require.Equal(*resp.Messages[0].MessageText, testcommon.QueueDefaultData)
 }
 
 func (s *RecordedTestSuite) TestPeekMessagesWithNumMessagesLargerThan32() {
@@ -1032,8 +1032,8 @@ func (s *RecordedTestSuite) TestDeleteMessageBasic() {
 	for i := 0; i < 4; i++ {
 		resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
 		_require.Nil(err)
-		popReceipts = append(popReceipts, *resp.QueueMessagesList[0].PopReceipt)
-		messageIDs = append(messageIDs, *resp.QueueMessagesList[0].MessageID)
+		popReceipts = append(popReceipts, *resp.Messages[0].PopReceipt)
+		messageIDs = append(messageIDs, *resp.Messages[0].MessageID)
 	}
 
 	// delete 4 messages
@@ -1044,7 +1044,7 @@ func (s *RecordedTestSuite) TestDeleteMessageBasic() {
 	}
 	// should be 0 now
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
-	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Equal(0, len(resp.Messages))
 	_require.Nil(err)
 }
 
@@ -1067,8 +1067,8 @@ func (s *RecordedTestSuite) TestDeleteMessageNilOptions() {
 	for i := 0; i < 4; i++ {
 		resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
 		_require.Nil(err)
-		popReceipts = append(popReceipts, *resp.QueueMessagesList[0].PopReceipt)
-		messageIDs = append(messageIDs, *resp.QueueMessagesList[0].MessageID)
+		popReceipts = append(popReceipts, *resp.Messages[0].PopReceipt)
+		messageIDs = append(messageIDs, *resp.Messages[0].MessageID)
 	}
 
 	// delete 4 messages
@@ -1078,7 +1078,7 @@ func (s *RecordedTestSuite) TestDeleteMessageNilOptions() {
 	}
 	// should be 0 now
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
-	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Equal(0, len(resp.Messages))
 	_require.Nil(err)
 }
 
@@ -1097,8 +1097,8 @@ func (s *RecordedTestSuite) TestDeleteMessageDoesNotExist() {
 
 	resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
 	_require.Nil(err)
-	popReceipt := *resp.QueueMessagesList[0].PopReceipt
-	messageID := *resp.QueueMessagesList[0].MessageID
+	popReceipt := *resp.Messages[0].PopReceipt
+	messageID := *resp.Messages[0].MessageID
 
 	opts := &azqueue.DeleteMessageOptions{}
 	_, err = queueClient.DeleteMessage(context.Background(), messageID, popReceipt, opts)
@@ -1136,7 +1136,7 @@ func (s *RecordedTestSuite) TestClearMessagesBasic() {
 
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Equal(0, len(resp.Messages))
 }
 
 func (s *RecordedTestSuite) TestClearMessagesNilOptions() {
@@ -1164,7 +1164,7 @@ func (s *RecordedTestSuite) TestClearMessagesNilOptions() {
 
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Equal(0, len(resp.Messages))
 }
 
 func (s *RecordedTestSuite) TestClearMessagesMoreThan32() {
@@ -1193,7 +1193,7 @@ func (s *RecordedTestSuite) TestClearMessagesMoreThan32() {
 
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Equal(0, len(resp.Messages))
 }
 
 func (s *RecordedTestSuite) TestUpdateMessageBasic() {
@@ -1211,8 +1211,8 @@ func (s *RecordedTestSuite) TestUpdateMessageBasic() {
 
 	resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
 	_require.Nil(err)
-	popReceipt := *resp.QueueMessagesList[0].PopReceipt
-	messageID := *resp.QueueMessagesList[0].MessageID
+	popReceipt := *resp.Messages[0].PopReceipt
+	messageID := *resp.Messages[0].MessageID
 
 	opts := &azqueue.UpdateMessageOptions{}
 	_, err = queueClient.UpdateMessage(context.Background(), messageID, popReceipt, "new content", opts)
@@ -1220,7 +1220,7 @@ func (s *RecordedTestSuite) TestUpdateMessageBasic() {
 
 	resp1, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.Nil(err)
-	content := *resp1.QueueMessagesList[0].MessageText
+	content := *resp1.Messages[0].MessageText
 	_require.Equal("new content", content)
 }
 
@@ -1239,8 +1239,8 @@ func (s *RecordedTestSuite) TestUpdateMessageWithVisibilityTimeout() {
 
 	resp, err := queueClient.EnqueueMessage(context.Background(), testcommon.QueueDefaultData, nil)
 	_require.Nil(err)
-	popReceipt := *resp.QueueMessagesList[0].PopReceipt
-	messageID := *resp.QueueMessagesList[0].MessageID
+	popReceipt := *resp.Messages[0].PopReceipt
+	messageID := *resp.Messages[0].MessageID
 
 	opts := &azqueue.UpdateMessageOptions{VisibilityTimeout: to.Ptr(int32(1))}
 	_, err = queueClient.UpdateMessage(context.Background(), messageID, popReceipt, "new content", opts)
@@ -1248,7 +1248,7 @@ func (s *RecordedTestSuite) TestUpdateMessageWithVisibilityTimeout() {
 	time.Sleep(time.Second * 2)
 	resp1, err := queueClient.DequeueMessage(context.Background(), nil)
 	_require.Nil(err)
-	content := *resp1.QueueMessagesList[0].MessageText
+	content := *resp1.Messages[0].MessageText
 	_require.Equal("new content", content)
 }
 
@@ -1448,11 +1448,11 @@ func (s *UnrecordedTestSuite) TestServiceSASDequeueMessage() {
 	for i := 0; i < 4; i++ {
 		resp, err := queueClient1.DequeueMessage(context.Background(), nil)
 		_require.Nil(err)
-		_require.Equal(1, len(resp.QueueMessagesList))
-		_require.NotNil(resp.QueueMessagesList[0].MessageID)
+		_require.Equal(1, len(resp.Messages))
+		_require.NotNil(resp.Messages[0].MessageID)
 	}
 	// should be 0 now
 	resp, err := queueClient1.DequeueMessage(context.Background(), nil)
-	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Equal(0, len(resp.Messages))
 	_require.Nil(err)
 }

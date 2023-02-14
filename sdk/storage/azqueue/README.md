@@ -110,7 +110,7 @@ const (
 )
 ```
 
-### Creating a Queue, enqueuing a message, dequeueing and deleting the queue
+### Exploring Queue Service APIs
 
 ```go
 // shared key credential set up
@@ -120,20 +120,20 @@ cred := azqueue.NewSharedKeyCredential(accountName, accountKey)
 serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(account, cred, nil)
 // TODO: handle error
 
-// create queue
+// 1. create queue
 queueClient := serviceClient.NewQueueClient(queueName)
 _, err = queueClient.Create(context.TODO(), nil)
 // TODO: handle error
 
-// enqueue message
+// 2. enqueue message
 _, err = queueClient.EnqueueMessage(context.TODO(), message, nil)
 // TODO: handle error
 
-// dequeue message
+// 3. dequeue message
 _, err = queueClient.DequeueMessage(context.TODO(), nil)
 // TODO: handle error
 
-// delete queue
+// 4. delete queue
 _, err =queueClient.Delete(context.TODO(), nil)
 // TODO: handle error
 ```
@@ -142,7 +142,7 @@ _, err =queueClient.Delete(context.TODO(), nil)
 
 ```go
 const (
-	account       = "https://MYSTORAGEACCOUNT.queue.core.windows.net/"
+	account = "https://MYSTORAGEACCOUNT.queue.core.windows.net/"
 )
 
 // authenticate with Azure Active Directory
@@ -178,7 +178,7 @@ along with various helper facilities for error handling.
 ```go
 const (
 	connectionString = "<connection_string>"
-	queueName    = "samplequeue"
+	queueName        = "samplequeue"
 )
 
 // create a client with the provided connection string

@@ -1,13 +1,13 @@
 # Azure Queue Storage SDK for Go
 
-> Server Version: 2020-10-02
+> Server Version: 2018-03-28
 
 Azure Queue storage is a service for storing large numbers of messages that can be accessed from anywhere in 
 the world via authenticated calls using HTTP or HTTPS. 
 A single queue message can be up to 64 KiB in size, and a queue can contain millions of messages, 
 up to the total capacity limit of a storage account.
 
-[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs]
+[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs]
 
 ## Getting started
 
@@ -70,10 +70,10 @@ Two different clients are provided to interact with the various components of th
    this client represents interaction with the Azure storage account itself, and allows you to acquire preconfigured
    client instances to access the queues within. It provides operations to retrieve and configure the account
    properties as well as list, create, and delete queues within the account. To perform operations on a specific queue,
-   retrieve a client using the `GetQueueClient` method.
+   retrieve a client using the `NewQueueClient` method.
 2. QueueClient -
    this client represents interaction with a specific queue (which need not exist yet). It provides operations to
-   create, delete, or configure a queue and includes operations to send, receive, peek, delete, and update messages
+   create, delete, or configure a queue and includes operations to enqueue, dequeue, peek, delete, and update messages
    within it.
 
 ### Messages
@@ -84,12 +84,10 @@ Two different clients are provided to interact with the various components of th
 * **Delete** - Deletes a specified message from the queue.
 * **Clear** - Clears all messages from the queue.
 
-Learn more about options for authentication _(including Connection Strings, Shared Key, Shared Access Signatures (SAS), Azure Active Directory (AAD), and anonymous public access)_ [in our examples.](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/storage/azblob/examples_test.go)
-
 ### Goroutine safety
 We guarantee that all client instance methods are goroutine-safe and independent of each other ([guideline](https://azure.github.io/azure-sdk/golang_introduction.html#thread-safety)). This ensures that the recommendation of reusing client instances is always safe, even across goroutines.
 
-### About blob metadata
+### About Queue metadata
 Queue metadata name/value pairs are valid HTTP headers and should adhere to all restrictions governing HTTP headers. Metadata names must be valid HTTP header names, may contain only ASCII characters, and should be treated as case-insensitive. Base64-encode or URL-encode metadata values containing non-ASCII characters.
 
 ### Additional concepts
@@ -106,31 +104,45 @@ Queue metadata name/value pairs are valid HTTP headers and should adhere to all 
 
 ```go
 const (
-	account       = "https://MYSTORAGEACCOUNT.queue.core.windows.net/"
+	accountName   = "MYSTORAGEACCOUNT"
 	accountKey    = "ACCOUNT_KEY"
 	queueName     = "samplequeue"
 )
 ```
 
-### Creating a Queue and enqueuing a message
+### Creating a Queue, enqueuing a message, dequeueing and deleting the queue
 
 ```go
 // shared key credential set up
-cred := azqueue.NewSharedKeyCredential("MYSTORAGEACCOUNT", accountKey)
+cred := azqueue.NewSharedKeyCredential(accountName, accountKey)
 
-// this example accesses a public blob via anonymous access, so no credentials are required
+// instantiate service client
 serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(account, cred, nil)
 // TODO: handle error
 
+// create queue
+queueClient := serviceClient.NewQueueClient(queueName)
+_, err = queueClient.Create(context.TODO(), nil)
+// TODO: handle error
+
 // enqueue message
+_, err = queueClient.EnqueueMessage(context.TODO(), message, nil)
+// TODO: handle error
+
+// dequeue message
+_, err = queueClient.DequeueMessage(context.TODO(), nil)
+// TODO: handle error
+
+// delete queue
+_, err =queueClient.Delete(context.TODO(), nil)
+// TODO: handle error
 ```
 
-### Enumerating blobs
+### Enumerating queues
 
 ```go
 const (
-	account       = "https://MYSTORAGEACCOUNT.blob.core.windows.net/"
-	containerName = "sample-container"
+	account       = "https://MYSTORAGEACCOUNT.queue.core.windows.net/"
 )
 
 // authenticate with Azure Active Directory
@@ -138,48 +150,46 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 // TODO: handle error
 
 // create a client for the specified storage account
-client, err := azblob.NewClient(account, cred, nil)
+client, err := azqueue.NewServiceClient(account, cred, nil)
 // TODO: handle error
 
-// blob listings are returned across multiple pages
-pager := client.NewListBlobsFlatPager(containerName, nil)
+// queue listings are returned across multiple pages
+pager := client.NewListQueuesPager(nil)
 
 // continue fetching pages until no more remain
 for pager.More() {
-  // advance to the next page
-	page, err := pager.NextPage(context.TODO())
-	// TODO: handle error
-
-	// print the blob names for this page
-	for _, blob := range page.Segment.BlobItems {
-		fmt.Println(*blob.Name)
+   resp, err := pager.NextPage(context.Background())
+   _require.Nil(err)
+   // print queue name
+   for _, queue := range resp.Queues {
+		fmt.Println(*queue.Name)
 	}
 }
 ```
 
 ## Troubleshooting
 
-All Blob service operations will return an
+All queue service operations will return an
 [*azcore.ResponseError][azcore_response_error] on failure with a
 populated `ErrorCode` field. Many of these errors are recoverable.
-The [bloberror][blob_error] package provides the possible Storage error codes
+The [queueerror][queue_error] package provides the possible Storage error codes
 along with various helper facilities for error handling.
 
 ```go
 const (
 	connectionString = "<connection_string>"
-	containerName    = "sample-container"
+	queueName    = "samplequeue"
 )
 
 // create a client with the provided connection string
-client, err := azblob.NewClientFromConnectionString(connectionString, nil)
+client, err := azqueue.NewServiceClientFromConnectionString(connectionString, nil)
 // TODO: handle error
 
-// try to delete the container, avoiding any potential race conditions with an in-progress or completed deletion
-_, err = client.DeleteContainer(context.TODO(), containerName, nil)
+// try to delete the queue, avoiding any potential race conditions with an in-progress or completed deletion
+_, err = client.DeleteQueue(context.TODO(), queueName, nil)
 
-if bloberror.HasCode(err, bloberror.ContainerBeingDeleted, bloberror.ContainerNotFound) {
-	// ignore any errors if the container is being deleted or already has been deleted
+if queueerror.HasCode(err, queueerror.QueueBeingDeleted, queueerror.QueueNotFound) {
+	// ignore any errors if the queue is being deleted or already has been deleted
 } else if err != nil {
 	// TODO: some other error
 }
@@ -187,28 +197,7 @@ if bloberror.HasCode(err, bloberror.ContainerBeingDeleted, bloberror.ContainerNo
 
 ## Next steps
 
-Get started with our [Blob samples][samples].  They contain complete examples of the above snippets and more.
-
-### Specialized clients
-
-The Azure Blob Storage SDK for Go also provides specialized clients in various subpackages.
-Use these clients when you need to interact with a specific kind of blob.
-Learn more about the various types of blobs from the following links.
-
-- [appendblob][append_blob] - [REST docs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-append-blobs)
-- [blockblob][block_blob] - [REST docs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-block-blobs)
-- [pageblob][page_blob] - [REST docs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-page-blobs)
-
-The [blob][blob] package contains APIs common to all blob types.  This includes APIs for deleting and undeleting a blob, setting metadata, and more.
-
-The [lease][lease] package contains clients for managing leases on blobs and containers.  Please see the [reference docs](https://docs.microsoft.com/rest/api/storageservices/lease-blob#remarks) for general information on leases.
-
-The [container][container] package contains APIs specific to containers.  This includes APIs setting access policies or properties, and more.
-
-The [service][service] package contains APIs specific to blob service.  This includes APIs for manipulating containers, retrieving account information, and more.
-
-The [sas][sas] package contains utilities to aid in the creation and manipulation of Shared Access Signature tokens.
-See the package's documentation for more information.
+Get started with our [Queue samples][samples].  They contain complete examples of the above snippets and more.
 
 ## Contributing
 
@@ -228,10 +217,9 @@ additional questions or comments.
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fstorage%2Fazblob%2FREADME.png)
 
 <!-- LINKS -->
-[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob
-[docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
-[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue
+[docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue
+[rest_docs]: https://learn.microsoft.com/en-us/rest/api/storageservices/queue-service-rest-api
 [godevdl]: https://go.dev/dl/
 [goget]: https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
 [storage_account_docs]: https://docs.microsoft.com/azure/storage/common/storage-account-overview
@@ -243,16 +231,11 @@ additional questions or comments.
 [azidentity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [storage_ad]: https://docs.microsoft.com/azure/storage/common/storage-auth-aad
 [azcore_response_error]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#ResponseError
-[samples]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/storage/azblob/examples_test.go
-[append_blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/appendblob/client.go
-[blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/blob/client.go
-[blob_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/bloberror/error_codes.go
-[block_blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/blockblob/client.go
-[container]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/container/client.go
-[lease]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/lease
-[page_blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/pageblob/client.go
-[sas]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/sas
-[service]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/service/client.go
+[samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/samples_test.go
+[queue_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/queueerror/error_codes.go
+[queue]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/queue_client.go
+[sas]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/sas
+[service]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/service_client.go
 [storage_contrib]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

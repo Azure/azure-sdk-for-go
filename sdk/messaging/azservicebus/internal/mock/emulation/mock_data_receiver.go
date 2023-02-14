@@ -16,12 +16,19 @@ import (
 
 type MockReceiver struct {
 	*mock.MockAMQPReceiverCloser
-	Opts            *amqp.ReceiverOptions
-	Session         *MockSession
-	Source          string
-	Status          *Status
-	TargetAddress   string
+	Opts          *amqp.ReceiverOptions
+	Session       *MockSession
+	Source        string
+	Status        *Status
+	TargetAddress string
+
+	// InternalReceive will receive from our default mock. Useful if you want to
+	// change the default EXPECT() for AMQPReceiver.Receive().
 	InternalReceive func(ctx context.Context) (*amqp.Message, error)
+
+	// InternalIssueCredit will issue credit for our default mock. Useful if you
+	// want to change the default EXPECT() for AMQPReceiver.IssueCredit().
+	InternalIssueCredit func(credit uint32) error
 }
 
 func (rcvr *MockReceiver) Done() <-chan error {
@@ -69,6 +76,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		Source:                 source,
 		Status:                 NewStatus(sess.Status),
 		TargetAddress:          opts.TargetAddress,
+		Opts:                   opts,
 	}
 
 	id := fmt.Sprintf("%s|%s|%s|e:%s", sess.Conn.Name(), sess.ID, md.nextUniqueName("r"), source)
@@ -92,6 +100,11 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 
 		credits--
 		return m, nil
+	}
+
+	rcvr.InternalIssueCredit = func(credit uint32) error {
+		credits += credit
+		return q.IssueCredit(credit, rcvr.LinkEvent(), rcvr.Status)
 	}
 
 	if err := md.options.PreReceiverMock(rcvr, ctx); err != nil {
@@ -149,10 +162,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 	rcvr.EXPECT().Prefetched().Return((*amqp.Message)(nil)).AnyTimes()
 
 	if opts.ManualCredits {
-		rcvr.EXPECT().IssueCredit(gomock.Any()).DoAndReturn(func(credit uint32) error {
-			credits += credit
-			return q.IssueCredit(credit, rcvr.LinkEvent(), rcvr.Status)
-		}).AnyTimes()
+		rcvr.EXPECT().IssueCredit(gomock.Any()).DoAndReturn(rcvr.InternalIssueCredit).AnyTimes()
 	} else {
 		// assume unlimited credits for this receiver - the AMQP stack is going to take care of replenishing credits.
 		_ = q.IssueCredit(math.MaxUint32, rcvr.LinkEvent(), rcvr.Status)

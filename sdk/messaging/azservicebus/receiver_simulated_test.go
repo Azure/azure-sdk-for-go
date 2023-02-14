@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
@@ -551,6 +552,102 @@ func TestReceiver_ReceiveMessages_MessageReleaser(t *testing.T) {
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"message available again after being released by releaser"}, getSortedBodies(messages))
+}
+
+func TestReceiver_ReceiveMessages_CreditValidation(t *testing.T) {
+	_, client, cleanup := newClientWithMockedConn(t, nil, nil)
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.NoError(t, err)
+	require.NotNil(t, receiver)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 5001, nil)
+	require.EqualError(t, err, "maxMessages cannot exceed 5000")
+	require.Empty(t, messages)
+
+	messages, err = receiver.ReceiveMessages(context.Background(), -1, nil)
+	require.EqualError(t, err, "maxMessages should be greater than 0")
+	require.Empty(t, messages)
+
+	messages, err = receiver.ReceiveMessages(context.Background(), 0, nil)
+	require.EqualError(t, err, "maxMessages should be greater than 0")
+	require.Empty(t, messages)
+}
+
+func TestReceiver_CreditsDontExceedMax(t *testing.T) {
+	type keyType string
+
+	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+			if mr.Source == "queue" {
+				// first actual request, 5000 fresh credits.
+				mr.EXPECT().IssueCredit(uint32(5000)).DoAndReturn(mr.InternalIssueCredit)
+
+				// we're going to eat up one credit with a Receive() call and then
+				// issue 5000 again, and should only need to issue 1 new credit.
+				mr.EXPECT().IssueCredit(uint32(1)).DoAndReturn(mr.InternalIssueCredit)
+
+				mr.EXPECT().Receive(mock.NewContextWithValueMatcher(keyType("FromReceive"), true)).DoAndReturn(mr.InternalReceive).AnyTimes()
+
+				mr.EXPECT().Receive(gomock.Any()).DoAndReturn(func(ctx context.Context) (*amqp.Message, error) {
+					// interaction with the releaser just makes this test harder to make predictable and doesn't
+					// add or change anything.
+					azlog.Writef(azlog.Event("testing"), "===> Releaser asking for message, blocking on cancel.")
+					<-ctx.Done()
+					return nil, ctx.Err()
+				}).AnyTimes()
+
+				require.Equal(t, defaultLinkRxBuffer, mr.Opts.Credit)
+			}
+
+			return nil
+		},
+	}, nil)
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue("queue", nil)
+	require.NoError(t, err)
+	require.NotNil(t, receiver)
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+
+	baseReceiveCtx := context.WithValue(context.Background(), keyType("FromReceive"), true)
+
+	ctx, cancel := context.WithTimeout(baseReceiveCtx, time.Second)
+	defer cancel()
+
+	messages, err := receiver.ReceiveMessages(ctx, 5000, nil)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Empty(t, messages)
+
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello world")}, nil)
+	require.NoError(t, err)
+
+	logsFn := test.CaptureLogsForTest()
+
+	// no issue credit needed - we've still got the 5000 from last time since we didn't
+	// receive any messages.
+	messages, err = receiver.ReceiveMessages(baseReceiveCtx, 5000, nil)
+	require.NoError(t, err)
+	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
+	require.Contains(t, logsFn(), "[azsb.Receiver] No additional credits needed, still have 5000 credits active")
+
+	ctx, cancel = context.WithTimeout(baseReceiveCtx, time.Second)
+	defer cancel()
+
+	logsFn = test.CaptureLogsForTest()
+
+	// we ate a credit last time since we received a single message, so this time we'll still
+	// need to issue some more to backfill.
+	messages, err = receiver.ReceiveMessages(ctx, 5000, nil)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Empty(t, messages)
+	require.Contains(t, logsFn(), "[azsb.Receiver] Only need to issue 1 additional credits")
+
+	require.Equal(t, 1, len(md.Events.GetOpenConns()))
+	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")
 }
 
 func TestSessionReceiver_ConnectionDeadForAccept(t *testing.T) {

@@ -661,12 +661,12 @@ func (s *UnrecordedTestSuite) TestAccountSASDequeueMessage() {
 	for i := 0; i < 4; i++ {
 		resp, err := queueClient.DequeueMessage(context.Background(), nil)
 		_require.Nil(err)
-		_require.Equal(1, len(resp.QueueMessagesList))
-		_require.NotNil(resp.QueueMessagesList[0].MessageID)
+		_require.Equal(1, len(resp.Messages))
+		_require.NotNil(resp.Messages[0].MessageID)
 	}
 	// should be 0 now
 	resp, err := queueClient.DequeueMessage(context.Background(), nil)
-	_require.Equal(0, len(resp.QueueMessagesList))
+	_require.Equal(0, len(resp.Messages))
 	_require.Nil(err)
 	_, err = svcClient.DeleteQueue(context.Background(), queueName, nil)
 	_require.Nil(err)

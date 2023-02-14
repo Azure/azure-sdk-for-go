@@ -80,6 +80,9 @@ type Queue = generated.Queue
 // AccessPolicy - An Access policy
 type AccessPolicy = generated.AccessPolicy
 
+// GeoReplicationStatus - The status of the secondary location
+type GeoReplicationStatus = generated.GeoReplicationStatus
+
 // AccessPolicyPermission type simplifies creating the permissions string for a queue's access policy.
 // Initialize an instance of this type and then call its String method to set AccessPolicy's Permission field.
 type AccessPolicyPermission = exported.AccessPolicyPermission

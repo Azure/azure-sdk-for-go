@@ -158,10 +158,10 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }
@@ -421,10 +421,10 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		result.FilePermissionKey = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }
@@ -784,10 +784,10 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }

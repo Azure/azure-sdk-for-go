@@ -26,8 +26,8 @@ const (
 	NoScrubData       NTFSFileAttributes = 131072
 )
 
-// PossibleNtfsFileAttributesValues returns the possible values for the NTFSFileAttributes const type.
-func PossibleNtfsFileAttributesValues() []NTFSFileAttributes {
+// PossibleNTFSFileAttributesValues returns the possible values for the NTFSFileAttributes const type.
+func PossibleNTFSFileAttributesValues() []NTFSFileAttributes {
 	return []NTFSFileAttributes{
 		Readonly,
 		Hidden,

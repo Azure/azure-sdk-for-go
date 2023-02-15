@@ -490,10 +490,10 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }
@@ -737,10 +737,10 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 		result.FilePermissionKey = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
 		result.LeaseDuration = (*LeaseDurationType)(&val)
@@ -1005,10 +1005,10 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.FilePermissionKey = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
 		result.LeaseDuration = (*LeaseDurationType)(&val)
@@ -1394,10 +1394,10 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }

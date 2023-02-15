@@ -181,6 +181,9 @@ directive:
     from: FileItem
     to: File
 - rename-model:
+    from: HandleItem
+    to: Handle
+- rename-model:
     from: ShareItemInternal
     to: Share
 - rename-model:
@@ -188,7 +191,7 @@ directive:
     to: ShareProperties
 ```
 
-### Remove `Items` suffix
+### Remove `Items` and `List` suffix
 
 ``` yaml
 directive:
@@ -198,21 +201,33 @@ directive:
       return $.
         replace(/DirectoryItems/g, "Directories").
         replace(/FileItems/g, "Files").
-        replace(/ShareItems/g, "Shares");
+        replace(/ShareItems/g, "Shares").
+        replace(/HandleList/g, "Handles");
 ```
 
-### Rename `FileID` to `ID` in `Directory` and `File` models
+### Rename `FileID` to `ID` (except for Handle object)
 
 ``` yaml
 directive:
-- from: zz_models.go
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.Directory.properties.FileId["x-ms-client-name"] = "ID";
+    $.File.properties.FileId["x-ms-client-name"] = "ID";
+    $.Handle.properties.HandleId["x-ms-client-name"] = "ID";
+
+- from:
+  - zz_directory_client.go
+  - zz_file_client.go
+  - zz_response_types.go
   where: $
   transform: >-
     return $.
-      replace (/Attributes\s+\*string\s+\`xml\:\"Attributes\"\`\s*\n\s*FileID\s+\*string\s+\`xml\:\"FileId\"\`/g, `Attributes *string \`xml:"Attributes"\`\n\tID *string \`xml:"FileId"\``);
+      replace(/FileID/g, `ID`);
 ```
 
-### Change CORS acronym to be all caps
+
+### Change CORS acronym to be all caps and rename `FileParentID` to `ParentID`
 
 ``` yaml
 directive:
@@ -220,7 +235,8 @@ directive:
     where: $
     transform: >-
       return $.
-        replace(/Cors/g, "CORS");
+        replace(/Cors/g, "CORS").
+        replace(/FileParentID/g, "ParentID");
 ```
 
 ### Change cors xml to be correct

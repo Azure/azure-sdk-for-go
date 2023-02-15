@@ -32,14 +32,14 @@ type DirectoryClientCreateResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// FileID contains the information returned from the x-ms-file-id header response.
-	FileID *string
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
-	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
-	FileParentID *string
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
@@ -107,14 +107,14 @@ type DirectoryClientGetPropertiesResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// FileID contains the information returned from the x-ms-file-id header response.
-	FileID *string
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
-	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
-	FileParentID *string
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
@@ -202,14 +202,14 @@ type DirectoryClientSetPropertiesResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// FileID contains the information returned from the x-ms-file-id header response.
-	FileID *string
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
-	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
-	FileParentID *string
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
@@ -328,14 +328,14 @@ type FileClientCreateResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// FileID contains the information returned from the x-ms-file-id header response.
-	FileID *string
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
-	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
-	FileParentID *string
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
@@ -433,14 +433,14 @@ type FileClientDownloadResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// FileID contains the information returned from the x-ms-file-id header response.
-	FileID *string
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
-	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
-	FileParentID *string
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
@@ -547,14 +547,14 @@ type FileClientGetPropertiesResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// FileID contains the information returned from the x-ms-file-id header response.
-	FileID *string
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
-	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
-	FileParentID *string
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string
@@ -663,14 +663,14 @@ type FileClientSetHTTPHeadersResponse struct {
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
 	FileCreationTime *time.Time
 
-	// FileID contains the information returned from the x-ms-file-id header response.
-	FileID *string
+	// ID contains the information returned from the x-ms-file-id header response.
+	ID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
 	FileLastWriteTime *time.Time
 
-	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
-	FileParentID *string
+	// ParentID contains the information returned from the x-ms-file-parent-id header response.
+	ParentID *string
 
 	// FilePermissionKey contains the information returned from the x-ms-file-permission-key header response.
 	FilePermissionKey *string

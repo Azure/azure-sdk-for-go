@@ -444,8 +444,8 @@ type FilesAndDirectoriesListSegment struct {
 	Files []*File `xml:"File"`
 }
 
-// HandleItem - A listed Azure Storage handle item.
-type HandleItem struct {
+// Handle - A listed Azure Storage handle item.
+type Handle struct {
 	// REQUIRED; Client IP that opened the handle
 	ClientIP *string `xml:"ClientIp"`
 
@@ -453,7 +453,7 @@ type HandleItem struct {
 	FileID *string `xml:"FileId"`
 
 	// REQUIRED; XSMB service handle ID
-	HandleID *string `xml:"HandleId"`
+	ID *string `xml:"HandleId"`
 
 	// REQUIRED; Time when the session that previously opened the handle has last been reconnected. (UTC)
 	OpenTime *time.Time `xml:"OpenTime"`
@@ -505,8 +505,8 @@ type ListFilesAndDirectoriesSegmentResponse struct {
 // ListHandlesResponse - An enumeration of handles.
 type ListHandlesResponse struct {
 	// REQUIRED
-	NextMarker *string       `xml:"NextMarker"`
-	HandleList []*HandleItem `xml:"Entries>Handle"`
+	NextMarker *string   `xml:"NextMarker"`
+	Handles    []*Handle `xml:"Entries>Handle"`
 }
 
 // ListSharesResponse - An enumeration of shares.

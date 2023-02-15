@@ -13,14 +13,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
-
-// UserDelegationCredential contains an account's name and its user delegation key.
-type UserDelegationCredential = exported.UserDelegationCredential
 
 // AccountSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
@@ -50,12 +47,12 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 	}
 	v.Permissions = perms.String()
 
-	startTime, expiryTime, _ := formatTimesForSigning(v.StartTime, v.ExpiryTime, time.Time{})
+	startTime, expiryTime := formatTimesForSigning(v.StartTime, v.ExpiryTime)
 
 	stringToSign := strings.Join([]string{
 		sharedKeyCredential.AccountName(),
 		v.Permissions,
-		"b", // blob service
+		"q",
 		v.ResourceTypes,
 		startTime,
 		expiryTime,
@@ -79,7 +76,7 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 		ipRange:     v.IPRange,
 
 		// Account-specific SAS parameters
-		services:      "b", // will always be "b"
+		services:      "q",
 		resourceTypes: v.ResourceTypes,
 
 		// Calculated SAS signature
@@ -90,13 +87,13 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 }
 
 // AccountPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignature value's Permissions field.
+// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues' Permissions field.
 type AccountPermissions struct {
-	Read, Write, Delete, DeletePreviousVersion, PermanentDelete, List, Add, Create, Update, Process, FilterByTags, Tag, SetImmutabilityPolicy bool
+	Read, Write, Delete, DeletePreviousVersion, PermanentDelete, List, Add, Create, Update, Process, Tag, FilterByTags, SetImmutabilityPolicy bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
-// Call this method to set AccountSASSignatureValues' Permissions field.
+// Call this method to set AccountSASSignatureValues's Permissions field.
 func (p *AccountPermissions) String() string {
 	var buffer bytes.Buffer
 	if p.Read {
@@ -129,11 +126,11 @@ func (p *AccountPermissions) String() string {
 	if p.Process {
 		buffer.WriteRune('p')
 	}
-	if p.FilterByTags {
-		buffer.WriteRune('f')
-	}
 	if p.Tag {
 		buffer.WriteRune('t')
+	}
+	if p.FilterByTags {
+		buffer.WriteRune('f')
 	}
 	if p.SetImmutabilityPolicy {
 		buffer.WriteRune('i')

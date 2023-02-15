@@ -4,7 +4,6 @@
 ### Breaking Changes
 
 - Operation `*CachesClient.Update` has been changed to LRO, use `*CachesClient.BeginUpdate` instead.
-- Struct `CloudError` has been removed
 
 ### Features Added
 

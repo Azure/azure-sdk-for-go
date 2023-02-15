@@ -79,6 +79,28 @@ func TestLROFilter(t *testing.T) {
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
+func TestPageableFilter(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/page")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/page")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	common.FilterChangelog(changelog, common.FuncFilter, common.PageableFilter)
+
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.GetLog` has supported pagination, use `*Client.NewGetLogPager` instead.\n- Operation `*Client.NewListPager` does not support pagination anymore, use `*Client.List` instead.\n")
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}
+
 func TestInterfaceToAnyFilter(t *testing.T) {
 	oldExport, err := exports.Get("./testdata/old/interfacetoany")
 	if err != nil {

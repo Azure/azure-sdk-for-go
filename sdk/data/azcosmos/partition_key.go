@@ -14,7 +14,7 @@ type PartitionKey struct {
 	values []interface{}
 }
 
-var NullParitionKey PartitionKey = PartitionKey{
+var NullPartitionKey PartitionKey = PartitionKey{
 	values: []interface{}{nil},
 }
 

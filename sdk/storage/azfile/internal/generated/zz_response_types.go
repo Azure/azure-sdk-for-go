@@ -786,7 +786,7 @@ type FileClientUploadRangeResponse struct {
 
 // ServiceClientGetPropertiesResponse contains the response from method ServiceClient.GetProperties.
 type ServiceClientGetPropertiesResponse struct {
-	ShareServiceProperties
+	StorageServiceProperties
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
 

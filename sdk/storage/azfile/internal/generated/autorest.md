@@ -74,35 +74,6 @@ directive:
     }
 ```
 
-### ShareServiceProperties, ShareMetrics, ShareCORSRule, and ShareRetentionPolicy
-
-``` yaml
-directive:
-- rename-model:
-    from: Metrics
-    to: ShareMetrics
-- rename-model:
-    from: CorsRule
-    to: ShareCORSRule
-- rename-model:
-    from: RetentionPolicy
-    to: ShareRetentionPolicy
-- rename-model:
-    from: StorageServiceProperties
-    to: ShareServiceProperties
-    
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    $.ShareMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
-    $.ShareServiceProperties.xml = {"name": "StorageServiceProperties"};
-    $.ShareCORSRule.xml = {"name": "CorsRule"};
-- from: swagger-document
-  where: $.parameters
-  transform: >
-    $.StorageServiceProperties.name = "ShareServiceProperties";
-```
-
 ### Rename FileHttpHeaders to ShareFileHTTPHeaders and remove file prefix from properties
 
 ``` yaml
@@ -153,6 +124,18 @@ directive:
       replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`);
 ```
 
+### Rename models - remove `Share` prefix
+
+``` yaml
+directive:
+- rename-model:
+    from: ShareProtocolSettings
+    to: ProtocolSettings
+- rename-model:
+    from: ShareSmbSettings
+    to: SMBSettings
+```
+
 ### Capitalise SMB field
 
 ``` yaml
@@ -163,7 +146,6 @@ directive:
   where: $
   transform: >-
     return $.
-      replace(/ShareSmbSettings/g, `ShareSMBSettings`).
       replace(/SmbMultichannel/g, `SMBMultichannel`).
       replace(/copyFileSmbInfo/g, `copyFileSMBInfo`).
       replace(/CopyFileSmbInfo/g, `CopyFileSMBInfo`).

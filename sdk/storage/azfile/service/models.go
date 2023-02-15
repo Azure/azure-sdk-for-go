@@ -40,38 +40,38 @@ func (o *GetPropertiesOptions) format() *generated.ServiceClientGetPropertiesOpt
 // SetPropertiesOptions provides set of options for Client.SetProperties
 type SetPropertiesOptions struct {
 	// The set of CORS rules.
-	CORS []*ShareCORSRule
+	CORS []*CORSRule
 
 	// A summary of request statistics grouped by API in hourly aggregates for files.
-	HourMetrics *ShareMetrics
+	HourMetrics *Metrics
 
 	// A summary of request statistics grouped by API in minute aggregates for files.
-	MinuteMetrics *ShareMetrics
+	MinuteMetrics *Metrics
 
 	// Protocol settings
-	Protocol *ShareProtocolSettings `xml:"ProtocolSettings"`
+	Protocol *ProtocolSettings
 }
 
-// ShareServiceProperties - Storage service properties.
-type ShareServiceProperties = generated.ShareServiceProperties
+// StorageServiceProperties - Storage service properties.
+type StorageServiceProperties = generated.StorageServiceProperties
 
-// ShareCORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in
+// CORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in
 // another domain. Web browsers implement a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
 // domain) to call APIs in another domain.
-type ShareCORSRule = generated.ShareCORSRule
+type CORSRule = generated.CORSRule
 
-// ShareMetrics - Storage Analytics metrics for file service.
-type ShareMetrics = generated.ShareMetrics
+// Metrics - Storage Analytics metrics for file service.
+type Metrics = generated.Metrics
 
-// ShareRetentionPolicy - The retention policy.
-type ShareRetentionPolicy = generated.ShareRetentionPolicy
+// RetentionPolicy - The retention policy.
+type RetentionPolicy = generated.RetentionPolicy
 
-// ShareProtocolSettings - Protocol settings
-type ShareProtocolSettings = generated.ShareProtocolSettings
+// ProtocolSettings - Protocol settings
+type ProtocolSettings = generated.ProtocolSettings
 
-// ShareSMBSettings - Settings for SMB protocol.
-type ShareSMBSettings = generated.ShareSMBSettings
+// SMBSettings - Settings for SMB protocol.
+type SMBSettings = generated.SMBSettings
 
 // SMBMultichannel - Settings for SMB multichannel
 type SMBMultichannel = generated.SMBMultichannel

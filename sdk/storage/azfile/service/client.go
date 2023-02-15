@@ -11,7 +11,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 )
 
@@ -28,7 +30,12 @@ type Client base.Client[generated.ServiceClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	conOptions := shared.GetClientOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -36,7 +43,10 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 //   - serviceURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/?<sas token>
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	conOptions := shared.GetClientOptions(options)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -44,14 +54,32 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	authPolicy := exported.NewSharedKeyCredPolicy(cred)
+	conOptions := shared.GetClientOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewServiceClient(serviceURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - options - client options; pass nil to accept the default values
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	parsed, err := shared.ParseConnectionString(connectionString)
+	if err != nil {
+		return nil, err
+	}
+
+	if parsed.AccountKey != "" && parsed.AccountName != "" {
+		credential, err := exported.NewSharedKeyCredential(parsed.AccountName, parsed.AccountKey)
+		if err != nil {
+			return nil, err
+		}
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
+	}
+
+	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
 func (s *Client) generated() *generated.ServiceClient {
@@ -64,13 +92,14 @@ func (s *Client) sharedKey() *SharedKeyCredential {
 
 // URL returns the URL endpoint used by the Client object.
 func (s *Client) URL() string {
-	return "s.generated().Endpoint()"
+	return s.generated().Endpoint()
 }
 
 // NewShareClient creates a new share.Client object by concatenating shareName to the end of this Client's URL.
 // The new share.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewShareClient(shareName string) *share.Client {
-	return nil
+	shareURL := runtime.JoinPaths(s.generated().Endpoint(), shareName)
+	return (*share.Client)(base.NewShareClient(shareURL, s.generated().Pipeline(), s.sharedKey()))
 }
 
 // CreateShare is a lifecycle method to creates a new share under the specified account.

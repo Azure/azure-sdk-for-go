@@ -124,12 +124,12 @@ func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOpti
 	return DownloadStreamResponse{}, nil
 }
 
-// DownloadBuffer downloads an Azure blob to a buffer with parallel.
+// DownloadBuffer downloads an Azure file to a buffer with parallel.
 func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
 	return 0, nil
 }
 
-// DownloadFile downloads an Azure blob to a local file.
+// DownloadFile downloads an Azure file to a local file.
 // The file would be truncated if the size doesn't match.
 func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
 	return 0, nil

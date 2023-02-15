@@ -630,7 +630,11 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobFromURL() {
 
 	pbResp, err := destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
 	_require.NotNil(pbResp)
-	_require.Nil(err)
+	_require.NoError(err)
+
+	resp, err := srcBBClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(resp.ETag, pbResp.ETag)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
@@ -686,10 +690,10 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 
 	pbResp, err := destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
 	_require.NotNil(pbResp)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	resp, err = destBBClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	h = blob.ParseHTTPHeaders(resp)
 	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
 	_require.EqualValues(h, testcommon.BasicHeaders)

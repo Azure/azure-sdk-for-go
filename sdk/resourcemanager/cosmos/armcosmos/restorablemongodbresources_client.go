@@ -32,9 +32,9 @@ type RestorableMongodbResourcesClient struct {
 }
 
 // NewRestorableMongodbResourcesClient creates a new instance of RestorableMongodbResourcesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRestorableMongodbResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableMongodbResourcesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,11 +58,12 @@ func NewRestorableMongodbResourcesClient(subscriptionID string, credential azcor
 // NewListPager - Return a list of database and collection combo that exist on the account at the given timestamp and location.
 // This helps in scenarios to validate what resources exist at given timestamp and location.
 // This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission.
-// Generated from API version 2022-08-15-preview
-// location - Cosmos DB region, with spaces between words and each word capitalized.
-// instanceID - The instanceId GUID of a restorable database account.
-// options - RestorableMongodbResourcesClientListOptions contains the optional parameters for the RestorableMongodbResourcesClient.List
-// method.
+//
+// Generated from API version 2022-11-15
+//   - location - Cosmos DB region, with spaces between words and each word capitalized.
+//   - instanceID - The instanceId GUID of a restorable database account.
+//   - options - RestorableMongodbResourcesClientListOptions contains the optional parameters for the RestorableMongodbResourcesClient.NewListPager
+//     method.
 func (client *RestorableMongodbResourcesClient) NewListPager(location string, instanceID string, options *RestorableMongodbResourcesClientListOptions) *runtime.Pager[RestorableMongodbResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RestorableMongodbResourcesClientListResponse]{
 		More: func(page RestorableMongodbResourcesClientListResponse) bool {
@@ -105,7 +106,7 @@ func (client *RestorableMongodbResourcesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	if options != nil && options.RestoreLocation != nil {
 		reqQP.Set("restoreLocation", *options.RestoreLocation)
 	}

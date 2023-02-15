@@ -32,9 +32,9 @@ type RestorableGremlinDatabasesClient struct {
 }
 
 // NewRestorableGremlinDatabasesClient creates a new instance of RestorableGremlinDatabasesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRestorableGremlinDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableGremlinDatabasesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,11 +58,12 @@ func NewRestorableGremlinDatabasesClient(subscriptionID string, credential azcor
 // NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin databases under the restorable
 // account. This helps in scenario where database was accidentally deleted to get the deletion
 // time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
-// Generated from API version 2022-08-15-preview
-// location - Cosmos DB region, with spaces between words and each word capitalized.
-// instanceID - The instanceId GUID of a restorable database account.
-// options - RestorableGremlinDatabasesClientListOptions contains the optional parameters for the RestorableGremlinDatabasesClient.List
-// method.
+//
+// Generated from API version 2022-11-15
+//   - location - Cosmos DB region, with spaces between words and each word capitalized.
+//   - instanceID - The instanceId GUID of a restorable database account.
+//   - options - RestorableGremlinDatabasesClientListOptions contains the optional parameters for the RestorableGremlinDatabasesClient.NewListPager
+//     method.
 func (client *RestorableGremlinDatabasesClient) NewListPager(location string, instanceID string, options *RestorableGremlinDatabasesClientListOptions) *runtime.Pager[RestorableGremlinDatabasesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RestorableGremlinDatabasesClientListResponse]{
 		More: func(page RestorableGremlinDatabasesClientListResponse) bool {
@@ -105,7 +106,7 @@ func (client *RestorableGremlinDatabasesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

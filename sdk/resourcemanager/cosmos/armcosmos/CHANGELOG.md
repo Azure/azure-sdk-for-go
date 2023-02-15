@@ -1,10 +1,6 @@
 # Release History
 
-## 3.0.0 (2023-02-24)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-
+## 2.2.0 (2023-02-24)
 ### Features Added
 
 - New type alias `MinimalTLSVersion` with values `MinimalTLSVersionTLS`, `MinimalTLSVersionTls11`, `MinimalTLSVersionTls12`

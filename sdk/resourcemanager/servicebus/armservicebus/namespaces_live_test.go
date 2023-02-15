@@ -38,7 +38,7 @@ func (testsuite *NamespacesTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/servicebus/armservicebus/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.authorizationRuleName = testutil.GenerateAlphaNumericID(testsuite.T(), "sbauthrule", 6)
+	testsuite.authorizationRuleName = testutil.GenerateAlphaNumericID(testsuite.T(), "sbauthrulena", 6)
 	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "sbnamespace", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")

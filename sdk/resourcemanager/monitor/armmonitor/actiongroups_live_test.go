@@ -75,12 +75,6 @@ func (testsuite *ActiongroupsTestSuite) TestActiongroups() {
 				}},
 			Enabled:        to.Ptr(true),
 			GroupShortName: to.Ptr("sample"),
-			SmsReceivers: []*armmonitor.SmsReceiver{
-				{
-					Name:        to.Ptr("John Doe's mobile"),
-					CountryCode: to.Ptr("1"),
-					PhoneNumber: to.Ptr("1234567890"),
-				}},
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

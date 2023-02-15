@@ -66,6 +66,12 @@ func (testsuite *PrivatelinkscopesTestSuite) TestPrivatelinkscope() {
 	testsuite.Require().NoError(err)
 	_, err = privateLinkScopesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.scopeName, armmonitor.AzureMonitorPrivateLinkScope{
 		Location: to.Ptr("Global"),
+		Properties: &armmonitor.AzureMonitorPrivateLinkScopeProperties{
+			AccessModeSettings: &armmonitor.AccessModeSettings{
+				QueryAccessMode:     to.Ptr(armmonitor.AccessModeOpen),
+				IngestionAccessMode: to.Ptr(armmonitor.AccessModePrivateOnly),
+			},
+		},
 	}, nil)
 	testsuite.Require().NoError(err)
 

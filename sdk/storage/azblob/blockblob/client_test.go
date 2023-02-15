@@ -586,6 +586,113 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	_require.Nil(err)
 }
 
+func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobURL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	srcBlob := testcommon.GenerateBlobName(testName)
+	srcBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, srcBlob, containerClient)
+
+	dest := testcommon.GenerateBlobName(testName)
+	destBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, dest, containerClient)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+
+	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(body), nil)
+	_require.Nil(err)
+
+	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	if err != nil {
+		s.T().Fatal("Couldn't fetch credential because " + err.Error())
+	}
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    expiryTime,
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBBClient.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	_, err = destBBClient.PutBlobFromURL(context.Background(), int64(len(content)), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	_require.Nil(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobURLWithHeaders() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	srcBlob := testcommon.GenerateBlobName(testName)
+	srcBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, srcBlob, containerClient)
+
+	dest := testcommon.GenerateBlobName(testName)
+	destBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, dest, containerClient)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+
+	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(body), &blockblob.UploadOptions{
+		HTTPHeaders: &testcommon.BasicHeaders,
+	})
+	_require.Nil(err)
+
+	resp, err := srcBBClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	h := blob.ParseHTTPHeaders(resp)
+	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
+	_require.EqualValues(h, testcommon.BasicHeaders)
+
+	// Get source blob url with SAS for PutBlobFromURL.
+	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	if err != nil {
+		s.T().Fatal("Couldn't fetch credential because " + err.Error())
+	}
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    expiryTime,
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBBClient.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	_, err = destBBClient.PutBlobFromURL(context.Background(), int64(len(content)), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	_require.Nil(err)
+
+	resp, err = destBBClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	h = blob.ParseHTTPHeaders(resp)
+	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
+	_require.EqualValues(h, testcommon.BasicHeaders)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

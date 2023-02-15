@@ -628,7 +628,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobURL() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	_, err = destBBClient.PutBlobFromURL(context.Background(), int64(len(content)), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	_, err = destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
 	_require.Nil(err)
 }
 
@@ -683,7 +683,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobURLWithHeaders() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	_, err = destBBClient.PutBlobFromURL(context.Background(), int64(len(content)), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	_, err = destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
 	_require.Nil(err)
 
 	resp, err = destBBClient.GetProperties(context.Background(), nil)

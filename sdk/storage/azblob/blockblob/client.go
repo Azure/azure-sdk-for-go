@@ -170,9 +170,10 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 // with the content of the new blob. To perform partial updates to a block blob’s contents using a source URL, use the Put
 // Block from URL API in conjunction with Put Block List.
 // For more information, see https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url
-func (bb *Client) PutBlobFromURL(ctx context.Context, contentLength int64, copySource string, options *PutBlobFromURLOptions) (PutBlobFromURLResponse, error) {
+func (bb *Client) PutBlobFromURL(ctx context.Context, copySource string, options *PutBlobFromURLOptions) (PutBlobFromURLResponse, error) {
 	opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions := options.format()
 
+	contentLength := int64(0)
 	resp, err := bb.generated().PutBlobFromURL(ctx, contentLength, copySource, opts, httpHeaders, leaseAccessConditions,
 		cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions)
 

@@ -215,7 +215,7 @@ func TestItemCRUDforNullPartitionKey(t *testing.T) {
 	}
 
 	container, _ := database.NewContainer("aContainer")
-	pk := NewPartitionKeyNull()
+	pk := NullParitionKey
 
 	marshalled, err := json.Marshal(item)
 	if err != nil {

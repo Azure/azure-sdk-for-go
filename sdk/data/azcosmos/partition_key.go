@@ -14,6 +14,10 @@ type PartitionKey struct {
 	values []interface{}
 }
 
+var NullParitionKey PartitionKey = PartitionKey{
+	values: []interface{}{nil},
+}
+
 // NewPartitionKeyString creates a partition key with a string value.
 func NewPartitionKeyString(value string) PartitionKey {
 	components := []interface{}{value}
@@ -33,14 +37,6 @@ func NewPartitionKeyBool(value bool) PartitionKey {
 // NewPartitionKeyNumber creates a partition key with a numeric value.
 func NewPartitionKeyNumber(value float64) PartitionKey {
 	components := []interface{}{value}
-	return PartitionKey{
-		values: components,
-	}
-}
-
-// NewPartitionKeyNull creates a partition key with a null value.
-func NewPartitionKeyNull() PartitionKey {
-	components := []interface{}{nil}
 	return PartitionKey{
 		values: components,
 	}

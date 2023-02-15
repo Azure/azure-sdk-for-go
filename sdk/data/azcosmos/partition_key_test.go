@@ -15,7 +15,7 @@ func TestSerialization(t *testing.T) {
 		"[\"some string\"]": NewPartitionKeyString("some string"),
 		"[true]":            NewPartitionKeyBool(true),
 		"[false]":           NewPartitionKeyBool(false),
-		"[null]":            NewPartitionKeyNull(),
+		"[null]":            NullParitionKey,
 	}
 
 	for expectedSerialization, pk := range validTypes {
@@ -70,8 +70,8 @@ func TestPartitionKeyEquality(t *testing.T) {
 		t.Errorf("Expected %v to equal %v", pk, pk2)
 	}
 
-	pk = NewPartitionKeyNull()
-	pk2 = NewPartitionKeyNull()
+	pk = NullParitionKey
+	pk2 = NullParitionKey
 	if !reflect.DeepEqual(pk, pk2) {
 		t.Errorf("Expected %v to equal %v", pk, pk2)
 	}

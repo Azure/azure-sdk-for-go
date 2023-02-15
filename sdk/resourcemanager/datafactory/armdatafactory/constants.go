@@ -11,7 +11,7 @@ package armdatafactory
 
 const (
 	moduleName    = "armdatafactory"
-	moduleVersion = "v4.0.0"
+	moduleVersion = "v3.1.0"
 )
 
 // AzureFunctionActivityMethod - The list of HTTP methods supported by a AzureFunctionActivity.

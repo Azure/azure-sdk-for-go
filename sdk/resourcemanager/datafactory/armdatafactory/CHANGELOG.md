@@ -1,12 +1,9 @@
 # Release History
 
-## 4.0.0 (2023-02-24)
-### Breaking Changes
-
-- Type of `SynapseSparkJobActivityTypeProperties.NumExecutors` has been changed from `*int32` to `any`
-
+## 3.1.0 (2023-02-24)
 ### Features Added
 
+- Type of `SynapseSparkJobActivityTypeProperties.NumExecutors` has been changed from `*int32` to `any`
 - New type alias `ConfigurationType` with values `ConfigurationTypeArtifact`, `ConfigurationTypeCustomized`, `ConfigurationTypeDefault`
 - New type alias `SparkConfigurationReferenceType` with values `SparkConfigurationReferenceTypeSparkConfigurationReference`
 - New function `*Credential.GetCredential() *Credential`

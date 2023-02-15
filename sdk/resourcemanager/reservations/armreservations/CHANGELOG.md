@@ -3,7 +3,7 @@
 ## 2.0.0 (2023-02-24)
 ### Breaking Changes
 
-- Function `*AzureReservationAPIClient.GetCatalog` has been removed
+- Operation `*AzureReservationAPIClient.GetCatalog` has supported pagination, use `*AzureReservationAPIClient.NewGetCatalogPager` instead.
 - Operation `*ReturnClient.Post` has been changed to LRO, use `*ReturnClient.BeginPost` instead.
 
 ### Features Added
@@ -13,7 +13,6 @@
 - New type alias `BillingPlan` with values `BillingPlanP1M`
 - New type alias `CommitmentGrain` with values `CommitmentGrainHourly`
 - New type alias `SavingsPlanTerm` with values `SavingsPlanTermP1Y`, `SavingsPlanTermP3Y`
-- New function `*AzureReservationAPIClient.NewGetCatalogPager(string, *AzureReservationAPIClientGetCatalogOptions) *runtime.Pager[AzureReservationAPIClientGetCatalogResponse]`
 - New struct `AppliedScopeProperties`
 - New struct `CatalogsResult`
 - New struct `Commitment`

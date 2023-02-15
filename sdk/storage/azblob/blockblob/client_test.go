@@ -586,7 +586,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	_require.Nil(err)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobURL() {
+func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -628,11 +628,12 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobURL() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	_, err = destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	pbResp, err := destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	_require.NotNil(pbResp)
 	_require.Nil(err)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobURLWithHeaders() {
+func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -683,7 +684,8 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobURLWithHeaders() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	_, err = destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	pbResp, err := destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	_require.NotNil(pbResp)
 	_require.Nil(err)
 
 	resp, err = destBBClient.GetProperties(context.Background(), nil)

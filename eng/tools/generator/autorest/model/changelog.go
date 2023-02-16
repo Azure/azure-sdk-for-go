@@ -443,7 +443,7 @@ func typeToAny(b *report.BreakingChanges, flag bool) []string {
 			v := b.Structs[k]
 			for _, f := range sortChangeItem(v.Fields) {
 				d := v.Fields[f]
-				if flag == equalToAny(d.From, d.To) { // flag and equalToAny decided when to pass
+				if flag == (d.To == "any") {
 					line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
 					items = append(items, line)
 				}
@@ -452,29 +452,4 @@ func typeToAny(b *report.BreakingChanges, flag bool) []string {
 	}
 
 	return items
-}
-
-func equalToAny(from, to string) bool {
-	bFrom, aFrom, _ := strings.Cut(from, "]")
-	bTo, aTo, _ := strings.Cut(to, "]")
-
-	// 2D slice
-	if strings.Contains(aFrom, "]") || strings.Contains(aTo, "]") {
-		bFrom, _, _ = strings.Cut(aFrom, "]")
-		bTo, aTo, _ = strings.Cut(aTo, "]")
-	}
-
-	if aTo == "" && bTo == "any" {
-		return true
-	}
-
-	if !strings.Contains(aTo, "any") {
-		return false
-	}
-
-	if bFrom == bTo {
-		return true
-	}
-
-	return false
 }

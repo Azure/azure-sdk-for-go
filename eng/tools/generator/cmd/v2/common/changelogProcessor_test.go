@@ -139,7 +139,6 @@ func TestTypeToAny(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Client.M2` has been changed from `map[int]string` to `map[string]any`\n- Type of `Client.S` has been changed from `int` to `string`\n\n" +
-		"### Features Added\n\n- Type of `Client.M1` has been changed from `map[string]string` to `map[string]any`\n- Type of `Client.S1` has been changed from `*string` to `any`\n- Type of `Client.S2` has been changed from `[]*string` to `[]any`\n- Type of `Client.S3` has been changed from `[][]*string` to `[][]any`\n- Type of `Client.S4` has been changed from `[][]*string` to `[]any`\n")
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Client.M` has been changed from `map[string]string` to `map[string]any`\n\n### Features Added\n\n- Type of `Client.A` has been changed from `*int` to `any`\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }

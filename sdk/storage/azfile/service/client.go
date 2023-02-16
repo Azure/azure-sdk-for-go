@@ -9,12 +9,14 @@ package service
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
+	"net/http"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -142,11 +144,54 @@ func (s *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // SetProperties operation sets properties for a storage account's File service endpoint.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-service-properties.
 func (s *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
-	return SetPropertiesResponse{}, nil
+	svcProperties, o := options.format()
+	resp, err := s.generated().SetProperties(ctx, svcProperties, o)
+	return resp, err
 }
 
 // NewListSharesPager operation returns a pager of the shares under the specified account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-shares
 func (s *Client) NewListSharesPager(options *ListSharesOptions) *runtime.Pager[ListSharesSegmentResponse] {
-	return nil
+	listOptions := generated.ServiceClientListSharesSegmentOptions{}
+	if options != nil {
+		if options.Include.Deleted {
+			listOptions.Include = append(listOptions.Include, ListSharesIncludeTypeDeleted)
+		}
+		if options.Include.Metadata {
+			listOptions.Include = append(listOptions.Include, ListSharesIncludeTypeMetadata)
+		}
+		if options.Include.Snapshots {
+			listOptions.Include = append(listOptions.Include, ListSharesIncludeTypeSnapshots)
+		}
+		listOptions.Marker = options.Marker
+		listOptions.Maxresults = options.MaxResults
+		listOptions.Prefix = options.Prefix
+	}
+
+	return runtime.NewPager(runtime.PagingHandler[ListSharesSegmentResponse]{
+		More: func(page ListSharesSegmentResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListSharesSegmentResponse) (ListSharesSegmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = s.generated().ListSharesSegmentCreateRequest(ctx, &listOptions)
+			} else {
+				listOptions.Marker = page.NextMarker
+				req, err = s.generated().ListSharesSegmentCreateRequest(ctx, &listOptions)
+			}
+			if err != nil {
+				return ListSharesSegmentResponse{}, err
+			}
+			resp, err := s.generated().Pipeline().Do(req)
+			if err != nil {
+				return ListSharesSegmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListSharesSegmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return s.generated().ListSharesSegmentHandleResponse(resp)
+		},
+	})
 }

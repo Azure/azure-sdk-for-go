@@ -231,3 +231,16 @@ directive:
       return $.
         replace(/xml:"CORS>CORSRule"/g, "xml:\"Cors>CorsRule\"");
 ```
+
+### Remove pager methods and export various generated methods in service client
+
+``` yaml
+directive:
+  - from: zz_service_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/func \(client \*ServiceClient\) NewListSharesSegmentPager\(.+\/\/ listSharesSegmentCreateRequest creates the ListSharesSegment request/s, `//\n// listSharesSegmentCreateRequest creates the ListSharesSegment request`).
+        replace(/\(client \*ServiceClient\) listSharesSegmentCreateRequest\(/, `(client *ServiceClient) ListSharesSegmentCreateRequest(`).
+        replace(/\(client \*ServiceClient\) listSharesSegmentHandleResponse\(/, `(client *ServiceClient) ListSharesSegmentHandleResponse(`);
+```

@@ -13,7 +13,8 @@ import (
 )
 
 const (
-	TokenScope = "https://storage.azure.com/.default"
+	TokenScope              = "https://storage.azure.com/.default"
+	StorageAnalyticsVersion = "1.0"
 
 	HeaderAuthorization     = "Authorization"
 	HeaderXmsDate           = "x-ms-date"

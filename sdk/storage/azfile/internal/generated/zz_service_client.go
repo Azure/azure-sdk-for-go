@@ -97,36 +97,9 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // Generated from API version 2020-10-02
 //   - options - ServiceClientListSharesSegmentOptions contains the optional parameters for the ServiceClient.NewListSharesSegmentPager
 //     method.
-func (client *ServiceClient) NewListSharesSegmentPager(options *ServiceClientListSharesSegmentOptions) *runtime.Pager[ServiceClientListSharesSegmentResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ServiceClientListSharesSegmentResponse]{
-		More: func(page ServiceClientListSharesSegmentResponse) bool {
-			return page.NextMarker != nil && len(*page.NextMarker) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ServiceClientListSharesSegmentResponse) (ServiceClientListSharesSegmentResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listSharesSegmentCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
-			}
-			if err != nil {
-				return ServiceClientListSharesSegmentResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return ServiceClientListSharesSegmentResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceClientListSharesSegmentResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listSharesSegmentHandleResponse(resp)
-		},
-	})
-}
-
+//
 // listSharesSegmentCreateRequest creates the ListSharesSegment request.
-func (client *ServiceClient) listSharesSegmentCreateRequest(ctx context.Context, options *ServiceClientListSharesSegmentOptions) (*policy.Request, error) {
+func (client *ServiceClient) ListSharesSegmentCreateRequest(ctx context.Context, options *ServiceClientListSharesSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -155,7 +128,7 @@ func (client *ServiceClient) listSharesSegmentCreateRequest(ctx context.Context,
 }
 
 // listSharesSegmentHandleResponse handles the ListSharesSegment response.
-func (client *ServiceClient) listSharesSegmentHandleResponse(resp *http.Response) (ServiceClientListSharesSegmentResponse, error) {
+func (client *ServiceClient) ListSharesSegmentHandleResponse(resp *http.Response) (ServiceClientListSharesSegmentResponse, error) {
 	result := ServiceClientListSharesSegmentResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val

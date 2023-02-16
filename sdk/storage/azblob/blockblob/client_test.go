@@ -586,7 +586,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	_require.Nil(err)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobFromURL() {
+func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -637,7 +637,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobFromURL() {
 	_require.Equal(resp.ETag, pbResp.ETag)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
+func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

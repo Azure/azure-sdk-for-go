@@ -8,10 +8,35 @@
 package testcommon
 
 import (
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
+	"os"
+	"strings"
 	"testing"
 )
+
+const (
+	SharePrefix = "gos"
+)
+
+func GenerateShareName(testName string) string {
+	return SharePrefix + GenerateEntityName(testName)
+}
+
+func GenerateEntityName(testName string) string {
+	return strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
+}
+
+// GetRequiredEnv gets an environment variable by name and returns an error if it is not found
+func GetRequiredEnv(name string) (string, error) {
+	env, ok := os.LookupEnv(name)
+	if ok {
+		return env, nil
+	} else {
+		return "", errors.New("Required environment variable not set: " + name)
+	}
+}
 
 func BeforeTest(t *testing.T, suite string, test string) {
 	const urlRegex = `https://\S+\.file\.core\.windows\.net`

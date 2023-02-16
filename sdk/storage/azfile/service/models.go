@@ -17,6 +17,12 @@ import (
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
+// storage account's name and either its primary or secondary key.
+func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+	return exported.NewSharedKeyCredential(accountName, accountKey)
+}
+
 // CreateShareOptions contains the optional parameters for the share.Client.Create method.
 type CreateShareOptions = share.CreateOptions
 
@@ -119,7 +125,7 @@ type ListSharesOptions struct {
 	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater
 	// than 5,000, the server will return up to 5,000 items.
 	MaxResults *int32
-	
+
 	// Filters the results to return only entries whose name begins with the specified prefix.
 	Prefix *string
 }

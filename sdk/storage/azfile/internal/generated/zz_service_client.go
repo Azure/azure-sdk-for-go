@@ -85,7 +85,7 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
 	}
-	if err := runtime.UnmarshalAsXML(resp, &result.ShareServiceProperties); err != nil {
+	if err := runtime.UnmarshalAsXML(resp, &result.StorageServiceProperties); err != nil {
 		return ServiceClientGetPropertiesResponse{}, err
 	}
 	return result, nil
@@ -174,10 +174,10 @@ func (client *ServiceClient) listSharesSegmentHandleResponse(resp *http.Response
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-10-02
-//   - shareServiceProperties - The StorageService properties.
+//   - storageServiceProperties - The StorageService properties.
 //   - options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
-func (client *ServiceClient) SetProperties(ctx context.Context, shareServiceProperties ShareServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
-	req, err := client.setPropertiesCreateRequest(ctx, shareServiceProperties, options)
+func (client *ServiceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
+	req, err := client.setPropertiesCreateRequest(ctx, storageServiceProperties, options)
 	if err != nil {
 		return ServiceClientSetPropertiesResponse{}, err
 	}
@@ -192,7 +192,7 @@ func (client *ServiceClient) SetProperties(ctx context.Context, shareServiceProp
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, shareServiceProperties ShareServiceProperties, options *ServiceClientSetPropertiesOptions) (*policy.Request, error) {
+func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -206,7 +206,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sha
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	return req, runtime.MarshalAsXML(req, shareServiceProperties)
+	return req, runtime.MarshalAsXML(req, storageServiceProperties)
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.

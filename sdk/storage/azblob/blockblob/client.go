@@ -173,8 +173,7 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 func (bb *Client) PutBlobFromURL(ctx context.Context, copySource string, options *PutBlobFromURLOptions) (PutBlobFromURLResponse, error) {
 	opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions := options.format()
 
-	contentLength := int64(0)
-	resp, err := bb.generated().PutBlobFromURL(ctx, contentLength, copySource, opts, httpHeaders, leaseAccessConditions,
+	resp, err := bb.generated().PutBlobFromURL(ctx, int64(0), copySource, opts, httpHeaders, leaseAccessConditions,
 		cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions)
 
 	return resp, err

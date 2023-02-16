@@ -122,3 +122,24 @@ func TestInterfaceToAnyFilter(t *testing.T) {
 	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Interface2Any.NewType` has been changed from `interface{}` to `string`\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
+
+func TestTypeToAny(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/toany")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/toany")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Client.M2` has been changed from `map[int]string` to `map[string]any`\n- Type of `Client.S` has been changed from `int` to `string`\n\n" +
+		"### Features Added\n\n- Type of `Client.M1` has been changed from `map[string]string` to `map[string]any`\n- Type of `Client.S1` has been changed from `*string` to `any`\n- Type of `Client.S2` has been changed from `[]*string` to `[]any`\n- Type of `Client.S3` has been changed from `[][]*string` to `[][]any`\n- Type of `Client.S4` has been changed from `[][]*string` to `[]any`\n")
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}

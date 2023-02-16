@@ -94,7 +94,7 @@ func writeChangelogForPackage(r *report.Package) string {
 	}
 
 	// write additional changes
-	toAny := typeToAny(r.BreakingChanges)
+	toAny := typeToAny(r.BreakingChanges, true)
 	additives := getNewContents(r.AdditiveChanges)
 	if len(additives) > 0 || len(toAny) > 0 {
 		md.WriteHeader("Features Added")
@@ -265,17 +265,8 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 		}
 	}
 	// write struct changes
-	if len(b.Structs) > 0 {
-		for _, k := range sortChangeItem(b.Structs) {
-			v := b.Structs[k]
-			for f, d := range v.Fields {
-				if !strings.Contains(d.To, "any") {
-					line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
-					items = append(items, line)
-				}
-			}
-		}
-	}
+	items = append(items, typeToAny(b, false)...)
+
 	// interfaces are skipped, which are identical to some of the functions
 
 	return items
@@ -441,7 +432,7 @@ func removePattern(funcName string, returnValue string) string {
 	return fmt.Sprintf("%s.%s", before, after)
 }
 
-func typeToAny(b *report.BreakingChanges) []string {
+func typeToAny(b *report.BreakingChanges, flag bool) []string {
 	if b.IsEmpty() {
 		return nil
 	}
@@ -450,8 +441,9 @@ func typeToAny(b *report.BreakingChanges) []string {
 	if len(b.Structs) > 0 {
 		for _, k := range sortChangeItem(b.Structs) {
 			v := b.Structs[k]
-			for f, d := range v.Fields {
-				if strings.Contains(d.To, "any") {
+			for _, f := range sortChangeItem(v.Fields) {
+				d := v.Fields[f]
+				if flag == equalToAny(d.From, d.To) { // flag and equalToAny decided when to pass
 					line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
 					items = append(items, line)
 				}
@@ -460,4 +452,29 @@ func typeToAny(b *report.BreakingChanges) []string {
 	}
 
 	return items
+}
+
+func equalToAny(from, to string) bool {
+	bFrom, aFrom, _ := strings.Cut(from, "]")
+	bTo, aTo, _ := strings.Cut(to, "]")
+
+	// 2D slice
+	if strings.Contains(aFrom, "]") || strings.Contains(aTo, "]") {
+		bFrom, _, _ = strings.Cut(aFrom, "]")
+		bTo, aTo, _ = strings.Cut(aTo, "]")
+	}
+
+	if aTo == "" && bTo == "any" {
+		return true
+	}
+
+	if !strings.Contains(aTo, "any") {
+		return false
+	}
+
+	if bFrom == bTo {
+		return true
+	}
+
+	return false
 }

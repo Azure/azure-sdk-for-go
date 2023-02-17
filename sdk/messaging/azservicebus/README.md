@@ -8,7 +8,7 @@ Use the Service Bus client module `github.com/Azure/azure-sdk-for-go/sdk/messagi
 - Receive messages from a Service Bus queue or subscription
 
 Key links:
-[Source code][source] | [API reference documentation][godoc] | [REST API documentation](https://learn.microsoft.com/rest/api/servicebus/) | [Product documentation](https://learn.microsoft.com/azure/service-bus/) | [Examples][godoc_examples]
+[Source code][source] | [API reference documentation][godoc] | [REST API documentation](https://learn.microsoft.com/rest/api/servicebus/) | [Product documentation](https://learn.microsoft.com/azure/service-bus/) | [Samples](https://github.com/Azure-Samples/azure-sdk-for-go-samples)
 
 If you used the pre-release `azure-service-bus-go` module, see the [Migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/migrationguide.md).
 

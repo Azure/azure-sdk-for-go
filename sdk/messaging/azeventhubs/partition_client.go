@@ -61,16 +61,15 @@ type StartPosition struct {
 //
 // This type is instantiated from the [ConsumerClient] type, using [ConsumerClient.NewPartitionClient].
 type PartitionClient struct {
-	retryOptions  RetryOptions
-	eventHub      string
-	consumerGroup string
-	partitionID   string
-	ownerLevel    *int64
-	prefetch      int32
-
+	consumerGroup    string
+	eventHub         string
+	identifier       string
+	links            internal.LinksForPartitionClient[amqpwrap.AMQPReceiverCloser]
 	offsetExpression string
-
-	links internal.LinksForPartitionClient[amqpwrap.AMQPReceiverCloser]
+	ownerLevel       *int64
+	partitionID      string
+	prefetch         int32
+	retryOptions     RetryOptions
 }
 
 // ReceiveEventsOptions contains optional parameters for the ReceiveEvents function
@@ -204,12 +203,15 @@ func (pc *PartitionClient) getEntityPath(partitionID string) string {
 }
 
 func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (internal.AMQPReceiverCloser, error) {
-	var props map[string]interface{}
+	props := map[string]any{
+		// this lets Event Hubs return error messages that identify which Receiver stole ownership (and other things) within
+		// error messages.
+		// Ex: (ownershiplost): link detached, reason: *Error{Condition: amqp:link:stolen, Description: New receiver 'EventHubConsumerClientTestID-Interloper' with higher epoch of '1' is created hence current receiver 'EventHubConsumerClientTestID' with epoch '0' is getting disconnected. If you are recreating the receiver, make sure a higher epoch is used. TrackingId:8031553f0000a5060009a59b63f517a0_G4_B22, SystemTracker:riparkdev:eventhub:tests~10922|$default, Timestamp:2023-02-21T19:12:41, Info: map[]}
+		"com.microsoft:receiver-name": pc.identifier,
+	}
 
 	if pc.ownerLevel != nil {
-		props = map[string]interface{}{
-			"com.microsoft:epoch": *pc.ownerLevel,
-		}
+		props["com.microsoft:epoch"] = *pc.ownerLevel
 	}
 
 	receiverOptions := &amqp.ReceiverOptions{
@@ -217,7 +219,8 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 		Filters: []amqp.LinkFilter{
 			amqp.LinkFilterSelector(pc.offsetExpression),
 		},
-		Properties: props,
+		Properties:    props,
+		TargetAddress: pc.identifier,
 	}
 
 	if pc.prefetch > 0 {
@@ -233,6 +236,14 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 		receiverOptions.ManualCredits = true
 		receiverOptions.Credit = defaultMaxCreditSize
 	}
+
+	log.Writef(EventConsumer, "Creating receiver:\n  source:%s\n  identifier: %s\n  owner level: %d\n  offset: %s\n  manual: %v\n  prefetch: %d",
+		entityPath,
+		pc.identifier,
+		pc.ownerLevel,
+		pc.offsetExpression,
+		receiverOptions.ManualCredits,
+		pc.prefetch)
 
 	receiver, err := session.NewReceiver(ctx, entityPath, receiverOptions)
 
@@ -252,12 +263,11 @@ func (pc *PartitionClient) init(ctx context.Context) error {
 type partitionClientArgs struct {
 	namespace internal.NamespaceForAMQPLinks
 
-	eventHub    string
-	partitionID string
-
 	consumerGroup string
-
-	retryOptions RetryOptions
+	eventHub      string
+	identifier    string
+	partitionID   string
+	retryOptions  RetryOptions
 }
 
 func newPartitionClient(args partitionClientArgs, options *PartitionClientOptions) (*PartitionClient, error) {
@@ -277,13 +287,14 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 	}
 
 	client := &PartitionClient{
-		eventHub:         args.eventHub,
-		partitionID:      args.partitionID,
-		ownerLevel:       options.OwnerLevel,
 		consumerGroup:    args.consumerGroup,
+		eventHub:         args.eventHub,
 		offsetExpression: offsetExpr,
+		ownerLevel:       options.OwnerLevel,
+		partitionID:      args.partitionID,
 		prefetch:         options.Prefetch,
 		retryOptions:     args.retryOptions,
+		identifier:       args.identifier,
 	}
 
 	client.links = internal.NewLinks(args.namespace, fmt.Sprintf("%s/$management", client.eventHub), client.getEntityPath, client.newEventHubConsumerLink)

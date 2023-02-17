@@ -130,73 +130,105 @@ func TestProducerClient_SendToAny(t *testing.T) {
 	//    be placed into the same partition but let the overall distribution of the partition keys
 	//    happen through Event Hubs.
 
-	fn := func(t *testing.T, partitionKey *string) {
-		testParams := test.GetConnectionParamsForTest(t)
+	t.Run("no partition key, no client identifier", func(t *testing.T) {
+		testSendAny(t, struct {
+			identifier   string
+			partitionKey *string
+		}{})
+	})
 
-		producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
-		require.NoError(t, err)
-
-		defer test.RequireClose(t, producer)
-
-		batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
-			PartitionKey: partitionKey,
+	t.Run("no partition key, with client identifier", func(t *testing.T) {
+		testSendAny(t, struct {
+			identifier   string
+			partitionKey *string
+		}{
+			identifier: "client ID",
 		})
-		require.NoError(t, err)
+	})
 
-		err = batch.AddEventData(&azeventhubs.EventData{
-			Body:          []byte("hello world"),
-			ContentType:   to.Ptr("content type"),
-			CorrelationID: "correlation id",
-			MessageID:     to.Ptr("message id"),
-			Properties: map[string]any{
-				"hello": "world",
-			},
-		}, nil)
-		require.NoError(t, err)
+	t.Run("actual partition key, no client identifier", func(t *testing.T) {
+		testSendAny(t, struct {
+			identifier   string
+			partitionKey *string
+		}{
+			partitionKey: to.Ptr("my special partition key"),
+		})
+	})
 
-		partitionsBeforeSend := getAllPartitionProperties(t, producer)
+	t.Run("actual partition key, with client identifier", func(t *testing.T) {
+		testSendAny(t, struct {
+			identifier   string
+			partitionKey *string
+		}{
+			identifier:   "client ID",
+			partitionKey: to.Ptr("my special partition key"),
+		})
+	})
+}
 
-		err = producer.SendEventDataBatch(context.Background(), batch, nil)
-		require.NoError(t, err)
+func testSendAny(t *testing.T, args struct {
+	identifier   string
+	partitionKey *string
+}) {
+	testParams := test.GetConnectionParamsForTest(t)
 
-		consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
-		require.NoError(t, err)
+	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
 
-		defer test.RequireClose(t, consumer)
+	defer test.RequireClose(t, producer)
 
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-		defer cancel()
+	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionKey: args.partitionKey,
+	})
+	require.NoError(t, err)
 
-		receivedEvent := receiveEventFromAnyPartition(ctx, t, consumer, partitionsBeforeSend)
+	err = batch.AddEventData(&azeventhubs.EventData{
+		Body:          []byte("hello world"),
+		ContentType:   to.Ptr("content type"),
+		CorrelationID: "correlation id",
+		MessageID:     to.Ptr("message id"),
+		Properties: map[string]any{
+			"hello": "world",
+		},
+	}, nil)
+	require.NoError(t, err)
 
-		require.Equal(t, azeventhubs.EventData{
-			Body:          []byte("hello world"),
-			ContentType:   to.Ptr("content type"),
-			CorrelationID: "correlation id",
-			MessageID:     to.Ptr("message id"),
-			Properties: map[string]any{
-				"hello": "world",
-			}}, receivedEvent.EventData)
+	partitionsBeforeSend := getAllPartitionProperties(t, producer)
 
-		require.GreaterOrEqual(t, receivedEvent.SequenceNumber, int64(0))
-		require.NotNil(t, receivedEvent.Offset)
-		require.NotZero(t, receivedEvent.EnqueuedTime)
+	err = producer.SendEventDataBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
 
-		if partitionKey == nil {
-			require.Nil(t, receivedEvent.PartitionKey)
-		} else {
-			require.NotNil(t, receivedEvent.PartitionKey)
-			require.Equal(t, *partitionKey, *receivedEvent.PartitionKey)
-		}
+	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		Identifier: args.identifier,
+	})
+	require.NoError(t, err)
+
+	defer test.RequireClose(t, consumer)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer cancel()
+
+	receivedEvent := receiveEventFromAnyPartition(ctx, t, consumer, partitionsBeforeSend)
+
+	require.Equal(t, azeventhubs.EventData{
+		Body:          []byte("hello world"),
+		ContentType:   to.Ptr("content type"),
+		CorrelationID: "correlation id",
+		MessageID:     to.Ptr("message id"),
+		Properties: map[string]any{
+			"hello": "world",
+		}}, receivedEvent.EventData)
+
+	require.GreaterOrEqual(t, receivedEvent.SequenceNumber, int64(0))
+	require.NotNil(t, receivedEvent.Offset)
+	require.NotZero(t, receivedEvent.EnqueuedTime)
+
+	if args.partitionKey == nil {
+		require.Nil(t, receivedEvent.PartitionKey)
+	} else {
+		require.NotNil(t, receivedEvent.PartitionKey)
+		require.Equal(t, *args.partitionKey, *receivedEvent.PartitionKey)
 	}
-
-	t.Run("nil", func(t *testing.T) {
-		fn(t, nil)
-	})
-
-	t.Run("actual partition key", func(t *testing.T) {
-		fn(t, to.Ptr("my special partition key"))
-	})
 }
 
 func TestProducerClient_AMQPAnnotatedMessages(t *testing.T) {

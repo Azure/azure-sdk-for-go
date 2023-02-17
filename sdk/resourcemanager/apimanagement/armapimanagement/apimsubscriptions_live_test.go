@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -65,6 +66,7 @@ func TestApimsubscriptionsTestSuite(t *testing.T) {
 func (testsuite *ApimsubscriptionsTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -87,6 +89,7 @@ func (testsuite *ApimsubscriptionsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step Product_CreateOrUpdate
+	fmt.Println("Call operation: Product_CreateOrUpdate")
 	productClient, err := armapimanagement.NewProductClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	productClientCreateOrUpdateResponse, err := productClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, armapimanagement.ProductContract{
@@ -102,6 +105,7 @@ func (testsuite *ApimsubscriptionsTestSuite) Prepare() {
 func (testsuite *ApimsubscriptionsTestSuite) TestSubscription() {
 	var err error
 	// From step Subscription_CreateOrUpdate
+	fmt.Println("Call operation: Subscription_CreateOrUpdate")
 	subscriptionClient, err := armapimanagement.NewSubscriptionClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = subscriptionClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.sid, armapimanagement.SubscriptionCreateParameters{
@@ -116,10 +120,12 @@ func (testsuite *ApimsubscriptionsTestSuite) TestSubscription() {
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_GetEntityTag
+	fmt.Println("Call operation: Subscription_GetEntityTag")
 	_, err = subscriptionClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.sid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_List
+	fmt.Println("Call operation: Subscription_List")
 	subscriptionClientNewListPager := subscriptionClient.NewListPager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.SubscriptionClientListOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -131,10 +137,12 @@ func (testsuite *ApimsubscriptionsTestSuite) TestSubscription() {
 	}
 
 	// From step Subscription_Get
+	fmt.Println("Call operation: Subscription_Get")
 	_, err = subscriptionClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.sid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_Update
+	fmt.Println("Call operation: Subscription_Update")
 	_, err = subscriptionClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.sid, "*", armapimanagement.SubscriptionUpdateParameters{
 		Properties: &armapimanagement.SubscriptionUpdateParameterProperties{
 			DisplayName: to.Ptr(testsuite.sid),
@@ -145,18 +153,22 @@ func (testsuite *ApimsubscriptionsTestSuite) TestSubscription() {
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_RegeneratePrimaryKey
+	fmt.Println("Call operation: Subscription_RegeneratePrimaryKey")
 	_, err = subscriptionClient.RegeneratePrimaryKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.sid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_RegenerateSecondaryKey
+	fmt.Println("Call operation: Subscription_RegenerateSecondaryKey")
 	_, err = subscriptionClient.RegenerateSecondaryKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.sid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_ListSecrets
+	fmt.Println("Call operation: Subscription_ListSecrets")
 	_, err = subscriptionClient.ListSecrets(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.sid, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_Delete
+	fmt.Println("Call operation: Subscription_Delete")
 	_, err = subscriptionClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.sid, "*", nil)
 	testsuite.Require().NoError(err)
 }
@@ -165,6 +177,7 @@ func (testsuite *ApimsubscriptionsTestSuite) TestSubscription() {
 func (testsuite *ApimsubscriptionsTestSuite) TestApimanagementskus() {
 	var err error
 	// From step ApiManagementSkus_List
+	fmt.Println("Call operation: ApiManagementSkus_List")
 	sKUsClient, err := armapimanagement.NewSKUsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	sKUsClientNewListPager := sKUsClient.NewListPager(nil)
@@ -179,6 +192,7 @@ func (testsuite *ApimsubscriptionsTestSuite) TestApimanagementskus() {
 func (testsuite *ApimsubscriptionsTestSuite) TestTenantsettings() {
 	var err error
 	// From step TenantSettings_ListByService
+	fmt.Println("Call operation: TenantSettings_ListByService")
 	tenantSettingsClient, err := armapimanagement.NewTenantSettingsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	tenantSettingsClientNewListByServicePager := tenantSettingsClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.TenantSettingsClientListByServiceOptions{Filter: nil})
@@ -189,6 +203,7 @@ func (testsuite *ApimsubscriptionsTestSuite) TestTenantsettings() {
 	}
 
 	// From step TenantSettings_Get
+	fmt.Println("Call operation: TenantSettings_Get")
 	_, err = tenantSettingsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.SettingsTypeNamePublic, nil)
 	testsuite.Require().NoError(err)
 }

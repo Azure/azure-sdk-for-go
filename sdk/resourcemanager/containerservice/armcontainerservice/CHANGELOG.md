@@ -1,49 +1,28 @@
 # Release History
 
-## 2.3.0-beta.2 (2022-12-23)
-### Breaking Changes
-
-- Operation `*AgentPoolsClient.AbortLatestOperation` has been changed to LRO, use `*AgentPoolsClient.BeginAbortLatestOperation` instead.
-- Operation `*ManagedClustersClient.AbortLatestOperation` has been changed to LRO, use `*ManagedClustersClient.BeginAbortLatestOperation` instead.
-
+## 2.4.0-beta.1 (2023-01-27)
 ### Features Added
 
-- New value `ManagedClusterPodIdentityProvisioningStateCanceled`, `ManagedClusterPodIdentityProvisioningStateSucceeded` added to type alias `ManagedClusterPodIdentityProvisioningState`
-- New value `PrivateEndpointConnectionProvisioningStateCanceled` added to type alias `PrivateEndpointConnectionProvisioningState`
-- New value `TrustedAccessRoleBindingProvisioningStateCanceled` added to type alias `TrustedAccessRoleBindingProvisioningState`
+- New value `OSSKUMariner` added to type alias `OSSKU`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to type alias `PublicNetworkAccess`
+- New value `SnapshotTypeManagedCluster` added to type alias `SnapshotType`
+- New value `WorkloadRuntimeKataMshvVMIsolation` added to type alias `WorkloadRuntime`
+- New type alias `BackendPoolType` with values `BackendPoolTypeNodeIP`, `BackendPoolTypeNodeIPConfiguration`
+- New type alias `ControlledValues` with values `ControlledValuesRequestsAndLimits`, `ControlledValuesRequestsOnly`
+- New type alias `EbpfDataplane` with values `EbpfDataplaneCilium`
+- New type alias `FleetMemberProvisioningState` with values `FleetMemberProvisioningStateCanceled`, `FleetMemberProvisioningStateFailed`, `FleetMemberProvisioningStateJoining`, `FleetMemberProvisioningStateLeaving`, `FleetMemberProvisioningStateSucceeded`, `FleetMemberProvisioningStateUpdating`
+- New type alias `FleetProvisioningState` with values `FleetProvisioningStateCanceled`, `FleetProvisioningStateCreating`, `FleetProvisioningStateDeleting`, `FleetProvisioningStateFailed`, `FleetProvisioningStateSucceeded`, `FleetProvisioningStateUpdating`
+- New type alias `IpvsScheduler` with values `IpvsSchedulerLeastConnection`, `IpvsSchedulerRoundRobin`
+- New type alias `Level` with values `LevelEnforcement`, `LevelOff`, `LevelWarning`
+- New type alias `Mode` with values `ModeIPTABLES`, `ModeIPVS`
+- New type alias `NetworkPluginMode` with values `NetworkPluginModeOverlay`
 - New type alias `NodeOSUpgradeChannel` with values `NodeOSUpgradeChannelNodeImage`, `NodeOSUpgradeChannelNone`, `NodeOSUpgradeChannelSecurityPatch`, `NodeOSUpgradeChannelUnmanaged`
+- New type alias `Protocol` with values `ProtocolTCP`, `ProtocolUDP`
+- New type alias `RestrictionLevel` with values `RestrictionLevelReadOnly`, `RestrictionLevelUnrestricted`
+- New type alias `TrustedAccessRoleBindingProvisioningState` with values `TrustedAccessRoleBindingProvisioningStateCanceled`, `TrustedAccessRoleBindingProvisioningStateDeleting`, `TrustedAccessRoleBindingProvisioningStateFailed`, `TrustedAccessRoleBindingProvisioningStateSucceeded`, `TrustedAccessRoleBindingProvisioningStateUpdating`
 - New type alias `Type` with values `TypeFirst`, `TypeFourth`, `TypeLast`, `TypeSecond`, `TypeThird`
-- New struct `AbsoluteMonthlySchedule`
-- New struct `DailySchedule`
-- New struct `DateSpan`
-- New struct `MaintenanceWindow`
-- New struct `RelativeMonthlySchedule`
-- New struct `Schedule`
-- New struct `WeeklySchedule`
-- New field `MaintenanceWindow` in struct `MaintenanceConfigurationProperties`
-- New field `NodeOSUpgradeChannel` in struct `ManagedClusterAutoUpgradeProfile`
-- New field `Location` in struct `ManagedClustersClientGetCommandResultResponse`
-
-
-## 2.3.0-beta.1 (2022-11-24)
-### Features Added
-
-- New const `OSSKUMariner`
-- New const `PublicNetworkAccessSecuredByPerimeter`
-- New const `SnapshotTypeManagedCluster`
-- New type alias `BackendPoolType`
-- New type alias `ControlledValues`
-- New type alias `EbpfDataplane`
-- New type alias `FleetMemberProvisioningState`
-- New type alias `FleetProvisioningState`
-- New type alias `IpvsScheduler`
-- New type alias `Level`
-- New type alias `Mode`
-- New type alias `NetworkPluginMode`
-- New type alias `Protocol`
-- New type alias `TrustedAccessRoleBindingProvisioningState`
-- New type alias `UpdateMode`
-- New function `*AgentPoolsClient.AbortLatestOperation(context.Context, string, string, string, *AgentPoolsClientAbortLatestOperationOptions) (AgentPoolsClientAbortLatestOperationResponse, error)`
+- New type alias `UpdateMode` with values `UpdateModeAuto`, `UpdateModeInitial`, `UpdateModeOff`, `UpdateModeRecreate`
+- New function `*AgentPoolsClient.BeginAbortLatestOperation(context.Context, string, string, string, *AgentPoolsClientBeginAbortLatestOperationOptions) (*runtime.Poller[AgentPoolsClientAbortLatestOperationResponse], error)`
 - New function `NewFleetMembersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FleetMembersClient, error)`
 - New function `*FleetMembersClient.BeginCreateOrUpdate(context.Context, string, string, string, FleetMember, *FleetMembersClientBeginCreateOrUpdateOptions) (*runtime.Poller[FleetMembersClientCreateOrUpdateResponse], error)`
 - New function `*FleetMembersClient.BeginDelete(context.Context, string, string, string, *FleetMembersClientBeginDeleteOptions) (*runtime.Poller[FleetMembersClientDeleteResponse], error)`
@@ -64,7 +43,7 @@
 - New function `*ManagedClusterSnapshotsClient.NewListByResourceGroupPager(string, *ManagedClusterSnapshotsClientListByResourceGroupOptions) *runtime.Pager[ManagedClusterSnapshotsClientListByResourceGroupResponse]`
 - New function `*ManagedClusterSnapshotsClient.NewListPager(*ManagedClusterSnapshotsClientListOptions) *runtime.Pager[ManagedClusterSnapshotsClientListResponse]`
 - New function `*ManagedClusterSnapshotsClient.UpdateTags(context.Context, string, string, TagsObject, *ManagedClusterSnapshotsClientUpdateTagsOptions) (ManagedClusterSnapshotsClientUpdateTagsResponse, error)`
-- New function `*ManagedClustersClient.AbortLatestOperation(context.Context, string, string, *ManagedClustersClientAbortLatestOperationOptions) (ManagedClustersClientAbortLatestOperationResponse, error)`
+- New function `*ManagedClustersClient.BeginAbortLatestOperation(context.Context, string, string, *ManagedClustersClientBeginAbortLatestOperationOptions) (*runtime.Poller[ManagedClustersClientAbortLatestOperationResponse], error)`
 - New function `NewTrustedAccessRoleBindingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TrustedAccessRoleBindingsClient, error)`
 - New function `*TrustedAccessRoleBindingsClient.CreateOrUpdate(context.Context, string, string, string, TrustedAccessRoleBinding, *TrustedAccessRoleBindingsClientCreateOrUpdateOptions) (TrustedAccessRoleBindingsClientCreateOrUpdateResponse, error)`
 - New function `*TrustedAccessRoleBindingsClient.Delete(context.Context, string, string, string, *TrustedAccessRoleBindingsClientDeleteOptions) (TrustedAccessRoleBindingsClientDeleteResponse, error)`
@@ -72,8 +51,12 @@
 - New function `*TrustedAccessRoleBindingsClient.NewListPager(string, string, *TrustedAccessRoleBindingsClientListOptions) *runtime.Pager[TrustedAccessRoleBindingsClientListResponse]`
 - New function `NewTrustedAccessRolesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TrustedAccessRolesClient, error)`
 - New function `*TrustedAccessRolesClient.NewListPager(string, *TrustedAccessRolesClientListOptions) *runtime.Pager[TrustedAccessRolesClientListResponse]`
+- New struct `AbsoluteMonthlySchedule`
 - New struct `AgentPoolNetworkProfile`
 - New struct `AgentPoolWindowsProfile`
+- New struct `AgentPoolsClientAbortLatestOperationResponse`
+- New struct `DailySchedule`
+- New struct `DateSpan`
 - New struct `Fleet`
 - New struct `FleetCredentialResult`
 - New struct `FleetCredentialResults`
@@ -95,11 +78,13 @@
 - New struct `FleetsClientListResponse`
 - New struct `GuardrailsProfile`
 - New struct `IPTag`
+- New struct `MaintenanceWindow`
 - New struct `ManagedClusterAzureMonitorProfile`
 - New struct `ManagedClusterAzureMonitorProfileKubeStateMetrics`
 - New struct `ManagedClusterAzureMonitorProfileMetrics`
 - New struct `ManagedClusterIngressProfile`
 - New struct `ManagedClusterIngressProfileWebAppRouting`
+- New struct `ManagedClusterNodeResourceGroupProfile`
 - New struct `ManagedClusterPropertiesForSnapshot`
 - New struct `ManagedClusterSecurityProfileImageCleaner`
 - New struct `ManagedClusterSecurityProfileNodeRestriction`
@@ -110,13 +95,14 @@
 - New struct `ManagedClusterSnapshotsClient`
 - New struct `ManagedClusterSnapshotsClientListByResourceGroupResponse`
 - New struct `ManagedClusterSnapshotsClientListResponse`
-- New struct `ManagedClusterWorkloadAutoScalerProfile`
-- New struct `ManagedClusterWorkloadAutoScalerProfileKeda`
 - New struct `ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler`
+- New struct `ManagedClustersClientAbortLatestOperationResponse`
 - New struct `NetworkProfileForSnapshot`
 - New struct `NetworkProfileKubeProxyConfig`
 - New struct `NetworkProfileKubeProxyConfigIpvsConfig`
 - New struct `PortRange`
+- New struct `RelativeMonthlySchedule`
+- New struct `Schedule`
 - New struct `TrustedAccessRole`
 - New struct `TrustedAccessRoleBinding`
 - New struct `TrustedAccessRoleBindingListResult`
@@ -127,7 +113,9 @@
 - New struct `TrustedAccessRoleRule`
 - New struct `TrustedAccessRolesClient`
 - New struct `TrustedAccessRolesClientListResponse`
+- New struct `WeeklySchedule`
 - New field `IgnorePodDisruptionBudget` in struct `AgentPoolsClientBeginDeleteOptions`
+- New field `MaintenanceWindow` in struct `MaintenanceConfigurationProperties`
 - New field `EnableVnetIntegration` in struct `ManagedClusterAPIServerAccessProfile`
 - New field `SubnetID` in struct `ManagedClusterAPIServerAccessProfile`
 - New field `CapacityReservationGroupID` in struct `ManagedClusterAgentPoolProfile`
@@ -140,6 +128,7 @@
 - New field `MessageOfTheDay` in struct `ManagedClusterAgentPoolProfileProperties`
 - New field `NetworkProfile` in struct `ManagedClusterAgentPoolProfileProperties`
 - New field `WindowsProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `NodeOSUpgradeChannel` in struct `ManagedClusterAutoUpgradeProfile`
 - New field `EffectiveNoProxy` in struct `ManagedClusterHTTPProxyConfig`
 - New field `BackendPoolType` in struct `ManagedClusterLoadBalancerProfile`
 - New field `AzureMonitorProfile` in struct `ManagedClusterProperties`
@@ -147,16 +136,28 @@
 - New field `EnableNamespaceResources` in struct `ManagedClusterProperties`
 - New field `GuardrailsProfile` in struct `ManagedClusterProperties`
 - New field `IngressProfile` in struct `ManagedClusterProperties`
-- New field `WorkloadAutoScalerProfile` in struct `ManagedClusterProperties`
+- New field `NodeResourceGroupProfile` in struct `ManagedClusterProperties`
 - New field `CustomCATrustCertificates` in struct `ManagedClusterSecurityProfile`
 - New field `ImageCleaner` in struct `ManagedClusterSecurityProfile`
 - New field `NodeRestriction` in struct `ManagedClusterSecurityProfile`
 - New field `WorkloadIdentity` in struct `ManagedClusterSecurityProfile`
 - New field `Version` in struct `ManagedClusterStorageProfileDiskCSIDriver`
+- New field `VerticalPodAutoscaler` in struct `ManagedClusterWorkloadAutoScalerProfile`
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
 - New field `EbpfDataplane` in struct `NetworkProfile`
 - New field `KubeProxyConfig` in struct `NetworkProfile`
 - New field `NetworkPluginMode` in struct `NetworkProfile`
+
+
+## 2.3.0 (2023-01-27)
+### Features Added
+
+- New value `ManagedClusterPodIdentityProvisioningStateCanceled`, `ManagedClusterPodIdentityProvisioningStateSucceeded` added to type alias `ManagedClusterPodIdentityProvisioningState`
+- New value `PrivateEndpointConnectionProvisioningStateCanceled` added to type alias `PrivateEndpointConnectionProvisioningState`
+- New struct `ManagedClusterWorkloadAutoScalerProfile`
+- New struct `ManagedClusterWorkloadAutoScalerProfileKeda`
+- New field `WorkloadAutoScalerProfile` in struct `ManagedClusterProperties`
+- New field `Location` in struct `ManagedClustersClientGetCommandResultResponse`
 
 
 ## 2.2.0 (2022-10-26)

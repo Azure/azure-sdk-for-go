@@ -13,6 +13,32 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestParseURLIPStyle(t *testing.T) {
+	urlWithIP := "https://127.0.0.1:5000/fakestorageaccount"
+	blobURLParts, err := ParseURL(urlWithIP)
+	require.NoError(t, err)
+	require.Equal(t, blobURLParts.Scheme, "https")
+	require.Equal(t, blobURLParts.Host, "127.0.0.1:5000")
+	require.Equal(t, blobURLParts.IPEndpointStyleInfo.AccountName, "fakestorageaccount")
+
+	urlWithIP = "https://127.0.0.1:5000/fakestorageaccount/fakecontainer"
+	blobURLParts, err = ParseURL(urlWithIP)
+	require.NoError(t, err)
+	require.Equal(t, blobURLParts.Scheme, "https")
+	require.Equal(t, blobURLParts.Host, "127.0.0.1:5000")
+	require.Equal(t, blobURLParts.IPEndpointStyleInfo.AccountName, "fakestorageaccount")
+	require.Equal(t, blobURLParts.ContainerName, "fakecontainer")
+
+	urlWithIP = "https://127.0.0.1:5000/fakestorageaccount/fakecontainer/fakeblob"
+	blobURLParts, err = ParseURL(urlWithIP)
+	require.NoError(t, err)
+	require.Equal(t, blobURLParts.Scheme, "https")
+	require.Equal(t, blobURLParts.Host, "127.0.0.1:5000")
+	require.Equal(t, blobURLParts.IPEndpointStyleInfo.AccountName, "fakestorageaccount")
+	require.Equal(t, blobURLParts.ContainerName, "fakecontainer")
+	require.Equal(t, blobURLParts.BlobName, "fakeblob")
+}
+
 func TestParseURL(t *testing.T) {
 	testStorageAccount := "fakestorageaccount"
 	host := fmt.Sprintf("%s.blob.core.windows.net", testStorageAccount)
@@ -52,6 +78,4 @@ func TestParseURL(t *testing.T) {
 
 		validateSAS(t, sasStr, blobURLParts.SAS)
 	}
-
-	//urlWithIP := "https://127.0.0.1:5000/"
 }

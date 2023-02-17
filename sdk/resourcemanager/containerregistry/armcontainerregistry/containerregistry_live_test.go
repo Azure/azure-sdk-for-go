@@ -10,6 +10,7 @@ package armcontainerregistry_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -75,6 +76,7 @@ func TestContainerregistryTestSuite(t *testing.T) {
 func (testsuite *ContainerregistryTestSuite) Prepare() {
 	var err error
 	// From step Registries_Create
+	fmt.Println("Call operation: Registries_Create")
 	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	registriesClientCreateResponsePoller, err := registriesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, armcontainerregistry.Registry{
@@ -94,6 +96,7 @@ func (testsuite *ContainerregistryTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step ScopeMaps_Create
+	fmt.Println("Call operation: ScopeMaps_Create")
 	scopeMapsClient, err := armcontainerregistry.NewScopeMapsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scopeMapsClientCreateResponsePoller, err := scopeMapsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.scopeMapName, armcontainerregistry.ScopeMap{
@@ -111,6 +114,7 @@ func (testsuite *ContainerregistryTestSuite) Prepare() {
 	testsuite.scopeMapId = *scopeMapsClientCreateResponse.ID
 
 	// From step Tokens_Create
+	fmt.Println("Call operation: Tokens_Create")
 	tokensClient, err := armcontainerregistry.NewTokensClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	tokensClientCreateResponsePoller, err := tokensClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.tokenName, armcontainerregistry.Token{
@@ -130,6 +134,7 @@ func (testsuite *ContainerregistryTestSuite) Prepare() {
 func (testsuite *ContainerregistryTestSuite) TestContainerregister() {
 	var err error
 	// From step Registries_CheckNameAvailability
+	fmt.Println("Call operation: Registries_CheckNameAvailability")
 	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = registriesClient.CheckNameAvailability(testsuite.ctx, armcontainerregistry.RegistryNameCheckRequest{
@@ -139,6 +144,7 @@ func (testsuite *ContainerregistryTestSuite) TestContainerregister() {
 	testsuite.Require().NoError(err)
 
 	// From step Registries_List
+	fmt.Println("Call operation: Registries_List")
 	registriesClientNewListPager := registriesClient.NewListPager(nil)
 	for registriesClientNewListPager.More() {
 		_, err := registriesClientNewListPager.NextPage(testsuite.ctx)
@@ -147,10 +153,12 @@ func (testsuite *ContainerregistryTestSuite) TestContainerregister() {
 	}
 
 	// From step Registries_Get
+	fmt.Println("Call operation: Registries_Get")
 	_, err = registriesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Registries_ListByResourceGroup
+	fmt.Println("Call operation: Registries_ListByResourceGroup")
 	registriesClientNewListByResourceGroupPager := registriesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for registriesClientNewListByResourceGroupPager.More() {
 		_, err := registriesClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -159,10 +167,12 @@ func (testsuite *ContainerregistryTestSuite) TestContainerregister() {
 	}
 
 	// From step Registries_ListUsages
+	fmt.Println("Call operation: Registries_ListUsages")
 	_, err = registriesClient.ListUsages(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Registries_Update
+	fmt.Println("Call operation: Registries_Update")
 	registriesClientUpdateResponsePoller, err := registriesClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, armcontainerregistry.RegistryUpdateParameters{
 		Properties: &armcontainerregistry.RegistryPropertiesUpdateParameters{
 			AdminUserEnabled: to.Ptr(true),
@@ -179,6 +189,7 @@ func (testsuite *ContainerregistryTestSuite) TestContainerregister() {
 	testsuite.Require().NoError(err)
 
 	// From step Registries_ListPrivateLinkResources
+	fmt.Println("Call operation: Registries_ListPrivateLinkResources")
 	registriesClientNewListPrivateLinkResourcesPager := registriesClient.NewListPrivateLinkResourcesPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for registriesClientNewListPrivateLinkResourcesPager.More() {
 		_, err := registriesClientNewListPrivateLinkResourcesPager.NextPage(testsuite.ctx)
@@ -187,6 +198,7 @@ func (testsuite *ContainerregistryTestSuite) TestContainerregister() {
 	}
 
 	// From step Registries_GetPrivateLinkResource
+	fmt.Println("Call operation: Registries_GetPrivateLinkResource")
 	_, err = registriesClient.GetPrivateLinkResource(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, "registry", nil)
 	testsuite.Require().NoError(err)
 }
@@ -195,6 +207,7 @@ func (testsuite *ContainerregistryTestSuite) TestContainerregister() {
 func (testsuite *ContainerregistryTestSuite) TestWebhooks() {
 	var err error
 	// From step Webhooks_Create
+	fmt.Println("Call operation: Webhooks_Create")
 	webhooksClient, err := armcontainerregistry.NewWebhooksClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	webhooksClientCreateResponsePoller, err := webhooksClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.webhookName, armcontainerregistry.WebhookCreateParameters{
@@ -217,6 +230,7 @@ func (testsuite *ContainerregistryTestSuite) TestWebhooks() {
 	testsuite.Require().NoError(err)
 
 	// From step Webhooks_List
+	fmt.Println("Call operation: Webhooks_List")
 	webhooksClientNewListPager := webhooksClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for webhooksClientNewListPager.More() {
 		_, err := webhooksClientNewListPager.NextPage(testsuite.ctx)
@@ -225,10 +239,12 @@ func (testsuite *ContainerregistryTestSuite) TestWebhooks() {
 	}
 
 	// From step Webhooks_Get
+	fmt.Println("Call operation: Webhooks_Get")
 	_, err = webhooksClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.webhookName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Webhooks_Update
+	fmt.Println("Call operation: Webhooks_Update")
 	webhooksClientUpdateResponsePoller, err := webhooksClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.webhookName, armcontainerregistry.WebhookUpdateParameters{
 		Properties: &armcontainerregistry.WebhookPropertiesUpdateParameters{
 			Actions: []*armcontainerregistry.WebhookAction{
@@ -249,14 +265,17 @@ func (testsuite *ContainerregistryTestSuite) TestWebhooks() {
 	testsuite.Require().NoError(err)
 
 	// From step Webhooks_GetCallbackConfig
+	fmt.Println("Call operation: Webhooks_GetCallbackConfig")
 	_, err = webhooksClient.GetCallbackConfig(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.webhookName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Webhooks_Ping
+	fmt.Println("Call operation: Webhooks_Ping")
 	_, err = webhooksClient.Ping(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.webhookName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Webhooks_ListEvents
+	fmt.Println("Call operation: Webhooks_ListEvents")
 	webhooksClientNewListEventsPager := webhooksClient.NewListEventsPager(testsuite.resourceGroupName, testsuite.registryName, testsuite.webhookName, nil)
 	for webhooksClientNewListEventsPager.More() {
 		_, err := webhooksClientNewListEventsPager.NextPage(testsuite.ctx)
@@ -265,6 +284,7 @@ func (testsuite *ContainerregistryTestSuite) TestWebhooks() {
 	}
 
 	// From step Webhooks_Delete
+	fmt.Println("Call operation: Webhooks_Delete")
 	webhooksClientDeleteResponsePoller, err := webhooksClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.webhookName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, webhooksClientDeleteResponsePoller)
@@ -275,6 +295,7 @@ func (testsuite *ContainerregistryTestSuite) TestWebhooks() {
 func (testsuite *ContainerregistryTestSuite) TestReplications() {
 	var err error
 	// From step Replications_Create
+	fmt.Println("Call operation: Replications_Create")
 	replicationsClient, err := armcontainerregistry.NewReplicationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	replicationsClientCreateResponsePoller, err := replicationsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.replicationName, armcontainerregistry.Replication{
@@ -285,6 +306,7 @@ func (testsuite *ContainerregistryTestSuite) TestReplications() {
 	testsuite.Require().NoError(err)
 
 	// From step Replications_List
+	fmt.Println("Call operation: Replications_List")
 	replicationsClientNewListPager := replicationsClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for replicationsClientNewListPager.More() {
 		_, err := replicationsClientNewListPager.NextPage(testsuite.ctx)
@@ -293,10 +315,12 @@ func (testsuite *ContainerregistryTestSuite) TestReplications() {
 	}
 
 	// From step Replications_Get
+	fmt.Println("Call operation: Replications_Get")
 	_, err = replicationsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.replicationName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Replications_Update
+	fmt.Println("Call operation: Replications_Update")
 	replicationsClientUpdateResponsePoller, err := replicationsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.replicationName, armcontainerregistry.ReplicationUpdateParameters{
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
@@ -307,6 +331,7 @@ func (testsuite *ContainerregistryTestSuite) TestReplications() {
 	testsuite.Require().NoError(err)
 
 	// From step Replications_Delete
+	fmt.Println("Call operation: Replications_Delete")
 	replicationsClientDeleteResponsePoller, err := replicationsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.replicationName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, replicationsClientDeleteResponsePoller)
@@ -317,6 +342,7 @@ func (testsuite *ContainerregistryTestSuite) TestReplications() {
 func (testsuite *ContainerregistryTestSuite) TestScopemaps() {
 	var err error
 	// From step ScopeMaps_List
+	fmt.Println("Call operation: ScopeMaps_List")
 	scopeMapsClient, err := armcontainerregistry.NewScopeMapsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scopeMapsClientNewListPager := scopeMapsClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
@@ -327,10 +353,12 @@ func (testsuite *ContainerregistryTestSuite) TestScopemaps() {
 	}
 
 	// From step ScopeMaps_Get
+	fmt.Println("Call operation: ScopeMaps_Get")
 	_, err = scopeMapsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.scopeMapName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ScopeMaps_Update
+	fmt.Println("Call operation: ScopeMaps_Update")
 	scopeMapsClientUpdateResponsePoller, err := scopeMapsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.scopeMapName, armcontainerregistry.ScopeMapUpdateParameters{
 		Properties: &armcontainerregistry.ScopeMapPropertiesUpdateParameters{
 			Description: to.Ptr("Developer Scopes"),
@@ -348,6 +376,7 @@ func (testsuite *ContainerregistryTestSuite) TestScopemaps() {
 func (testsuite *ContainerregistryTestSuite) TestTokens() {
 	var err error
 	// From step Tokens_List
+	fmt.Println("Call operation: Tokens_List")
 	tokensClient, err := armcontainerregistry.NewTokensClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	tokensClientNewListPager := tokensClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
@@ -358,10 +387,12 @@ func (testsuite *ContainerregistryTestSuite) TestTokens() {
 	}
 
 	// From step Tokens_Get
+	fmt.Println("Call operation: Tokens_Get")
 	_, err = tokensClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.tokenName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Tokens_Update
+	fmt.Println("Call operation: Tokens_Update")
 	tokensClientUpdateResponsePoller, err := tokensClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.tokenName, armcontainerregistry.TokenUpdateParameters{
 		Properties: &armcontainerregistry.TokenUpdateProperties{
 			ScopeMapID: to.Ptr(testsuite.scopeMapId),
@@ -376,6 +407,7 @@ func (testsuite *ContainerregistryTestSuite) TestTokens() {
 func (testsuite *ContainerregistryTestSuite) TestRegistrycredentials() {
 	var err error
 	// From step Registries_GenerateCredentials
+	fmt.Println("Call operation: Registries_GenerateCredentials")
 	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	registriesClientGenerateCredentialsResponsePoller, err := registriesClient.BeginGenerateCredentials(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, armcontainerregistry.GenerateCredentialsParameters{
@@ -386,12 +418,14 @@ func (testsuite *ContainerregistryTestSuite) TestRegistrycredentials() {
 	testsuite.Require().NoError(err)
 
 	// From step Registries_RegenerateCredential
+	fmt.Println("Call operation: Registries_RegenerateCredential")
 	_, err = registriesClient.RegenerateCredential(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, armcontainerregistry.RegenerateCredentialParameters{
 		Name: to.Ptr(armcontainerregistry.PasswordNamePassword),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Registries_ListCredentials
+	fmt.Println("Call operation: Registries_ListCredentials")
 	_, err = registriesClient.ListCredentials(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, nil)
 	testsuite.Require().NoError(err)
 }
@@ -400,6 +434,7 @@ func (testsuite *ContainerregistryTestSuite) TestRegistrycredentials() {
 func (testsuite *ContainerregistryTestSuite) TestExportpipelines() {
 	var err error
 	// From step ExportPipelines_Create
+	fmt.Println("Call operation: ExportPipelines_Create")
 	exportPipelinesClient, err := armcontainerregistry.NewExportPipelinesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	exportPipelinesClientCreateResponsePoller, err := exportPipelinesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.exportPipelineName, armcontainerregistry.ExportPipeline{
@@ -422,6 +457,7 @@ func (testsuite *ContainerregistryTestSuite) TestExportpipelines() {
 	testsuite.Require().NoError(err)
 
 	// From step ExportPipelines_List
+	fmt.Println("Call operation: ExportPipelines_List")
 	exportPipelinesClientNewListPager := exportPipelinesClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for exportPipelinesClientNewListPager.More() {
 		_, err := exportPipelinesClientNewListPager.NextPage(testsuite.ctx)
@@ -430,10 +466,12 @@ func (testsuite *ContainerregistryTestSuite) TestExportpipelines() {
 	}
 
 	// From step ExportPipelines_Get
+	fmt.Println("Call operation: ExportPipelines_Get")
 	_, err = exportPipelinesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.exportPipelineName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ExportPipelines_Delete
+	fmt.Println("Call operation: ExportPipelines_Delete")
 	exportPipelinesClientDeleteResponsePoller, err := exportPipelinesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.exportPipelineName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, exportPipelinesClientDeleteResponsePoller)
@@ -444,6 +482,7 @@ func (testsuite *ContainerregistryTestSuite) TestExportpipelines() {
 func (testsuite *ContainerregistryTestSuite) TestImportpipelines() {
 	var err error
 	// From step ImportPipelines_Create
+	fmt.Println("Call operation: ImportPipelines_Create")
 	importPipelinesClient, err := armcontainerregistry.NewImportPipelinesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	importPipelinesClientCreateResponsePoller, err := importPipelinesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.importPipelineName, armcontainerregistry.ImportPipeline{
@@ -468,6 +507,7 @@ func (testsuite *ContainerregistryTestSuite) TestImportpipelines() {
 	testsuite.Require().NoError(err)
 
 	// From step ImportPipelines_List
+	fmt.Println("Call operation: ImportPipelines_List")
 	importPipelinesClientNewListPager := importPipelinesClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for importPipelinesClientNewListPager.More() {
 		_, err := importPipelinesClientNewListPager.NextPage(testsuite.ctx)
@@ -476,10 +516,12 @@ func (testsuite *ContainerregistryTestSuite) TestImportpipelines() {
 	}
 
 	// From step ImportPipelines_Get
+	fmt.Println("Call operation: ImportPipelines_Get")
 	_, err = importPipelinesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.importPipelineName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ImportPipelines_Delete
+	fmt.Println("Call operation: ImportPipelines_Delete")
 	importPipelinesClientDeleteResponsePoller, err := importPipelinesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.importPipelineName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, importPipelinesClientDeleteResponsePoller)
@@ -490,6 +532,7 @@ func (testsuite *ContainerregistryTestSuite) TestImportpipelines() {
 func (testsuite *ContainerregistryTestSuite) TestOperations() {
 	var err error
 	// From step Operations_List
+	fmt.Println("Call operation: Operations_List")
 	operationsClient, err := armcontainerregistry.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	operationsClientNewListPager := operationsClient.NewListPager(nil)
@@ -503,6 +546,7 @@ func (testsuite *ContainerregistryTestSuite) TestOperations() {
 func (testsuite *ContainerregistryTestSuite) Cleanup() {
 	var err error
 	// From step Tokens_Delete
+	fmt.Println("Call operation: Tokens_Delete")
 	tokensClient, err := armcontainerregistry.NewTokensClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	tokensClientDeleteResponsePoller, err := tokensClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.tokenName, nil)
@@ -511,6 +555,7 @@ func (testsuite *ContainerregistryTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step ScopeMaps_Delete
+	fmt.Println("Call operation: ScopeMaps_Delete")
 	scopeMapsClient, err := armcontainerregistry.NewScopeMapsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scopeMapsClientDeleteResponsePoller, err := scopeMapsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.scopeMapName, nil)
@@ -519,6 +564,7 @@ func (testsuite *ContainerregistryTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step Registries_Delete
+	fmt.Println("Call operation: Registries_Delete")
 	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	registriesClientDeleteResponsePoller, err := registriesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, nil)

@@ -114,20 +114,19 @@ The following code shows an example of setting the server timeout. By setting th
 
 ```go
 workspaceID := "<workspace_id>"
-prefer := "wait=600" // increases wait time to ten minutes
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-if err != nil {
-    //TODO: handle error
-}
-client := azquery.NewLogsClient(cred, nil)
+options := &azquery.LogsClientQueryWorkspaceOptions{
+		Options: &azquery.LogsQueryOptions{
+			Wait:          to.Ptr(600), // increases wait time to ten minutes
+		},
+	}
 
-res, err := client.QueryWorkspace(context.Background(), 
+res, err := logsClient.QueryWorkspace(context.Background(), 
              workspaceID, 
              azquery.Body{Query: to.Ptr("AzureActivity
                     | summarize Count = count() by ResourceGroup
                     | top 10 by Count
                     | project ResourceGroup")}, 
-             &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer})
+             options)
 if err != nil {
     //TODO: handle error
 }
@@ -144,9 +143,8 @@ sufficient permissions to query the workspace.
 {"error":{"code":"AuthorizationFailed","message":"The client '71d56230-5920-4856-8f33-c030b269d870' with object id '71d56230-5920-4856-8f33-c030b269d870' does not have authorization to perform action 'microsoft.insights/metrics/read' over scope '/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights' or the scope is invalid. If access was recently granted, please refresh your credentials."}}
 ```
 
-1. Check that the application or user that is making the request has sufficient permissions:
-    * You can refer to this document to [manage access to workspaces][workspace_access]
-2. If the user or application is granted sufficient privileges to query the workspace, make sure you are
+1. Check that the application or user that is making the request has sufficient permissions.
+2. If the user or application is granted sufficient privileges to query the resource, make sure you are
    authenticating as that user/application. If you are authenticating using the
    [DefaultAzureCredential][default_azure_cred]
    then check the logs to verify that the credential used is the one you expected. To enable logging, see [enable
@@ -158,7 +156,7 @@ guide][azidentity_troubleshooting]
 ### Troubleshooting unsupported granularity for metrics query
 
 If you notice the following exception, this is due to an invalid time granularity in the metrics query request. Your
-query might look something like the following where `MetricsQueryOptions().setGranularity()` is set to an unsupported
+query might look something like the following where `MetricsClientQueryResourceOptions.Interval` is set to an unsupported
 duration.
 
 ```text
@@ -172,6 +170,6 @@ As documented in the error message, the supported granularity for metrics querie
 [azidentity_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azidentity_troubleshooting]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/TROUBLESHOOTING.md
 [default_azure_cred]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
-[kusto]: https://docs.microsoft.com/azure/data-explorer/kusto/query
+[kusto]: https://learn.microsoft.com/azure/data-explorer/kusto/query
 [readme_authentication]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery#authentication
-[workspace_access]: https://docs.microsoft.com/azure/azure-monitor/logs/manage-access#manage-access-using-workspace-permissions
+[workspace_access]: https://learn.microsoft.com/azure/azure-monitor/logs/manage-access#manage-access-using-workspace-permissions

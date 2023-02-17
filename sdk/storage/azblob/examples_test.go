@@ -65,7 +65,7 @@ func Example() {
 		blobName,
 		strings.NewReader(blobData),
 		&azblob.UploadStreamOptions{
-			Metadata: map[string]string{"Foo": "Bar"},
+			Metadata: map[string]*string{"Foo": to.Ptr("Bar")},
 			Tags:     map[string]string{"Year": "2022"},
 		})
 	handleError(err)
@@ -182,7 +182,7 @@ func Example_client_CreateContainer() {
 	handleError(err)
 
 	resp, err := client.CreateContainer(context.TODO(), "testcontainer", &azblob.CreateContainerOptions{
-		Metadata: map[string]string{"hello": "world"},
+		Metadata: map[string]*string{"hello": to.Ptr("world")},
 	})
 	handleError(err)
 	fmt.Println(resp)
@@ -384,7 +384,7 @@ func Example_client_UploadStream() {
 	// Perform UploadStream
 	resp, err := client.UploadStream(context.TODO(), containerName, blobName, blobContentReader,
 		&azblob.UploadStreamOptions{
-			Metadata: map[string]string{"hello": "world"},
+			Metadata: map[string]*string{"hello": to.Ptr("world")},
 		})
 	// Assert that upload was successful
 	handleError(err)

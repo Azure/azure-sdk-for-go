@@ -386,7 +386,6 @@ func (client *LiveEventsClient) getHandleResponse(resp *http.Response) (LiveEven
 }
 
 // NewListPager - Lists all the live events in the account.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.

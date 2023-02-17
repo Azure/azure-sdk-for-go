@@ -17,10 +17,10 @@ outputFile="$(realpath $outputFile)"
 echo "output json file: $outputFile"
 
 TMPDIR="/tmp"
-if [ ! "$(go version | awk '{print $3}' | cut -c 3-6)" = "1.19" ]
+if [ ! "$(go version | awk '{print $3}' | cut -c 3-6)" = "1.20" ]
 then
-  wget https://golang.org/dl/go1.19.linux-amd64.tar.gz
-  tar -C $TMPDIR -xzf go1.19.linux-amd64.tar.gz
+  wget https://golang.org/dl/go1.20.linux-amd64.tar.gz
+  tar -C $TMPDIR -xzf go1.20.linux-amd64.tar.gz
   export GOROOT=$TMPDIR/go
   export PATH=$GOROOT/bin:$PATH
 fi

@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"time"
@@ -66,6 +67,7 @@ func TestApimgatewaysTestSuite(t *testing.T) {
 func (testsuite *ApimgatewaysTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -92,6 +94,7 @@ func (testsuite *ApimgatewaysTestSuite) Prepare() {
 func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 	var err error
 	// From step Gateway_CreateOrUpdate
+	fmt.Println("Call operation: Gateway_CreateOrUpdate")
 	gatewayClient, err := armapimanagement.NewGatewayClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = gatewayClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, armapimanagement.GatewayContract{
@@ -105,10 +108,12 @@ func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 	testsuite.Require().NoError(err)
 
 	// From step Gateway_GetEntityTag
+	fmt.Println("Call operation: Gateway_GetEntityTag")
 	_, err = gatewayClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Gateway_ListByService
+	fmt.Println("Call operation: Gateway_ListByService")
 	gatewayClientNewListByServicePager := gatewayClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.GatewayClientListByServiceOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -120,10 +125,12 @@ func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 	}
 
 	// From step Gateway_Get
+	fmt.Println("Call operation: Gateway_Get")
 	_, err = gatewayClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Gateway_Update
+	fmt.Println("Call operation: Gateway_Update")
 	_, err = gatewayClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, "*", armapimanagement.GatewayContract{
 		Properties: &armapimanagement.GatewayContractProperties{
 			Description: to.Ptr("my gateway 1"),
@@ -135,16 +142,19 @@ func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 	testsuite.Require().NoError(err)
 
 	// From step Gateway_ListKeys
+	fmt.Println("Call operation: Gateway_ListKeys")
 	_, err = gatewayClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Gateway_RegenerateKey
+	fmt.Println("Call operation: Gateway_RegenerateKey")
 	_, err = gatewayClient.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, armapimanagement.GatewayKeyRegenerationRequestContract{
 		KeyType: to.Ptr(armapimanagement.KeyTypePrimary),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Gateway_GenerateToken
+	fmt.Println("Call operation: Gateway_GenerateToken")
 	_, err = gatewayClient.GenerateToken(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, armapimanagement.GatewayTokenRequestContract{
 		Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-21T00:44:24.2845269Z"); return t }()),
 		KeyType: to.Ptr(armapimanagement.KeyTypePrimary),
@@ -152,6 +162,7 @@ func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 	testsuite.Require().NoError(err)
 
 	// From step Gateway_Delete
+	fmt.Println("Call operation: Gateway_Delete")
 	_, err = gatewayClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, "*", nil)
 	testsuite.Require().NoError(err)
 }
@@ -160,6 +171,7 @@ func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 func (testsuite *ApimgatewaysTestSuite) TestOutboundnetworkdependenciesendpoints() {
 	var err error
 	// From step OutboundNetworkDependenciesEndpoints_ListByService
+	fmt.Println("Call operation: OutboundNetworkDependenciesEndpoints_ListByService")
 	outboundNetworkDependenciesEndpointsClient, err := armapimanagement.NewOutboundNetworkDependenciesEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = outboundNetworkDependenciesEndpointsClient.ListByService(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
@@ -170,12 +182,14 @@ func (testsuite *ApimgatewaysTestSuite) TestOutboundnetworkdependenciesendpoints
 func (testsuite *ApimgatewaysTestSuite) TestNetworkstatus() {
 	var err error
 	// From step NetworkStatus_ListByLocation
+	fmt.Println("Call operation: NetworkStatus_ListByLocation")
 	networkStatusClient, err := armapimanagement.NewNetworkStatusClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = networkStatusClient.ListByLocation(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.location, nil)
 	testsuite.Require().NoError(err)
 
 	// From step NetworkStatus_ListByService
+	fmt.Println("Call operation: NetworkStatus_ListByService")
 	_, err = networkStatusClient.ListByService(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 }

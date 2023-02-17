@@ -323,8 +323,7 @@ func TestRetryLogging(t *testing.T) {
 	})
 
 	t.Run("normal error2", func(t *testing.T) {
-		cleanup := test.EnableStdoutLogging()
-		defer cleanup()
+		test.EnableStdoutLogging(t)
 
 		err := Retry(context.Background(), testLogEvent, "my_operation", func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc", "Attempt %d, within test func, returning error hello", args.I)

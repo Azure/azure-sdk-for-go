@@ -57,7 +57,7 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreateOrUpdate - Creates a new firewall rule or updates an existing firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2022-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // firewallRuleName - The name of the server firewall rule.
@@ -70,7 +70,9 @@ func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[FirewallRulesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FirewallRulesClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[FirewallRulesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
@@ -78,7 +80,7 @@ func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 
 // CreateOrUpdate - Creates a new firewall rule or updates an existing firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2022-12-01
 func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, parameters FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, parameters, options)
 	if err != nil {
@@ -118,7 +120,7 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -126,7 +128,7 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 
 // BeginDelete - Deletes a PostgreSQL server firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2022-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // firewallRuleName - The name of the server firewall rule.
@@ -138,7 +140,9 @@ func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[FirewallRulesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FirewallRulesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[FirewallRulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
@@ -146,7 +150,7 @@ func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Deletes a PostgreSQL server firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2022-12-01
 func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, options)
 	if err != nil {
@@ -186,7 +190,7 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -194,7 +198,7 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - List all the firewall rules in a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2022-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // firewallRuleName - The name of the server firewall rule.
@@ -238,7 +242,7 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -254,8 +258,7 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 }
 
 // NewListByServerPager - List all the firewall rules in a given PostgreSQL server.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2022-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - FirewallRulesClientListByServerOptions contains the optional parameters for the FirewallRulesClient.ListByServer
@@ -308,7 +311,7 @@ func (client *FirewallRulesClient) listByServerCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

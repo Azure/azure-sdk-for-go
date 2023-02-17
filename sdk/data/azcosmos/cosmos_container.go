@@ -403,7 +403,6 @@ func (c *ContainerClient) DeleteItem(
 }
 
 // NewQueryItemsPager executes a single partition query in a Cosmos container.
-// ctx - The context for the request.
 // query - The SQL query to execute.
 // partitionKey - The partition key to scope the query on.
 // o - Options for the operation.

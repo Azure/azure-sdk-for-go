@@ -3,7 +3,9 @@
 
 package azcosmos
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 // ReadDatabaseOptions includes options ReadDatabase operation.
 type ReadDatabaseOptions struct {
@@ -51,4 +53,25 @@ func (options *DeleteDatabaseOptions) toHeaders() *map[string]string {
 type CreateDatabaseOptions struct {
 	// ThroughputProperties: Optional throughput configuration of the database
 	ThroughputProperties *ThroughputProperties
+}
+
+// QueryDatabasesOptions are options to query databases
+type QueryDatabasesOptions struct {
+	// ContinuationToken to be used to continue a previous query execution.
+	// Obtained from QueryItemsResponse.ContinuationToken.
+	ContinuationToken string
+
+	// QueryParameters allows execution of parametrized queries.
+	// See https://docs.microsoft.com/azure/cosmos-db/sql/sql-query-parameterized-queries
+	QueryParameters []QueryParameter
+}
+
+func (options *QueryDatabasesOptions) toHeaders() *map[string]string {
+	headers := make(map[string]string)
+
+	if options.ContinuationToken != "" {
+		headers[cosmosHeaderContinuationToken] = options.ContinuationToken
+	}
+
+	return &headers
 }

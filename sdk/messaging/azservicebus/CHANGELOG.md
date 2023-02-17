@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.4 (Unreleased)
+## 1.2.1 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,22 @@
 
 ### Bugs Fixed
 
-- User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
+- Fixing issues where we could over-request credit (#19965) or allow for negative/zero credits (#19743), both of
+  which could cause issues with go-amqp. (PR#19992)
 
 ### Other Changes
+
+## 1.2.0 (2023-02-07)
+
+### Bugs Fixed
+
+- Links could hang when closing, preventing recovery from completing and making a link appear stalled. (PR#19886)
+
+## 1.1.4 (2023-01-10)
+
+### Bugs Fixed
+
+- User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
 
 ## 1.1.3 (2022-11-16)
 

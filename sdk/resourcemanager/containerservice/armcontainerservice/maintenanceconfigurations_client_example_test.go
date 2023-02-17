@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-10-02-preview/examples/MaintenanceConfigurationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsList.json
 func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMaintenanceConfigurationsByManagedCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMai
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-10-02-preview/examples/MaintenanceConfigurationsList_MaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsList_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMaintenanceConfigurationsConfiguredWithMaintenanceWindowByManagedCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMai
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-10-02-preview/examples/MaintenanceConfigurationsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsGet.json
 func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfiguration() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-10-02-preview/examples/MaintenanceConfigurationsGet_MaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsGet_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfiguredWithMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfi
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-10-02-preview/examples/MaintenanceConfigurationsCreate_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsCreate_Update.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenan
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-10-02-preview/examples/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenanceConfigurationWithMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenan
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-10-02-preview/examples/MaintenanceConfigurationsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsDelete.json
 func ExampleMaintenanceConfigurationsClient_Delete_deleteMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleMaintenanceConfigurationsClient_Delete_deleteMaintenanceConfiguratio
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-10-02-preview/examples/MaintenanceConfigurationsDelete_MaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsDelete_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Delete_deleteMaintenanceConfigurationForNodeOsUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

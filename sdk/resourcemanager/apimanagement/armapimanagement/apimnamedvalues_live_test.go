@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimnamedvaluesTestSuite(t *testing.T) {
 func (testsuite *ApimnamedvaluesTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimnamedvaluesTestSuite) Prepare() {
 func (testsuite *ApimnamedvaluesTestSuite) TestNamedvalue() {
 	var err error
 	// From step NamedValue_CreateOrUpdate
+	fmt.Println("Call operation: NamedValue_CreateOrUpdate")
 	namedValueClient, err := armapimanagement.NewNamedValueClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	namedValueClientCreateOrUpdateResponsePoller, err := namedValueClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.namedValueId, armapimanagement.NamedValueCreateContract{
@@ -105,10 +108,12 @@ func (testsuite *ApimnamedvaluesTestSuite) TestNamedvalue() {
 	testsuite.Require().NoError(err)
 
 	// From step NamedValue_GetEntityTag
+	fmt.Println("Call operation: NamedValue_GetEntityTag")
 	_, err = namedValueClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.namedValueId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step NamedValue_ListByService
+	fmt.Println("Call operation: NamedValue_ListByService")
 	namedValueClientNewListByServicePager := namedValueClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.NamedValueClientListByServiceOptions{Filter: nil,
 		Top:                     nil,
 		Skip:                    nil,
@@ -121,10 +126,12 @@ func (testsuite *ApimnamedvaluesTestSuite) TestNamedvalue() {
 	}
 
 	// From step NamedValue_Get
+	fmt.Println("Call operation: NamedValue_Get")
 	_, err = namedValueClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.namedValueId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step NamedValue_Update
+	fmt.Println("Call operation: NamedValue_Update")
 	namedValueClientUpdateResponsePoller, err := namedValueClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.namedValueId, "*", armapimanagement.NamedValueUpdateParameters{
 		Properties: &armapimanagement.NamedValueUpdateParameterProperties{
 			Secret: to.Ptr(false),
@@ -140,10 +147,12 @@ func (testsuite *ApimnamedvaluesTestSuite) TestNamedvalue() {
 	testsuite.Require().NoError(err)
 
 	// From step NamedValue_ListValue
+	fmt.Println("Call operation: NamedValue_ListValue")
 	_, err = namedValueClient.ListValue(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.namedValueId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step NamedValue_Delete
+	fmt.Println("Call operation: NamedValue_Delete")
 	_, err = namedValueClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.namedValueId, "*", nil)
 	testsuite.Require().NoError(err)
 }

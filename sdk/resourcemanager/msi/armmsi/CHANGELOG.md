@@ -1,5 +1,23 @@
 # Release History
 
+## 1.0.0 (2023-02-24)
+### Breaking Changes
+
+- Function `*UserAssignedIdentitiesClient.NewListAssociatedResourcesPager` has been removed
+
+### Features Added
+
+- New type alias `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New function `timeRFC3339.MarshalText() ([]byte, error)`
+- New function `*timeRFC3339.Parse(string) error`
+- New function `*timeRFC3339.UnmarshalText([]byte) error`
+- New struct `SystemData`
+- New field `SystemData` in struct `FederatedIdentityCredential`
+- New field `SystemData` in struct `Identity`
+- New field `SystemData` in struct `IdentityUpdate`
+- New field `SystemData` in struct `SystemAssignedIdentity`
+
+
 ## 0.7.0 (2022-06-27)
 ### Features Added
 

@@ -10,8 +10,13 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
+
+// processorOwnerLevel is the owner level we assign to every ProcessorPartitionClient
+// created by this Processor.
+var processorOwnerLevel = to.Ptr[int64](0)
 
 // ProcessorStrategy specifies the load balancing strategy used by the Processor.
 type ProcessorStrategy string
@@ -49,12 +54,15 @@ type ProcessorOptions struct {
 	// The default position is Latest.
 	StartPositions StartPositions
 
-	// OwnerLevel is the priority for partition clients created by this Processor, also known as
-	// the 'epoch' level.
-	// When used, a partition client with a higher OwnerLevel will take ownership of a partition
-	// from partition clients with a lower OwnerLevel.
-	// Default is 0.
-	OwnerLevel int64
+	// Prefetch represents the size of the internal prefetch buffer for each ProcessorPartitionClient
+	// created by this Processor. When set, this client will attempt to always maintain
+	// an internal cache of events of this size, asynchronously, increasing the odds that
+	// ReceiveEvents() will use a locally stored cache of events, rather than having to
+	// wait for events to arrive from the network.
+	//
+	// Defaults to 300 events if Prefetch == 0.
+	// Disabled if Prefetch < 0.
+	Prefetch int32
 }
 
 // StartPositions are used if there is no checkpoint for a partition in
@@ -81,7 +89,7 @@ type Processor struct {
 	ownershipUpdateInterval time.Duration
 	defaultStartPositions   StartPositions
 	checkpointStore         CheckpointStore
-	ownerLevel              int64
+	prefetch                int32
 
 	// consumerClient is actually a *azeventhubs.ConsumerClient
 	// it's an interface here to make testing easier.
@@ -147,7 +155,6 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 	}
 
 	return &Processor{
-		ownerLevel:              options.OwnerLevel,
 		ownershipUpdateInterval: updateInterval,
 		consumerClient:          consumerClient,
 		checkpointStore:         checkpointStore,
@@ -156,6 +163,7 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 			PerPartition: startPosPerPartition,
 			Default:      options.StartPositions.Default,
 		},
+		prefetch:              options.Prefetch,
 		consumerClientDetails: consumerClient.getDetails(),
 		runCalled:             make(chan struct{}),
 		lb:                    newProcessorLoadBalancer(checkpointStore, consumerClient.getDetails(), strategy, partitionDurationExpiration),
@@ -326,7 +334,8 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 
 	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &PartitionClientOptions{
 		StartPosition: sp,
-		OwnerLevel:    &p.ownerLevel,
+		OwnerLevel:    processorOwnerLevel,
+		Prefetch:      p.prefetch,
 	})
 
 	if err != nil {

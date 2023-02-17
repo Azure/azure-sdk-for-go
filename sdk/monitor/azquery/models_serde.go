@@ -21,8 +21,8 @@ import (
 func (b BatchQueryRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "body", b.Body)
+	populate(objectMap, "id", b.CorrelationID)
 	populate(objectMap, "headers", b.Headers)
-	populate(objectMap, "id", b.ID)
 	if b.Method == nil {
 		b.Method = to.Ptr(BatchQueryRequestMethodPOST)
 	}
@@ -31,7 +31,7 @@ func (b BatchQueryRequest) MarshalJSON() ([]byte, error) {
 		b.Path = to.Ptr(BatchQueryRequestPathQuery)
 	}
 	populate(objectMap, "path", b.Path)
-	populate(objectMap, "workspace", b.Workspace)
+	populate(objectMap, "workspace", b.WorkspaceID)
 	return json.Marshal(objectMap)
 }
 
@@ -47,11 +47,11 @@ func (b *BatchQueryRequest) UnmarshalJSON(data []byte) error {
 		case "body":
 			err = unpopulate(val, "Body", &b.Body)
 			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "CorrelationID", &b.CorrelationID)
+			delete(rawMsg, key)
 		case "headers":
 			err = unpopulate(val, "Headers", &b.Headers)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &b.ID)
 			delete(rawMsg, key)
 		case "method":
 			err = unpopulate(val, "Method", &b.Method)
@@ -60,7 +60,7 @@ func (b *BatchQueryRequest) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Path", &b.Path)
 			delete(rawMsg, key)
 		case "workspace":
-			err = unpopulate(val, "Workspace", &b.Workspace)
+			err = unpopulate(val, "WorkspaceID", &b.WorkspaceID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -74,8 +74,8 @@ func (b *BatchQueryRequest) UnmarshalJSON(data []byte) error {
 func (b BatchQueryResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "body", b.Body)
+	populate(objectMap, "id", b.CorrelationID)
 	populate(objectMap, "headers", b.Headers)
-	populate(objectMap, "id", b.ID)
 	populate(objectMap, "status", b.Status)
 	return json.Marshal(objectMap)
 }
@@ -92,11 +92,11 @@ func (b *BatchQueryResponse) UnmarshalJSON(data []byte) error {
 		case "body":
 			err = unpopulate(val, "Body", &b.Body)
 			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "CorrelationID", &b.CorrelationID)
+			delete(rawMsg, key)
 		case "headers":
 			err = unpopulate(val, "Headers", &b.Headers)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &b.ID)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &b.Status)
@@ -113,9 +113,9 @@ func (b *BatchQueryResponse) UnmarshalJSON(data []byte) error {
 func (b BatchQueryResults) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "error", b.Error)
-	populate(objectMap, "render", &b.Render)
 	populate(objectMap, "statistics", &b.Statistics)
 	populate(objectMap, "tables", b.Tables)
+	populate(objectMap, "render", &b.Visualization)
 	return json.Marshal(objectMap)
 }
 
@@ -131,14 +131,14 @@ func (b *BatchQueryResults) UnmarshalJSON(data []byte) error {
 		case "error":
 			err = unpopulate(val, "Error", &b.Error)
 			delete(rawMsg, key)
-		case "render":
-			b.Render = val
-			delete(rawMsg, key)
 		case "statistics":
 			b.Statistics = val
 			delete(rawMsg, key)
 		case "tables":
 			err = unpopulate(val, "Tables", &b.Tables)
+			delete(rawMsg, key)
+		case "render":
+			b.Visualization = val
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -205,9 +205,9 @@ func (b *BatchResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Body.
 func (b Body) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "workspaces", b.AdditionalWorkspaces)
 	populate(objectMap, "query", b.Query)
 	populate(objectMap, "timespan", b.Timespan)
-	populate(objectMap, "workspaces", b.Workspaces)
 	return json.Marshal(objectMap)
 }
 
@@ -220,14 +220,14 @@ func (b *Body) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "workspaces":
+			err = unpopulate(val, "AdditionalWorkspaces", &b.AdditionalWorkspaces)
+			delete(rawMsg, key)
 		case "query":
 			err = unpopulate(val, "Query", &b.Query)
 			delete(rawMsg, key)
 		case "timespan":
 			err = unpopulate(val, "Timespan", &b.Timespan)
-			delete(rawMsg, key)
-		case "workspaces":
-			err = unpopulate(val, "Workspaces", &b.Workspaces)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -338,7 +338,7 @@ func (m Metric) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "errorMessage", m.ErrorMessage)
 	populate(objectMap, "id", m.ID)
 	populate(objectMap, "name", m.Name)
-	populate(objectMap, "timeseries", m.Timeseries)
+	populate(objectMap, "timeseries", m.TimeSeries)
 	populate(objectMap, "type", m.Type)
 	populate(objectMap, "unit", m.Unit)
 	return json.Marshal(objectMap)
@@ -369,7 +369,7 @@ func (m *Metric) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &m.Name)
 			delete(rawMsg, key)
 		case "timeseries":
-			err = unpopulate(val, "Timeseries", &m.Timeseries)
+			err = unpopulate(val, "TimeSeries", &m.TimeSeries)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &m.Type)
@@ -668,7 +668,7 @@ func (r Response) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "cost", r.Cost)
 	populate(objectMap, "interval", r.Interval)
 	populate(objectMap, "namespace", r.Namespace)
-	populate(objectMap, "resourceregion", r.Resourceregion)
+	populate(objectMap, "resourceregion", r.ResourceRegion)
 	populate(objectMap, "timespan", r.Timespan)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
@@ -693,7 +693,7 @@ func (r *Response) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Namespace", &r.Namespace)
 			delete(rawMsg, key)
 		case "resourceregion":
-			err = unpopulate(val, "Resourceregion", &r.Resourceregion)
+			err = unpopulate(val, "ResourceRegion", &r.ResourceRegion)
 			delete(rawMsg, key)
 		case "timespan":
 			err = unpopulate(val, "Timespan", &r.Timespan)
@@ -713,9 +713,9 @@ func (r *Response) UnmarshalJSON(data []byte) error {
 func (r Results) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "error", r.Error)
-	populate(objectMap, "render", &r.Render)
 	populate(objectMap, "statistics", &r.Statistics)
 	populate(objectMap, "tables", r.Tables)
+	populate(objectMap, "render", &r.Visualization)
 	return json.Marshal(objectMap)
 }
 
@@ -731,14 +731,14 @@ func (r *Results) UnmarshalJSON(data []byte) error {
 		case "error":
 			err = unpopulate(val, "Error", &r.Error)
 			delete(rawMsg, key)
-		case "render":
-			r.Render = val
-			delete(rawMsg, key)
 		case "statistics":
 			r.Statistics = val
 			delete(rawMsg, key)
 		case "tables":
 			err = unpopulate(val, "Tables", &r.Tables)
+			delete(rawMsg, key)
+		case "render":
+			r.Visualization = val
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -757,11 +757,37 @@ func (t Table) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type Table.
+func (t *Table) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "columns":
+			err = unpopulate(val, "Columns", &t.Columns)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &t.Name)
+			delete(rawMsg, key)
+		case "rows":
+			err = unpopulate(val, "Rows", &t.Rows)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type TimeSeriesElement.
 func (t TimeSeriesElement) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "data", t.Data)
-	populate(objectMap, "metadatavalues", t.Metadatavalues)
+	populate(objectMap, "metadatavalues", t.MetadataValues)
 	return json.Marshal(objectMap)
 }
 
@@ -778,7 +804,7 @@ func (t *TimeSeriesElement) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Data", &t.Data)
 			delete(rawMsg, key)
 		case "metadatavalues":
-			err = unpopulate(val, "Metadatavalues", &t.Metadatavalues)
+			err = unpopulate(val, "MetadataValues", &t.MetadataValues)
 			delete(rawMsg, key)
 		}
 		if err != nil {

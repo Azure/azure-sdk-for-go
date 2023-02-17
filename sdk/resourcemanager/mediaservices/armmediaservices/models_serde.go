@@ -2481,6 +2481,49 @@ func (c *CrossSiteAccessPolicies) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DDAudio.
+func (d DDAudio) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "bitrate", d.Bitrate)
+	populate(objectMap, "channels", d.Channels)
+	populate(objectMap, "label", d.Label)
+	objectMap["@odata.type"] = "#Microsoft.Media.DDAudio"
+	populate(objectMap, "samplingRate", d.SamplingRate)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DDAudio.
+func (d *DDAudio) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "bitrate":
+			err = unpopulate(val, "Bitrate", &d.Bitrate)
+			delete(rawMsg, key)
+		case "channels":
+			err = unpopulate(val, "Channels", &d.Channels)
+			delete(rawMsg, key)
+		case "label":
+			err = unpopulate(val, "Label", &d.Label)
+			delete(rawMsg, key)
+		case "@odata.type":
+			err = unpopulate(val, "ODataType", &d.ODataType)
+			delete(rawMsg, key)
+		case "samplingRate":
+			err = unpopulate(val, "SamplingRate", &d.SamplingRate)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type DashSettings.
 func (d DashSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2928,6 +2971,41 @@ func (f *FaceDetectorPreset) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type Fade.
+func (f Fade) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "duration", f.Duration)
+	populate(objectMap, "fadeColor", f.FadeColor)
+	populate(objectMap, "start", f.Start)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Fade.
+func (f *Fade) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "duration":
+			err = unpopulate(val, "Duration", &f.Duration)
+			delete(rawMsg, key)
+		case "fadeColor":
+			err = unpopulate(val, "FadeColor", &f.FadeColor)
+			delete(rawMsg, key)
+		case "start":
+			err = unpopulate(val, "Start", &f.Start)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type FilterTrackPropertyCondition.
 func (f FilterTrackPropertyCondition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2995,6 +3073,8 @@ func (f Filters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "crop", f.Crop)
 	populate(objectMap, "deinterlace", f.Deinterlace)
+	populate(objectMap, "fadeIn", f.FadeIn)
+	populate(objectMap, "fadeOut", f.FadeOut)
 	populate(objectMap, "overlays", f.Overlays)
 	populate(objectMap, "rotation", f.Rotation)
 	return json.Marshal(objectMap)
@@ -3014,6 +3094,12 @@ func (f *Filters) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "deinterlace":
 			err = unpopulate(val, "Deinterlace", &f.Deinterlace)
+			delete(rawMsg, key)
+		case "fadeIn":
+			err = unpopulate(val, "FadeIn", &f.FadeIn)
+			delete(rawMsg, key)
+		case "fadeOut":
+			err = unpopulate(val, "FadeOut", &f.FadeOut)
 			delete(rawMsg, key)
 		case "overlays":
 			f.Overlays, err = unmarshalOverlayClassificationArray(val)
@@ -6926,6 +7012,7 @@ func (s *ServiceSpecification) UnmarshalJSON(data []byte) error {
 func (s StandardEncoderPreset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "codecs", s.Codecs)
+	populate(objectMap, "experimentalOptions", s.ExperimentalOptions)
 	populate(objectMap, "filters", s.Filters)
 	populate(objectMap, "formats", s.Formats)
 	objectMap["@odata.type"] = "#Microsoft.Media.StandardEncoderPreset"
@@ -6943,6 +7030,9 @@ func (s *StandardEncoderPreset) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "codecs":
 			s.Codecs, err = unmarshalCodecClassificationArray(val)
+			delete(rawMsg, key)
+		case "experimentalOptions":
+			err = unpopulate(val, "ExperimentalOptions", &s.ExperimentalOptions)
 			delete(rawMsg, key)
 		case "filters":
 			err = unpopulate(val, "Filters", &s.Filters)

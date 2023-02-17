@@ -9,70 +9,21 @@
 
 package armmsi
 
-// AssociatedResourcesListResult - Azure resources returned by the resource action to get a list of assigned resources.
-type AssociatedResourcesListResult struct {
-	// READ-ONLY; The url to get the next page of results, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Total number of Azure resources assigned to the identity.
-	TotalCount *float32 `json:"totalCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The collection of Azure resources returned by the resource action to get a list of assigned resources.
-	Value []*AzureResource `json:"value,omitempty" azure:"ro"`
-}
-
-// AzureResource - Describes an Azure resource that is attached to an identity.
-type AzureResource struct {
-	// READ-ONLY; The ID of this resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource group this resource belongs to.
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the subscription this resource belongs to.
-	SubscriptionDisplayName *string `json:"subscriptionDisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The ID of the subscription this resource belongs to.
-	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// CloudError - An error response from the ManagedServiceIdentity service.
-type CloudError struct {
-	// A list of additional details about the error.
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the ManagedServiceIdentity service.
-type CloudErrorBody struct {
-	// An identifier for the error.
-	Code *string `json:"code,omitempty"`
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty"`
-}
+import "time"
 
 // FederatedIdentityCredential - Describes a federated identity credential.
 type FederatedIdentityCredential struct {
 	// The properties associated with the federated identity credential.
 	Properties *FederatedIdentityCredentialProperties `json:"properties,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -108,7 +59,7 @@ type FederatedIdentityCredentialsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FederatedIdentityCredentialsClientListOptions contains the optional parameters for the FederatedIdentityCredentialsClient.List
+// FederatedIdentityCredentialsClientListOptions contains the optional parameters for the FederatedIdentityCredentialsClient.NewListPager
 // method.
 type FederatedIdentityCredentialsClientListOptions struct {
 	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
@@ -136,7 +87,7 @@ type Identity struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
@@ -144,6 +95,9 @@ type Identity struct {
 
 	// READ-ONLY; The properties associated with the identity.
 	Properties *UserAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -157,7 +111,7 @@ type IdentityUpdate struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
@@ -165,6 +119,9 @@ type IdentityUpdate struct {
 
 	// READ-ONLY; The properties associated with the identity.
 	Properties *UserAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -203,34 +160,9 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SystemAssignedIdentitiesClientGetByScopeOptions contains the optional parameters for the SystemAssignedIdentitiesClient.GetByScope
@@ -247,7 +179,7 @@ type SystemAssignedIdentity struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
@@ -255,6 +187,9 @@ type SystemAssignedIdentity struct {
 
 	// READ-ONLY; The properties associated with the identity.
 	Properties *SystemAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -275,23 +210,25 @@ type SystemAssignedIdentityProperties struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
 
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
 
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // UserAssignedIdentitiesClientCreateOrUpdateOptions contains the optional parameters for the UserAssignedIdentitiesClient.CreateOrUpdate
@@ -311,30 +248,13 @@ type UserAssignedIdentitiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIdentitiesClientListAssociatedResourcesOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListAssociatedResources
-// method.
-type UserAssignedIdentitiesClientListAssociatedResourcesOptions struct {
-	// OData filter expression to apply to the query.
-	Filter *string
-	// OData orderBy expression to apply to the query.
-	Orderby *string
-	// Number of records to skip.
-	Skip *int32
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
-	// a nextLink element, the value of the nextLink element will include a
-	// skipToken parameter that specifies a starting point to use for subsequent calls.
-	Skiptoken *string
-	// Number of records to return.
-	Top *int32
-}
-
-// UserAssignedIdentitiesClientListByResourceGroupOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListByResourceGroup
+// UserAssignedIdentitiesClientListByResourceGroupOptions contains the optional parameters for the UserAssignedIdentitiesClient.NewListByResourceGroupPager
 // method.
 type UserAssignedIdentitiesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIdentitiesClientListBySubscriptionOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListBySubscription
+// UserAssignedIdentitiesClientListBySubscriptionOptions contains the optional parameters for the UserAssignedIdentitiesClient.NewListBySubscriptionPager
 // method.
 type UserAssignedIdentitiesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters

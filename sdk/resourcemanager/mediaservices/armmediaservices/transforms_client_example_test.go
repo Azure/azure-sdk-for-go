@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-list-all.json
 func ExampleTransformsClient_NewListPager_listsTheTransforms() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleTransformsClient_NewListPager_listsTheTransforms() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all-filter-by-created.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-list-all-filter-by-created.json
 func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByCreated() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByCreated() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contosoresources", "contosomedia", &armmediaservices.TransformsClientListOptions{Filter: to.Ptr("properties/created gt 2021-11-01T00:00:00.0000000Z and properties/created le 2021-11-01T00:00:10.0000000Z"),
+	pager := client.NewListPager("contosoresources", "contosomedia", &armmediaservices.TransformsClientListOptions{Filter: to.Ptr("properties/created gt 2021-06-01T00:00:00.0000000Z and properties/created le 2021-06-01T00:00:10.0000000Z"),
 		Orderby: to.Ptr("properties/created"),
 	})
 	for pager.More() {
@@ -69,7 +69,7 @@ func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByCreated() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all-filter-by-lastmodified.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-list-all-filter-by-lastmodified.json
 func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByLastmodified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByLastmodified
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contosoresources", "contosomedia", &armmediaservices.TransformsClientListOptions{Filter: to.Ptr("properties/lastmodified gt 2021-11-01T00:00:00.0000000Z and properties/lastmodified le 2021-11-01T00:00:10.0000000Z"),
+	pager := client.NewListPager("contosoresources", "contosomedia", &armmediaservices.TransformsClientListOptions{Filter: to.Ptr("properties/lastmodified gt 2021-06-01T00:00:00.0000000Z and properties/lastmodified le 2021-06-01T00:00:10.0000000Z"),
 		Orderby: to.Ptr("properties/lastmodified desc"),
 	})
 	for pager.More() {
@@ -95,7 +95,7 @@ func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByLastmodified
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all-filter-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-list-all-filter-by-name.json
 func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleTransformsClient_NewListPager_listsTheTransformsFilterByName() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-get-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-get-by-name.json
 func ExampleTransformsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleTransformsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-create.json
 func ExampleTransformsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleTransformsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-delete.json
 func ExampleTransformsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleTransformsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-update.json
 func ExampleTransformsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

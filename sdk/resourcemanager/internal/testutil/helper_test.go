@@ -24,8 +24,8 @@ const (
 func TestGetEnv(t *testing.T) {
 	err := os.Setenv("test", "test")
 	require.NoError(t, err)
-	require.Equal(t, GetEnv("test", ""), "test")
-	require.Equal(t, GetEnv("testfail", "fail"), "fail")
+	require.Equal(t, "test", GetEnv("test", ""))
+	require.Equal(t, "fail", GetEnv("testfail", "fail"))
 }
 
 func TestCreateDeleteResourceGroup(t *testing.T) {
@@ -36,7 +36,7 @@ func TestCreateDeleteResourceGroup(t *testing.T) {
 	defer stop()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
 	require.NoError(t, err)
-	require.Equal(t, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"), true)
+	require.True(t, strings.HasPrefix(*resourceGroup.Name, "go-sdk-test-"))
 	_, err = DeleteResourceGroup(ctx, subscriptionID, cred, options, *resourceGroup.Name)
 	require.NoError(t, err)
 }

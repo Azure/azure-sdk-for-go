@@ -352,6 +352,30 @@ func LROFilter(changelog *model.Changelog) {
 	}
 }
 
+// PageableFilter PageableFilter after OperationFilter
+func PageableFilter(changelog *model.Changelog) {
+	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
+		removedContent := changelog.Modified.BreakingChanges.Removed
+		for bFunc, v := range removedContent.Funcs {
+			var pagination string
+			clientFunc := strings.Split(bFunc, ".")
+			if len(clientFunc) == 2 {
+				if strings.Contains(clientFunc[1], "New") && strings.Contains(clientFunc[1], "Pager") {
+					clientFunc[1] = strings.TrimPrefix(strings.TrimSuffix(clientFunc[1], "Pager"), "New")
+					pagination = fmt.Sprintf("%s.%s", clientFunc[0], clientFunc[1])
+				} else {
+					pagination = fmt.Sprintf("%s.New%sPager", clientFunc[0], clientFunc[1])
+				}
+				if _, ok := changelog.Modified.AdditiveChanges.Funcs[pagination]; ok {
+					delete(changelog.Modified.AdditiveChanges.Funcs, pagination)
+					v.ReplacedBy = &pagination
+					removedContent.Funcs[bFunc] = v
+				}
+			}
+		}
+	}
+}
+
 func InterfaceToAnyFilter(changelog *model.Changelog) {
 	if changelog.HasBreakingChanges() {
 		for structName, s := range changelog.Modified.BreakingChanges.Structs {

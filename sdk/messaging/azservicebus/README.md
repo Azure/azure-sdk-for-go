@@ -10,7 +10,7 @@ Use the Service Bus client module `github.com/Azure/azure-sdk-for-go/sdk/messagi
 Key links:
 [Source code][source] | [API reference documentation][godoc] | [REST API documentation](https://learn.microsoft.com/rest/api/servicebus/) | [Product documentation](https://learn.microsoft.com/azure/service-bus/) | [Examples][godoc_examples]
 
-If you used the pre-release `azure-service-bus-go` module, see the [Migration     guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/migrationguide.md).
+If you used the pre-release `azure-service-bus-go` module, see the [Migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/migrationguide.md).
 
 ## Getting started
 
@@ -229,7 +229,7 @@ for _, message := range messages {
 
     if errors.As(err, &sbErr) && sbErr.Code == azservicebus.CodeLockLost {
       // The message lock has expired. This isn't fatal for the client, but it does mean
-      // that this message can be received by another receiver (or potentially this one).
+      // that this message can be received by another Receiver (or potentially this one).
       fmt.Printf("Message lock expired\n")
 
       // You can extend the message lock by calling receiver.RenewMessageLock(msg) before the

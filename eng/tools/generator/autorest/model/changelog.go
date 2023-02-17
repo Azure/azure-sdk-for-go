@@ -433,11 +433,12 @@ func removePattern(funcName string, returnValue string) string {
 }
 
 func typeToAny(b *report.BreakingChanges, flag bool) []string {
-	if b.IsEmpty() {
-		return nil
+	var items []string
+
+	if b == nil || b.IsEmpty() {
+		return items
 	}
 
-	var items []string
 	if len(b.Structs) > 0 {
 		for _, k := range sortChangeItem(b.Structs) {
 			v := b.Structs[k]

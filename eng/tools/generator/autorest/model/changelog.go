@@ -433,7 +433,7 @@ func removePattern(funcName string, returnValue string) string {
 }
 
 func typeToAny(b *report.BreakingChanges, flag bool) []string {
-	if b.IsEmpty() {
+	if b == nil || b.IsEmpty() {
 		return nil
 	}
 

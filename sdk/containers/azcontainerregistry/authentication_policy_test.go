@@ -7,10 +7,12 @@
 package azcontainerregistry
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/stretchr/testify/require"
@@ -170,4 +172,15 @@ func Test_authenticationPolicy_anonymousAccess(t *testing.T) {
 	require.NotEmpty(t, repositoryName)
 	_, err = client.UpdateRepositoryProperties(ctx, repositoryName, &ClientUpdateRepositoryPropertiesOptions{Value: &RepositoryWriteableProperties{CanDelete: to.Ptr(true)}})
 	require.Error(t, err)
+}
+
+func Test_authenticationPolicy_getChallengeRequest(t *testing.T) {
+	oriReq, err := runtime.NewRequest(context.Background(), http.MethodPost, "https://test.com")
+	testBody := []byte("test")
+	oriReq.SetBody(streaming.NopCloser(bytes.NewReader(testBody)), "text/plain")
+	require.NoError(t, err)
+	p := &authenticationPolicy{}
+	challengeReq := p.getChallengeRequest(*oriReq)
+	require.Equal(t, fmt.Sprintf("%d", len(testBody)), oriReq.Raw().Header.Get("Content-Length"))
+	require.Equal(t, "", challengeReq.Raw().Header.Get("Content-Length"))
 }

@@ -7,13 +7,10 @@
 package azcontainerregistry
 
 import (
-	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/http"
 	"strings"
@@ -52,10 +49,7 @@ func newAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authC
 
 func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	// send a copy of the original request without body content
-	challengeReq, err := p.getChallengeRequest(*req)
-	if err != nil {
-		return nil, err
-	}
+	challengeReq := p.getChallengeRequest(*req)
 	resp, err := challengeReq.Next()
 	if err != nil {
 		return nil, err
@@ -148,27 +142,11 @@ func (p *authenticationPolicy) findServiceAndScope(resp *http.Response) error {
 	return nil
 }
 
-func (p authenticationPolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
-	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
-	if err != nil {
-		return nil, err
-	}
-
-	req.Raw().Header = orig.Raw().Header
-	req.Raw().Header.Set("Content-Length", "0")
-	req.Raw().ContentLength = 0
-
-	copied := orig.Clone(orig.Raw().Context())
-	copied.Raw().Body = req.Body()
-	copied.Raw().ContentLength = 0
-	copied.Raw().Header.Set("Content-Length", "0")
-	err = copied.SetBody(streaming.NopCloser(bytes.NewReader([]byte{})), "application/json")
-	if err != nil {
-		return nil, err
-	}
+func (p authenticationPolicy) getChallengeRequest(oriReq policy.Request) *policy.Request {
+	copied := oriReq.Clone(oriReq.Raw().Context())
+	copied.SetBody(nil, "")
 	copied.Raw().Header.Del("Content-Type")
-
-	return copied, err
+	return copied
 }
 
 type acquiringResourceState struct {

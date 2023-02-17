@@ -10,6 +10,7 @@ package armcosmos_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -64,6 +65,7 @@ func TestPrivateendpointconnectionsTestSuite(t *testing.T) {
 func (testsuite *PrivateendpointconnectionsTestSuite) Prepare() {
 	var err error
 	// From step DatabaseAccount_Create
+	fmt.Println("Call operation: DatabaseAccounts_CreateOrUpdate")
 	databaseAccountsClient, err := armcosmos.NewDatabaseAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databaseAccountsClientCreateOrUpdateResponsePoller, err := databaseAccountsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armcosmos.DatabaseAccountCreateUpdateParameters{
@@ -242,6 +244,7 @@ func (testsuite *PrivateendpointconnectionsTestSuite) Prepare() {
 func (testsuite *PrivateendpointconnectionsTestSuite) TestPrivateendpointconnection() {
 	var err error
 	// From step PrivateEndpointConnection_Create
+	fmt.Println("Call operation: PrivateEndpointConnections_CreateOrUpdate")
 	privateEndpointConnectionsClient, err := armcosmos.NewPrivateEndpointConnectionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateEndpointConnectionsClientCreateOrUpdateResponsePoller, err := privateEndpointConnectionsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.privateEndpointConnectionName, armcosmos.PrivateEndpointConnection{
@@ -262,10 +265,12 @@ func (testsuite *PrivateendpointconnectionsTestSuite) TestPrivateendpointconnect
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnection_Get
+	fmt.Println("Call operation: PrivateEndpointConnections_Get")
 	_, err = privateEndpointConnectionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnection_ListByDatabaseAccount
+	fmt.Println("Call operation: PrivateEndpointConnections_ListByDatabaseAccount")
 	privateEndpointConnectionsClientNewListByDatabaseAccountPager := privateEndpointConnectionsClient.NewListByDatabaseAccountPager(testsuite.resourceGroupName, testsuite.accountName, nil)
 	for privateEndpointConnectionsClientNewListByDatabaseAccountPager.More() {
 		_, err := privateEndpointConnectionsClientNewListByDatabaseAccountPager.NextPage(testsuite.ctx)
@@ -274,6 +279,7 @@ func (testsuite *PrivateendpointconnectionsTestSuite) TestPrivateendpointconnect
 	}
 
 	// From step PrivateEndpointConnection_Delete
+	fmt.Println("Call operation: PrivateEndpointConnections_Delete")
 	privateEndpointConnectionsClientDeleteResponsePoller, err := privateEndpointConnectionsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, privateEndpointConnectionsClientDeleteResponsePoller)
@@ -284,12 +290,14 @@ func (testsuite *PrivateendpointconnectionsTestSuite) TestPrivateendpointconnect
 func (testsuite *PrivateendpointconnectionsTestSuite) TestPrivatelinkresource() {
 	var err error
 	// From step PrivateLinkResource_Get
+	fmt.Println("Call operation: PrivateLinkResources_Get")
 	privateLinkResourcesClient, err := armcosmos.NewPrivateLinkResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = privateLinkResourcesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, "sql", nil)
 	testsuite.Require().NoError(err)
 
 	// From step PrivateLinkResource_LisyByDabasebaseAccount
+	fmt.Println("Call operation: PrivateLinkResources_ListByDatabaseAccount")
 	privateLinkResourcesClientNewListByDatabaseAccountPager := privateLinkResourcesClient.NewListByDatabaseAccountPager(testsuite.resourceGroupName, testsuite.accountName, nil)
 	for privateLinkResourcesClientNewListByDatabaseAccountPager.More() {
 		_, err := privateLinkResourcesClientNewListByDatabaseAccountPager.NextPage(testsuite.ctx)

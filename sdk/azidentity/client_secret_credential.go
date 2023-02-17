@@ -20,6 +20,9 @@ const credNameSecret = "ClientSecretCredential"
 // ClientSecretCredentialOptions contains optional parameters for ClientSecretCredential.
 type ClientSecretCredentialOptions struct {
 	azcore.ClientOptions
+
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
 }
 
 // ClientSecretCredential authenticates an application with a client secret.
@@ -36,7 +39,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	if err != nil {
 		return nil, err
 	}
-	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions)
+	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	if err != nil {
 		return nil, err
 	}

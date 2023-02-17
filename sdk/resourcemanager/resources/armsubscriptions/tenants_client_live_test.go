@@ -8,6 +8,7 @@ package armsubscriptions_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -51,6 +52,7 @@ func TestTenantsClient(t *testing.T) {
 }
 
 func (testsuite *TenantsClientTestSuite) TestTenantsCRUD() {
+	fmt.Println("Call operation: Tenants_List")
 	tenantsClient, err := armsubscriptions.NewTenantsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	pager := tenantsClient.NewListPager(nil)

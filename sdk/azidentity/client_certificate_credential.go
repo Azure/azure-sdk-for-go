@@ -25,6 +25,9 @@ const credNameCert = "ClientCertificateCredential"
 type ClientCertificateCredentialOptions struct {
 	azcore.ClientOptions
 
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
+
 	// SendCertificateChain controls whether the credential sends the public certificate chain in the x5c
 	// header of each token request's JWT. This is required for Subject Name/Issuer (SNI) authentication.
 	// Defaults to False.
@@ -52,6 +55,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if options.SendCertificateChain {
 		o = append(o, confidential.WithX5C())
 	}
+	o = append(o, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, o...)
 	if err != nil {
 		return nil, err

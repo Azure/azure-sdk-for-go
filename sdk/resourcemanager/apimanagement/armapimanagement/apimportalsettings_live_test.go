@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestApimportalsettingsTestSuite(t *testing.T) {
 func (testsuite *ApimportalsettingsTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -86,6 +88,7 @@ func (testsuite *ApimportalsettingsTestSuite) Prepare() {
 func (testsuite *ApimportalsettingsTestSuite) TestPortalsettings() {
 	var err error
 	// From step PortalSettings_ListByService
+	fmt.Println("Call operation: PortalSettings_ListByService")
 	portalSettingsClient, err := armapimanagement.NewPortalSettingsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = portalSettingsClient.ListByService(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
@@ -96,6 +99,7 @@ func (testsuite *ApimportalsettingsTestSuite) TestPortalsettings() {
 func (testsuite *ApimportalsettingsTestSuite) TestSigninsettings() {
 	var err error
 	// From step SignInSettings_CreateOrUpdate
+	fmt.Println("Call operation: SignInSettings_CreateOrUpdate")
 	signInSettingsClient, err := armapimanagement.NewSignInSettingsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = signInSettingsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PortalSigninSettings{
@@ -106,14 +110,17 @@ func (testsuite *ApimportalsettingsTestSuite) TestSigninsettings() {
 	testsuite.Require().NoError(err)
 
 	// From step SignInSettings_GetEntityTag
+	fmt.Println("Call operation: SignInSettings_GetEntityTag")
 	_, err = signInSettingsClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SignInSettings_Get
+	fmt.Println("Call operation: SignInSettings_Get")
 	_, err = signInSettingsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SignInSettings_Update
+	fmt.Println("Call operation: SignInSettings_Update")
 	_, err = signInSettingsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, "*", armapimanagement.PortalSigninSettings{
 		Properties: &armapimanagement.PortalSigninSettingProperties{
 			Enabled: to.Ptr(true),
@@ -126,6 +133,7 @@ func (testsuite *ApimportalsettingsTestSuite) TestSigninsettings() {
 func (testsuite *ApimportalsettingsTestSuite) TestSignupsettings() {
 	var err error
 	// From step SignUpSettings_CreateOrUpdate
+	fmt.Println("Call operation: SignUpSettings_CreateOrUpdate")
 	signUpSettingsClient, err := armapimanagement.NewSignUpSettingsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = signUpSettingsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PortalSignupSettings{
@@ -141,14 +149,17 @@ func (testsuite *ApimportalsettingsTestSuite) TestSignupsettings() {
 	testsuite.Require().NoError(err)
 
 	// From step SignUpSettings_GetEntityTag
+	fmt.Println("Call operation: SignUpSettings_GetEntityTag")
 	_, err = signUpSettingsClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SignUpSettings_Get
+	fmt.Println("Call operation: SignUpSettings_Get")
 	_, err = signUpSettingsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SignUpSettings_Update
+	fmt.Println("Call operation: SignUpSettings_Update")
 	_, err = signUpSettingsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, "*", armapimanagement.PortalSignupSettings{
 		Properties: &armapimanagement.PortalSignupSettingsProperties{
 			Enabled: to.Ptr(true),

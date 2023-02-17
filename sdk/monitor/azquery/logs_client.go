@@ -19,8 +19,7 @@ import (
 	"strings"
 )
 
-// QueryBatch - Executes a batch of Analytics queries for data. Here [https://dev.loganalytics.io/documentation/Using-the-API]
-// is an example for using POST with an Analytics query.
+// QueryBatch - Executes a batch of Analytics queries for data.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-05-19_Preview
 // body - The batch request body
@@ -60,11 +59,10 @@ func (client *LogsClient) queryBatchHandleResponse(resp *http.Response) (LogsCli
 	return result, nil
 }
 
-// QueryWorkspace - Executes an Analytics query for data. Here [https://dev.loganalytics.io/documentation/Using-the-API] is
-// an example for using POST with an Analytics query.
+// QueryWorkspace - Executes an Analytics query for data.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-05-19_Preview
-// workspaceID - ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
+// workspaceID - Primary Workspace ID of the query. This is Workspace ID from the Properties blade in the Azure portal
 // body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
 // options - LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
 func (client *LogsClient) QueryWorkspace(ctx context.Context, workspaceID string, body Body, options *LogsClientQueryWorkspaceOptions) (LogsClientQueryWorkspaceResponse, error) {
@@ -93,8 +91,8 @@ func (client *LogsClient) queryWorkspaceCreateRequest(ctx context.Context, works
 	if err != nil {
 		return nil, err
 	}
-	if options != nil && options.Prefer != nil {
-		req.Raw().Header["Prefer"] = []string{*options.Prefer}
+	if options != nil && options.Options != nil {
+		req.Raw().Header["Prefer"] = []string{options.Options.preferHeader()}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

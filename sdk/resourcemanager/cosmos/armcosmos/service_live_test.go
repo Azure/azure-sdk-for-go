@@ -10,6 +10,7 @@ package armcosmos_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestServiceTestSuite(t *testing.T) {
 func (testsuite *ServiceTestSuite) Prepare() {
 	var err error
 	// From step DatabaseAccount_Create
+	fmt.Println("Call operation: DatabaseAccounts_CreateOrUpdate")
 	databaseAccountsClient, err := armcosmos.NewDatabaseAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databaseAccountsClientCreateOrUpdateResponsePoller, err := databaseAccountsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armcosmos.DatabaseAccountCreateUpdateParameters{
@@ -84,6 +86,7 @@ func (testsuite *ServiceTestSuite) Prepare() {
 func (testsuite *ServiceTestSuite) TestService() {
 	var err error
 	// From step Service_CreateSqlDedicatedGatewayService
+	fmt.Println("Call operation: Service_Create")
 	serviceClient, err := armcosmos.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateResponsePoller, err := serviceClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, "SqlDedicatedGateway", armcosmos.ServiceResourceCreateUpdateParameters{
@@ -98,10 +101,12 @@ func (testsuite *ServiceTestSuite) TestService() {
 	testsuite.Require().NoError(err)
 
 	// From step Service_GetSqlDedicatedGatewayService
+	fmt.Println("Call operation: Service_Get")
 	_, err = serviceClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, "SqlDedicatedGateway", nil)
 	testsuite.Require().NoError(err)
 
 	// From step Service_List
+	fmt.Println("Call operation: Service_List")
 	serviceClientNewListPager := serviceClient.NewListPager(testsuite.resourceGroupName, testsuite.accountName, nil)
 	for serviceClientNewListPager.More() {
 		_, err := serviceClientNewListPager.NextPage(testsuite.ctx)
@@ -110,6 +115,7 @@ func (testsuite *ServiceTestSuite) TestService() {
 	}
 
 	// From step Service_DeleteSqlDedicatedGatewayService
+	fmt.Println("Call operation: Service_Delete")
 	serviceClientDeleteResponsePoller, err := serviceClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, "SqlDedicatedGateway", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, serviceClientDeleteResponsePoller)

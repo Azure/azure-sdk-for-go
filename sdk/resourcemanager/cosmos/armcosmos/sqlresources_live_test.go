@@ -10,6 +10,7 @@ package armcosmos_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestSqlresourcesTestSuite(t *testing.T) {
 func (testsuite *SqlresourcesTestSuite) Prepare() {
 	var err error
 	// From step DatabaseAccount_Create
+	fmt.Println("Call operation: DatabaseAccounts_CreateOrUpdate")
 	databaseAccountsClient, err := armcosmos.NewDatabaseAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databaseAccountsClientCreateOrUpdateResponsePoller, err := databaseAccountsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armcosmos.DatabaseAccountCreateUpdateParameters{
@@ -86,6 +88,7 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	databaseName := "cosmos_sql"
 	var err error
 	// From step SQLResources_CreateSQLDatabase
+	fmt.Println("Call operation: SQLResources_CreateUpdateSQLDatabase")
 	sQLResourcesClient, err := armcosmos.NewSQLResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	sQLResourcesClientCreateUpdateSQLDatabaseResponsePoller, err := sQLResourcesClient.BeginCreateUpdateSQLDatabase(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, armcosmos.SQLDatabaseCreateUpdateParameters{
@@ -105,10 +108,12 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_GetSQLDatabase
+	fmt.Println("Call operation: SQLResources_GetSQLDatabase")
 	_, err = sQLResourcesClient.GetSQLDatabase(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_ListSQLDatabase
+	fmt.Println("Call operation: SQLResources_ListSQLDatabases")
 	sQLResourcesClientNewListSQLDatabasesPager := sQLResourcesClient.NewListSQLDatabasesPager(testsuite.resourceGroupName, testsuite.accountName, nil)
 	for sQLResourcesClientNewListSQLDatabasesPager.More() {
 		_, err := sQLResourcesClientNewListSQLDatabasesPager.NextPage(testsuite.ctx)
@@ -117,6 +122,7 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	}
 
 	// From step SQLResources_UpdateSQLDatabaseThroughput
+	fmt.Println("Call operation: SQLResources_UpdateSQLDatabaseThroughput")
 	sQLResourcesClientUpdateSQLDatabaseThroughputResponsePoller, err := sQLResourcesClient.BeginUpdateSQLDatabaseThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -131,22 +137,26 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_GetSQLDatabaseThroughput
+	fmt.Println("Call operation: SQLResources_GetSQLDatabaseThroughput")
 	_, err = sQLResourcesClient.GetSQLDatabaseThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_MigrateSQLDatabaseToAutoscale
+	fmt.Println("Call operation: SQLResources_MigrateSQLDatabaseToAutoscale")
 	sQLResourcesClientMigrateSQLDatabaseToAutoscaleResponsePoller, err := sQLResourcesClient.BeginMigrateSQLDatabaseToAutoscale(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sQLResourcesClientMigrateSQLDatabaseToAutoscaleResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_MigrateSQLDatabaseToManualThroughput
+	fmt.Println("Call operation: SQLResources_MigrateSQLDatabaseToManualThroughput")
 	sQLResourcesClientMigrateSQLDatabaseToManualThroughputResponsePoller, err := sQLResourcesClient.BeginMigrateSQLDatabaseToManualThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sQLResourcesClientMigrateSQLDatabaseToManualThroughputResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_CreateSQLContainer
+	fmt.Println("Call operation: SQLResources_CreateUpdateSQLContainer")
 	sQLResourcesClientCreateUpdateSQLContainerResponsePoller, err := sQLResourcesClient.BeginCreateUpdateSQLContainer(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, armcosmos.SQLContainerCreateUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -200,10 +210,12 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_GetSQLContainer
+	fmt.Println("Call operation: SQLResources_GetSQLContainer")
 	_, err = sQLResourcesClient.GetSQLContainer(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_ListSQLContainers
+	fmt.Println("Call operation: SQLResources_ListSQLContainers")
 	sQLResourcesClientNewListSQLContainersPager := sQLResourcesClient.NewListSQLContainersPager(testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	for sQLResourcesClientNewListSQLContainersPager.More() {
 		_, err := sQLResourcesClientNewListSQLContainersPager.NextPage(testsuite.ctx)
@@ -212,6 +224,7 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	}
 
 	// From step SQLResources_UpdateSQLContainerThroughput
+	fmt.Println("Call operation: SQLResources_UpdateSQLContainerThroughput")
 	sQLResourcesClientUpdateSQLContainerThroughputResponsePoller, err := sQLResourcesClient.BeginUpdateSQLContainerThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -226,22 +239,26 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_GetSQLContainerThroughput
+	fmt.Println("Call operation: SQLResources_GetSQLContainerThroughput")
 	_, err = sQLResourcesClient.GetSQLContainerThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_MigrateSQLContainerToAutoscale
+	fmt.Println("Call operation: SQLResources_MigrateSQLContainerToAutoscale")
 	sQLResourcesClientMigrateSQLContainerToAutoscaleResponsePoller, err := sQLResourcesClient.BeginMigrateSQLContainerToAutoscale(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sQLResourcesClientMigrateSQLContainerToAutoscaleResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_MigrateSQLContainerToManualThroughput
+	fmt.Println("Call operation: SQLResources_MigrateSQLContainerToManualThroughput")
 	sQLResourcesClientMigrateSQLContainerToManualThroughputResponsePoller, err := sQLResourcesClient.BeginMigrateSQLContainerToManualThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sQLResourcesClientMigrateSQLContainerToManualThroughputResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_CreateSQLStoredProcedure
+	fmt.Println("Call operation: SQLResources_CreateUpdateSQLStoredProcedure")
 	sQLResourcesClientCreateUpdateSQLStoredProcedureResponsePoller, err := sQLResourcesClient.BeginCreateUpdateSQLStoredProcedure(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, "storedProcedureName", armcosmos.SQLStoredProcedureCreateUpdateParameters{
 		Properties: &armcosmos.SQLStoredProcedureCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
@@ -256,10 +273,12 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_GetSQLStoredProcedure
+	fmt.Println("Call operation: SQLResources_GetSQLStoredProcedure")
 	_, err = sQLResourcesClient.GetSQLStoredProcedure(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, "storedProcedureName", nil)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_ListSQLStoredProcedures
+	fmt.Println("Call operation: SQLResources_ListSQLStoredProcedures")
 	sQLResourcesClientNewListSQLStoredProceduresPager := sQLResourcesClient.NewListSQLStoredProceduresPager(testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, nil)
 	for sQLResourcesClientNewListSQLStoredProceduresPager.More() {
 		_, err := sQLResourcesClientNewListSQLStoredProceduresPager.NextPage(testsuite.ctx)
@@ -268,12 +287,14 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	}
 
 	// From step SQLResources_DeleteSQLStoredProcedure
+	fmt.Println("Call operation: SQLResources_DeleteSQLStoredProcedure")
 	sQLResourcesClientDeleteSQLStoredProcedureResponsePoller, err := sQLResourcesClient.BeginDeleteSQLStoredProcedure(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, "storedProcedureName", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sQLResourcesClientDeleteSQLStoredProcedureResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_CreateSQLUserDefinedFunction
+	fmt.Println("Call operation: SQLResources_CreateUpdateSQLUserDefinedFunction")
 	sQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponsePoller, err := sQLResourcesClient.BeginCreateUpdateSQLUserDefinedFunction(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, "userDefinedFunctionName", armcosmos.SQLUserDefinedFunctionCreateUpdateParameters{
 		Properties: &armcosmos.SQLUserDefinedFunctionCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
@@ -288,10 +309,12 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_GetSQLUserDefinedFunction
+	fmt.Println("Call operation: SQLResources_GetSQLUserDefinedFunction")
 	_, err = sQLResourcesClient.GetSQLUserDefinedFunction(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, "userDefinedFunctionName", nil)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_ListSQLUserDefinedFunctions
+	fmt.Println("Call operation: SQLResources_ListSQLUserDefinedFunctions")
 	sQLResourcesClientNewListSQLUserDefinedFunctionsPager := sQLResourcesClient.NewListSQLUserDefinedFunctionsPager(testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, nil)
 	for sQLResourcesClientNewListSQLUserDefinedFunctionsPager.More() {
 		_, err := sQLResourcesClientNewListSQLUserDefinedFunctionsPager.NextPage(testsuite.ctx)
@@ -300,12 +323,14 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	}
 
 	// From step SQLResources_DeleteSQLUserDefinedFunction
+	fmt.Println("Call operation: SQLResources_DeleteSQLUserDefinedFunction")
 	sQLResourcesClientDeleteSQLUserDefinedFunctionResponsePoller, err := sQLResourcesClient.BeginDeleteSQLUserDefinedFunction(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, "userDefinedFunctionName", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sQLResourcesClientDeleteSQLUserDefinedFunctionResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_CreateSQLTrigger
+	fmt.Println("Call operation: SQLResources_CreateUpdateSQLTrigger")
 	sQLResourcesClientCreateUpdateSQLTriggerResponsePoller, err := sQLResourcesClient.BeginCreateUpdateSQLTrigger(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, "triggerName", armcosmos.SQLTriggerCreateUpdateParameters{
 		Properties: &armcosmos.SQLTriggerCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
@@ -322,10 +347,12 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_GetSQLTrigger
+	fmt.Println("Call operation: SQLResources_GetSQLTrigger")
 	_, err = sQLResourcesClient.GetSQLTrigger(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, "triggerName", nil)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_ListSQLTriggers
+	fmt.Println("Call operation: SQLResources_ListSQLTriggers")
 	sQLResourcesClientNewListSQLTriggersPager := sQLResourcesClient.NewListSQLTriggersPager(testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, nil)
 	for sQLResourcesClientNewListSQLTriggersPager.More() {
 		_, err := sQLResourcesClientNewListSQLTriggersPager.NextPage(testsuite.ctx)
@@ -334,18 +361,21 @@ func (testsuite *SqlresourcesTestSuite) TestSqlresources() {
 	}
 
 	// From step SQLResources_DeleteSQLTrigger
+	fmt.Println("Call operation: SQLResources_DeleteSQLTrigger")
 	sQLResourcesClientDeleteSQLTriggerResponsePoller, err := sQLResourcesClient.BeginDeleteSQLTrigger(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, "triggerName", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sQLResourcesClientDeleteSQLTriggerResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_DeleteSQLContainer
+	fmt.Println("Call operation: SQLResources_DeleteSQLContainer")
 	sQLResourcesClientDeleteSQLContainerResponsePoller, err := sQLResourcesClient.BeginDeleteSQLContainer(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, containerName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sQLResourcesClientDeleteSQLContainerResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step SQLResources_DeleteSQLDatabase
+	fmt.Println("Call operation: SQLResources_DeleteSQLDatabase")
 	sQLResourcesClientDeleteSQLDatabaseResponsePoller, err := sQLResourcesClient.BeginDeleteSQLDatabase(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sQLResourcesClientDeleteSQLDatabaseResponsePoller)

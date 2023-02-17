@@ -59,7 +59,7 @@ func NewLogAnalyticsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window
 // to show throttling activities.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+// Generated from API version 2022-11-01
 // location - The location upon which virtual-machine-sizes is queried.
 // parameters - Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
 // options - LogAnalyticsClientBeginExportRequestRateByIntervalOptions contains the optional parameters for the LogAnalyticsClient.BeginExportRequestRateByInterval
@@ -81,7 +81,7 @@ func (client *LogAnalyticsClient) BeginExportRequestRateByInterval(ctx context.C
 // ExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window to
 // show throttling activities.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+// Generated from API version 2022-11-01
 func (client *LogAnalyticsClient) exportRequestRateByInterval(ctx context.Context, location string, parameters RequestRateByIntervalInput, options *LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (*http.Response, error) {
 	req, err := client.exportRequestRateByIntervalCreateRequest(ctx, location, parameters, options)
 	if err != nil {
@@ -113,7 +113,7 @@ func (client *LogAnalyticsClient) exportRequestRateByIntervalCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -122,7 +122,7 @@ func (client *LogAnalyticsClient) exportRequestRateByIntervalCreateRequest(ctx c
 // BeginExportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time
 // window.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+// Generated from API version 2022-11-01
 // location - The location upon which virtual-machine-sizes is queried.
 // parameters - Parameters supplied to the LogAnalytics getThrottledRequests Api.
 // options - LogAnalyticsClientBeginExportThrottledRequestsOptions contains the optional parameters for the LogAnalyticsClient.BeginExportThrottledRequests
@@ -143,7 +143,7 @@ func (client *LogAnalyticsClient) BeginExportThrottledRequests(ctx context.Conte
 
 // ExportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time window.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+// Generated from API version 2022-11-01
 func (client *LogAnalyticsClient) exportThrottledRequests(ctx context.Context, location string, parameters ThrottledRequestsInput, options *LogAnalyticsClientBeginExportThrottledRequestsOptions) (*http.Response, error) {
 	req, err := client.exportThrottledRequestsCreateRequest(ctx, location, parameters, options)
 	if err != nil {
@@ -175,7 +175,7 @@ func (client *LogAnalyticsClient) exportThrottledRequestsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

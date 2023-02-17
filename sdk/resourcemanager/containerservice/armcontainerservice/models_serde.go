@@ -2680,6 +2680,33 @@ func (m *ManagedClusterNATGatewayProfile) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ManagedClusterNodeResourceGroupProfile.
+func (m ManagedClusterNodeResourceGroupProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "restrictionLevel", m.RestrictionLevel)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManagedClusterNodeResourceGroupProfile.
+func (m *ManagedClusterNodeResourceGroupProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "restrictionLevel":
+			err = unpopulate(val, "RestrictionLevel", &m.RestrictionLevel)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ManagedClusterOIDCIssuerProfile.
 func (m ManagedClusterOIDCIssuerProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3025,6 +3052,7 @@ func (m ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "maxAgentPools", m.MaxAgentPools)
 	populate(objectMap, "networkProfile", m.NetworkProfile)
 	populate(objectMap, "nodeResourceGroup", m.NodeResourceGroup)
+	populate(objectMap, "nodeResourceGroupProfile", m.NodeResourceGroupProfile)
 	populate(objectMap, "oidcIssuerProfile", m.OidcIssuerProfile)
 	populate(objectMap, "podIdentityProfile", m.PodIdentityProfile)
 	populate(objectMap, "powerState", m.PowerState)
@@ -3129,6 +3157,9 @@ func (m *ManagedClusterProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "nodeResourceGroup":
 			err = unpopulate(val, "NodeResourceGroup", &m.NodeResourceGroup)
+			delete(rawMsg, key)
+		case "nodeResourceGroupProfile":
+			err = unpopulate(val, "NodeResourceGroupProfile", &m.NodeResourceGroupProfile)
 			delete(rawMsg, key)
 		case "oidcIssuerProfile":
 			err = unpopulate(val, "OidcIssuerProfile", &m.OidcIssuerProfile)

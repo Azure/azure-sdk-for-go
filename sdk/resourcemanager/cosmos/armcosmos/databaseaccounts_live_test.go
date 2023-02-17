@@ -10,6 +10,7 @@ package armcosmos_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -59,6 +60,7 @@ func (testsuite *DatabaseaccountsTestSuite) TestDatabaseaccount() {
 	accountName := "databaseaccountcosmos"
 	var err error
 	// From step DatabaseAccount_Create
+	fmt.Println("Call operation: DatabaseAccounts_CreateOrUpdate")
 	databaseAccountsClient, err := armcosmos.NewDatabaseAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databaseAccountsClientCreateOrUpdateResponsePoller, err := databaseAccountsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, accountName, armcosmos.DatabaseAccountCreateUpdateParameters{
@@ -86,14 +88,17 @@ func (testsuite *DatabaseaccountsTestSuite) TestDatabaseaccount() {
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_CheckNameExists
+	fmt.Println("Call operation: DatabaseAccounts_CheckNameExists")
 	_, err = databaseAccountsClient.CheckNameExists(testsuite.ctx, accountName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_Get
+	fmt.Println("Call operation: DatabaseAccounts_Get")
 	_, err = databaseAccountsClient.Get(testsuite.ctx, testsuite.resourceGroupName, accountName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_List
+	fmt.Println("Call operation: DatabaseAccounts_List")
 	databaseAccountsClientNewListPager := databaseAccountsClient.NewListPager(nil)
 	for databaseAccountsClientNewListPager.More() {
 		_, err := databaseAccountsClientNewListPager.NextPage(testsuite.ctx)
@@ -102,6 +107,7 @@ func (testsuite *DatabaseaccountsTestSuite) TestDatabaseaccount() {
 	}
 
 	// From step DatabaseAccount_ListByResourceGroup
+	fmt.Println("Call operation: DatabaseAccounts_ListByResourceGroup")
 	databaseAccountsClientNewListByResourceGroupPager := databaseAccountsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for databaseAccountsClientNewListByResourceGroupPager.More() {
 		_, err := databaseAccountsClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -110,22 +116,27 @@ func (testsuite *DatabaseaccountsTestSuite) TestDatabaseaccount() {
 	}
 
 	// From step DatabaseAccount_ListKeys
+	fmt.Println("Call operation: DatabaseAccounts_ListKeys")
 	_, err = databaseAccountsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, accountName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_ListConnectionStrings
+	fmt.Println("Call operation: DatabaseAccounts_ListConnectionStrings")
 	_, err = databaseAccountsClient.ListConnectionStrings(testsuite.ctx, testsuite.resourceGroupName, accountName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_GetReadOnlyKeys
+	fmt.Println("Call operation: DatabaseAccounts_GetReadOnlyKeys")
 	_, err = databaseAccountsClient.GetReadOnlyKeys(testsuite.ctx, testsuite.resourceGroupName, accountName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_ListReadOnlyKeys
+	fmt.Println("Call operation: DatabaseAccounts_ListReadOnlyKeys")
 	_, err = databaseAccountsClient.ListReadOnlyKeys(testsuite.ctx, testsuite.resourceGroupName, accountName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_ListMetricDefinitions
+	fmt.Println("Call operation: DatabaseAccounts_ListMetricDefinitions")
 	databaseAccountsClientNewListMetricDefinitionsPager := databaseAccountsClient.NewListMetricDefinitionsPager(testsuite.resourceGroupName, accountName, nil)
 	for databaseAccountsClientNewListMetricDefinitionsPager.More() {
 		_, err := databaseAccountsClientNewListMetricDefinitionsPager.NextPage(testsuite.ctx)
@@ -134,6 +145,7 @@ func (testsuite *DatabaseaccountsTestSuite) TestDatabaseaccount() {
 	}
 
 	// From step DatabaseAccount_FailoverPriorityChange
+	fmt.Println("Call operation: DatabaseAccounts_FailoverPriorityChange")
 	databaseAccountsClientFailoverPriorityChangeResponsePoller, err := databaseAccountsClient.BeginFailoverPriorityChange(testsuite.ctx, testsuite.resourceGroupName, accountName, armcosmos.FailoverPolicies{
 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 			{
@@ -154,6 +166,7 @@ func (testsuite *DatabaseaccountsTestSuite) TestDatabaseaccount() {
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_RegenerateKey
+	fmt.Println("Call operation: DatabaseAccounts_RegenerateKey")
 	databaseAccountsClientRegenerateKeyResponsePoller, err := databaseAccountsClient.BeginRegenerateKey(testsuite.ctx, testsuite.resourceGroupName, accountName, armcosmos.DatabaseAccountRegenerateKeyParameters{
 		KeyKind: to.Ptr(armcosmos.KeyKindPrimary),
 	}, nil)
@@ -162,6 +175,7 @@ func (testsuite *DatabaseaccountsTestSuite) TestDatabaseaccount() {
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_Update
+	fmt.Println("Call operation: DatabaseAccounts_Update")
 	databaseAccountsClientUpdateResponsePoller, err := databaseAccountsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, accountName, armcosmos.DatabaseAccountUpdateParameters{
 		Tags: map[string]*string{
 			"dept": to.Ptr("finance"),
@@ -172,6 +186,7 @@ func (testsuite *DatabaseaccountsTestSuite) TestDatabaseaccount() {
 	testsuite.Require().NoError(err)
 
 	// From step DatabaseAccount_Delete
+	fmt.Println("Call operation: DatabaseAccounts_Delete")
 	databaseAccountsClientDeleteResponsePoller, err := databaseAccountsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, accountName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, databaseAccountsClientDeleteResponsePoller)

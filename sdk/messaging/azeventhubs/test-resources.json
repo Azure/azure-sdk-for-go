@@ -212,6 +212,14 @@
     "CHECKPOINTSTORE_STORAGE_CONNECTION_STRING": {
       "type": "string",
       "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+    },
+    "RESOURCE_GROUP": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    },
+    "AZURE_SUBSCRIPTION_ID": {
+      "type": "string",
+      "value": "[subscription().subscriptionId]"
     }
   }
 }

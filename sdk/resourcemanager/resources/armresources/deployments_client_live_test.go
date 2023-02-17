@@ -102,6 +102,7 @@ func unmarshalTemplate(data string) (map[string]interface{}, error) {
 
 func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 	// check existence deployment
+	fmt.Println("Call operation: Deployments_CheckExistence")
 	deploymentsClient, err := armresources.NewDeploymentsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	deploymentName := "go-test-deployment"
@@ -112,6 +113,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 	tmp, err := unmarshalTemplate(template)
 
 	// create deployment
+	fmt.Println("Call operation: Deployments_CreateOrUpdate")
 	testsuite.Require().NoError(err)
 	pollerResp, err := deploymentsClient.BeginCreateOrUpdate(
 		testsuite.ctx,
@@ -136,15 +138,18 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 	testsuite.Require().Equal(deploymentName, *resp.Name)
 
 	// get
+	fmt.Println("Call operation: Deployments_Get")
 	getResp, err := deploymentsClient.Get(testsuite.ctx, testsuite.resourceGroupName, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list by resource group
+	fmt.Println("Call operation: Deployments_ListByResourceGroup")
 	listPager := deploymentsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// what if
+	fmt.Println("Call operation: Deployments_WhatIf")
 	whatPoller, err := deploymentsClient.BeginWhatIf(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -163,6 +168,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 	testsuite.Require().Equal("InvalidTemplate", *whatResp.Error.Code)
 
 	// validate
+	fmt.Println("Call operation: Deployments_Validate")
 	vPoller, err := deploymentsClient.BeginValidate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -186,11 +192,13 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 	testsuite.Require().Equal(to.Ptr(armresources.DeploymentModeIncremental), vResp.Properties.Mode)
 
 	// export template
+	fmt.Println("Call operation: Deployments_ExportTemplate")
 	exportTemplate, err := deploymentsClient.ExportTemplate(testsuite.ctx, testsuite.resourceGroupName, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(exportTemplate)
 
 	// delete deployment
+	fmt.Println("Call operation: Deployments_Delete")
 	delPoller, err := deploymentsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, delPoller)
@@ -199,6 +207,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 
 func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 	// check deployment existence
+	fmt.Println("Call operation: Deployments_CheckExistenceAtScope")
 	deploymentsClient, err := armresources.NewDeploymentsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	deploymentName := "go-test-deployment-scope"
@@ -211,6 +220,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 	testsuite.Require().NoError(err)
 
 	// create deployment at scope
+	fmt.Println("Call operation: Deployments_CreateOrUpdateAtScope")
 	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtScope(
 		testsuite.ctx,
 		scopeResource,
@@ -234,14 +244,17 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 	testsuite.Require().Equal(deploymentName, *resp.Name)
 
 	// get deployment at scope
+	fmt.Println("Call operation: Deployments_GetAtScope")
 	getResp, err := deploymentsClient.GetAtScope(testsuite.ctx, scopeResource, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list deployment at scope
+	fmt.Println("Call operation: Deployments_ListAtScope")
 	listPager := deploymentsClient.NewListAtScopePager(scopeResource, nil)
 	testsuite.Require().True(listPager.More())
 
+	fmt.Println("Call operation: Deployments_ValidateAtScope")
 	vPoller, err := deploymentsClient.BeginValidateAtScope(
 		testsuite.ctx,
 		scopeResource,
@@ -265,11 +278,13 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 	testsuite.Require().Equal(armresources.DeploymentModeIncremental, *vResp.Properties.Mode)
 
 	// export template
+	fmt.Println("Call operation: Deployments_ExportTemplateAtScope")
 	exportTemplate, err := deploymentsClient.ExportTemplateAtScope(testsuite.ctx, scopeResource, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(exportTemplate)
 
 	// delete deployment
+	fmt.Println("Call operation: Deployments_DeleteAtScope")
 	delPoller, err := deploymentsClient.BeginDeleteAtScope(testsuite.ctx, scopeResource, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	_, err = delPoller.PollUntilDone(testsuite.ctx, nil)
@@ -295,6 +310,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 	testsuite.Require().Equal(groupName, *mgResp.Name)
 
 	// create deployment
+	fmt.Println("Call operation: Deployments_CreateOrUpdateAtManagementGroupScope")
 	deploymentsClient, err := armresources.NewDeploymentsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	deploymentName := "go-test-deploymentMG"
@@ -322,20 +338,24 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 	testsuite.Require().Equal(deploymentName, *resp.Name)
 
 	// check
+	fmt.Println("Call operation: Deployments_CheckExistenceAtManagementGroupScope")
 	check, err := deploymentsClient.CheckExistenceAtManagementGroupScope(testsuite.ctx, groupName, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().True(check.Success)
 
 	// get deployment
+	fmt.Println("Call operation: Deployments_GetAtManagementGroupScope")
 	getResp, err := deploymentsClient.GetAtManagementGroupScope(testsuite.ctx, groupName, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list deployment
+	fmt.Println("Call operation: Deployments_ListAtManagementGroupScope")
 	listPager := deploymentsClient.NewListAtManagementGroupScopePager(groupName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// validate deployment
+	fmt.Println("Call operation: Deployments_ValidateAtManagementGroupScope")
 	validatePoller, err := deploymentsClient.BeginValidateAtManagementGroupScope(
 		testsuite.ctx,
 		groupName,
@@ -360,17 +380,20 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 	testsuite.Require().NotNil(validateResp.Properties)
 
 	// export template deployment
+	fmt.Println("Call operation: Deployments_ExportTemplateAtManagementGroupScope")
 	exportResp, err := deploymentsClient.ExportTemplateAtManagementGroupScope(testsuite.ctx, groupName, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(exportResp.Template)
 
 	// delete template deployment
+	fmt.Println("Call operation: Deployments_DeleteAtManagementGroupScope")
 	delPoller, err := deploymentsClient.BeginDeleteAtManagementGroupScope(testsuite.ctx, groupName, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, delPoller)
 	testsuite.Require().NoError(err)
 
 	// delete management group
+	fmt.Println("Call operation: Deployments_Delete")
 	delManagementGroup, err := managementGroupsClient.BeginDelete(testsuite.ctx, groupName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, delManagementGroup)
@@ -379,6 +402,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 
 func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtSubscriptionScope() {
 	// check deployment existence
+	fmt.Println("Call operation: Deployments_CheckExistenceAtSubscriptionScope")
 	deploymentsClient, err := armresources.NewDeploymentsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	deploymentName := "go-test-at-subscription"
@@ -387,6 +411,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtSubscriptionScope(
 	testsuite.Require().False(check.Success)
 
 	// create deployment at subscription scope
+	fmt.Println("Call operation: Deployments_CreateOrUpdateAtSubscriptionScope")
 	pollerResp, err := deploymentsClient.BeginCreateOrUpdateAtSubscriptionScope(
 		testsuite.ctx,
 		deploymentName,
@@ -410,15 +435,18 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtSubscriptionScope(
 	testsuite.Require().Equal(deploymentName, *resp.Name)
 
 	// get deployment
+	fmt.Println("Call operation: Deployments_GetAtSubscriptionScope")
 	getResp, err := deploymentsClient.GetAtSubscriptionScope(testsuite.ctx, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list deployment
+	fmt.Println("Call operation: Deployments_ListAtSubscriptionScope")
 	listResp := deploymentsClient.NewListAtSubscriptionScopePager(nil)
 	testsuite.Require().True(listResp.More())
 
 	// what if deployment
+	fmt.Println("Call operation: Deployments_WhatIfAtSubscriptionScope")
 	whatIfPoller, err := deploymentsClient.BeginWhatIfAtSubscriptionScope(
 		testsuite.ctx,
 		deploymentName,
@@ -441,6 +469,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtSubscriptionScope(
 	testsuite.Require().NoError(err)
 
 	// validate deployment
+	fmt.Println("Call operation: Deployments_ValidateAtSubscriptionScope")
 	validatePoller, err := deploymentsClient.BeginValidateAtSubscriptionScope(
 		testsuite.ctx,
 		deploymentName,
@@ -463,11 +492,13 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtSubscriptionScope(
 	testsuite.Require().NoError(err)
 
 	// export template deployment
+	fmt.Println("Call operation: Deployments_ExportTemplateAtSubscriptionScope")
 	exportResp, err := deploymentsClient.ExportTemplateAtSubscriptionScope(testsuite.ctx, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(exportResp.Template)
 
 	// delete deployment
+	fmt.Println("Call operation: Deployments_DeleteAtSubscriptionScope")
 	delPoller, err := deploymentsClient.BeginDeleteAtSubscriptionScope(testsuite.ctx, deploymentName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, delPoller)

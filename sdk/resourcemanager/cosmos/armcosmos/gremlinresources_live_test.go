@@ -10,6 +10,7 @@ package armcosmos_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -60,6 +61,7 @@ func TestGremlinresourcesTestSuite(t *testing.T) {
 func (testsuite *GremlinresourcesTestSuite) Prepare() {
 	var err error
 	// From step DatabaseAccount_Create
+	fmt.Println("Call operation: DatabaseAccounts_CreateOrUpdate")
 	databaseAccountsClient, err := armcosmos.NewDatabaseAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databaseAccountsClientCreateOrUpdateResponsePoller, err := databaseAccountsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armcosmos.DatabaseAccountCreateUpdateParameters{
@@ -89,6 +91,7 @@ func (testsuite *GremlinresourcesTestSuite) TestGremlinresources() {
 	databaseName := "scenario_gremlindb"
 	var err error
 	// From step GremlinResources_CreateGremlinDatabase
+	fmt.Println("Call operation: GremlinResources_CreateUpdateGremlinDatabase")
 	gremlinResourcesClient, err := armcosmos.NewGremlinResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	gremlinResourcesClientCreateUpdateGremlinDatabaseResponsePoller, err := gremlinResourcesClient.BeginCreateUpdateGremlinDatabase(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, armcosmos.GremlinDatabaseCreateUpdateParameters{
@@ -108,10 +111,12 @@ func (testsuite *GremlinresourcesTestSuite) TestGremlinresources() {
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_GetGremlinDatabase
+	fmt.Println("Call operation: GremlinResources_GetGremlinDatabase")
 	_, err = gremlinResourcesClient.GetGremlinDatabase(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_ListGremlinDatabases
+	fmt.Println("Call operation: GremlinResources_ListGremlinDatabases")
 	gremlinResourcesClientNewListGremlinDatabasesPager := gremlinResourcesClient.NewListGremlinDatabasesPager(testsuite.resourceGroupName, testsuite.accountName, nil)
 	for gremlinResourcesClientNewListGremlinDatabasesPager.More() {
 		_, err := gremlinResourcesClientNewListGremlinDatabasesPager.NextPage(testsuite.ctx)
@@ -120,6 +125,7 @@ func (testsuite *GremlinresourcesTestSuite) TestGremlinresources() {
 	}
 
 	// From step GremlinResources_UpdateGremlinDatabaseThroughput
+	fmt.Println("Call operation: GremlinResources_UpdateGremlinDatabaseThroughput")
 	gremlinResourcesClientUpdateGremlinDatabaseThroughputResponsePoller, err := gremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -134,22 +140,26 @@ func (testsuite *GremlinresourcesTestSuite) TestGremlinresources() {
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_GetGremlinDatabaseThroughput
+	fmt.Println("Call operation: GremlinResources_GetGremlinDatabaseThroughput")
 	_, err = gremlinResourcesClient.GetGremlinDatabaseThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_MigrateGremlinDatabaseToAutoscale
+	fmt.Println("Call operation: GremlinResources_MigrateGremlinDatabaseToAutoscale")
 	gremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponsePoller, err := gremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, gremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_MigrateGremlinDatabaseToManualThroughput
+	fmt.Println("Call operation: GremlinResources_MigrateGremlinDatabaseToManualThroughput")
 	gremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponsePoller, err := gremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, gremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_CreateGremlinGraph
+	fmt.Println("Call operation: GremlinResources_CreateUpdateGremlinGraph")
 	gremlinResourcesClientCreateUpdateGremlinGraphResponsePoller, err := gremlinResourcesClient.BeginCreateUpdateGremlinGraph(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, "graphName", armcosmos.GremlinGraphCreateUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -204,10 +214,12 @@ func (testsuite *GremlinresourcesTestSuite) TestGremlinresources() {
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_GetGremlinGraph
+	fmt.Println("Call operation: GremlinResources_GetGremlinGraph")
 	_, err = gremlinResourcesClient.GetGremlinGraph(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, "graphName", nil)
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_ListGremlinGraphs
+	fmt.Println("Call operation: GremlinResources_ListGremlinGraphs")
 	gremlinResourcesClientNewListGremlinGraphsPager := gremlinResourcesClient.NewListGremlinGraphsPager(testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	for gremlinResourcesClientNewListGremlinGraphsPager.More() {
 		_, err := gremlinResourcesClientNewListGremlinGraphsPager.NextPage(testsuite.ctx)
@@ -216,6 +228,7 @@ func (testsuite *GremlinresourcesTestSuite) TestGremlinresources() {
 	}
 
 	// From step GremlinResources_UpdateGremlinGraphThroughput
+	fmt.Println("Call operation: GremlinResources_UpdateGremlinGraphThroughput")
 	gremlinResourcesClientUpdateGremlinGraphThroughputResponsePoller, err := gremlinResourcesClient.BeginUpdateGremlinGraphThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, "graphName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
@@ -230,28 +243,33 @@ func (testsuite *GremlinresourcesTestSuite) TestGremlinresources() {
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_GetGremlinGraphThroughput
+	fmt.Println("Call operation: GremlinResources_GetGremlinGraphThroughput")
 	_, err = gremlinResourcesClient.GetGremlinGraphThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, "graphName", nil)
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_MigrateGremlinGraphToAutoscale
+	fmt.Println("Call operation: GremlinResources_MigrateGremlinGraphToAutoscale")
 	gremlinResourcesClientMigrateGremlinGraphToAutoscaleResponsePoller, err := gremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, "graphName", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, gremlinResourcesClientMigrateGremlinGraphToAutoscaleResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_MigrateGremlinGraphToManualThroughput
+	fmt.Println("Call operation: GremlinResources_MigrateGremlinGraphToManualThroughput")
 	gremlinResourcesClientMigrateGremlinGraphToManualThroughputResponsePoller, err := gremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, "graphName", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, gremlinResourcesClientMigrateGremlinGraphToManualThroughputResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_DeleteGremlinGraph
+	fmt.Println("Call operation: GremlinResources_DeleteGremlinGraph")
 	gremlinResourcesClientDeleteGremlinGraphResponsePoller, err := gremlinResourcesClient.BeginDeleteGremlinGraph(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, "graphName", nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, gremlinResourcesClientDeleteGremlinGraphResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step GremlinResources_DeleteGremlinDatabase
+	fmt.Println("Call operation: GremlinResources_DeleteGremlinDatabase")
 	gremlinResourcesClientDeleteGremlinDatabaseResponsePoller, err := gremlinResourcesClient.BeginDeleteGremlinDatabase(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, databaseName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, gremlinResourcesClientDeleteGremlinDatabaseResponsePoller)

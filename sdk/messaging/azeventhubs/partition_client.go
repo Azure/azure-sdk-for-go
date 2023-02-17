@@ -21,7 +21,11 @@ import (
 const DefaultConsumerGroup = "$Default"
 
 const defaultPrefetchSize = uint32(300)
-const defaultMaxCreditSize = uint32(2048)
+
+// defaultLinkRxBuffer is the maximum number of transfer frames we can handle
+// on the Receiver. This matches the current default window size that go-amqp
+// uses for sessions.
+const defaultMaxCreditSize = uint32(5000)
 
 // StartPosition indicates the position to start receiving events within a partition.
 // The default position is Latest.
@@ -100,6 +104,14 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 
 	prefetchDisabled := pc.prefetch < 0
 
+	if count <= 0 {
+		return nil, internal.NewErrNonRetriable("count should be greater than 0")
+	}
+
+	if prefetchDisabled && count > int(defaultMaxCreditSize) {
+		return nil, internal.NewErrNonRetriable(fmt.Sprintf("count cannot exceed %d", defaultMaxCreditSize))
+	}
+
 	err := pc.links.Retry(ctx, EventConsumer, "ReceiveEvents", pc.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) error {
 		events = nil
 
@@ -109,9 +121,10 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 			if count > int(remainingCredits) {
 				newCredits := uint32(count) - remainingCredits
 
-				log.Writef(EventConsumer, "Have %d outstanding credit, only issuing %d credits", remainingCredits, newCredits)
+				log.Writef(EventConsumer, "(%s) Have %d outstanding credit, only issuing %d credits", lwid.String(), remainingCredits, newCredits)
 
 				if err := lwid.Link.IssueCredit(newCredits); err != nil {
+					log.Writef(EventConsumer, "(%s) Error when issuing credits: %s", lwid.String(), err)
 					return err
 				}
 			}
@@ -121,6 +134,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 			amqpMessage, err := lwid.Link.Receive(ctx)
 
 			if internal.IsOwnershipLostError(err) {
+				log.Writef(EventConsumer, "(%s) Error, link ownership lost: %s", lwid.String(), err)
 				events = nil
 				return err
 			}
@@ -132,6 +146,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 					re, err := newReceivedEventData(amqpMsg)
 
 					if err != nil {
+						log.Writef(EventConsumer, "(%s) Failed converting AMQP message to EventData: %s", lwid.String(), err)
 						return err
 					}
 
@@ -149,6 +164,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 			receivedEvent, err := newReceivedEventData(amqpMessage)
 
 			if err != nil {
+				log.Writef(EventConsumer, "(%s) Failed converting AMQP message to EventData: %s", lwid.String(), err)
 				return err
 			}
 
@@ -253,6 +269,11 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 
 	if err != nil {
 		return nil, err
+	}
+
+	if options.Prefetch > int32(defaultMaxCreditSize) {
+		// don't allow them to set the prefetch above the session window size.
+		return nil, internal.NewErrNonRetriable(fmt.Sprintf("options.Prefetch cannot exceed %d", defaultMaxCreditSize))
 	}
 
 	client := &PartitionClient{

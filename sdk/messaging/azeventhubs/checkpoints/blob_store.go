@@ -8,20 +8,23 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"regexp"
 	"strconv"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
 // BlobStore is a CheckpointStore implementation that uses Azure Blob storage.
 type BlobStore struct {
-	cc *blob.ContainerClient
+	cc *container.Client
 }
 
 // BlobStoreOptions contains optional parameters for the New, NewFromConnectionString and NewWithSharedKey
@@ -31,33 +34,11 @@ type BlobStoreOptions struct {
 }
 
 // NewBlobStore creates a checkpoint store that stores ownership and checkpoints in
-// Azure Blob storage, using a container URL and a TokenCredential.
+// Azure Blob storage.
 // NOTE: the container must exist before the checkpoint store can be used.
-func NewBlobStore(containerURL string, cred azcore.TokenCredential, options *BlobStoreOptions) (*BlobStore, error) {
-	cc, err := blob.NewContainerClient(containerURL, cred, toContainerClientOptions(options))
-
-	if err != nil {
-		return nil, err
-	}
-
+func NewBlobStore(containerClient *container.Client, options *BlobStoreOptions) (*BlobStore, error) {
 	return &BlobStore{
-		cc: cc,
-	}, nil
-}
-
-// NewBlobStoreFromConnectionString creates a checkpoint store that stores
-// ownership and checkpoints in Azure Blob storage, using a storage account
-// connection string.
-// NOTE: the container must exist before the checkpoint store can be used.
-func NewBlobStoreFromConnectionString(connectionString string, containerName string, options *BlobStoreOptions) (azeventhubs.CheckpointStore, error) {
-	cc, err := blob.NewContainerClientFromConnectionString(connectionString, containerName, toContainerClientOptions(options))
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &BlobStore{
-		cc: cc,
+		cc: containerClient,
 	}, nil
 }
 
@@ -73,22 +54,13 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 		if err != nil {
 			return nil, err
 		}
-
-		var expectedETag *string
-
-		if po.ETag != "" {
-			expectedETag = &po.ETag
-		}
-
-		lastModified, etag, err := b.setMetadata(ctx, blobName, newOwnershipBlobMetadata(po), expectedETag)
+		lastModified, etag, err := b.setMetadata(ctx, blobName, newOwnershipBlobMetadata(po), po.ETag)
 
 		if err != nil {
-			var storageErr *blob.StorageError
-
-			// we can fail to claim ownership and that's okay - it's expected that clients will
-			// attempt to claim with whatever state they hold locally. If they fail it just means
-			// someone else claimed ownership before them.
-			if errors.As(err, &storageErr) && storageErr.ErrorCode == blob.StorageErrorCodeConditionNotMet {
+			if bloberror.HasCode(err, bloberror.ConditionNotMet) {
+				// we can fail to claim ownership and that's okay - it's expected that clients will
+				// attempt to claim with whatever state they hold locally. If they fail it just means
+				// someone else claimed ownership before them.
 				continue
 			}
 
@@ -96,7 +68,7 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 		}
 
 		newOwnership := po
-		newOwnership.ETag = etag
+		newOwnership.ETag = &etag
 		newOwnership.LastModifiedTime = *lastModified
 
 		ownerships = append(ownerships, newOwnership)
@@ -117,17 +89,21 @@ func (b *BlobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace
 		return nil, err
 	}
 
-	pager := b.cc.ListBlobsFlat(&blob.ContainerListBlobsFlatOptions{
+	pager := b.cc.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Prefix: &prefix,
-		Include: []blob.ListBlobsIncludeItem{
-			blob.ListBlobsIncludeItemMetadata,
+		Include: container.ListBlobsInclude{
+			Metadata: true,
 		},
 	})
 
 	var checkpoints []azeventhubs.Checkpoint
 
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+
+		if err != nil {
+			return nil, err
+		}
 
 		for _, blob := range resp.Segment.BlobItems {
 			partitionID := partitionIDRegexp.FindString(*blob.Name)
@@ -145,10 +121,6 @@ func (b *BlobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace
 
 			checkpoints = append(checkpoints, cp)
 		}
-	}
-
-	if pager.Err() != nil {
-		return nil, pager.Err()
 	}
 
 	return checkpoints, nil
@@ -169,17 +141,21 @@ func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace s
 		return nil, err
 	}
 
-	pager := b.cc.ListBlobsFlat(&blob.ContainerListBlobsFlatOptions{
+	pager := b.cc.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Prefix: &prefix,
-		Include: []blob.ListBlobsIncludeItem{
-			blob.ListBlobsIncludeItemMetadata,
+		Include: container.ListBlobsInclude{
+			Metadata: true,
 		},
 	})
 
 	var ownerships []azeventhubs.Ownership
 
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+
+		if err != nil {
+			return nil, err
+		}
 
 		for _, blob := range resp.Segment.BlobItems {
 			partitionID := partitionIDRegexp.FindString(*blob.Name)
@@ -199,10 +175,6 @@ func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace s
 		}
 	}
 
-	if pager.Err() != nil {
-		return nil, pager.Err()
-	}
-
 	return ownerships, nil
 }
 
@@ -218,22 +190,15 @@ func (b *BlobStore) UpdateCheckpoint(ctx context.Context, checkpoint azeventhubs
 	return err
 }
 
-func isBlobNotFoundError(err error) bool {
-	var storageErr *blob.StorageError
-	return errors.As(err, &storageErr) && storageErr.StatusCode() == http.StatusNotFound
-}
-
-func (b *BlobStore) setMetadata(ctx context.Context, blobName string, blobMetadata map[string]string, etag *string) (*time.Time, string, error) {
-	blobClient, err := b.cc.NewBlockBlobClient(blobName)
-
-	if err != nil {
-		return nil, "", err
-	}
+func (b *BlobStore) setMetadata(ctx context.Context, blobName string, blobMetadata map[string]*string, etag *azcore.ETag) (*time.Time, azcore.ETag, error) {
+	blobClient := b.cc.NewBlockBlobClient(blobName)
 
 	if etag != nil {
-		setMetadataResp, err := blobClient.SetMetadata(ctx, blobMetadata, &blob.BlobSetMetadataOptions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-				IfMatch: etag,
+		setMetadataResp, err := blobClient.SetMetadata(ctx, blobMetadata, &blob.SetMetadataOptions{
+			AccessConditions: &blob.AccessConditions{
+				ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+					IfMatch: etag,
+				},
 			},
 		})
 
@@ -249,13 +214,13 @@ func (b *BlobStore) setMetadata(ctx context.Context, blobName string, blobMetada
 			return setMetadataResp.LastModified, *setMetadataResp.ETag, nil
 		}
 
-		if !isBlobNotFoundError(err) {
+		if !bloberror.HasCode(err, bloberror.BlobNotFound) {
 			return nil, "", err
 		}
 
 		// in JS they check to see if the error is BlobNotFound. If it is, then they
 		// do a full upload of a blob instead.
-		uploadResp, err := blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte{})), &blob.BlockBlobUploadOptions{
+		uploadResp, err := blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte{})), &blockblob.UploadOptions{
 			Metadata: blobMetadata,
 		})
 
@@ -337,21 +302,21 @@ func updateCheckpoint(metadata map[string]*string, destCheckpoint *azeventhubs.C
 	return nil
 }
 
-func newCheckpointBlobMetadata(cpd azeventhubs.Checkpoint) map[string]string {
-	m := map[string]string{}
+func newCheckpointBlobMetadata(cpd azeventhubs.Checkpoint) map[string]*string {
+	m := map[string]*string{}
 
 	if cpd.SequenceNumber != nil {
-		m["sequencenumber"] = strconv.FormatInt(*cpd.SequenceNumber, 10)
+		m["sequencenumber"] = to.Ptr(strconv.FormatInt(*cpd.SequenceNumber, 10))
 	}
 
 	if cpd.Offset != nil {
-		m["offset"] = strconv.FormatInt(*cpd.Offset, 10)
+		m["offset"] = to.Ptr(strconv.FormatInt(*cpd.Offset, 10))
 	}
 
 	return m
 }
 
-func updateOwnership(b *blob.BlobItemInternal, destOwnership *azeventhubs.Ownership) error {
+func updateOwnership(b *container.BlobItem, destOwnership *azeventhubs.Ownership) error {
 	if b == nil || b.Metadata == nil || b.Properties == nil {
 		return fmt.Errorf("no ownership metadata for blob")
 	}
@@ -364,27 +329,12 @@ func updateOwnership(b *blob.BlobItemInternal, destOwnership *azeventhubs.Owners
 
 	destOwnership.OwnerID = *ownerID
 	destOwnership.LastModifiedTime = *b.Properties.LastModified
-	destOwnership.ETag = *b.Properties.Etag
+	destOwnership.ETag = b.Properties.ETag
 	return nil
 }
 
-func newOwnershipBlobMetadata(od azeventhubs.Ownership) map[string]string {
-	return map[string]string{
-		"ownerid": od.OwnerID,
-	}
-}
-
-func toContainerClientOptions(opts *BlobStoreOptions) *blob.ClientOptions {
-	if opts == nil {
-		return nil
-	}
-
-	return &blob.ClientOptions{
-		Logging:          opts.Logging,
-		Retry:            opts.Retry,
-		Telemetry:        opts.Telemetry,
-		Transport:        opts.Transport,
-		PerCallPolicies:  opts.PerCallPolicies,
-		PerRetryPolicies: opts.PerRetryPolicies,
+func newOwnershipBlobMetadata(od azeventhubs.Ownership) map[string]*string {
+	return map[string]*string{
+		"ownerid": &od.OwnerID,
 	}
 }

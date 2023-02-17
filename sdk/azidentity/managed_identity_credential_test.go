@@ -13,7 +13,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -34,16 +33,6 @@ func clearEnvVars(envVars ...string) {
 	for _, ev := range envVars {
 		_ = os.Unsetenv(ev)
 	}
-}
-
-// delayPolicy adds a delay to pipeline requests. Used to test timeout behavior.
-type delayPolicy struct {
-	delay time.Duration
-}
-
-func (p delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	time.Sleep(p.delay)
-	return req.Next()
 }
 
 func TestManagedIdentityCredential_AzureArc(t *testing.T) {
@@ -448,53 +437,6 @@ func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred)
-}
-
-func TestManagedIdentityCredential_IMDSTimeoutExceeded(t *testing.T) {
-	resetEnvironmentVarsForTest()
-	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{
-			PerCallPolicies: []policy.Policy{delayPolicy{delay: time.Microsecond}},
-		},
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	cred.mic.imdsTimeout = time.Nanosecond
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if _, ok := err.(*credentialUnavailableError); !ok {
-		t.Fatalf("expected credentialUnavailableError, received %T", err)
-	}
-	if !reflect.ValueOf(tk).IsZero() {
-		t.Fatal("expected a zero value AccessToken")
-	}
-}
-
-func TestManagedIdentityCredential_IMDSTimeoutSuccess(t *testing.T) {
-	resetEnvironmentVarsForTest()
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody(accessTokenRespSuccess))
-	options := ManagedIdentityCredentialOptions{}
-	options.Transport = srv
-	cred, err := NewManagedIdentityCredential(&options)
-	if err != nil {
-		t.Fatal(err)
-	}
-	cred.mic.imdsTimeout = time.Minute
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if tk.Token != tokenValue {
-		t.Fatalf(`got unexpected token "%s"`, tk.Token)
-	}
-	if v := time.Until(tk.ExpiresOn); v > tokenExpiresIn*time.Second || tokenExpiresIn-v > time.Second {
-		t.Fatalf("expected token to expire in about %d seconds but it expires in %f seconds", tokenExpiresIn, v.Seconds())
-	}
-	if cred.mic.imdsTimeout > 0 {
-		t.Fatal("credential didn't remove IMDS timeout after receiving a response")
-	}
 }
 
 func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {

@@ -395,52 +395,6 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, ns.FQDN, "mysb.windows.servicebus.net")
 	})
 
-	t.Run("CloseAndLinkTracking", func(t *testing.T) {
-		setupClient := func() (*Client, *internal.FakeNS) {
-			client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{}, nil)
-			require.NoError(t, err)
-
-			ns := &internal.FakeNS{
-				AMQPLinks: &internal.FakeAMQPLinks{
-					Receiver: &internal.FakeAMQPReceiver{},
-				},
-			}
-
-			client.namespace = ns
-			return client, ns
-		}
-
-		client, ns := setupClient()
-		_, err := client.NewSender("hello", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.True(t, ns.AMQPLinks.ClosedPermanently())
-
-		client, ns = setupClient()
-		_, err = client.NewReceiverForQueue("hello", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.True(t, ns.AMQPLinks.ClosedPermanently())
-
-		client, ns = setupClient()
-		_, err = client.NewReceiverForSubscription("hello", "world", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
-	})
-
 	t.Run("RetryOptionsArePropagated", func(t *testing.T) {
 		// retry options are passed and copied along several routes, just make sure it's properly propagated.
 		// NOTE: session receivers are checked in a separate test because they require actual SB access.

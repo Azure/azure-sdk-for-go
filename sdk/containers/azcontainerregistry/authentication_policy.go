@@ -48,38 +48,42 @@ func newAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authC
 }
 
 func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
-	// send a copy of the original request without body content
-	challengeReq, err := p.getChallengeRequest(*req)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := challengeReq.Next()
-	if err != nil {
-		return nil, err
-	}
-
-	// do challenge process
-	if resp.StatusCode == 401 {
-		err := p.findServiceAndScope(resp)
+	// first retry request, do challenge process
+	if req.Raw().Header.Get(headerAuthorization) == "" {
+		// send a copy of the original request without body content
+		challengeReq, err := p.getChallengeRequest(*req)
 		if err != nil {
 			return nil, err
 		}
-
-		accessToken, err := p.getAccessToken(req)
+		resp, err := challengeReq.Next()
 		if err != nil {
 			return nil, err
 		}
-
-		req.Raw().Header.Set(
-			headerAuthorization,
-			fmt.Sprintf("%s%s", bearerHeader, accessToken),
-		)
-
-		// send the original request with auth
-		return req.Next()
+		// do challenge process
+		if resp.StatusCode == 401 {
+			err := p.findServiceAndScope(resp)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			// the request failed for some other reason, don't try any further
+			return resp, nil
+		}
 	}
 
-	return resp, nil
+	// we only cache refresh token, so we need to get access token for each retry request
+	accessToken, err := p.getAccessToken(req)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Raw().Header.Set(
+		headerAuthorization,
+		fmt.Sprintf("%s%s", bearerHeader, accessToken),
+	)
+
+	// send the original request with auth
+	return req.Next()
 }
 
 func (p *authenticationPolicy) getAccessToken(req *policy.Request) (string, error) {

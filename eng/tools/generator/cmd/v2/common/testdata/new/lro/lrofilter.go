@@ -13,3 +13,12 @@ func (client *Client) BeginCreateOrUpdate(resourceGroupName string, options *Cli
 type ClientBeginCreateOrUpdateOptions struct{}
 
 type ClientBeginCreateOrUpdateResponse struct{}
+
+func (client *Client) Delete(resourceGroupName string, options *ClientDeleteOptions) (ClientDeleteResponse, error) {
+
+	return ClientDeleteResponse{}, nil
+}
+
+type ClientDeleteOptions struct{}
+
+type ClientDeleteResponse struct{}

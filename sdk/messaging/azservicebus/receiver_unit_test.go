@@ -27,7 +27,8 @@ func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 		amqpLinks:   fakeAMQPLinks,
 		receiveMode: ReceiveModePeekLock,
 		// TODO: need to make this test rely less on stubbing.
-		cancelReleaser: &atomic.Value{},
+		cancelReleaser:    &atomic.Value{},
+		maxAllowedCredits: defaultLinkRxBuffer,
 	}
 
 	receiver.cancelReleaser.Store(emptyCancelFn)
@@ -46,150 +47,15 @@ var receiveModesForTests = []struct {
 	{Name: "receiveAndDelete", Val: ReceiveModeReceiveAndDelete},
 }
 
-func TestReceiver_ReceiveMessages_SomeMessagesAndCancelled(t *testing.T) {
-	for _, mode := range receiveModesForTests {
-		t.Run(mode.Name, func(t *testing.T) {
-			fakeAMQPReceiver := &internal.FakeAMQPReceiver{
-				ReceiveResults: []struct {
-					M *amqp.Message
-					E error
-				}{
-					{M: &amqp.Message{Data: [][]byte{[]byte("hello")}}},
-					// after this the context will block until the cancellation context's deadline fires.
-				},
-			}
-
-			fakeAMQPLinks := &internal.FakeAMQPLinks{
-				Receiver: fakeAMQPReceiver,
-			}
-
-			receiver, err := newReceiver(newReceiverArgs{
-				ns:     &internal.FakeNS{AMQPLinks: fakeAMQPLinks},
-				entity: entity{Queue: "queue"},
-			}, &ReceiverOptions{ReceiveMode: mode.Val})
-			require.NoError(t, err)
-
-			messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-			require.NoError(t, err)
-			require.Equal(t, []string{"hello"}, getSortedBodies(messages))
-
-			// and the links did not need to be closed for a cancellation
-			require.Equal(t, 0, fakeAMQPLinks.Closed)
-			require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled)
-		})
+func ReceiveModeString(mode ReceiveMode) string {
+	switch mode {
+	case ReceiveModePeekLock:
+		return "peekLock"
+	case ReceiveModeReceiveAndDelete:
+		return "receiveAndDelete"
+	default:
+		panic(fmt.Sprintf("No string for receive mode %d", mode))
 	}
-}
-
-func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
-	var errors = []struct {
-		Err      error
-		Expected error
-	}{
-		// a fatal error is always returned in peekLock mode
-		{Err: internal.NewErrNonRetriable("non retriable error"), Expected: internal.NewErrNonRetriable("non retriable error")},
-		// non-fatal errors are "erased" and the error will be caught on the next iteration of the loop
-		{Err: amqp.ErrLinkClosed, Expected: nil},
-	}
-
-	// all the receive modes work the same when there are no messages
-	for _, mode := range receiveModesForTests {
-		for i, data := range errors {
-			t.Run(fmt.Sprintf("%s [%d] %s", mode.Name, i, data.Err), func(t *testing.T) {
-				fakeAMQPReceiver := &internal.FakeAMQPReceiver{
-					ReceiveResults: []struct {
-						M *amqp.Message
-						E error
-					}{
-						{E: data.Err},
-					},
-				}
-
-				fakeAMQPLinks := &internal.FakeAMQPLinks{
-					Receiver: fakeAMQPReceiver,
-				}
-
-				receiver, err := newReceiver(newReceiverArgs{
-					ns:     &internal.FakeNS{AMQPLinks: fakeAMQPLinks},
-					entity: entity{Queue: "queue"},
-				}, &ReceiverOptions{ReceiveMode: mode.Val})
-				require.NoError(t, err)
-
-				messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-				require.EqualValues(t, data.Expected, err)
-				require.Empty(t, messages)
-
-				require.Equal(t, 1, fakeAMQPReceiver.PrefetchedCalled, "prefetched before throwing away the broken link")
-
-				// a fatal error happened, links should be closed.
-				require.Equal(t, 0, fakeAMQPLinks.Closed, "links are closed using CloseIfNeeded")
-				require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled, "links are closed on receive errors")
-			})
-		}
-	}
-}
-
-func TestReceiver_ReceiveMessages_AllMessagesReceived(t *testing.T) {
-	for _, mode := range receiveModesForTests {
-		t.Run(mode.Name, func(t *testing.T) {
-			fakeAMQPReceiver := &internal.FakeAMQPReceiver{
-				ReceiveResults: []struct {
-					M *amqp.Message
-					E error
-				}{
-					{M: &amqp.Message{Data: [][]byte{[]byte("hello")}}},
-					{M: &amqp.Message{Data: [][]byte{[]byte("world")}}},
-				},
-			}
-
-			fakeAMQPLinks := &internal.FakeAMQPLinks{
-				Receiver: fakeAMQPReceiver,
-			}
-
-			receiver, err := newReceiver(newReceiverArgs{
-				ns:     &internal.FakeNS{AMQPLinks: fakeAMQPLinks},
-				entity: entity{Queue: "queue"},
-			}, &ReceiverOptions{ReceiveMode: mode.Val})
-			require.NoError(t, err)
-
-			messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-			require.NoError(t, err)
-			require.Equal(t, []string{"hello", "world"}, getSortedBodies(messages))
-
-			// and the links did not need to be closed for a cancellation
-			require.Equal(t, 0, fakeAMQPLinks.Closed)
-			require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled, "called, but with a benign error")
-		})
-	}
-}
-
-func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
-	fakeAMQPReceiver := &internal.FakeAMQPReceiver{
-		ReceiveResults: []struct {
-			M *amqp.Message
-			E error
-		}{
-			{M: &amqp.Message{Data: [][]byte{[]byte("hello")}}},
-			{E: internal.NewErrNonRetriable("non-retriable error on second message")},
-		},
-	}
-
-	fakeAMQPLinks := &internal.FakeAMQPLinks{
-		Receiver: fakeAMQPReceiver,
-	}
-
-	receiver, err := newReceiver(newReceiverArgs{
-		ns:     &internal.FakeNS{AMQPLinks: fakeAMQPLinks},
-		entity: entity{Queue: "queue"},
-	}, nil)
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-	require.Equal(t, []string{"hello"}, getSortedBodies(messages))
-	require.NoError(t, err, "error is 'erased' when there are some messages to return")
-
-	// a fatal error happened, links should be closed.
-	require.Equal(t, 0, fakeAMQPLinks.Closed, "links are closed using CloseIfNeeded")
-	require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled, "prefetch is called")
 }
 
 func TestReceiverCancellationUnitTests(t *testing.T) {
@@ -198,7 +64,8 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 			amqpLinks: &internal.FakeAMQPLinks{
 				Receiver: &internal.FakeAMQPReceiver{},
 			},
-			cancelReleaser: &atomic.Value{},
+			cancelReleaser:    &atomic.Value{},
+			maxAllowedCredits: defaultLinkRxBuffer,
 		}
 
 		r.cancelReleaser.Store(emptyCancelFn)
@@ -224,7 +91,8 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 					},
 				},
 			},
-			cancelReleaser: &atomic.Value{},
+			cancelReleaser:    &atomic.Value{},
+			maxAllowedCredits: defaultLinkRxBuffer,
 		}
 
 		r.cancelReleaser.Store(emptyCancelFn)
@@ -260,77 +128,6 @@ func TestReceiverOptions(t *testing.T) {
 	path, err = e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
-}
-
-func TestReceiver_UserFacingErrors(t *testing.T) {
-	fakeAMQPLinks := &internal.FakeAMQPLinks{}
-
-	receiver, err := newReceiver(newReceiverArgs{
-		ns: &internal.FakeNS{
-			AMQPLinks: fakeAMQPLinks,
-		},
-		entity: entity{
-			Queue: "queue",
-		},
-		cleanupOnClose:      func() {},
-		getRecoveryKindFunc: internal.GetRecoveryKind,
-		newLinkFn: func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
-			return nil, nil, nil
-		},
-		retryOptions: RetryOptions{
-			MaxRetries:    0,
-			RetryDelay:    0,
-			MaxRetryDelay: 0,
-		},
-	}, nil)
-	require.NoError(t, err)
-
-	var asSBError *Error
-
-	fakeAMQPLinks.Err = amqp.ErrLinkClosed
-	messages, err := receiver.PeekMessages(context.Background(), 1, nil)
-	require.Empty(t, messages)
-	require.ErrorAs(t, err, &asSBError)
-	require.Equal(t, CodeConnectionLost, asSBError.Code)
-
-	fakeAMQPLinks.Err = &amqp.ConnectionError{}
-	messages, err = receiver.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
-	require.Empty(t, messages)
-	require.ErrorAs(t, err, &asSBError)
-	require.Equal(t, CodeConnectionLost, asSBError.Code)
-
-	fakeAMQPLinks.Err = &amqp.ConnectionError{}
-	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
-	require.Empty(t, messages)
-	require.ErrorAs(t, err, &asSBError)
-	require.Equal(t, CodeConnectionLost, asSBError.Code)
-
-	fakeAMQPLinks.Err = internal.RPCError{Resp: &internal.RPCResponse{Code: internal.RPCResponseCodeLockLost}}
-
-	err = receiver.AbandonMessage(context.Background(), &ReceivedMessage{}, nil)
-	require.Empty(t, messages)
-	require.ErrorAs(t, err, &asSBError)
-	require.Equal(t, CodeLockLost, asSBError.Code)
-
-	err = receiver.CompleteMessage(context.Background(), &ReceivedMessage{}, nil)
-	require.Empty(t, messages)
-	require.ErrorAs(t, err, &asSBError)
-	require.Equal(t, CodeLockLost, asSBError.Code)
-
-	err = receiver.DeadLetterMessage(context.Background(), &ReceivedMessage{}, nil)
-	require.Empty(t, messages)
-	require.ErrorAs(t, err, &asSBError)
-	require.Equal(t, CodeLockLost, asSBError.Code)
-
-	err = receiver.DeferMessage(context.Background(), &ReceivedMessage{}, nil)
-	require.Empty(t, messages)
-	require.ErrorAs(t, err, &asSBError)
-	require.Equal(t, CodeLockLost, asSBError.Code)
-
-	err = receiver.RenewMessageLock(context.Background(), &ReceivedMessage{}, nil)
-	require.Empty(t, messages)
-	require.ErrorAs(t, err, &asSBError)
-	require.Equal(t, CodeLockLost, asSBError.Code)
 }
 
 func TestReceiver_releaserFunc(t *testing.T) {
@@ -645,143 +442,6 @@ func TestReceiver_fetchMessages_UserCancelsAfterFirstMessage(t *testing.T) {
 		amqpReceiver.PrefetchedResults)
 }
 
-func TestReceiver_ReceiveMessages_RollingCredits_NoMessages(t *testing.T) {
-	amqpReceiver := &internal.FakeAMQPReceiver{
-		ReceiveResults: nil,
-	}
-
-	args := defaultNewReceiverArgsForTest()
-
-	ns := args.ns.(*internal.FakeNS)
-	ns.AMQPLinks = &internal.FakeAMQPLinks{
-		Receiver: amqpReceiver,
-	}
-
-	receiver, err := newReceiver(args, &ReceiverOptions{
-		ReceiveMode: ReceiveModeReceiveAndDelete,
-	})
-	require.NoError(t, err)
-
-	t.Run("no initial credits, must issue new credit", func(t *testing.T) {
-		amqpReceiver.ReceiveResults = []struct {
-			M *amqp.Message
-			E error
-		}{
-			{M: &amqp.Message{Data: [][]byte{[]byte("Received message 1")}}},
-			{E: context.Canceled},
-		}
-
-		messages, err := receiver.ReceiveMessages(context.Background(), 10, nil)
-		require.NoError(t, err, "User didn't cancel so cancellation is erased")
-		require.Equal(t, []string{"Received message 1"}, getSortedBodies(messages))
-
-		// note, our AMQPReceiver is a stub so the credits here are whatever
-		// RecieveMessages() actually just IssueCredit'd.
-		require.Equal(t, uint32(10), amqpReceiver.Credits())
-		require.Empty(t, amqpReceiver.ReceiveResults)
-	})
-
-	t.Run("existing credit, but not enough to cover all the requested credits", func(t *testing.T) {
-		amqpReceiver.ReceiveResults = []struct {
-			M *amqp.Message
-			E error
-		}{
-			{M: &amqp.Message{Data: [][]byte{[]byte("Received message 2")}}},
-			{E: context.Canceled},
-		}
-
-		// now this time we have 10 credits, so our next receive won't need to add as many
-		messages, err := receiver.ReceiveMessages(context.Background(), 101, nil)
-		require.NoError(t, err, "User didn't cancel so cancellation is erased")
-		require.Equal(t, []string{"Received message 2"}, getSortedBodies(messages))
-
-		require.Equal(t, uint32(10)+uint32(101-10), amqpReceiver.Credits(), "Credits includes the existing credits on the line and adds more to make up the difference to get to 101")
-		require.Empty(t, amqpReceiver.ReceiveResults)
-	})
-
-	t.Run("credits on the line are already enough to cover our request", func(t *testing.T) {
-		amqpReceiver.ReceiveResults = []struct {
-			M *amqp.Message
-			E error
-		}{
-			{M: &amqp.Message{Data: [][]byte{[]byte("Received message 3")}}},
-			{E: context.Canceled},
-		}
-
-		// now we're going to request messages but this time our current credit should cover it
-		messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
-		require.NoError(t, err, "User didn't cancel so cancellation is erased")
-		require.Equal(t, []string{"Received message 3"}, getSortedBodies(messages))
-
-		require.Equal(t, uint32(101), amqpReceiver.Credits(), "No new credit needed to be issued - existing credits cover it all")
-
-		require.NoError(t, receiver.Close(context.Background()))
-	})
-}
-
-func TestReceiver_ReceiveMessages_MessagesArrivingBetweenReceiveMessagesCallsAreReleased(t *testing.T) {
-	released := make(chan *amqp.Message, 2)
-
-	amqpReceiver := &internal.FakeAMQPReceiver{
-		ReceiveResults: []struct {
-			M *amqp.Message
-			E error
-		}{
-			{M: &amqp.Message{Data: [][]byte{[]byte(("received message 1"))}}},
-			{M: &amqp.Message{Data: [][]byte{[]byte(("received message 2"))}}},
-
-			// our expectation is that the messageReleaser will pick these up
-			{M: &amqp.Message{Data: [][]byte{[]byte(("will be released 1"))}}},
-			{M: &amqp.Message{Data: [][]byte{[]byte(("will be released 2"))}}},
-		},
-		ReleaseMessageFn: func(ctx context.Context, msg *amqp.Message) error {
-			select {
-			case released <- msg:
-			default:
-				require.Fail(t, "More messages were released than expected")
-			}
-			return nil
-		},
-	}
-
-	args := defaultNewReceiverArgsForTest()
-
-	ns := args.ns.(*internal.FakeNS)
-	ns.AMQPLinks = &internal.FakeAMQPLinks{
-		Receiver: amqpReceiver,
-	}
-
-	receiver, err := newReceiver(args, &ReceiverOptions{
-		ReceiveMode: ReceiveModePeekLock,
-	})
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
-	require.NoError(t, err)
-	require.Equal(t, []string{"received message 1", "received message 2"}, getSortedBodies(messages))
-
-	// now, we can just wait - the messages will be drained by the background goroutine.
-	for i := 0; i < 2; i++ {
-		msg := <-released
-		require.Equal(t, fmt.Sprintf("will be released %d", i+1), string(msg.Data[0]))
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-
-	// there aren't any messages in there now since they were all released by
-	// the messageReleaser.
-	messages, err = receiver.ReceiveMessages(ctx, 1, nil)
-	require.ErrorIs(t, err, context.DeadlineExceeded)
-	require.Empty(t, messages)
-
-	// closing also shuts down the releaser
-	err = receiver.Close(context.Background())
-	require.NoError(t, err)
-	require.Empty(t, amqpReceiver.ReceiveResults)
-	require.Equal(t, 2, amqpReceiver.ReleaseMessageCalled)
-}
-
 func defaultNewReceiverArgsForTest() newReceiverArgs {
 	return newReceiverArgs{
 		entity: entity{
@@ -790,7 +450,7 @@ func defaultNewReceiverArgsForTest() newReceiverArgs {
 		ns:                  &internal.FakeNS{},
 		cleanupOnClose:      func() {},
 		getRecoveryKindFunc: internal.GetRecoveryKind,
-		newLinkFn: func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+		newLinkFn: func(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
 			return nil, nil, nil
 		},
 		retryOptions: exported.RetryOptions{},

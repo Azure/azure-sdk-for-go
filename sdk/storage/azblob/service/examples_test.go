@@ -205,7 +205,8 @@ func Example_service_Client_GetSASURL() {
 	permission := sas.AccountPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
-	sasURL, err := serviceClient.GetSASURL(resources, permission, sas.AccountServices{Blob: true}, start, expiry)
+	options := service.GetSASURLOptions{StartTime: &start}
+	sasURL, err := serviceClient.GetSASURL(resources, permission, expiry, &options)
 	handleError(err)
 
 	serviceURL := fmt.Sprintf("https://<myAccountName>.blob.core.windows.net/?%s", sasURL)
@@ -266,7 +267,6 @@ func Example_service_SASSignatureValues_Sign() {
 		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	handleError(err)

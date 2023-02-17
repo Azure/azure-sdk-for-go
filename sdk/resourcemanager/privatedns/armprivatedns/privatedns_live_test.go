@@ -10,6 +10,7 @@ package armprivatedns_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -63,6 +64,7 @@ func TestPrivatednsTestSuite(t *testing.T) {
 func (testsuite *PrivatednsTestSuite) Prepare() {
 	var err error
 	// From step PrivateZone_Create
+	fmt.Println("Call operation: PrivateZones_Create")
 	privateZonesClient, err := armprivatedns.NewPrivateZonesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateZonesClientCreateOrUpdateResponsePoller, err := privateZonesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, armprivatedns.PrivateZone{
@@ -79,6 +81,7 @@ func (testsuite *PrivatednsTestSuite) Prepare() {
 func (testsuite *PrivatednsTestSuite) TestPrivatezone() {
 	var err error
 	// From step PrivateZone_Update
+	fmt.Println("Call operation: PrivateZones_Update")
 	privateZonesClient, err := armprivatedns.NewPrivateZonesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateZonesClientUpdateResponsePoller, err := privateZonesClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, armprivatedns.PrivateZone{
@@ -91,10 +94,12 @@ func (testsuite *PrivatednsTestSuite) TestPrivatezone() {
 	testsuite.Require().NoError(err)
 
 	// From step PrivateZone_Get
+	fmt.Println("Call operation: PrivateZones_Get")
 	_, err = privateZonesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PrivateZone_ListBySubscription
+	fmt.Println("Call operation: PrivateZones_List")
 	privateZonesClientNewListPager := privateZonesClient.NewListPager(&armprivatedns.PrivateZonesClientListOptions{Top: nil})
 	for privateZonesClientNewListPager.More() {
 		_, err := privateZonesClientNewListPager.NextPage(testsuite.ctx)
@@ -103,6 +108,7 @@ func (testsuite *PrivatednsTestSuite) TestPrivatezone() {
 	}
 
 	// From step PrivateZone_ListByResourceGroup
+	fmt.Println("Call operation: PrivateZones_ListByResourceGroup")
 	privateZonesClientNewListByResourceGroupPager := privateZonesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, &armprivatedns.PrivateZonesClientListByResourceGroupOptions{Top: nil})
 	for privateZonesClientNewListByResourceGroupPager.More() {
 		_, err := privateZonesClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -116,6 +122,7 @@ func (testsuite *PrivatednsTestSuite) TestRecordset() {
 	relativeRecordSetName := "scenario_recordset"
 	var err error
 	// From step RecordSet_Create
+	fmt.Println("Call operation: RecordSets_CreateOrUpdate")
 	recordSetsClient, err := armprivatedns.NewRecordSetsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = recordSetsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, armprivatedns.RecordTypeA, relativeRecordSetName, armprivatedns.RecordSet{
@@ -135,6 +142,7 @@ func (testsuite *PrivatednsTestSuite) TestRecordset() {
 	testsuite.Require().NoError(err)
 
 	// From step RecordSet_Update
+	fmt.Println("Call operation: RecordSets_Update")
 	_, err = recordSetsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, armprivatedns.RecordTypeA, relativeRecordSetName, armprivatedns.RecordSet{
 		Properties: &armprivatedns.RecordSetProperties{
 			Metadata: map[string]*string{
@@ -145,10 +153,12 @@ func (testsuite *PrivatednsTestSuite) TestRecordset() {
 	testsuite.Require().NoError(err)
 
 	// From step RecordSet_Get
+	fmt.Println("Call operation: RecordSets_Get")
 	_, err = recordSetsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, armprivatedns.RecordTypeA, relativeRecordSetName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step RecordSet_ListByType
+	fmt.Println("Call operation: RecordSets_ListByType")
 	recordSetsClientNewListByTypePager := recordSetsClient.NewListByTypePager(testsuite.resourceGroupName, testsuite.privateZoneName, armprivatedns.RecordTypeA, &armprivatedns.RecordSetsClientListByTypeOptions{Top: nil,
 		Recordsetnamesuffix: nil,
 	})
@@ -159,6 +169,7 @@ func (testsuite *PrivatednsTestSuite) TestRecordset() {
 	}
 
 	// From step RecordSet_List
+	fmt.Println("Call operation: RecordSets_List")
 	recordSetsClientNewListPager := recordSetsClient.NewListPager(testsuite.resourceGroupName, testsuite.privateZoneName, &armprivatedns.RecordSetsClientListOptions{Top: nil,
 		Recordsetnamesuffix: nil,
 	})
@@ -169,6 +180,7 @@ func (testsuite *PrivatednsTestSuite) TestRecordset() {
 	}
 
 	// From step RecordSet_Delete
+	fmt.Println("Call operation: RecordSets_Delete")
 	_, err = recordSetsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, armprivatedns.RecordTypeA, relativeRecordSetName, &armprivatedns.RecordSetsClientDeleteOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)
 }
@@ -232,6 +244,7 @@ func (testsuite *PrivatednsTestSuite) TestVirtualnetworklink() {
 	virtaulNetworkId = deploymentExtend.Properties.Outputs.(map[string]interface{})["virtaulNetworkId"].(map[string]interface{})["value"].(string)
 
 	// From step VirtualNetworkLink_Create
+	fmt.Println("Call operation: VirtualNetworkLinks_CreateOrUpdate")
 	virtualNetworkLinksClient, err := armprivatedns.NewVirtualNetworkLinksClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	virtualNetworkLinksClientCreateOrUpdateResponsePoller, err := virtualNetworkLinksClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, virtualNetworkLinkName, armprivatedns.VirtualNetworkLink{
@@ -250,6 +263,7 @@ func (testsuite *PrivatednsTestSuite) TestVirtualnetworklink() {
 	testsuite.Require().NoError(err)
 
 	// From step VirtualNetworkLink_Update
+	fmt.Println("Call operation: VirtualNetworkLinks_Update")
 	virtualNetworkLinksClientUpdateResponsePoller, err := virtualNetworkLinksClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, virtualNetworkLinkName, armprivatedns.VirtualNetworkLink{
 		Tags: map[string]*string{
 			"key2": to.Ptr("value2"),
@@ -263,10 +277,12 @@ func (testsuite *PrivatednsTestSuite) TestVirtualnetworklink() {
 	testsuite.Require().NoError(err)
 
 	// From step VirtualNetworkLink_Get
+	fmt.Println("Call operation: VirtualNetworkLinks_Get")
 	_, err = virtualNetworkLinksClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, virtualNetworkLinkName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step VirtualNetworkLink_List
+	fmt.Println("Call operation: VirtualNetworkLinks_List")
 	virtualNetworkLinksClientNewListPager := virtualNetworkLinksClient.NewListPager(testsuite.resourceGroupName, testsuite.privateZoneName, &armprivatedns.VirtualNetworkLinksClientListOptions{Top: nil})
 	for virtualNetworkLinksClientNewListPager.More() {
 		_, err := virtualNetworkLinksClientNewListPager.NextPage(testsuite.ctx)
@@ -275,6 +291,7 @@ func (testsuite *PrivatednsTestSuite) TestVirtualnetworklink() {
 	}
 
 	// From step VirtualNetworkLink_Delete
+	fmt.Println("Call operation: VirtualNetworkLinks_Delete")
 	virtualNetworkLinksClientDeleteResponsePoller, err := virtualNetworkLinksClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, virtualNetworkLinkName, &armprivatedns.VirtualNetworkLinksClientBeginDeleteOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, virtualNetworkLinksClientDeleteResponsePoller)

@@ -27,8 +27,8 @@ func TestRecordingPolicy(t *testing.T) {
 	require.NoError(t, err)
 	resp, err := pl.Do(req)
 	require.NoError(t, err)
-	require.Equal(t, resp.StatusCode, http.StatusBadRequest)
-	require.Equal(t, resp.Request.URL.String(), testEndpoint)
+	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	require.Equal(t, testEndpoint, resp.Request.URL.String())
 }
 
 func TestStartStopRecording(t *testing.T) {
@@ -39,6 +39,6 @@ func TestStartStopRecording(t *testing.T) {
 func TestGenerateAlphaNumericID(t *testing.T) {
 	stop := StartRecording(t, pathToPackage)
 	rnd := GenerateAlphaNumericID(t, "test", 6)
-	require.Equal(t, rnd, "testsUJVGl")
+	require.Equal(t, "testNlDAa8", rnd)
 	defer stop()
 }

@@ -11,4 +11,5 @@
 // There are two clients for consuming events:
 //   - [azeventhubs.Processor], which handles checkpointing and load balancing using durable storage.
 //   - [azeventhubs.ConsumerClient], which is fully manual, but provides full control.
+
 package azeventhubs

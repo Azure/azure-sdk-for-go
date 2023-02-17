@@ -8,6 +8,7 @@ package armstorage_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,6 +54,7 @@ func TestManagementPoliciesClient(t *testing.T) {
 
 func (testsuite *ManagementPoliciesClientTestSuite) TestManagementPoliciesCRUD() {
 	// create storage account
+	fmt.Println("Call operation: StorageAccounts_Create")
 	storageAccountsClient, err := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scName := "gotestaccount3"
@@ -94,6 +96,7 @@ func (testsuite *ManagementPoliciesClientTestSuite) TestManagementPoliciesCRUD()
 	testsuite.Require().Equal(scName, *resp.Name)
 
 	// create management policy
+	fmt.Println("Call operation: ManagementPolicies_CreateOrUpdate")
 	managementPoliciesClient, err := armstorage.NewManagementPoliciesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	mpResp, err := managementPoliciesClient.CreateOrUpdate(
@@ -148,11 +151,13 @@ func (testsuite *ManagementPoliciesClientTestSuite) TestManagementPoliciesCRUD()
 	testsuite.Require().Equal("DefaultManagementPolicy", *mpResp.Name)
 
 	// get management policy
+	fmt.Println("Call operation: ManagementPolicies_Get")
 	getResp, err := managementPoliciesClient.Get(testsuite.ctx, testsuite.resourceGroupName, scName, "default", nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal("DefaultManagementPolicy", *getResp.Name)
 
 	// delete management policy
+	fmt.Println("Call operation: ManagementPolicies_Delete")
 	_, err = managementPoliciesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scName, "default", nil)
 	testsuite.Require().NoError(err)
 }

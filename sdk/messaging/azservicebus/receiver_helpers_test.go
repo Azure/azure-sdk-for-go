@@ -6,34 +6,34 @@ package azservicebus
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
 type StubAMQPReceiver struct {
-	stubClose                       func(inner internal.AMQPReceiverCloser, ctx context.Context) error
+	stubClose                       func(inner amqpwrap.AMQPReceiverCloser, ctx context.Context) error
 	stubCloseCalled                 int
-	stubIssueCredit                 func(inner internal.AMQPReceiverCloser, credit uint32) error
+	stubIssueCredit                 func(inner amqpwrap.AMQPReceiverCloser, credit uint32) error
 	stubIssueCreditCalled           int
-	stubCredits                     func(inner internal.AMQPReceiverCloser) uint32
+	stubCredits                     func(inner amqpwrap.AMQPReceiverCloser) uint32
 	stubCreditsCalled               int
-	stubReceive                     func(inner internal.AMQPReceiverCloser, ctx context.Context) (*amqp.Message, error)
+	stubReceive                     func(inner amqpwrap.AMQPReceiverCloser, ctx context.Context) (*amqp.Message, error)
 	stubReceiveCalled               int
-	stubPrefetched                  func(inner internal.AMQPReceiverCloser) *amqp.Message
+	stubPrefetched                  func(inner amqpwrap.AMQPReceiverCloser) *amqp.Message
 	stubPrefetchedCalled            int
-	stubAcceptMessage               func(inner internal.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message) error
+	stubAcceptMessage               func(inner amqpwrap.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message) error
 	stubAcceptMessageCalled         int
-	stubRejectMessage               func(inner internal.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message, e *amqp.Error) error
+	stubRejectMessage               func(inner amqpwrap.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message, e *amqp.Error) error
 	stubRejectMessageCalled         int
-	stubReleaseMessage              func(inner internal.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message) error
+	stubReleaseMessage              func(inner amqpwrap.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message) error
 	stubReleaseMessageCalled        int
-	stubModifyMessage               func(inner internal.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error
+	stubModifyMessage               func(inner amqpwrap.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error
 	stubModifyMessageCalled         int
-	stubLinkName                    func(inner internal.AMQPReceiverCloser) string
+	stubLinkName                    func(inner amqpwrap.AMQPReceiverCloser) string
 	stubLinkNameCalled              int
-	stubLinkSourceFilterValue       func(inner internal.AMQPReceiverCloser, name string) interface{}
+	stubLinkSourceFilterValue       func(inner amqpwrap.AMQPReceiverCloser, name string) interface{}
 	stubLinkSourceFilterValueCalled int
-	inner                           internal.AMQPReceiverCloser
+	inner                           amqpwrap.AMQPReceiverCloser
 }
 
 func (r *StubAMQPReceiver) Close(ctx context.Context) error {

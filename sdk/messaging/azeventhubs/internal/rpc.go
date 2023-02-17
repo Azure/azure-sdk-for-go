@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package internal
 
 import (
@@ -50,15 +51,6 @@ type (
 		uuidNewV4 func() (uuid.UUID, error)
 	}
 
-	// RPCResponse is the simplified response structure from an RPC like call
-	RPCResponse struct {
-		// Code is the response code - these originate from Service Bus. Some
-		// common values are called out below, with the RPCResponseCode* constants.
-		Code        int
-		Description string
-		Message     *amqp.Message
-	}
-
 	// RPCLinkOption provides a way to customize the construction of a Link
 	RPCLinkOption func(link *rpcLink) error
 
@@ -79,7 +71,7 @@ const (
 // RPCError is an error from an RPCLink.
 // RPCLinks are used for communication with the $management and $cbs links.
 type RPCError struct {
-	Resp    *RPCResponse
+	Resp    *amqpwrap.RPCResponse
 	Message string
 }
 
@@ -226,7 +218,7 @@ func (l *rpcLink) startResponseRouter() {
 }
 
 // RPC sends a request and waits on a response for that request
-func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, error) {
+func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
 	l.startResponseRouterOnce.Do(func() {
 		go l.startResponseRouter()
 	})
@@ -311,7 +303,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 		}
 	}
 
-	response := &RPCResponse{
+	response := &amqpwrap.RPCResponse{
 		Code:        int(statusCode),
 		Description: description,
 		Message:     res,
@@ -331,11 +323,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 }
 
 // Close the link receiver, sender and session
-func (l *rpcLink) Close(_ context.Context) error {
-	// we're finding, in practice, that allowing cancellations when cleaning up state
-	// just results in inconsistencies. We'll cut cancellation off here for now.
-	ctx := context.Background()
-
+func (l *rpcLink) Close(ctx context.Context) error {
 	l.rpcLinkCtxCancel()
 
 	if err := l.closeReceiver(ctx); err != nil {
@@ -460,7 +448,7 @@ func addMessageID(message *amqp.Message, uuidNewV4 func() (uuid.UUID, error)) (*
 // asRPCError checks to see if the res is actually a failed request
 // (where failed means the status code was non-2xx). If so,
 // it returns true and updates the struct pointed to by err.
-func asRPCError(res *RPCResponse, err *RPCError) bool {
+func asRPCError(res *amqpwrap.RPCResponse, err *RPCError) bool {
 	if res == nil {
 		return false
 	}

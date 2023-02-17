@@ -24,12 +24,12 @@ type FederatedIdentityCredentialsClientGetResponse struct {
 	FederatedIdentityCredential
 }
 
-// FederatedIdentityCredentialsClientListResponse contains the response from method FederatedIdentityCredentialsClient.List.
+// FederatedIdentityCredentialsClientListResponse contains the response from method FederatedIdentityCredentialsClient.NewListPager.
 type FederatedIdentityCredentialsClientListResponse struct {
 	FederatedIdentityCredentialsListResult
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -54,17 +54,12 @@ type UserAssignedIdentitiesClientGetResponse struct {
 	Identity
 }
 
-// UserAssignedIdentitiesClientListAssociatedResourcesResponse contains the response from method UserAssignedIdentitiesClient.ListAssociatedResources.
-type UserAssignedIdentitiesClientListAssociatedResourcesResponse struct {
-	AssociatedResourcesListResult
-}
-
-// UserAssignedIdentitiesClientListByResourceGroupResponse contains the response from method UserAssignedIdentitiesClient.ListByResourceGroup.
+// UserAssignedIdentitiesClientListByResourceGroupResponse contains the response from method UserAssignedIdentitiesClient.NewListByResourceGroupPager.
 type UserAssignedIdentitiesClientListByResourceGroupResponse struct {
 	UserAssignedIdentitiesListResult
 }
 
-// UserAssignedIdentitiesClientListBySubscriptionResponse contains the response from method UserAssignedIdentitiesClient.ListBySubscription.
+// UserAssignedIdentitiesClientListBySubscriptionResponse contains the response from method UserAssignedIdentitiesClient.NewListBySubscriptionPager.
 type UserAssignedIdentitiesClientListBySubscriptionResponse struct {
 	UserAssignedIdentitiesListResult
 }

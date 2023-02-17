@@ -47,18 +47,18 @@ func Example_pageblob_Client() {
 
 	page := make([]byte, pageblob.PageBytes)
 	copy(page, "Page 0")
-	_, err = pageBlobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page)), nil)
+	_, err = pageBlobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page)), blob.HTTPRange{
+		Offset: 0,
+		Count:  0,
+	}, nil)
 	handleError(err)
 
 	copy(page, "Page 1")
 	_, err = pageBlobClient.UploadPages(
 		context.TODO(),
-		streaming.NopCloser(bytes.NewReader(page)),
-		&pageblob.UploadPagesOptions{
-			Range: blob.HTTPRange{
-				Count: int64(2 * pageblob.PageBytes),
-			},
-		})
+		streaming.NopCloser(bytes.NewReader(page)), blob.HTTPRange{
+			Count: int64(2 * pageblob.PageBytes),
+		}, nil)
 	handleError(err)
 
 	pager := pageBlobClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{

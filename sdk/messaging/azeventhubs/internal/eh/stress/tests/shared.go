@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package tests
 
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -16,8 +18,8 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/joho/godotenv"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -117,13 +119,13 @@ func newStressTestData(name string, verbose bool, baggage map[string]string) (*s
 
 	log.Printf("Name: %s, TestRunID: %s", td.name, td.runID)
 
-	parsedConn, err := conn.ParsedConnectionFromStr(td.ConnectionString)
+	props, err := exported.ParseConnectionString(td.ConnectionString)
 
 	if err != nil {
 		return nil, err
 	}
 
-	td.Namespace = parsedConn.Namespace
+	td.Namespace = props.FullyQualifiedNamespace
 
 	startBaggage := map[string]string{
 		"Namespace": td.Namespace,
@@ -258,7 +260,7 @@ func sendEventsToPartition(ctx context.Context, args sendEventsToPartitionArgs) 
 // Returns the checkpoints we updated, sorted by partition ID.
 func initCheckpointStore(ctx context.Context, containerName string, testData *stressTestData) ([]azeventhubs.Checkpoint, error) {
 	// create the container first - it shouldn't already exist
-	cc, err := blob.NewContainerClientFromConnectionString(testData.StorageConnectionString, containerName, nil)
+	cc, err := container.NewClientFromConnectionString(testData.StorageConnectionString, containerName, nil)
 
 	if err != nil {
 		return nil, err
@@ -268,7 +270,7 @@ func initCheckpointStore(ctx context.Context, containerName string, testData *st
 		return nil, err
 	}
 
-	cps, err := checkpoints.NewBlobStoreFromConnectionString(testData.StorageConnectionString, containerName, nil)
+	cps, err := checkpoints.NewBlobStore(cc, nil)
 
 	if err != nil {
 		return nil, err
@@ -380,4 +382,24 @@ func enableVerboseLogging() {
 	azlog.SetListener(func(e azlog.Event, s string) {
 		log.Printf("[%s] %s", e, s)
 	})
+}
+
+func addSleepAfterFlag(fs *flag.FlagSet) func() {
+	var durationStr string
+	fs.StringVar(&durationStr, "sleepAfter", "0m", "Time to sleep after test completes")
+
+	return func() {
+		sleepAfter, err := time.ParseDuration(durationStr)
+
+		if err != nil {
+			log.Printf("Invalid sleepAfter duration given: %s", sleepAfter)
+			return
+		}
+
+		if sleepAfter > 0 {
+			log.Printf("Sleeping for %s", sleepAfter)
+			time.Sleep(sleepAfter)
+			log.Printf("Done sleeping for %s", sleepAfter)
+		}
+	}
 }

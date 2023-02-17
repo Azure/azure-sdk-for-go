@@ -9,12 +9,12 @@
 
 package armloadtesting
 
-// LoadTestsClientCreateOrUpdateResponse contains the response from method LoadTestsClient.CreateOrUpdate.
+// LoadTestsClientCreateOrUpdateResponse contains the response from method LoadTestsClient.BeginCreateOrUpdate.
 type LoadTestsClientCreateOrUpdateResponse struct {
 	LoadTestResource
 }
 
-// LoadTestsClientDeleteResponse contains the response from method LoadTestsClient.Delete.
+// LoadTestsClientDeleteResponse contains the response from method LoadTestsClient.BeginDelete.
 type LoadTestsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,27 +24,27 @@ type LoadTestsClientGetResponse struct {
 	LoadTestResource
 }
 
-// LoadTestsClientListByResourceGroupResponse contains the response from method LoadTestsClient.ListByResourceGroup.
+// LoadTestsClientListByResourceGroupResponse contains the response from method LoadTestsClient.NewListByResourceGroupPager.
 type LoadTestsClientListByResourceGroupResponse struct {
 	LoadTestResourcePageList
 }
 
-// LoadTestsClientListBySubscriptionResponse contains the response from method LoadTestsClient.ListBySubscription.
+// LoadTestsClientListBySubscriptionResponse contains the response from method LoadTestsClient.NewListBySubscriptionPager.
 type LoadTestsClientListBySubscriptionResponse struct {
 	LoadTestResourcePageList
 }
 
-// LoadTestsClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method LoadTestsClient.ListOutboundNetworkDependenciesEndpoints.
+// LoadTestsClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method LoadTestsClient.NewListOutboundNetworkDependenciesEndpointsPager.
 type LoadTestsClientListOutboundNetworkDependenciesEndpointsResponse struct {
 	OutboundEnvironmentEndpointCollection
 }
 
-// LoadTestsClientUpdateResponse contains the response from method LoadTestsClient.Update.
+// LoadTestsClientUpdateResponse contains the response from method LoadTestsClient.BeginUpdate.
 type LoadTestsClientUpdateResponse struct {
 	LoadTestResource
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -59,7 +59,7 @@ type QuotasClientGetResponse struct {
 	QuotaResource
 }
 
-// QuotasClientListResponse contains the response from method QuotasClient.List.
+// QuotasClientListResponse contains the response from method QuotasClient.NewListPager.
 type QuotasClientListResponse struct {
 	QuotaResourceList
 }

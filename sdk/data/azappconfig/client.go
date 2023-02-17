@@ -150,16 +150,21 @@ func fromGeneratedAdd(g generated.AzureAppConfigurationClientPutKeyValueResponse
 type AddSettingOptions struct {
 	// Configuration setting label.
 	Label *string
+
+	// Configuration setting content type.
+	ContentType *string
 }
 
 // AddSetting creates a configuration setting only if the setting does not already exist in the configuration store.
 func (c *Client) AddSetting(ctx context.Context, key string, value *string, options *AddSettingOptions) (AddSettingResponse, error) {
 	var label *string
+	var contentType *string
 	if options != nil {
 		label = options.Label
+		contentType = options.ContentType
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: label}
+	setting := Setting{Key: &key, Value: value, Label: label, ContentType: contentType}
 
 	etagAny := azcore.ETagAny
 	kv, opts := setting.toGeneratedPutOptions(nil, &etagAny)
@@ -394,6 +399,9 @@ type SetSettingOptions struct {
 	// Configuration setting label.
 	Label *string
 
+	// Configuration setting content type.
+	ContentType *string
+
 	// If set, and the configuration setting exists in the configuration store, overwrite the setting
 	// if the passed-in ETag is the same version as the one in the configuration store.
 	OnlyIfUnchanged *azcore.ETag
@@ -402,14 +410,16 @@ type SetSettingOptions struct {
 // SetSetting creates a configuration setting if it doesn't exist or overwrites the existing setting in the configuration store.
 func (c *Client) SetSetting(ctx context.Context, key string, value *string, options *SetSettingOptions) (SetSettingResponse, error) {
 	var label *string
+	var contentType *string
 	var ifMatch *azcore.ETag
 
 	if options != nil {
 		label = options.Label
+		contentType = options.ContentType
 		ifMatch = options.OnlyIfUnchanged
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: label}
+	setting := Setting{Key: &key, Value: value, Label: label, ContentType: contentType}
 
 	kv, opts := setting.toGeneratedPutOptions(ifMatch, nil)
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)

@@ -189,17 +189,21 @@ type rpcTesterClient struct {
 	session amqpwrap.AMQPSession
 }
 
+func (c *rpcTesterClient) Name() string {
+	return "rpcClientName"
+}
+
 func (c *rpcTesterClient) NewSession(ctx context.Context, opts *amqp.SessionOptions) (amqpwrap.AMQPSession, error) {
 	return c.session, nil
 }
 
 func (c *rpcTesterClient) Close() error { return nil }
 
-func (tester *rpcTester) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
+func (tester *rpcTester) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
 	return tester, nil
 }
 
-func (tester *rpcTester) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (AMQPSenderCloser, error) {
+func (tester *rpcTester) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (amqpwrap.AMQPSenderCloser, error) {
 	return tester, nil
 }
 

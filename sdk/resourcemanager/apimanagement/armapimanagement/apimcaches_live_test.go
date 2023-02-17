@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimcachesTestSuite(t *testing.T) {
 func (testsuite *ApimcachesTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimcachesTestSuite) Prepare() {
 func (testsuite *ApimcachesTestSuite) TestCache() {
 	var err error
 	// From step Cache_CreateOrUpdate
+	fmt.Println("Call operation: Cache_CreateOrUpdate")
 	cacheClient, err := armapimanagement.NewCacheClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = cacheClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.cacheId, armapimanagement.CacheContract{
@@ -101,14 +104,17 @@ func (testsuite *ApimcachesTestSuite) TestCache() {
 	testsuite.Require().NoError(err)
 
 	// From step Cache_GetEntityTag
+	fmt.Println("Call operation: Cache_GetEntityTag")
 	_, err = cacheClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.cacheId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Cache_Get
+	fmt.Println("Call operation: Cache_Get")
 	_, err = cacheClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.cacheId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Cache_ListByService
+	fmt.Println("Call operation: Cache_ListByService")
 	cacheClientNewListByServicePager := cacheClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.CacheClientListByServiceOptions{Top: nil,
 		Skip: nil,
 	})
@@ -119,6 +125,7 @@ func (testsuite *ApimcachesTestSuite) TestCache() {
 	}
 
 	// From step Cache_Update
+	fmt.Println("Call operation: Cache_Update")
 	_, err = cacheClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.cacheId, "*", armapimanagement.CacheUpdateParameters{
 		Properties: &armapimanagement.CacheUpdateProperties{
 			Description: to.Ptr("update cache description"),
@@ -127,6 +134,7 @@ func (testsuite *ApimcachesTestSuite) TestCache() {
 	testsuite.Require().NoError(err)
 
 	// From step Cache_Delete
+	fmt.Println("Call operation: Cache_Delete")
 	_, err = cacheClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.cacheId, "*", nil)
 	testsuite.Require().NoError(err)
 }

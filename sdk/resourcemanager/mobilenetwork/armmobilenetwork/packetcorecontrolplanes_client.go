@@ -55,6 +55,74 @@ func NewPacketCoreControlPlanesClient(subscriptionID string, credential azcore.T
 	return client, nil
 }
 
+// BeginCollectDiagnosticsPackage - Collect a diagnostics package for the specified packet core control plane. This action
+// will upload the diagnostics to a storage account.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// packetCoreControlPlaneName - The name of the packet core control plane.
+// parameters - Parameters supplied to the packet core control plane collect diagnostics package operation.
+// options - PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginCollectDiagnosticsPackage
+// method.
+func (client *PacketCoreControlPlanesClient) BeginCollectDiagnosticsPackage(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters PacketCoreControlPlaneCollectDiagnosticsPackage, options *PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions) (*runtime.Poller[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.collectDiagnosticsPackage(ctx, resourceGroupName, packetCoreControlPlaneName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// CollectDiagnosticsPackage - Collect a diagnostics package for the specified packet core control plane. This action will
+// upload the diagnostics to a storage account.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+func (client *PacketCoreControlPlanesClient) collectDiagnosticsPackage(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters PacketCoreControlPlaneCollectDiagnosticsPackage, options *PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions) (*http.Response, error) {
+	req, err := client.collectDiagnosticsPackageCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// collectDiagnosticsPackageCreateRequest creates the CollectDiagnosticsPackage request.
+func (client *PacketCoreControlPlanesClient) collectDiagnosticsPackageCreateRequest(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters PacketCoreControlPlaneCollectDiagnosticsPackage, options *PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/collectDiagnosticsPackage"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if packetCoreControlPlaneName == "" {
+		return nil, errors.New("parameter packetCoreControlPlaneName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{packetCoreControlPlaneName}", url.PathEscape(packetCoreControlPlaneName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
 // BeginCreateOrUpdate - Creates or updates a packet core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-11-01
@@ -364,6 +432,140 @@ func (client *PacketCoreControlPlanesClient) listBySubscriptionHandleResponse(re
 		return PacketCoreControlPlanesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginReinstall - Reinstall the specified packet core control plane. This action will remove any transaction state from
+// the packet core to return it to a known state. This action will cause a service outage.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// packetCoreControlPlaneName - The name of the packet core control plane.
+// options - PacketCoreControlPlanesClientBeginReinstallOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginReinstall
+// method.
+func (client *PacketCoreControlPlanesClient) BeginReinstall(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginReinstallOptions) (*runtime.Poller[PacketCoreControlPlanesClientReinstallResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reinstall(ctx, resourceGroupName, packetCoreControlPlaneName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PacketCoreControlPlanesClientReinstallResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientReinstallResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// Reinstall - Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
+// core to return it to a known state. This action will cause a service outage.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+func (client *PacketCoreControlPlanesClient) reinstall(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginReinstallOptions) (*http.Response, error) {
+	req, err := client.reinstallCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// reinstallCreateRequest creates the Reinstall request.
+func (client *PacketCoreControlPlanesClient) reinstallCreateRequest(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginReinstallOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/reinstall"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if packetCoreControlPlaneName == "" {
+		return nil, errors.New("parameter packetCoreControlPlaneName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{packetCoreControlPlaneName}", url.PathEscape(packetCoreControlPlaneName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRollback - Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
+// consecutive rollbacks are not possible. This action may cause a service outage.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// packetCoreControlPlaneName - The name of the packet core control plane.
+// options - PacketCoreControlPlanesClientBeginRollbackOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginRollback
+// method.
+func (client *PacketCoreControlPlanesClient) BeginRollback(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginRollbackOptions) (*runtime.Poller[PacketCoreControlPlanesClientRollbackResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.rollback(ctx, resourceGroupName, packetCoreControlPlaneName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PacketCoreControlPlanesClientRollbackResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientRollbackResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// Rollback - Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple consecutive
+// rollbacks are not possible. This action may cause a service outage.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-11-01
+func (client *PacketCoreControlPlanesClient) rollback(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginRollbackOptions) (*http.Response, error) {
+	req, err := client.rollbackCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// rollbackCreateRequest creates the Rollback request.
+func (client *PacketCoreControlPlanesClient) rollbackCreateRequest(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginRollbackOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/rollback"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if packetCoreControlPlaneName == "" {
+		return nil, errors.New("parameter packetCoreControlPlaneName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{packetCoreControlPlaneName}", url.PathEscape(packetCoreControlPlaneName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
 }
 
 // UpdateTags - Updates packet core control planes tags.

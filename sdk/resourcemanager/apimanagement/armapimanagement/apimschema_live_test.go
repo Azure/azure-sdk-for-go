@@ -10,6 +10,7 @@ package armapimanagement_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -62,6 +63,7 @@ func TestApimschemaTestSuite(t *testing.T) {
 func (testsuite *ApimschemaTestSuite) Prepare() {
 	var err error
 	// From step ApiManagementService_CreateOrUpdate
+	fmt.Println("Call operation: ApiManagementService_CreateOrUpdate")
 	serviceClient, err := armapimanagement.NewServiceClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
@@ -88,6 +90,7 @@ func (testsuite *ApimschemaTestSuite) Prepare() {
 func (testsuite *ApimschemaTestSuite) TestGlobalschema() {
 	var err error
 	// From step GlobalSchema_CreateOrUpdate
+	fmt.Println("Call operation: GlobalSchema_CreateOrUpdate")
 	globalSchemaClient, err := armapimanagement.NewGlobalSchemaClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	globalSchemaClientCreateOrUpdateResponsePoller, err := globalSchemaClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.schemaId, armapimanagement.GlobalSchemaContract{
@@ -102,10 +105,12 @@ func (testsuite *ApimschemaTestSuite) TestGlobalschema() {
 	testsuite.Require().NoError(err)
 
 	// From step GlobalSchema_GetEntityTag
+	fmt.Println("Call operation: GlobalSchema_GetEntityTag")
 	_, err = globalSchemaClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.schemaId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step GlobalSchema_ListByService
+	fmt.Println("Call operation: GlobalSchema_ListByService")
 	globalSchemaClientNewListByServicePager := globalSchemaClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.GlobalSchemaClientListByServiceOptions{Filter: nil,
 		Top:  nil,
 		Skip: nil,
@@ -117,10 +122,12 @@ func (testsuite *ApimschemaTestSuite) TestGlobalschema() {
 	}
 
 	// From step GlobalSchema_Get
+	fmt.Println("Call operation: GlobalSchema_Get")
 	_, err = globalSchemaClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.schemaId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step GlobalSchema_Delete
+	fmt.Println("Call operation: GlobalSchema_Delete")
 	_, err = globalSchemaClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.schemaId, "*", nil)
 	testsuite.Require().NoError(err)
 }

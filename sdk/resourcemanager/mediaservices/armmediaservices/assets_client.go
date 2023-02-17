@@ -294,7 +294,6 @@ func (client *AssetsClient) getEncryptionKeyHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - List Assets in the Media Services account with optional filtering and ordering
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.

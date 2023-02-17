@@ -94,21 +94,6 @@ type OperationsClientListResponse struct {
 	OperationList
 }
 
-// PacketCoreControlPlaneClientCollectDiagnosticsPackageResponse contains the response from method PacketCoreControlPlaneClient.CollectDiagnosticsPackage.
-type PacketCoreControlPlaneClientCollectDiagnosticsPackageResponse struct {
-	AsyncOperationStatus
-}
-
-// PacketCoreControlPlaneClientReinstallResponse contains the response from method PacketCoreControlPlaneClient.Reinstall.
-type PacketCoreControlPlaneClientReinstallResponse struct {
-	AsyncOperationStatus
-}
-
-// PacketCoreControlPlaneClientRollbackResponse contains the response from method PacketCoreControlPlaneClient.Rollback.
-type PacketCoreControlPlaneClientRollbackResponse struct {
-	AsyncOperationStatus
-}
-
 // PacketCoreControlPlaneVersionsClientGetResponse contains the response from method PacketCoreControlPlaneVersionsClient.Get.
 type PacketCoreControlPlaneVersionsClientGetResponse struct {
 	PacketCoreControlPlaneVersion
@@ -117,6 +102,11 @@ type PacketCoreControlPlaneVersionsClientGetResponse struct {
 // PacketCoreControlPlaneVersionsClientListResponse contains the response from method PacketCoreControlPlaneVersionsClient.List.
 type PacketCoreControlPlaneVersionsClientListResponse struct {
 	PacketCoreControlPlaneVersionListResult
+}
+
+// PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse contains the response from method PacketCoreControlPlanesClient.CollectDiagnosticsPackage.
+type PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse struct {
+	AsyncOperationStatus
 }
 
 // PacketCoreControlPlanesClientCreateOrUpdateResponse contains the response from method PacketCoreControlPlanesClient.CreateOrUpdate.
@@ -142,6 +132,16 @@ type PacketCoreControlPlanesClientListByResourceGroupResponse struct {
 // PacketCoreControlPlanesClientListBySubscriptionResponse contains the response from method PacketCoreControlPlanesClient.ListBySubscription.
 type PacketCoreControlPlanesClientListBySubscriptionResponse struct {
 	PacketCoreControlPlaneListResult
+}
+
+// PacketCoreControlPlanesClientReinstallResponse contains the response from method PacketCoreControlPlanesClient.Reinstall.
+type PacketCoreControlPlanesClientReinstallResponse struct {
+	AsyncOperationStatus
+}
+
+// PacketCoreControlPlanesClientRollbackResponse contains the response from method PacketCoreControlPlanesClient.Rollback.
+type PacketCoreControlPlanesClientRollbackResponse struct {
+	AsyncOperationStatus
 }
 
 // PacketCoreControlPlanesClientUpdateTagsResponse contains the response from method PacketCoreControlPlanesClient.UpdateTags.
@@ -199,21 +199,6 @@ type ServicesClientUpdateTagsResponse struct {
 	Service
 }
 
-// SimClientBulkDeleteResponse contains the response from method SimClient.BulkDelete.
-type SimClientBulkDeleteResponse struct {
-	AsyncOperationStatus
-}
-
-// SimClientBulkUploadEncryptedResponse contains the response from method SimClient.BulkUploadEncrypted.
-type SimClientBulkUploadEncryptedResponse struct {
-	AsyncOperationStatus
-}
-
-// SimClientBulkUploadResponse contains the response from method SimClient.BulkUpload.
-type SimClientBulkUploadResponse struct {
-	AsyncOperationStatus
-}
-
 // SimGroupsClientCreateOrUpdateResponse contains the response from method SimGroupsClient.CreateOrUpdate.
 type SimGroupsClientCreateOrUpdateResponse struct {
 	SimGroup
@@ -267,6 +252,21 @@ type SimPoliciesClientListByMobileNetworkResponse struct {
 // SimPoliciesClientUpdateTagsResponse contains the response from method SimPoliciesClient.UpdateTags.
 type SimPoliciesClientUpdateTagsResponse struct {
 	SimPolicy
+}
+
+// SimsClientBulkDeleteResponse contains the response from method SimsClient.BulkDelete.
+type SimsClientBulkDeleteResponse struct {
+	AsyncOperationStatus
+}
+
+// SimsClientBulkUploadEncryptedResponse contains the response from method SimsClient.BulkUploadEncrypted.
+type SimsClientBulkUploadEncryptedResponse struct {
+	AsyncOperationStatus
+}
+
+// SimsClientBulkUploadResponse contains the response from method SimsClient.BulkUpload.
+type SimsClientBulkUploadResponse struct {
+	AsyncOperationStatus
 }
 
 // SimsClientCreateOrUpdateResponse contains the response from method SimsClient.CreateOrUpdate.

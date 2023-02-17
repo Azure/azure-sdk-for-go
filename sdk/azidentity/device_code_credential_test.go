@@ -86,12 +86,52 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_Live(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		t.Skip("this test requires manual recording and can't pass live in CI")
+	if recording.GetRecordMode() != recording.PlaybackMode && !runManualTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+	}
+	for _, test := range []struct {
+		clientID, desc, tenantID string
+		opts                     DeviceCodeCredentialOptions
+	}{
+		{
+			desc: "default options",
+		},
+		{
+			desc: "instance discovery disabled",
+			opts: DeviceCodeCredentialOptions{DisableInstanceDiscovery: true, TenantID: liveSP.tenantID},
+		},
+		{
+			desc: "optional tenant",
+			opts: DeviceCodeCredentialOptions{TenantID: liveSP.tenantID},
+		},
+	} {
+		t.Run(test.desc, func(t *testing.T) {
+			o, stop := initRecording(t)
+			defer stop()
+			test.opts.ClientOptions = o
+			if recording.GetRecordMode() == recording.PlaybackMode {
+				test.opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }
+			}
+			cred, err := NewDeviceCodeCredential(&test.opts)
+			if err != nil {
+				t.Fatal(err)
+			}
+			testGetTokenSuccess(t, cred)
+		})
+	}
+}
+
+func TestDeviceCodeCredentialADFS_Live(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode && !runManualTests {
+		t.Skip("set AZIDENTITY_RUN_MANUAL_TESTS to run this test")
+	}
+	if adfsLiveSP.clientID == "" {
+		t.Skip("set ADFS_SP_* environment variables to run this test")
 	}
 	o, stop := initRecording(t)
 	defer stop()
-	opts := DeviceCodeCredentialOptions{TenantID: liveUser.tenantID, ClientOptions: o}
+	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
+	opts := DeviceCodeCredentialOptions{TenantID: "adfs", ClientID: adfsLiveUser.clientID, ClientOptions: o, DisableInstanceDiscovery: true}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }
 	}
@@ -99,5 +139,5 @@ func TestDeviceCodeCredential_Live(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	testGetTokenSuccess(t, cred)
+	testGetTokenSuccess(t, cred, adfsScope)
 }

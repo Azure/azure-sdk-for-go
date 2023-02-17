@@ -9,6 +9,7 @@ package container_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"net/url"
 	"sort"
 	"strconv"
@@ -104,7 +105,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateInvalidName() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	_require.NotNil(err)
@@ -121,7 +122,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyName() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	_require.NotNil(err)
@@ -143,7 +144,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateNameCollision() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 
 	containerClient = svcClient.NewContainerClient(containerName)
@@ -164,7 +165,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateInvalidMetadata() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{"1 foo": "bar"},
+		Metadata: map[string]*string{"1 foo": to.Ptr("bar")},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 
@@ -183,7 +184,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateNilMetadata() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -206,7 +207,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyMetadata() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -1083,7 +1084,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataEmpty() {
 	_require.Nil(err)
 
 	setMetadataContainerOptions := container.SetMetadataOptions{
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.SetMetadata(context.Background(), &setMetadataContainerOptions)
 	_require.Nil(err)
@@ -1128,7 +1129,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataInvalidField() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	setMetadataContainerOptions := container.SetMetadataOptions{
-		Metadata: map[string]string{"!nval!d Field!@#%": "value"},
+		Metadata: map[string]*string{"!nval!d Field!@#%": to.Ptr("value")},
 	}
 	_, err = containerClient.SetMetadata(context.Background(), &setMetadataContainerOptions)
 	_require.NotNil(err)
@@ -1349,7 +1350,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetEmptyAccessPolicy() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &container.SetAccessPolicyOptions{})
+	_, err = containerClient.SetAccessPolicy(context.Background(), &container.SetAccessPolicyOptions{})
 	_require.Nil(err)
 }
 
@@ -1378,8 +1379,8 @@ func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 		},
 		ID: &id,
 	})
-
-	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 }
 
@@ -1423,8 +1424,8 @@ func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 			Permission: &permission3,
 		},
 	})
-
-	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
 	// Make a Get to assert two access policies
@@ -1449,8 +1450,8 @@ func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
 	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
 		ID: &id,
 	})
-
-	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1492,8 +1493,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerGetSetPermissionsMultiplePoli
 			},
 		},
 	}
-
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: permissions}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 
 	_require.Nil(err)
 
@@ -1540,7 +1541,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessNon
 	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 
 	// Container is created with PublicAccessTypeBlob, so setting it to None will actually test that it is changed through this method
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, nil)
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 
 	bsu2, err := service.NewClientWithNoCredential(svcClient.URL(), nil)
@@ -1579,7 +1580,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessTyp
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1600,7 +1601,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessCon
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeContainer),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1698,7 +1699,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: &access,
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
@@ -1736,7 +1738,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModify
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: &access,
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1749,7 +1752,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModify
 	setAccessPolicyOptions1 := container.SetAccessPolicyOptions{
 		Access: &access,
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions1)
+	setAccessPolicyOptions1.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions1)
 	_require.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1789,7 +1793,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAllPolici
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1800,7 +1805,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAllPolici
 	setAccessPolicyOptions = container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), []*container.SignedIdentifier{}, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = []*container.SignedIdentifier{}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1840,7 +1846,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsInvalidPolicyTi
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 }
 
@@ -1854,7 +1861,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsNilPolicySlice(
 
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, nil)
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 }
 
@@ -1891,7 +1898,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsSignedIdentifie
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
@@ -1917,7 +1925,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfModifiedSince
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1946,7 +1954,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfModifiedSince
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -1973,7 +1981,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSin
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -2002,7 +2010,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSin
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -2121,8 +2129,8 @@ func (s *ContainerUnrecordedTestsSuite) TestSetAccessPoliciesInDifferentTimeForm
 			Permission: &permission3,
 		},
 	})
-
-	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
 	// make a Get to assert three access policies
@@ -2149,7 +2157,8 @@ func (s *ContainerRecordedTestsSuite) TestSetAccessPolicyWithNullId() {
 		},
 	})
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 	_require.NotNil(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
 
@@ -2182,4 +2191,34 @@ func (s *ContainerUnrecordedTestsSuite) TestBlobNameSpecialCharacters() {
 		bc := client.NewBlobClient(blobName)
 		_require.Equal(expected, bc.URL())
 	}
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.ContainerPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// ContainerSASURL is created with GetSASURL
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create container client with sasUrl
+	_, err = container.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
 }

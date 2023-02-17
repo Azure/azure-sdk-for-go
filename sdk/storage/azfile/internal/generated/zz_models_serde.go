@@ -101,23 +101,23 @@ func (f FilesAndDirectoriesListSegment) MarshalXML(enc *xml.Encoder, start xml.S
 	type alias FilesAndDirectoriesListSegment
 	aux := &struct {
 		*alias
-		DirectoryItems *[]*DirectoryItem `xml:"Directory"`
-		FileItems      *[]*FileItem      `xml:"File"`
+		Directories *[]*Directory `xml:"Directory"`
+		Files       *[]*File      `xml:"File"`
 	}{
 		alias: (*alias)(&f),
 	}
-	if f.DirectoryItems != nil {
-		aux.DirectoryItems = &f.DirectoryItems
+	if f.Directories != nil {
+		aux.Directories = &f.Directories
 	}
-	if f.FileItems != nil {
-		aux.FileItems = &f.FileItems
+	if f.Files != nil {
+		aux.Files = &f.Files
 	}
 	return enc.EncodeElement(aux, start)
 }
 
-// MarshalXML implements the xml.Marshaller interface for type HandleItem.
-func (h HandleItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias HandleItem
+// MarshalXML implements the xml.Marshaller interface for type Handle.
+func (h Handle) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias Handle
 	aux := &struct {
 		*alias
 		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
@@ -130,9 +130,9 @@ func (h HandleItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	return enc.EncodeElement(aux, start)
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type HandleItem.
-func (h *HandleItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias HandleItem
+// UnmarshalXML implements the xml.Unmarshaller interface for type Handle.
+func (h *Handle) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias Handle
 	aux := &struct {
 		*alias
 		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
@@ -153,12 +153,12 @@ func (l ListHandlesResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement
 	type alias ListHandlesResponse
 	aux := &struct {
 		*alias
-		HandleList *[]*HandleItem `xml:"Entries>Handle"`
+		Handles *[]*Handle `xml:"Entries>Handle"`
 	}{
 		alias: (*alias)(&l),
 	}
-	if l.HandleList != nil {
-		aux.HandleList = &l.HandleList
+	if l.Handles != nil {
+		aux.Handles = &l.Handles
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -168,14 +168,30 @@ func (l ListSharesResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement)
 	type alias ListSharesResponse
 	aux := &struct {
 		*alias
-		ShareItems *[]*ShareItemInternal `xml:"Shares>Share"`
+		Shares *[]*Share `xml:"Shares>Share"`
 	}{
 		alias: (*alias)(&l),
 	}
-	if l.ShareItems != nil {
-		aux.ShareItems = &l.ShareItems
+	if l.Shares != nil {
+		aux.Shares = &l.Shares
 	}
 	return enc.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type Share.
+func (s *Share) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias Share
+	aux := &struct {
+		*alias
+		Metadata additionalProperties `xml:"Metadata"`
+	}{
+		alias: (*alias)(s),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	s.Metadata = (map[string]*string)(aux.Metadata)
+	return nil
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ShareFileRangeList.
@@ -195,22 +211,6 @@ func (s ShareFileRangeList) MarshalXML(enc *xml.Encoder, start xml.StartElement)
 		aux.Ranges = &s.Ranges
 	}
 	return enc.EncodeElement(aux, start)
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type ShareItemInternal.
-func (s *ShareItemInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias ShareItemInternal
-	aux := &struct {
-		*alias
-		Metadata additionalProperties `xml:"Metadata"`
-	}{
-		alias: (*alias)(s),
-	}
-	if err := dec.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	s.Metadata = (map[string]*string)(aux.Metadata)
-	return nil
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SharePermission.
@@ -240,9 +240,9 @@ func (s *SharePermission) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalXML implements the xml.Marshaller interface for type SharePropertiesInternal.
-func (s SharePropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias SharePropertiesInternal
+// MarshalXML implements the xml.Marshaller interface for type ShareProperties.
+func (s ShareProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias ShareProperties
 	aux := &struct {
 		*alias
 		AccessTierChangeTime          *timeRFC1123 `xml:"AccessTierChangeTime"`
@@ -259,9 +259,9 @@ func (s SharePropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartEle
 	return enc.EncodeElement(aux, start)
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type SharePropertiesInternal.
-func (s *SharePropertiesInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias SharePropertiesInternal
+// UnmarshalXML implements the xml.Unmarshaller interface for type ShareProperties.
+func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias ShareProperties
 	aux := &struct {
 		*alias
 		AccessTierChangeTime          *timeRFC1123 `xml:"AccessTierChangeTime"`
@@ -279,22 +279,6 @@ func (s *SharePropertiesInternal) UnmarshalXML(dec *xml.Decoder, start xml.Start
 	s.LastModified = (*time.Time)(aux.LastModified)
 	s.NextAllowedQuotaDowngradeTime = (*time.Time)(aux.NextAllowedQuotaDowngradeTime)
 	return nil
-}
-
-// MarshalXML implements the xml.Marshaller interface for type ShareServiceProperties.
-func (s ShareServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	start.Name.Local = "StorageServiceProperties"
-	type alias ShareServiceProperties
-	aux := &struct {
-		*alias
-		Cors *[]*ShareCorsRule `xml:"Cors>CorsRule"`
-	}{
-		alias: (*alias)(&s),
-	}
-	if s.Cors != nil {
-		aux.Cors = &s.Cors
-	}
-	return enc.EncodeElement(aux, start)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StorageError.
@@ -322,6 +306,21 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
+}
+
+// MarshalXML implements the xml.Marshaller interface for type StorageServiceProperties.
+func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias StorageServiceProperties
+	aux := &struct {
+		*alias
+		CORS *[]*CORSRule `xml:"Cors>CorsRule"`
+	}{
+		alias: (*alias)(&s),
+	}
+	if s.CORS != nil {
+		aux.CORS = &s.CORS
+	}
+	return enc.EncodeElement(aux, start)
 }
 
 func populate(m map[string]any, k string, v any) {

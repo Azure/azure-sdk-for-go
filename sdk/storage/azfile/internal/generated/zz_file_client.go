@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"encoding/base64"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -154,7 +155,7 @@ func (client *FileClient) acquireLeaseCreateRequest(ctx context.Context, options
 func (client *FileClient) acquireLeaseHandleResponse(resp *http.Response) (FileClientAcquireLeaseResponse, error) {
 	result := FileClientAcquireLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -234,7 +235,7 @@ func (client *FileClient) breakLeaseCreateRequest(ctx context.Context, options *
 func (client *FileClient) breakLeaseHandleResponse(resp *http.Response) (FileClientBreakLeaseResponse, error) {
 	result := FileClientBreakLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -315,7 +316,7 @@ func (client *FileClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileClientChangeLeaseResponse, error) {
 	result := FileClientChangeLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -432,7 +433,7 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientCreateResponse, error) {
 	result := FileClientCreateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -489,10 +490,10 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }
@@ -635,7 +636,7 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 		result.ContentRange = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
@@ -736,10 +737,10 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 		result.FilePermissionKey = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
 		result.LeaseDuration = (*LeaseDurationType)(&val)
@@ -913,7 +914,7 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.ContentType = &val
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
@@ -1004,10 +1005,10 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.FilePermissionKey = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
 		result.LeaseDuration = (*LeaseDurationType)(&val)
@@ -1082,7 +1083,7 @@ func (client *FileClient) getRangeListHandleResponse(resp *http.Response) (FileC
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("x-ms-content-length"); val != "" {
 		fileContentLength, err := strconv.ParseInt(val, 10, 64)
@@ -1228,7 +1229,7 @@ func (client *FileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileClientReleaseLeaseResponse, error) {
 	result := FileClientReleaseLeaseResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1336,7 +1337,7 @@ func (client *FileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (FileClientSetHTTPHeadersResponse, error) {
 	result := FileClientSetHTTPHeadersResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1393,10 +1394,10 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }
@@ -1453,7 +1454,7 @@ func (client *FileClient) setMetadataCreateRequest(ctx context.Context, options 
 func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileClientSetMetadataResponse, error) {
 	result := FileClientSetMetadataResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
@@ -1496,10 +1497,10 @@ func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileCl
 //     access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in
 //     a share snapshot can also be specified as a copy source.
 //   - options - FileClientStartCopyOptions contains the optional parameters for the FileClient.StartCopy method.
-//   - CopyFileSmbInfo - CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
+//   - CopyFileSMBInfo - CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) StartCopy(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (FileClientStartCopyResponse, error) {
-	req, err := client.startCopyCreateRequest(ctx, copySource, options, copyFileSmbInfo, leaseAccessConditions)
+func (client *FileClient) StartCopy(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSMBInfo *CopyFileSMBInfo, leaseAccessConditions *LeaseAccessConditions) (FileClientStartCopyResponse, error) {
+	req, err := client.startCopyCreateRequest(ctx, copySource, options, copyFileSMBInfo, leaseAccessConditions)
 	if err != nil {
 		return FileClientStartCopyResponse{}, err
 	}
@@ -1514,7 +1515,7 @@ func (client *FileClient) StartCopy(ctx context.Context, copySource string, opti
 }
 
 // startCopyCreateRequest creates the StartCopy request.
-func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource string, options *FileClientStartCopyOptions, copyFileSMBInfo *CopyFileSMBInfo, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1539,23 +1540,23 @@ func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource
 	if options != nil && options.FilePermissionKey != nil {
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.FilePermissionCopyMode != nil {
-		req.Raw().Header["x-ms-file-permission-copy-mode"] = []string{string(*copyFileSmbInfo.FilePermissionCopyMode)}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FilePermissionCopyMode != nil {
+		req.Raw().Header["x-ms-file-permission-copy-mode"] = []string{string(*copyFileSMBInfo.FilePermissionCopyMode)}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.IgnoreReadOnly != nil {
-		req.Raw().Header["x-ms-file-copy-ignore-readonly"] = []string{strconv.FormatBool(*copyFileSmbInfo.IgnoreReadOnly)}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.IgnoreReadOnly != nil {
+		req.Raw().Header["x-ms-file-copy-ignore-readonly"] = []string{strconv.FormatBool(*copyFileSMBInfo.IgnoreReadOnly)}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.FileAttributes != nil {
-		req.Raw().Header["x-ms-file-attributes"] = []string{*copyFileSmbInfo.FileAttributes}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileAttributes != nil {
+		req.Raw().Header["x-ms-file-attributes"] = []string{*copyFileSMBInfo.FileAttributes}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.FileCreationTime != nil {
-		req.Raw().Header["x-ms-file-creation-time"] = []string{*copyFileSmbInfo.FileCreationTime}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileCreationTime != nil {
+		req.Raw().Header["x-ms-file-creation-time"] = []string{*copyFileSMBInfo.FileCreationTime}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.FileLastWriteTime != nil {
-		req.Raw().Header["x-ms-file-last-write-time"] = []string{*copyFileSmbInfo.FileLastWriteTime}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.FileLastWriteTime != nil {
+		req.Raw().Header["x-ms-file-last-write-time"] = []string{*copyFileSMBInfo.FileLastWriteTime}
 	}
-	if copyFileSmbInfo != nil && copyFileSmbInfo.SetArchiveAttribute != nil {
-		req.Raw().Header["x-ms-file-copy-set-archive"] = []string{strconv.FormatBool(*copyFileSmbInfo.SetArchiveAttribute)}
+	if copyFileSMBInfo != nil && copyFileSMBInfo.SetArchiveAttribute != nil {
+		req.Raw().Header["x-ms-file-copy-set-archive"] = []string{strconv.FormatBool(*copyFileSMBInfo.SetArchiveAttribute)}
 	}
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
@@ -1568,7 +1569,7 @@ func (client *FileClient) startCopyCreateRequest(ctx context.Context, copySource
 func (client *FileClient) startCopyHandleResponse(resp *http.Response) (FileClientStartCopyResponse, error) {
 	result := FileClientStartCopyResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1663,7 +1664,7 @@ func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangePar
 func (client *FileClient) uploadRangeHandleResponse(resp *http.Response) (FileClientUploadRangeResponse, error) {
 	result := FileClientUploadRangeResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1777,7 +1778,7 @@ func (client *FileClient) uploadRangeFromURLCreateRequest(ctx context.Context, r
 func (client *FileClient) uploadRangeFromURLHandleResponse(resp *http.Response) (FileClientUploadRangeFromURLResponse, error) {
 	result := FileClientUploadRangeFromURLResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

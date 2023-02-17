@@ -9,7 +9,10 @@
 
 package generated
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
+)
 
 // AccessPolicy - An Access policy.
 type AccessPolicy struct {
@@ -31,8 +34,8 @@ type ClearRange struct {
 	Start *int64 `xml:"Start"`
 }
 
-// CopyFileSmbInfo contains a group of parameters for the FileClient.StartCopy method.
-type CopyFileSmbInfo struct {
+// CopyFileSMBInfo contains a group of parameters for the FileClient.StartCopy method.
+type CopyFileSMBInfo struct {
 	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes
 	// to set on a target file.
 	FileAttributes *string
@@ -50,6 +53,43 @@ type CopyFileSmbInfo struct {
 	// Specifies the option to set archive attribute on a target file. True means archive attribute will be set on a target file
 	// despite attribute overrides or a source file state.
 	SetArchiveAttribute *bool
+}
+
+// CORSRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
+// domain. Web browsers implement a security restriction known as same-origin policy that
+// prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
+// domain) to call APIs in another domain.
+type CORSRule struct {
+	// REQUIRED; The request headers that the origin domain may specify on the CORS request.
+	AllowedHeaders *string `xml:"AllowedHeaders"`
+
+	// REQUIRED; The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
+	AllowedMethods *string `xml:"AllowedMethods"`
+
+	// REQUIRED; The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
+	// is the domain from which the request originates. Note that the origin must be an exact
+	// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*'
+	// to allow all origin domains to make requests via CORS.
+	AllowedOrigins *string `xml:"AllowedOrigins"`
+
+	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request
+	// issuer.
+	ExposedHeaders *string `xml:"ExposedHeaders"`
+
+	// REQUIRED; The maximum amount time that a browser should cache the preflight OPTIONS request.
+	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
+}
+
+// Directory - A listed directory item.
+type Directory struct {
+	// REQUIRED
+	Name          *string `xml:"Name"`
+	Attributes    *string `xml:"Attributes"`
+	ID            *string `xml:"FileId"`
+	PermissionKey *string `xml:"PermissionKey"`
+
+	// File properties.
+	Properties *FileProperty `xml:"Properties"`
 }
 
 // DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
@@ -168,16 +208,16 @@ type DirectoryClientSetPropertiesOptions struct {
 	Timeout *int32
 }
 
-// DirectoryItem - A listed directory item.
-type DirectoryItem struct {
+// File - A listed file item.
+type File struct {
 	// REQUIRED
-	Name          *string `xml:"Name"`
-	Attributes    *string `xml:"Attributes"`
-	FileID        *string `xml:"FileId"`
-	PermissionKey *string `xml:"PermissionKey"`
+	Name *string `xml:"Name"`
 
-	// File properties.
-	Properties *FileProperty `xml:"Properties"`
+	// REQUIRED; File properties.
+	Properties    *FileProperty `xml:"Properties"`
+	Attributes    *string       `xml:"Attributes"`
+	ID            *string       `xml:"FileId"`
+	PermissionKey *string       `xml:"PermissionKey"`
 }
 
 // FileClientAbortCopyOptions contains the optional parameters for the FileClient.AbortCopy method.
@@ -397,30 +437,18 @@ type FileClientUploadRangeOptions struct {
 	Timeout *int32
 }
 
-// FileItem - A listed file item.
-type FileItem struct {
-	// REQUIRED
-	Name *string `xml:"Name"`
-
-	// REQUIRED; File properties.
-	Properties    *FileProperty `xml:"Properties"`
-	Attributes    *string       `xml:"Attributes"`
-	FileID        *string       `xml:"FileId"`
-	PermissionKey *string       `xml:"PermissionKey"`
-}
-
 // FileProperty - File properties.
 type FileProperty struct {
 	// REQUIRED; Content length of the file. This value may not be up-to-date since an SMB client may have modified the file locally.
 	// The value of Content-Length may not reflect that fact until the handle is closed or
 	// the op-lock is broken. To retrieve current property values, call Get File Properties.
-	ContentLength  *int64     `xml:"Content-Length"`
-	ChangeTime     *time.Time `xml:"ChangeTime"`
-	CreationTime   *time.Time `xml:"CreationTime"`
-	Etag           *string    `xml:"Etag"`
-	LastAccessTime *time.Time `xml:"LastAccessTime"`
-	LastModified   *time.Time `xml:"Last-Modified"`
-	LastWriteTime  *time.Time `xml:"LastWriteTime"`
+	ContentLength  *int64       `xml:"Content-Length"`
+	ChangeTime     *time.Time   `xml:"ChangeTime"`
+	CreationTime   *time.Time   `xml:"CreationTime"`
+	ETag           *azcore.ETag `xml:"Etag"`
+	LastAccessTime *time.Time   `xml:"LastAccessTime"`
+	LastModified   *time.Time   `xml:"Last-Modified"`
+	LastWriteTime  *time.Time   `xml:"LastWriteTime"`
 }
 
 // FileRange - An Azure Storage file range.
@@ -435,14 +463,14 @@ type FileRange struct {
 // FilesAndDirectoriesListSegment - Abstract for entries that can be listed from Directory.
 type FilesAndDirectoriesListSegment struct {
 	// REQUIRED
-	DirectoryItems []*DirectoryItem `xml:"Directory"`
+	Directories []*Directory `xml:"Directory"`
 
 	// REQUIRED
-	FileItems []*FileItem `xml:"File"`
+	Files []*File `xml:"File"`
 }
 
-// HandleItem - A listed Azure Storage handle item.
-type HandleItem struct {
+// Handle - A listed Azure Storage handle item.
+type Handle struct {
 	// REQUIRED; Client IP that opened the handle
 	ClientIP *string `xml:"ClientIp"`
 
@@ -450,7 +478,7 @@ type HandleItem struct {
 	FileID *string `xml:"FileId"`
 
 	// REQUIRED; XSMB service handle ID
-	HandleID *string `xml:"HandleId"`
+	ID *string `xml:"HandleId"`
 
 	// REQUIRED; Time when the session that previously opened the handle has last been reconnected. (UTC)
 	OpenTime *time.Time `xml:"OpenTime"`
@@ -502,8 +530,8 @@ type ListFilesAndDirectoriesSegmentResponse struct {
 // ListHandlesResponse - An enumeration of handles.
 type ListHandlesResponse struct {
 	// REQUIRED
-	NextMarker *string       `xml:"NextMarker"`
-	HandleList []*HandleItem `xml:"Entries>Handle"`
+	NextMarker *string   `xml:"NextMarker"`
+	Handles    []*Handle `xml:"Entries>Handle"`
 }
 
 // ListSharesResponse - An enumeration of shares.
@@ -512,11 +540,49 @@ type ListSharesResponse struct {
 	NextMarker *string `xml:"NextMarker"`
 
 	// REQUIRED
-	ServiceEndpoint *string              `xml:"ServiceEndpoint,attr"`
-	Marker          *string              `xml:"Marker"`
-	MaxResults      *int32               `xml:"MaxResults"`
-	Prefix          *string              `xml:"Prefix"`
-	ShareItems      []*ShareItemInternal `xml:"Shares>Share"`
+	ServiceEndpoint *string  `xml:"ServiceEndpoint,attr"`
+	Marker          *string  `xml:"Marker"`
+	MaxResults      *int32   `xml:"MaxResults"`
+	Prefix          *string  `xml:"Prefix"`
+	Shares          []*Share `xml:"Shares>Share"`
+}
+
+// Metrics - Storage Analytics metrics for file service.
+type Metrics struct {
+	// REQUIRED; Indicates whether metrics are enabled for the File service.
+	Enabled *bool `xml:"Enabled"`
+
+	// REQUIRED; The version of Storage Analytics to configure.
+	Version *string `xml:"Version"`
+
+	// Indicates whether metrics should generate summary statistics for called API operations.
+	IncludeAPIs *bool `xml:"IncludeAPIs"`
+
+	// The retention policy.
+	RetentionPolicy *RetentionPolicy `xml:"RetentionPolicy"`
+}
+
+// ProtocolSettings - Protocol settings
+type ProtocolSettings struct {
+	// Settings for SMB protocol.
+	Smb *SMBSettings `xml:"SMB"`
+}
+
+// RetentionPolicy - The retention policy.
+type RetentionPolicy struct {
+	// REQUIRED; Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and
+	// the user is responsible for deleting it.
+	Enabled *bool `xml:"Enabled"`
+
+	// Indicates the number of days that metrics data should be retained. All data older than this value will be deleted. Metrics
+	// data is deleted on a best-effort basis after the retention period expires.
+	Days *int32 `xml:"Days"`
+}
+
+// SMBSettings - Settings for SMB protocol.
+type SMBSettings struct {
+	// Settings for SMB Multichannel.
+	Multichannel *SMBMultichannel `xml:"Multichannel"`
 }
 
 // ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
@@ -551,6 +617,21 @@ type ServiceClientSetPropertiesOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
 	Timeout *int32
+}
+
+// Share - A listed Azure Storage share item.
+type Share struct {
+	// REQUIRED
+	Name *string `xml:"Name"`
+
+	// REQUIRED; Properties of a share.
+	Properties *ShareProperties `xml:"Properties"`
+	Deleted    *bool            `xml:"Deleted"`
+
+	// Dictionary of
+	Metadata map[string]*string `xml:"Metadata"`
+	Snapshot *string            `xml:"Snapshot"`
+	Version  *string            `xml:"Version"`
 }
 
 // ShareClientAcquireLeaseOptions contains the optional parameters for the ShareClient.AcquireLease method.
@@ -749,31 +830,6 @@ type ShareClientSetPropertiesOptions struct {
 	Timeout *int32
 }
 
-// ShareCorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in
-// another domain. Web browsers implement a security restriction known as same-origin policy that
-// prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
-// domain) to call APIs in another domain.
-type ShareCorsRule struct {
-	// REQUIRED; The request headers that the origin domain may specify on the CORS request.
-	AllowedHeaders *string `xml:"AllowedHeaders"`
-
-	// REQUIRED; The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
-	AllowedMethods *string `xml:"AllowedMethods"`
-
-	// REQUIRED; The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
-	// is the domain from which the request originates. Note that the origin must be an exact
-	// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*'
-	// to allow all origin domains to make requests via CORS.
-	AllowedOrigins *string `xml:"AllowedOrigins"`
-
-	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request
-	// issuer.
-	ExposedHeaders *string `xml:"ExposedHeaders"`
-
-	// REQUIRED; The maximum amount time that a browser should cache the preflight OPTIONS request.
-	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
-}
-
 // ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 type ShareFileHTTPHeaders struct {
 	// Sets the file's cache control. The File service stores this value but does not use or modify it.
@@ -796,46 +852,16 @@ type ShareFileRangeList struct {
 	Ranges      []*FileRange  `xml:"Range"`
 }
 
-// ShareItemInternal - A listed Azure Storage share item.
-type ShareItemInternal struct {
-	// REQUIRED
-	Name *string `xml:"Name"`
-
-	// REQUIRED; Properties of a share.
-	Properties *SharePropertiesInternal `xml:"Properties"`
-	Deleted    *bool                    `xml:"Deleted"`
-
-	// Dictionary of
-	Metadata map[string]*string `xml:"Metadata"`
-	Snapshot *string            `xml:"Snapshot"`
-	Version  *string            `xml:"Version"`
-}
-
-// ShareMetrics - Storage Analytics metrics for file service.
-type ShareMetrics struct {
-	// REQUIRED; Indicates whether metrics are enabled for the File service.
-	Enabled *bool `xml:"Enabled"`
-
-	// REQUIRED; The version of Storage Analytics to configure.
-	Version *string `xml:"Version"`
-
-	// Indicates whether metrics should generate summary statistics for called API operations.
-	IncludeApis *bool `xml:"IncludeAPIs"`
-
-	// The retention policy.
-	RetentionPolicy *ShareRetentionPolicy `xml:"RetentionPolicy"`
-}
-
 // SharePermission - A permission (a security descriptor) at the share level.
 type SharePermission struct {
 	// REQUIRED; The permission in the Security Descriptor Definition Language (SDDL).
 	Permission *string `json:"permission,omitempty"`
 }
 
-// SharePropertiesInternal - Properties of a share.
-type SharePropertiesInternal struct {
+// ShareProperties - Properties of a share.
+type ShareProperties struct {
 	// REQUIRED
-	Etag *string `xml:"Etag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED
 	LastModified *time.Time `xml:"Last-Modified"`
@@ -864,44 +890,6 @@ type SharePropertiesInternal struct {
 	RootSquash                    *ShareRootSquash `xml:"RootSquash"`
 }
 
-// ShareProtocolSettings - Protocol settings
-type ShareProtocolSettings struct {
-	// Settings for SMB protocol.
-	Smb *ShareSmbSettings `xml:"SMB"`
-}
-
-// ShareRetentionPolicy - The retention policy.
-type ShareRetentionPolicy struct {
-	// REQUIRED; Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and
-	// the user is responsible for deleting it.
-	Enabled *bool `xml:"Enabled"`
-
-	// Indicates the number of days that metrics data should be retained. All data older than this value will be deleted. Metrics
-	// data is deleted on a best-effort basis after the retention period expires.
-	Days *int32 `xml:"Days"`
-}
-
-// ShareServiceProperties - Storage service properties.
-type ShareServiceProperties struct {
-	// The set of CORS rules.
-	Cors []*ShareCorsRule `xml:"Cors>CorsRule"`
-
-	// A summary of request statistics grouped by API in hourly aggregates for files.
-	HourMetrics *ShareMetrics `xml:"HourMetrics"`
-
-	// A summary of request statistics grouped by API in minute aggregates for files.
-	MinuteMetrics *ShareMetrics `xml:"MinuteMetrics"`
-
-	// Protocol settings
-	Protocol *ShareProtocolSettings `xml:"ProtocolSettings"`
-}
-
-// ShareSmbSettings - Settings for SMB protocol.
-type ShareSmbSettings struct {
-	// Settings for SMB Multichannel.
-	Multichannel *SmbMultichannel `xml:"Multichannel"`
-}
-
 // ShareStats - Stats for the share.
 type ShareStats struct {
 	// REQUIRED; The approximate size of the data stored in bytes. Note that this value may not include all recently created or
@@ -918,8 +906,8 @@ type SignedIdentifier struct {
 	AccessPolicy *AccessPolicy `xml:"AccessPolicy"`
 }
 
-// SmbMultichannel - Settings for SMB multichannel
-type SmbMultichannel struct {
+// SMBMultichannel - Settings for SMB multichannel
+type SMBMultichannel struct {
 	// If SMB multichannel is enabled.
 	Enabled *bool `xml:"Enabled"`
 }
@@ -934,4 +922,19 @@ type SourceModifiedAccessConditions struct {
 
 type StorageError struct {
 	Message *string `json:"Message,omitempty"`
+}
+
+// StorageServiceProperties - Storage service properties.
+type StorageServiceProperties struct {
+	// The set of CORS rules.
+	CORS []*CORSRule `xml:"Cors>CorsRule"`
+
+	// A summary of request statistics grouped by API in hourly aggregates for files.
+	HourMetrics *Metrics `xml:"HourMetrics"`
+
+	// A summary of request statistics grouped by API in minute aggregates for files.
+	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
+
+	// Protocol settings
+	Protocol *ProtocolSettings `xml:"ProtocolSettings"`
 }

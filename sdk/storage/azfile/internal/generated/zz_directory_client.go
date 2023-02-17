@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -100,7 +101,7 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttr
 func (client *DirectoryClient) createHandleResponse(resp *http.Response) (DirectoryClientCreateResponse, error) {
 	result := DirectoryClientCreateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -157,10 +158,10 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }
@@ -363,7 +364,7 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		}
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -420,10 +421,10 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		result.FilePermissionKey = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }
@@ -646,7 +647,7 @@ func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, opt
 func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (DirectoryClientSetMetadataResponse, error) {
 	result := DirectoryClientSetMetadataResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
@@ -726,7 +727,7 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, f
 func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) (DirectoryClientSetPropertiesResponse, error) {
 	result := DirectoryClientSetPropertiesResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
@@ -783,10 +784,10 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		result.FileChangeTime = &fileChangeTime
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
-		result.FileID = &val
+		result.ID = &val
 	}
 	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
-		result.FileParentID = &val
+		result.ParentID = &val
 	}
 	return result, nil
 }

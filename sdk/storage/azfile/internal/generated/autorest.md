@@ -74,35 +74,6 @@ directive:
     }
 ```
 
-### ShareServiceProperties, ShareMetrics, ShareCorsRule, and ShareRetentionPolicy
-
-``` yaml
-directive:
-- rename-model:
-    from: Metrics
-    to: ShareMetrics
-- rename-model:
-    from: CorsRule
-    to: ShareCorsRule
-- rename-model:
-    from: RetentionPolicy
-    to: ShareRetentionPolicy
-- rename-model:
-    from: StorageServiceProperties
-    to: ShareServiceProperties
-    
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    $.ShareMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
-    $.ShareServiceProperties.xml = {"name": "StorageServiceProperties"};
-    $.ShareCorsRule.xml = {"name": "CorsRule"};
-- from: swagger-document
-  where: $.parameters
-  transform: >
-    $.StorageServiceProperties.name = "ShareServiceProperties";
-```
-
 ### Rename FileHttpHeaders to ShareFileHTTPHeaders and remove file prefix from properties
 
 ``` yaml
@@ -122,4 +93,141 @@ directive:
     $.FileContentMD5["x-ms-client-name"] = "contentMd5";
     $.FileContentType["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileContentType["x-ms-client-name"] = "contentType";
+```
+
+### use azcore.ETag
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/import "time"/, `import (\n\t"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n)`).
+      replace(/Etag\s+\*string/g, `ETag *azcore.ETag`);
+
+- from: zz_response_types.go
+  where: $
+  transform: >-
+    return $.
+      replace(/"time"/, `"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"`).
+      replace(/ETag\s+\*string/g, `ETag *azcore.ETag`);
+
+- from:
+  - zz_directory_client.go
+  - zz_file_client.go
+  - zz_share_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/"github\.com\/Azure\/azure\-sdk\-for\-go\/sdk\/azcore\/policy"/, `"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"`).
+      replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`);
+```
+
+### Rename models - remove `Share` prefix
+
+``` yaml
+directive:
+- rename-model:
+    from: ShareProtocolSettings
+    to: ProtocolSettings
+- rename-model:
+    from: ShareSmbSettings
+    to: SMBSettings
+```
+
+### Capitalise SMB field
+
+``` yaml
+directive:
+- from:
+  - zz_file_client.go
+  - zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/SmbMultichannel/g, `SMBMultichannel`).
+      replace(/copyFileSmbInfo/g, `copyFileSMBInfo`).
+      replace(/CopyFileSmbInfo/g, `CopyFileSMBInfo`).
+      replace(/Smb\s+\*ShareSMBSettings/g, `SMB *ShareSMBSettings`);
+```
+
+### Rename models - remove `Item` and `Internal` suffix
+
+``` yaml
+directive:
+- rename-model:
+    from: DirectoryItem
+    to: Directory
+- rename-model:
+    from: FileItem
+    to: File
+- rename-model:
+    from: HandleItem
+    to: Handle
+- rename-model:
+    from: ShareItemInternal
+    to: Share
+- rename-model:
+    from: SharePropertiesInternal
+    to: ShareProperties
+```
+
+### Remove `Items` and `List` suffix
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/DirectoryItems/g, "Directories").
+        replace(/FileItems/g, "Files").
+        replace(/ShareItems/g, "Shares").
+        replace(/HandleList/g, "Handles");
+```
+
+### Rename `FileID` to `ID` (except for Handle object)
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.Directory.properties.FileId["x-ms-client-name"] = "ID";
+    $.File.properties.FileId["x-ms-client-name"] = "ID";
+    $.Handle.properties.HandleId["x-ms-client-name"] = "ID";
+
+- from:
+  - zz_directory_client.go
+  - zz_file_client.go
+  - zz_response_types.go
+  where: $
+  transform: >-
+    return $.
+      replace(/FileID/g, `ID`);
+```
+
+
+### Change CORS acronym to be all caps and rename `FileParentID` to `ParentID`
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/Cors/g, "CORS").
+        replace(/FileParentID/g, "ParentID");
+```
+
+### Change cors xml to be correct
+
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/xml:"CORS>CORSRule"/g, "xml:\"Cors>CorsRule\"");
 ```

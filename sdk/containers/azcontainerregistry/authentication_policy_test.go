@@ -176,11 +176,13 @@ func Test_authenticationPolicy_anonymousAccess(t *testing.T) {
 
 func Test_authenticationPolicy_getChallengeRequest(t *testing.T) {
 	oriReq, err := runtime.NewRequest(context.Background(), http.MethodPost, "https://test.com")
+	require.NoError(t, err)
 	testBody := []byte("test")
-	oriReq.SetBody(streaming.NopCloser(bytes.NewReader(testBody)), "text/plain")
+	err = oriReq.SetBody(streaming.NopCloser(bytes.NewReader(testBody)), "text/plain")
 	require.NoError(t, err)
 	p := &authenticationPolicy{}
-	challengeReq := p.getChallengeRequest(*oriReq)
+	challengeReq, err := p.getChallengeRequest(*oriReq)
+	require.NoError(t, err)
 	require.Equal(t, fmt.Sprintf("%d", len(testBody)), oriReq.Raw().Header.Get("Content-Length"))
 	require.Equal(t, "", challengeReq.Raw().Header.Get("Content-Length"))
 }

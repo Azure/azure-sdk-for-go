@@ -49,7 +49,10 @@ func newAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authC
 
 func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	// send a copy of the original request without body content
-	challengeReq := p.getChallengeRequest(*req)
+	challengeReq, err := p.getChallengeRequest(*req)
+	if err != nil {
+		return nil, err
+	}
 	resp, err := challengeReq.Next()
 	if err != nil {
 		return nil, err
@@ -142,11 +145,14 @@ func (p *authenticationPolicy) findServiceAndScope(resp *http.Response) error {
 	return nil
 }
 
-func (p authenticationPolicy) getChallengeRequest(oriReq policy.Request) *policy.Request {
+func (p authenticationPolicy) getChallengeRequest(oriReq policy.Request) (*policy.Request, error) {
 	copied := oriReq.Clone(oriReq.Raw().Context())
-	copied.SetBody(nil, "")
+	err := copied.SetBody(nil, "")
+	if err != nil {
+		return nil, err
+	}
 	copied.Raw().Header.Del("Content-Type")
-	return copied
+	return copied, nil
 }
 
 type acquiringResourceState struct {

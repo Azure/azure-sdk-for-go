@@ -48,7 +48,6 @@ const (
 	ClientCacheFlushDelay                Code = "ClientCacheFlushDelay"
 	ConditionHeadersNotSupported         Code = "ConditionHeadersNotSupported"
 	ConditionNotMet                      Code = "ConditionNotMet"
-	ContainerQuotaDowngradeNotAllowed    Code = "ContainerQuotaDowngradeNotAllowed"
 	DeletePending                        Code = "DeletePending"
 	DirectoryNotEmpty                    Code = "DirectoryNotEmpty"
 	EmptyMetadataKey                     Code = "EmptyMetadataKey"

@@ -56,7 +56,7 @@ type ServiceUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (s *ServiceRecordedTestsSuite) TestAccountNewServiceURLValidName() {
+func (s *ServiceUnrecordedTestsSuite) TestAccountNewServiceURLValidName() {
 	_require := require.New(s.T())
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -66,7 +66,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountNewServiceURLValidName() {
 	_require.Equal(svcClient.URL(), correctURL)
 }
 
-func (s *ServiceRecordedTestsSuite) TestAccountNewShareURLValidName() {
+func (s *ServiceUnrecordedTestsSuite) TestAccountNewShareURLValidName() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

@@ -27,19 +27,6 @@ type ClientOptions struct {
 // Client represents a URL to the Azure File Storage service allowing you to manipulate file shares.
 type Client base.Client[generated.ServiceClient]
 
-// NewClient creates an instance of Client with the specified values.
-//   - serviceURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/
-//   - cred - an Azure AD credential, typically obtained via the azidentity module
-//   - options - client options; pass nil to accept the default values
-func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
-	conOptions := shared.GetClientOptions(options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
-
-	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
-}
-
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.file.core.windows.net/?<sas token>

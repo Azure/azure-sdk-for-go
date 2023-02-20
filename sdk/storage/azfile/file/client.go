@@ -23,14 +23,6 @@ type ClientOptions struct {
 // Client represents a URL to the Azure Storage file.
 type Client base.Client[generated.FileClient]
 
-// NewClient creates an instance of Client with the specified values.
-//   - fileURL - the URL of the file e.g. https://<account>.file.core.windows.net/share/directoryPath/file
-//   - cred - an Azure AD credential, typically obtained via the azidentity module
-//   - options - client options; pass nil to accept the default values
-func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	return nil, nil
-}
-
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 // This is used to anonymously access a file or with a shared access signature (SAS) token.
 //   - fileURL - the URL of the file e.g. https://<account>.file.core.windows.net/share/directoryPath/file?<sas token>

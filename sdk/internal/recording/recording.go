@@ -472,21 +472,21 @@ var (
 )
 
 const (
-	RecordingMode                   = "record"
-	PlaybackMode                    = "playback"
-	LiveMode                        = "live"
-	IDHeader                        = "x-recording-id"
-	ModeHeader                      = "x-recording-mode"
-	UpstreamURIHeader               = "x-recording-upstream-base-uri"
-	recordingRandomSeedVariableName = "recordingRandomSeed"
+	RecordingMode           = "record"
+	PlaybackMode            = "playback"
+	LiveMode                = "live"
+	IDHeader                = "x-recording-id"
+	ModeHeader              = "x-recording-mode"
+	UpstreamURIHeader       = "x-recording-upstream-base-uri"
+	recordingRandSeedVarKey = "randSeed"
 )
 
 type recordedTest struct {
-	recordingId           string
-	liveOnly              bool
-	variables             map[string]interface{}
-	recordingSeed         int64
-	recordingRandomSource rand.Source
+	recordingId      string
+	liveOnly         bool
+	variables        map[string]interface{}
+	recordingSeed    int64
+	recordingRandSrc rand.Source
 }
 
 // testMap maps test names to metadata
@@ -762,7 +762,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 			if options.Variables == nil {
 				options.Variables = map[string]interface{}{}
 			}
-			options.Variables[recordingRandomSeedVariableName] = strconv.FormatInt(testStruct.recordingSeed, 10)
+			options.Variables[recordingRandSeedVarKey] = strconv.FormatInt(testStruct.recordingSeed, 10)
 		}
 	}
 
@@ -803,8 +803,8 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 
 func getRandomSource(t *testing.T) rand.Source {
 	if testStruct, ok := testSuite.Load(t.Name()); ok {
-		if testStruct.recordingRandomSource != nil {
-			return testStruct.recordingRandomSource
+		if testStruct.recordingRandSrc != nil {
+			return testStruct.recordingRandSrc
 		}
 	}
 
@@ -812,7 +812,7 @@ func getRandomSource(t *testing.T) rand.Source {
 	var err error
 
 	variables := GetVariables(t)
-	seedString, ok := variables[recordingRandomSeedVariableName]
+	seedString, ok := variables[recordingRandSeedVarKey]
 	if ok {
 		seed, err = strconv.ParseInt(seedString.(string), 10, 64)
 	}
@@ -825,7 +825,7 @@ func getRandomSource(t *testing.T) rand.Source {
 	source := rand.NewSource(seed)
 	if testStruct, ok := testSuite.Load(t.Name()); ok {
 		testStruct.recordingSeed = seed
-		testStruct.recordingRandomSource = source
+		testStruct.recordingRandSrc = source
 		testSuite.Store(t.Name(), testStruct)
 	}
 
@@ -833,7 +833,7 @@ func getRandomSource(t *testing.T) rand.Source {
 }
 
 // GenerateAlphaNumericID will generate a recorded random alpha numeric id.
-// When playback mode, a new random seed will be used, otherwise, the random seed is stable and will be stored in recording file.
+// When live mode or the recording has a randomSeed already set, the value will be generated from that seed, else a new random seed will be used.
 func GenerateAlphaNumericID(t *testing.T, prefix string, length int, lowercaseOnly bool) (string, error) {
 	return generateAlphaNumericID(prefix, length, lowercaseOnly, getRandomSource(t))
 }

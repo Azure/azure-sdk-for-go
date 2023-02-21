@@ -24,7 +24,7 @@ type FileSignatureValues struct {
 	StartTime          time.Time `param:"st"`  // Not specified if IsZero
 	ExpiryTime         time.Time `param:"se"`  // Not specified if IsZero
 	SnapshotTime       time.Time
-	Permissions        string  `param:"sp"` // Create by initializing a ContainerSASPermissions or BlobSASPermissions and then call String()
+	Permissions        string  `param:"sp"` // Create by initializing a SharePermissions or FilePermissions and then call String()
 	IPRange            IPRange `param:"sip"`
 	Identifier         string  `param:"si"`
 	ShareName          string

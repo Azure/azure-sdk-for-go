@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
+	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -146,3 +147,24 @@ type Share = generated.Share
 
 // ShareProperties - Properties of a share.
 type ShareProperties = generated.ShareProperties
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+
+	var st time.Time
+	if o.StartTime != nil {
+		st = o.StartTime.UTC()
+	} else {
+		st = time.Time{}
+	}
+	return st
+}

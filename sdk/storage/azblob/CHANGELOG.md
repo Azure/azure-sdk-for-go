@@ -3,7 +3,7 @@
 ## 1.0.1 (Unreleased)
 
 ### Features Added
-* Added PutBlobFromURL API. For more information view [here](https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url). 
+* UploadBlobFromURL API. For more information view [here](https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url). 
 
 ### Breaking Changes
 

@@ -628,7 +628,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	pbResp, err := destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	pbResp, err := destBBClient.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.UploadBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
 	_require.NotNil(pbResp)
 	_require.NoError(err)
 
@@ -667,7 +667,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
 	_require.EqualValues(h, testcommon.BasicHeaders)
 
-	// Get source blob url with SAS for PutBlobFromURL.
+	// Get source blob url with SAS for UploadBlobFromURL.
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_require.Nil(err)
 
@@ -688,7 +688,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	pbResp, err := destBBClient.PutBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.PutBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	pbResp, err := destBBClient.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.UploadBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
 	_require.NotNil(pbResp)
 	_require.NoError(err)
 

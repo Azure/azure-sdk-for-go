@@ -70,8 +70,8 @@ func (o *UploadOptions) format() (*generated.BlockBlobClientUploadOptions, *gene
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// PutBlobFromURLOptions contains the optional parameters for the Client.PutBlobFromURL method.
-type PutBlobFromURLOptions struct {
+// UploadBlobFromURLOptions contains the optional parameters for the Client.UploadBlobFromURL method.
+type UploadBlobFromURLOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	Tags map[string]string
 
@@ -100,7 +100,7 @@ type PutBlobFromURLOptions struct {
 	SourceModifiedAccessConditions *blob.SourceModifiedAccessConditions
 }
 
-func (o *PutBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFromURLOptions, *generated.BlobHTTPHeaders,
+func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFromURLOptions, *generated.BlobHTTPHeaders,
 	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions,
 	*generated.SourceModifiedAccessConditions) {
 	if o == nil {

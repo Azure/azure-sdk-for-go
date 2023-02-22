@@ -32,10 +32,10 @@ type OperationsResultsLocationClient struct {
 }
 
 // NewOperationsResultsLocationClient creates a new instance of OperationsResultsLocationClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationsResultsLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsResultsLocationClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,11 +58,12 @@ func NewOperationsResultsLocationClient(subscriptionID string, credential azcore
 
 // Get - Returns operation results.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// location - Azure location (region) name.
-// operationID - The Guid of the operation ID
-// options - OperationsResultsLocationClientGetOptions contains the optional parameters for the OperationsResultsLocationClient.Get
-// method.
+//
+// Generated from API version 2022-12-29
+//   - location - Azure location (region) name.
+//   - operationID - The Guid of the operation ID
+//   - options - OperationsResultsLocationClientGetOptions contains the optional parameters for the OperationsResultsLocationClient.Get
+//     method.
 func (client *OperationsResultsLocationClient) Get(ctx context.Context, location string, operationID string, options *OperationsResultsLocationClientGetOptions) (OperationsResultsLocationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
 	if err != nil {
@@ -98,7 +99,7 @@ func (client *OperationsResultsLocationClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

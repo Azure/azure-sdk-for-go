@@ -23,20 +23,20 @@ import (
 	"strings"
 )
 
-// OperationsResultsClient contains the methods for the OperationsResults group.
-// Don't use this type directly, use NewOperationsResultsClient() instead.
-type OperationsResultsClient struct {
+// SKUsClient contains the methods for the SKUs group.
+// Don't use this type directly, use NewSKUsClient() instead.
+type SKUsClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewOperationsResultsClient creates a new instance of OperationsResultsClient with the specified values.
+// NewSKUsClient creates a new instance of SKUsClient with the specified values.
 //   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
 //     forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsResultsClient, error) {
+func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -48,7 +48,7 @@ func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCr
 	if err != nil {
 		return nil, err
 	}
-	client := &OperationsResultsClient{
+	client := &SKUsClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -56,31 +56,36 @@ func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// Get - Returns operation results.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - Lists eligible region SKUs for Kusto resource provider by Azure region.
 //
 // Generated from API version 2022-12-29
 //   - location - Azure location (region) name.
-//   - operationID - The Guid of the operation ID
-//   - options - OperationsResultsClientGetOptions contains the optional parameters for the OperationsResultsClient.Get method.
-func (client *OperationsResultsClient) Get(ctx context.Context, location string, operationID string, options *OperationsResultsClientGetOptions) (OperationsResultsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, location, operationID, options)
-	if err != nil {
-		return OperationsResultsClientGetResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return OperationsResultsClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OperationsResultsClientGetResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.getHandleResponse(resp)
+//   - options - SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
+func (client *SKUsClient) NewListPager(location string, options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SKUsClientListResponse]{
+		More: func(page SKUsClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *SKUsClientListResponse) (SKUsClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, location, options)
+			if err != nil {
+				return SKUsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SKUsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SKUsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
-// getCreateRequest creates the Get request.
-func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, location string, operationID string, options *OperationsResultsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults/{operationId}"
+// listCreateRequest creates the List request.
+func (client *SKUsClient) listCreateRequest(ctx context.Context, location string, options *SKUsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -89,10 +94,6 @@ func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, loc
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if operationID == "" {
-		return nil, errors.New("parameter operationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -104,11 +105,11 @@ func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, loc
 	return req, nil
 }
 
-// getHandleResponse handles the Get response.
-func (client *OperationsResultsClient) getHandleResponse(resp *http.Response) (OperationsResultsClientGetResponse, error) {
-	result := OperationsResultsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OperationResult); err != nil {
-		return OperationsResultsClientGetResponse{}, err
+// listHandleResponse handles the List response.
+func (client *SKUsClient) listHandleResponse(resp *http.Response) (SKUsClientListResponse, error) {
+	result := SKUsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUDescriptionList); err != nil {
+		return SKUsClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -42,10 +42,10 @@ type ConsumerClientOptions struct {
 	// ApplicationID is used as the identifier when setting the User-Agent property.
 	ApplicationID string
 
-	// Identifier is a unique name used to identify the consumer. This can help with
+	// InstanceID is a unique name used to identify the consumer. This can help with
 	// diagnostics as this name will be returned in error messages. By default,
 	// an identifier will be automatically generated.
-	Identifier string
+	InstanceID string
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
@@ -180,8 +180,8 @@ func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionI
 	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, partitionID, options)
 }
 
-// ID is the identifier for this ConsumerClient.
-func (cc *ConsumerClient) ID() string {
+// InstanceID is the identifier for this ConsumerClient.
+func (cc *ConsumerClient) InstanceID() string {
 	return cc.identifier
 }
 
@@ -222,7 +222,7 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 		options = &ConsumerClientOptions{}
 	}
 
-	identifier, err := getIdentifier(options.Identifier)
+	identifier, err := getIdentifier(options.InstanceID)
 
 	if err != nil {
 		return nil, err

@@ -199,7 +199,7 @@ func testSendAny(t *testing.T, args struct {
 	require.NoError(t, err)
 
 	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
-		Identifier: args.identifier,
+		InstanceID: args.identifier,
 	})
 	require.NoError(t, err)
 

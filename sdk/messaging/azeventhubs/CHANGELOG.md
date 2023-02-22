@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added the `ConsumerClientOptions.Identifier` field. This optional field can enhance error messages from 
+- Added the `ConsumerClientOptions.InstanceID` field. This optional field can enhance error messages from 
   Event Hubs. For example, error messages related to ownership changes for a partition will contain the 
   name of the link that has taken ownership, which can help with traceability.
 

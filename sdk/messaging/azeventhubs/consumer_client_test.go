@@ -734,11 +734,11 @@ func TestConsumerClient_ClientID(t *testing.T) {
 		require.NoError(t, err)
 		defer test.RequireClose(t, consumerClient)
 
-		parsedUUID, err := uuid.Parse(consumerClient.ID())
+		parsedUUID, err := uuid.Parse(consumerClient.InstanceID())
 		require.NotZero(t, parsedUUID)
 		require.NoError(t, err)
 
-		identifier = consumerClient.ID()
+		identifier = consumerClient.InstanceID()
 
 		partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
 			OwnerLevel:    to.Ptr(int64(1)),
@@ -753,7 +753,7 @@ func TestConsumerClient_ClientID(t *testing.T) {
 	}
 
 	failedConsumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
-		Identifier: "LosesBecauseOfLowOwnerLevel",
+		InstanceID: "LosesBecauseOfLowOwnerLevel",
 		RetryOptions: azeventhubs.RetryOptions{
 			MaxRetries: -1, // just fail immediately, don't retry.
 		},

@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/stretchr/testify/suite"
@@ -61,8 +62,8 @@ func (testsuite *SkusTestSuite) TestResourceSkus() {
 	fmt.Println("Call operation: ResourceSKUs_List")
 	resourceSKUsClient, err := armcompute.NewResourceSKUsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	resourceSKUsClientNewListPager := resourceSKUsClient.NewListPager(&armcompute.ResourceSKUsClientListOptions{Filter: nil,
-		IncludeExtendedLocations: nil,
+	resourceSKUsClientNewListPager := resourceSKUsClient.NewListPager(&armcompute.ResourceSKUsClientListOptions{
+		Filter: to.Ptr("location eq 'westus2'"),
 	})
 	for resourceSKUsClientNewListPager.More() {
 		_, err := resourceSKUsClientNewListPager.NextPage(testsuite.ctx)

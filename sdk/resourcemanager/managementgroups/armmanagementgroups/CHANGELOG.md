@@ -1,5 +1,15 @@
 # Release History
 
+## 2.0.0 (2023-02-22)
+### Breaking Changes
+
+- Type of `SubscriptionUnderManagementGroupProperties.Parent` has been changed from `*DescendantParentGroupInfo` to `*ParentGroupBagInfo`
+
+### Features Added
+
+- New struct `ParentGroupBagInfo`
+
+
 ## 1.0.0 (2022-05-18)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

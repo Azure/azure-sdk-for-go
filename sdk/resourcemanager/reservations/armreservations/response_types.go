@@ -16,13 +16,12 @@ type AzureReservationAPIClientGetAppliedReservationListResponse struct {
 	AppliedReservations
 }
 
-// AzureReservationAPIClientGetCatalogResponse contains the response from method AzureReservationAPIClient.GetCatalog.
+// AzureReservationAPIClientGetCatalogResponse contains the response from method AzureReservationAPIClient.NewGetCatalogPager.
 type AzureReservationAPIClientGetCatalogResponse struct {
-	// Array of Catalog
-	CatalogArray []*Catalog
+	CatalogsResult
 }
 
-// CalculateExchangeClientPostResponse contains the response from method CalculateExchangeClient.Post.
+// CalculateExchangeClientPostResponse contains the response from method CalculateExchangeClient.BeginPost.
 type CalculateExchangeClientPostResponse struct {
 	CalculateExchangeOperationResultResponse
 }
@@ -32,17 +31,17 @@ type CalculateRefundClientPostResponse struct {
 	CalculateRefundResponse
 }
 
-// ExchangeClientPostResponse contains the response from method ExchangeClient.Post.
+// ExchangeClientPostResponse contains the response from method ExchangeClient.BeginPost.
 type ExchangeClientPostResponse struct {
 	ExchangeOperationResultResponse
 }
 
-// OperationClientListResponse contains the response from method OperationClient.List.
+// OperationClientListResponse contains the response from method OperationClient.NewListPager.
 type OperationClientListResponse struct {
 	OperationList
 }
 
-// QuotaClientCreateOrUpdateResponse contains the response from method QuotaClient.CreateOrUpdate.
+// QuotaClientCreateOrUpdateResponse contains the response from method QuotaClient.BeginCreateOrUpdate.
 type QuotaClientCreateOrUpdateResponse struct {
 	CurrentQuotaLimitBase
 }
@@ -54,14 +53,14 @@ type QuotaClientGetResponse struct {
 	ETag *string
 }
 
-// QuotaClientListResponse contains the response from method QuotaClient.List.
+// QuotaClientListResponse contains the response from method QuotaClient.NewListPager.
 type QuotaClientListResponse struct {
 	QuotaLimits
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// QuotaClientUpdateResponse contains the response from method QuotaClient.Update.
+// QuotaClientUpdateResponse contains the response from method QuotaClient.BeginUpdate.
 type QuotaClientUpdateResponse struct {
 	CurrentQuotaLimitBase
 }
@@ -71,7 +70,7 @@ type QuotaRequestStatusClientGetResponse struct {
 	QuotaRequestDetails
 }
 
-// QuotaRequestStatusClientListResponse contains the response from method QuotaRequestStatusClient.List.
+// QuotaRequestStatusClientListResponse contains the response from method QuotaRequestStatusClient.NewListPager.
 type QuotaRequestStatusClientListResponse struct {
 	QuotaRequestDetailsList
 }
@@ -81,7 +80,7 @@ type ReservationClientArchiveResponse struct {
 	// placeholder for future response values
 }
 
-// ReservationClientAvailableScopesResponse contains the response from method ReservationClient.AvailableScopes.
+// ReservationClientAvailableScopesResponse contains the response from method ReservationClient.BeginAvailableScopes.
 type ReservationClientAvailableScopesResponse struct {
 	AvailableScopeProperties
 }
@@ -91,22 +90,22 @@ type ReservationClientGetResponse struct {
 	ReservationResponse
 }
 
-// ReservationClientListAllResponse contains the response from method ReservationClient.ListAll.
+// ReservationClientListAllResponse contains the response from method ReservationClient.NewListAllPager.
 type ReservationClientListAllResponse struct {
 	ListResult
 }
 
-// ReservationClientListResponse contains the response from method ReservationClient.List.
+// ReservationClientListResponse contains the response from method ReservationClient.NewListPager.
 type ReservationClientListResponse struct {
 	ReservationList
 }
 
-// ReservationClientListRevisionsResponse contains the response from method ReservationClient.ListRevisions.
+// ReservationClientListRevisionsResponse contains the response from method ReservationClient.NewListRevisionsPager.
 type ReservationClientListRevisionsResponse struct {
 	ReservationList
 }
 
-// ReservationClientMergeResponse contains the response from method ReservationClient.Merge.
+// ReservationClientMergeResponse contains the response from method ReservationClient.BeginMerge.
 type ReservationClientMergeResponse struct {
 	// Array of ReservationResponse
 	ReservationResponseArray []*ReservationResponse
@@ -117,7 +116,7 @@ func (r *ReservationClientMergeResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.ReservationResponseArray)
 }
 
-// ReservationClientSplitResponse contains the response from method ReservationClient.Split.
+// ReservationClientSplitResponse contains the response from method ReservationClient.BeginSplit.
 type ReservationClientSplitResponse struct {
 	// Array of ReservationResponse
 	ReservationResponseArray []*ReservationResponse
@@ -133,7 +132,7 @@ type ReservationClientUnarchiveResponse struct {
 	// placeholder for future response values
 }
 
-// ReservationClientUpdateResponse contains the response from method ReservationClient.Update.
+// ReservationClientUpdateResponse contains the response from method ReservationClient.BeginUpdate.
 type ReservationClientUpdateResponse struct {
 	ReservationResponse
 }
@@ -153,19 +152,17 @@ type ReservationOrderClientGetResponse struct {
 	ReservationOrderResponse
 }
 
-// ReservationOrderClientListResponse contains the response from method ReservationOrderClient.List.
+// ReservationOrderClientListResponse contains the response from method ReservationOrderClient.NewListPager.
 type ReservationOrderClientListResponse struct {
 	ReservationOrderList
 }
 
-// ReservationOrderClientPurchaseResponse contains the response from method ReservationOrderClient.Purchase.
+// ReservationOrderClientPurchaseResponse contains the response from method ReservationOrderClient.BeginPurchase.
 type ReservationOrderClientPurchaseResponse struct {
 	ReservationOrderResponse
 }
 
-// ReturnClientPostResponse contains the response from method ReturnClient.Post.
+// ReturnClientPostResponse contains the response from method ReturnClient.BeginPost.
 type ReturnClientPostResponse struct {
 	RefundResponse
-	// Location contains the information returned from the Location header response.
-	Location *string
 }

@@ -32,8 +32,8 @@ type ReservationClient struct {
 }
 
 // NewReservationClient creates a new instance of ReservationClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewReservationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -55,10 +55,11 @@ func NewReservationClient(credential azcore.TokenCredential, options *arm.Client
 
 // Archive - Archiving a Reservation moves it to Archived state.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// reservationOrderID - Order Id of the reservation
-// reservationID - Id of the Reservation Item
-// options - ReservationClientArchiveOptions contains the optional parameters for the ReservationClient.Archive method.
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - reservationID - Id of the reservation item
+//   - options - ReservationClientArchiveOptions contains the optional parameters for the ReservationClient.Archive method.
 func (client *ReservationClient) Archive(ctx context.Context, reservationOrderID string, reservationID string, options *ReservationClientArchiveOptions) (ReservationClientArchiveResponse, error) {
 	req, err := client.archiveCreateRequest(ctx, reservationOrderID, reservationID, options)
 	if err != nil {
@@ -90,19 +91,21 @@ func (client *ReservationClient) archiveCreateRequest(ctx context.Context, reser
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginAvailableScopes - Get Available Scopes for Reservation.
+// BeginAvailableScopes - Check whether the scopes from request is valid for Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// reservationOrderID - Order Id of the reservation
-// reservationID - Id of the Reservation Item
-// options - ReservationClientBeginAvailableScopesOptions contains the optional parameters for the ReservationClient.BeginAvailableScopes
-// method.
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - reservationID - Id of the reservation item
+//   - body - Scopes to be checked for eligibility.
+//   - options - ReservationClientBeginAvailableScopesOptions contains the optional parameters for the ReservationClient.BeginAvailableScopes
+//     method.
 func (client *ReservationClient) BeginAvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationClientBeginAvailableScopesOptions) (*runtime.Poller[ReservationClientAvailableScopesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.availableScopes(ctx, reservationOrderID, reservationID, body, options)
@@ -115,9 +118,10 @@ func (client *ReservationClient) BeginAvailableScopes(ctx context.Context, reser
 	}
 }
 
-// AvailableScopes - Get Available Scopes for Reservation.
+// AvailableScopes - Check whether the scopes from request is valid for Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+//
+// Generated from API version 2022-11-01
 func (client *ReservationClient) availableScopes(ctx context.Context, reservationOrderID string, reservationID string, body AvailableScopeRequest, options *ReservationClientBeginAvailableScopesOptions) (*http.Response, error) {
 	req, err := client.availableScopesCreateRequest(ctx, reservationOrderID, reservationID, body, options)
 	if err != nil {
@@ -149,7 +153,7 @@ func (client *ReservationClient) availableScopesCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -157,12 +161,13 @@ func (client *ReservationClient) availableScopesCreateRequest(ctx context.Contex
 
 // Get - Get specific Reservation details.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// reservationID - Id of the Reservation Item
-// reservationOrderID - Order Id of the reservation
-// options - ReservationClientGetOptions contains the optional parameters for the ReservationClient.Get method.
-func (client *ReservationClient) Get(ctx context.Context, reservationID string, reservationOrderID string, options *ReservationClientGetOptions) (ReservationClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, reservationID, reservationOrderID, options)
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - reservationID - Id of the reservation item
+//   - options - ReservationClientGetOptions contains the optional parameters for the ReservationClient.Get method.
+func (client *ReservationClient) Get(ctx context.Context, reservationOrderID string, reservationID string, options *ReservationClientGetOptions) (ReservationClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, reservationOrderID, reservationID, options)
 	if err != nil {
 		return ReservationClientGetResponse{}, err
 	}
@@ -177,24 +182,24 @@ func (client *ReservationClient) Get(ctx context.Context, reservationID string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReservationClient) getCreateRequest(ctx context.Context, reservationID string, reservationOrderID string, options *ReservationClientGetOptions) (*policy.Request, error) {
+func (client *ReservationClient) getCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, options *ReservationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
-	if reservationID == "" {
-		return nil, errors.New("parameter reservationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
+	if reservationID == "" {
+		return nil, errors.New("parameter reservationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.Expand != nil {
-		reqQP.Set("expand", *options.Expand)
+		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -211,9 +216,10 @@ func (client *ReservationClient) getHandleResponse(resp *http.Response) (Reserva
 }
 
 // NewListPager - List Reservations within a single ReservationOrder.
-// Generated from API version 2022-03-01
-// reservationOrderID - Order Id of the reservation
-// options - ReservationClientListOptions contains the optional parameters for the ReservationClient.List method.
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - options - ReservationClientListOptions contains the optional parameters for the ReservationClient.NewListPager method.
 func (client *ReservationClient) NewListPager(reservationOrderID string, options *ReservationClientListOptions) *runtime.Pager[ReservationClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReservationClientListResponse]{
 		More: func(page ReservationClientListResponse) bool {
@@ -254,7 +260,7 @@ func (client *ReservationClient) listCreateRequest(ctx context.Context, reservat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -271,8 +277,9 @@ func (client *ReservationClient) listHandleResponse(resp *http.Response) (Reserv
 
 // NewListAllPager - List the reservations and the roll up counts of reservations group by provisioning states that the user
 // has access to in the current tenant.
-// Generated from API version 2022-03-01
-// options - ReservationClientListAllOptions contains the optional parameters for the ReservationClient.ListAll method.
+//
+// Generated from API version 2022-11-01
+//   - options - ReservationClientListAllOptions contains the optional parameters for the ReservationClient.NewListAllPager method.
 func (client *ReservationClient) NewListAllPager(options *ReservationClientListAllOptions) *runtime.Pager[ReservationClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReservationClientListAllResponse]{
 		More: func(page ReservationClientListAllResponse) bool {
@@ -309,7 +316,7 @@ func (client *ReservationClient) listAllCreateRequest(ctx context.Context, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -343,12 +350,13 @@ func (client *ReservationClient) listAllHandleResponse(resp *http.Response) (Res
 }
 
 // NewListRevisionsPager - List of all the revisions for the Reservation.
-// Generated from API version 2022-03-01
-// reservationID - Id of the Reservation Item
-// reservationOrderID - Order Id of the reservation
-// options - ReservationClientListRevisionsOptions contains the optional parameters for the ReservationClient.ListRevisions
-// method.
-func (client *ReservationClient) NewListRevisionsPager(reservationID string, reservationOrderID string, options *ReservationClientListRevisionsOptions) *runtime.Pager[ReservationClientListRevisionsResponse] {
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - reservationID - Id of the reservation item
+//   - options - ReservationClientListRevisionsOptions contains the optional parameters for the ReservationClient.NewListRevisionsPager
+//     method.
+func (client *ReservationClient) NewListRevisionsPager(reservationOrderID string, reservationID string, options *ReservationClientListRevisionsOptions) *runtime.Pager[ReservationClientListRevisionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReservationClientListRevisionsResponse]{
 		More: func(page ReservationClientListRevisionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -357,7 +365,7 @@ func (client *ReservationClient) NewListRevisionsPager(reservationID string, res
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listRevisionsCreateRequest(ctx, reservationID, reservationOrderID, options)
+				req, err = client.listRevisionsCreateRequest(ctx, reservationOrderID, reservationID, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -377,22 +385,22 @@ func (client *ReservationClient) NewListRevisionsPager(reservationID string, res
 }
 
 // listRevisionsCreateRequest creates the ListRevisions request.
-func (client *ReservationClient) listRevisionsCreateRequest(ctx context.Context, reservationID string, reservationOrderID string, options *ReservationClientListRevisionsOptions) (*policy.Request, error) {
+func (client *ReservationClient) listRevisionsCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, options *ReservationClientListRevisionsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/revisions"
-	if reservationID == "" {
-		return nil, errors.New("parameter reservationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
+	if reservationID == "" {
+		return nil, errors.New("parameter reservationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -410,10 +418,11 @@ func (client *ReservationClient) listRevisionsHandleResponse(resp *http.Response
 // BeginMerge - Merge the specified Reservations into a new Reservation. The two Reservations being merged must have same
 // properties.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// reservationOrderID - Order Id of the reservation
-// body - Information needed for commercial request for a reservation
-// options - ReservationClientBeginMergeOptions contains the optional parameters for the ReservationClient.BeginMerge method.
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - body - Information needed for commercial request for a reservation
+//   - options - ReservationClientBeginMergeOptions contains the optional parameters for the ReservationClient.BeginMerge method.
 func (client *ReservationClient) BeginMerge(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationClientBeginMergeOptions) (*runtime.Poller[ReservationClientMergeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.merge(ctx, reservationOrderID, body, options)
@@ -430,7 +439,8 @@ func (client *ReservationClient) BeginMerge(ctx context.Context, reservationOrde
 
 // Merge - Merge the specified Reservations into a new Reservation. The two Reservations being merged must have same properties.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+//
+// Generated from API version 2022-11-01
 func (client *ReservationClient) merge(ctx context.Context, reservationOrderID string, body MergeRequest, options *ReservationClientBeginMergeOptions) (*http.Response, error) {
 	req, err := client.mergeCreateRequest(ctx, reservationOrderID, body, options)
 	if err != nil {
@@ -458,7 +468,7 @@ func (client *ReservationClient) mergeCreateRequest(ctx context.Context, reserva
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -466,10 +476,11 @@ func (client *ReservationClient) mergeCreateRequest(ctx context.Context, reserva
 
 // BeginSplit - Split a Reservation into two Reservations with specified quantity distribution.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// reservationOrderID - Order Id of the reservation
-// body - Information needed to Split a reservation item
-// options - ReservationClientBeginSplitOptions contains the optional parameters for the ReservationClient.BeginSplit method.
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - body - Information needed to Split a reservation item
+//   - options - ReservationClientBeginSplitOptions contains the optional parameters for the ReservationClient.BeginSplit method.
 func (client *ReservationClient) BeginSplit(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationClientBeginSplitOptions) (*runtime.Poller[ReservationClientSplitResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.split(ctx, reservationOrderID, body, options)
@@ -486,7 +497,8 @@ func (client *ReservationClient) BeginSplit(ctx context.Context, reservationOrde
 
 // Split - Split a Reservation into two Reservations with specified quantity distribution.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+//
+// Generated from API version 2022-11-01
 func (client *ReservationClient) split(ctx context.Context, reservationOrderID string, body SplitRequest, options *ReservationClientBeginSplitOptions) (*http.Response, error) {
 	req, err := client.splitCreateRequest(ctx, reservationOrderID, body, options)
 	if err != nil {
@@ -514,18 +526,19 @@ func (client *ReservationClient) splitCreateRequest(ctx context.Context, reserva
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// Unarchive - Unarchiving a Reservation moves it to the state it was before archiving.
+// Unarchive - Restores a Reservation to the state it was before archiving.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// reservationOrderID - Order Id of the reservation
-// reservationID - Id of the Reservation Item
-// options - ReservationClientUnarchiveOptions contains the optional parameters for the ReservationClient.Unarchive method.
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - reservationID - Id of the reservation item
+//   - options - ReservationClientUnarchiveOptions contains the optional parameters for the ReservationClient.Unarchive method.
 func (client *ReservationClient) Unarchive(ctx context.Context, reservationOrderID string, reservationID string, options *ReservationClientUnarchiveOptions) (ReservationClientUnarchiveResponse, error) {
 	req, err := client.unarchiveCreateRequest(ctx, reservationOrderID, reservationID, options)
 	if err != nil {
@@ -557,7 +570,7 @@ func (client *ReservationClient) unarchiveCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -565,18 +578,21 @@ func (client *ReservationClient) unarchiveCreateRequest(ctx context.Context, res
 
 // BeginUpdate - Updates the applied scopes of the Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// reservationOrderID - Order Id of the reservation
-// reservationID - Id of the Reservation Item
-// parameters - Information needed to patch a reservation item
-// options - ReservationClientBeginUpdateOptions contains the optional parameters for the ReservationClient.BeginUpdate method.
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - reservationID - Id of the reservation item
+//   - parameters - Information needed to patch a reservation item
+//   - options - ReservationClientBeginUpdateOptions contains the optional parameters for the ReservationClient.BeginUpdate method.
 func (client *ReservationClient) BeginUpdate(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationClientBeginUpdateOptions) (*runtime.Poller[ReservationClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, reservationOrderID, reservationID, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ReservationClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ReservationClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[ReservationClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
@@ -584,7 +600,8 @@ func (client *ReservationClient) BeginUpdate(ctx context.Context, reservationOrd
 
 // Update - Updates the applied scopes of the Reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+//
+// Generated from API version 2022-11-01
 func (client *ReservationClient) update(ctx context.Context, reservationOrderID string, reservationID string, parameters Patch, options *ReservationClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, reservationOrderID, reservationID, parameters, options)
 	if err != nil {
@@ -616,7 +633,7 @@ func (client *ReservationClient) updateCreateRequest(ctx context.Context, reserv
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

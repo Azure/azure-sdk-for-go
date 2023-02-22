@@ -28,8 +28,8 @@ type CalculateExchangeClient struct {
 }
 
 // NewCalculateExchangeClient creates a new instance of CalculateExchangeClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCalculateExchangeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CalculateExchangeClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -51,10 +51,11 @@ func NewCalculateExchangeClient(credential azcore.TokenCredential, options *arm.
 
 // BeginPost - Calculates price for exchanging Reservations if there are no policy errors.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// body - Request containing purchases and refunds that need to be executed.
-// options - CalculateExchangeClientBeginPostOptions contains the optional parameters for the CalculateExchangeClient.BeginPost
-// method.
+//
+// Generated from API version 2022-11-01
+//   - body - Request containing purchases and refunds that need to be executed.
+//   - options - CalculateExchangeClientBeginPostOptions contains the optional parameters for the CalculateExchangeClient.BeginPost
+//     method.
 func (client *CalculateExchangeClient) BeginPost(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeClientBeginPostOptions) (*runtime.Poller[CalculateExchangeClientPostResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.post(ctx, body, options)
@@ -71,7 +72,8 @@ func (client *CalculateExchangeClient) BeginPost(ctx context.Context, body Calcu
 
 // Post - Calculates price for exchanging Reservations if there are no policy errors.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+//
+// Generated from API version 2022-11-01
 func (client *CalculateExchangeClient) post(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeClientBeginPostOptions) (*http.Response, error) {
 	req, err := client.postCreateRequest(ctx, body, options)
 	if err != nil {
@@ -95,7 +97,7 @@ func (client *CalculateExchangeClient) postCreateRequest(ctx context.Context, bo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

@@ -261,7 +261,7 @@ func getCanonicalName(account string, containerName string, blobName string, dir
 }
 
 // ContainerPermissions type simplifies creating the permissions string for an Azure Storage container SAS.
-// Initialize an instance of this type and then call Client.GetSASURL with it or use the String method to set BlobSASSignatureValues Permissions field.
+// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues' Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type ContainerPermissions struct {
 	Read, Add, Create, Write, Delete, DeletePreviousVersion, List, FilterByTags, Move, SetImmutabilityPolicy bool
@@ -353,13 +353,13 @@ func parseContainerPermissions(s string) (ContainerPermissions, error) {
 }
 
 // BlobPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
-// Initialize an instance of this type and then call Client.GetSASURL with it or use the String method to set BlobSASSignatureValues Permissions field.
+// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues' Permissions field.
 type BlobPermissions struct {
 	Read, Add, Create, Write, Delete, DeletePreviousVersion, PermanentDelete, List, Tag, Move, Execute, Ownership, Permissions, SetImmutabilityPolicy bool
 }
 
 // String produces the SAS permissions string for an Azure Storage blob.
-// Call this method to set BlobSignatureValue's Permissions field.
+// Call this method to set BlobSignatureValues' Permissions field.
 func (p *BlobPermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {

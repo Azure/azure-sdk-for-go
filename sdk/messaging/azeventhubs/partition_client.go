@@ -21,7 +21,11 @@ import (
 const DefaultConsumerGroup = "$Default"
 
 const defaultPrefetchSize = uint32(300)
-const defaultMaxCreditSize = uint32(2048)
+
+// defaultLinkRxBuffer is the maximum number of transfer frames we can handle
+// on the Receiver. This matches the current default window size that go-amqp
+// uses for sessions.
+const defaultMaxCreditSize = uint32(5000)
 
 // StartPosition indicates the position to start receiving events within a partition.
 // The default position is Latest.
@@ -99,6 +103,14 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 	var events []*ReceivedEventData
 
 	prefetchDisabled := pc.prefetch < 0
+
+	if count <= 0 {
+		return nil, internal.NewErrNonRetriable("count should be greater than 0")
+	}
+
+	if prefetchDisabled && count > int(defaultMaxCreditSize) {
+		return nil, internal.NewErrNonRetriable(fmt.Sprintf("count cannot exceed %d", defaultMaxCreditSize))
+	}
 
 	err := pc.links.Retry(ctx, EventConsumer, "ReceiveEvents", pc.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) error {
 		events = nil
@@ -257,6 +269,11 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 
 	if err != nil {
 		return nil, err
+	}
+
+	if options.Prefetch > int32(defaultMaxCreditSize) {
+		// don't allow them to set the prefetch above the session window size.
+		return nil, internal.NewErrNonRetriable(fmt.Sprintf("options.Prefetch cannot exceed %d", defaultMaxCreditSize))
 	}
 
 	client := &PartitionClient{

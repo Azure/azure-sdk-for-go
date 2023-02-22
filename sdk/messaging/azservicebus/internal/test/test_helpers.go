@@ -28,11 +28,12 @@ var (
 
 func init() {
 	addSwappableLogger()
-	rand.Seed(time.Now().Unix())
 }
 
 // RandomString generates a random string with prefix
 func RandomString(prefix string, length int) string {
+	rand := rand.New(rand.NewSource(time.Now().Unix()))
+
 	b := make([]rune, length)
 	for i := range b {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
@@ -142,38 +143,44 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 			return nil
 		}
 
-		close(messagesCh)
-
 		var messages []string
 
-		for msg := range messagesCh {
-			messages = append(messages, msg)
+	Loop:
+		for {
+			select {
+			case msg := <-messagesCh:
+				messages = append(messages, msg)
+			default:
+				break Loop
+			}
 		}
 
-		messagesCh = nil
 		return messages
 	}
 }
 
 // EnableStdoutLogging turns on logging to stdout for diagnostics.
-func EnableStdoutLogging() func() {
+func EnableStdoutLogging(t *testing.T) {
 	ch := make(chan string, 10000)
 	cleanupLogs := CaptureLogsForTestWithChannel(ch)
+	ctx, cancel := context.WithCancel(context.Background())
 
-	doneCh := make(chan struct{})
+	t.Cleanup(func() {
+		cancel()
+	})
 
 	go func() {
-		defer close(doneCh)
-
-		for msg := range ch {
-			log.Printf("%s", msg)
+	Loop:
+		for {
+			select {
+			case <-ctx.Done():
+				_ = cleanupLogs()
+				break Loop
+			case msg := <-ch:
+				log.Printf("%s", msg)
+			}
 		}
 	}()
-
-	return func() {
-		_ = cleanupLogs()
-		<-doneCh
-	}
 }
 
 func RequireClose(t *testing.T, closeable interface {

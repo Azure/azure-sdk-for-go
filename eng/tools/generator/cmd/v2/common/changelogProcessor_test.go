@@ -53,7 +53,7 @@ func TestFuncFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n")
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.NewListPager` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -75,7 +75,29 @@ func TestLROFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter, common.LROFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.CreateOrUpdate` has been changed to LRO, use `*Client.BeginCreateOrUpdate` instead.\n")
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.BeginDelete` has been changed to non-LRO, use `*Client.Delete` instead.\n- Operation `*Client.CreateOrUpdate` has been changed to LRO, use `*Client.BeginCreateOrUpdate` instead.\n")
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}
+
+func TestPageableFilter(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/page")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/page")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	common.FilterChangelog(changelog, common.FuncFilter, common.PageableFilter)
+
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.GetLog` has supported pagination, use `*Client.NewGetLogPager` instead.\n- Operation `*Client.NewListPager` does not support pagination anymore, use `*Client.List` instead.\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -98,5 +120,25 @@ func TestInterfaceToAnyFilter(t *testing.T) {
 	common.FilterChangelog(changelog, common.InterfaceToAnyFilter)
 
 	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Interface2Any.NewType` has been changed from `interface{}` to `string`\n")
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}
+
+func TestTypeToAny(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/toany")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/toany")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Client.M` has been changed from `map[string]string` to `map[string]any`\n\n### Features Added\n\n- Type of `Client.A` has been changed from `*int` to `any`\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }

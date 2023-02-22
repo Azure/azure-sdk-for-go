@@ -232,7 +232,7 @@ for _, message := range messages {
       // that this message can be received by another Receiver (or potentially this one).
       fmt.Printf("Message lock expired\n")
 
-      // You can extend the message lock by calling receiver.RenewMessageLock(msg) before the
+      // You can extend the message lock by calling Receiver.RenewMessageLock(msg) before the
       // message lock has expired.
       continue
     }
@@ -265,7 +265,7 @@ deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",
 //   })
 ```
 
-To see some example code for receiving messages using the receiver, see the [Receive messages](#receive-messages) example.
+To see some example code for receiving messages using the `Receiver`, see the [Receive messages](#receive-messages) example.
 
 ## Troubleshooting
 

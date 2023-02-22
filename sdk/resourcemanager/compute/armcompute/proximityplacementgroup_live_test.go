@@ -24,13 +24,13 @@ import (
 type ProximityPlacementGroupTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	location          string
+	ctx                         context.Context
+	cred                        azcore.TokenCredential
+	options                     *arm.ClientOptions
+	location                    string
 	proximityPlacementGroupName string
-	resourceGroupName string
-	subscriptionId    string
+	resourceGroupName           string
+	subscriptionId              string
 }
 
 func (testsuite *ProximityPlacementGroupTestSuite) SetupSuite() {

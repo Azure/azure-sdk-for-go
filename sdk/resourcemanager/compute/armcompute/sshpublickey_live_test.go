@@ -27,7 +27,7 @@ type SshPublicKeyTestSuite struct {
 	ctx               context.Context
 	cred              azcore.TokenCredential
 	options           *arm.ClientOptions
-	sshPublicKeyName string
+	sshPublicKeyName  string
 	location          string
 	resourceGroupName string
 	subscriptionId    string

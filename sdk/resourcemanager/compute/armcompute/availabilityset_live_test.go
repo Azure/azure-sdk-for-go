@@ -24,12 +24,12 @@ import (
 type AvailabilitySetTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx                 context.Context
+	cred                azcore.TokenCredential
+	options             *arm.ClientOptions
+	location            string
+	resourceGroupName   string
+	subscriptionId      string
 	availabilitySetName string
 }
 

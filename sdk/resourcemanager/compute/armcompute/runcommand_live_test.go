@@ -36,8 +36,8 @@ type RunCommandTestSuite struct {
 	virtualNetworksName      string
 	vmName                   string
 	vmScaleSetName           string
-	vmRunCommandName string
-	vmssRunCommandName string
+	vmRunCommandName         string
+	vmssRunCommandName       string
 	adminPassword            string
 	location                 string
 	resourceGroupName        string

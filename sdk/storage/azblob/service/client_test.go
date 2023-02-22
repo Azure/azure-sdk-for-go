@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"io"
 	"net/http"
 	"os"
@@ -1060,7 +1061,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountFilterBlobs() {
 	_require.Len(resp.FilterBlobSegment.Blobs, 0)
 }
 
-func batchSetup(containerName string, svcClient *service.Client, bb *service.BatchBuilder, operationType shared.BlobBatchOperationType) ([]*container.Client, error) {
+func batchSetup(containerName string, svcClient *service.Client, bb *service.BatchBuilder, operationType exported.BlobBatchOperationType) ([]*container.Client, error) {
 	var cntClients []*container.Client
 	for i := 0; i < 5; i++ {
 		cntName := fmt.Sprintf("%v%v", containerName, i)
@@ -1078,7 +1079,7 @@ func batchSetup(containerName string, svcClient *service.Client, bb *service.Bat
 			return cntClients, err
 		}
 
-		if operationType == shared.BatchSetTierOperationType {
+		if operationType == exported.BatchSetTierOperationType {
 			err = bb.SetTier(cntName, bbName, blob.AccessTierCool, nil)
 		} else {
 			err = bb.Delete(cntName, bbName, nil)
@@ -1094,7 +1095,7 @@ func batchSetup(containerName string, svcClient *service.Client, bb *service.Bat
 			return cntClients, err
 		}
 
-		if operationType == shared.BatchSetTierOperationType {
+		if operationType == exported.BatchSetTierOperationType {
 			err = bb.SetTier(cntName, bbName, blob.AccessTierCool, nil)
 		} else {
 			err = bb.Delete(cntName, bbName, nil)
@@ -1124,7 +1125,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey()
 	bb, err := svcClient.NewBatchBuilder()
 	_require.NoError(err)
 
-	cntClients, err := batchSetup(containerName, svcClient, bb, shared.BatchDeleteOperationType)
+	cntClients, err := batchSetup(containerName, svcClient, bb, exported.BatchDeleteOperationType)
 	defer batchClean(cntClients)
 	_require.NoError(err)
 
@@ -1166,7 +1167,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey(
 	bb, err := svcClient.NewBatchBuilder()
 	_require.NoError(err)
 
-	cntClients, err := batchSetup(containerName, svcClient, bb, shared.BatchSetTierOperationType)
+	cntClients, err := batchSetup(containerName, svcClient, bb, exported.BatchSetTierOperationType)
 	defer batchClean(cntClients)
 	_require.NoError(err)
 
@@ -1398,7 +1399,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingAccountSAS(
 	bb, err := svcClient.NewBatchBuilder()
 	_require.NoError(err)
 
-	cntClients, err := batchSetup(containerName, svcClient, bb, shared.BatchDeleteOperationType)
+	cntClients, err := batchSetup(containerName, svcClient, bb, exported.BatchDeleteOperationType)
 	defer batchClean(cntClients)
 	_require.NoError(err)
 
@@ -1449,7 +1450,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingAccountSAS
 	bb, err := svcClient.NewBatchBuilder()
 	_require.NoError(err)
 
-	cntClients, err := batchSetup(containerName, svcClient, bb, shared.BatchSetTierOperationType)
+	cntClients, err := batchSetup(containerName, svcClient, bb, exported.BatchSetTierOperationType)
 	defer batchClean(cntClients)
 	_require.NoError(err)
 

@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"reflect"
 	"time"
 
@@ -342,10 +341,10 @@ type BatchBuilder struct {
 	endpoint      string
 	authPolicy    policy.Policy
 	subRequests   []*policy.Request
-	operationType *shared.BlobBatchOperationType
+	operationType *exported.BlobBatchOperationType
 }
 
-func (bb *BatchBuilder) checkOperationType(operationType shared.BlobBatchOperationType) error {
+func (bb *BatchBuilder) checkOperationType(operationType exported.BlobBatchOperationType) error {
 	if bb.operationType == nil {
 		bb.operationType = &operationType
 		return nil

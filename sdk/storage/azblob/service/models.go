@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"time"
 )
 
@@ -312,10 +311,10 @@ type BatchBuilder struct {
 	endpoint      string
 	authPolicy    policy.Policy
 	subRequests   []*policy.Request
-	operationType *shared.BlobBatchOperationType
+	operationType *exported.BlobBatchOperationType
 }
 
-func (bb *BatchBuilder) checkOperationType(operationType shared.BlobBatchOperationType) error {
+func (bb *BatchBuilder) checkOperationType(operationType exported.BlobBatchOperationType) error {
 	if bb.operationType == nil {
 		bb.operationType = &operationType
 		return nil

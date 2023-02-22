@@ -369,7 +369,7 @@ func (c *Client) NewBatchBuilder() (*BatchBuilder, error) {
 
 // Delete operation is used to add delete sub-request to the batch builder.
 func (bb *BatchBuilder) Delete(blobName string, options *BatchDeleteOptions) error {
-	err := bb.checkOperationType(shared.BatchDeleteOperationType)
+	err := bb.checkOperationType(exported.BatchDeleteOperationType)
 	if err != nil {
 		return err
 	}
@@ -389,7 +389,7 @@ func (bb *BatchBuilder) Delete(blobName string, options *BatchDeleteOptions) err
 	}
 
 	// remove x-ms-version header
-	shared.UpdateSubRequestHeaders(req)
+	exported.UpdateSubRequestHeaders(req)
 
 	bb.subRequests = append(bb.subRequests, req)
 	return nil
@@ -397,7 +397,7 @@ func (bb *BatchBuilder) Delete(blobName string, options *BatchDeleteOptions) err
 
 // SetTier operation is used to add set tier sub-request to the batch builder.
 func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, options *BatchSetTierOptions) error {
-	err := bb.checkOperationType(shared.BatchSetTierOperationType)
+	err := bb.checkOperationType(exported.BatchSetTierOperationType)
 	if err != nil {
 		return err
 	}
@@ -417,7 +417,7 @@ func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, opt
 	}
 
 	// remove x-ms-version header
-	shared.UpdateSubRequestHeaders(req)
+	exported.UpdateSubRequestHeaders(req)
 
 	bb.subRequests = append(bb.subRequests, req)
 	return nil
@@ -433,7 +433,7 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	}
 
 	// create the request body
-	batchReq, batchID, err := shared.CreateBatchRequest(&shared.BlobBatchBuilder{
+	batchReq, batchID, err := exported.CreateBatchRequest(&exported.BlobBatchBuilder{
 		Endpoint:    &bb.endpoint,
 		AuthPolicy:  bb.authPolicy,
 		SubRequests: bb.subRequests,
@@ -453,7 +453,7 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 		}, err
 	}
 
-	batchResponses, err := shared.ParseBlobBatchResponse(resp.Body, resp.ContentType, bb.subRequests)
+	batchResponses, err := exported.ParseBlobBatchResponse(resp.Body, resp.ContentType, bb.subRequests)
 	return SubmitBatchResponse{
 		ContainerClientSubmitBatchResponse: resp,
 		Responses:                          batchResponses,

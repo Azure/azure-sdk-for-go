@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package shared
+package exported
 
 import (
 	"bufio"
@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"io"
 	"net/http"
 	"strconv"
@@ -97,7 +98,7 @@ func buildSubRequest(req *policy.Request) string {
 	batchSubRequest.WriteString(fmt.Sprintf("%s %s %s%s", req.Raw().Method, blobPath, HttpVersion, HttpNewline))
 
 	for k, v := range req.Raw().Header {
-		if strings.EqualFold(k, HeaderXmsVersion) {
+		if strings.EqualFold(k, shared.HeaderXmsVersion) {
 			continue
 		}
 		if len(v) > 0 {
@@ -158,7 +159,7 @@ func CreateBatchRequest(bb *BlobBatchBuilder) (string, string, error) {
 func UpdateSubRequestHeaders(req *policy.Request) {
 	// remove x-ms-version header from the request header
 	for k := range req.Raw().Header {
-		if strings.EqualFold(k, HeaderXmsVersion) {
+		if strings.EqualFold(k, shared.HeaderXmsVersion) {
 			delete(req.Raw().Header, k)
 		}
 	}

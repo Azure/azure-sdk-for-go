@@ -9,6 +9,7 @@ package azadmin
 // this file contains handwritten additions to the generated code
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 
@@ -117,4 +118,29 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 // Error implements a custom error for type Error.
 func (e *Error) Error() string {
 	return string(e.data)
+}
+
+// beginFullRestore is a custom implementation of BeginFullRestore
+// Uses custom poller handler
+func (client *BackupClient) beginFullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BackupClientBeginFullRestoreOptions) (*runtime.Poller[BackupClientFullRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.fullRestore(ctx, restoreBlobDetails, options)
+		if err != nil {
+			return nil, err
+		}
+		handler, err := newRestorePoller[BackupClientFullRestoreResponse](client.pl, resp, runtime.FinalStateViaAzureAsyncOp)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[BackupClientFullRestoreResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Handler:       handler,
+		})
+	} else {
+		handler, err := newRestorePoller[BackupClientFullRestoreResponse](client.pl, nil, runtime.FinalStateViaAzureAsyncOp)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[BackupClientFullRestoreResponse]{Handler: handler})
+	}
 }

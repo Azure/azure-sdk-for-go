@@ -86,26 +86,7 @@ func (client *BackupClient) fullBackupCreateRequest(ctx context.Context, azureSt
 // restoreBlobDetails - The Azure blob SAS token pointing to a folder where the previous successful full backup was stored
 // options - BackupClientBeginFullRestoreOptions contains the optional parameters for the BackupClient.BeginFullRestore method.
 func (client *BackupClient) BeginFullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BackupClientBeginFullRestoreOptions) (*runtime.Poller[BackupClientFullRestoreResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.fullRestore(ctx, restoreBlobDetails, options)
-		if err != nil {
-			return nil, err
-		}
-		handler, err := newRestorePoller[BackupClientFullRestoreResponse](client.pl, resp, runtime.FinalStateViaAzureAsyncOp)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[BackupClientFullRestoreResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Handler: handler,
-		})
-	} else {
-		handler, err := newRestorePoller[BackupClientFullRestoreResponse](client.pl, nil, runtime.FinalStateViaAzureAsyncOp)
-		if err != nil {
-			return nil, err
-		}
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[BackupClientFullRestoreResponse]{Handler: handler})
-	}
+	return client.beginFullRestore(ctx, restoreBlobDetails, options)
 }
 
 // FullRestore - Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup

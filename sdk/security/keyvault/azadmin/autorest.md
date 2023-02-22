@@ -112,4 +112,8 @@ directive:
     where: $
     transform:  return $.replace(/scope\)/g, "string(scope))");
 
+  # modify BeginFullRestore to use implementation with custom poller handler
+  - from: backup_client.go
+    where: $
+    transform:  return $.replace(/\[BackupClientFullRestoreResponse\], error\) \{\s(?:.+\s)+\}/, "[BackupClientFullRestoreResponse], error) {return client.beginFullRestore(ctx, restoreBlobDetails, options)}");
 ```

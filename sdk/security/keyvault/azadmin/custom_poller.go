@@ -32,7 +32,7 @@ func pollHelper(ctx context.Context, endpoint string, pl runtime.Pipeline, updat
 	if err != nil {
 		return err
 	}
-	//log.Writef(log.EventLRO, "State %s", state)
+
 	return nil
 }
 
@@ -92,7 +92,6 @@ type restorePoller[T any] struct {
 // Pass nil for response to create an empty Poller for rehydration.
 func newRestorePoller[T any](pl runtime.Pipeline, resp *http.Response, finalState runtime.FinalStateVia) (*restorePoller[T], error) {
 	if resp == nil {
-		//log.Write(log.EventLRO, "Resuming Azure-AsyncOperation poller.")
 		return &restorePoller[T]{pl: pl}, nil
 	}
 	//log.Write(log.EventLRO, "Using Azure-AsyncOperation poller.")

@@ -13,7 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azadmin"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
@@ -145,6 +145,7 @@ func TestRoleAssignment(t *testing.T) {
 	require.NotNil(t, roleDefinitions.Value)
 	roleDefinition := roleDefinitions.Value[rand.Intn(len(roleDefinitions.Value))]
 	roleAssignment := azadmin.RoleAssignmentCreateParameters{Properties: &azadmin.RoleAssignmentProperties{PrincipalID: to.Ptr(principalID), RoleDefinitionID: roleDefinition.ID}}
+	testSerde(t, &roleAssignment)
 
 	// create role assignment
 	createdAssignment, err := client.CreateRoleAssignment(context.Background(), scope, name, roleAssignment, nil)

@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 )
 
 // AccessControlClientOptions contains optional settings for AccessControlClient.

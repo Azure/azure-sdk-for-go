@@ -1,9 +1,18 @@
-# Azure KeyVault Administration client library for Go
+# Azure KeyVault Administration client module for Go
+
+>**Note:** The Administration module only works with [Managed HSM][managed_hsm] – functions targeting a Key Vault will fail.
+
+* Vault administration (this module) - role-based access control (RBAC), settings, and vault-level backup and restore options
+* Certificate management (azcertificates) - create, manage, and deploy public and private SSL/TLS certificates
+* Cryptographic key management (azkeys) - create, store, and control access to the keys used to encrypt your data
+* Secrets management (azsecrets) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
 
 Azure Key Vault Managed HSM is a fully-managed, highly-available, single-tenant, standards-compliant cloud service that enables you to safeguard
 cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validated HSMs.
 
 The Azure Key Vault administration library clients support administrative tasks such as full backup / restore and key-level role-based access control (RBAC).
+
+[Source code][azadmin_repo] | [Package (pkg.go.dev)][azadmin_pkg_go] | [Product documentation][managed_hsm_docs] | [Samples][azadmin_examples]
 
 ## Getting started
 
@@ -14,82 +23,28 @@ Install `azadmin` and `azidentity` with `go get`:
 go get github.com/Azure/azure-sdk-for-go/sdk/keyvault/azadmin
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
-[azidentity][azure_identity] is used for Azure Active Directory authentication as demonstrated below.
+[azidentity][azure_identity] is used for Azure Active Directory authentication during client contruction.
 
 
 ### Prerequisites
 
 * An [Azure subscription][azure_sub].
-* An existing Azure Key Vault. If you need to create an Azure Key Vault, you can use the [Azure CLI][azure_cli].
-* Authorization to an existing Azure Key Vault using either [RBAC][rbac_guide] (recommended) or [access control][access_policy].
-
-To create a Managed HSM resource, run the following CLI command:
-
-```PowerShell
-az keyvault create --hsm-name <your-key-vault-name> --resource-group <your-resource-group-name> --administrators <your-user-object-id> --location <your-azure-location>
-```
-
-To get `<your-user-object-id>` you can run the following CLI command:
-
-```PowerShell
-az ad user show --id <your-user-principal> --query id
-```
+* A supported Go version (the Azure SDK supports the two most recent Go releases)
+* An existing [Key Vault Managed HSM][managed_hsm]. If you need to create one, you can do so using the Azure CLI by following the steps in [this document][create_managed_hsm].
 
 ### Authentication
 
 This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate. This credential type works in both local development and production environments. We recommend using a [managed identity][managed_identity] in production.
 
-Client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
+The clients accept any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
 #### Create a client
 
 Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal.
 
-- Example AccessControlClient:
-- Example BackupClient:
-- Example SettingsClient:
-
-#### Activate your managed HSM
-
-All data plane commands are disabled until the HSM is activated. You will not be able to create keys or assign roles.
-Only the designated administrators that were assigned during the create command can activate the HSM. To activate the HSM you must download the security domain.
-
-To activate your HSM you need:
-
-* A minimum of 3 RSA key-pairs (maximum 10)
-* Specify the minimum number of keys required to decrypt the security domain (quorum)
-
-To activate the HSM you send at least 3 (maximum 10) RSA public keys to the HSM. The HSM encrypts the security domain with these keys and sends it back.
-Once this security domain is successfully downloaded, your HSM is ready to use.
-You also need to specify quorum, which is the minimum number of private keys required to decrypt the security domain.
-
-The example below shows how to use openssl to generate 3 self-signed certificates.
-
-```PowerShell
-openssl req -newkey rsa:2048 -nodes -keyout cert_0.key -x509 -days 365 -out cert_0.cer
-openssl req -newkey rsa:2048 -nodes -keyout cert_1.key -x509 -days 365 -out cert_1.cer
-openssl req -newkey rsa:2048 -nodes -keyout cert_2.key -x509 -days 365 -out cert_2.cer
-```
-
-Use the `az keyvault security-domain download` command to download the security domain and activate your managed HSM.
-The example below uses 3 RSA key pairs (only public keys are needed for this command) and sets the quorum to 2.
-
-```PowerShell
-az keyvault security-domain download --hsm-name <your-managed-hsm-name> --sd-wrapping-keys ./certs/cert_0.cer ./certs/cert_1.cer ./certs/cert_2.cer --sd-quorum 2 --security-domain-file ContosoMHSM-SD.json
-```
-
-#### Controlling access to your managed HSM
-
-The designated administrators assigned during creation are automatically added to the "Managed HSM Administrators" [built-in role][built_in_roles],
-who are able to download a security domain and [manage roles for data plane access][access_control], among other limited permissions.
-
-To perform other actions on keys, you need to assign principals to other roles such as "Managed HSM Crypto User", which can perform non-destructive key operations:
-
-```PowerShell
-az keyvault role assignment create --hsm-name <your-managed-hsm-name> --role "Managed HSM Crypto User" --scope / --assignee-object-id <principal-or-user-object-ID> --assignee-principal-type <principal-type>
-```
-
-Please read [best practices][best_practices] for properly securing your managed HSM.
+- Example AccessControlClient
+- Example BackupClient
+- Example SettingsClient
 
 ## Key concepts
 
@@ -106,19 +61,11 @@ A `RoleAssignment` is the association of a RoleDefinition to a service principal
 
 ### AccessControlClient
 
-A `AccessControlClient` provides both synchronous and asynchronous operations allowing for management of `KeyVaultRoleDefinition` and `KeyVaultRoleAssignment` objects.
+An `AccessControlClient` allows for management of `RoleDefinition` and `RoleAssignment` types.
 
 ### BackupClient
 
-A `BackupClient` provides both synchronous and asynchronous operations for performing full key backups, full key restores, and selective key restores.
-
-### BeginFullBackup
-
-A `BeginFullBackup` represents a long running operation for a full key backup.
-
-### RestoreOperation
-
-A `BeginFullRestoreOperation` represents a long running operation for both a full key and selective key restore.
+A `BackupClient` allows for performing full key backups, full key restores, and selective key restores.
 
 ## Examples
 
@@ -191,16 +138,15 @@ or contact opencode@microsoft.com with any
 additional questions or comments.
 
 <!-- LINKS -->
-[access_control]: https://learn.microsoft.com/azure/key-vault/managed-hsm/access-control
-[access_policy]: https://learn.microsoft.com/azure/key-vault/general/assign-access-policy
+[azadmin_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin
 [azadmin_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin#pkg-examples
+[azadmin_repo]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/security/keyvault/azadmin
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
-[rbac_guide]: https://learn.microsoft.com/azure/key-vault/general/rbac-guide
-[azure_cli]: https://learn.microsoft.com/cli/azure
-[best_practices]: https://learn.microsoft.com/azure/key-vault/managed-hsm/best-practices
-[built_in_roles]: https://learn.microsoft.com/azure/key-vault/managed-hsm/built-in-roles
+[create_managed_hsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
+[managed_hsm]: https://docs.microsoft.com/azure/key-vault/managed-hsm/overview
+[managed_hsm_docs]: https://learn.microsoft.com/azure/key-vault/managed-hsm/
 [managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 

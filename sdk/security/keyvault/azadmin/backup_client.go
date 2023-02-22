@@ -100,7 +100,11 @@ func (client *BackupClient) BeginFullRestore(ctx context.Context, restoreBlobDet
 			Handler: handler,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupClientFullRestoreResponse](options.ResumeToken, client.pl, nil)
+		handler, err := newRestorePoller[BackupClientFullRestoreResponse](client.pl, nil, runtime.FinalStateViaAzureAsyncOp)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[BackupClientFullRestoreResponse]{Handler: handler})
 	}
 }
 

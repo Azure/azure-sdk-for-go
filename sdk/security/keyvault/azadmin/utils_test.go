@@ -9,6 +9,7 @@ package azadmin_test
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"regexp"
 	"testing"
@@ -18,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azadmin"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin"
 	"github.com/stretchr/testify/require"
 )
 
@@ -47,6 +48,10 @@ func TestMain(m *testing.M) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
+		/*tenantID := lookupEnvVar("KEYVAULT_TENANT_ID")
+		clientID := lookupEnvVar("KEYVAULT_CLIENT_ID")
+		secret := lookupEnvVar("KEYVAULT_CLIENT_SECRET")
+		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)*/
 		credential, err = azidentity.NewDefaultAzureCredential(nil)
 		if err != nil {
 			panic(err)
@@ -87,15 +92,22 @@ func startAccessControlTest(t *testing.T) *azadmin.AccessControlClient {
 	return client
 }
 
-func startBackupTest(t *testing.T) *azadmin.BackupClient {
+func startBackupTest(t *testing.T) (*azadmin.BackupClient, azadmin.SASTokenParameter) {
 	startRecording(t)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	opts := &azadmin.BackupClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	client, err := azadmin.NewBackupClient(hsmURL, credential, opts)
 	require.NoError(t, err)
-	return client
 
+	storageResourceUri := os.Getenv("BLOB_RESOURCE_URI")
+	token := os.Getenv("SAS_TOKEN")
+	sasToken := azadmin.SASTokenParameter{
+		StorageResourceURI: &storageResourceUri,
+		Token:              &token,
+	}
+
+	return client, sasToken
 }
 
 func startSettingsTest(t *testing.T) *azadmin.SettingsClient {
@@ -106,6 +118,14 @@ func startSettingsTest(t *testing.T) *azadmin.SettingsClient {
 	client, err := azadmin.NewSettingsClient(hsmURL, credential, opts)
 	require.NoError(t, err)
 	return client
+}
+
+func lookupEnvVar(s string) string {
+	ret, ok := os.LookupEnv(s)
+	if !ok {
+		panic(fmt.Sprintf("Could not find env var: '%s'", s))
+	}
+	return ret
 }
 
 type FakeCredential struct{}

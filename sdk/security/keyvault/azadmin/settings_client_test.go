@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azadmin"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin"
 	"github.com/stretchr/testify/require"
 )
 

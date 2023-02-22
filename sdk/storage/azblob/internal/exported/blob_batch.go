@@ -165,8 +165,8 @@ func UpdateSubRequestHeaders(req *policy.Request) {
 	}
 }
 
-// BlobBatchResponse contains the response for the individual sub-requests.
-type BlobBatchResponse struct {
+// BlobBatchSubResponse contains the response for the individual sub-requests.
+type BlobBatchSubResponse struct {
 	ContentID     *int
 	ContainerName *string
 	BlobName      *string
@@ -207,7 +207,7 @@ func getContentID(part string) *int {
 	return &contentID
 }
 
-func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequests []*policy.Request) ([]*BlobBatchResponse, error) {
+func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequests []*policy.Request) ([]*BlobBatchSubResponse, error) {
 	boundary, err := getResponseBoundary(contentType)
 	if err != nil {
 		return nil, err
@@ -222,7 +222,7 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 	body := string(bytesBody)
 
 	parts := strings.Split(body, boundary)
-	var responses []*BlobBatchResponse
+	var responses []*BlobBatchSubResponse
 	batchPartialError := false
 
 	for i, part := range parts {
@@ -230,7 +230,7 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 			continue
 		}
 
-		batchResponse := &BlobBatchResponse{}
+		batchResponse := &BlobBatchSubResponse{}
 		batchResponse.ContentID = getContentID(part)
 
 		if batchResponse.ContentID != nil {

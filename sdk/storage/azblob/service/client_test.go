@@ -1270,7 +1270,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUs
 	_require.NotEmpty(resp.RequestID)
 
 	var ctrSuccess, ctrFailure = 0, 0
-	for _, subResp := range resp.Responses {
+	for _, subResp := range resp.SubResponses {
 		_require.NotNil(subResp.Response)
 		if subResp.Response.StatusCode >= 200 && subResp.Response.StatusCode < 300 {
 			ctrSuccess++
@@ -1351,7 +1351,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 	_require.NotEmpty(resp.RequestID)
 
 	ctr := 0
-	for _, subResp := range resp.Responses {
+	for _, subResp := range resp.SubResponses {
 		_require.NotNil(subResp.Response)
 		if subResp.Response.StatusCode >= 200 && subResp.Response.StatusCode < 300 {
 			ctr++
@@ -1682,9 +1682,9 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
 	resp1, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
 	_require.NotEmpty(resp1.RequestID)
-	_require.Equal(len(resp1.Responses), 1)
-	_require.NotNil(resp1.Responses[0].Response)
-	_require.Equal(resp1.Responses[0].Response.StatusCode, http.StatusAccepted)
+	_require.Equal(len(resp1.SubResponses), 1)
+	_require.NotNil(resp1.SubResponses[0].Response)
+	_require.Equal(resp1.SubResponses[0].Response.StatusCode, http.StatusAccepted)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -1698,9 +1698,9 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
 	resp2, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.Error(err)
 	_require.NotEmpty(resp2.RequestID)
-	_require.Equal(len(resp2.Responses), 1)
-	_require.NotNil(resp2.Responses[0].Response)
-	_require.Equal(resp2.Responses[0].Response.StatusCode, http.StatusNotFound)
+	_require.Equal(len(resp2.SubResponses), 1)
+	_require.NotNil(resp2.SubResponses[0].Response)
+	_require.Equal(resp2.SubResponses[0].Response.StatusCode, http.StatusNotFound)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchErrors() {

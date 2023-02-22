@@ -44,11 +44,14 @@ type FilterBlobsResponse = generated.ServiceClientFilterBlobsResponse
 // GetUserDelegationKeyResponse contains the response from method ServiceClient.GetUserDelegationKey.
 type GetUserDelegationKeyResponse = generated.ServiceClientGetUserDelegationKeyResponse
 
+// BatchRawResponse contains the response from the SubmitBatch method of the generated client.
+type BatchRawResponse = generated.ServiceClientSubmitBatchResponse
+
 // SubmitBatchResponse contains the response from method Client.SubmitBatch.
 type SubmitBatchResponse struct {
-	generated.ServiceClientSubmitBatchResponse
-	Responses []*BatchResponse
+	BatchRawResponse
+	SubResponses []*BatchSubResponse
 }
 
-// BatchResponse contains the response for the individual sub-requests.
-type BatchResponse = exported.BlobBatchResponse
+// BatchSubResponse contains the response for the individual sub-requests.
+type BatchSubResponse = exported.BlobBatchSubResponse

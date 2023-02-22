@@ -417,7 +417,7 @@ func Example_service_BatchDelete() {
 	handleError(err)
 
 	// get response for individual sub-requests
-	for _, resp := range resp.Responses {
+	for _, resp := range resp.SubResponses {
 		if resp.ContainerName != nil && resp.BlobName != nil {
 			fmt.Println("Container: " + *resp.ContainerName)
 			fmt.Println("Blob: " + *resp.BlobName)
@@ -494,7 +494,7 @@ func Example_service_BatchSetTier() {
 	handleError(err)
 
 	// get response for individual sub-requests
-	for _, resp := range resp.Responses {
+	for _, resp := range resp.SubResponses {
 		if resp.ContainerName != nil && resp.BlobName != nil {
 			fmt.Println("Container: " + *resp.ContainerName)
 			fmt.Println("Blob: " + *resp.BlobName)

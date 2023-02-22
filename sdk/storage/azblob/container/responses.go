@@ -44,11 +44,14 @@ type GetAccessPolicyResponse = generated.ContainerClientGetAccessPolicyResponse
 // SetAccessPolicyResponse contains the response from method Client.SetAccessPolicy.
 type SetAccessPolicyResponse = generated.ContainerClientSetAccessPolicyResponse
 
+// BatchRawResponse contains the response from the SubmitBatch method of the generated client.
+type BatchRawResponse = generated.ContainerClientSubmitBatchResponse
+
 // SubmitBatchResponse contains the response from method Client.SubmitBatch.
 type SubmitBatchResponse struct {
-	generated.ContainerClientSubmitBatchResponse
-	Responses []*BatchResponse
+	BatchRawResponse
+	SubResponses []*BatchSubResponse
 }
 
-// BatchResponse contains the response for the individual sub-requests.
-type BatchResponse = exported.BlobBatchResponse
+// BatchSubResponse contains the response for the individual sub-requests.
+type BatchSubResponse = exported.BlobBatchSubResponse

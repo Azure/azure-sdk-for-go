@@ -402,13 +402,13 @@ func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 
 	if err != nil {
 		return SubmitBatchResponse{
-			ServiceClientSubmitBatchResponse: resp,
+			BatchRawResponse: resp,
 		}, err
 	}
 
 	batchResponses, err := exported.ParseBlobBatchResponse(resp.Body, resp.ContentType, bb.subRequests)
 	return SubmitBatchResponse{
-		ServiceClientSubmitBatchResponse: resp,
-		Responses:                        batchResponses,
+		BatchRawResponse: resp,
+		SubResponses:     batchResponses,
 	}, err
 }

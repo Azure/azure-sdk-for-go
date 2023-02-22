@@ -32,6 +32,9 @@ type WorkloadIdentityCredential struct {
 // WorkloadIdentityCredentialOptions contains optional parameters for WorkloadIdentityCredential.
 type WorkloadIdentityCredentialOptions struct {
 	azcore.ClientOptions
+
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
 }
 
 // NewWorkloadIdentityCredential constructs a WorkloadIdentityCredential. tenantID and clientID specify the identity the credential authenticates.
@@ -41,7 +44,8 @@ func NewWorkloadIdentityCredential(tenantID, clientID, file string, options *Wor
 		options = &WorkloadIdentityCredentialOptions{}
 	}
 	w := WorkloadIdentityCredential{file: file, mtx: &sync.RWMutex{}}
-	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &ClientAssertionCredentialOptions{ClientOptions: options.ClientOptions})
+	caco := ClientAssertionCredentialOptions{ClientOptions: options.ClientOptions, DisableInstanceDiscovery: options.DisableInstanceDiscovery}
+	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
 	if err != nil {
 		return nil, err
 	}

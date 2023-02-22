@@ -29,7 +29,7 @@ type APIProperties struct {
 	AADTenantID *string `json:"aadTenantId,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// (Personalization Only) The flag to enable statistics of Bing Search.
 	EventHubConnectionString *string `json:"eventHubConnectionString,omitempty"`
@@ -113,8 +113,14 @@ type AccountModel struct {
 	// Cognitive Services account ModelDeprecationInfo.
 	Deprecation *ModelDeprecationInfo `json:"deprecation,omitempty"`
 
+	// The capabilities for finetune models.
+	FinetuneCapabilities map[string]*string `json:"finetuneCapabilities,omitempty"`
+
 	// Deployment model format.
 	Format *string `json:"format,omitempty"`
+
+	// Model lifecycle status.
+	LifecycleStatus *ModelLifecycleStatus `json:"lifecycleStatus,omitempty"`
 
 	// The max capacity.
 	MaxCapacity *int32 `json:"maxCapacity,omitempty"`
@@ -157,6 +163,9 @@ type AccountProperties struct {
 	// The encryption properties for this resource.
 	Encryption *Encryption `json:"encryption,omitempty"`
 
+	// The multiregion settings of Cognitive Services account.
+	Locations *MultiRegionSettings `json:"locations,omitempty"`
+
 	// Resource migration token.
 	MigrationToken *string `json:"migrationToken,omitempty"`
 
@@ -177,6 +186,9 @@ type AccountProperties struct {
 	// READ-ONLY; Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific feature.
 	// The values are read-only and for reference only.
 	Capabilities []*SKUCapability `json:"capabilities,omitempty" azure:"ro"`
+
+	// READ-ONLY; The commitment plan associations of Cognitive Services account.
+	CommitmentPlanAssociations []*CommitmentPlanAssociation `json:"commitmentPlanAssociations,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the date of cognitive services account creation.
 	DateCreated *string `json:"dateCreated,omitempty" azure:"ro"`
@@ -250,7 +262,8 @@ type AccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
+// method.
 type AccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -260,12 +273,12 @@ type AccountsClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListModelsOptions contains the optional parameters for the AccountsClient.ListModels method.
+// AccountsClientListModelsOptions contains the optional parameters for the AccountsClient.NewListModelsPager method.
 type AccountsClientListModelsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
+// AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
 type AccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -365,8 +378,20 @@ type CommitmentPeriod struct {
 
 // CommitmentPlan - Cognitive Services account commitment plan.
 type CommitmentPlan struct {
+	// The Kind of the resource.
+	Kind *string `json:"kind,omitempty"`
+
+	// The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Properties of Cognitive Services account commitment plan.
 	Properties *CommitmentPlanProperties `json:"properties,omitempty"`
+
+	// The resource model definition representing SKU
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Resource Etag.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
@@ -384,6 +409,52 @@ type CommitmentPlan struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// CommitmentPlanAccountAssociation - The commitment plan association.
+type CommitmentPlanAccountAssociation struct {
+	// Properties of Cognitive Services account commitment plan association.
+	Properties *CommitmentPlanAccountAssociationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CommitmentPlanAccountAssociationListResult - The list of cognitive services Commitment Plan Account Association operation
+// response.
+type CommitmentPlanAccountAssociationListResult struct {
+	// The link used to get the next page of Commitment Plan Account Association.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; Gets the list of Cognitive Services Commitment Plan Account Association and their properties.
+	Value []*CommitmentPlanAccountAssociation `json:"value,omitempty" azure:"ro"`
+}
+
+// CommitmentPlanAccountAssociationProperties - The commitment plan account association properties.
+type CommitmentPlanAccountAssociationProperties struct {
+	// The Azure resource id of the account.
+	AccountID *string `json:"accountId,omitempty"`
+}
+
+// CommitmentPlanAssociation - The commitment plan association.
+type CommitmentPlanAssociation struct {
+	// The Azure resource id of the commitment plan.
+	CommitmentPlanID *string `json:"commitmentPlanId,omitempty"`
+
+	// The location of of the commitment plan.
+	CommitmentPlanLocation *string `json:"commitmentPlanLocation,omitempty"`
+}
+
 // CommitmentPlanListResult - The list of cognitive services accounts operation response.
 type CommitmentPlanListResult struct {
 	// The link used to get the next page of CommitmentPlan.
@@ -397,6 +468,9 @@ type CommitmentPlanListResult struct {
 type CommitmentPlanProperties struct {
 	// AutoRenew commitment plan.
 	AutoRenew *bool `json:"autoRenew,omitempty"`
+
+	// Commitment plan guid.
+	CommitmentPlanGUID *string `json:"commitmentPlanGuid,omitempty"`
 
 	// Cognitive Services account commitment period.
 	Current *CommitmentPeriod `json:"current,omitempty"`
@@ -412,10 +486,48 @@ type CommitmentPlanProperties struct {
 
 	// READ-ONLY; Cognitive Services account commitment period.
 	Last *CommitmentPeriod `json:"last,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the status of the resource at the time the operation was called.
+	ProvisioningState *CommitmentPlanProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// CommitmentPlansClientBeginCreateOrUpdateAssociationOptions contains the optional parameters for the CommitmentPlansClient.BeginCreateOrUpdateAssociation
+// method.
+type CommitmentPlansClientBeginCreateOrUpdateAssociationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CommitmentPlansClientBeginCreateOrUpdatePlanOptions contains the optional parameters for the CommitmentPlansClient.BeginCreateOrUpdatePlan
+// method.
+type CommitmentPlansClientBeginCreateOrUpdatePlanOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CommitmentPlansClientBeginDeleteAssociationOptions contains the optional parameters for the CommitmentPlansClient.BeginDeleteAssociation
+// method.
+type CommitmentPlansClientBeginDeleteAssociationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CommitmentPlansClientBeginDeleteOptions contains the optional parameters for the CommitmentPlansClient.BeginDelete method.
 type CommitmentPlansClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CommitmentPlansClientBeginDeletePlanOptions contains the optional parameters for the CommitmentPlansClient.BeginDeletePlan
+// method.
+type CommitmentPlansClientBeginDeletePlanOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CommitmentPlansClientBeginUpdatePlanOptions contains the optional parameters for the CommitmentPlansClient.BeginUpdatePlan
+// method.
+type CommitmentPlansClientBeginUpdatePlanOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -426,13 +538,42 @@ type CommitmentPlansClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CommitmentPlansClientGetAssociationOptions contains the optional parameters for the CommitmentPlansClient.GetAssociation
+// method.
+type CommitmentPlansClientGetAssociationOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CommitmentPlansClientGetOptions contains the optional parameters for the CommitmentPlansClient.Get method.
 type CommitmentPlansClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CommitmentPlansClientListOptions contains the optional parameters for the CommitmentPlansClient.List method.
+// CommitmentPlansClientGetPlanOptions contains the optional parameters for the CommitmentPlansClient.GetPlan method.
+type CommitmentPlansClientGetPlanOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentPlansClientListAssociationsOptions contains the optional parameters for the CommitmentPlansClient.NewListAssociationsPager
+// method.
+type CommitmentPlansClientListAssociationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentPlansClientListOptions contains the optional parameters for the CommitmentPlansClient.NewListPager method.
 type CommitmentPlansClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentPlansClientListPlansByResourceGroupOptions contains the optional parameters for the CommitmentPlansClient.NewListPlansByResourceGroupPager
+// method.
+type CommitmentPlansClientListPlansByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommitmentPlansClientListPlansBySubscriptionOptions contains the optional parameters for the CommitmentPlansClient.NewListPlansBySubscriptionPager
+// method.
+type CommitmentPlansClientListPlansBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -481,7 +622,7 @@ type CommitmentTierListResult struct {
 	Value []*CommitmentTier `json:"value,omitempty" azure:"ro"`
 }
 
-// CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.List method.
+// CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.NewListPager method.
 type CommitmentTiersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -497,7 +638,7 @@ type DeletedAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.List method.
+// DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.NewListPager method.
 type DeletedAccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -598,7 +739,7 @@ type DeploymentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
+// DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.NewListPager method.
 type DeploymentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -633,7 +774,7 @@ type Encryption struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -732,6 +873,14 @@ type ModelDeprecationInfo struct {
 	Inference *string `json:"inference,omitempty"`
 }
 
+// MultiRegionSettings - The multiregion settings Cognitive Services account.
+type MultiRegionSettings struct {
+	Regions []*RegionSetting `json:"regions,omitempty"`
+
+	// Multiregion routing methods.
+	RoutingMethod *RoutingMethods `json:"routingMethod,omitempty"`
+}
+
 // NetworkRuleSet - A set of rules governing the network accessibility.
 type NetworkRuleSet struct {
 	// The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the bypass property
@@ -794,9 +943,24 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PatchResourceTags - The object being used to update tags of a resource, in general used for PATCH operations.
+type PatchResourceTags struct {
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// PatchResourceTagsAndSKU - The object being used to update tags and sku of a resource, in general used for PATCH operations.
+type PatchResourceTagsAndSKU struct {
+	// The resource model definition representing SKU
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // PrivateEndpoint - The Private Endpoint resource.
@@ -955,6 +1119,18 @@ type RegenerateKeyParameters struct {
 	KeyName *KeyName `json:"keyName,omitempty"`
 }
 
+// RegionSetting - The call rate limit Cognitive Services account.
+type RegionSetting struct {
+	// Maps the region to the regional custom subdomain.
+	Customsubdomain *string `json:"customsubdomain,omitempty"`
+
+	// Name of the region.
+	Name *string `json:"name,omitempty"`
+
+	// A value for priority or weighted routing methods.
+	Value *float32 `json:"value,omitempty"`
+}
+
 type RequestMatchPattern struct {
 	Method *string `json:"method,omitempty"`
 	Path   *string `json:"path,omitempty"`
@@ -1026,7 +1202,7 @@ type ResourceSKURestrictions struct {
 	Values []*string `json:"values,omitempty"`
 }
 
-// ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.List method.
+// ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.NewListPager method.
 type ResourceSKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }

@@ -130,6 +130,7 @@ type ListSharesOptions struct {
 	Prefix *string
 }
 
+// ListSharesInclude indicates what additional information the service should return with each share.
 type ListSharesInclude struct {
 	// Tells the service whether to return metadata for each share.
 	Metadata bool

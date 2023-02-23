@@ -58,7 +58,7 @@ func (d *Client) sharedKey() *SharedKeyCredential {
 
 // URL returns the URL endpoint used by the Client object.
 func (d *Client) URL() string {
-	return "s.generated().Endpoint()"
+	return d.generated().Endpoint()
 }
 
 // NewSubdirectoryClient creates a new Client object by concatenating subDirectoryName to the end of this Client's URL.

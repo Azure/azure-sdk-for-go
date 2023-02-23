@@ -42,9 +42,9 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - shareName - the name of the share within the storage account
-//   - directoryName - the name of the directory within the storage account
+//   - directoryPath - the path of the directory within the share
 //   - options - client options; pass nil to accept the default values
-func NewClientFromConnectionString(connectionString string, shareName string, directoryName string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, shareName string, directoryPath string, options *ClientOptions) (*Client, error) {
 	return nil, nil
 }
 

@@ -5,6 +5,7 @@ metadata:
     testName: "goeh"
     # This'll make it so the resources aren't deleted on test exit.
     # Skip.RemoveTestResources: "true"
+    chaos: "{{ default false .Stress.chaos }}"
 spec:
   containers:
     - name: main
@@ -40,3 +41,37 @@ spec:
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
 
+{{- include "stress-test-addons.chaos-wrapper.tpl" (list . "stress.network-chaos") -}}
+{{- define "stress.network-chaos" -}}
+# basically: every 5 minutes do 10s of network loss
+kind: Schedule
+apiVersion: chaos-mesh.org/v1alpha1
+spec:
+  schedule: "*/5 * * * *"
+  startingDeadlineSeconds: null
+  concurrencyPolicy: Forbid
+  historyLimit: 1
+  type: NetworkChaos
+  networkChaos:
+    selector:
+      namespaces:
+        - "{{ .Release.Namespace }}"
+      labelSelectors:
+        scenario: {{ .Stress.Scenario }}
+    mode: all
+    action: loss
+    duration: 10s
+    loss:
+      loss: '100'
+      correlation: '100'
+    direction: to
+    target:
+      selector:
+        namespaces:
+          - {{ .Release.Namespace }}
+        labelSelectors:
+          scenario: {{ .Stress.Scenario }}
+      mode: all
+    externalTargets:
+      - {{ .Stress.BaseName }}.servicebus.windows.net
+{{- end -}}

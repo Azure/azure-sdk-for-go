@@ -11,11 +11,33 @@ package armworkloads
 
 import "encoding/json"
 
+func unmarshalFileShareConfigurationClassification(rawMsg json.RawMessage) (FileShareConfigurationClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b FileShareConfigurationClassification
+	switch m["configurationType"] {
+	case string(ConfigurationTypeCreateAndMount):
+		b = &CreateAndMountFileShareConfiguration{}
+	case string(ConfigurationTypeMount):
+		b = &MountFileShareConfiguration{}
+	case string(ConfigurationTypeSkip):
+		b = &SkipFileShareConfiguration{}
+	default:
+		b = &FileShareConfiguration{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
 func unmarshalInfrastructureConfigurationClassification(rawMsg json.RawMessage) (InfrastructureConfigurationClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -35,7 +57,7 @@ func unmarshalOSConfigurationClassification(rawMsg json.RawMessage) (OSConfigura
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -55,7 +77,7 @@ func unmarshalProviderSpecificPropertiesClassification(rawMsg json.RawMessage) (
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -83,7 +105,7 @@ func unmarshalSAPConfigurationClassification(rawMsg json.RawMessage) (SAPConfigu
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -105,7 +127,7 @@ func unmarshalSAPSizingRecommendationResultClassification(rawMsg json.RawMessage
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -121,22 +143,60 @@ func unmarshalSAPSizingRecommendationResultClassification(rawMsg json.RawMessage
 	return b, json.Unmarshal(rawMsg, b)
 }
 
+func unmarshalSingleServerCustomResourceNamesClassification(rawMsg json.RawMessage) (SingleServerCustomResourceNamesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b SingleServerCustomResourceNamesClassification
+	switch m["namingPatternType"] {
+	case string(NamingPatternTypeFullResourceName):
+		b = &SingleServerFullResourceNames{}
+	default:
+		b = &SingleServerCustomResourceNames{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
 func unmarshalSoftwareConfigurationClassification(rawMsg json.RawMessage) (SoftwareConfigurationClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
 	var b SoftwareConfigurationClassification
 	switch m["softwareInstallationType"] {
+	case string(SAPSoftwareInstallationTypeExternal):
+		b = &ExternalInstallationSoftwareConfiguration{}
 	case string(SAPSoftwareInstallationTypeSAPInstallWithoutOSConfig):
 		b = &SAPInstallWithoutOSConfigSoftwareConfiguration{}
 	case string(SAPSoftwareInstallationTypeServiceInitiated):
 		b = &ServiceInitiatedSoftwareConfiguration{}
 	default:
 		b = &SoftwareConfiguration{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalThreeTierCustomResourceNamesClassification(rawMsg json.RawMessage) (ThreeTierCustomResourceNamesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ThreeTierCustomResourceNamesClassification
+	switch m["namingPatternType"] {
+	case string(NamingPatternTypeFullResourceName):
+		b = &ThreeTierFullResourceNames{}
+	default:
+		b = &ThreeTierCustomResourceNames{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }

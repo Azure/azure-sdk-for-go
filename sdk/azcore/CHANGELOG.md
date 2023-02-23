@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 * ARM's RP registration policy will no longer swallow unrecognized errors.
+* Fixed an issue in `runtime.NewPollerFromResumeToken()` when resuming a `Poller` with a custom `PollingHandler`.
 
 ### Other Changes
 

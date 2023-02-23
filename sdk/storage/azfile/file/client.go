@@ -59,7 +59,7 @@ func (f *Client) sharedKey() *SharedKeyCredential {
 
 // URL returns the URL endpoint used by the Client object.
 func (f *Client) URL() string {
-	return "s.generated().Endpoint()"
+	return f.generated().Endpoint()
 }
 
 // Create operation creates a new file or replaces a file. Note it only initializes the file with no content.

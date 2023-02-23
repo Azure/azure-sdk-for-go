@@ -23,14 +23,6 @@ type ClientOptions struct {
 // Client represents a URL to the Azure Storage file.
 type Client base.Client[generated.FileClient]
 
-// NewClient creates an instance of Client with the specified values.
-//   - fileURL - the URL of the file e.g. https://<account>.file.core.windows.net/share/directoryPath/file
-//   - cred - an Azure AD credential, typically obtained via the azidentity module
-//   - options - client options; pass nil to accept the default values
-func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	return nil, nil
-}
-
 // NewClientWithNoCredential creates an instance of Client with the specified values.
 // This is used to anonymously access a file or with a shared access signature (SAS) token.
 //   - fileURL - the URL of the file e.g. https://<account>.file.core.windows.net/share/directoryPath/file?<sas token>
@@ -67,7 +59,7 @@ func (f *Client) sharedKey() *SharedKeyCredential {
 
 // URL returns the URL endpoint used by the Client object.
 func (f *Client) URL() string {
-	return "s.generated().Endpoint()"
+	return f.generated().Endpoint()
 }
 
 // Create operation creates a new file or replaces a file. Note it only initializes the file with no content.
@@ -124,12 +116,12 @@ func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOpti
 	return DownloadStreamResponse{}, nil
 }
 
-// DownloadBuffer downloads an Azure blob to a buffer with parallel.
+// DownloadBuffer downloads an Azure file to a buffer with parallel.
 func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
 	return 0, nil
 }
 
-// DownloadFile downloads an Azure blob to a local file.
+// DownloadFile downloads an Azure file to a local file.
 // The file would be truncated if the size doesn't match.
 func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
 	return 0, nil

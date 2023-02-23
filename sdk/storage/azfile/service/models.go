@@ -7,13 +7,21 @@
 package service
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
+
+// NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
+// storage account's name and either its primary or secondary key.
+func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+	return exported.NewSharedKeyCredential(accountName, accountKey)
+}
 
 // CreateShareOptions contains the optional parameters for the share.Client.Create method.
 type CreateShareOptions = share.CreateOptions
@@ -52,6 +60,31 @@ type SetPropertiesOptions struct {
 	Protocol *ProtocolSettings
 }
 
+func (o *SetPropertiesOptions) format() (generated.StorageServiceProperties, *generated.ServiceClientSetPropertiesOptions) {
+	if o == nil {
+		return generated.StorageServiceProperties{}, nil
+	}
+
+	formatMetrics(o.HourMetrics)
+	formatMetrics(o.MinuteMetrics)
+
+	return generated.StorageServiceProperties{
+		CORS:          o.CORS,
+		HourMetrics:   o.HourMetrics,
+		MinuteMetrics: o.MinuteMetrics,
+		Protocol:      o.Protocol,
+	}, nil
+}
+
+// update version of Storage Analytics to configure. Use 1.0 for this value.
+func formatMetrics(m *Metrics) {
+	if m == nil {
+		return
+	}
+
+	m.Version = to.Ptr(shared.StorageAnalyticsVersion)
+}
+
 // StorageServiceProperties - Storage service properties.
 type StorageServiceProperties = generated.StorageServiceProperties
 
@@ -81,17 +114,32 @@ type SMBMultichannel = generated.SMBMultichannel
 // ListSharesOptions contains the optional parameters for the Client.NewListSharesPager method.
 type ListSharesOptions struct {
 	// Include this parameter to specify one or more datasets to include in the responseBody.
-	Include []ListSharesIncludeType
+	Include ListSharesInclude
+
 	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
 	// a marker value within the responseBody body if the list returned was not complete.
 	// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
 	// to the client.
 	Marker *string
+
 	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater
 	// than 5,000, the server will return up to 5,000 items.
 	MaxResults *int32
+
 	// Filters the results to return only entries whose name begins with the specified prefix.
 	Prefix *string
+}
+
+// ListSharesInclude indicates what additional information the service should return with each share.
+type ListSharesInclude struct {
+	// Tells the service whether to return metadata for each share.
+	Metadata bool
+
+	// Tells the service whether to return soft-deleted shares.
+	Deleted bool
+
+	// Tells the service whether to return share snapshots.
+	Snapshots bool
 }
 
 // Share - A listed Azure Storage share item.

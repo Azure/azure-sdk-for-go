@@ -712,10 +712,10 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 	}
 }
 
-func TestConsumerClient_ClientID(t *testing.T) {
+func TestConsumerClient_InstanceID(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
-	var identifier string
+	var instanceID string
 
 	// create a partition client with owner level 1 that's fully initialized.
 	{
@@ -729,7 +729,7 @@ func TestConsumerClient_ClientID(t *testing.T) {
 
 		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
 			// We'll just let this one be auto-generated.
-			//Identifier: "",
+			//InstanceID: "",
 		})
 		require.NoError(t, err)
 		defer test.RequireClose(t, consumerClient)
@@ -738,7 +738,7 @@ func TestConsumerClient_ClientID(t *testing.T) {
 		require.NotZero(t, parsedUUID)
 		require.NoError(t, err)
 
-		identifier = consumerClient.InstanceID()
+		instanceID = consumerClient.InstanceID()
 
 		partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
 			OwnerLevel:    to.Ptr(int64(1)),
@@ -769,7 +769,7 @@ func TestConsumerClient_ClientID(t *testing.T) {
 
 	_, err = failedPartitionClient.ReceiveEvents(context.Background(), 1, nil)
 
-	require.Contains(t, err.Error(), fmt.Sprintf("Description: Receiver '%s' with a higher epoch '1' already exists. Receiver 'LosesBecauseOfLowOwnerLevel' with epoch 0 cannot be created. Make sure you are creating receiver with increasing epoch value to ensure connectivity, or ensure all old epoch receivers are closed or disconnected", identifier))
+	require.Contains(t, err.Error(), fmt.Sprintf("Description: Receiver '%s' with a higher epoch '1' already exists. Receiver 'LosesBecauseOfLowOwnerLevel' with epoch 0 cannot be created. Make sure you are creating receiver with increasing epoch value to ensure connectivity, or ensure all old epoch receivers are closed or disconnected", instanceID))
 }
 
 // mustSendEventsToAllPartitions sends the event given in evt to each partition in the

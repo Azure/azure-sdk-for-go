@@ -265,7 +265,7 @@ type partitionClientArgs struct {
 
 	consumerGroup string
 	eventHub      string
-	identifier    string
+	instanceID    string
 	partitionID   string
 	retryOptions  RetryOptions
 }
@@ -294,7 +294,7 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 		partitionID:      args.partitionID,
 		prefetch:         options.Prefetch,
 		retryOptions:     args.retryOptions,
-		identifier:       args.identifier,
+		identifier:       args.instanceID,
 	}
 
 	client.links = internal.NewLinks(args.namespace, fmt.Sprintf("%s/$management", client.eventHub), client.getEntityPath, client.newEventHubConsumerLink)

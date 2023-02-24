@@ -65,10 +65,10 @@ type ConsumerClient struct {
 	consumerGroup string
 	eventHub      string
 
-	// identifier is a customer supplied identifier that can be passed to Event Hubs.
+	// instanceID is a customer supplied instanceID that can be passed to Event Hubs.
 	// It'll be returned in error messages and can be useful for customers when
 	// troubleshooting.
-	identifier string
+	instanceID string
 
 	links        *internal.Links[amqpwrap.AMQPReceiverCloser]
 	namespace    *internal.Namespace
@@ -150,7 +150,7 @@ func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *Partit
 		namespace:     cc.namespace,
 		eventHub:      cc.eventHub,
 		partitionID:   partitionID,
-		identifier:    cc.identifier,
+		instanceID:    cc.instanceID,
 		consumerGroup: cc.consumerGroup,
 		retryOptions:  cc.retryOptions,
 	}, options)
@@ -182,7 +182,7 @@ func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionI
 
 // InstanceID is the identifier for this ConsumerClient.
 func (cc *ConsumerClient) InstanceID() string {
-	return cc.identifier
+	return cc.instanceID
 }
 
 type consumerClientDetails struct {
@@ -197,7 +197,7 @@ func (cc *ConsumerClient) getDetails() consumerClientDetails {
 		FullyQualifiedNamespace: cc.namespace.FQDN,
 		ConsumerGroup:           cc.consumerGroup,
 		EventHubName:            cc.eventHub,
-		ClientID:                cc.identifier,
+		ClientID:                cc.InstanceID(),
 	}
 }
 
@@ -231,7 +231,7 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 	client := &ConsumerClient{
 		consumerGroup: args.consumerGroup,
 		eventHub:      args.eventHub,
-		identifier:    identifier,
+		instanceID:    identifier,
 	}
 
 	var nsOptions []internal.NamespaceOption

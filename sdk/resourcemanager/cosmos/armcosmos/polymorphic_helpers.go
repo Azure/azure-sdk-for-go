@@ -15,7 +15,7 @@ func unmarshalBackupPolicyClassification(rawMsg json.RawMessage) (BackupPolicyCl
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -31,33 +31,11 @@ func unmarshalBackupPolicyClassification(rawMsg json.RawMessage) (BackupPolicyCl
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (DataTransferDataSourceSinkClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b DataTransferDataSourceSinkClassification
-	switch m["component"] {
-	case string(DataTransferComponentAzureBlobStorage):
-		b = &AzureBlobDataTransferDataSourceSink{}
-	case string(DataTransferComponentCosmosDBCassandra):
-		b = &CassandraDataTransferDataSourceSink{}
-	case string(DataTransferComponentCosmosDBSQL):
-		b = &SQLDataTransferDataSourceSink{}
-	default:
-		b = &DataTransferDataSourceSink{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
 func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (ServiceResourcePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

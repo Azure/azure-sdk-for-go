@@ -57,7 +57,7 @@ func TestAccountPermissions_Parse(t *testing.T) {
 			Delete: true,
 			List:   true,
 			Create: true,
-		}, input: "rwldc"},
+		}, input: "rcdlw"},
 	}
 	for _, c := range testdata {
 		permissions, err := parseAccountPermissions(c.input)
@@ -89,4 +89,36 @@ func TestAccountResourceTypes_String(t *testing.T) {
 	for _, c := range testdata {
 		require.Equal(t, c.expected, c.input.String())
 	}
+}
+
+func TestAccountResourceTypes_Parse(t *testing.T) {
+	testdata := []struct {
+		input    string
+		expected AccountResourceTypes
+	}{
+		{expected: AccountResourceTypes{Service: true}, input: "s"},
+		{expected: AccountResourceTypes{Container: true}, input: "c"},
+		{expected: AccountResourceTypes{Object: true}, input: "o"},
+		{expected: AccountResourceTypes{
+			Service:   true,
+			Container: true,
+			Object:    true,
+		}, input: "sco"},
+		{expected: AccountResourceTypes{
+			Service:   true,
+			Container: true,
+			Object:    true,
+		}, input: "osc"},
+	}
+	for _, c := range testdata {
+		permissions, err := parseAccountResourceTypes(c.input)
+		require.Nil(t, err)
+		require.Equal(t, c.expected, permissions)
+	}
+}
+
+func TestAccountResourceTypes_ParseNegative(t *testing.T) {
+	_, err := parseAccountResourceTypes("scoz") // Here 'z' is invalid
+	require.NotNil(t, err)
+	require.Contains(t, err.Error(), "122")
 }

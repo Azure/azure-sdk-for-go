@@ -73,7 +73,7 @@ func TestMain(m *testing.M) {
 }
 
 func startRecording(t *testing.T) {
-	err := recording.Start(t, "sdk/keyvault/azadmin/testdata", nil)
+	err := recording.Start(t, "sdk/security/keyvault/azadmin/testdata", nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

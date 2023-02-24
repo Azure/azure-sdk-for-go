@@ -8,7 +8,9 @@ package runtime
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -40,11 +42,14 @@ func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
 		defer func() {
 			if resp != nil {
 				span.SetAttributes(tracing.Attribute{Key: "http.status_code", Value: resp.StatusCode})
+				if resp.StatusCode > 399 {
+					span.SetStatus(tracing.SpanStatusError, resp.Status)
+				}
 				if reqID := resp.Header.Get(shared.HeaderXMSRequestID); reqID != "" {
 					span.SetAttributes(tracing.Attribute{Key: "az.service_request_id", Value: reqID})
 				}
 			} else if err != nil {
-				span.SetStatus(tracing.SpanStatusError, err.Error())
+				span.SetStatus(tracing.SpanStatusError, fmt.Sprintf("%T: %s", err, err.Error()))
 			}
 			span.End()
 		}()
@@ -81,7 +86,8 @@ func StartSpan(ctx context.Context, name string, tracer tracing.Tracer, options 
 	ctx = context.WithValue(ctx, shared.CtxWithTracingTracer{}, tracer)
 	return ctx, func(err error) {
 		if err != nil {
-			span.SetStatus(tracing.SpanStatusError, err.Error())
+			errType := strings.Replace(fmt.Sprintf("%T", err), "*exported.", "*azcore.", 1)
+			span.SetStatus(tracing.SpanStatusError, fmt.Sprintf("%s:\n%s", errType, err.Error()))
 		}
 		span.End()
 	}

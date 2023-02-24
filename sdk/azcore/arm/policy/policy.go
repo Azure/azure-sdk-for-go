@@ -48,8 +48,8 @@ type ClientOptions struct {
 	DisableRPRegistration bool
 }
 
-// Copy return a deep copy of the current options.
-func (o *ClientOptions) Copy() *ClientOptions {
+// Clone return a deep copy of the current options.
+func (o *ClientOptions) Clone() *ClientOptions {
 	if o == nil {
 		return nil
 	}

@@ -3,7 +3,7 @@
 ## 1.3.2 (Unreleased)
 
 ### Features Added
-* Add `Copy()` method for `arm/policy.ClientOptions`.
+* Add `Clone()` method for `arm/policy.ClientOptions`.
 
 ### Breaking Changes
 

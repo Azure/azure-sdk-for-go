@@ -1,3 +1,9 @@
+//go:build go1.18
+// +build go1.18
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package policy
 
 import (
@@ -11,7 +17,7 @@ import (
 
 func TestClientOptions_Copy(t *testing.T) {
 	var option *ClientOptions
-	require.Nil(t, option.Copy())
+	require.Nil(t, option.Clone())
 
 	option = &ClientOptions{ClientOptions: policy.ClientOptions{
 		Cloud: cloud.AzurePublic,
@@ -23,7 +29,7 @@ func TestClientOptions_Copy(t *testing.T) {
 		PerRetryPolicies: []policy.Policy{runtime.NewLogPolicy(nil)},
 		PerCallPolicies:  []policy.Policy{runtime.NewLogPolicy(nil)},
 	}}
-	copiedOption := option.Copy()
+	copiedOption := option.Clone()
 	require.Equal(t, option.APIVersion, copiedOption.APIVersion)
 	require.NotEqual(t, fmt.Sprintf("%p", &option.APIVersion), fmt.Sprintf("%p", &copiedOption.APIVersion))
 	require.Equal(t, option.Cloud.Services, copiedOption.Cloud.Services)

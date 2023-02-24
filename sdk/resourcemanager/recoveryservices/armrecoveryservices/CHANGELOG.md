@@ -1,5 +1,26 @@
 # Release History
 
+## 1.2.0 (2023-02-24)
+### Features Added
+
+- New type alias `ImmutabilityState` with values `ImmutabilityStateDisabled`, `ImmutabilityStateLocked`, `ImmutabilityStateUnlocked`
+- New type alias `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`
+- New type alias `VaultSubResourceType` with values `VaultSubResourceTypeAzureBackup`, `VaultSubResourceTypeAzureBackupSecondary`, `VaultSubResourceTypeAzureSiteRecovery`
+- New function `*Client.Capabilities(context.Context, string, ResourceCapabilities, *ClientCapabilitiesOptions) (ClientCapabilitiesResponse, error)`
+- New struct `CapabilitiesProperties`
+- New struct `CapabilitiesResponse`
+- New struct `CapabilitiesResponseProperties`
+- New struct `DNSZone`
+- New struct `DNSZoneResponse`
+- New struct `ImmutabilitySettings`
+- New struct `ResourceCapabilities`
+- New struct `ResourceCapabilitiesBase`
+- New struct `SecuritySettings`
+- New field `GroupIDs` in struct `PrivateEndpointConnection`
+- New field `PublicNetworkAccess` in struct `VaultProperties`
+- New field `SecuritySettings` in struct `VaultProperties`
+
+
 ## 1.1.0 (2022-07-22)
 ### Features Added
 

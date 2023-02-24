@@ -12,18 +12,30 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
+// newHTTPTracePolicy creates a new instance of the httpTracePolicy.
+//   - allowedQueryParams contains the user-specified query parameters that don't need to be redacted from the trace
+func newHTTPTracePolicy(allowedQueryParams []string) exported.Policy {
+	return &httpTracePolicy{allowedQP: getAllowedQueryParams(allowedQueryParams)}
+}
+
 // httpTracePolicy is a policy that creates a trace for the HTTP request and its response
-func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
+type httpTracePolicy struct {
+	allowedQP map[string]struct{}
+}
+
+// Do implements the pipeline.Policy interfaces for the httpTracePolicy type.
+func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	rawTracer := req.Raw().Context().Value(shared.CtxWithTracingTracer{})
 	if tracer, ok := rawTracer.(tracing.Tracer); ok {
 		attributes := []tracing.Attribute{
 			{Key: "http.method", Value: req.Raw().Method},
-			{Key: "http.url", Value: req.Raw().URL.String()},
+			{Key: "http.url", Value: getSanitizedURL(*req.Raw().URL, h.allowedQP)},
 		}
 
 		if ua := req.Raw().Header.Get(shared.HeaderUserAgent); ua != "" {
@@ -49,7 +61,9 @@ func httpTracePolicy(req *policy.Request) (resp *http.Response, err error) {
 					span.SetAttributes(tracing.Attribute{Key: "az.service_request_id", Value: reqID})
 				}
 			} else if err != nil {
-				span.SetStatus(tracing.SpanStatusError, fmt.Sprintf("%T: %s", err, err.Error()))
+				// including the output from err.Error() might disclose URL query parameters.
+				// so instead of attempting to sanitize the output, we simply output the error type.
+				span.SetStatus(tracing.SpanStatusError, fmt.Sprintf("%T", err))
 			}
 			span.End()
 		}()

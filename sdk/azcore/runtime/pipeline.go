@@ -59,7 +59,7 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 	policies = append(policies, cp.PerRetryPolicies...)
 	policies = append(policies, NewLogPolicy(&cp.Logging))
 	policies = append(policies, exported.PolicyFunc(httpHeaderPolicy), exported.PolicyFunc(bodyDownloadPolicy))
-	policies = append(policies, exported.PolicyFunc(httpTracePolicy))
+	policies = append(policies, newHTTPTracePolicy(cp.Logging.AllowedQueryParams))
 	transport := cp.Transport
 	if transport == nil {
 		transport = defaultHTTPClient

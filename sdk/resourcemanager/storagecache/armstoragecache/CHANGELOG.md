@@ -1,5 +1,19 @@
 # Release History
 
+## 3.0.0 (2023-02-24)
+### Breaking Changes
+
+- Operation `*CachesClient.Update` has been changed to LRO, use `*CachesClient.BeginUpdate` instead.
+
+### Features Added
+
+- New function `*StorageTargetsClient.BeginRestoreDefaults(context.Context, string, string, string, *StorageTargetsClientBeginRestoreDefaultsOptions) (*runtime.Poller[StorageTargetsClientRestoreDefaultsResponse], error)`
+- New field `VerificationTimer` in struct `BlobNfsTarget`
+- New field `WriteBackTimer` in struct `BlobNfsTarget`
+- New field `VerificationTimer` in struct `Nfs3Target`
+- New field `WriteBackTimer` in struct `Nfs3Target`
+
+
 ## 2.0.0 (2022-07-06)
 ### Breaking Changes
 

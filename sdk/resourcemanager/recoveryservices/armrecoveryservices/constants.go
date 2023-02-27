@@ -11,7 +11,7 @@ package armrecoveryservices
 
 const (
 	moduleName    = "armrecoveryservices"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.0"
 )
 
 type AlertsState string
@@ -105,6 +105,23 @@ func PossibleCrossRegionRestoreValues() []CrossRegionRestore {
 	}
 }
 
+type ImmutabilityState string
+
+const (
+	ImmutabilityStateDisabled ImmutabilityState = "Disabled"
+	ImmutabilityStateLocked   ImmutabilityState = "Locked"
+	ImmutabilityStateUnlocked ImmutabilityState = "Unlocked"
+)
+
+// PossibleImmutabilityStateValues returns the possible values for the ImmutabilityState const type.
+func PossibleImmutabilityStateValues() []ImmutabilityState {
+	return []ImmutabilityState{
+		ImmutabilityStateDisabled,
+		ImmutabilityStateLocked,
+		ImmutabilityStateUnlocked,
+	}
+}
+
 // InfrastructureEncryptionState - Enabling/Disabling the Double Encryption state
 type InfrastructureEncryptionState string
 
@@ -158,6 +175,22 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateFailed,
 		ProvisioningStatePending,
 		ProvisioningStateSucceeded,
+	}
+}
+
+// PublicNetworkAccess - property to enable or disable resource provider inbound network traffic from public clients
+type PublicNetworkAccess string
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
 	}
 }
 
@@ -304,6 +337,24 @@ func PossibleVaultPrivateEndpointStateValues() []VaultPrivateEndpointState {
 	return []VaultPrivateEndpointState{
 		VaultPrivateEndpointStateEnabled,
 		VaultPrivateEndpointStateNone,
+	}
+}
+
+// VaultSubResourceType - Subresource type for vault AzureBackup, AzureBackup_secondary or AzureSiteRecovery
+type VaultSubResourceType string
+
+const (
+	VaultSubResourceTypeAzureBackup          VaultSubResourceType = "AzureBackup"
+	VaultSubResourceTypeAzureBackupSecondary VaultSubResourceType = "AzureBackup_secondary"
+	VaultSubResourceTypeAzureSiteRecovery    VaultSubResourceType = "AzureSiteRecovery"
+)
+
+// PossibleVaultSubResourceTypeValues returns the possible values for the VaultSubResourceType const type.
+func PossibleVaultSubResourceTypeValues() []VaultSubResourceType {
+	return []VaultSubResourceType{
+		VaultSubResourceTypeAzureBackup,
+		VaultSubResourceTypeAzureBackupSecondary,
+		VaultSubResourceTypeAzureSiteRecovery,
 	}
 }
 

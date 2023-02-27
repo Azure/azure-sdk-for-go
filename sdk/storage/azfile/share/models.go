@@ -9,6 +9,7 @@ package share
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -30,6 +31,20 @@ type CreateOptions struct {
 	RootSquash *RootSquash
 }
 
+func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.ShareClientCreateOptions{
+		AccessTier:       o.AccessTier,
+		EnabledProtocols: o.EnabledProtocols,
+		Metadata:         o.Metadata,
+		Quota:            o.Quota,
+		RootSquash:       o.RootSquash,
+	}
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // DeleteOptions contains the optional parameters for the Client.Delete method.
@@ -38,9 +53,20 @@ type DeleteOptions struct {
 	DeleteSnapshots *DeleteSnapshotsOptionType
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Snapshot *string
+	ShareSnapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *DeleteOptions) format() (*generated.ShareClientDeleteOptions, *LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return &generated.ShareClientDeleteOptions{
+		DeleteSnapshots: o.DeleteSnapshots,
+		Sharesnapshot:   o.ShareSnapshot,
+	}, o.LeaseAccessConditions
 }
 
 // LeaseAccessConditions contains optional parameters to access leased entity.
@@ -59,9 +85,19 @@ type RestoreOptions struct {
 type GetPropertiesOptions struct {
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Snapshot *string
+	ShareSnapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *GetPropertiesOptions) format() (*generated.ShareClientGetPropertiesOptions, *LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return &generated.ShareClientGetPropertiesOptions{
+		Sharesnapshot: o.ShareSnapshot,
+	}, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -78,6 +114,18 @@ type SetPropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOptions, *LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return &generated.ShareClientSetPropertiesOptions{
+		AccessTier: o.AccessTier,
+		Quota:      o.Quota,
+		RootSquash: o.RootSquash,
+	}, o.LeaseAccessConditions
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // CreateSnapshotOptions contains the optional parameters for the Client.CreateSnapshot method.
@@ -86,12 +134,30 @@ type CreateSnapshotOptions struct {
 	Metadata map[string]*string
 }
 
+func (o *CreateSnapshotOptions) format() *generated.ShareClientCreateSnapshotOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.ShareClientCreateSnapshotOptions{
+		Metadata: o.Metadata,
+	}
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // GetAccessPolicyOptions contains the optional parameters for the Client.GetAccessPolicy method.
 type GetAccessPolicyOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *GetAccessPolicyOptions) format() (*generated.ShareClientGetAccessPolicyOptions, *LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return nil, o.LeaseAccessConditions
 }
 
 // SignedIdentifier - Signed identifier.
@@ -108,6 +174,46 @@ type SetAccessPolicyOptions struct {
 	ShareACL []*SignedIdentifier
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *SetAccessPolicyOptions) format() (*generated.ShareClientSetAccessPolicyOptions, []*SignedIdentifier, *LeaseAccessConditions, error) {
+	if o == nil {
+		return nil, nil, nil, nil
+	}
+
+	if o.ShareACL != nil {
+		for _, si := range o.ShareACL {
+			err := formatTime(si)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+		}
+	}
+
+	return nil, o.ShareACL, o.LeaseAccessConditions, nil
+}
+
+func formatTime(si *SignedIdentifier) error {
+	if si.AccessPolicy == nil {
+		return nil
+	}
+
+	if si.AccessPolicy.Start != nil {
+		st, err := time.Parse(time.RFC3339, si.AccessPolicy.Start.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		si.AccessPolicy.Start = &st
+	}
+	if si.AccessPolicy.Expiry != nil {
+		et, err := time.Parse(time.RFC3339, si.AccessPolicy.Expiry.UTC().Format(time.RFC3339))
+		if err != nil {
+			return err
+		}
+		si.AccessPolicy.Expiry = &et
+	}
+
+	return nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

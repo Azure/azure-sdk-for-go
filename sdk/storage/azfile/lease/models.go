@@ -43,7 +43,7 @@ type ShareAcquireOptions struct {
 	ProposedLeaseID *string
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Snapshot *string
+	ShareSnapshot *string
 }
 
 // ShareBreakOptions contains the optional parameters for the ShareClient.Break method.
@@ -57,7 +57,7 @@ type ShareBreakOptions struct {
 	BreakPeriod *int32
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Snapshot *string
+	ShareSnapshot *string
 	// AccessConditions contains optional parameters to access leased entity.
 	AccessConditions *AccessConditions
 }
@@ -66,19 +66,19 @@ type ShareBreakOptions struct {
 type ShareChangeOptions struct {
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Snapshot *string
+	ShareSnapshot *string
 }
 
 // ShareReleaseOptions contains the optional parameters for the ShareClient.Release method.
 type ShareReleaseOptions struct {
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Snapshot *string
+	ShareSnapshot *string
 }
 
 // ShareRenewOptions contains the optional parameters for the ShareClient.Renew method.
 type ShareRenewOptions struct {
 	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
-	Snapshot *string
+	ShareSnapshot *string
 }

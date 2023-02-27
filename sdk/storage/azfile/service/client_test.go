@@ -84,7 +84,7 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountNewShareURLValidName() {
 	_require.Equal(shareClient.URL(), correctURL)
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceClientFromConnectionString() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 
 	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
@@ -95,7 +95,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require.NotNil(resp.RequestID)
 }
 
-func (s *ServiceRecordedTestsSuite) TestAccountProperties() {
+func (s *ServiceUnrecordedTestsSuite) TestAccountProperties() {
 	_require := require.New(s.T())
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -165,7 +165,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountHourMetrics() {
 	_require.NoError(err)
 }
 
-func (s *ServiceRecordedTestsSuite) TestAccountListSharesNonDefault() {
+func (s *ServiceUnrecordedTestsSuite) TestAccountListSharesNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

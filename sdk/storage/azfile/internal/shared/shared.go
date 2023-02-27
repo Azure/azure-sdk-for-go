@@ -9,6 +9,7 @@ package shared
 import (
 	"errors"
 	"fmt"
+	"net"
 	"strings"
 )
 
@@ -107,4 +108,23 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 		AccountName: accountName,
 		AccountKey:  accountKey,
 	}, nil
+}
+
+// IsIPEndpointStyle checks if URL's host is IP, in this case the storage account endpoint will be composed as:
+// http(s)://IP(:port)/storageaccount/share(||container||etc)/...
+// As url's Host property, host could be both host or host:port
+func IsIPEndpointStyle(host string) bool {
+	if host == "" {
+		return false
+	}
+	if h, _, err := net.SplitHostPort(host); err == nil {
+		host = h
+	}
+	// For IPv6, there could be case where SplitHostPort fails for cannot finding port.
+	// In this case, eliminate the '[' and ']' in the URL.
+	// For details about IPv6 URL, please refer to https://tools.ietf.org/html/rfc2732
+	if host[0] == '[' && host[len(host)-1] == ']' {
+		host = host[1 : len(host)-1]
+	}
+	return net.ParseIP(host) != nil
 }

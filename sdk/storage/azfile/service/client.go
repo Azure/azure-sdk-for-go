@@ -11,12 +11,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"net/http"
+	"strings"
+	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -181,4 +185,33 @@ func (s *Client) NewListSharesPager(options *ListSharesOptions) *runtime.Pager[L
 			return s.generated().ListSharesSegmentHandleResponse(resp)
 		},
 	})
+}
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	if s.sharedKey() == nil {
+		return "", fileerror.MissingSharedKeyCredential
+	}
+	st := o.format()
+	qps, err := sas.AccountSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
+		Permissions:   permissions.String(),
+		ResourceTypes: resources.String(),
+		StartTime:     st,
+		ExpiryTime:    expiry.UTC(),
+	}.SignWithSharedKey(s.sharedKey())
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := s.URL()
+	if !strings.HasSuffix(endpoint, "/") {
+		// add a trailing slash to be consistent with the portal
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+
+	return endpoint, nil
 }

@@ -7,8 +7,6 @@
 package container
 
 import (
-	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"reflect"
 	"time"
@@ -335,31 +333,11 @@ func formatTime(c *SignedIdentifier) error {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// BatchBuilder is used for creating the batch operations list. It contains the list of either delete or set tier sub-requests.
-// NOTE: All sub-requests in the batch must be of the same type, either delete or set tier.
-type BatchBuilder struct {
-	endpoint      string
-	authPolicy    policy.Policy
-	subRequests   []*policy.Request
-	operationType *exported.BlobBatchOperationType
-}
-
-func (bb *BatchBuilder) checkOperationType(operationType exported.BlobBatchOperationType) error {
-	if bb.operationType == nil {
-		bb.operationType = &operationType
-		return nil
-	}
-	if *bb.operationType != operationType {
-		return fmt.Errorf("BlobBatch only supports one operation type per batch and is already being used for %s operations", *bb.operationType)
-	}
-	return nil
-}
-
 // BatchDeleteOptions contains the optional parameters for the BatchBuilder.Delete method.
 type BatchDeleteOptions struct {
+	blob.DeleteOptions
 	VersionID *string
 	Snapshot  *string
-	*blob.DeleteOptions
 }
 
 func (o *BatchDeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -380,9 +358,9 @@ func (o *BatchDeleteOptions) format() (*generated.BlobClientDeleteOptions, *gene
 
 // BatchSetTierOptions contains the optional parameters for the BatchBuilder.SetTier method.
 type BatchSetTierOptions struct {
+	blob.SetTierOptions
 	VersionID *string
 	Snapshot  *string
-	*blob.SetTierOptions
 }
 
 func (o *BatchSetTierOptions) format() (*generated.BlobClientSetTierOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {

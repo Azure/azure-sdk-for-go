@@ -367,62 +367,6 @@ func (c *Client) NewBatchBuilder() (*BatchBuilder, error) {
 	}, nil
 }
 
-// Delete operation is used to add delete sub-request to the batch builder.
-func (bb *BatchBuilder) Delete(blobName string, options *BatchDeleteOptions) error {
-	err := bb.checkOperationType(exported.BatchDeleteOperationType)
-	if err != nil {
-		return err
-	}
-
-	blobName = url.PathEscape(blobName)
-	blobURL := runtime.JoinPaths(bb.endpoint, blobName)
-
-	blobClient, err := blob.NewClientWithNoCredential(blobURL, nil)
-	if err != nil {
-		return err
-	}
-
-	deleteOptions, leaseInfo, accessConditions := options.format()
-	req, err := getGeneratedBlobClient(blobClient).DeleteCreateRequest(context.TODO(), deleteOptions, leaseInfo, accessConditions)
-	if err != nil {
-		return err
-	}
-
-	// remove x-ms-version header
-	exported.UpdateSubRequestHeaders(req)
-
-	bb.subRequests = append(bb.subRequests, req)
-	return nil
-}
-
-// SetTier operation is used to add set tier sub-request to the batch builder.
-func (bb *BatchBuilder) SetTier(blobName string, accessTier blob.AccessTier, options *BatchSetTierOptions) error {
-	err := bb.checkOperationType(exported.BatchSetTierOperationType)
-	if err != nil {
-		return err
-	}
-
-	blobName = url.PathEscape(blobName)
-	blobURL := runtime.JoinPaths(bb.endpoint, blobName)
-
-	blobClient, err := blob.NewClientWithNoCredential(blobURL, nil)
-	if err != nil {
-		return err
-	}
-
-	setTierOptions, leaseInfo, accessConditions := options.format()
-	req, err := getGeneratedBlobClient(blobClient).SetTierCreateRequest(context.TODO(), accessTier, setTierOptions, leaseInfo, accessConditions)
-	if err != nil {
-		return err
-	}
-
-	// remove x-ms-version header
-	exported.UpdateSubRequestHeaders(req)
-
-	bb.subRequests = append(bb.subRequests, req)
-	return nil
-}
-
 // SubmitBatch operation allows multiple API calls to be embedded into a single HTTP request.
 // It builds the request body using the BatchBuilder object passed.
 // BatchBuilder contains the list of operations to be submitted. It supports up to 256 sub-requests in a single batch.

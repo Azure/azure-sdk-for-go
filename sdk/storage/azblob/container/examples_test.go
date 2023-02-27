@@ -437,7 +437,7 @@ func Example_container_BatchDelete() {
 	handleError(err)
 
 	err = bb.Delete("testBlob3", &container.BatchDeleteOptions{
-		DeleteOptions: &blob.DeleteOptions{
+		DeleteOptions: blob.DeleteOptions{
 			DeleteSnapshots: to.Ptr(blob.DeleteSnapshotsOptionTypeOnly),
 			BlobDeleteType:  to.Ptr(blob.DeleteTypeNone),
 		},
@@ -519,7 +519,7 @@ func Example_container_BatchSetTier() {
 	handleError(err)
 
 	err = bb.SetTier("testBlob4", blob.AccessTierCool, &container.BatchSetTierOptions{
-		SetTierOptions: &blob.SetTierOptions{
+		SetTierOptions: blob.SetTierOptions{
 			RehydratePriority: to.Ptr(blob.RehydratePriorityStandard),
 		},
 	})

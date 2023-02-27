@@ -11,13 +11,16 @@ package armreservations
 
 import "time"
 
+// AppliedReservationList - Paginated list of applied reservations
 type AppliedReservationList struct {
 	// Url to get the next page of reservations
 	NextLink *string   `json:"nextLink,omitempty"`
 	Value    []*string `json:"value,omitempty"`
 }
 
+// AppliedReservations - The response for applied reservations api
 type AppliedReservations struct {
+	// Properties for applied reservations returned
 	Properties *AppliedReservationsProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; Identifier of the applied reservations
@@ -30,11 +33,34 @@ type AppliedReservations struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// AppliedReservationsProperties - Properties for applied reservations returned
 type AppliedReservationsProperties struct {
+	// Paginated list of applied reservations
 	ReservationOrderIDs *AppliedReservationList `json:"reservationOrderIds,omitempty"`
 }
 
+// AppliedScopeProperties - Properties specific to applied scope type. Not required if not applicable. Required and need to
+// provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup
+type AppliedScopeProperties struct {
+	// Display name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Fully-qualified identifier of the management group where the benefit must be applied.
+	ManagementGroupID *string `json:"managementGroupId,omitempty"`
+
+	// Fully-qualified identifier of the resource group.
+	ResourceGroupID *string `json:"resourceGroupId,omitempty"`
+
+	// Fully-qualified identifier of the subscription.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+
+	// Tenant ID where the savings plan should apply benefit.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// AvailableScopeProperties - The response of available scope api containing scopes and their eligibilities.
 type AvailableScopeProperties struct {
+	// The scopes checked by the available scope api.
 	Properties *SubscriptionScopeProperties `json:"properties,omitempty"`
 }
 
@@ -55,10 +81,12 @@ type AzureReservationAPIClientGetAppliedReservationListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureReservationAPIClientGetCatalogOptions contains the optional parameters for the AzureReservationAPIClient.GetCatalog
+// AzureReservationAPIClientGetCatalogOptions contains the optional parameters for the AzureReservationAPIClient.NewGetCatalogPager
 // method.
 type AzureReservationAPIClientGetCatalogOptions struct {
-	// Filters the skus based on the location specified in this parameter. This can be an azure region or global
+	// May be used to filter by Catalog properties. The filter supports 'eq', 'or', and 'and'.
+	Filter *string
+	// Filters the skus based on the location specified in this parameter. This can be an Azure region or global
 	Location *string
 	// Offer id used to get the third party products
 	OfferID *string
@@ -68,13 +96,22 @@ type AzureReservationAPIClientGetCatalogOptions struct {
 	PublisherID *string
 	// The type of the resource for which the skus should be provided.
 	ReservedResourceType *string
+	// The number of reservations to skip from the list before returning results
+	Skip *float32
+	// To number of reservations to return
+	Take *float32
 }
 
 // BillingInformation - billing information
 type BillingInformation struct {
-	BillingCurrencyProratedAmount            *Price `json:"billingCurrencyProratedAmount,omitempty"`
+	// Pricing information containing the amount and the currency code
+	BillingCurrencyProratedAmount *Price `json:"billingCurrencyProratedAmount,omitempty"`
+
+	// Pricing information containing the amount and the currency code
 	BillingCurrencyRemainingCommitmentAmount *Price `json:"billingCurrencyRemainingCommitmentAmount,omitempty"`
-	BillingCurrencyTotalPaidAmount           *Price `json:"billingCurrencyTotalPaidAmount,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	BillingCurrencyTotalPaidAmount *Price `json:"billingCurrencyTotalPaidAmount,omitempty"`
 }
 
 // CalculateExchangeClientBeginPostOptions contains the optional parameters for the CalculateExchangeClient.BeginPost method.
@@ -114,16 +151,24 @@ type CalculateExchangeRequestProperties struct {
 
 	// List of reservations that are being purchased in this exchange.
 	ReservationsToPurchase []*PurchaseRequest `json:"reservationsToPurchase,omitempty"`
+
+	// List of savings plans that are being purchased in this exchange.
+	SavingsPlansToPurchase []*SavingsPlanPurchaseRequest `json:"savingsPlansToPurchase,omitempty"`
 }
 
 // CalculateExchangeResponseProperties - CalculateExchange response properties
 type CalculateExchangeResponseProperties struct {
+	// Pricing information containing the amount and the currency code
 	NetPayable *Price `json:"netPayable,omitempty"`
 
 	// Exchange policy errors
-	PolicyResult   *ExchangePolicyErrors `json:"policyResult,omitempty"`
-	PurchasesTotal *Price                `json:"purchasesTotal,omitempty"`
-	RefundsTotal   *Price                `json:"refundsTotal,omitempty"`
+	PolicyResult *ExchangePolicyErrors `json:"policyResult,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	PurchasesTotal *Price `json:"purchasesTotal,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	RefundsTotal *Price `json:"refundsTotal,omitempty"`
 
 	// Details of the reservations being returned
 	ReservationsToExchange []*ReservationToExchange `json:"reservationsToExchange,omitempty"`
@@ -131,14 +176,20 @@ type CalculateExchangeResponseProperties struct {
 	// Details of the reservations being purchased
 	ReservationsToPurchase []*ReservationToPurchaseCalculateExchange `json:"reservationsToPurchase,omitempty"`
 
+	// Details of the savings plans being purchased
+	SavingsPlansToPurchase []*SavingsPlanToPurchaseCalculateExchange `json:"savingsPlansToPurchase,omitempty"`
+
 	// Exchange session identifier
 	SessionID *string `json:"sessionId,omitempty"`
 }
 
+// CalculatePriceResponse - The response of calculate price for reservation.
 type CalculatePriceResponse struct {
+	// Properties for calculate price response
 	Properties *CalculatePriceResponseProperties `json:"properties,omitempty"`
 }
 
+// CalculatePriceResponseProperties - Properties for calculate price response
 type CalculatePriceResponseProperties struct {
 	// Currency and amount that customer will be charged in customer's local currency. Tax is not included.
 	BillingCurrencyTotal *CalculatePriceResponsePropertiesBillingCurrencyTotal `json:"billingCurrencyTotal,omitempty"`
@@ -162,10 +213,10 @@ type CalculatePriceResponseProperties struct {
 	// GUID that represents reservation order that can be placed after calculating price.
 	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
 
-	// Description of SKU that is being purchased.
+	// Description of sku that is being purchased.
 	SKUDescription *string `json:"skuDescription,omitempty"`
 
-	// Title of SKU that is being purchased.
+	// Title of sku that is being purchased.
 	SKUTitle *string `json:"skuTitle,omitempty"`
 
 	// Tax amount in pricing currency.
@@ -196,12 +247,17 @@ type CalculateRefundClientPostOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CalculateRefundRequest - Request containing information needed for calculating refund.
 type CalculateRefundRequest struct {
 	// Fully qualified identifier of the reservation order being returned
-	ID         *string                           `json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
+
+	// Properties needed for calculate refund including the scope and the reservation to be returned.
 	Properties *CalculateRefundRequestProperties `json:"properties,omitempty"`
 }
 
+// CalculateRefundRequestProperties - Properties needed for calculate refund including the scope and the reservation to be
+// returned.
 type CalculateRefundRequestProperties struct {
 	// Reservation to return
 	ReservationToReturn *ReservationToReturn `json:"reservationToReturn,omitempty"`
@@ -210,14 +266,18 @@ type CalculateRefundRequestProperties struct {
 	Scope *string `json:"scope,omitempty"`
 }
 
+// CalculateRefundResponse - The response of calculate refund containing refund information of reservation
 type CalculateRefundResponse struct {
 	// Fully qualified identifier of the reservation being returned
-	ID         *string                   `json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
+
+	// The refund properties of reservation
 	Properties *RefundResponseProperties `json:"properties,omitempty"`
 }
 
+// Catalog - Product details of a type of resource.
 type Catalog struct {
-	// The billing plan options available for this SKU.
+	// The billing plan options available for this sku.
 	BillingPlans map[string][]*ReservationBillingPlan `json:"billingPlans,omitempty"`
 
 	// READ-ONLY
@@ -226,13 +286,13 @@ type Catalog struct {
 	// READ-ONLY
 	Locations []*string `json:"locations,omitempty" azure:"ro"`
 
-	// READ-ONLY; Pricing information about the SKU
+	// READ-ONLY; Pricing information about the sku
 	Msrp *CatalogMsrp `json:"msrp,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of SKU
+	// READ-ONLY; The name of sku
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The type of resource the SKU applies to.
+	// READ-ONLY; The type of resource the sku applies to.
 	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
 
 	// READ-ONLY
@@ -241,22 +301,35 @@ type Catalog struct {
 	// READ-ONLY
 	SKUProperties []*SKUProperty `json:"skuProperties,omitempty" azure:"ro"`
 
-	// READ-ONLY; The size of this SKU
+	// READ-ONLY; The size of this sku
 	Size *string `json:"size,omitempty" azure:"ro"`
 
 	// READ-ONLY; Available reservation terms for this resource
 	Terms []*ReservationTerm `json:"terms,omitempty" azure:"ro"`
 
-	// READ-ONLY; The tier of this SKU
+	// READ-ONLY; The tier of this sku
 	Tier *string `json:"tier,omitempty" azure:"ro"`
 }
 
-// CatalogMsrp - Pricing information about the SKU
+// CatalogMsrp - Pricing information about the sku
 type CatalogMsrp struct {
 	// Amount in pricing currency. Tax not included.
 	P1Y *Price `json:"p1Y,omitempty"`
 }
 
+// CatalogsResult - The list of catalogs and pagination information.
+type CatalogsResult struct {
+	// The total amount of catalog items.
+	TotalItems *int64 `json:"totalItems,omitempty"`
+
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of catalogs.
+	Value []*Catalog `json:"value,omitempty" azure:"ro"`
+}
+
+// ChangeDirectoryRequest - Request body for change directory of a reservation.
 type ChangeDirectoryRequest struct {
 	// Tenant id GUID that reservation order is to be transferred to
 	DestinationTenantID *string `json:"destinationTenantId,omitempty"`
@@ -282,6 +355,17 @@ type ChangeDirectoryResult struct {
 
 	// Name of the reservation order or reservation
 	Name *string `json:"name,omitempty"`
+}
+
+// Commitment towards the benefit.
+type Commitment struct {
+	Amount *float64 `json:"amount,omitempty"`
+
+	// The ISO 4217 3-letter currency code for the currency used by this purchase record.
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+
+	// Commitment grain.
+	Grain *CommitmentGrain `json:"grain,omitempty"`
 }
 
 // CreateGenericQuotaRequestParameters - Quota change requests information.
@@ -314,7 +398,9 @@ type CurrentQuotaLimitBase struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// Error information
 type Error struct {
+	// Extended error information including error code and error message
 	Error *ExtendedErrorInfo `json:"error,omitempty"`
 }
 
@@ -393,12 +479,17 @@ type ExchangeRequestProperties struct {
 
 // ExchangeResponseProperties - Exchange response properties
 type ExchangeResponseProperties struct {
+	// Pricing information containing the amount and the currency code
 	NetPayable *Price `json:"netPayable,omitempty"`
 
 	// Exchange policy errors
-	PolicyResult   *ExchangePolicyErrors `json:"policyResult,omitempty"`
-	PurchasesTotal *Price                `json:"purchasesTotal,omitempty"`
-	RefundsTotal   *Price                `json:"refundsTotal,omitempty"`
+	PolicyResult *ExchangePolicyErrors `json:"policyResult,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	PurchasesTotal *Price `json:"purchasesTotal,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	RefundsTotal *Price `json:"refundsTotal,omitempty"`
 
 	// Details of the reservations being returned
 	ReservationsToExchange []*ReservationToReturnForExchange `json:"reservationsToExchange,omitempty"`
@@ -406,11 +497,16 @@ type ExchangeResponseProperties struct {
 	// Details of the reservations being purchased
 	ReservationsToPurchase []*ReservationToPurchaseExchange `json:"reservationsToPurchase,omitempty"`
 
+	// Details of the savings plans being purchased
+	SavingsPlansToPurchase []*SavingsPlanToPurchaseExchange `json:"savingsPlansToPurchase,omitempty"`
+
 	// Exchange session identifier
 	SessionID *string `json:"sessionId,omitempty"`
 }
 
+// ExtendedErrorInfo - Extended error information including error code and error message
 type ExtendedErrorInfo struct {
+	// Error code describing the reason that service is not able to process the incoming request
 	Code    *ErrorResponseCode `json:"code,omitempty"`
 	Message *string            `json:"message,omitempty"`
 }
@@ -433,20 +529,24 @@ type ListResult struct {
 	Value []*ReservationResponse `json:"value,omitempty" azure:"ro"`
 }
 
+// MergeProperties - Properties for reservation merge
 type MergeProperties struct {
 	// Format of the resource id should be /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
 	Sources []*string `json:"sources,omitempty"`
 }
 
+// MergeRequest - The request for reservation merge
 type MergeRequest struct {
+	// Properties for reservation merge
 	Properties *MergeProperties `json:"properties,omitempty"`
 }
 
-// OperationClientListOptions contains the optional parameters for the OperationClient.List method.
+// OperationClientListOptions contains the optional parameters for the OperationClient.NewListPager method.
 type OperationClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// OperationDisplay - Information about an operation
 type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 	Operation   *string `json:"operation,omitempty"`
@@ -454,12 +554,14 @@ type OperationDisplay struct {
 	Resource    *string `json:"resource,omitempty"`
 }
 
+// OperationList - Paginated list of operations
 type OperationList struct {
 	// Url to get the next page of items.
 	NextLink *string              `json:"nextLink,omitempty"`
 	Value    []*OperationResponse `json:"value,omitempty"`
 }
 
+// OperationResponse - The response containing operation information
 type OperationResponse struct {
 	// Display of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -474,7 +576,7 @@ type OperationResponse struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// Properties of the operation
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 }
 
 // OperationResultError - Required if status == failed or status == canceled.
@@ -488,11 +590,18 @@ type OperationResultError struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Patch - The request for reservation patch
 type Patch struct {
+	// Properties for reservation patch
 	Properties *PatchProperties `json:"properties,omitempty"`
 }
 
+// PatchProperties - Properties for reservation patch
 type PatchProperties struct {
+	// Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId and managementGroupId
+	// if AppliedScopeType is ManagementGroup
+	AppliedScopeProperties *AppliedScopeProperties `json:"appliedScopeProperties,omitempty"`
+
 	// Type of the Applied Scope.
 	AppliedScopeType *AppliedScopeType `json:"appliedScopeType,omitempty"`
 
@@ -503,15 +612,19 @@ type PatchProperties struct {
 	// reserved resource type.
 	InstanceFlexibility *InstanceFlexibility `json:"instanceFlexibility,omitempty"`
 
-	// Name of the Reservation
+	// Display name of the reservation
 	Name *string `json:"name,omitempty"`
 
 	// Setting this to true will automatically purchase a new reservation on the expiration date time.
 	Renew           *bool                           `json:"renew,omitempty"`
 	RenewProperties *PatchPropertiesRenewProperties `json:"renewProperties,omitempty"`
+
+	// This is the date-time when the Azure hybrid benefit needs to be reviewed.
+	ReviewDateTime *time.Time `json:"reviewDateTime,omitempty"`
 }
 
 type PatchPropertiesRenewProperties struct {
+	// The request for reservation purchase
 	PurchaseProperties *PurchaseRequest `json:"purchaseProperties,omitempty"`
 }
 
@@ -537,6 +650,7 @@ type PaymentDetail struct {
 	Status *PaymentStatus `json:"status,omitempty"`
 }
 
+// Price - Pricing information containing the amount and the currency code
 type Price struct {
 	Amount *float64 `json:"amount,omitempty"`
 
@@ -546,6 +660,10 @@ type Price struct {
 
 // Properties - The properties of the reservations
 type Properties struct {
+	// Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId and managementGroupId
+	// if AppliedScopeType is ManagementGroup
+	AppliedScopeProperties *AppliedScopeProperties `json:"appliedScopeProperties,omitempty"`
+
 	// The applied scope type
 	AppliedScopeType *AppliedScopeType `json:"appliedScopeType,omitempty"`
 
@@ -558,10 +676,10 @@ type Properties struct {
 	// This is the DateTime when the reservation benefit started.
 	BenefitStartTime *time.Time `json:"benefitStartTime,omitempty"`
 
-	// The billing plan options available for this SKU.
+	// The billing plan options available for this sku.
 	BillingPlan *ReservationBillingPlan `json:"billingPlan,omitempty"`
 
-	// Subscription that will be charged for purchasing Reservation
+	// Subscription that will be charged for purchasing reservation or savings plan
 	BillingScopeID *string `json:"billingScopeId,omitempty"`
 
 	// Capabilities of the reservation
@@ -570,35 +688,45 @@ type Properties struct {
 	// Friendly name for user to easily identify the reservation
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// DateTime of the Reservation starting when this version is effective from.
+	// DateTime of the reservation starting when this version is effective from.
 	EffectiveDateTime *time.Time `json:"effectiveDateTime,omitempty"`
 
-	// This is the date when the Reservation will expire.
+	// This is the date when the reservation will expire.
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
+
+	// This is the date-time when the reservation will expire.
+	ExpiryDateTime *time.Time `json:"expiryDateTime,omitempty"`
 
 	// The message giving detailed information about the status code.
 	ExtendedStatusInfo *ExtendedStatusInfo `json:"extendedStatusInfo,omitempty"`
 
-	// Allows reservation discount to be applied across skus within the same Autofit group. Not all skus support instance size
+	// Allows reservation discount to be applied across skus within the same auto fit group. Not all skus support instance size
 	// flexibility.
-	InstanceFlexibility *InstanceFlexibility        `json:"instanceFlexibility,omitempty"`
-	MergeProperties     *ReservationMergeProperties `json:"mergeProperties,omitempty"`
+	InstanceFlexibility *InstanceFlexibility `json:"instanceFlexibility,omitempty"`
+
+	// Properties of reservation merge
+	MergeProperties *ReservationMergeProperties `json:"mergeProperties,omitempty"`
 
 	// Current state of the reservation.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
 
-	// This is the date when the Reservation was purchased.
+	// This is the date when the reservation was purchased.
 	PurchaseDate *time.Time `json:"purchaseDate,omitempty"`
 
-	// Quantity of the SKUs that are part of the Reservation.
+	// This is the date-time when the reservation was purchased.
+	PurchaseDateTime *time.Time `json:"purchaseDateTime,omitempty"`
+
+	// Quantity of the skus that are part of the reservation.
 	Quantity *int32 `json:"quantity,omitempty"`
 
 	// Setting this to true will automatically purchase a new reservation on the expiration date time.
 	Renew *bool `json:"renew,omitempty"`
 
 	// Reservation Id of the reservation which is purchased because of renew. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-	RenewDestination *string                  `json:"renewDestination,omitempty"`
-	RenewProperties  *RenewPropertiesResponse `json:"renewProperties,omitempty"`
+	RenewDestination *string `json:"renewDestination,omitempty"`
+
+	// The renew properties for a reservation.
+	RenewProperties *RenewPropertiesResponse `json:"renewProperties,omitempty"`
 
 	// Reservation Id of the reservation from which this reservation is renewed. Format of the resource Id is
 	// /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
@@ -607,20 +735,28 @@ type Properties struct {
 	// The type of the resource that is being reserved.
 	ReservedResourceType *ReservedResourceType `json:"reservedResourceType,omitempty"`
 
-	// Description of the SKU in english.
-	SKUDescription  *string                     `json:"skuDescription,omitempty"`
+	// This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
+	ReviewDateTime *time.Time `json:"reviewDateTime,omitempty"`
+
+	// Description of the sku in english.
+	SKUDescription *string `json:"skuDescription,omitempty"`
+
+	// Properties of reservation split
 	SplitProperties *ReservationSplitProperties `json:"splitProperties,omitempty"`
 
-	// Represent the term of Reservation.
+	// Properties of reservation swap
+	SwapProperties *ReservationSwapProperties `json:"swapProperties,omitempty"`
+
+	// Represent the term of reservation.
 	Term *ReservationTerm `json:"term,omitempty"`
 
 	// READ-ONLY; The provisioning state of the reservation for display, e.g. Succeeded
 	DisplayProvisioningState *string `json:"displayProvisioningState,omitempty" azure:"ro"`
 
-	// READ-ONLY; DateTime of the last time the Reservation was updated.
+	// READ-ONLY; DateTime of the last time the reservation was updated.
 	LastUpdatedDateTime *time.Time `json:"lastUpdatedDateTime,omitempty" azure:"ro"`
 
-	// READ-ONLY; The provisioning state of the reservation, e.g. Succeeded
+	// READ-ONLY; The provisioning sub-state of the reservation, e.g. Succeeded
 	ProvisioningSubState *string `json:"provisioningSubState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The applied scope type of the reservation for display, e.g. Shared
@@ -638,18 +774,44 @@ type PropertiesUtilization struct {
 	// The array of aggregates of a reservation's utilization
 	Aggregates []*ReservationUtilizationAggregates `json:"aggregates,omitempty"`
 
-	// READ-ONLY; The number of days trend for a reservation
+	// READ-ONLY; last 7 day utilization trend for a reservation
 	Trend *string `json:"trend,omitempty" azure:"ro"`
 }
 
-type PurchaseRequest struct {
-	// The Azure Region where the reserved resource lives.
-	Location   *string                    `json:"location,omitempty"`
-	Properties *PurchaseRequestProperties `json:"properties,omitempty"`
-	SKU        *SKUName                   `json:"sku,omitempty"`
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// PurchaseRequest - The request for reservation purchase
+type PurchaseRequest struct {
+	// The Azure region where the reserved resource lives.
+	Location *string `json:"location,omitempty"`
+
+	// Properties of reservation purchase request
+	Properties *PurchaseRequestProperties `json:"properties,omitempty"`
+
+	// The name of sku
+	SKU *SKUName `json:"sku,omitempty"`
+}
+
+// PurchaseRequestProperties - Properties of reservation purchase request
 type PurchaseRequestProperties struct {
+	// Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId and managementGroupId
+	// if AppliedScopeType is ManagementGroup
+	AppliedScopeProperties *AppliedScopeProperties `json:"appliedScopeProperties,omitempty"`
+
 	// Type of the Applied Scope.
 	AppliedScopeType *AppliedScopeType `json:"appliedScopeType,omitempty"`
 
@@ -659,13 +821,13 @@ type PurchaseRequestProperties struct {
 	// Represent the billing plans.
 	BillingPlan *ReservationBillingPlan `json:"billingPlan,omitempty"`
 
-	// Subscription that will be charged for purchasing Reservation
+	// Subscription that will be charged for purchasing reservation or savings plan
 	BillingScopeID *string `json:"billingScopeId,omitempty"`
 
-	// Friendly name of the Reservation
+	// Friendly name of the reservation
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Quantity of the SKUs that are part of the Reservation.
+	// Quantity of the skus that are part of the reservation.
 	Quantity *int32 `json:"quantity,omitempty"`
 
 	// Setting this to true will automatically purchase a new reservation on the expiration date time.
@@ -677,7 +839,10 @@ type PurchaseRequestProperties struct {
 	// The type of the resource that is being reserved.
 	ReservedResourceType *ReservedResourceType `json:"reservedResourceType,omitempty"`
 
-	// Represent the term of Reservation.
+	// This is the date-time when the Azure hybrid benefit needs to be reviewed.
+	ReviewDateTime *time.Time `json:"reviewDateTime,omitempty"`
+
+	// Represent the term of reservation.
 	Term *ReservationTerm `json:"term,omitempty"`
 }
 
@@ -706,7 +871,7 @@ type QuotaClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QuotaClientListOptions contains the optional parameters for the QuotaClient.List method.
+// QuotaClientListOptions contains the optional parameters for the QuotaClient.NewListPager method.
 type QuotaClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -738,7 +903,7 @@ type QuotaProperties struct {
 	Name *ResourceName `json:"name,omitempty"`
 
 	// Additional properties for the specified resource provider.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 
 	// The name of the resource type.
 	ResourceType *ResourceType `json:"resourceType,omitempty"`
@@ -831,7 +996,7 @@ type QuotaRequestStatusClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.List method.
+// QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.NewListPager method.
 type QuotaRequestStatusClientListOptions struct {
 	// FIELD SUPPORTED OPERATORS
 	// requestSubmitTime ge, le, eq, gt, lt
@@ -885,9 +1050,14 @@ type QuotaRequestSubmitResponse201 struct {
 
 // RefundBillingInformation - billing information
 type RefundBillingInformation struct {
-	BillingCurrencyProratedAmount            *Price `json:"billingCurrencyProratedAmount,omitempty"`
+	// Pricing information containing the amount and the currency code
+	BillingCurrencyProratedAmount *Price `json:"billingCurrencyProratedAmount,omitempty"`
+
+	// Pricing information containing the amount and the currency code
 	BillingCurrencyRemainingCommitmentAmount *Price `json:"billingCurrencyRemainingCommitmentAmount,omitempty"`
-	BillingCurrencyTotalPaidAmount           *Price `json:"billingCurrencyTotalPaidAmount,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	BillingCurrencyTotalPaidAmount *Price `json:"billingCurrencyTotalPaidAmount,omitempty"`
 
 	// Represent the billing plans.
 	BillingPlan *ReservationBillingPlan `json:"billingPlan,omitempty"`
@@ -901,6 +1071,7 @@ type RefundBillingInformation struct {
 
 // RefundPolicyError - error details
 type RefundPolicyError struct {
+	// Error code describing the reason that service is not able to process the incoming request
 	Code    *ErrorResponseCode `json:"code,omitempty"`
 	Message *string            `json:"message,omitempty"`
 }
@@ -913,17 +1084,25 @@ type RefundPolicyResult struct {
 
 // RefundPolicyResultProperty - Refund policy result property
 type RefundPolicyResultProperty struct {
+	// Pricing information containing the amount and the currency code
 	ConsumedRefundsTotal *Price `json:"consumedRefundsTotal,omitempty"`
-	MaxRefundLimit       *Price `json:"maxRefundLimit,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	MaxRefundLimit *Price `json:"maxRefundLimit,omitempty"`
 
 	// Refund Policy errors
 	PolicyErrors []*RefundPolicyError `json:"policyErrors,omitempty"`
 }
 
+// RefundRequest - Request containing information needed for returning reservation.
 type RefundRequest struct {
+	// Properties needed for refund request including the session id from calculate refund, the scope, the reservation to be returned
+	// and the return reason.
 	Properties *RefundRequestProperties `json:"properties,omitempty"`
 }
 
+// RefundRequestProperties - Properties needed for refund request including the session id from calculate refund, the scope,
+// the reservation to be returned and the return reason.
 type RefundRequestProperties struct {
 	// Reservation to return
 	ReservationToReturn *ReservationToReturn `json:"reservationToReturn,omitempty"`
@@ -938,20 +1117,28 @@ type RefundRequestProperties struct {
 	SessionID *string `json:"sessionId,omitempty"`
 }
 
+// RefundResponse - The response of refund request containing refund information of reservation
 type RefundResponse struct {
 	// Fully qualified identifier of the reservation being returned
-	ID         *string                   `json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
+
+	// The refund properties of reservation
 	Properties *RefundResponseProperties `json:"properties,omitempty"`
 }
 
+// RefundResponseProperties - The refund properties of reservation
 type RefundResponseProperties struct {
 	// billing information
-	BillingInformation  *RefundBillingInformation `json:"billingInformation,omitempty"`
-	BillingRefundAmount *Price                    `json:"billingRefundAmount,omitempty"`
+	BillingInformation *RefundBillingInformation `json:"billingInformation,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	BillingRefundAmount *Price `json:"billingRefundAmount,omitempty"`
 
 	// Refund policy result
-	PolicyResult        *RefundPolicyResult `json:"policyResult,omitempty"`
-	PricingRefundAmount *Price              `json:"pricingRefundAmount,omitempty"`
+	PolicyResult *RefundPolicyResult `json:"policyResult,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	PricingRefundAmount *Price `json:"pricingRefundAmount,omitempty"`
 
 	// Quantity to be returned
 	Quantity *int32 `json:"quantity,omitempty"`
@@ -960,6 +1147,7 @@ type RefundResponseProperties struct {
 	SessionID *string `json:"sessionId,omitempty"`
 }
 
+// RenewPropertiesResponse - The renew properties for a reservation.
 type RenewPropertiesResponse struct {
 	// Currency and amount that customer will be charged in customer's local currency for renewal purchase. Tax is not included.
 	BillingCurrencyTotal *RenewPropertiesResponseBillingCurrencyTotal `json:"billingCurrencyTotal,omitempty"`
@@ -967,7 +1155,9 @@ type RenewPropertiesResponse struct {
 	// Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included. This is locked
 	// price 30 days before expiry.
 	PricingCurrencyTotal *RenewPropertiesResponsePricingCurrencyTotal `json:"pricingCurrencyTotal,omitempty"`
-	PurchaseProperties   *PurchaseRequest                             `json:"purchaseProperties,omitempty"`
+
+	// The request for reservation purchase
+	PurchaseProperties *PurchaseRequest `json:"purchaseProperties,omitempty"`
 }
 
 // RenewPropertiesResponseBillingCurrencyTotal - Currency and amount that customer will be charged in customer's local currency
@@ -1024,12 +1214,12 @@ type ReservationClientGetOptions struct {
 	Expand *string
 }
 
-// ReservationClientListAllOptions contains the optional parameters for the ReservationClient.ListAll method.
+// ReservationClientListAllOptions contains the optional parameters for the ReservationClient.NewListAllPager method.
 type ReservationClientListAllOptions struct {
 	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support
 	// 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
-	// properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate, provisioningState,
-	// quantity, renew, reservedResourceType, term,
+	// properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate, expiryDateTime,
+	// provisioningState, quantity, renew, reservedResourceType, term,
 	// userFriendlyAppliedScopeType, userFriendlyRenewState}
 	Filter *string
 	// May be used to sort order by reservation properties.
@@ -1044,12 +1234,13 @@ type ReservationClientListAllOptions struct {
 	Take *float32
 }
 
-// ReservationClientListOptions contains the optional parameters for the ReservationClient.List method.
+// ReservationClientListOptions contains the optional parameters for the ReservationClient.NewListPager method.
 type ReservationClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReservationClientListRevisionsOptions contains the optional parameters for the ReservationClient.ListRevisions method.
+// ReservationClientListRevisionsOptions contains the optional parameters for the ReservationClient.NewListRevisionsPager
+// method.
 type ReservationClientListRevisionsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1059,17 +1250,19 @@ type ReservationClientUnarchiveOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ReservationList - List of Reservations
 type ReservationList struct {
 	// Url to get the next page of reservations.
 	NextLink *string                `json:"nextLink,omitempty"`
 	Value    []*ReservationResponse `json:"value,omitempty"`
 }
 
+// ReservationMergeProperties - Properties of reservation merge
 type ReservationMergeProperties struct {
-	// Reservation Resource Id Created due to the merge. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	// Reservation resource id Created due to the merge. Format of the resource id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
 	MergeDestination *string `json:"mergeDestination,omitempty"`
 
-	// Resource Ids of the Source Reservation's merged to form this Reservation. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	// Resource ids of the source reservation's merged to form this reservation. Format of the resource id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
 	MergeSources []*string `json:"mergeSources,omitempty"`
 }
 
@@ -1110,17 +1303,19 @@ type ReservationOrderClientGetOptions struct {
 	Expand *string
 }
 
-// ReservationOrderClientListOptions contains the optional parameters for the ReservationOrderClient.List method.
+// ReservationOrderClientListOptions contains the optional parameters for the ReservationOrderClient.NewListPager method.
 type ReservationOrderClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ReservationOrderList - List of ReservationOrders
 type ReservationOrderList struct {
 	// Url to get the next page of reservationOrders.
 	NextLink *string                     `json:"nextLink,omitempty"`
 	Value    []*ReservationOrderResponse `json:"value,omitempty"`
 }
 
+// ReservationOrderProperties - Properties of a reservation order.
 type ReservationOrderProperties struct {
 	// This is the DateTime when the reservation benefit started.
 	BenefitStartTime *time.Time `json:"benefitStartTime,omitempty"`
@@ -1134,10 +1329,13 @@ type ReservationOrderProperties struct {
 	// Friendly name for user to easily identified the reservation.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// This is the date when the Reservation will expire.
+	// This is the date when the reservation will expire.
 	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
 
-	// Total Quantity of the SKUs purchased in the Reservation.
+	// This is the date-time when the reservation will expire.
+	ExpiryDateTime *time.Time `json:"expiryDateTime,omitempty"`
+
+	// Total Quantity of the skus purchased in the reservation.
 	OriginalQuantity *int32 `json:"originalQuantity,omitempty"`
 
 	// Information describing the type of billing plan for this reservation.
@@ -1150,12 +1348,18 @@ type ReservationOrderProperties struct {
 	RequestDateTime *time.Time             `json:"requestDateTime,omitempty"`
 	Reservations    []*ReservationResponse `json:"reservations,omitempty"`
 
-	// Represent the term of Reservation.
+	// This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
+	ReviewDateTime *time.Time `json:"reviewDateTime,omitempty"`
+
+	// Represent the term of reservation.
 	Term *ReservationTerm `json:"term,omitempty"`
 }
 
+// ReservationOrderResponse - Details of a reservation order being returned.
 type ReservationOrderResponse struct {
-	Etag       *int32                      `json:"etag,omitempty"`
+	Etag *int32 `json:"etag,omitempty"`
+
+	// Properties of a reservation order.
 	Properties *ReservationOrderProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; Identifier of the reservation
@@ -1178,7 +1382,7 @@ type ReservationResponse struct {
 	// Resource Provider type to be reserved.
 	Kind *string `json:"kind,omitempty"`
 
-	// The Azure Region where the reserved resource lives.
+	// The Azure region where the reserved resource lives.
 	Location *string `json:"location,omitempty"`
 
 	// The properties associated to this reservation
@@ -1187,24 +1391,25 @@ type ReservationResponse struct {
 	// The sku information associated to this reservation
 	SKU *SKUName `json:"sku,omitempty"`
 
-	// READ-ONLY; Identifier of the reservation
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Name of the reservation
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
-	// READ-ONLY; Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// ReservationSplitProperties - Properties of reservation split
 type ReservationSplitProperties struct {
-	// List of destination Resource Id that are created due to split. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	// List of destination resource id that are created due to split. Format of the resource id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
 	SplitDestinations []*string `json:"splitDestinations,omitempty"`
 
-	// Resource Id of the Reservation from which this is split. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	// Resource id of the reservation from which this is split. Format of the resource id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
 	SplitSource *string `json:"splitSource,omitempty"`
 }
 
@@ -1222,6 +1427,9 @@ type ReservationSummary struct {
 	// READ-ONLY; The number of reservation in Failed state
 	FailedCount *float32 `json:"failedCount,omitempty" azure:"ro"`
 
+	// READ-ONLY; The number of reservation in NoBenefit state
+	NoBenefitCount *float32 `json:"noBenefitCount,omitempty" azure:"ro"`
+
 	// READ-ONLY; The number of reservation in Pending state
 	PendingCount *float32 `json:"pendingCount,omitempty" azure:"ro"`
 
@@ -1230,37 +1438,57 @@ type ReservationSummary struct {
 
 	// READ-ONLY; The number of reservation in Succeeded state
 	SucceededCount *float32 `json:"succeededCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of reservation in Warning state
+	WarningCount *float32 `json:"warningCount,omitempty" azure:"ro"`
+}
+
+// ReservationSwapProperties - Properties of reservation swap
+type ReservationSwapProperties struct {
+	// Reservation resource id that the original resource gets swapped to. Format of the resource id is /providers/microsoft.capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SwapDestination *string `json:"swapDestination,omitempty"`
+
+	// Resource id of the source reservation that gets swapped. Format of the resource id is /providers/microsoft.capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SwapSource *string `json:"swapSource,omitempty"`
 }
 
 // ReservationToExchange - Reservation refund details
 type ReservationToExchange struct {
 	// billing information
-	BillingInformation  *BillingInformation `json:"billingInformation,omitempty"`
-	BillingRefundAmount *Price              `json:"billingRefundAmount,omitempty"`
+	BillingInformation *BillingInformation `json:"billingInformation,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	BillingRefundAmount *Price `json:"billingRefundAmount,omitempty"`
 
 	// Quantity to be returned
 	Quantity *int32 `json:"quantity,omitempty"`
 
-	// Fully qualified id of the Reservation being returned.
+	// Fully qualified id of the reservation being returned.
 	ReservationID *string `json:"reservationId,omitempty"`
 }
 
 // ReservationToPurchaseCalculateExchange - Reservation purchase details
 type ReservationToPurchaseCalculateExchange struct {
-	BillingCurrencyTotal *Price           `json:"billingCurrencyTotal,omitempty"`
-	Properties           *PurchaseRequest `json:"properties,omitempty"`
+	// Pricing information containing the amount and the currency code
+	BillingCurrencyTotal *Price `json:"billingCurrencyTotal,omitempty"`
+
+	// The request for reservation purchase
+	Properties *PurchaseRequest `json:"properties,omitempty"`
 }
 
 // ReservationToPurchaseExchange - Reservation purchase details
 type ReservationToPurchaseExchange struct {
-	BillingCurrencyTotal *Price           `json:"billingCurrencyTotal,omitempty"`
-	Properties           *PurchaseRequest `json:"properties,omitempty"`
+	// Pricing information containing the amount and the currency code
+	BillingCurrencyTotal *Price `json:"billingCurrencyTotal,omitempty"`
 
-	// Fully qualified id of the Reservation being purchased. This value is only guaranteed to be non-null if the purchase is
+	// The request for reservation purchase
+	Properties *PurchaseRequest `json:"properties,omitempty"`
+
+	// Fully qualified id of the reservation being purchased. This value is only guaranteed to be non-null if the purchase is
 	// successful.
 	ReservationID *string `json:"reservationId,omitempty"`
 
-	// Fully qualified id of the ReservationOrder being purchased
+	// Fully qualified id of the reservationOrder being purchased
 	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
 
 	// Status of the individual operation.
@@ -1272,20 +1500,22 @@ type ReservationToReturn struct {
 	// Quantity to be returned. Must be greater than zero.
 	Quantity *int32 `json:"quantity,omitempty"`
 
-	// Fully qualified identifier of the Reservation being returned
+	// Fully qualified identifier of the reservation being returned
 	ReservationID *string `json:"reservationId,omitempty"`
 }
 
 // ReservationToReturnForExchange - Reservation refund details
 type ReservationToReturnForExchange struct {
 	// billing information
-	BillingInformation  *BillingInformation `json:"billingInformation,omitempty"`
-	BillingRefundAmount *Price              `json:"billingRefundAmount,omitempty"`
+	BillingInformation *BillingInformation `json:"billingInformation,omitempty"`
+
+	// Pricing information containing the amount and the currency code
+	BillingRefundAmount *Price `json:"billingRefundAmount,omitempty"`
 
 	// Quantity to be returned
 	Quantity *int32 `json:"quantity,omitempty"`
 
-	// Fully qualified id of the Reservation being returned.
+	// Fully qualified id of the reservation being returned.
 	ReservationID *string `json:"reservationId,omitempty"`
 
 	// Status of the individual operation.
@@ -1307,6 +1537,21 @@ type ReservationUtilizationAggregates struct {
 	ValueUnit *string `json:"valueUnit,omitempty" azure:"ro"`
 }
 
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
 // ResourceName - Resource name provided by the resource provider. Use this property for quotaRequest parameter.
 type ResourceName struct {
 	// Resource name.
@@ -1316,11 +1561,13 @@ type ResourceName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty" azure:"ro"`
 }
 
-// ReturnClientPostOptions contains the optional parameters for the ReturnClient.Post method.
-type ReturnClientPostOptions struct {
-	// placeholder for future optional parameters
+// ReturnClientBeginPostOptions contains the optional parameters for the ReturnClient.BeginPost method.
+type ReturnClientBeginPostOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
+// SKUCapability - Capability of a sku.
 type SKUCapability struct {
 	// An invariant to describe the feature.
 	Name *string `json:"name,omitempty"`
@@ -1329,10 +1576,12 @@ type SKUCapability struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// SKUName - The name of sku
 type SKUName struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// SKUProperty - Property of a sku.
 type SKUProperty struct {
 	// An invariant to describe the feature.
 	Name *string `json:"name,omitempty"`
@@ -1341,6 +1590,7 @@ type SKUProperty struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// SKURestriction - Restriction of a sku.
 type SKURestriction struct {
 	// The reason for restriction.
 	ReasonCode *string `json:"reasonCode,omitempty"`
@@ -1348,11 +1598,74 @@ type SKURestriction struct {
 	// The type of restrictions.
 	Type *string `json:"type,omitempty"`
 
-	// The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU
+	// The value of restrictions. If the restriction type is set to location. This would be different locations where the sku
 	// is restricted.
 	Values []*string `json:"values,omitempty"`
 }
 
+// SavingsPlanPurchaseRequest - Request body for savings plan purchase
+type SavingsPlanPurchaseRequest struct {
+	// Properties of a savings plan purchase
+	Properties *SavingsPlanPurchaseRequestProperties `json:"properties,omitempty"`
+
+	// The name of sku
+	SKU *SKUName `json:"sku,omitempty"`
+}
+
+// SavingsPlanPurchaseRequestProperties - Properties of a savings plan purchase
+type SavingsPlanPurchaseRequestProperties struct {
+	// Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId and managementGroupId
+	// if AppliedScopeType is ManagementGroup
+	AppliedScopeProperties *AppliedScopeProperties `json:"appliedScopeProperties,omitempty"`
+
+	// Type of the Applied Scope.
+	AppliedScopeType *AppliedScopeType `json:"appliedScopeType,omitempty"`
+
+	// Represents the billing plan in ISO 8601 format. Required only for monthly billing plans.
+	BillingPlan *BillingPlan `json:"billingPlan,omitempty"`
+
+	// Subscription that will be charged for purchasing reservation or savings plan
+	BillingScopeID *string `json:"billingScopeId,omitempty"`
+
+	// Commitment towards the benefit.
+	Commitment *Commitment `json:"commitment,omitempty"`
+
+	// Friendly name of the savings plan
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Represent savings plan term in ISO 8601 format.
+	Term *SavingsPlanTerm `json:"term,omitempty"`
+}
+
+// SavingsPlanToPurchaseCalculateExchange - Savings plan purchase details
+type SavingsPlanToPurchaseCalculateExchange struct {
+	// Pricing information containing the amount and the currency code
+	BillingCurrencyTotal *Price `json:"billingCurrencyTotal,omitempty"`
+
+	// Request body for savings plan purchase
+	Properties *SavingsPlanPurchaseRequest `json:"properties,omitempty"`
+}
+
+// SavingsPlanToPurchaseExchange - Savings plan purchase details
+type SavingsPlanToPurchaseExchange struct {
+	// Pricing information containing the amount and the currency code
+	BillingCurrencyTotal *Price `json:"billingCurrencyTotal,omitempty"`
+
+	// Request body for savings plan purchase
+	Properties *SavingsPlanPurchaseRequest `json:"properties,omitempty"`
+
+	// Fully qualified id of the savings plan being purchased. This value is only guaranteed to be non-null if the purchase is
+	// successful.
+	SavingsPlanID *string `json:"savingsPlanId,omitempty"`
+
+	// Fully qualified id of the savings plan order being purchased
+	SavingsPlanOrderID *string `json:"savingsPlanOrderId,omitempty"`
+
+	// Status of the individual operation.
+	Status *OperationStatus `json:"status,omitempty"`
+}
+
+// ScopeProperties - The scope and whether it is valid.
 type ScopeProperties struct {
 	Scope *string `json:"scope,omitempty"`
 	Valid *bool   `json:"valid,omitempty"`
@@ -1379,6 +1692,7 @@ type ServiceErrorDetail struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
+// SplitProperties - Properties for reservation split
 type SplitProperties struct {
 	// List of the quantities in the new reservations to create.
 	Quantities []*int32 `json:"quantities,omitempty"`
@@ -1387,7 +1701,9 @@ type SplitProperties struct {
 	ReservationID *string `json:"reservationId,omitempty"`
 }
 
+// SplitRequest - The request for reservation split
 type SplitRequest struct {
+	// Properties for reservation split
 	Properties *SplitProperties `json:"properties,omitempty"`
 }
 
@@ -1415,6 +1731,7 @@ type SubRequest struct {
 	SubRequestID *string `json:"subRequestId,omitempty" azure:"ro"`
 }
 
+// SubscriptionScopeProperties - The scopes checked by the available scope api.
 type SubscriptionScopeProperties struct {
 	Scopes []*ScopeProperties `json:"scopes,omitempty"`
 }

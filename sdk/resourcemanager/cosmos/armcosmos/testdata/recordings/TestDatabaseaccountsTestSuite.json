@@ -40,7 +40,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-11-15",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -73,12 +73,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 06:16:28 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -180,7 +180,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -211,7 +211,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -242,7 +242,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -273,7 +273,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -304,7 +304,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -335,7 +335,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -366,7 +366,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -397,7 +397,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -428,7 +428,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -459,7 +459,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -490,7 +490,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -521,7 +521,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -682,7 +682,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/providers/Microsoft.DocumentDB/databaseAccountNames/databaseaccountcosmos?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/providers/Microsoft.DocumentDB/databaseAccountNames/databaseaccountcosmos?api-version=2022-11-15",
       "RequestMethod": "HEAD",
       "RequestHeaders": {
         "Authorization": "Sanitized",
@@ -707,7 +707,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -869,7 +869,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/databaseAccounts?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/databaseAccounts?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1228,7 +1228,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1394,7 +1394,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/listKeys?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/listKeys?api-version=2022-11-15",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1430,7 +1430,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/listConnectionStrings?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/listConnectionStrings?api-version=2022-11-15",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1480,7 +1480,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/readonlykeys?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/readonlykeys?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1513,7 +1513,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/readonlykeys?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/readonlykeys?api-version=2022-11-15",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1547,7 +1547,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/metricDefinitions?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/metricDefinitions?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2589,7 +2589,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/failoverPriorityChange?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/failoverPriorityChange?api-version=2022-11-15",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2616,12 +2616,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 06:21:51 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/failoverPriorityChange/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/failoverPriorityChange/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -2637,7 +2637,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2668,7 +2668,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2699,7 +2699,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2730,7 +2730,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/failoverPriorityChange/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/failoverPriorityChange/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2761,7 +2761,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/regenerateKey?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/regenerateKey?api-version=2022-11-15",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2775,12 +2775,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 06:22:57 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/regenerateKey/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/regenerateKey/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -2796,7 +2796,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2827,7 +2827,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2858,7 +2858,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2889,7 +2889,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/regenerateKey/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/regenerateKey/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2920,7 +2920,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-11-15",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2937,12 +2937,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 06:24:03 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -3090,7 +3090,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3121,7 +3121,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3152,7 +3152,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3183,7 +3183,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3214,7 +3214,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3377,7 +3377,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountcosmos?api-version=2022-11-15",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3387,12 +3387,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 06:25:40 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -3408,7 +3408,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3439,7 +3439,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3470,7 +3470,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3501,7 +3501,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3532,7 +3532,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3563,7 +3563,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3594,7 +3594,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3625,7 +3625,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3656,7 +3656,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3687,7 +3687,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3718,7 +3718,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3749,7 +3749,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3780,7 +3780,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3811,7 +3811,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3842,7 +3842,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3873,7 +3873,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3904,7 +3904,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3935,7 +3935,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3966,7 +3966,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3997,7 +3997,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4028,7 +4028,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4059,7 +4059,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4090,7 +4090,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4121,7 +4121,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4152,7 +4152,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4183,7 +4183,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4214,7 +4214,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4245,7 +4245,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4276,7 +4276,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4307,7 +4307,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4338,7 +4338,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4369,7 +4369,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4400,7 +4400,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4431,7 +4431,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4462,7 +4462,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4493,7 +4493,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4524,7 +4524,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4555,7 +4555,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4586,7 +4586,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4617,7 +4617,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4648,7 +4648,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -4679,7 +4679,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",

@@ -33,9 +33,9 @@ type PipelinesClient struct {
 }
 
 // NewPipelinesClient creates a new instance of PipelinesClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PipelinesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Creates or updates a pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// pipelineName - The pipeline name.
-// pipeline - Pipeline resource definition.
-// options - PipelinesClientCreateOrUpdateOptions contains the optional parameters for the PipelinesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - pipelineName - The pipeline name.
+//   - pipeline - Pipeline resource definition.
+//   - options - PipelinesClientCreateOrUpdateOptions contains the optional parameters for the PipelinesClient.CreateOrUpdate
+//     method.
 func (client *PipelinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, pipeline PipelineResource, options *PipelinesClientCreateOrUpdateOptions) (PipelinesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, pipelineName, pipeline, options)
 	if err != nil {
@@ -124,11 +125,12 @@ func (client *PipelinesClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // CreateRun - Creates a run of a pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// pipelineName - The pipeline name.
-// options - PipelinesClientCreateRunOptions contains the optional parameters for the PipelinesClient.CreateRun method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - pipelineName - The pipeline name.
+//   - options - PipelinesClientCreateRunOptions contains the optional parameters for the PipelinesClient.CreateRun method.
 func (client *PipelinesClient) CreateRun(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesClientCreateRunOptions) (PipelinesClientCreateRunResponse, error) {
 	req, err := client.createRunCreateRequest(ctx, resourceGroupName, factoryName, pipelineName, options)
 	if err != nil {
@@ -200,11 +202,12 @@ func (client *PipelinesClient) createRunHandleResponse(resp *http.Response) (Pip
 
 // Delete - Deletes a pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// pipelineName - The pipeline name.
-// options - PipelinesClientDeleteOptions contains the optional parameters for the PipelinesClient.Delete method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - pipelineName - The pipeline name.
+//   - options - PipelinesClientDeleteOptions contains the optional parameters for the PipelinesClient.Delete method.
 func (client *PipelinesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesClientDeleteOptions) (PipelinesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, pipelineName, options)
 	if err != nil {
@@ -252,11 +255,12 @@ func (client *PipelinesClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Gets a pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// pipelineName - The pipeline name.
-// options - PipelinesClientGetOptions contains the optional parameters for the PipelinesClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - pipelineName - The pipeline name.
+//   - options - PipelinesClientGetOptions contains the optional parameters for the PipelinesClient.Get method.
 func (client *PipelinesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, options *PipelinesClientGetOptions) (PipelinesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, pipelineName, options)
 	if err != nil {
@@ -315,10 +319,12 @@ func (client *PipelinesClient) getHandleResponse(resp *http.Response) (Pipelines
 }
 
 // NewListByFactoryPager - Lists pipelines.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - PipelinesClientListByFactoryOptions contains the optional parameters for the PipelinesClient.ListByFactory method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - PipelinesClientListByFactoryOptions contains the optional parameters for the PipelinesClient.NewListByFactoryPager
+//     method.
 func (client *PipelinesClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *PipelinesClientListByFactoryOptions) *runtime.Pager[PipelinesClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PipelinesClientListByFactoryResponse]{
 		More: func(page PipelinesClientListByFactoryResponse) bool {

@@ -1,5 +1,203 @@
 # Release History
 
+## 0.3.0 (2023-02-24)
+### Breaking Changes
+
+- Type alias `ApplicationProvisioningState` has been removed
+- Type alias `AzureFrontDoorEnabled` has been removed
+- Type alias `DatabaseTier` has been removed
+- Type alias `DatabaseType` has been removed
+- Type alias `DiskStorageType` has been removed
+- Type alias `EnableBackup` has been removed
+- Type alias `EnableSSLEnforcement` has been removed
+- Type alias `FileShareStorageType` has been removed
+- Type alias `FileShareType` has been removed
+- Type alias `HAEnabled` has been removed
+- Type alias `LoadBalancerType` has been removed
+- Type alias `LocationType` has been removed
+- Type alias `OSImageOffer` has been removed
+- Type alias `OSImagePublisher` has been removed
+- Type alias `OSImageSKU` has been removed
+- Type alias `OSImageVersion` has been removed
+- Type alias `PHPVersion` has been removed
+- Type alias `PhpWorkloadProvisioningState` has been removed
+- Type alias `RedisCacheFamily` has been removed
+- Type alias `SKURestrictionReasonCode` has been removed
+- Type alias `SKURestrictionType` has been removed
+- Type alias `SKUScaleType` has been removed
+- Type alias `SKUTier` has been removed
+- Type alias `SearchType` has been removed
+- Type alias `WordpressVersions` has been removed
+- Type alias `WorkloadKind` has been removed
+- Function `NewPhpWorkloadsClient` has been removed
+- Function `*PhpWorkloadsClient.BeginCreateOrUpdate` has been removed
+- Function `*PhpWorkloadsClient.BeginDelete` has been removed
+- Function `*PhpWorkloadsClient.Get` has been removed
+- Function `*PhpWorkloadsClient.NewListByResourceGroupPager` has been removed
+- Function `*PhpWorkloadsClient.NewListBySubscriptionPager` has been removed
+- Function `*PhpWorkloadsClient.Update` has been removed
+- Function `NewSKUsClient` has been removed
+- Function `*SKUsClient.NewListPager` has been removed
+- Function `NewWordpressInstancesClient` has been removed
+- Function `*WordpressInstancesClient.BeginCreateOrUpdate` has been removed
+- Function `*WordpressInstancesClient.Delete` has been removed
+- Function `*WordpressInstancesClient.Get` has been removed
+- Function `*WordpressInstancesClient.NewListPager` has been removed
+- Struct `BackupProfile` has been removed
+- Struct `CacheProfile` has been removed
+- Struct `DatabaseProfile` has been removed
+- Struct `DiskInfo` has been removed
+- Struct `FileshareProfile` has been removed
+- Struct `NetworkProfile` has been removed
+- Struct `NodeProfile` has been removed
+- Struct `OsImageProfile` has been removed
+- Struct `PatchResourceRequestBody` has been removed
+- Struct `PatchResourceRequestBodyIdentity` has been removed
+- Struct `PhpProfile` has been removed
+- Struct `PhpWorkloadResource` has been removed
+- Struct `PhpWorkloadResourceIdentity` has been removed
+- Struct `PhpWorkloadResourceList` has been removed
+- Struct `PhpWorkloadResourceProperties` has been removed
+- Struct `PhpWorkloadsClient` has been removed
+- Struct `PhpWorkloadsClientCreateOrUpdateResponse` has been removed
+- Struct `PhpWorkloadsClientDeleteResponse` has been removed
+- Struct `PhpWorkloadsClientListByResourceGroupResponse` has been removed
+- Struct `PhpWorkloadsClientListBySubscriptionResponse` has been removed
+- Struct `RestrictionInfo` has been removed
+- Struct `SKU` has been removed
+- Struct `SKUCapability` has been removed
+- Struct `SKUCapacity` has been removed
+- Struct `SKUCost` has been removed
+- Struct `SKUDefinition` has been removed
+- Struct `SKULocationAndZones` has been removed
+- Struct `SKURestriction` has been removed
+- Struct `SKUZoneDetail` has been removed
+- Struct `SKUsClient` has been removed
+- Struct `SKUsClientListResponse` has been removed
+- Struct `SKUsListResult` has been removed
+- Struct `SearchProfile` has been removed
+- Struct `SiteProfile` has been removed
+- Struct `UserProfile` has been removed
+- Struct `VmssNodesProfile` has been removed
+- Struct `WordpressInstanceResource` has been removed
+- Struct `WordpressInstanceResourceList` has been removed
+- Struct `WordpressInstanceResourceProperties` has been removed
+- Struct `WordpressInstancesClient` has been removed
+- Struct `WordpressInstancesClientCreateOrUpdateResponse` has been removed
+- Struct `WordpressInstancesClientListResponse` has been removed
+- Field `DbSSLCertificateURI` of struct `HanaDbProviderInstanceProperties` has been removed
+- Field `VirtualMachineID` of struct `SAPApplicationServerProperties` has been removed
+- Field `DiskCount` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskIopsReadWrite` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskMBpsReadWrite` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskSizeGB` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskStorageType` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskType` of struct `SAPDiskConfiguration` has been removed
+- Field `Volume` of struct `SAPDiskConfiguration` has been removed
+- Field `DiskConfigurations` of struct `SAPDiskConfigurationsResult` has been removed
+- Field `SapSSLCertificateURI` of struct `SapNetWeaverProviderInstanceProperties` has been removed
+- Field `HardStop` of struct `StopRequest` has been removed
+
+### Features Added
+
+- New value `SAPSoftwareInstallationTypeExternal` added to type alias `SAPSoftwareInstallationType`
+- New value `SAPVirtualInstanceStateSoftwareDetectionFailed`, `SAPVirtualInstanceStateSoftwareDetectionInProgress` added to type alias `SAPVirtualInstanceState`
+- New value `SAPVirtualInstanceStatusSoftShutdown` added to type alias `SAPVirtualInstanceStatus`
+- New type alias `ApplicationServerVirtualMachineType` with values `ApplicationServerVirtualMachineTypeActive`, `ApplicationServerVirtualMachineTypeStandby`, `ApplicationServerVirtualMachineTypeUnknown`
+- New type alias `ConfigurationType` with values `ConfigurationTypeCreateAndMount`, `ConfigurationTypeMount`, `ConfigurationTypeSkip`
+- New type alias `DiskSKUName` with values `DiskSKUNamePremiumLRS`, `DiskSKUNamePremiumV2LRS`, `DiskSKUNamePremiumZRS`, `DiskSKUNameStandardLRS`, `DiskSKUNameStandardSSDLRS`, `DiskSKUNameStandardSSDZRS`, `DiskSKUNameUltraSSDLRS`
+- New type alias `NamingPatternType` with values `NamingPatternTypeFullResourceName`
+- New type alias `SSLPreference` with values `SSLPreferenceDisabled`, `SSLPreferenceRootCertificate`, `SSLPreferenceServerCertificate`
+- New type alias `SapLandscapeMonitorProvisioningState` with values `SapLandscapeMonitorProvisioningStateAccepted`, `SapLandscapeMonitorProvisioningStateCanceled`, `SapLandscapeMonitorProvisioningStateCreated`, `SapLandscapeMonitorProvisioningStateFailed`, `SapLandscapeMonitorProvisioningStateSucceeded`
+- New function `*CreateAndMountFileShareConfiguration.GetFileShareConfiguration() *FileShareConfiguration`
+- New function `*ExternalInstallationSoftwareConfiguration.GetSoftwareConfiguration() *SoftwareConfiguration`
+- New function `*FileShareConfiguration.GetFileShareConfiguration() *FileShareConfiguration`
+- New function `*MountFileShareConfiguration.GetFileShareConfiguration() *FileShareConfiguration`
+- New function `*SAPApplicationServerInstancesClient.BeginStartInstance(context.Context, string, string, string, *SAPApplicationServerInstancesClientBeginStartInstanceOptions) (*runtime.Poller[SAPApplicationServerInstancesClientStartInstanceResponse], error)`
+- New function `*SAPApplicationServerInstancesClient.BeginStopInstance(context.Context, string, string, string, *SAPApplicationServerInstancesClientBeginStopInstanceOptions) (*runtime.Poller[SAPApplicationServerInstancesClientStopInstanceResponse], error)`
+- New function `*SAPCentralInstancesClient.BeginStartInstance(context.Context, string, string, string, *SAPCentralInstancesClientBeginStartInstanceOptions) (*runtime.Poller[SAPCentralInstancesClientStartInstanceResponse], error)`
+- New function `*SAPCentralInstancesClient.BeginStopInstance(context.Context, string, string, string, *SAPCentralInstancesClientBeginStopInstanceOptions) (*runtime.Poller[SAPCentralInstancesClientStopInstanceResponse], error)`
+- New function `*SAPDatabaseInstancesClient.BeginStartInstance(context.Context, string, string, string, *SAPDatabaseInstancesClientBeginStartInstanceOptions) (*runtime.Poller[SAPDatabaseInstancesClientStartInstanceResponse], error)`
+- New function `*SAPDatabaseInstancesClient.BeginStopInstance(context.Context, string, string, string, *SAPDatabaseInstancesClientBeginStopInstanceOptions) (*runtime.Poller[SAPDatabaseInstancesClientStopInstanceResponse], error)`
+- New function `NewSapLandscapeMonitorClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SapLandscapeMonitorClient, error)`
+- New function `*SapLandscapeMonitorClient.Create(context.Context, string, string, SapLandscapeMonitor, *SapLandscapeMonitorClientCreateOptions) (SapLandscapeMonitorClientCreateResponse, error)`
+- New function `*SapLandscapeMonitorClient.Delete(context.Context, string, string, *SapLandscapeMonitorClientDeleteOptions) (SapLandscapeMonitorClientDeleteResponse, error)`
+- New function `*SapLandscapeMonitorClient.Get(context.Context, string, string, *SapLandscapeMonitorClientGetOptions) (SapLandscapeMonitorClientGetResponse, error)`
+- New function `*SapLandscapeMonitorClient.List(context.Context, string, string, *SapLandscapeMonitorClientListOptions) (SapLandscapeMonitorClientListResponse, error)`
+- New function `*SapLandscapeMonitorClient.Update(context.Context, string, string, SapLandscapeMonitor, *SapLandscapeMonitorClientUpdateOptions) (SapLandscapeMonitorClientUpdateResponse, error)`
+- New function `*SingleServerCustomResourceNames.GetSingleServerCustomResourceNames() *SingleServerCustomResourceNames`
+- New function `*SingleServerFullResourceNames.GetSingleServerCustomResourceNames() *SingleServerCustomResourceNames`
+- New function `*SkipFileShareConfiguration.GetFileShareConfiguration() *FileShareConfiguration`
+- New function `*ThreeTierCustomResourceNames.GetThreeTierCustomResourceNames() *ThreeTierCustomResourceNames`
+- New function `*ThreeTierFullResourceNames.GetThreeTierCustomResourceNames() *ThreeTierCustomResourceNames`
+- New struct `ApplicationServerFullResourceNames`
+- New struct `ApplicationServerVMDetails`
+- New struct `CentralServerFullResourceNames`
+- New struct `CreateAndMountFileShareConfiguration`
+- New struct `DatabaseServerFullResourceNames`
+- New struct `DiskConfiguration`
+- New struct `DiskDetails`
+- New struct `DiskSKU`
+- New struct `DiskVolumeConfiguration`
+- New struct `ExternalInstallationSoftwareConfiguration`
+- New struct `LoadBalancerDetails`
+- New struct `LoadBalancerResourceNames`
+- New struct `MountFileShareConfiguration`
+- New struct `NetworkInterfaceResourceNames`
+- New struct `SAPApplicationServerInstancesClientStartInstanceResponse`
+- New struct `SAPApplicationServerInstancesClientStopInstanceResponse`
+- New struct `SAPCentralInstancesClientStartInstanceResponse`
+- New struct `SAPCentralInstancesClientStopInstanceResponse`
+- New struct `SAPDatabaseInstancesClientStartInstanceResponse`
+- New struct `SAPDatabaseInstancesClientStopInstanceResponse`
+- New struct `SapLandscapeMonitor`
+- New struct `SapLandscapeMonitorClient`
+- New struct `SapLandscapeMonitorListResult`
+- New struct `SapLandscapeMonitorMetricThresholds`
+- New struct `SapLandscapeMonitorProperties`
+- New struct `SapLandscapeMonitorPropertiesGrouping`
+- New struct `SapLandscapeMonitorSidMapping`
+- New struct `SharedStorageResourceNames`
+- New struct `SingleServerFullResourceNames`
+- New struct `SkipFileShareConfiguration`
+- New struct `StorageConfiguration`
+- New struct `StorageInformation`
+- New struct `ThreeTierFullResourceNames`
+- New struct `VirtualMachineResourceNames`
+- New field `StorageDetails` in struct `CentralServerVMDetails`
+- New field `SSLCertificateURI` in struct `DB2ProviderInstanceProperties`
+- New field `SSLPreference` in struct `DB2ProviderInstanceProperties`
+- New field `DiskConfiguration` in struct `DatabaseConfiguration`
+- New field `StorageDetails` in struct `DatabaseVMDetails`
+- New field `ManagedRgStorageAccountName` in struct `DiscoveryConfiguration`
+- New field `SSLCertificateURI` in struct `HanaDbProviderInstanceProperties`
+- New field `SSLPreference` in struct `HanaDbProviderInstanceProperties`
+- New field `SapSid` in struct `HanaDbProviderInstanceProperties`
+- New field `StorageAccountArmID` in struct `MonitorProperties`
+- New field `ZoneRedundancyPreference` in struct `MonitorProperties`
+- New field `SSLCertificateURI` in struct `MsSQLServerProviderInstanceProperties`
+- New field `SSLPreference` in struct `MsSQLServerProviderInstanceProperties`
+- New field `SSLCertificateURI` in struct `PrometheusHaClusterProviderInstanceProperties`
+- New field `SSLPreference` in struct `PrometheusHaClusterProviderInstanceProperties`
+- New field `SSLCertificateURI` in struct `PrometheusOSProviderInstanceProperties`
+- New field `SSLPreference` in struct `PrometheusOSProviderInstanceProperties`
+- New field `SapSid` in struct `PrometheusOSProviderInstanceProperties`
+- New field `LoadBalancerDetails` in struct `SAPApplicationServerProperties`
+- New field `VMDetails` in struct `SAPApplicationServerProperties`
+- New field `LoadBalancerDetails` in struct `SAPCentralServerProperties`
+- New field `LoadBalancerDetails` in struct `SAPDatabaseProperties`
+- New field `RecommendedConfiguration` in struct `SAPDiskConfiguration`
+- New field `SupportedConfigurations` in struct `SAPDiskConfiguration`
+- New field `VolumeConfigurations` in struct `SAPDiskConfigurationsResult`
+- New field `SSLCertificateURI` in struct `SapNetWeaverProviderInstanceProperties`
+- New field `SSLPreference` in struct `SapNetWeaverProviderInstanceProperties`
+- New field `CustomResourceNames` in struct `SingleServerConfiguration`
+- New field `DbDiskConfiguration` in struct `SingleServerConfiguration`
+- New field `SoftStopTimeoutSeconds` in struct `StopRequest`
+- New field `CustomResourceNames` in struct `ThreeTierConfiguration`
+- New field `StorageConfiguration` in struct `ThreeTierConfiguration`
+
+
 ## 0.2.0 (2022-06-30)
 ### Breaking Changes
 

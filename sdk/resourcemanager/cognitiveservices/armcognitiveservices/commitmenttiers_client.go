@@ -32,9 +32,9 @@ type CommitmentTiersClient struct {
 }
 
 // NewCommitmentTiersClient creates a new instance of CommitmentTiersClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCommitmentTiersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommitmentTiersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -56,9 +56,11 @@ func NewCommitmentTiersClient(subscriptionID string, credential azcore.TokenCred
 }
 
 // NewListPager - List Commitment Tiers.
-// Generated from API version 2022-10-01
-// location - Resource location.
-// options - CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.List method.
+//
+// Generated from API version 2022-12-01
+//   - location - Resource location.
+//   - options - CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.NewListPager
+//     method.
 func (client *CommitmentTiersClient) NewListPager(location string, options *CommitmentTiersClientListOptions) *runtime.Pager[CommitmentTiersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CommitmentTiersClientListResponse]{
 		More: func(page CommitmentTiersClientListResponse) bool {
@@ -103,7 +105,7 @@ func (client *CommitmentTiersClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

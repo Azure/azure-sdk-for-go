@@ -11,7 +11,7 @@ package armworkloads
 
 const (
 	moduleName    = "armworkloads"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -28,45 +28,21 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// ApplicationProvisioningState - WordPress instance provisioning state
-type ApplicationProvisioningState string
+// ApplicationServerVirtualMachineType - Defines the type of application server VM.
+type ApplicationServerVirtualMachineType string
 
 const (
-	ApplicationProvisioningStateAccepted     ApplicationProvisioningState = "Accepted"
-	ApplicationProvisioningStateCanceled     ApplicationProvisioningState = "Canceled"
-	ApplicationProvisioningStateCreated      ApplicationProvisioningState = "Created"
-	ApplicationProvisioningStateFailed       ApplicationProvisioningState = "Failed"
-	ApplicationProvisioningStateInstalling   ApplicationProvisioningState = "Installing"
-	ApplicationProvisioningStateNotSpecified ApplicationProvisioningState = "NotSpecified"
-	ApplicationProvisioningStateSucceeded    ApplicationProvisioningState = "Succeeded"
+	ApplicationServerVirtualMachineTypeActive  ApplicationServerVirtualMachineType = "Active"
+	ApplicationServerVirtualMachineTypeStandby ApplicationServerVirtualMachineType = "Standby"
+	ApplicationServerVirtualMachineTypeUnknown ApplicationServerVirtualMachineType = "Unknown"
 )
 
-// PossibleApplicationProvisioningStateValues returns the possible values for the ApplicationProvisioningState const type.
-func PossibleApplicationProvisioningStateValues() []ApplicationProvisioningState {
-	return []ApplicationProvisioningState{
-		ApplicationProvisioningStateAccepted,
-		ApplicationProvisioningStateCanceled,
-		ApplicationProvisioningStateCreated,
-		ApplicationProvisioningStateFailed,
-		ApplicationProvisioningStateInstalling,
-		ApplicationProvisioningStateNotSpecified,
-		ApplicationProvisioningStateSucceeded,
-	}
-}
-
-// AzureFrontDoorEnabled - Whether to enable Azure front door
-type AzureFrontDoorEnabled string
-
-const (
-	AzureFrontDoorEnabledDisabled AzureFrontDoorEnabled = "Disabled"
-	AzureFrontDoorEnabledEnabled  AzureFrontDoorEnabled = "Enabled"
-)
-
-// PossibleAzureFrontDoorEnabledValues returns the possible values for the AzureFrontDoorEnabled const type.
-func PossibleAzureFrontDoorEnabledValues() []AzureFrontDoorEnabled {
-	return []AzureFrontDoorEnabled{
-		AzureFrontDoorEnabledDisabled,
-		AzureFrontDoorEnabledEnabled,
+// PossibleApplicationServerVirtualMachineTypeValues returns the possible values for the ApplicationServerVirtualMachineType const type.
+func PossibleApplicationServerVirtualMachineTypeValues() []ApplicationServerVirtualMachineType {
+	return []ApplicationServerVirtualMachineType{
+		ApplicationServerVirtualMachineTypeActive,
+		ApplicationServerVirtualMachineTypeStandby,
+		ApplicationServerVirtualMachineTypeUnknown,
 	}
 }
 
@@ -96,6 +72,24 @@ func PossibleCentralServerVirtualMachineTypeValues() []CentralServerVirtualMachi
 	}
 }
 
+// ConfigurationType - The type of file share config.
+type ConfigurationType string
+
+const (
+	ConfigurationTypeCreateAndMount ConfigurationType = "CreateAndMount"
+	ConfigurationTypeMount          ConfigurationType = "Mount"
+	ConfigurationTypeSkip           ConfigurationType = "Skip"
+)
+
+// PossibleConfigurationTypeValues returns the possible values for the ConfigurationType const type.
+func PossibleConfigurationTypeValues() []ConfigurationType {
+	return []ConfigurationType{
+		ConfigurationTypeCreateAndMount,
+		ConfigurationTypeMount,
+		ConfigurationTypeSkip,
+	}
+}
+
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -116,85 +110,29 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DatabaseTier - Tier of the server SKU
-type DatabaseTier string
+// DiskSKUName - Defines the disk sku name.
+type DiskSKUName string
 
 const (
-	DatabaseTierBurstable       DatabaseTier = "Burstable"
-	DatabaseTierGeneralPurpose  DatabaseTier = "GeneralPurpose"
-	DatabaseTierMemoryOptimized DatabaseTier = "MemoryOptimized"
+	DiskSKUNamePremiumLRS     DiskSKUName = "Premium_LRS"
+	DiskSKUNamePremiumV2LRS   DiskSKUName = "PremiumV2_LRS"
+	DiskSKUNamePremiumZRS     DiskSKUName = "Premium_ZRS"
+	DiskSKUNameStandardLRS    DiskSKUName = "Standard_LRS"
+	DiskSKUNameStandardSSDLRS DiskSKUName = "StandardSSD_LRS"
+	DiskSKUNameStandardSSDZRS DiskSKUName = "StandardSSD_ZRS"
+	DiskSKUNameUltraSSDLRS    DiskSKUName = "UltraSSD_LRS"
 )
 
-// PossibleDatabaseTierValues returns the possible values for the DatabaseTier const type.
-func PossibleDatabaseTierValues() []DatabaseTier {
-	return []DatabaseTier{
-		DatabaseTierBurstable,
-		DatabaseTierGeneralPurpose,
-		DatabaseTierMemoryOptimized,
-	}
-}
-
-// DatabaseType - Database type
-type DatabaseType string
-
-const (
-	DatabaseTypeMySQL DatabaseType = "MySql"
-)
-
-// PossibleDatabaseTypeValues returns the possible values for the DatabaseType const type.
-func PossibleDatabaseTypeValues() []DatabaseType {
-	return []DatabaseType{
-		DatabaseTypeMySQL,
-	}
-}
-
-// DiskStorageType - Storage type
-type DiskStorageType string
-
-const (
-	DiskStorageTypePremiumLRS     DiskStorageType = "Premium_LRS"
-	DiskStorageTypeStandardLRS    DiskStorageType = "Standard_LRS"
-	DiskStorageTypeStandardSSDLRS DiskStorageType = "StandardSSD_LRS"
-)
-
-// PossibleDiskStorageTypeValues returns the possible values for the DiskStorageType const type.
-func PossibleDiskStorageTypeValues() []DiskStorageType {
-	return []DiskStorageType{
-		DiskStorageTypePremiumLRS,
-		DiskStorageTypeStandardLRS,
-		DiskStorageTypeStandardSSDLRS,
-	}
-}
-
-// EnableBackup - Whether to enable Azure backup for the workload
-type EnableBackup string
-
-const (
-	EnableBackupDisabled EnableBackup = "Disabled"
-	EnableBackupEnabled  EnableBackup = "Enabled"
-)
-
-// PossibleEnableBackupValues returns the possible values for the EnableBackup const type.
-func PossibleEnableBackupValues() []EnableBackup {
-	return []EnableBackup{
-		EnableBackupDisabled,
-		EnableBackupEnabled,
-	}
-}
-
-// EnableSSLEnforcement - Whether to enable SSL enforcement on the database
-type EnableSSLEnforcement string
-
-const (
-	EnableSSLEnforcementDisabled EnableSSLEnforcement = "Disabled"
-	EnableSSLEnforcementEnabled  EnableSSLEnforcement = "Enabled"
-)
-
-// PossibleEnableSSLEnforcementValues returns the possible values for the EnableSSLEnforcement const type.
-func PossibleEnableSSLEnforcementValues() []EnableSSLEnforcement {
-	return []EnableSSLEnforcement{
-		EnableSSLEnforcementDisabled,
-		EnableSSLEnforcementEnabled,
+// PossibleDiskSKUNameValues returns the possible values for the DiskSKUName const type.
+func PossibleDiskSKUNameValues() []DiskSKUName {
+	return []DiskSKUName{
+		DiskSKUNamePremiumLRS,
+		DiskSKUNamePremiumV2LRS,
+		DiskSKUNamePremiumZRS,
+		DiskSKUNameStandardLRS,
+		DiskSKUNameStandardSSDLRS,
+		DiskSKUNameStandardSSDZRS,
+		DiskSKUNameUltraSSDLRS,
 	}
 }
 
@@ -214,90 +152,6 @@ func PossibleEnqueueReplicationServerTypeValues() []EnqueueReplicationServerType
 	}
 }
 
-// FileShareStorageType - File share backing storage type
-type FileShareStorageType string
-
-const (
-	FileShareStorageTypePremiumLRS  FileShareStorageType = "Premium_LRS"
-	FileShareStorageTypeStandardGRS FileShareStorageType = "Standard_GRS"
-	FileShareStorageTypeStandardLRS FileShareStorageType = "Standard_LRS"
-	FileShareStorageTypeStandardZRS FileShareStorageType = "Standard_ZRS"
-)
-
-// PossibleFileShareStorageTypeValues returns the possible values for the FileShareStorageType const type.
-func PossibleFileShareStorageTypeValues() []FileShareStorageType {
-	return []FileShareStorageType{
-		FileShareStorageTypePremiumLRS,
-		FileShareStorageTypeStandardGRS,
-		FileShareStorageTypeStandardLRS,
-		FileShareStorageTypeStandardZRS,
-	}
-}
-
-// FileShareType - Share type
-type FileShareType string
-
-const (
-	FileShareTypeAzureFiles      FileShareType = "AzureFiles"
-	FileShareTypeNfsOnController FileShareType = "NfsOnController"
-)
-
-// PossibleFileShareTypeValues returns the possible values for the FileShareType const type.
-func PossibleFileShareTypeValues() []FileShareType {
-	return []FileShareType{
-		FileShareTypeAzureFiles,
-		FileShareTypeNfsOnController,
-	}
-}
-
-// HAEnabled - Whether to enable HA for the server
-type HAEnabled string
-
-const (
-	HAEnabledDisabled HAEnabled = "Disabled"
-	HAEnabledEnabled  HAEnabled = "Enabled"
-)
-
-// PossibleHAEnabledValues returns the possible values for the HAEnabled const type.
-func PossibleHAEnabledValues() []HAEnabled {
-	return []HAEnabled{
-		HAEnabledDisabled,
-		HAEnabledEnabled,
-	}
-}
-
-// LoadBalancerType - Load balancer type
-type LoadBalancerType string
-
-const (
-	LoadBalancerTypeApplicationGateway LoadBalancerType = "ApplicationGateway"
-	LoadBalancerTypeLoadBalancer       LoadBalancerType = "LoadBalancer"
-)
-
-// PossibleLoadBalancerTypeValues returns the possible values for the LoadBalancerType const type.
-func PossibleLoadBalancerTypeValues() []LoadBalancerType {
-	return []LoadBalancerType{
-		LoadBalancerTypeApplicationGateway,
-		LoadBalancerTypeLoadBalancer,
-	}
-}
-
-// LocationType - Type of the extended location.
-type LocationType string
-
-const (
-	LocationTypeEdgeZone LocationType = "EdgeZone"
-	LocationTypeRegion   LocationType = "Region"
-)
-
-// PossibleLocationTypeValues returns the possible values for the LocationType const type.
-func PossibleLocationTypeValues() []LocationType {
-	return []LocationType{
-		LocationTypeEdgeZone,
-		LocationTypeRegion,
-	}
-}
-
 // ManagedServiceIdentityType - Type of managed service identity (only None, UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
@@ -314,61 +168,17 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
-// OSImageOffer - OS image offer
-type OSImageOffer string
+// NamingPatternType - The pattern type to be used for resource naming.
+type NamingPatternType string
 
 const (
-	OSImageOfferUbuntuServer OSImageOffer = "UbuntuServer"
+	NamingPatternTypeFullResourceName NamingPatternType = "FullResourceName"
 )
 
-// PossibleOSImageOfferValues returns the possible values for the OSImageOffer const type.
-func PossibleOSImageOfferValues() []OSImageOffer {
-	return []OSImageOffer{
-		OSImageOfferUbuntuServer,
-	}
-}
-
-// OSImagePublisher - OS image publisher
-type OSImagePublisher string
-
-const (
-	OSImagePublisherCanonical OSImagePublisher = "Canonical"
-)
-
-// PossibleOSImagePublisherValues returns the possible values for the OSImagePublisher const type.
-func PossibleOSImagePublisherValues() []OSImagePublisher {
-	return []OSImagePublisher{
-		OSImagePublisherCanonical,
-	}
-}
-
-// OSImageSKU - OS image sku
-type OSImageSKU string
-
-const (
-	OSImageSKUEighteen04LTS OSImageSKU = "18.04-LTS"
-	OSImageSKUSixteen04LTS  OSImageSKU = "16.04-LTS"
-)
-
-// PossibleOSImageSKUValues returns the possible values for the OSImageSKU const type.
-func PossibleOSImageSKUValues() []OSImageSKU {
-	return []OSImageSKU{
-		OSImageSKUEighteen04LTS,
-		OSImageSKUSixteen04LTS,
-	}
-}
-
-// OSImageVersion - OS image version
-type OSImageVersion string
-
-const (
-	OSImageVersionLatest OSImageVersion = "latest"
-)
-
-// PossibleOSImageVersionValues returns the possible values for the OSImageVersion const type.
-func PossibleOSImageVersionValues() []OSImageVersion {
-	return []OSImageVersion{
-		OSImageVersionLatest,
+// PossibleNamingPatternTypeValues returns the possible values for the NamingPatternType const type.
+func PossibleNamingPatternTypeValues() []NamingPatternType {
+	return []NamingPatternType{
+		NamingPatternTypeFullResourceName,
 	}
 }
 
@@ -422,68 +232,6 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
-	}
-}
-
-// PHPVersion - PHP version
-type PHPVersion string
-
-const (
-	PHPVersionSeven2 PHPVersion = "7.2"
-	PHPVersionSeven3 PHPVersion = "7.3"
-	PHPVersionSeven4 PHPVersion = "7.4"
-)
-
-// PossiblePHPVersionValues returns the possible values for the PHPVersion const type.
-func PossiblePHPVersionValues() []PHPVersion {
-	return []PHPVersion{
-		PHPVersionSeven2,
-		PHPVersionSeven3,
-		PHPVersionSeven4,
-	}
-}
-
-// PhpWorkloadProvisioningState - Php workload resource provisioning state
-type PhpWorkloadProvisioningState string
-
-const (
-	PhpWorkloadProvisioningStateAccepted     PhpWorkloadProvisioningState = "Accepted"
-	PhpWorkloadProvisioningStateCanceled     PhpWorkloadProvisioningState = "Canceled"
-	PhpWorkloadProvisioningStateCreated      PhpWorkloadProvisioningState = "Created"
-	PhpWorkloadProvisioningStateDeleting     PhpWorkloadProvisioningState = "Deleting"
-	PhpWorkloadProvisioningStateFailed       PhpWorkloadProvisioningState = "Failed"
-	PhpWorkloadProvisioningStateNotSpecified PhpWorkloadProvisioningState = "NotSpecified"
-	PhpWorkloadProvisioningStateProvisioning PhpWorkloadProvisioningState = "Provisioning"
-	PhpWorkloadProvisioningStateSucceeded    PhpWorkloadProvisioningState = "Succeeded"
-)
-
-// PossiblePhpWorkloadProvisioningStateValues returns the possible values for the PhpWorkloadProvisioningState const type.
-func PossiblePhpWorkloadProvisioningStateValues() []PhpWorkloadProvisioningState {
-	return []PhpWorkloadProvisioningState{
-		PhpWorkloadProvisioningStateAccepted,
-		PhpWorkloadProvisioningStateCanceled,
-		PhpWorkloadProvisioningStateCreated,
-		PhpWorkloadProvisioningStateDeleting,
-		PhpWorkloadProvisioningStateFailed,
-		PhpWorkloadProvisioningStateNotSpecified,
-		PhpWorkloadProvisioningStateProvisioning,
-		PhpWorkloadProvisioningStateSucceeded,
-	}
-}
-
-// RedisCacheFamily - Cache family
-type RedisCacheFamily string
-
-const (
-	RedisCacheFamilyC RedisCacheFamily = "C"
-	RedisCacheFamilyP RedisCacheFamily = "P"
-)
-
-// PossibleRedisCacheFamilyValues returns the possible values for the RedisCacheFamily const type.
-func PossibleRedisCacheFamilyValues() []RedisCacheFamily {
-	return []RedisCacheFamily{
-		RedisCacheFamilyC,
-		RedisCacheFamilyP,
 	}
 }
 
@@ -552,7 +300,7 @@ func PossibleSAPDatabaseTypeValues() []SAPDatabaseType {
 	}
 }
 
-// SAPDeploymentType - The deployment Type.
+// SAPDeploymentType - The type of SAP deployment, single server or Three tier.
 type SAPDeploymentType string
 
 const (
@@ -584,7 +332,7 @@ func PossibleSAPEnvironmentTypeValues() []SAPEnvironmentType {
 	}
 }
 
-// SAPHealthState - Defines the SAP Instance health.
+// SAPHealthState - Defines the health of SAP Instances.
 type SAPHealthState string
 
 const (
@@ -643,6 +391,7 @@ func PossibleSAPProductTypeValues() []SAPProductType {
 type SAPSoftwareInstallationType string
 
 const (
+	SAPSoftwareInstallationTypeExternal                  SAPSoftwareInstallationType = "External"
 	SAPSoftwareInstallationTypeSAPInstallWithoutOSConfig SAPSoftwareInstallationType = "SAPInstallWithoutOSConfig"
 	SAPSoftwareInstallationTypeServiceInitiated          SAPSoftwareInstallationType = "ServiceInitiated"
 )
@@ -650,6 +399,7 @@ const (
 // PossibleSAPSoftwareInstallationTypeValues returns the possible values for the SAPSoftwareInstallationType const type.
 func PossibleSAPSoftwareInstallationTypeValues() []SAPSoftwareInstallationType {
 	return []SAPSoftwareInstallationType{
+		SAPSoftwareInstallationTypeExternal,
 		SAPSoftwareInstallationTypeSAPInstallWithoutOSConfig,
 		SAPSoftwareInstallationTypeServiceInitiated,
 	}
@@ -666,6 +416,8 @@ const (
 	SAPVirtualInstanceStateInfrastructureDeploymentInProgress SAPVirtualInstanceState = "InfrastructureDeploymentInProgress"
 	SAPVirtualInstanceStateInfrastructureDeploymentPending    SAPVirtualInstanceState = "InfrastructureDeploymentPending"
 	SAPVirtualInstanceStateRegistrationComplete               SAPVirtualInstanceState = "RegistrationComplete"
+	SAPVirtualInstanceStateSoftwareDetectionFailed            SAPVirtualInstanceState = "SoftwareDetectionFailed"
+	SAPVirtualInstanceStateSoftwareDetectionInProgress        SAPVirtualInstanceState = "SoftwareDetectionInProgress"
 	SAPVirtualInstanceStateSoftwareInstallationFailed         SAPVirtualInstanceState = "SoftwareInstallationFailed"
 	SAPVirtualInstanceStateSoftwareInstallationInProgress     SAPVirtualInstanceState = "SoftwareInstallationInProgress"
 	SAPVirtualInstanceStateSoftwareInstallationPending        SAPVirtualInstanceState = "SoftwareInstallationPending"
@@ -681,6 +433,8 @@ func PossibleSAPVirtualInstanceStateValues() []SAPVirtualInstanceState {
 		SAPVirtualInstanceStateInfrastructureDeploymentInProgress,
 		SAPVirtualInstanceStateInfrastructureDeploymentPending,
 		SAPVirtualInstanceStateRegistrationComplete,
+		SAPVirtualInstanceStateSoftwareDetectionFailed,
+		SAPVirtualInstanceStateSoftwareDetectionInProgress,
 		SAPVirtualInstanceStateSoftwareInstallationFailed,
 		SAPVirtualInstanceStateSoftwareInstallationInProgress,
 		SAPVirtualInstanceStateSoftwareInstallationPending,
@@ -694,6 +448,7 @@ const (
 	SAPVirtualInstanceStatusOffline          SAPVirtualInstanceStatus = "Offline"
 	SAPVirtualInstanceStatusPartiallyRunning SAPVirtualInstanceStatus = "PartiallyRunning"
 	SAPVirtualInstanceStatusRunning          SAPVirtualInstanceStatus = "Running"
+	SAPVirtualInstanceStatusSoftShutdown     SAPVirtualInstanceStatus = "SoftShutdown"
 	SAPVirtualInstanceStatusStarting         SAPVirtualInstanceStatus = "Starting"
 	SAPVirtualInstanceStatusStopping         SAPVirtualInstanceStatus = "Stopping"
 	SAPVirtualInstanceStatusUnavailable      SAPVirtualInstanceStatus = "Unavailable"
@@ -705,84 +460,50 @@ func PossibleSAPVirtualInstanceStatusValues() []SAPVirtualInstanceStatus {
 		SAPVirtualInstanceStatusOffline,
 		SAPVirtualInstanceStatusPartiallyRunning,
 		SAPVirtualInstanceStatusRunning,
+		SAPVirtualInstanceStatusSoftShutdown,
 		SAPVirtualInstanceStatusStarting,
 		SAPVirtualInstanceStatusStopping,
 		SAPVirtualInstanceStatusUnavailable,
 	}
 }
 
-// SKURestrictionReasonCode - The SKU restriction reason code.
-type SKURestrictionReasonCode string
+// SSLPreference - Gets or sets certificate preference if secure communication is enabled.
+type SSLPreference string
 
 const (
-	SKURestrictionReasonCodeNotAvailableForSubscription SKURestrictionReasonCode = "NotAvailableForSubscription"
-	SKURestrictionReasonCodeNotSpecified                SKURestrictionReasonCode = "NotSpecified"
-	SKURestrictionReasonCodeQuotaID                     SKURestrictionReasonCode = "QuotaId"
+	SSLPreferenceDisabled          SSLPreference = "Disabled"
+	SSLPreferenceRootCertificate   SSLPreference = "RootCertificate"
+	SSLPreferenceServerCertificate SSLPreference = "ServerCertificate"
 )
 
-// PossibleSKURestrictionReasonCodeValues returns the possible values for the SKURestrictionReasonCode const type.
-func PossibleSKURestrictionReasonCodeValues() []SKURestrictionReasonCode {
-	return []SKURestrictionReasonCode{
-		SKURestrictionReasonCodeNotAvailableForSubscription,
-		SKURestrictionReasonCodeNotSpecified,
-		SKURestrictionReasonCodeQuotaID,
+// PossibleSSLPreferenceValues returns the possible values for the SSLPreference const type.
+func PossibleSSLPreferenceValues() []SSLPreference {
+	return []SSLPreference{
+		SSLPreferenceDisabled,
+		SSLPreferenceRootCertificate,
+		SSLPreferenceServerCertificate,
 	}
 }
 
-// SKURestrictionType - The SKU restriction type.
-type SKURestrictionType string
+// SapLandscapeMonitorProvisioningState - State of provisioning of the SAP monitor.
+type SapLandscapeMonitorProvisioningState string
 
 const (
-	SKURestrictionTypeLocation     SKURestrictionType = "Location"
-	SKURestrictionTypeNotSpecified SKURestrictionType = "NotSpecified"
-	SKURestrictionTypeZone         SKURestrictionType = "Zone"
+	SapLandscapeMonitorProvisioningStateAccepted  SapLandscapeMonitorProvisioningState = "Accepted"
+	SapLandscapeMonitorProvisioningStateCanceled  SapLandscapeMonitorProvisioningState = "Canceled"
+	SapLandscapeMonitorProvisioningStateCreated   SapLandscapeMonitorProvisioningState = "Created"
+	SapLandscapeMonitorProvisioningStateFailed    SapLandscapeMonitorProvisioningState = "Failed"
+	SapLandscapeMonitorProvisioningStateSucceeded SapLandscapeMonitorProvisioningState = "Succeeded"
 )
 
-// PossibleSKURestrictionTypeValues returns the possible values for the SKURestrictionType const type.
-func PossibleSKURestrictionTypeValues() []SKURestrictionType {
-	return []SKURestrictionType{
-		SKURestrictionTypeLocation,
-		SKURestrictionTypeNotSpecified,
-		SKURestrictionTypeZone,
-	}
-}
-
-// SKUScaleType - Scale type of the SKU capacity.
-type SKUScaleType string
-
-const (
-	SKUScaleTypeAutomatic SKUScaleType = "Automatic"
-	SKUScaleTypeManual    SKUScaleType = "Manual"
-	SKUScaleTypeNone      SKUScaleType = "None"
-)
-
-// PossibleSKUScaleTypeValues returns the possible values for the SKUScaleType const type.
-func PossibleSKUScaleTypeValues() []SKUScaleType {
-	return []SKUScaleType{
-		SKUScaleTypeAutomatic,
-		SKUScaleTypeManual,
-		SKUScaleTypeNone,
-	}
-}
-
-// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
-// is not required on a PUT.
-type SKUTier string
-
-const (
-	SKUTierFree     SKUTier = "Free"
-	SKUTierBasic    SKUTier = "Basic"
-	SKUTierStandard SKUTier = "Standard"
-	SKUTierPremium  SKUTier = "Premium"
-)
-
-// PossibleSKUTierValues returns the possible values for the SKUTier const type.
-func PossibleSKUTierValues() []SKUTier {
-	return []SKUTier{
-		SKUTierFree,
-		SKUTierBasic,
-		SKUTierStandard,
-		SKUTierPremium,
+// PossibleSapLandscapeMonitorProvisioningStateValues returns the possible values for the SapLandscapeMonitorProvisioningState const type.
+func PossibleSapLandscapeMonitorProvisioningStateValues() []SapLandscapeMonitorProvisioningState {
+	return []SapLandscapeMonitorProvisioningState{
+		SapLandscapeMonitorProvisioningStateAccepted,
+		SapLandscapeMonitorProvisioningStateCanceled,
+		SapLandscapeMonitorProvisioningStateCreated,
+		SapLandscapeMonitorProvisioningStateFailed,
+		SapLandscapeMonitorProvisioningStateSucceeded,
 	}
 }
 
@@ -805,54 +526,6 @@ func PossibleSapVirtualInstanceProvisioningStateValues() []SapVirtualInstancePro
 		SapVirtualInstanceProvisioningStateFailed,
 		SapVirtualInstanceProvisioningStateSucceeded,
 		SapVirtualInstanceProvisioningStateUpdating,
-	}
-}
-
-// SearchType - Search type
-type SearchType string
-
-const (
-	SearchTypeElastic SearchType = "Elastic"
-)
-
-// PossibleSearchTypeValues returns the possible values for the SearchType const type.
-func PossibleSearchTypeValues() []SearchType {
-	return []SearchType{
-		SearchTypeElastic,
-	}
-}
-
-// WordpressVersions - Application version
-type WordpressVersions string
-
-const (
-	WordpressVersionsFive4  WordpressVersions = "5.4"
-	WordpressVersionsFive41 WordpressVersions = "5.4.1"
-	WordpressVersionsFive42 WordpressVersions = "5.4.2"
-	WordpressVersionsFive43 WordpressVersions = "5.4.3"
-)
-
-// PossibleWordpressVersionsValues returns the possible values for the WordpressVersions const type.
-func PossibleWordpressVersionsValues() []WordpressVersions {
-	return []WordpressVersions{
-		WordpressVersionsFive4,
-		WordpressVersionsFive41,
-		WordpressVersionsFive42,
-		WordpressVersionsFive43,
-	}
-}
-
-// WorkloadKind - Indicates which kind of php workload this resource represent e.g WordPress
-type WorkloadKind string
-
-const (
-	WorkloadKindWordPress WorkloadKind = "WordPress"
-)
-
-// PossibleWorkloadKindValues returns the possible values for the WorkloadKind const type.
-func PossibleWorkloadKindValues() []WorkloadKind {
-	return []WorkloadKind{
-		WorkloadKindWordPress,
 	}
 }
 

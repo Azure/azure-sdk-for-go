@@ -20,7 +20,7 @@ The Azure Key Vault administration library clients support administrative tasks 
 
 Install `azadmin` and `azidentity` with `go get`:
 ```
-go get github.com/Azure/azure-sdk-for-go/sdk/keyvault/azadmin
+go get github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 [azidentity][azure_identity] is used for Azure Active Directory authentication during client contruction.

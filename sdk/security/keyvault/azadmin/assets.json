@@ -1,6 +1,6 @@
 {
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
-  "TagPrefix": "go/keyvault/azadmin",
+  "TagPrefix": "go/security/keyvault/azadmin",
   "Tag": ""
 }

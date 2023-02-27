@@ -9,7 +9,7 @@ input-file:
     - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/backuprestore.json
     - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
 license-header: MICROSOFT_MIT_NO_VERSION
-module: github.com/Azure/azure-sdk-for-go/sdk/keyvault/azadmin
+module: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin
 openapi-type: "data-plane"
 output-folder: ../azadmin
 override-client-name: BackupClient

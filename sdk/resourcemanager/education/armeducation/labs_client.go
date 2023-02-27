@@ -32,8 +32,8 @@ type LabsClient struct {
 }
 
 // NewLabsClient creates a new instance of LabsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLabsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*LabsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -55,12 +55,13 @@ func NewLabsClient(credential azcore.TokenCredential, options *arm.ClientOptions
 
 // CreateOrUpdate - Create a new lab or update a previously created lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// parameters - Request parameters that are provided to create lab resource.
-// options - LabsClientCreateOrUpdateOptions contains the optional parameters for the LabsClient.CreateOrUpdate method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - parameters - Request parameters that are provided to create lab resource.
+//   - options - LabsClientCreateOrUpdateOptions contains the optional parameters for the LabsClient.CreateOrUpdate method.
 func (client *LabsClient) CreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters LabDetails, options *LabsClientCreateOrUpdateOptions) (LabsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, parameters, options)
 	if err != nil {
@@ -114,11 +115,12 @@ func (client *LabsClient) createOrUpdateHandleResponse(resp *http.Response) (Lab
 // Delete - Delete a specific lab associated with the provided billing account name, billing profile name, and invoice section
 // name. Note all students must be removed from the lab in order to delete the lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// options - LabsClientDeleteOptions contains the optional parameters for the LabsClient.Delete method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - options - LabsClientDeleteOptions contains the optional parameters for the LabsClient.Delete method.
 func (client *LabsClient) Delete(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *LabsClientDeleteOptions) (LabsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
 	if err != nil {
@@ -162,12 +164,13 @@ func (client *LabsClient) deleteCreateRequest(ctx context.Context, billingAccoun
 
 // GenerateInviteCode - Generate invite code for a lab
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// parameters - Request parameters that are provided to generate invite code.
-// options - LabsClientGenerateInviteCodeOptions contains the optional parameters for the LabsClient.GenerateInviteCode method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - parameters - Request parameters that are provided to generate invite code.
+//   - options - LabsClientGenerateInviteCodeOptions contains the optional parameters for the LabsClient.GenerateInviteCode method.
 func (client *LabsClient) GenerateInviteCode(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters InviteCodeGenerateRequest, options *LabsClientGenerateInviteCodeOptions) (LabsClientGenerateInviteCodeResponse, error) {
 	req, err := client.generateInviteCodeCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, parameters, options)
 	if err != nil {
@@ -224,11 +227,12 @@ func (client *LabsClient) generateInviteCodeHandleResponse(resp *http.Response) 
 // Get - Get the details for a specific lab associated with the provided billing account name, billing profile name, and invoice
 // section name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// options - LabsClientGetOptions contains the optional parameters for the LabsClient.Get method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - options - LabsClientGetOptions contains the optional parameters for the LabsClient.Get method.
 func (client *LabsClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *LabsClientGetOptions) (LabsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
 	if err != nil {
@@ -284,12 +288,12 @@ func (client *LabsClient) getHandleResponse(resp *http.Response) (LabsClientGetR
 
 // NewListPager - Get the details for a specific lab associated with the provided billing account name, billing profile name,
 // and invoice section name.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// options - LabsClientListOptions contains the optional parameters for the LabsClient.List method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - options - LabsClientListOptions contains the optional parameters for the LabsClient.NewListPager method.
 func (client *LabsClient) NewListPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *LabsClientListOptions) *runtime.Pager[LabsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LabsClientListResponse]{
 		More: func(page LabsClientListResponse) bool {
@@ -357,11 +361,11 @@ func (client *LabsClient) listHandleResponse(resp *http.Response) (LabsClientLis
 }
 
 // NewListAllPager - Get a list of labs associated with the provided billing account name and billing profile name.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// options - LabsClientListAllOptions contains the optional parameters for the LabsClient.ListAll method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - options - LabsClientListAllOptions contains the optional parameters for the LabsClient.NewListAllPager method.
 func (client *LabsClient) NewListAllPager(billingAccountName string, billingProfileName string, options *LabsClientListAllOptions) *runtime.Pager[LabsClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LabsClientListAllResponse]{
 		More: func(page LabsClientListAllResponse) bool {

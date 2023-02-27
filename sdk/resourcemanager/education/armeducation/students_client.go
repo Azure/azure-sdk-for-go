@@ -32,8 +32,8 @@ type StudentsClient struct {
 }
 
 // NewStudentsClient creates a new instance of StudentsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewStudentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*StudentsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -56,13 +56,14 @@ func NewStudentsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // CreateOrUpdate - Create and add a new student to the specified lab or update the details of an existing student in a lab.
 // Note the student must have a valid tenant to accept the lab after they have been added to lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// studentAlias - Student alias.
-// parameters - Request parameters that are provided to update student properties.
-// options - StudentsClientCreateOrUpdateOptions contains the optional parameters for the StudentsClient.CreateOrUpdate method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - studentAlias - Student alias.
+//   - parameters - Request parameters that are provided to update student properties.
+//   - options - StudentsClientCreateOrUpdateOptions contains the optional parameters for the StudentsClient.CreateOrUpdate method.
 func (client *StudentsClient) CreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, studentAlias string, parameters StudentDetails, options *StudentsClientCreateOrUpdateOptions) (StudentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters, options)
 	if err != nil {
@@ -119,12 +120,13 @@ func (client *StudentsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Delete the specified student based on the student alias.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// studentAlias - Student alias.
-// options - StudentsClientDeleteOptions contains the optional parameters for the StudentsClient.Delete method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - studentAlias - Student alias.
+//   - options - StudentsClientDeleteOptions contains the optional parameters for the StudentsClient.Delete method.
 func (client *StudentsClient) Delete(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, studentAlias string, options *StudentsClientDeleteOptions) (StudentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, studentAlias, options)
 	if err != nil {
@@ -172,12 +174,13 @@ func (client *StudentsClient) deleteCreateRequest(ctx context.Context, billingAc
 
 // Get - Get the details for a specific student in the specified lab by student alias
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// studentAlias - Student alias.
-// options - StudentsClientGetOptions contains the optional parameters for the StudentsClient.Get method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - studentAlias - Student alias.
+//   - options - StudentsClientGetOptions contains the optional parameters for the StudentsClient.Get method.
 func (client *StudentsClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, studentAlias string, options *StudentsClientGetOptions) (StudentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, studentAlias, options)
 	if err != nil {
@@ -233,12 +236,12 @@ func (client *StudentsClient) getHandleResponse(resp *http.Response) (StudentsCl
 }
 
 // NewListPager - Get a list of details about students that are associated with the specified lab.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// options - StudentsClientListOptions contains the optional parameters for the StudentsClient.List method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - options - StudentsClientListOptions contains the optional parameters for the StudentsClient.NewListPager method.
 func (client *StudentsClient) NewListPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *StudentsClientListOptions) *runtime.Pager[StudentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[StudentsClientListResponse]{
 		More: func(page StudentsClientListResponse) bool {

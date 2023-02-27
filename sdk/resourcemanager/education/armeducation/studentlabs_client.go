@@ -31,8 +31,8 @@ type StudentLabsClient struct {
 }
 
 // NewStudentLabsClient creates a new instance of StudentLabsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewStudentLabsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*StudentLabsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -54,9 +54,10 @@ func NewStudentLabsClient(credential azcore.TokenCredential, options *arm.Client
 
 // Get - Get the details for a specified lab associated with the student lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// studentLabName - Student lab name.
-// options - StudentLabsClientGetOptions contains the optional parameters for the StudentLabsClient.Get method.
+//   - studentLabName - The ID that uniquely identifies a student lab.
+//   - options - StudentLabsClientGetOptions contains the optional parameters for the StudentLabsClient.Get method.
 func (client *StudentLabsClient) Get(ctx context.Context, studentLabName string, options *StudentLabsClientGetOptions) (StudentLabsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, studentLabName, options)
 	if err != nil {
@@ -100,9 +101,9 @@ func (client *StudentLabsClient) getHandleResponse(resp *http.Response) (Student
 }
 
 // NewListAllPager - Get a list of all labs associated with the caller of the API.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// options - StudentLabsClientListAllOptions contains the optional parameters for the StudentLabsClient.ListAll method.
+//   - options - StudentLabsClientListAllOptions contains the optional parameters for the StudentLabsClient.NewListAllPager method.
 func (client *StudentLabsClient) NewListAllPager(options *StudentLabsClientListAllOptions) *runtime.Pager[StudentLabsClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[StudentLabsClientListAllResponse]{
 		More: func(page StudentLabsClientListAllResponse) bool {

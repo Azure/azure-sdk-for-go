@@ -32,8 +32,8 @@ type JoinRequestsClient struct {
 }
 
 // NewJoinRequestsClient creates a new instance of JoinRequestsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewJoinRequestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*JoinRequestsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -55,12 +55,13 @@ func NewJoinRequestsClient(credential azcore.TokenCredential, options *arm.Clien
 
 // Approve - Approve student joining the redeemable lab
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// joinRequestName - Join name
-// options - JoinRequestsClientApproveOptions contains the optional parameters for the JoinRequestsClient.Approve method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - joinRequestName - The ID that uniquely identifies a join request.
+//   - options - JoinRequestsClientApproveOptions contains the optional parameters for the JoinRequestsClient.Approve method.
 func (client *JoinRequestsClient) Approve(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, joinRequestName string, options *JoinRequestsClientApproveOptions) (JoinRequestsClientApproveResponse, error) {
 	req, err := client.approveCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, options)
 	if err != nil {
@@ -108,12 +109,13 @@ func (client *JoinRequestsClient) approveCreateRequest(ctx context.Context, bill
 
 // Deny - Deny student joining the redeemable lab
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// joinRequestName - Join name
-// options - JoinRequestsClientDenyOptions contains the optional parameters for the JoinRequestsClient.Deny method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - joinRequestName - The ID that uniquely identifies a join request.
+//   - options - JoinRequestsClientDenyOptions contains the optional parameters for the JoinRequestsClient.Deny method.
 func (client *JoinRequestsClient) Deny(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, joinRequestName string, options *JoinRequestsClientDenyOptions) (JoinRequestsClientDenyResponse, error) {
 	req, err := client.denyCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, options)
 	if err != nil {
@@ -161,12 +163,13 @@ func (client *JoinRequestsClient) denyCreateRequest(ctx context.Context, billing
 
 // Get - get student join requests
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// joinRequestName - Join name
-// options - JoinRequestsClientGetOptions contains the optional parameters for the JoinRequestsClient.Get method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - joinRequestName - The ID that uniquely identifies a join request.
+//   - options - JoinRequestsClientGetOptions contains the optional parameters for the JoinRequestsClient.Get method.
 func (client *JoinRequestsClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, joinRequestName string, options *JoinRequestsClientGetOptions) (JoinRequestsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, options)
 	if err != nil {
@@ -222,12 +225,12 @@ func (client *JoinRequestsClient) getHandleResponse(resp *http.Response) (JoinRe
 }
 
 // NewListPager - get student join requests
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// invoiceSectionName - Invoice section name.
-// options - JoinRequestsClientListOptions contains the optional parameters for the JoinRequestsClient.List method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - invoiceSectionName - The ID that uniquely identifies an invoice section.
+//   - options - JoinRequestsClientListOptions contains the optional parameters for the JoinRequestsClient.NewListPager method.
 func (client *JoinRequestsClient) NewListPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *JoinRequestsClientListOptions) *runtime.Pager[JoinRequestsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[JoinRequestsClientListResponse]{
 		More: func(page JoinRequestsClientListResponse) bool {

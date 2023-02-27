@@ -28,8 +28,8 @@ type ManagementClient struct {
 }
 
 // NewManagementClient creates a new instance of ManagementClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewManagementClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -51,10 +51,11 @@ func NewManagementClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // RedeemInvitationCode - Redeem invite code to join a redeemable lab
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// parameters - Request parameters to provide redeem code.
-// options - ManagementClientRedeemInvitationCodeOptions contains the optional parameters for the ManagementClient.RedeemInvitationCode
-// method.
+//   - parameters - Request parameters to provide redeem code.
+//   - options - ManagementClientRedeemInvitationCodeOptions contains the optional parameters for the ManagementClient.RedeemInvitationCode
+//     method.
 func (client *ManagementClient) RedeemInvitationCode(ctx context.Context, parameters RedeemRequest, options *ManagementClientRedeemInvitationCodeOptions) (ManagementClientRedeemInvitationCodeResponse, error) {
 	req, err := client.redeemInvitationCodeCreateRequest(ctx, parameters, options)
 	if err != nil {

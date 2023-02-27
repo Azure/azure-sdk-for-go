@@ -14,12 +14,12 @@ type GrantsClientGetResponse struct {
 	GrantDetails
 }
 
-// GrantsClientListAllResponse contains the response from method GrantsClient.ListAll.
+// GrantsClientListAllResponse contains the response from method GrantsClient.NewListAllPager.
 type GrantsClientListAllResponse struct {
 	GrantListResponse
 }
 
-// GrantsClientListResponse contains the response from method GrantsClient.List.
+// GrantsClientListResponse contains the response from method GrantsClient.NewListPager.
 type GrantsClientListResponse struct {
 	GrantListResponse
 }
@@ -39,7 +39,7 @@ type JoinRequestsClientGetResponse struct {
 	JoinRequestDetails
 }
 
-// JoinRequestsClientListResponse contains the response from method JoinRequestsClient.List.
+// JoinRequestsClientListResponse contains the response from method JoinRequestsClient.NewListPager.
 type JoinRequestsClientListResponse struct {
 	JoinRequestList
 }
@@ -64,12 +64,12 @@ type LabsClientGetResponse struct {
 	LabDetails
 }
 
-// LabsClientListAllResponse contains the response from method LabsClient.ListAll.
+// LabsClientListAllResponse contains the response from method LabsClient.NewListAllPager.
 type LabsClientListAllResponse struct {
 	LabListResult
 }
 
-// LabsClientListResponse contains the response from method LabsClient.List.
+// LabsClientListResponse contains the response from method LabsClient.NewListPager.
 type LabsClientListResponse struct {
 	LabListResult
 }
@@ -89,7 +89,7 @@ type StudentLabsClientGetResponse struct {
 	StudentLabDetails
 }
 
-// StudentLabsClientListAllResponse contains the response from method StudentLabsClient.ListAll.
+// StudentLabsClientListAllResponse contains the response from method StudentLabsClient.NewListAllPager.
 type StudentLabsClientListAllResponse struct {
 	StudentLabListResult
 }
@@ -109,7 +109,7 @@ type StudentsClientGetResponse struct {
 	StudentDetails
 }
 
-// StudentsClientListResponse contains the response from method StudentsClient.List.
+// StudentsClientListResponse contains the response from method StudentsClient.NewListPager.
 type StudentsClientListResponse struct {
 	StudentListResult
 }

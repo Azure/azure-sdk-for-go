@@ -32,8 +32,8 @@ type GrantsClient struct {
 }
 
 // NewGrantsClient creates a new instance of GrantsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGrantsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GrantsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -55,10 +55,11 @@ func NewGrantsClient(credential azcore.TokenCredential, options *arm.ClientOptio
 
 // Get - Get details for a specific grant linked to the provided billing account and billing profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// options - GrantsClientGetOptions contains the optional parameters for the GrantsClient.Get method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - options - GrantsClientGetOptions contains the optional parameters for the GrantsClient.Get method.
 func (client *GrantsClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, options *GrantsClientGetOptions) (GrantsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, options)
 	if err != nil {
@@ -109,11 +110,11 @@ func (client *GrantsClient) getHandleResponse(resp *http.Response) (GrantsClient
 }
 
 // NewListPager - Get details for a specific grant linked to the provided billing account and billing profile.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// options - GrantsClientListOptions contains the optional parameters for the GrantsClient.List method.
+//   - billingAccountName - The ID that uniquely identifies a billing account.
+//   - billingProfileName - The ID that uniquely identifies a billing profile.
+//   - options - GrantsClientListOptions contains the optional parameters for the GrantsClient.NewListPager method.
 func (client *GrantsClient) NewListPager(billingAccountName string, billingProfileName string, options *GrantsClientListOptions) *runtime.Pager[GrantsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GrantsClientListResponse]{
 		More: func(page GrantsClientListResponse) bool {
@@ -177,9 +178,9 @@ func (client *GrantsClient) listHandleResponse(resp *http.Response) (GrantsClien
 }
 
 // NewListAllPager - Get a list of grants that Microsoft has provided.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// options - GrantsClientListAllOptions contains the optional parameters for the GrantsClient.ListAll method.
+//   - options - GrantsClientListAllOptions contains the optional parameters for the GrantsClient.NewListAllPager method.
 func (client *GrantsClient) NewListAllPager(options *GrantsClientListAllOptions) *runtime.Pager[GrantsClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GrantsClientListAllResponse]{
 		More: func(page GrantsClientListAllResponse) bool {

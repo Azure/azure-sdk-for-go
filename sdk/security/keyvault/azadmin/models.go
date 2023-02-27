@@ -171,12 +171,6 @@ type RoleAssignmentCreateParameters struct {
 	Properties *RoleAssignmentProperties `json:"properties,omitempty"`
 }
 
-// RoleAssignmentFilter - Role Assignments filter
-type RoleAssignmentFilter struct {
-	// Returns role assignment of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
-}
-
 // RoleAssignmentListResult - Role assignment list operation result.
 type RoleAssignmentListResult struct {
 	// The URL to use for getting the next set of results.
@@ -227,12 +221,6 @@ type RoleDefinition struct {
 type RoleDefinitionCreateParameters struct {
 	// REQUIRED; Role definition properties.
 	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
-}
-
-// RoleDefinitionFilter - Role Definitions filter
-type RoleDefinitionFilter struct {
-	// Returns role definition with the specific name.
-	RoleName *string `json:"roleName,omitempty"`
 }
 
 // RoleDefinitionListResult - Role definition list operation result.

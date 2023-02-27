@@ -104,6 +104,14 @@ directive:
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:Error|KeyVaultError)\).*\{\s(?:.+\s)+\}\s/g, "");
 
+  # delete unused filter models
+  - from: models.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+type (?:RoleAssignmentFilter|RoleDefinitionFilter).+\{(?:\s.+\s)+\}\s/g, "");
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:RoleAssignmentFilter|RoleDefinitionFilter)\).*\{\s(?:.+\s)+\}\s/g, "");
+
   # change type of scope parameter from string to RoleScope
   - from: accesscontrol_client.go
     where: $

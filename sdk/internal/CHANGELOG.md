@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Add random alphanumeric string generation support for test-proxy recording framework.
+
 ### Breaking Changes
 
 ### Bugs Fixed

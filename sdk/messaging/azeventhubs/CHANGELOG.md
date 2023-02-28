@@ -1,10 +1,16 @@
 # Release History
 
-## 0.5.1 (Unreleased)
+## 0.6.0 (Unreleased)
 
 ### Features Added
 
+- Added the `ConsumerClientOptions.InstanceID` field. This optional field can enhance error messages from 
+  Event Hubs. For example, error messages related to ownership changes for a partition will contain the 
+  name of the link that has taken ownership, which can help with traceability.
+
 ### Breaking Changes
+
+- `ConsumerClient.ID()` renamed to `ConsumerClient.InstanceID()`.
 
 ### Bugs Fixed
 

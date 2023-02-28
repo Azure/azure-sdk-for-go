@@ -107,8 +107,8 @@ func (up URLParts) String() string {
 	rawQuery := up.UnparsedParams
 
 	//If no snapshot is initially provided, fill it in from the SAS query properties to help the user
-	if up.ShareSnapshot == "" && !up.SAS.SnapshotTime().IsZero() {
-		up.ShareSnapshot = up.SAS.SnapshotTime().Format(snapshotTimeFormat)
+	if up.ShareSnapshot == "" && !up.SAS.ShareSnapshotTime().IsZero() {
+		up.ShareSnapshot = up.SAS.ShareSnapshotTime().Format(SnapshotTimeFormat)
 	}
 
 	// Concatenate share snapshot query parameter (if it exists)

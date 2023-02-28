@@ -11,12 +11,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"net/url"
+	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -193,24 +195,67 @@ func (s *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 // The created security descriptor can be used for the files and directories in the share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-permission.
 func (s *Client) CreatePermission(ctx context.Context, sharePermission string, options *CreatePermissionOptions) (CreatePermissionResponse, error) {
-	return CreatePermissionResponse{}, nil
+	permission, opts := options.format(sharePermission)
+	resp, err := s.generated().CreatePermission(ctx, permission, opts)
+	return resp, err
 }
 
 // GetPermission operation gets the SDDL permission string from the service using a known permission key.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-permission.
 func (s *Client) GetPermission(ctx context.Context, filePermissionKey string, options *GetPermissionOptions) (GetPermissionResponse, error) {
-	return GetPermissionResponse{}, nil
+	opts := options.format()
+	resp, err := s.generated().GetPermission(ctx, filePermissionKey, opts)
+	return resp, err
 }
 
 // SetMetadata operation sets one or more user-defined name-value pairs for the specified share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-share-metadata.
 func (s *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	return SetMetadataResponse{}, nil
-
+	opts, leaseAccessConditions := options.format()
+	resp, err := s.generated().SetMetadata(ctx, opts, leaseAccessConditions)
+	return resp, err
 }
 
 // GetStatistics operation retrieves statistics related to the share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-share-stats.
 func (s *Client) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
-	return GetStatisticsResponse{}, nil
+	opts, leaseAccessConditions := options.format()
+	resp, err := s.generated().GetStatistics(ctx, opts, leaseAccessConditions)
+	return resp, err
+}
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at share.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+func (s *Client) GetSASURL(permissions sas.SharePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	if s.sharedKey() == nil {
+		return "", fileerror.MissingSharedKeyCredential
+	}
+	st := o.format()
+
+	urlParts, err := sas.ParseURL(s.URL())
+	if err != nil {
+		return "", err
+	}
+
+	t, err := time.Parse(sas.SnapshotTimeFormat, urlParts.ShareSnapshot)
+	if err != nil {
+		t = time.Time{}
+	}
+
+	qps, err := sas.FileSignatureValues{
+		Version:      sas.Version,
+		Protocol:     sas.ProtocolHTTPS,
+		ShareName:    urlParts.ShareName,
+		SnapshotTime: t,
+		Permissions:  permissions.String(),
+		StartTime:    st,
+		ExpiryTime:   expiry.UTC(),
+	}.SignWithSharedKey(s.sharedKey())
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := s.URL() + "?" + qps.Encode()
+
+	return endpoint, nil
 }

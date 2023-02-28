@@ -106,7 +106,7 @@ func (v FileSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		contentEncoding:    v.ContentEncoding,
 		contentLanguage:    v.ContentLanguage,
 		contentType:        v.ContentType,
-		snapshotTime:       v.SnapshotTime,
+		shareSnapshotTime:  v.SnapshotTime,
 		// Calculated SAS signature
 		signature: signature,
 	}

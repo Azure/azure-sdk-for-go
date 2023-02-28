@@ -162,10 +162,10 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 		require.Equal(t, parameters.ExpiryTime(), endTime)
 	}
 
-	if _, ok := sasCompMap["snapshot"]; ok {
-		snapshotTime, _, err := parseTime(sasCompMap["snapshot"])
+	if _, ok := sasCompMap["sharesnapshot"]; ok {
+		snapshotTime, _, err := parseTime(sasCompMap["sharesnapshot"])
 		require.NoError(t, err)
-		require.Equal(t, parameters.SnapshotTime(), snapshotTime)
+		require.Equal(t, parameters.ShareSnapshotTime(), snapshotTime)
 	}
 	ipRange := parameters.IPRange()
 	require.Equal(t, ipRange.String(), sasCompMap["sip"])

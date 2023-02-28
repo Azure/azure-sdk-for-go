@@ -223,6 +223,12 @@ type CreatePermissionOptions struct {
 	// placeholder for future options
 }
 
+func (o *CreatePermissionOptions) format(sharePermission string) (Permission, *generated.ShareClientCreatePermissionOptions) {
+	return Permission{
+		Permission: &sharePermission,
+	}, nil
+}
+
 // Permission - A permission (a security descriptor) at the share level.
 type Permission = generated.SharePermission
 
@@ -231,6 +237,10 @@ type Permission = generated.SharePermission
 // GetPermissionOptions contains the optional parameters for the Client.GetPermission method.
 type GetPermissionOptions struct {
 	// placeholder for future options
+}
+
+func (o *GetPermissionOptions) format() *generated.ShareClientGetPermissionOptions {
+	return nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -243,6 +253,16 @@ type SetMetadataOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+func (o *SetMetadataOptions) format() (*generated.ShareClientSetMetadataOptions, *LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return &generated.ShareClientSetMetadataOptions{
+		Metadata: o.Metadata,
+	}, o.LeaseAccessConditions
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // GetStatisticsOptions contains the optional parameters for the Client.GetStatistics method.
@@ -251,5 +271,34 @@ type GetStatisticsOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+func (o *GetStatisticsOptions) format() (*generated.ShareClientGetStatisticsOptions, *LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return nil, o.LeaseAccessConditions
+}
+
 // Stats - Stats for the share.
 type Stats = generated.ShareStats
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+
+	var st time.Time
+	if o.StartTime != nil {
+		st = o.StartTime.UTC()
+	} else {
+		st = time.Time{}
+	}
+	return st
+}

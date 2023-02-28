@@ -17,7 +17,7 @@ import (
 // timeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
 const (
 	timeFormat         = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
-	snapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
+	SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 )
 
 var (
@@ -40,7 +40,7 @@ const (
 	ProtocolHTTPSandHTTP Protocol = "https,http"
 )
 
-// FormatTimesForSigning converts a time.Time to a snapshotTimeFormat string suitable for a
+// FormatTimesForSigning converts a time.Time to a SnapshotTimeFormat string suitable for a
 // Field's StartTime or ExpiryTime fields. Returns "" if value.IsZero().
 func formatTimesForSigning(startTime, expiryTime, snapshotTime time.Time) (string, string, string) {
 	ss := ""
@@ -53,7 +53,7 @@ func formatTimesForSigning(startTime, expiryTime, snapshotTime time.Time) (strin
 	}
 	sh := ""
 	if !snapshotTime.IsZero() {
-		sh = snapshotTime.Format(snapshotTimeFormat)
+		sh = snapshotTime.Format(SnapshotTimeFormat)
 	}
 	return ss, se, sh
 }
@@ -121,7 +121,7 @@ type QueryParameters struct {
 	protocol           Protocol  `param:"spr"`
 	startTime          time.Time `param:"st"`
 	expiryTime         time.Time `param:"se"`
-	snapshotTime       time.Time `param:"snapshot"`
+	shareSnapshotTime  time.Time `param:"sharesnapshot"`
 	ipRange            IPRange   `param:"sip"`
 	identifier         string    `param:"si"`
 	resource           string    `param:"sr"`
@@ -137,9 +137,9 @@ type QueryParameters struct {
 	seTimeFormat string
 }
 
-// SnapshotTime returns snapshotTime.
-func (p *QueryParameters) SnapshotTime() time.Time {
-	return p.snapshotTime
+// ShareSnapshotTime returns shareSnapshotTime.
+func (p *QueryParameters) ShareSnapshotTime() time.Time {
+	return p.shareSnapshotTime
 }
 
 // Version returns version.
@@ -296,8 +296,8 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.resourceTypes = val
 		case "spr":
 			p.protocol = Protocol(val)
-		case "snapshot":
-			p.snapshotTime, _ = time.Parse(snapshotTimeFormat, val)
+		case "sharesnapshot":
+			p.shareSnapshotTime, _ = time.Parse(SnapshotTimeFormat, val)
 		case "st":
 			p.startTime, p.stTimeFormat, _ = parseTime(val)
 		case "se":

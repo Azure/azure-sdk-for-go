@@ -389,17 +389,21 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	reader := bytes.NewReader([]byte(batchReq))
 	rsc := streaming.NopCloser(reader)
 	multipartContentType := "multipart/mixed; boundary=" + batchID
-	resp, err := c.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
 
+	resp, err := c.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
 	if err != nil {
-		return SubmitBatchResponse{
-			BatchRawResponse: resp,
-		}, err
+		return SubmitBatchResponse{}, err
 	}
 
 	batchResponses, err := exported.ParseBlobBatchResponse(resp.Body, resp.ContentType, bb.subRequests)
+	if err != nil {
+		return SubmitBatchResponse{}, err
+	}
+
 	return SubmitBatchResponse{
-		BatchRawResponse: resp,
-		SubResponses:     batchResponses,
-	}, err
+		SubResponses: batchResponses,
+		ContentType:  resp.ContentType,
+		RequestID:    resp.RequestID,
+		Version:      resp.Version,
+	}, nil
 }

@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"io"
 	"log"
@@ -455,19 +454,12 @@ func Example_container_BatchDelete() {
 			fmt.Println("Container: " + *resp.ContainerName)
 			fmt.Println("Blob: " + *resp.BlobName)
 		}
-		if resp.Response != nil {
-			fmt.Println("Response Status: " + resp.Response.Status)
+		if resp.Error == nil {
+			fmt.Println("Successful sub-request")
 		} else {
 			fmt.Println("Error: " + resp.Error.Error())
 		}
 	}
-
-	// print raw response body
-	bodyBytes, err := runtime.Payload(&http.Response{
-		Body: resp.Body,
-	})
-	handleError(err)
-	fmt.Println("Response Body of SubmitBatch:\n" + string(bodyBytes))
 }
 
 // ExampleContainerBatchSetTier shows blob batch operations for delete and set tier.
@@ -536,17 +528,10 @@ func Example_container_BatchSetTier() {
 			fmt.Println("Container: " + *resp.ContainerName)
 			fmt.Println("Blob: " + *resp.BlobName)
 		}
-		if resp.Response != nil {
-			fmt.Println("Response Status: " + resp.Response.Status)
+		if resp.Error == nil {
+			fmt.Println("Successful sub-request")
 		} else {
 			fmt.Println("Error: " + resp.Error.Error())
 		}
 	}
-
-	// print raw response body
-	bodyBytes, err := runtime.Payload(&http.Response{
-		Body: resp.Body,
-	})
-	handleError(err)
-	fmt.Println("Response Body of SubmitBatch:\n" + string(bodyBytes))
 }

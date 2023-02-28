@@ -72,12 +72,12 @@ func getBatchRequestDelimiter(batchID *string, prefixDash bool, postfixDash bool
 // Content-Type: application/http
 // Content-Transfer-Encoding: binary
 // Content-ID: 0
-func createSubReqHeader(batchID *string, contentID *int) string {
+func createSubReqHeader(batchID *string, contentID int) string {
 	var subReqHeader strings.Builder
 	subReqHeader.WriteString(getBatchRequestDelimiter(batchID, true, false) + HttpNewline)
 	subReqHeader.WriteString("Content-Type: application/http" + HttpNewline)
 	subReqHeader.WriteString("Content-Transfer-Encoding: binary" + HttpNewline)
-	subReqHeader.WriteString("Content-ID: " + strconv.Itoa(*contentID) + HttpNewline)
+	subReqHeader.WriteString("Content-ID: " + strconv.Itoa(contentID) + HttpNewline)
 	subReqHeader.WriteString(HttpNewline)
 
 	return subReqHeader.String()
@@ -129,10 +129,9 @@ func CreateBatchRequest(bb *BlobBatchBuilder) (string, string, error) {
 		return "", "", err
 	}
 
-	contentID := 0
 	var batchRequest strings.Builder
 
-	for _, req := range bb.SubRequests {
+	for i, req := range bb.SubRequests {
 		if bb.AuthPolicy != nil {
 			resp, err := bb.AuthPolicy.Do(req)
 			if err != nil && resp != nil {
@@ -142,9 +141,8 @@ func CreateBatchRequest(bb *BlobBatchBuilder) (string, string, error) {
 			}
 		}
 
-		batchRequest.WriteString(createSubReqHeader(&batchID, &contentID))
+		batchRequest.WriteString(createSubReqHeader(&batchID, i))
 		batchRequest.WriteString(buildSubRequest(req))
-		contentID++
 	}
 
 	// add the last line of the request body. It looks like,
@@ -170,8 +168,9 @@ type BlobBatchSubResponse struct {
 	ContentID     *int
 	ContainerName *string
 	BlobName      *string
-	Response      *http.Response
-	Error         error
+	RequestID     *string
+	Version       *string
+	Error         error // nil error indicates that the batch sub-request operation is successful
 }
 
 func getResponseBoundary(contentType *string) (string, error) {
@@ -207,6 +206,15 @@ func getContentID(part string) *int {
 	return &contentID
 }
 
+func getResponseHeader(key string, headers map[string][]string) *string {
+	for k, v := range headers {
+		if strings.EqualFold(k, key) {
+			return to.Ptr(v[0])
+		}
+	}
+	return nil
+}
+
 func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequests []*policy.Request) ([]*BlobBatchSubResponse, error) {
 	boundary, err := getResponseBoundary(contentType)
 	if err != nil {
@@ -223,21 +231,20 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 
 	parts := strings.Split(body, boundary)
 	var responses []*BlobBatchSubResponse
-	batchPartialError := false
 
 	for i, part := range parts {
 		if i == 0 || i == len(parts)-1 {
 			continue
 		}
 
-		batchResponse := &BlobBatchSubResponse{}
-		batchResponse.ContentID = getContentID(part)
+		batchSubResponse := &BlobBatchSubResponse{}
+		batchSubResponse.ContentID = getContentID(part)
 
-		if batchResponse.ContentID != nil {
-			path := strings.Trim(subRequests[*batchResponse.ContentID].Raw().URL.Path, "/")
+		if batchSubResponse.ContentID != nil {
+			path := strings.Trim(subRequests[*batchSubResponse.ContentID].Raw().URL.Path, "/")
 			p := strings.Split(path, "/")
-			batchResponse.ContainerName = to.Ptr(p[0])
-			batchResponse.BlobName = to.Ptr(strings.Join(p[1:], "/"))
+			batchSubResponse.ContainerName = to.Ptr(p[0])
+			batchSubResponse.BlobName = to.Ptr(strings.Join(p[1:], "/"))
 		}
 
 		respStringIdx := strings.Index(part, "HTTP/1.1")
@@ -250,38 +257,34 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 
 		buf := bytes.NewBufferString(part[respStringIdx:])
 		resp, err := http.ReadResponse(bufio.NewReader(buf), nil)
-		batchResponse.Response = resp
-		batchResponse.Error = err
+		// sub-response parsing error
 		if err != nil {
-			batchPartialError = true
-			if log.Should(EventSubmitBatch) {
-				log.Writef(EventSubmitBatch, "failed to parse response from:\n%v\n\nError: %v", part, err.Error())
-			}
+			return nil, err
 		}
-		if resp != nil && (resp.StatusCode < 200 || resp.StatusCode >= 300) {
-			batchPartialError = true
-			if i == 1 && batchResponse.ContentID == nil {
-				// this case can happen when the parent request fails.
-				// For example, batch request having more than 256 sub-requests.
-				return nil, fmt.Errorf("%v", part[respStringIdx:])
-			}
-			if batchResponse.ContainerName != nil && batchResponse.BlobName != nil {
-				if log.Should(EventSubmitBatch) {
-					log.Writef(EventSubmitBatch, "got status: %v, for %v/%v", resp.Status, batchResponse.ContainerName, batchResponse.BlobName)
+
+		if resp != nil {
+			batchSubResponse.RequestID = getResponseHeader(shared.HeaderXmsRequestID, resp.Header)
+			batchSubResponse.Version = getResponseHeader(shared.HeaderXmsVersion, resp.Header)
+
+			// sub-response failure
+			if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+				if i == 1 && batchSubResponse.ContentID == nil {
+					// this case can happen when the parent request fails.
+					// For example, batch request having more than 256 sub-requests.
+					return nil, fmt.Errorf("%v", part[respStringIdx:])
 				}
+
+				resp.Request = subRequests[*batchSubResponse.ContentID].Raw()
+				batchSubResponse.Error = runtime.NewResponseError(resp)
 			}
 		}
 
-		responses = append(responses, batchResponse)
+		responses = append(responses, batchSubResponse)
 	}
 
 	if len(responses) != len(subRequests) {
-		return responses, fmt.Errorf("expected %v responses, got %v for the batch request", len(subRequests), len(responses))
+		return nil, fmt.Errorf("expected %v responses, got %v for the batch ID: %v", len(subRequests), len(responses), boundary)
 	}
 
-	if batchPartialError {
-		return responses, fmt.Errorf("there is a partial failure in the batch operation")
-	} else {
-		return responses, nil
-	}
+	return responses, nil
 }

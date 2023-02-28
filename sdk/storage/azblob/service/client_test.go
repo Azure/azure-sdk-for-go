@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"io"
-	"net/http"
 	"os"
 	"strings"
 	"testing"
@@ -1244,7 +1243,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUs
 	bb, err := svcClient.NewBatchBuilder()
 	_require.NoError(err)
 
-	cntClients, err := batchSetup(containerName, svcClient, bb, shared.BatchDeleteOperationType)
+	cntClients, err := batchSetup(containerName, svcClient, bb, exported.BatchDeleteOperationType)
 	defer batchClean(cntClients)
 	_require.NoError(err)
 
@@ -1266,16 +1265,17 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUs
 	}
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
-	_require.Error(err)
+	_require.NoError(err)
 	_require.NotEmpty(resp.RequestID)
 
 	var ctrSuccess, ctrFailure = 0, 0
 	for _, subResp := range resp.SubResponses {
-		_require.NotNil(subResp.Response)
-		if subResp.Response.StatusCode >= 200 && subResp.Response.StatusCode < 300 {
+		if subResp.Error == nil {
 			ctrSuccess++
 		} else {
 			ctrFailure++
+			_require.NotEmpty(subResp.Error.Error())
+			testcommon.ValidateBlobErrorCode(_require, subResp.Error, bloberror.ContainerNotFound)
 		}
 	}
 	_require.Equal(ctrSuccess, 10)
@@ -1324,7 +1324,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 	bb, err := svcClient.NewBatchBuilder()
 	_require.NoError(err)
 
-	cntClients, err := batchSetup(containerName, svcClient, bb, shared.BatchSetTierOperationType)
+	cntClients, err := batchSetup(containerName, svcClient, bb, exported.BatchSetTierOperationType)
 	defer batchClean(cntClients)
 	_require.NoError(err)
 
@@ -1352,8 +1352,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 
 	ctr := 0
 	for _, subResp := range resp.SubResponses {
-		_require.NotNil(subResp.Response)
-		if subResp.Response.StatusCode >= 200 && subResp.Response.StatusCode < 300 {
+		if subResp.Error == nil {
 			ctr++
 		}
 	}
@@ -1640,7 +1639,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteMoreThan256() {
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.Error(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.Nil(resp.RequestID)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -1683,8 +1682,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
 	_require.NoError(err)
 	_require.NotEmpty(resp1.RequestID)
 	_require.Equal(len(resp1.SubResponses), 1)
-	_require.NotNil(resp1.SubResponses[0].Response)
-	_require.Equal(resp1.SubResponses[0].Response.StatusCode, http.StatusAccepted)
+	_require.NoError(resp1.SubResponses[0].Error)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -1696,11 +1694,11 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
 	_require.Equal(ctr, 0)
 
 	resp2, err := svcClient.SubmitBatch(context.Background(), bb, nil)
-	_require.Error(err)
-	_require.NotEmpty(resp2.RequestID)
+	_require.NoError(err)
+	_require.NotNil(resp2.RequestID)
 	_require.Equal(len(resp2.SubResponses), 1)
-	_require.NotNil(resp2.SubResponses[0].Response)
-	_require.Equal(resp2.SubResponses[0].Response.StatusCode, http.StatusNotFound)
+	_require.Error(resp2.SubResponses[0].Error)
+	testcommon.ValidateBlobErrorCode(_require, resp2.SubResponses[0].Error, bloberror.BlobNotFound)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchErrors() {

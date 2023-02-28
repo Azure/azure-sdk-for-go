@@ -168,6 +168,7 @@ func TestNewClientTracingEnabled(t *testing.T) {
 	req, err := exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, client.Tracer()), http.MethodGet, srv.URL()+requestEndpoint)
 	require.NoError(t, err)
 	srv.AppendResponse()
-	client.Pipeline().Do(req)
+	_, err = client.Pipeline().Do(req)
+	require.NoError(t, err)
 	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)
 }

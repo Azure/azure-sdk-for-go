@@ -23,6 +23,7 @@ const (
 	HeaderUserAgent              = "User-Agent"
 	HeaderWWWAuthenticate        = "WWW-Authenticate"
 	HeaderXMSClientRequestID     = "x-ms-client-request-id"
+	HeaderXMSRequestID           = "x-ms-request-id"
 )
 
 const BearerTokenPrefix = "Bearer "

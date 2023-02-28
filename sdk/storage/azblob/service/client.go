@@ -338,7 +338,7 @@ func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 		return SubmitBatchResponse{}, err
 	}
 
-	reader := bytes.NewReader([]byte(batchReq))
+	reader := bytes.NewReader(batchReq)
 	rsc := streaming.NopCloser(reader)
 	multipartContentType := "multipart/mixed; boundary=" + batchID
 

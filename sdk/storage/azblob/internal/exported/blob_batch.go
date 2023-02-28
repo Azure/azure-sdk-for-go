@@ -17,7 +17,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"io"
+	"io/ioutil"
+	"mime/multipart"
 	"net/http"
+	"net/textproto"
 	"strconv"
 	"strings"
 )
@@ -48,47 +51,12 @@ func createBatchID() (string, error) {
 	return BatchIdPrefix + batchID.String(), nil
 }
 
-// getBatchRequestDelimiter is used for creating the batch boundary
-// e.g. --batch_357de4f7-6d0b-4e02-8cd2-6361411a9525
-// last line of the request body: --batch_357de4f7-6d0b-4e02-8cd2-6361411a9525--
-func getBatchRequestDelimiter(batchID *string, prefixDash bool, postfixDash bool) string {
-	outString := ""
-
-	if prefixDash {
-		outString = "--"
-	}
-
-	outString += *batchID
-
-	if postfixDash {
-		outString += "--"
-	}
-
-	return outString
-}
-
-// createSubReqHeader is used to create the sub-request header. Example:
-// --batch_357de4f7-6d0b-4e02-8cd2-6361411a9525
-// Content-Type: application/http
-// Content-Transfer-Encoding: binary
-// Content-ID: 0
-func createSubReqHeader(batchID *string, contentID int) string {
-	var subReqHeader strings.Builder
-	subReqHeader.WriteString(getBatchRequestDelimiter(batchID, true, false) + HttpNewline)
-	subReqHeader.WriteString("Content-Type: application/http" + HttpNewline)
-	subReqHeader.WriteString("Content-Transfer-Encoding: binary" + HttpNewline)
-	subReqHeader.WriteString("Content-ID: " + strconv.Itoa(contentID) + HttpNewline)
-	subReqHeader.WriteString(HttpNewline)
-
-	return subReqHeader.String()
-}
-
 // buildSubRequest is used for building the sub-request. Example:
 // DELETE /container0/blob0 HTTP/1.1
 // x-ms-date: Thu, 14 Jun 2018 16:46:54 GMT
 // Authorization: SharedKey account:G4jjBXA7LI/RnWKIOQ8i9xH4p76pAQ+4Fs4R1VxasaE=
 // Content-Length: 0
-func buildSubRequest(req *policy.Request) string {
+func buildSubRequest(req *policy.Request) []byte {
 	var batchSubRequest strings.Builder
 	blobPath := req.Raw().URL.Path
 	if len(req.Raw().URL.RawQuery) > 0 {
@@ -107,7 +75,7 @@ func buildSubRequest(req *policy.Request) string {
 	}
 
 	batchSubRequest.WriteString(HttpNewline)
-	return batchSubRequest.String()
+	return []byte(batchSubRequest.String())
 }
 
 // CreateBatchRequest creates a new batch request using the sub-requests present in the BlobBatchBuilder.
@@ -123,13 +91,26 @@ func buildSubRequest(req *policy.Request) string {
 //	x-ms-date: Thu, 14 Jun 2018 16:46:54 GMT
 //	Authorization: SharedKey account:G4jjBXA7LI/RnWKIOQ8i9xH4p76pAQ+4Fs4R1VxasaE=
 //	Content-Length: 0
-func CreateBatchRequest(bb *BlobBatchBuilder) (string, string, error) {
+func CreateBatchRequest(bb *BlobBatchBuilder) ([]byte, string, error) {
 	batchID, err := createBatchID()
 	if err != nil {
-		return "", "", err
+		return nil, "", err
 	}
 
-	var batchRequest strings.Builder
+	// Create a new multipart buffer
+	reqBody := &bytes.Buffer{}
+	writer := multipart.NewWriter(reqBody)
+
+	// Set the boundary
+	err = writer.SetBoundary(batchID)
+	if err != nil {
+		return nil, "", err
+	}
+
+	partHeaders := make(textproto.MIMEHeader)
+	partHeaders["Content-Type"] = []string{"application/http"}
+	partHeaders["Content-Transfer-Encoding"] = []string{"binary"}
+	var partWriter io.Writer
 
 	for i, req := range bb.SubRequests {
 		if bb.AuthPolicy != nil {
@@ -141,15 +122,25 @@ func CreateBatchRequest(bb *BlobBatchBuilder) (string, string, error) {
 			}
 		}
 
-		batchRequest.WriteString(createSubReqHeader(&batchID, i))
-		batchRequest.WriteString(buildSubRequest(req))
+		partHeaders["Content-ID"] = []string{fmt.Sprintf("%v", i)}
+		partWriter, err = writer.CreatePart(partHeaders)
+		if err != nil {
+			return nil, "", err
+		}
+
+		_, err = partWriter.Write(buildSubRequest(req))
+		if err != nil {
+			return nil, "", err
+		}
 	}
 
-	// add the last line of the request body. It looks like,
-	// --batch_357de4f7-6d0b-4e02-8cd2-6361411a9525--
-	batchRequest.WriteString(getBatchRequestDelimiter(&batchID, true, true) + HttpNewline)
+	// Close the multipart writer
+	err = writer.Close()
+	if err != nil {
+		return nil, "", err
+	}
 
-	return batchRequest.String(), batchID, nil
+	return reqBody.Bytes(), batchID, nil
 }
 
 // UpdateSubRequestHeaders updates the sub-request headers.
@@ -181,29 +172,20 @@ func getResponseBoundary(contentType *string) (string, error) {
 	if boundaryIdx == -1 {
 		return "", fmt.Errorf("batch boundary not present in Content-Type header of the SubmitBatch response.\nContent-Type: %v\n", *contentType)
 	}
-	return "--" + (*contentType)[boundaryIdx:], nil
+	return (*contentType)[boundaryIdx:], nil
 }
 
-func getContentID(part string) *int {
-	contentIDIdx := strings.Index(part, "Content-ID")
-	if contentIDIdx == -1 {
-		return nil
+func getContentID(part *multipart.Part) (*int, error) {
+	contentID := getResponseHeader("Content-ID", part.Header)
+	if contentID == nil {
+		return nil, nil
 	}
-	contentID := -1
-	for i := contentIDIdx + len("Content-ID"); i < len(part); i++ {
-		if part[i] >= '0' && part[i] <= '9' {
-			if contentID == -1 {
-				contentID = 0
-			}
-			contentID = contentID*10 + int(part[i]-'0')
-		} else if contentID != -1 || part[i] == '\n' {
-			break
-		}
+
+	val, err := strconv.Atoi(strings.TrimSpace(*contentID))
+	if err != nil {
+		return nil, err
 	}
-	if contentID == -1 {
-		return nil
-	}
-	return &contentID
+	return &val, nil
 }
 
 func getResponseHeader(key string, headers map[string][]string) *string {
@@ -221,24 +203,24 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 		return nil, err
 	}
 
-	bytesBody, err := runtime.Payload(&http.Response{
-		Body: respBody,
-	})
-	if err != nil {
-		return nil, err
-	}
-	body := string(bytesBody)
-
-	parts := strings.Split(body, boundary)
+	respReader := multipart.NewReader(respBody, boundary)
 	var responses []*BlobBatchSubResponse
 
-	for i, part := range parts {
-		if i == 0 || i == len(parts)-1 {
-			continue
+	for {
+		part, err := respReader.NextPart()
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				return nil, err
+			}
 		}
 
 		batchSubResponse := &BlobBatchSubResponse{}
-		batchSubResponse.ContentID = getContentID(part)
+		batchSubResponse.ContentID, err = getContentID(part)
+		if err != nil {
+			return nil, err
+		}
 
 		if batchSubResponse.ContentID != nil {
 			path := strings.Trim(subRequests[*batchSubResponse.ContentID].Raw().URL.Path, "/")
@@ -247,15 +229,12 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 			batchSubResponse.BlobName = to.Ptr(strings.Join(p[1:], "/"))
 		}
 
-		respStringIdx := strings.Index(part, "HTTP/1.1")
-		if respStringIdx == -1 {
-			if log.Should(EventSubmitBatch) {
-				log.Writef(EventSubmitBatch, "failed to get response for sub-request in:\n%v", part)
-			}
-			continue
+		respBytes, err := ioutil.ReadAll(part)
+		if err != nil {
+			return nil, err
 		}
-
-		buf := bytes.NewBufferString(part[respStringIdx:])
+		respBytes = append(respBytes, byte('\n'))
+		buf := bytes.NewBuffer(respBytes)
 		resp, err := http.ReadResponse(bufio.NewReader(buf), nil)
 		// sub-response parsing error
 		if err != nil {
@@ -268,10 +247,10 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 
 			// sub-response failure
 			if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-				if i == 1 && batchSubResponse.ContentID == nil {
+				if len(responses) == 0 && batchSubResponse.ContentID == nil {
 					// this case can happen when the parent request fails.
 					// For example, batch request having more than 256 sub-requests.
-					return nil, fmt.Errorf("%v", part[respStringIdx:])
+					return nil, fmt.Errorf("%v", string(respBytes))
 				}
 
 				resp.Request = subRequests[*batchSubResponse.ContentID].Raw()

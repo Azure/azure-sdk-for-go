@@ -1621,7 +1621,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteMoreThan256() {
 	bb, err := svcClient.NewBatchBuilder()
 	_require.NoError(err)
 
-	for i := 0; i < 260; i++ {
+	for i := 0; i < 256; i++ {
 		bbName := fmt.Sprintf("blockblob%v", i)
 		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
 		err = bb.Delete(containerName, bbName, nil)
@@ -1635,11 +1635,14 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteMoreThan256() {
 		handleError(err)
 		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
 	}
-	_require.Equal(ctr, 260)
+	_require.Equal(ctr, 256)
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
-	_require.Error(err)
-	_require.Nil(resp.RequestID)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+	for _, subResp := range resp.SubResponses {
+		_require.Nil(subResp.Error)
+	}
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -1648,7 +1651,18 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteMoreThan256() {
 		handleError(err)
 		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
 	}
-	_require.Equal(ctr, 260)
+	_require.Equal(ctr, 0)
+
+	// add more items to make batch size more than 256
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("fakeblob%v", i)
+		err = bb.Delete(containerName, bbName, nil)
+		_require.NoError(err)
+	}
+
+	resp2, err := svcClient.SubmitBatch(context.Background(), bb, nil)
+	_require.Error(err)
+	_require.Nil(resp2.RequestID)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {

@@ -39,11 +39,13 @@ const (
 
 // ConsumerClientOptions configures optional parameters for a ConsumerClient.
 type ConsumerClientOptions struct {
-	// TLSConfig configures a client with a custom *tls.Config.
-	TLSConfig *tls.Config
-
-	// Application ID that will be passed to the namespace.
+	// ApplicationID is used as the identifier when setting the User-Agent property.
 	ApplicationID string
+
+	// InstanceID is a unique name used to identify the consumer. This can help with
+	// diagnostics as this name will be returned in error messages. By default,
+	// an identifier will be automatically generated.
+	InstanceID string
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
@@ -52,6 +54,9 @@ type ConsumerClientOptions struct {
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
 	RetryOptions RetryOptions
+
+	// TLSConfig configures a client with a custom *tls.Config.
+	TLSConfig *tls.Config
 }
 
 // ConsumerClient can create PartitionClient instances, which can read events from
@@ -59,11 +64,15 @@ type ConsumerClientOptions struct {
 type ConsumerClient struct {
 	consumerGroup string
 	eventHub      string
-	retryOptions  RetryOptions
-	namespace     *internal.Namespace
-	links         *internal.Links[amqpwrap.AMQPReceiverCloser]
 
-	clientID string
+	// instanceID is a customer supplied instanceID that can be passed to Event Hubs.
+	// It'll be returned in error messages and can be useful for customers when
+	// troubleshooting.
+	instanceID string
+
+	links        *internal.Links[amqpwrap.AMQPReceiverCloser]
+	namespace    *internal.Namespace
+	retryOptions RetryOptions
 }
 
 // NewConsumerClient creates a ConsumerClient which uses an azcore.TokenCredential for authentication. You
@@ -141,6 +150,7 @@ func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *Partit
 		namespace:     cc.namespace,
 		eventHub:      cc.eventHub,
 		partitionID:   partitionID,
+		instanceID:    cc.instanceID,
 		consumerGroup: cc.consumerGroup,
 		retryOptions:  cc.retryOptions,
 	}, options)
@@ -170,9 +180,9 @@ func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionI
 	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, partitionID, options)
 }
 
-// ID is the identifier for this ConsumerClient.
-func (cc *ConsumerClient) ID() string {
-	return cc.clientID
+// InstanceID is the identifier for this ConsumerClient.
+func (cc *ConsumerClient) InstanceID() string {
+	return cc.instanceID
 }
 
 type consumerClientDetails struct {
@@ -187,7 +197,7 @@ func (cc *ConsumerClient) getDetails() consumerClientDetails {
 		FullyQualifiedNamespace: cc.namespace.FQDN,
 		ConsumerGroup:           cc.consumerGroup,
 		EventHubName:            cc.eventHub,
-		ClientID:                cc.clientID,
+		ClientID:                cc.InstanceID(),
 	}
 }
 
@@ -212,7 +222,7 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 		options = &ConsumerClientOptions{}
 	}
 
-	clientUUID, err := uuid.New()
+	instanceID, err := getInstanceID(options.InstanceID)
 
 	if err != nil {
 		return nil, err
@@ -221,7 +231,7 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 	client := &ConsumerClient{
 		consumerGroup: args.consumerGroup,
 		eventHub:      args.eventHub,
-		clientID:      clientUUID.String(),
+		instanceID:    instanceID,
 	}
 
 	var nsOptions []internal.NamespaceOption
@@ -262,4 +272,19 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 	client.links = internal.NewLinks[amqpwrap.AMQPReceiverCloser](tempNS, fmt.Sprintf("%s/$management", client.eventHub), nil, nil)
 
 	return client, nil
+}
+
+func getInstanceID(optionalID string) (string, error) {
+	if optionalID != "" {
+		return optionalID, nil
+	}
+
+	// generate a new one
+	id, err := uuid.New()
+
+	if err != nil {
+		return "", err
+	}
+
+	return id.String(), nil
 }

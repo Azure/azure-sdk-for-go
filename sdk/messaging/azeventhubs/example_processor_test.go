@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
-// Example_consumingEventsUsingProcessor shows how to use the [Processor] type.
+// Shows how to use the [Processor] type.
 //
 // The Processor type acts as a load balancer, ensuring that partitions are divided up amongst
 // active Processor instances. You provide it with a [ConsumerClient] as well as a [CheckpointStore].

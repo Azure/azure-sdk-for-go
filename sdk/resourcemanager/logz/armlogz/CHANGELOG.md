@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.1 (2023-02-28)
+### Other Changes
+
+
 ## 1.0.0 (2022-05-18)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logz/armlogz` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

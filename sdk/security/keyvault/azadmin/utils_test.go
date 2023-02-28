@@ -99,8 +99,8 @@ func startBackupTest(t *testing.T) (*azadmin.BackupClient, azadmin.SASTokenParam
 	client, err := azadmin.NewBackupClient(hsmURL, credential, opts)
 	require.NoError(t, err)
 
-	storageResourceUri := os.Getenv("BLOB_RESOURCE_URI")
-	token := os.Getenv("SAS_TOKEN")
+	storageResourceUri := "https://" + os.Getenv("BLOB_STORAGE_ACCOUNT_NAME") + ".blob." + os.Getenv("KEYVAULT_STORAGE_ENDPOINT_SUFFIX") + "/" + os.Getenv("BLOB_CONTAINER_NAME")
+	token := os.Getenv("BLOB_STORAGE_SAS_TOKEN")
 	sasToken := azadmin.SASTokenParameter{
 		StorageResourceURI: &storageResourceUri,
 		Token:              &token,

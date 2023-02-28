@@ -8,6 +8,8 @@ package azadmin_test
 
 import (
 	"context"
+	"fmt"
+	"math/rand"
 	"os"
 	"strings"
 	"testing"
@@ -121,7 +123,10 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 		KeySize: to.Ptr(int32(2048)),
 		Kty:     to.Ptr(azkeys.JSONWebKeyTypeRSA),
 	}
-	_, err = keyClient.CreateKey(context.TODO(), "selective-restore-test-key", params, nil)
+	rand.Seed(time.Now().UnixNano())
+	keyName := "selective-restore-test-key" + fmt.Sprint(rand.Intn(1000))
+	key, err := keyClient.CreateKey(context.TODO(), keyName, params, nil)
+	_ = key
 	require.NoError(t, err)
 
 	// backup the vault
@@ -138,7 +143,7 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 		SasTokenParameters: &sasToken,
 	}
 	testSerde(t, &restoreOperationParameters)
-	selectivePoller, err := backupClient.BeginSelectiveKeyRestore(context.Background(), "selective-restore-test-key", restoreOperationParameters, nil)
+	selectivePoller, err := backupClient.BeginSelectiveKeyRestore(context.Background(), keyName, restoreOperationParameters, nil)
 	require.NoError(t, err)
 	selectiveResults, err := selectivePoller.PollUntilDone(context.Background(), nil)
 	require.NoError(t, err)

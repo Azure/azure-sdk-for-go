@@ -2,6 +2,7 @@
 // +build go1.18
 
 //go:generate autorest ./settings/autorest.md
+//go:generate autorest ./rbac/autorest.md
 //go:generate gofmt -w .
 
 // Copyright (c) Microsoft Corporation. All rights reserved.

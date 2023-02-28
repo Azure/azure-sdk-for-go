@@ -5,14 +5,11 @@ clear-output-folder: false
 export-clients: true
 go: true
 input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/rbac.json
-    - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/backuprestore.json
-    - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/rbac.json
 license-header: MICROSOFT_MIT_NO_VERSION
-module: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin
 openapi-type: "data-plane"
-output-folder: ../azadmin
-override-client-name: BackupClient
+output-folder: ../rbac
+override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
 use: "@autorest/go@4.0.0-preview.44"
@@ -25,76 +22,36 @@ directive:
     where: $["x-ms-parameterized-host"]
     transform: $.parameters[0]["x-ms-parameter-location"] = "client"
 
-  # rename role definition and role assignment operations so they will generate as one access control client
-  - rename-operation:
-      from: RoleDefinitions_Delete
-      to: AccessControl_DeleteRoleDefinition
-  - rename-operation:
-      from: RoleAssignments_Delete
-      to: AccessControl_DeleteRoleAssignment
-  - rename-operation:
-      from: RoleDefinitions_CreateOrUpdate
-      to: AccessControl_CreateOrUpdateRoleDefinition
-  - rename-operation:
-      from: RoleAssignments_Create
-      to: AccessControl_CreateRoleAssignment
-  - rename-operation:
-      from: RoleDefinitions_Get
-      to: AccessControl_GetRoleDefinition
-  - rename-operation:
-      from: RoleAssignments_Get
-      to: AccessControl_GetRoleAssignment
-  - rename-operation:
-      from: RoleDefinitions_List
-      to: AccessControl_ListRoleDefinitions
-  - rename-operation:
-      from: RoleAssignments_ListForScope
-      to: AccessControl_ListRoleAssignments
-
-    # rename setting operations to generate as their own client
-  - rename-operation:
-      from: GetSetting
-      to: Settings_GetSetting
-  - rename-operation:
-      from: GetSettings
-      to: Settings_GetSettings
-  - rename-operation:
-      from: UpdateSetting
-      to: Settings_UpdateSetting
-
-  # rename restore operation from BeginFullRestoreOperation to BeginFullRestore
-  - rename-operation:
-      from: FullRestoreOperation
-      to: FullRestore
-  - rename-operation:
-      from: SelectiveKeyRestoreOperation
-      to: SelectiveKeyRestore
-
-  # make SASToken parameter required
-  - from: swagger-document
-    where: $.paths["/backup"].post.parameters[0]
-    transform: $["required"] = true
-
-  # delete backup and restore status methods
-  - from: swagger-document
-    where: $["paths"]
-    transform: >
-        delete $["/backup/{jobId}/pending"];
-  - from: swagger-document
-    where: $["paths"]
-    transform: >
-        delete $["/restore/{jobId}/pending"];
-
   # delete generated client constructor
-  - from: accesscontrol_client.go
+  - from: client.go
     where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func NewAccessControlClient.+\{\s(?:.+\s)+\}\s/, "");
-  - from: backup_client.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func NewBackupClient.+\{\s(?:.+\s)+\}\s/, "");
-  - from: settings_client.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func NewSettingsClient.+\{\s(?:.+\s)+\}\s/, "");
+    transform: return $.replace(/(?:\/\/.*\s)+func NewClient.+\{\s(?:.+\s)+\}\s/, "");
+
+    # rename role definition and role assignment operations so they will generate as one access control client
+#   - rename-operation:
+#       from: RoleDefinitions_Delete
+#       to: DeleteRoleDefinition
+#   - rename-operation:
+#       from: RoleAssignments_Delete
+#       to: DeleteRoleAssignment
+#   - rename-operation:
+#       from: RoleDefinitions_CreateOrUpdate
+#       to: CreateOrUpdateRoleDefinition
+#   - rename-operation:
+#       from: RoleAssignments_Create
+#       to: CreateRoleAssignment
+#   - rename-operation:
+#       from: RoleDefinitions_Get
+#       to: GetRoleDefinition
+#   - rename-operation:
+#       from: RoleAssignments_Get
+#       to: GetRoleAssignment
+#   - rename-operation:
+#       from: RoleDefinitions_List
+#       to: ListRoleDefinitions
+#   - rename-operation:
+#       from: RoleAssignments_ListForScope
+#       to: ListRoleAssignments
 
   # delete unused error models
   - from: models.go
@@ -113,15 +70,10 @@ directive:
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:RoleAssignmentFilter|RoleDefinitionFilter)\).*\{\s(?:.+\s)+\}\s/g, "");
 
   # change type of scope parameter from string to RoleScope
-  - from: accesscontrol_client.go
+  - from: client.go
     where: $
     transform:  return $.replace(/scope string/g, "scope RoleScope");
-  - from: accesscontrol_client.go
+  - from: client.go
     where: $
     transform:  return $.replace(/scope\)/g, "string(scope))");
-
-  # modify BeginFullRestore to use implementation with custom poller handler
-  - from: backup_client.go
-    where: $
-    transform:  return $.replace(/\[BackupClientFullRestoreResponse\], error\) \{\s(?:.+\s)+\}/, "[BackupClientFullRestoreResponse], error) {return client.beginFullRestore(ctx, restoreBlobDetails, options)}");
 ```

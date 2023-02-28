@@ -5,7 +5,7 @@ clear-output-folder: false
 export-clients: true
 go: true
 input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/settings.json
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 output-folder: ../settings
@@ -22,6 +22,12 @@ directive:
     where: $["x-ms-parameterized-host"]
     transform: $.parameters[0]["x-ms-parameter-location"] = "client"
 
+  # fix bug- change ListResult.Value to ListResult.Settings
+  - where-model: SettingsListResult
+    rename-property:
+      from: value
+      to: settings
+
   # delete generated client constructor
   - from: client.go
     where: $
@@ -34,4 +40,7 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:Error|KeyVaultError)\).*\{\s(?:.+\s)+\}\s/g, "");
+
+  # fix bug- change ListResult.Value to ListResult.Settings
+
 ```

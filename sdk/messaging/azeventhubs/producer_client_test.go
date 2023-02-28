@@ -530,6 +530,9 @@ func receiveEventFromAnyPartition(ctx context.Context, t *testing.T, consumer *a
 				eventCh <- events[0]
 				cancelPartitionReceiving()
 			}
+
+			t.Logf("No error returned and no events received")
+			eventCh <- nil
 		}(partitionClientContext, partProps)
 	}
 

@@ -63,7 +63,7 @@ type StartPosition struct {
 type PartitionClient struct {
 	consumerGroup    string
 	eventHub         string
-	identifier       string
+	instanceID       string
 	links            internal.LinksForPartitionClient[amqpwrap.AMQPReceiverCloser]
 	offsetExpression string
 	ownerLevel       *int64
@@ -207,7 +207,7 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 		// this lets Event Hubs return error messages that identify which Receiver stole ownership (and other things) within
 		// error messages.
 		// Ex: (ownershiplost): link detached, reason: *Error{Condition: amqp:link:stolen, Description: New receiver 'EventHubConsumerClientTestID-Interloper' with higher epoch of '1' is created hence current receiver 'EventHubConsumerClientTestID' with epoch '0' is getting disconnected. If you are recreating the receiver, make sure a higher epoch is used. TrackingId:8031553f0000a5060009a59b63f517a0_G4_B22, SystemTracker:riparkdev:eventhub:tests~10922|$default, Timestamp:2023-02-21T19:12:41, Info: map[]}
-		"com.microsoft:receiver-name": pc.identifier,
+		"com.microsoft:receiver-name": pc.instanceID,
 	}
 
 	if pc.ownerLevel != nil {
@@ -220,7 +220,7 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 			amqp.LinkFilterSelector(pc.offsetExpression),
 		},
 		Properties:    props,
-		TargetAddress: pc.identifier,
+		TargetAddress: pc.instanceID,
 	}
 
 	if pc.prefetch > 0 {
@@ -237,9 +237,9 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 		receiverOptions.Credit = defaultMaxCreditSize
 	}
 
-	log.Writef(EventConsumer, "Creating receiver:\n  source:%s\n  identifier: %s\n  owner level: %d\n  offset: %s\n  manual: %v\n  prefetch: %d",
+	log.Writef(EventConsumer, "Creating receiver:\n  source:%s\n  instanceID: %s\n  owner level: %d\n  offset: %s\n  manual: %v\n  prefetch: %d",
 		entityPath,
-		pc.identifier,
+		pc.instanceID,
 		pc.ownerLevel,
 		pc.offsetExpression,
 		receiverOptions.ManualCredits,
@@ -294,7 +294,7 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 		partitionID:      args.partitionID,
 		prefetch:         options.Prefetch,
 		retryOptions:     args.retryOptions,
-		identifier:       args.instanceID,
+		instanceID:       args.instanceID,
 	}
 
 	client.links = internal.NewLinks(args.namespace, fmt.Sprintf("%s/$management", client.eventHub), client.getEntityPath, client.newEventHubConsumerLink)

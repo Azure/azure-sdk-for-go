@@ -10,6 +10,8 @@
 
 ### Breaking Changes
 
+- `ConsumerClient.ID()` renamed to `ConsumerClient.InstanceID()`.
+
 ### Bugs Fixed
 
 ### Other Changes

@@ -130,44 +130,44 @@ func TestProducerClient_SendToAny(t *testing.T) {
 	//    be placed into the same partition but let the overall distribution of the partition keys
 	//    happen through Event Hubs.
 
-	t.Run("no partition key, no client identifier", func(t *testing.T) {
+	t.Run("no partition key, no client instanceID", func(t *testing.T) {
 		testSendAny(t, struct {
-			identifier   string
+			instanceID   string
 			partitionKey *string
 		}{})
 	})
 
-	t.Run("no partition key, with client identifier", func(t *testing.T) {
+	t.Run("no partition key, with client instanceID", func(t *testing.T) {
 		testSendAny(t, struct {
-			identifier   string
+			instanceID   string
 			partitionKey *string
 		}{
-			identifier: "client ID",
+			instanceID: "client ID",
 		})
 	})
 
-	t.Run("actual partition key, no client identifier", func(t *testing.T) {
+	t.Run("actual partition key, no client instanceID", func(t *testing.T) {
 		testSendAny(t, struct {
-			identifier   string
+			instanceID   string
 			partitionKey *string
 		}{
 			partitionKey: to.Ptr("my special partition key"),
 		})
 	})
 
-	t.Run("actual partition key, with client identifier", func(t *testing.T) {
+	t.Run("actual partition key, with client instanceID", func(t *testing.T) {
 		testSendAny(t, struct {
-			identifier   string
+			instanceID   string
 			partitionKey *string
 		}{
-			identifier:   "client ID",
+			instanceID:   "client ID",
 			partitionKey: to.Ptr("my special partition key"),
 		})
 	})
 }
 
 func testSendAny(t *testing.T, args struct {
-	identifier   string
+	instanceID   string
 	partitionKey *string
 }) {
 	testParams := test.GetConnectionParamsForTest(t)
@@ -199,7 +199,7 @@ func testSendAny(t *testing.T, args struct {
 	require.NoError(t, err)
 
 	consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
-		InstanceID: args.identifier,
+		InstanceID: args.instanceID,
 	})
 	require.NoError(t, err)
 

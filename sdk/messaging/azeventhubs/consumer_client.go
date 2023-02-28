@@ -222,7 +222,7 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 		options = &ConsumerClientOptions{}
 	}
 
-	identifier, err := getIdentifier(options.InstanceID)
+	instanceID, err := getInstanceID(options.InstanceID)
 
 	if err != nil {
 		return nil, err
@@ -231,7 +231,7 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 	client := &ConsumerClient{
 		consumerGroup: args.consumerGroup,
 		eventHub:      args.eventHub,
-		instanceID:    identifier,
+		instanceID:    instanceID,
 	}
 
 	var nsOptions []internal.NamespaceOption
@@ -274,9 +274,9 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 	return client, nil
 }
 
-func getIdentifier(identifier string) (string, error) {
-	if identifier != "" {
-		return identifier, nil
+func getInstanceID(optionalID string) (string, error) {
+	if optionalID != "" {
+		return optionalID, nil
 	}
 
 	// generate a new one

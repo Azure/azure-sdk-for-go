@@ -29,67 +29,100 @@ const (
 type authenticationPolicyOptions struct {
 }
 
+// authenticationPolicy is a policy to do the challenge-based authentication for container registry service. The authorization flow is as follows:
+// Step 1: GET /api/v1/acr/repositories
+// Return Header: 401: www-authenticate header - Bearer realm="{url}",service="{serviceName}",scope="{scope}",error="invalid_token"
+// Step 2: Retrieve the serviceName, scope from the WWW-Authenticate header.
+// Step 3: POST /api/oauth2/exchange
+// Request Body : { service, scope, grant-type, aadToken with ARM scope }
+// Response Body: { refreshToken }
+// Step 4: POST /api/oauth2/token
+// Request Body: { refreshToken, scope, grant-type }
+// Response Body: { accessToken }
+// Step 5: GET /api/v1/acr/repositories
+// Request Header: { Bearer acrTokenAccess }
+// Each registry service shares one refresh token, it will be cached in refreshTokenCache until expire time.
+// Since the scope will be different for different API/repository/artifact, accessTokenCache will only work when continuously calling same API.
 type authenticationPolicy struct {
-	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
-	cred         azcore.TokenCredential
-	aadScopes    []string
-	acrScope     string
-	acrService   string
-	authClient   *authenticationClient
+	refreshTokenCache *temporal.Resource[azcore.AccessToken, acquiringResourceState]
+	accessTokenCache  string
+	cred              azcore.TokenCredential
+	aadScopes         []string
+	authClient        *authenticationClient
 }
 
 func newAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authClient *authenticationClient, opts *authenticationPolicyOptions) *authenticationPolicy {
 	return &authenticationPolicy{
-		cred:         cred,
-		aadScopes:    scopes,
-		authClient:   authClient,
-		mainResource: temporal.NewResource(acquire),
+		cred:              cred,
+		aadScopes:         scopes,
+		authClient:        authClient,
+		refreshTokenCache: temporal.NewResource(acquireRefreshToken),
 	}
 }
 
 func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
-	// first retry request, do challenge process
-	if req.Raw().Header.Get(headerAuthorization) == "" {
-		// send a copy of the original request without body content
+	var resp *http.Response
+	var err error
+	if req.Raw().Header.Get(headerAuthorization) != "" {
+		// retry request could do the request with existed token directly
+		resp, err = req.Next()
+		if err != nil {
+			return nil, err
+		}
+	} else if p.accessTokenCache != "" {
+		// if there is a previous access token, then we try to use this token to do the request
+		req.Raw().Header.Set(
+			headerAuthorization,
+			fmt.Sprintf("%s%s", bearerHeader, p.accessTokenCache),
+		)
+		resp, err = req.Next()
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		// do challenge process for the initial request
 		challengeReq, err := p.getChallengeRequest(*req)
 		if err != nil {
 			return nil, err
 		}
-		resp, err := challengeReq.Next()
+		resp, err = challengeReq.Next()
 		if err != nil {
 			return nil, err
 		}
-		// do challenge process
-		if resp.StatusCode == 401 {
-			err := p.findServiceAndScope(resp)
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			// the request failed for some other reason, don't try any further
-			return resp, nil
+	}
+
+	// if 401 response, then try to get access token
+	if resp.StatusCode == 401 {
+		service, scope, err := findServiceAndScope(resp)
+		if err != nil {
+			return nil, err
 		}
+
+		accessToken, err := p.getAccessToken(req, service, scope)
+		if err != nil {
+			return nil, err
+		}
+
+		p.accessTokenCache = accessToken
+		req.Raw().Header.Set(
+			headerAuthorization,
+			fmt.Sprintf("%s%s", bearerHeader, accessToken),
+		)
+		// since the request may already been used once, body should be rewound
+		err = req.RewindBody()
+		if err != nil {
+			return nil, err
+		}
+		return req.Next()
 	}
 
-	// we only cache refresh token, so we need to get access token for each retry request
-	accessToken, err := p.getAccessToken(req)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Raw().Header.Set(
-		headerAuthorization,
-		fmt.Sprintf("%s%s", bearerHeader, accessToken),
-	)
-
-	// send the original request with auth
-	return req.Next()
+	return resp, nil
 }
 
-func (p *authenticationPolicy) getAccessToken(req *policy.Request) (string, error) {
+func (p *authenticationPolicy) getAccessToken(req *policy.Request, service, scope string) (string, error) {
 	// anonymous access
 	if p.cred == nil {
-		resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(req.Raw().Context(), p.acrService, p.acrScope, "", &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypePassword)})
+		resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(req.Raw().Context(), service, scope, "", &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypePassword)})
 		if err != nil {
 			return "", err
 		}
@@ -97,29 +130,28 @@ func (p *authenticationPolicy) getAccessToken(req *policy.Request) (string, erro
 	}
 
 	// access with token
-	as := acquiringResourceState{
-		policy: p,
-		req:    req,
-	}
-
 	// get refresh token from cache/request
-	refreshToken, err := p.mainResource.Get(as)
+	refreshToken, err := p.refreshTokenCache.Get(acquiringResourceState{
+		policy:  p,
+		req:     req,
+		service: service,
+	})
 	if err != nil {
 		return "", err
 	}
 
 	// get access token from request
-	resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(req.Raw().Context(), p.acrService, p.acrScope, refreshToken.Token, &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypeRefreshToken)})
+	resp, err := p.authClient.ExchangeACRRefreshTokenForACRAccessToken(req.Raw().Context(), service, scope, refreshToken.Token, &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypeRefreshToken)})
 	if err != nil {
 		return "", err
 	}
 	return *resp.acrAccessToken.AccessToken, nil
 }
 
-func (p *authenticationPolicy) findServiceAndScope(resp *http.Response) error {
+func findServiceAndScope(resp *http.Response) (string, string, error) {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" {
-		return errors.New("response has no WWW-Authenticate header for challenge authentication")
+		return "", "", errors.New("response has no WWW-Authenticate header for challenge authentication")
 	}
 
 	authHeader = strings.ReplaceAll(authHeader, "Bearer ", "")
@@ -132,21 +164,15 @@ func (p *authenticationPolicy) findServiceAndScope(resp *http.Response) error {
 		}
 	}
 
-	if v, ok := valuesMap["scope"]; ok {
-		p.acrScope = v
-	}
-	if p.acrScope == "" {
-		return errors.New("could not find a valid scope in the WWW-Authenticate header")
+	if _, ok := valuesMap["service"]; !ok {
+		return "", "", errors.New("could not find a valid service in the WWW-Authenticate header")
 	}
 
-	if v, ok := valuesMap["service"]; ok {
-		p.acrService = v
-	}
-	if p.acrService == "" {
-		return errors.New("could not find a valid service in the WWW-Authenticate header")
+	if _, ok := valuesMap["scope"]; !ok {
+		return "", "", errors.New("could not find a valid scope in the WWW-Authenticate header")
 	}
 
-	return nil
+	return valuesMap["service"], valuesMap["scope"], nil
 }
 
 func (p authenticationPolicy) getChallengeRequest(oriReq policy.Request) (*policy.Request, error) {
@@ -160,13 +186,13 @@ func (p authenticationPolicy) getChallengeRequest(oriReq policy.Request) (*polic
 }
 
 type acquiringResourceState struct {
-	req    *policy.Request
-	policy *authenticationPolicy
+	req     *policy.Request
+	policy  *authenticationPolicy
+	service string
 }
 
-// acquire acquires or updates the resource; only one
-// thread/goroutine at a time ever calls this function
-func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
+// acquireRefreshToken acquires or updates the refresh token of ACR service; only one thread/goroutine at a time ever calls this function
+func acquireRefreshToken(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
 	// get AAD token from credential
 	aadToken, err := state.policy.cred.GetToken(
 		state.req.Raw().Context(),
@@ -179,7 +205,7 @@ func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newE
 	}
 
 	// exchange refresh token with AAD token
-	refreshResp, err := state.policy.authClient.ExchangeAADAccessTokenForACRRefreshToken(state.req.Raw().Context(), postContentSchemaGrantTypeAccessToken, state.policy.acrService, &authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions{
+	refreshResp, err := state.policy.authClient.ExchangeAADAccessTokenForACRRefreshToken(state.req.Raw().Context(), postContentSchemaGrantTypeAccessToken, state.service, &authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions{
 		AccessToken: &aadToken.Token,
 	})
 	if err != nil {

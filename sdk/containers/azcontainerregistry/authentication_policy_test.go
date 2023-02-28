@@ -79,7 +79,7 @@ func Test_getJWTExpireTime(t *testing.T) {
 	}
 }
 
-func Test_authenticationPolicy_findServiceAndScope(t *testing.T) {
+func Test_findServiceAndScope(t *testing.T) {
 	resp1 := http.Response{}
 	resp1.Header = http.Header{}
 	resp1.Header.Set("WWW-Authenticate", "Bearer realm=\"https://contosoregistry.azurecr.io/oauth2/token\",service=\"contosoregistry.azurecr.io\",scope=\"registry:catalog:*\"")
@@ -99,14 +99,13 @@ func Test_authenticationPolicy_findServiceAndScope(t *testing.T) {
 		{"error", "error", &http.Response{}, true},
 	} {
 		t.Run(fmt.Sprintf("%s-%s", test.acrService, test.acrScope), func(t *testing.T) {
-			p := &authenticationPolicy{}
-			err := p.findServiceAndScope(test.resp)
+			service, scope, err := findServiceAndScope(test.resp)
 			if test.err {
 				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, test.acrScope, p.acrScope)
-				require.Equal(t, test.acrService, p.acrService)
+				require.Equal(t, test.acrService, service)
+				require.Equal(t, test.acrScope, scope)
 			}
 		})
 	}
@@ -120,16 +119,15 @@ func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	}
 	authClient := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	p := &authenticationPolicy{
-		temporal.NewResource(acquire),
+		temporal.NewResource(acquireRefreshToken),
+		"",
 		cred,
 		[]string{options.Cloud.Services[ServiceName].Audience + "/.default"},
-		"registry:catalog:*",
-		strings.TrimPrefix(endpoint, "https://"),
 		authClient,
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
 	require.NoError(t, err)
-	token, err := p.getAccessToken(request)
+	token, err := p.getAccessToken(request, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 }
@@ -139,16 +137,12 @@ func Test_authenticationPolicy_getAccessToken_live_anonymous(t *testing.T) {
 	endpoint, _, options := getEndpointCredAndClientOptions(t)
 	authClient := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	p := &authenticationPolicy{
-		temporal.NewResource(acquire),
-		nil,
-		nil,
-		"registry:catalog:*",
-		strings.TrimPrefix(endpoint, "https://"),
-		authClient,
+		refreshTokenCache: temporal.NewResource(acquireRefreshToken),
+		authClient:        authClient,
 	}
 	request, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://test.com")
 	require.NoError(t, err)
-	token, err := p.getAccessToken(request)
+	token, err := p.getAccessToken(request, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*")
 	require.NoError(t, err)
 	require.NotEmpty(t, token)
 }

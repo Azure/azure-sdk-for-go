@@ -2255,15 +2255,16 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteSuccessUsing
 
 	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
-	ctr = 0
 	for _, subResp := range resp.SubResponses {
-		if subResp.Error == nil {
-			ctr++
-		}
+		_require.NotNil(subResp.ContentID)
+		_require.NotNil(subResp.ContainerName)
+		_require.NotNil(subResp.BlobName)
+		_require.NotNil(subResp.RequestID)
+		_require.NotNil(subResp.Version)
+		_require.NoError(subResp.Error)
 	}
-	_require.Equal(ctr, 10)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -2316,10 +2317,15 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFail
 
 	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	var ctrSuccess, ctrFailure = 0, 0
 	for _, subResp := range resp.SubResponses {
+		_require.NotNil(subResp.ContentID)
+		_require.NotNil(subResp.ContainerName)
+		_require.NotNil(subResp.BlobName)
+		_require.NotNil(subResp.RequestID)
+		_require.NotNil(subResp.Version)
 		if subResp.Error == nil {
 			ctrSuccess++
 		} else {
@@ -2402,7 +2408,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingTokenCr
 
 	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -2473,7 +2479,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingTokenC
 
 	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctrHot = 0
@@ -2535,7 +2541,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingAccount
 
 	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -2595,7 +2601,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingAccoun
 
 	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctrHot = 0
@@ -2652,7 +2658,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingService
 
 	resp, err := cntClientSAS.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	pager = cntClientSAS.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -2708,7 +2714,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingServic
 
 	resp, err := cntClientSAS.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	pager = cntClientSAS.NewListBlobsFlatPager(nil)
 	ctrHot = 0
@@ -2786,7 +2792,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingUserDel
 
 	resp, err := cntClientSAS.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	pager = cntClientSAS.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -2862,7 +2868,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingUserDe
 
 	resp, err := cntClientSAS.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	pager = cntClientSAS.NewListBlobsFlatPager(nil)
 	ctrHot = 0
@@ -2969,7 +2975,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteForOneBlob()
 
 	resp1, err := containerClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp1.RequestID)
+	_require.NotNil(resp1.RequestID)
 	_require.Equal(len(resp1.SubResponses), 1)
 	_require.NoError(resp1.SubResponses[0].Error)
 

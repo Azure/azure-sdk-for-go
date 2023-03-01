@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"io"
@@ -1141,7 +1142,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey()
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	for _, cntClient := range cntClients {
 		pager := cntClient.NewListBlobsFlatPager(nil)
@@ -1190,7 +1191,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey(
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	for _, cntClient := range cntClients {
 		pager := cntClient.NewListBlobsFlatPager(nil)
@@ -1211,7 +1212,6 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey(
 	}
 }
 
-/*
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUsingTokenCredential() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1266,10 +1266,15 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUs
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	var ctrSuccess, ctrFailure = 0, 0
 	for _, subResp := range resp.SubResponses {
+		_require.NotNil(subResp.ContentID)
+		_require.NotNil(subResp.ContainerName)
+		_require.NotNil(subResp.BlobName)
+		_require.NotNil(subResp.RequestID)
+		_require.NotNil(subResp.Version)
 		if subResp.Error == nil {
 			ctrSuccess++
 		} else {
@@ -1348,15 +1353,16 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
-	ctr := 0
 	for _, subResp := range resp.SubResponses {
-		if subResp.Error == nil {
-			ctr++
-		}
+		_require.NotNil(subResp.ContentID)
+		_require.NotNil(subResp.ContainerName)
+		_require.NotNil(subResp.BlobName)
+		_require.NotNil(subResp.RequestID)
+		_require.NotNil(subResp.Version)
+		_require.NoError(subResp.Error)
 	}
-	_require.Equal(ctr, 10)
 
 	for _, cntClient := range cntClients {
 		pager := cntClient.NewListBlobsFlatPager(nil)
@@ -1376,7 +1382,6 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 		_require.Equal(ctrCool, 2)
 	}
 }
-*/
 
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingAccountSAS() {
 	_require := require.New(s.T())
@@ -1415,7 +1420,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingAccountSAS(
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	for _, cntClient := range cntClients {
 		pager := cntClient.NewListBlobsFlatPager(nil)
@@ -1473,7 +1478,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingAccountSAS
 
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp.RequestID)
+	_require.NotNil(resp.RequestID)
 
 	for _, cntClient := range cntClients {
 		pager := cntClient.NewListBlobsFlatPager(nil)
@@ -1694,7 +1699,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
 
 	resp1, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
-	_require.NotEmpty(resp1.RequestID)
+	_require.NotNil(resp1.RequestID)
 	_require.Equal(len(resp1.SubResponses), 1)
 	_require.NoError(resp1.SubResponses[0].Error)
 

@@ -310,7 +310,7 @@ func (s *Client) NewBatchBuilder() (*BatchBuilder, error) {
 		// for authentication using SAS
 		authPolicy = nil
 	default:
-		panic(fmt.Sprintf("unrecognised authentication type %T", cred))
+		return nil, fmt.Errorf("unrecognised authentication type %T", cred)
 	}
 
 	return &BatchBuilder{
@@ -330,7 +330,6 @@ func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 
 	// create the request body
 	batchReq, batchID, err := exported.CreateBatchRequest(&exported.BlobBatchBuilder{
-		Endpoint:    &bb.endpoint,
 		AuthPolicy:  bb.authPolicy,
 		SubRequests: bb.subRequests,
 	})

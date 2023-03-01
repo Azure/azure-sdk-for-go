@@ -1,10 +1,6 @@
 # Release History
 
-## 0.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.1.1 (2023-03-07)
 
 ### Bugs Fixed
 * Fix possible failure when request retry

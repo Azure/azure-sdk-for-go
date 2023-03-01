@@ -11,7 +11,7 @@ package armmediaservices
 
 const (
 	moduleName    = "armmediaservices"
-	moduleVersion = "v3.2.0"
+	moduleVersion = "v3.3.0"
 )
 
 // AacAudioProfile - The encoding profile to be used when encoding audio with AAC.
@@ -1035,6 +1035,29 @@ func PossibleLiveEventEncodingTypeValues() []LiveEventEncodingType {
 	}
 }
 
+// LiveEventHealthStatus - Health status of last 20 seconds.
+type LiveEventHealthStatus string
+
+const (
+	// LiveEventHealthStatusExcellent - Incoming bitrate >= 75% of target bitrate AND no Ingest warning and error AND ABS(IngestDrift)
+	// is equal to 0.
+	LiveEventHealthStatusExcellent LiveEventHealthStatus = "Excellent"
+	// LiveEventHealthStatusGood - Incoming bitrate >= 20% AND no Ingest Error or warning exception discontinuities which gap
+	// < 10 seconds.
+	LiveEventHealthStatusGood LiveEventHealthStatus = "Good"
+	// LiveEventHealthStatusPoor - Otherwise.
+	LiveEventHealthStatusPoor LiveEventHealthStatus = "Poor"
+)
+
+// PossibleLiveEventHealthStatusValues returns the possible values for the LiveEventHealthStatus const type.
+func PossibleLiveEventHealthStatusValues() []LiveEventHealthStatus {
+	return []LiveEventHealthStatus{
+		LiveEventHealthStatusExcellent,
+		LiveEventHealthStatusGood,
+		LiveEventHealthStatusPoor,
+	}
+}
+
 // LiveEventInputProtocol - The input protocol for the live event. This is specified at creation time and cannot be updated.
 type LiveEventInputProtocol string
 
@@ -1093,6 +1116,163 @@ func PossibleLiveEventResourceStateValues() []LiveEventResourceState {
 		LiveEventResourceStateStarting,
 		LiveEventResourceStateStopped,
 		LiveEventResourceStateStopping,
+	}
+}
+
+// LiveEventState - Current state of the live event. See https://go.microsoft.com/fwlink/?linkid=2139012 for more information.
+type LiveEventState string
+
+const (
+	// LiveEventStateRunning - The live event resources have been allocated, ingest and preview URLs have been generated, and
+	// it is capable of receiving live streams. At this point, billing is active. You must explicitly call Stop on the live event
+	// resource to halt further billing.
+	LiveEventStateRunning LiveEventState = "Running"
+	// LiveEventStateStopped - This is the initial state of the live event after creation (unless autostart was set to true.)
+	// No billing occurs in this state. In this state, the live event properties can be updated but streaming is not allowed.
+	LiveEventStateStopped LiveEventState = "Stopped"
+)
+
+// PossibleLiveEventStateValues returns the possible values for the LiveEventState const type.
+func PossibleLiveEventStateValues() []LiveEventState {
+	return []LiveEventState{
+		LiveEventStateRunning,
+		LiveEventStateStopped,
+	}
+}
+
+// LiveEventStreamEventLevel - Event level.
+type LiveEventStreamEventLevel string
+
+const (
+	LiveEventStreamEventLevelCritical    LiveEventStreamEventLevel = "Critical"
+	LiveEventStreamEventLevelError       LiveEventStreamEventLevel = "Error"
+	LiveEventStreamEventLevelInformation LiveEventStreamEventLevel = "Information"
+	LiveEventStreamEventLevelWarning     LiveEventStreamEventLevel = "Warning"
+)
+
+// PossibleLiveEventStreamEventLevelValues returns the possible values for the LiveEventStreamEventLevel const type.
+func PossibleLiveEventStreamEventLevelValues() []LiveEventStreamEventLevel {
+	return []LiveEventStreamEventLevel{
+		LiveEventStreamEventLevelCritical,
+		LiveEventStreamEventLevelError,
+		LiveEventStreamEventLevelInformation,
+		LiveEventStreamEventLevelWarning,
+	}
+}
+
+// LiveEventStreamEventMaxTimeMediaType - The media type of the larger timestamp of two fragments compared.
+type LiveEventStreamEventMaxTimeMediaType string
+
+const (
+	LiveEventStreamEventMaxTimeMediaTypeAudio LiveEventStreamEventMaxTimeMediaType = "Audio"
+	LiveEventStreamEventMaxTimeMediaTypeVideo LiveEventStreamEventMaxTimeMediaType = "Video"
+)
+
+// PossibleLiveEventStreamEventMaxTimeMediaTypeValues returns the possible values for the LiveEventStreamEventMaxTimeMediaType const type.
+func PossibleLiveEventStreamEventMaxTimeMediaTypeValues() []LiveEventStreamEventMaxTimeMediaType {
+	return []LiveEventStreamEventMaxTimeMediaType{
+		LiveEventStreamEventMaxTimeMediaTypeAudio,
+		LiveEventStreamEventMaxTimeMediaTypeVideo,
+	}
+}
+
+// LiveEventStreamEventMediaType - Type of the track.
+type LiveEventStreamEventMediaType string
+
+const (
+	LiveEventStreamEventMediaTypeAudio LiveEventStreamEventMediaType = "audio"
+	LiveEventStreamEventMediaTypeVideo LiveEventStreamEventMediaType = "video"
+)
+
+// PossibleLiveEventStreamEventMediaTypeValues returns the possible values for the LiveEventStreamEventMediaType const type.
+func PossibleLiveEventStreamEventMediaTypeValues() []LiveEventStreamEventMediaType {
+	return []LiveEventStreamEventMediaType{
+		LiveEventStreamEventMediaTypeAudio,
+		LiveEventStreamEventMediaTypeVideo,
+	}
+}
+
+// LiveEventStreamEventMinTimeMediaType - The media type of the smaller timestamp of two fragments compared.
+type LiveEventStreamEventMinTimeMediaType string
+
+const (
+	LiveEventStreamEventMinTimeMediaTypeAudio LiveEventStreamEventMinTimeMediaType = "Audio"
+	LiveEventStreamEventMinTimeMediaTypeVideo LiveEventStreamEventMinTimeMediaType = "Video"
+)
+
+// PossibleLiveEventStreamEventMinTimeMediaTypeValues returns the possible values for the LiveEventStreamEventMinTimeMediaType const type.
+func PossibleLiveEventStreamEventMinTimeMediaTypeValues() []LiveEventStreamEventMinTimeMediaType {
+	return []LiveEventStreamEventMinTimeMediaType{
+		LiveEventStreamEventMinTimeMediaTypeAudio,
+		LiveEventStreamEventMinTimeMediaTypeVideo,
+	}
+}
+
+// LiveEventStreamEventType - The type of the stream event. Format: StreamEvent/{eventType}
+type LiveEventStreamEventType string
+
+const (
+	// LiveEventStreamEventTypeStreamEventBeginIngest - Ingest session begins.
+	LiveEventStreamEventTypeStreamEventBeginIngest LiveEventStreamEventType = "StreamEvent/BeginIngest"
+	// LiveEventStreamEventTypeStreamEventChunkDropped - Fragment dropped.
+	LiveEventStreamEventTypeStreamEventChunkDropped LiveEventStreamEventType = "StreamEvent/ChunkDropped"
+	// LiveEventStreamEventTypeStreamEventDiscontinuity - Timestamp discontinuity detected.
+	LiveEventStreamEventTypeStreamEventDiscontinuity LiveEventStreamEventType = "StreamEvent/Discontinuity"
+	// LiveEventStreamEventTypeStreamEventEndIngest - Ingest session ends.
+	LiveEventStreamEventTypeStreamEventEndIngest LiveEventStreamEventType = "StreamEvent/EndIngest"
+	// LiveEventStreamEventTypeStreamEventFirstChunkReceived - First fragment received on ingest media track.
+	LiveEventStreamEventTypeStreamEventFirstChunkReceived LiveEventStreamEventType = "StreamEvent/FirstChunkReceived"
+	// LiveEventStreamEventTypeStreamEventInvalidConnection - Ingest session denied.
+	LiveEventStreamEventTypeStreamEventInvalidConnection LiveEventStreamEventType = "StreamEvent/InvalidConnection"
+	// LiveEventStreamEventTypeStreamEventUnalignedKeyFrames - Unaligned video keyframes detected.
+	LiveEventStreamEventTypeStreamEventUnalignedKeyFrames LiveEventStreamEventType = "StreamEvent/UnalignedKeyFrames"
+	// LiveEventStreamEventTypeStreamEventUnalignedPresentation - Unaligned presentation detected, meaning two fragments across
+	// two quality levels are not time aligned.
+	LiveEventStreamEventTypeStreamEventUnalignedPresentation LiveEventStreamEventType = "StreamEvent/UnalignedPresentation"
+)
+
+// PossibleLiveEventStreamEventTypeValues returns the possible values for the LiveEventStreamEventType const type.
+func PossibleLiveEventStreamEventTypeValues() []LiveEventStreamEventType {
+	return []LiveEventStreamEventType{
+		LiveEventStreamEventTypeStreamEventBeginIngest,
+		LiveEventStreamEventTypeStreamEventChunkDropped,
+		LiveEventStreamEventTypeStreamEventDiscontinuity,
+		LiveEventStreamEventTypeStreamEventEndIngest,
+		LiveEventStreamEventTypeStreamEventFirstChunkReceived,
+		LiveEventStreamEventTypeStreamEventInvalidConnection,
+		LiveEventStreamEventTypeStreamEventUnalignedKeyFrames,
+		LiveEventStreamEventTypeStreamEventUnalignedPresentation,
+	}
+}
+
+// LiveEventTrackEventType - The type of the track event.
+type LiveEventTrackEventType string
+
+const (
+	// LiveEventTrackEventTypeTrackEventIngestHeartbeat - Track heartbeat received.
+	LiveEventTrackEventTypeTrackEventIngestHeartbeat LiveEventTrackEventType = "TrackEvent/IngestHeartbeat"
+)
+
+// PossibleLiveEventTrackEventTypeValues returns the possible values for the LiveEventTrackEventType const type.
+func PossibleLiveEventTrackEventTypeValues() []LiveEventTrackEventType {
+	return []LiveEventTrackEventType{
+		LiveEventTrackEventTypeTrackEventIngestHeartbeat,
+	}
+}
+
+// LiveEventTrackType - Type of the track.
+type LiveEventTrackType string
+
+const (
+	LiveEventTrackTypeAudio LiveEventTrackType = "audio"
+	LiveEventTrackTypeVideo LiveEventTrackType = "video"
+)
+
+// PossibleLiveEventTrackTypeValues returns the possible values for the LiveEventTrackType const type.
+func PossibleLiveEventTrackTypeValues() []LiveEventTrackType {
+	return []LiveEventTrackType{
+		LiveEventTrackTypeAudio,
+		LiveEventTrackTypeVideo,
 	}
 }
 
@@ -1159,6 +1339,31 @@ func PossibleMetricUnitValues() []MetricUnit {
 		MetricUnitBytes,
 		MetricUnitCount,
 		MetricUnitMilliseconds,
+	}
+}
+
+// MinimumTLSVersion - The minimum TLS version allowed for this account's requests. This is an optional property. If unspecified,
+// a secure default value will be used.
+type MinimumTLSVersion string
+
+const (
+	// MinimumTLSVersionTls10 - Minimum TLS version is TLS 1.0.
+	MinimumTLSVersionTls10 MinimumTLSVersion = "Tls10"
+	// MinimumTLSVersionTls11 - Minimum TLS version is TLS 1.1.
+	MinimumTLSVersionTls11 MinimumTLSVersion = "Tls11"
+	// MinimumTLSVersionTls12 - Minimum TLS version is TLS 1.2.
+	MinimumTLSVersionTls12 MinimumTLSVersion = "Tls12"
+	// MinimumTLSVersionTls13 - Minimum TLS version is TLS 1.3.
+	MinimumTLSVersionTls13 MinimumTLSVersion = "Tls13"
+)
+
+// PossibleMinimumTLSVersionValues returns the possible values for the MinimumTLSVersion const type.
+func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
+	return []MinimumTLSVersion{
+		MinimumTLSVersionTls10,
+		MinimumTLSVersionTls11,
+		MinimumTLSVersionTls12,
+		MinimumTLSVersionTls13,
 	}
 }
 
@@ -1244,7 +1449,7 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
-// ProvisioningState - Provisioning state of the Media Services account.
+// ProvisioningState - Provisioning state of the asset track.
 type ProvisioningState string
 
 const (

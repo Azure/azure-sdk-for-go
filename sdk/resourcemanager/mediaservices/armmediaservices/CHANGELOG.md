@@ -1,5 +1,40 @@
 # Release History
 
+## 3.3.0 (2023-03-24)
+### Features Added
+
+- New type alias `LiveEventHealthStatus` with values `LiveEventHealthStatusExcellent`, `LiveEventHealthStatusGood`, `LiveEventHealthStatusPoor`
+- New type alias `LiveEventState` with values `LiveEventStateRunning`, `LiveEventStateStopped`
+- New type alias `LiveEventStreamEventLevel` with values `LiveEventStreamEventLevelCritical`, `LiveEventStreamEventLevelError`, `LiveEventStreamEventLevelInformation`, `LiveEventStreamEventLevelWarning`
+- New type alias `LiveEventStreamEventMaxTimeMediaType` with values `LiveEventStreamEventMaxTimeMediaTypeAudio`, `LiveEventStreamEventMaxTimeMediaTypeVideo`
+- New type alias `LiveEventStreamEventMediaType` with values `LiveEventStreamEventMediaTypeAudio`, `LiveEventStreamEventMediaTypeVideo`
+- New type alias `LiveEventStreamEventMinTimeMediaType` with values `LiveEventStreamEventMinTimeMediaTypeAudio`, `LiveEventStreamEventMinTimeMediaTypeVideo`
+- New type alias `LiveEventStreamEventType` with values `LiveEventStreamEventTypeStreamEventBeginIngest`, `LiveEventStreamEventTypeStreamEventChunkDropped`, `LiveEventStreamEventTypeStreamEventDiscontinuity`, `LiveEventStreamEventTypeStreamEventEndIngest`, `LiveEventStreamEventTypeStreamEventFirstChunkReceived`, `LiveEventStreamEventTypeStreamEventInvalidConnection`, `LiveEventStreamEventTypeStreamEventUnalignedKeyFrames`, `LiveEventStreamEventTypeStreamEventUnalignedPresentation`
+- New type alias `LiveEventTrackEventType` with values `LiveEventTrackEventTypeTrackEventIngestHeartbeat`
+- New type alias `LiveEventTrackType` with values `LiveEventTrackTypeAudio`, `LiveEventTrackTypeVideo`
+- New type alias `MinimumTLSVersion` with values `MinimumTLSVersionTls10`, `MinimumTLSVersionTls11`, `MinimumTLSVersionTls12`, `MinimumTLSVersionTls13`
+- New function `*LiveEventsClient.BeginListGetStatus(context.Context, string, string, string, *LiveEventsClientBeginListGetStatusOptions) (*runtime.Poller[*runtime.Pager[LiveEventsClientListGetStatusResponse]], error)`
+- New function `*LiveEventsClient.BeginListGetStreamEvents(context.Context, string, string, string, *LiveEventsClientBeginListGetStreamEventsOptions) (*runtime.Poller[*runtime.Pager[LiveEventsClientListGetStreamEventsResponse]], error)`
+- New function `*LiveEventsClient.BeginListGetTrackIngestHeartbeats(context.Context, string, string, string, *LiveEventsClientBeginListGetTrackIngestHeartbeatsOptions) (*runtime.Poller[*runtime.Pager[LiveEventsClientListGetTrackIngestHeartbeatsResponse]], error)`
+- New struct `LiveEventGetStatusResult`
+- New struct `LiveEventGetStreamEventsResult`
+- New struct `LiveEventGetTrackIngestHeartbeatsResult`
+- New struct `LiveEventIngestInterruption`
+- New struct `LiveEventIngestion`
+- New struct `LiveEventStatus`
+- New struct `LiveEventStreamEvent`
+- New struct `LiveEventStreamEventData`
+- New struct `LiveEventTimedMetadataEndpoint`
+- New struct `LiveEventTrackEvent`
+- New struct `LiveEventTrackEventData`
+- New struct `LiveEventTrackStatus`
+- New struct `LiveEventsClientListGetStatusResponse`
+- New struct `LiveEventsClientListGetStreamEventsResponse`
+- New struct `LiveEventsClientListGetTrackIngestHeartbeatsResponse`
+- New field `TimedMetadataEndpoints` in struct `LiveEventInput`
+- New field `MinimumTLSVersion` in struct `MediaServiceProperties`
+
+
 ## 3.2.0 (2023-01-13)
 ### Features Added
 

@@ -32,9 +32,9 @@ type JobsClient struct {
 }
 
 // NewJobsClient creates a new instance of JobsClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // CancelJob - Cancel a Job.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// jobName - The Job name.
-// options - JobsClientCancelJobOptions contains the optional parameters for the JobsClient.CancelJob method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - jobName - The Job name.
+//   - options - JobsClientCancelJobOptions contains the optional parameters for the JobsClient.CancelJob method.
 func (client *JobsClient) CancelJob(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string, options *JobsClientCancelJobOptions) (JobsClientCancelJobResponse, error) {
 	req, err := client.cancelJobCreateRequest(ctx, resourceGroupName, accountName, transformName, jobName, options)
 	if err != nil {
@@ -114,13 +115,14 @@ func (client *JobsClient) cancelJobCreateRequest(ctx context.Context, resourceGr
 
 // Create - Creates a Job.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// jobName - The Job name.
-// parameters - The request parameters
-// options - JobsClientCreateOptions contains the optional parameters for the JobsClient.Create method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - jobName - The Job name.
+//   - parameters - The request parameters
+//   - options - JobsClientCreateOptions contains the optional parameters for the JobsClient.Create method.
 func (client *JobsClient) Create(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string, parameters Job, options *JobsClientCreateOptions) (JobsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, transformName, jobName, parameters, options)
 	if err != nil {
@@ -181,12 +183,13 @@ func (client *JobsClient) createHandleResponse(resp *http.Response) (JobsClientC
 
 // Delete - Deletes a Job.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// jobName - The Job name.
-// options - JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - jobName - The Job name.
+//   - options - JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
 func (client *JobsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string, options *JobsClientDeleteOptions) (JobsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, transformName, jobName, options)
 	if err != nil {
@@ -238,12 +241,13 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 
 // Get - Gets a Job.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// jobName - The Job name.
-// options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - jobName - The Job name.
+//   - options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
 func (client *JobsClient) Get(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string, options *JobsClientGetOptions) (JobsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, transformName, jobName, options)
 	if err != nil {
@@ -303,11 +307,12 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 }
 
 // NewListPager - Lists all of the Jobs for the Transform.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - options - JobsClientListOptions contains the optional parameters for the JobsClient.NewListPager method.
 func (client *JobsClient) NewListPager(resourceGroupName string, accountName string, transformName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {
@@ -384,13 +389,14 @@ func (client *JobsClient) listHandleResponse(resp *http.Response) (JobsClientLis
 // Update - Update is only supported for description and priority. Updating Priority will take effect when the Job state is
 // Queued or Scheduled and depending on the timing the priority update may be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// transformName - The Transform name.
-// jobName - The Job name.
-// parameters - The request parameters
-// options - JobsClientUpdateOptions contains the optional parameters for the JobsClient.Update method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - transformName - The Transform name.
+//   - jobName - The Job name.
+//   - parameters - The request parameters
+//   - options - JobsClientUpdateOptions contains the optional parameters for the JobsClient.Update method.
 func (client *JobsClient) Update(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string, parameters Job, options *JobsClientUpdateOptions) (JobsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, transformName, jobName, parameters, options)
 	if err != nil {

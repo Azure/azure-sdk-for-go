@@ -32,9 +32,9 @@ type OperationStatusesClient struct {
 }
 
 // NewOperationStatusesClient creates a new instance of OperationStatusesClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,10 +57,11 @@ func NewOperationStatusesClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Get media service operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
-// locationName - Location name.
-// operationID - Operation ID.
-// options - OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
+//
+// Generated from API version 2023-01-01
+//   - locationName - Location name.
+//   - operationID - Operation ID.
+//   - options - OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
 func (client *OperationStatusesClient) Get(ctx context.Context, locationName string, operationID string, options *OperationStatusesClientGetOptions) (OperationStatusesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, locationName, operationID, options)
 	if err != nil {
@@ -96,7 +97,7 @@ func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

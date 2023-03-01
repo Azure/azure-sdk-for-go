@@ -135,7 +135,7 @@ type AccountFiltersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.List method.
+// AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.NewListPager method.
 type AccountFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -289,7 +289,7 @@ type AssetFiltersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.List method.
+// AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.NewListPager method.
 type AssetFiltersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -441,7 +441,7 @@ type AssetsClientListContainerSasOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssetsClientListOptions contains the optional parameters for the AssetsClient.List method.
+// AssetsClientListOptions contains the optional parameters for the AssetsClient.NewListPager method.
 type AssetsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -752,7 +752,7 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 type ClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -762,7 +762,7 @@ type ClientListEdgePoliciesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListOptions contains the optional parameters for the Client.List method.
+// ClientListOptions contains the optional parameters for the Client.NewListPager method.
 type ClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -869,7 +869,7 @@ type ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.List method.
+// ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.NewListPager method.
 type ContentKeyPoliciesClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -1565,7 +1565,7 @@ type EnvelopeEncryption struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -2650,7 +2650,7 @@ type JobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+// JobsClientListOptions contains the optional parameters for the JobsClient.NewListPager method.
 type JobsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -2936,6 +2936,57 @@ type LiveEventEndpoint struct {
 	URL *string `json:"url,omitempty"`
 }
 
+// LiveEventGetStatusResult - Get live event status result.
+type LiveEventGetStatusResult struct {
+	// The result of the get live event status.
+	Value []*LiveEventStatus `json:"value,omitempty"`
+}
+
+// LiveEventGetStreamEventsResult - Get live event stream events result.
+type LiveEventGetStreamEventsResult struct {
+	// The result of the get live event stream events.
+	Value []*LiveEventStreamEvent `json:"value,omitempty"`
+}
+
+// LiveEventGetTrackIngestHeartbeatsResult - Get live event track ingest heart beats result.
+type LiveEventGetTrackIngestHeartbeatsResult struct {
+	// The result of the get live event track events.
+	Value []*LiveEventTrackEvent `json:"value,omitempty"`
+}
+
+// LiveEventIngestInterruption - The live event ingest interruption data.
+type LiveEventIngestInterruption struct {
+	// UTC time of interruption start, encoder disconnected.
+	Begin *time.Time `json:"begin,omitempty"`
+
+	// Duration of interruption in ISO 8601 time. For example, use PT1H30M to indicate 1 hour and 30 minutes.
+	Duration *string `json:"duration,omitempty"`
+
+	// UTC time of interruption end, encoder re-connected.
+	End *time.Time `json:"end,omitempty"`
+
+	// Interruption reason.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// LiveEventIngestion - The live event ingestion telemetry data.
+type LiveEventIngestion struct {
+	// Ingestion begin time in UTC.
+	Begin *time.Time `json:"begin,omitempty"`
+
+	// Ingestion end time in UTC. Empty if it's not stopped yet.
+	End *time.Time `json:"end,omitempty"`
+
+	// Reason why ingestion stops. Empty if it's not stopped yet. E.g) Service Stopped. No Ingestion.
+	EndReason *string `json:"endReason,omitempty"`
+
+	// IngestInterruption entry list.
+	IngestInterruptions []*LiveEventIngestInterruption `json:"ingestInterruptions,omitempty"`
+
+	// Ingestion stream name.
+	StreamName *string `json:"streamName,omitempty"`
+}
+
 // LiveEventInput - The live event input.
 type LiveEventInput struct {
 	// REQUIRED; The input protocol for the live event. This is specified at creation time and cannot be updated.
@@ -2955,6 +3006,9 @@ type LiveEventInput struct {
 	// in the HLS output. For example, use PT2S to indicate 2 seconds. Leave the
 	// value empty for encoding live events.
 	KeyFrameIntervalDuration *string `json:"keyFrameIntervalDuration,omitempty"`
+
+	// The metadata endpoints for the live event.
+	TimedMetadataEndpoints []*LiveEventTimedMetadataEndpoint `json:"timedMetadataEndpoints,omitempty"`
 }
 
 // LiveEventInputAccessControl - The IP access control for live event input.
@@ -3073,6 +3127,235 @@ type LiveEventProperties struct {
 	ResourceState *LiveEventResourceState `json:"resourceState,omitempty" azure:"ro"`
 }
 
+// LiveEventStatus - The live event status.
+type LiveEventStatus struct {
+	// List of strings justifying the health status.
+	HealthDescriptions []*string `json:"healthDescriptions,omitempty"`
+
+	// Health status of last 20 seconds.
+	HealthStatus *LiveEventHealthStatus `json:"healthStatus,omitempty"`
+
+	// Live event ingestion entry.
+	Ingestion *LiveEventIngestion `json:"ingestion,omitempty"`
+
+	// Last updated UTC time of this status.
+	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty"`
+
+	// Current state of the live event. See https://go.microsoft.com/fwlink/?linkid=2139012 for more information.
+	State *LiveEventState `json:"state,omitempty"`
+
+	// Track entry list.
+	TrackStatus []*LiveEventTrackStatus `json:"trackStatus,omitempty"`
+}
+
+// LiveEventStreamEvent - The live event stream event.
+type LiveEventStreamEvent struct {
+	// Event data based on event type.
+	Data *LiveEventStreamEventData `json:"data,omitempty"`
+
+	// Event level.
+	EventLevel *LiveEventStreamEventLevel `json:"eventLevel,omitempty"`
+
+	// The time event raised.
+	EventTime *time.Time `json:"eventTime,omitempty"`
+
+	// The type of the stream event. Format: StreamEvent/{eventType}
+	EventType *LiveEventStreamEventType `json:"eventType,omitempty"`
+}
+
+// LiveEventStreamEventData - The live event stream event data.
+type LiveEventStreamEventData struct {
+	// Bitrate of the track.
+	Bitrate *int64 `json:"bitrate,omitempty"`
+
+	// Current fragment timestamp in timescale.
+	CurrentFragmentTimestamp *string `json:"currentFragmentTimestamp,omitempty"`
+
+	// Length of the discontinuity gap in timescale.
+	DiscontinuityGap *int64 `json:"discontinuityGap,omitempty"`
+
+	// Fragment duration.
+	Duration *string `json:"duration,omitempty"`
+
+	// Reason the fragment was dropped.
+	FragmentDropReason *string `json:"fragmentDropReason,omitempty"`
+
+	// Duration of first fragment used to make a comparison, in timescale.
+	FragmentOneDuration *string `json:"fragmentOneDuration,omitempty"`
+
+	// Timestamp of first fragment used to make a comparison, in timescale.
+	FragmentOneTimestamp *string `json:"fragmentOneTimestamp,omitempty"`
+
+	// Duration of second fragment used to make a comparison, in timescale.
+	FragmentTwoDuration *string `json:"fragmentTwoDuration,omitempty"`
+
+	// Timestamp of second fragment used to make a comparison, in timescale.
+	FragmentTwoTimestamp *string `json:"fragmentTwoTimestamp,omitempty"`
+
+	// The larger timestamp of the two fragments compared.
+	MaxTime *string `json:"maxTime,omitempty"`
+
+	// The media type of the larger timestamp of two fragments compared.
+	MaxTimeMediaType *LiveEventStreamEventMaxTimeMediaType `json:"maxTimeMediaType,omitempty"`
+
+	// Fragment timestamp in timescale.
+	MediaTimestamp *string `json:"mediaTimestamp,omitempty"`
+
+	// Type of the track.
+	MediaType *LiveEventStreamEventMediaType `json:"mediaType,omitempty"`
+
+	// The smaller timestamp of the two fragments compared.
+	MinTime *string `json:"minTime,omitempty"`
+
+	// The media type of the smaller timestamp of two fragments compared.
+	MinTimeMediaType *LiveEventStreamEventMinTimeMediaType `json:"minTimeMediaType,omitempty"`
+
+	// Previous fragment duration in timescale.
+	PreviousFragmentDuration *string `json:"previousFragmentDuration,omitempty"`
+
+	// Previous fragment timestamp in timescale.
+	PreviousFragmentTimestamp *string `json:"previousFragmentTimestamp,omitempty"`
+
+	// Truncated IP of the encoder.
+	RemoteIP *string `json:"remoteIp,omitempty"`
+
+	// Port of the encoder.
+	RemotePort *string `json:"remotePort,omitempty"`
+
+	// Width x Height for video, null otherwise.
+	Resolution *string `json:"resolution,omitempty"`
+
+	// Result code.
+	ResultCode *string `json:"resultCode,omitempty"`
+
+	// Result message.
+	ResultMessage *string `json:"resultMessage,omitempty"`
+
+	// Stream ID in the format "trackName_bitrate"
+	StreamID *string `json:"streamId,omitempty"`
+
+	// Identifier of the stream or connection. Encoder or customer is responsible to add this ID in the ingest URL.
+	StreamName *string `json:"streamName,omitempty"`
+
+	// Timescale in which timestamps are expressed.
+	Timescale *string `json:"timescale,omitempty"`
+
+	// Timescale of the fragment with the larger timestamp.
+	TimescaleOfMaxTime *string `json:"timescaleOfMaxTime,omitempty"`
+
+	// Timescale of the fragment with the smaller timestamp.
+	TimescaleOfMinTime *string `json:"timescaleOfMinTime,omitempty"`
+
+	// Track index.
+	TrackID *int32 `json:"trackId,omitempty"`
+
+	// Name of the track.
+	TrackName *string `json:"trackName,omitempty"`
+}
+
+// LiveEventTimedMetadataEndpoint - The live event metadata insertion endpoint.
+type LiveEventTimedMetadataEndpoint struct {
+	// The metadata endpoint URL.
+	URL *string `json:"url,omitempty"`
+}
+
+// LiveEventTrackEvent - The live event track event.
+type LiveEventTrackEvent struct {
+	// Event data.
+	Data *LiveEventTrackEventData `json:"data,omitempty"`
+
+	// The time event raised.
+	EventTime *time.Time `json:"eventTime,omitempty"`
+
+	// The type of the track event.
+	EventType *LiveEventTrackEventType `json:"eventType,omitempty"`
+}
+
+// LiveEventTrackEventData - The live event track ingest heart beat event data.
+type LiveEventTrackEventData struct {
+	// Bitrate of the track.
+	Bitrate *int64 `json:"bitrate,omitempty"`
+
+	// Number of discontinuities detected in the last 20 seconds.
+	DiscontinuityCount *int64 `json:"discontinuityCount,omitempty"`
+
+	// Indicates whether ingest is healthy.
+	Healthy *bool `json:"healthy,omitempty"`
+
+	// Calculated bitrate based on data chunks coming from encoder.
+	IncomingBitrate *int64 `json:"incomingBitrate,omitempty"`
+
+	// Indicates the speed of delay, in seconds-per-minute, of the incoming audio or video data during the last minute. The value
+	// is greater than zero if data is arriving to the live event slower than
+	// expected in the last minute; zero if data arrived with no delay; and "n/a" if no audio or video data was received. For
+	// example, if you have a contribution encoder sending in live content, and it is
+	// slowing down due to processing issues, or network latency, it may be only able to deliver a total of 58 seconds of audio
+	// or video in a one-minute period. This would be reported as two
+	// seconds-per-minute of drift. If the encoder is able to catch up and send all 60 seconds or more of data every minute, you
+	// will see this value reported as 0. If there was a disconnection or
+	// discontinuity from the encoder, this value may still display as 0, as it does not account for breaks in the data - only
+	// data that is delayed in timestamps.
+	IngestDriftValue *string `json:"ingestDriftValue,omitempty"`
+
+	// The last timestamp in UTC that a fragment arrived at the ingest endpoint.
+	LastFragmentArrivalTime *time.Time `json:"lastFragmentArrivalTime,omitempty"`
+
+	// Latest timestamp received for a track in last 20 seconds.
+	LastTimestamp *string `json:"lastTimestamp,omitempty"`
+
+	// Number of data chunks with timestamps in the past that were received in last 20 seconds.
+	NonincreasingCount *int64 `json:"nonincreasingCount,omitempty"`
+
+	// Number of data chunks that had overlapped timestamps in last 20 seconds.
+	OverlapCount *int64 `json:"overlapCount,omitempty"`
+
+	// State of the live event.
+	State *string `json:"state,omitempty"`
+
+	// Timescale in which timestamps are expressed.
+	Timescale *string `json:"timescale,omitempty"`
+
+	// Name of the track.
+	TrackName *string `json:"trackName,omitempty"`
+
+	// Type of the track.
+	TrackType *LiveEventTrackType `json:"trackType,omitempty"`
+
+	// The language code (in BCP-47 format) of the transcription language. For example, "de-de" indicates German (Germany). The
+	// value is empty for the video track heartbeats, or when live transcription is
+	// turned off.
+	TranscriptionLanguage *string `json:"transcriptionLanguage,omitempty"`
+
+	// This value is "On" for audio track heartbeats if live transcription is turned on, otherwise you will see an empty string.
+	// This state is only applicable to track type of "audio" for Live transcription.
+	// All other tracks will have an empty value.
+	TranscriptionState *string `json:"transcriptionState,omitempty"`
+
+	// If expected and actual bitrates differ by more than allowed limit in last 20 seconds.
+	UnexpectedBitrate *bool `json:"unexpectedBitrate,omitempty"`
+}
+
+// LiveEventTrackStatus - The live event track status.
+type LiveEventTrackStatus struct {
+	// Expected bitrate for this track.
+	ExpectedBitrate *int64 `json:"expectedBitrate,omitempty"`
+
+	// Average incoming bitrate for last 20 seconds when live event is running.
+	IncomingBitrate *int64 `json:"incomingBitrate,omitempty"`
+
+	// Current ingest drift value in seconds for last 1 minute.
+	IngestDrift *string `json:"ingestDrift,omitempty"`
+
+	// Total number of timed metadata request received.
+	RequestReceived *int64 `json:"requestReceived,omitempty"`
+
+	// Total number of successful timed metadata request received.
+	RequestSucceeded *int64 `json:"requestSucceeded,omitempty"`
+
+	// Track Id.
+	TrackID *string `json:"trackId,omitempty"`
+}
+
 // LiveEventTranscription - Describes the transcription tracks in the output of a live event, generated using speech-to-text
 // transcription. This property is reserved for future use, any value set on this property will be
 // ignored.
@@ -3118,6 +3401,27 @@ type LiveEventsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// LiveEventsClientBeginListGetStatusOptions contains the optional parameters for the LiveEventsClient.BeginListGetStatus
+// method.
+type LiveEventsClientBeginListGetStatusOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LiveEventsClientBeginListGetStreamEventsOptions contains the optional parameters for the LiveEventsClient.BeginListGetStreamEvents
+// method.
+type LiveEventsClientBeginListGetStreamEventsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LiveEventsClientBeginListGetTrackIngestHeartbeatsOptions contains the optional parameters for the LiveEventsClient.BeginListGetTrackIngestHeartbeats
+// method.
+type LiveEventsClientBeginListGetTrackIngestHeartbeatsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // LiveEventsClientBeginResetOptions contains the optional parameters for the LiveEventsClient.BeginReset method.
 type LiveEventsClientBeginResetOptions struct {
 	// Resumes the LRO from the provided token.
@@ -3147,7 +3451,7 @@ type LiveEventsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.List method.
+// LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.NewListPager method.
 type LiveEventsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3251,7 +3555,7 @@ type LiveOutputsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.List method.
+// LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.NewListPager method.
 type LiveOutputsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3370,6 +3674,10 @@ type MediaServiceProperties struct {
 
 	// The Key Delivery properties for Media Services account.
 	KeyDelivery *KeyDelivery `json:"keyDelivery,omitempty"`
+
+	// The minimum TLS version allowed for this account's requests. This is an optional property. If unspecified, a secure default
+	// value will be used.
+	MinimumTLSVersion *MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 
 	// Whether or not public network access is allowed for resources under the Media Services account.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
@@ -4372,7 +4680,7 @@ type StreamingEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.List method.
+// StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.NewListPager method.
 type StreamingEndpointsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4500,7 +4808,7 @@ type StreamingLocatorsClientListContentKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.List method.
+// StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.NewListPager method.
 type StreamingLocatorsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -4543,7 +4851,7 @@ type StreamingPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.List method.
+// StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.NewListPager method.
 type StreamingPoliciesClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string
@@ -4824,7 +5132,7 @@ type TracksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TracksClientListOptions contains the optional parameters for the TracksClient.List method.
+// TracksClientListOptions contains the optional parameters for the TracksClient.NewListPager method.
 type TracksClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -4905,7 +5213,7 @@ type TransformsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransformsClientListOptions contains the optional parameters for the TransformsClient.List method.
+// TransformsClientListOptions contains the optional parameters for the TransformsClient.NewListPager method.
 type TransformsClientListOptions struct {
 	// Restricts the set of items returned.
 	Filter *string

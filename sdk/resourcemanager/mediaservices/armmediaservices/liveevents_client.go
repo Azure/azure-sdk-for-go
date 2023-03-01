@@ -33,9 +33,9 @@ type LiveEventsClient struct {
 }
 
 // NewLiveEventsClient creates a new instance of LiveEventsClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLiveEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LiveEventsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewLiveEventsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginAllocate - A live event is in StandBy state after allocation completes, and is ready to start.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientBeginAllocateOptions contains the optional parameters for the LiveEventsClient.BeginAllocate
-// method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginAllocateOptions contains the optional parameters for the LiveEventsClient.BeginAllocate
+//     method.
 func (client *LiveEventsClient) BeginAllocate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginAllocateOptions) (*runtime.Poller[LiveEventsClientAllocateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.allocate(ctx, resourceGroupName, accountName, liveEventName, options)
@@ -78,7 +79,8 @@ func (client *LiveEventsClient) BeginAllocate(ctx context.Context, resourceGroup
 
 // Allocate - A live event is in StandBy state after allocation completes, and is ready to start.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+//
+// Generated from API version 2022-11-01
 func (client *LiveEventsClient) allocate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginAllocateOptions) (*http.Response, error) {
 	req, err := client.allocateCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
@@ -118,7 +120,7 @@ func (client *LiveEventsClient) allocateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -126,12 +128,13 @@ func (client *LiveEventsClient) allocateCreateRequest(ctx context.Context, resou
 
 // AsyncOperation - Get a live event operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// operationID - The ID of an ongoing async operation.
-// options - LiveEventsClientAsyncOperationOptions contains the optional parameters for the LiveEventsClient.AsyncOperation
-// method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - operationID - The ID of an ongoing async operation.
+//   - options - LiveEventsClientAsyncOperationOptions contains the optional parameters for the LiveEventsClient.AsyncOperation
+//     method.
 func (client *LiveEventsClient) AsyncOperation(ctx context.Context, resourceGroupName string, accountName string, operationID string, options *LiveEventsClientAsyncOperationOptions) (LiveEventsClientAsyncOperationResponse, error) {
 	req, err := client.asyncOperationCreateRequest(ctx, resourceGroupName, accountName, operationID, options)
 	if err != nil {
@@ -171,7 +174,7 @@ func (client *LiveEventsClient) asyncOperationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,12 +191,13 @@ func (client *LiveEventsClient) asyncOperationHandleResponse(resp *http.Response
 
 // BeginCreate - Creates a new live event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// parameters - Live event properties needed for creation.
-// options - LiveEventsClientBeginCreateOptions contains the optional parameters for the LiveEventsClient.BeginCreate method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - parameters - Live event properties needed for creation.
+//   - options - LiveEventsClientBeginCreateOptions contains the optional parameters for the LiveEventsClient.BeginCreate method.
 func (client *LiveEventsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginCreateOptions) (*runtime.Poller[LiveEventsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
@@ -208,7 +212,8 @@ func (client *LiveEventsClient) BeginCreate(ctx context.Context, resourceGroupNa
 
 // Create - Creates a new live event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+//
+// Generated from API version 2022-11-01
 func (client *LiveEventsClient) create(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
 	if err != nil {
@@ -248,7 +253,7 @@ func (client *LiveEventsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.AutoStart != nil {
 		reqQP.Set("autoStart", strconv.FormatBool(*options.AutoStart))
 	}
@@ -259,11 +264,12 @@ func (client *LiveEventsClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Deletes a live event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientBeginDeleteOptions contains the optional parameters for the LiveEventsClient.BeginDelete method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginDeleteOptions contains the optional parameters for the LiveEventsClient.BeginDelete method.
 func (client *LiveEventsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginDeleteOptions) (*runtime.Poller[LiveEventsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, liveEventName, options)
@@ -278,7 +284,8 @@ func (client *LiveEventsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes a live event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+//
+// Generated from API version 2022-11-01
 func (client *LiveEventsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
@@ -318,7 +325,7 @@ func (client *LiveEventsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,11 +333,12 @@ func (client *LiveEventsClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets properties of a live event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientGetOptions contains the optional parameters for the LiveEventsClient.Get method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientGetOptions contains the optional parameters for the LiveEventsClient.Get method.
 func (client *LiveEventsClient) Get(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientGetOptions) (LiveEventsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
@@ -370,7 +378,7 @@ func (client *LiveEventsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -386,10 +394,11 @@ func (client *LiveEventsClient) getHandleResponse(resp *http.Response) (LiveEven
 }
 
 // NewListPager - Lists all the live events in the account.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// options - LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.List method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - options - LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.NewListPager method.
 func (client *LiveEventsClient) NewListPager(resourceGroupName string, accountName string, options *LiveEventsClientListOptions) *runtime.Pager[LiveEventsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LiveEventsClientListResponse]{
 		More: func(page LiveEventsClientListResponse) bool {
@@ -438,7 +447,7 @@ func (client *LiveEventsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -453,15 +462,319 @@ func (client *LiveEventsClient) listHandleResponse(resp *http.Response) (LiveEve
 	return result, nil
 }
 
+// BeginListGetStatus - Gets status telemetry of a live event.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginListGetStatusOptions contains the optional parameters for the LiveEventsClient.BeginListGetStatus
+//     method.
+func (client *LiveEventsClient) BeginListGetStatus(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginListGetStatusOptions) (*runtime.Poller[*runtime.Pager[LiveEventsClientListGetStatusResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[LiveEventsClientListGetStatusResponse]{
+		More: func(page LiveEventsClientListGetStatusResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *LiveEventsClientListGetStatusResponse) (LiveEventsClientListGetStatusResponse, error) {
+			req, err := client.listGetStatusCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
+			if err != nil {
+				return LiveEventsClientListGetStatusResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LiveEventsClientListGetStatusResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LiveEventsClientListGetStatusResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGetStatusHandleResponse(resp)
+		},
+	})
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listGetStatus(ctx, resourceGroupName, accountName, liveEventName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[LiveEventsClientListGetStatusResponse]]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Response:      &pager,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[LiveEventsClientListGetStatusResponse]]{
+			Response: &pager,
+		})
+	}
+}
+
+// ListGetStatus - Gets status telemetry of a live event.
+//
+// Generated from API version 2022-11-01
+func (client *LiveEventsClient) listGetStatus(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginListGetStatusOptions) (*http.Response, error) {
+	req, err := client.listGetStatusCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNotModified) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// listGetStatusCreateRequest creates the ListGetStatus request.
+func (client *LiveEventsClient) listGetStatusCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginListGetStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/getStatus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if liveEventName == "" {
+		return nil, errors.New("parameter liveEventName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listGetStatusHandleResponse handles the ListGetStatus response.
+func (client *LiveEventsClient) listGetStatusHandleResponse(resp *http.Response) (LiveEventsClientListGetStatusResponse, error) {
+	result := LiveEventsClientListGetStatusResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LiveEventGetStatusResult); err != nil {
+		return LiveEventsClientListGetStatusResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginListGetStreamEvents - Get stream events telemetry of a live event.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginListGetStreamEventsOptions contains the optional parameters for the LiveEventsClient.BeginListGetStreamEvents
+//     method.
+func (client *LiveEventsClient) BeginListGetStreamEvents(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginListGetStreamEventsOptions) (*runtime.Poller[*runtime.Pager[LiveEventsClientListGetStreamEventsResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[LiveEventsClientListGetStreamEventsResponse]{
+		More: func(page LiveEventsClientListGetStreamEventsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *LiveEventsClientListGetStreamEventsResponse) (LiveEventsClientListGetStreamEventsResponse, error) {
+			req, err := client.listGetStreamEventsCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
+			if err != nil {
+				return LiveEventsClientListGetStreamEventsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LiveEventsClientListGetStreamEventsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LiveEventsClientListGetStreamEventsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGetStreamEventsHandleResponse(resp)
+		},
+	})
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listGetStreamEvents(ctx, resourceGroupName, accountName, liveEventName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[LiveEventsClientListGetStreamEventsResponse]]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Response:      &pager,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[LiveEventsClientListGetStreamEventsResponse]]{
+			Response: &pager,
+		})
+	}
+}
+
+// ListGetStreamEvents - Get stream events telemetry of a live event.
+//
+// Generated from API version 2022-11-01
+func (client *LiveEventsClient) listGetStreamEvents(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginListGetStreamEventsOptions) (*http.Response, error) {
+	req, err := client.listGetStreamEventsCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNotModified) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// listGetStreamEventsCreateRequest creates the ListGetStreamEvents request.
+func (client *LiveEventsClient) listGetStreamEventsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginListGetStreamEventsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/getStreamEvents"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if liveEventName == "" {
+		return nil, errors.New("parameter liveEventName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listGetStreamEventsHandleResponse handles the ListGetStreamEvents response.
+func (client *LiveEventsClient) listGetStreamEventsHandleResponse(resp *http.Response) (LiveEventsClientListGetStreamEventsResponse, error) {
+	result := LiveEventsClientListGetStreamEventsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LiveEventGetStreamEventsResult); err != nil {
+		return LiveEventsClientListGetStreamEventsResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginListGetTrackIngestHeartbeats - Get track ingest heartbeat events telemetry of a live event.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginListGetTrackIngestHeartbeatsOptions contains the optional parameters for the LiveEventsClient.BeginListGetTrackIngestHeartbeats
+//     method.
+func (client *LiveEventsClient) BeginListGetTrackIngestHeartbeats(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginListGetTrackIngestHeartbeatsOptions) (*runtime.Poller[*runtime.Pager[LiveEventsClientListGetTrackIngestHeartbeatsResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[LiveEventsClientListGetTrackIngestHeartbeatsResponse]{
+		More: func(page LiveEventsClientListGetTrackIngestHeartbeatsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *LiveEventsClientListGetTrackIngestHeartbeatsResponse) (LiveEventsClientListGetTrackIngestHeartbeatsResponse, error) {
+			req, err := client.listGetTrackIngestHeartbeatsCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
+			if err != nil {
+				return LiveEventsClientListGetTrackIngestHeartbeatsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LiveEventsClientListGetTrackIngestHeartbeatsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LiveEventsClientListGetTrackIngestHeartbeatsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGetTrackIngestHeartbeatsHandleResponse(resp)
+		},
+	})
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listGetTrackIngestHeartbeats(ctx, resourceGroupName, accountName, liveEventName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[LiveEventsClientListGetTrackIngestHeartbeatsResponse]]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Response:      &pager,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[LiveEventsClientListGetTrackIngestHeartbeatsResponse]]{
+			Response: &pager,
+		})
+	}
+}
+
+// ListGetTrackIngestHeartbeats - Get track ingest heartbeat events telemetry of a live event.
+//
+// Generated from API version 2022-11-01
+func (client *LiveEventsClient) listGetTrackIngestHeartbeats(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginListGetTrackIngestHeartbeatsOptions) (*http.Response, error) {
+	req, err := client.listGetTrackIngestHeartbeatsCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNotModified) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// listGetTrackIngestHeartbeatsCreateRequest creates the ListGetTrackIngestHeartbeats request.
+func (client *LiveEventsClient) listGetTrackIngestHeartbeatsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginListGetTrackIngestHeartbeatsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/getTrackIngestHeartbeats"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if liveEventName == "" {
+		return nil, errors.New("parameter liveEventName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{liveEventName}", url.PathEscape(liveEventName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listGetTrackIngestHeartbeatsHandleResponse handles the ListGetTrackIngestHeartbeats response.
+func (client *LiveEventsClient) listGetTrackIngestHeartbeatsHandleResponse(resp *http.Response) (LiveEventsClientListGetTrackIngestHeartbeatsResponse, error) {
+	result := LiveEventsClientListGetTrackIngestHeartbeatsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LiveEventGetTrackIngestHeartbeatsResult); err != nil {
+		return LiveEventsClientListGetTrackIngestHeartbeatsResponse{}, err
+	}
+	return result, nil
+}
+
 // OperationLocation - Get a live event operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// operationID - The ID of an ongoing async operation.
-// options - LiveEventsClientOperationLocationOptions contains the optional parameters for the LiveEventsClient.OperationLocation
-// method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - operationID - The ID of an ongoing async operation.
+//   - options - LiveEventsClientOperationLocationOptions contains the optional parameters for the LiveEventsClient.OperationLocation
+//     method.
 func (client *LiveEventsClient) OperationLocation(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, operationID string, options *LiveEventsClientOperationLocationOptions) (LiveEventsClientOperationLocationResponse, error) {
 	req, err := client.operationLocationCreateRequest(ctx, resourceGroupName, accountName, liveEventName, operationID, options)
 	if err != nil {
@@ -505,7 +818,7 @@ func (client *LiveEventsClient) operationLocationCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -524,11 +837,12 @@ func (client *LiveEventsClient) operationLocationHandleResponse(resp *http.Respo
 // and will be started again. All assets used by the live outputs and streaming locators
 // created on these assets are unaffected.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientBeginResetOptions contains the optional parameters for the LiveEventsClient.BeginReset method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginResetOptions contains the optional parameters for the LiveEventsClient.BeginReset method.
 func (client *LiveEventsClient) BeginReset(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginResetOptions) (*runtime.Poller[LiveEventsClientResetResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.reset(ctx, resourceGroupName, accountName, liveEventName, options)
@@ -545,7 +859,8 @@ func (client *LiveEventsClient) BeginReset(ctx context.Context, resourceGroupNam
 // will be started again. All assets used by the live outputs and streaming locators
 // created on these assets are unaffected.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+//
+// Generated from API version 2022-11-01
 func (client *LiveEventsClient) reset(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginResetOptions) (*http.Response, error) {
 	req, err := client.resetCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
@@ -585,7 +900,7 @@ func (client *LiveEventsClient) resetCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -593,11 +908,12 @@ func (client *LiveEventsClient) resetCreateRequest(ctx context.Context, resource
 
 // BeginStart - A live event in Stopped or StandBy state will be in Running state after the start operation completes.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// options - LiveEventsClientBeginStartOptions contains the optional parameters for the LiveEventsClient.BeginStart method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - options - LiveEventsClientBeginStartOptions contains the optional parameters for the LiveEventsClient.BeginStart method.
 func (client *LiveEventsClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginStartOptions) (*runtime.Poller[LiveEventsClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, accountName, liveEventName, options)
@@ -612,7 +928,8 @@ func (client *LiveEventsClient) BeginStart(ctx context.Context, resourceGroupNam
 
 // Start - A live event in Stopped or StandBy state will be in Running state after the start operation completes.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+//
+// Generated from API version 2022-11-01
 func (client *LiveEventsClient) start(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, options *LiveEventsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, accountName, liveEventName, options)
 	if err != nil {
@@ -652,7 +969,7 @@ func (client *LiveEventsClient) startCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -660,12 +977,13 @@ func (client *LiveEventsClient) startCreateRequest(ctx context.Context, resource
 
 // BeginStop - Stops a running live event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// parameters - LiveEvent stop parameters
-// options - LiveEventsClientBeginStopOptions contains the optional parameters for the LiveEventsClient.BeginStop method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - parameters - LiveEvent stop parameters
+//   - options - LiveEventsClientBeginStopOptions contains the optional parameters for the LiveEventsClient.BeginStop method.
 func (client *LiveEventsClient) BeginStop(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEventActionInput, options *LiveEventsClientBeginStopOptions) (*runtime.Poller[LiveEventsClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
@@ -680,7 +998,8 @@ func (client *LiveEventsClient) BeginStop(ctx context.Context, resourceGroupName
 
 // Stop - Stops a running live event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+//
+// Generated from API version 2022-11-01
 func (client *LiveEventsClient) stop(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEventActionInput, options *LiveEventsClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
 	if err != nil {
@@ -720,7 +1039,7 @@ func (client *LiveEventsClient) stopCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -728,12 +1047,13 @@ func (client *LiveEventsClient) stopCreateRequest(ctx context.Context, resourceG
 
 // BeginUpdate - Updates settings on an existing live event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// liveEventName - The name of the live event, maximum length is 32.
-// parameters - Live event properties needed for patch.
-// options - LiveEventsClientBeginUpdateOptions contains the optional parameters for the LiveEventsClient.BeginUpdate method.
+//
+// Generated from API version 2022-11-01
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - liveEventName - The name of the live event, maximum length is 32.
+//   - parameters - Live event properties needed for patch.
+//   - options - LiveEventsClientBeginUpdateOptions contains the optional parameters for the LiveEventsClient.BeginUpdate method.
 func (client *LiveEventsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginUpdateOptions) (*runtime.Poller[LiveEventsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
@@ -748,7 +1068,8 @@ func (client *LiveEventsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Updates settings on an existing live event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-01
+//
+// Generated from API version 2022-11-01
 func (client *LiveEventsClient) update(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, options *LiveEventsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, liveEventName, parameters, options)
 	if err != nil {
@@ -788,7 +1109,7 @@ func (client *LiveEventsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

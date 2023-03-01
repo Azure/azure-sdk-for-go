@@ -33,9 +33,9 @@ type ContentKeyPoliciesClient struct {
 }
 
 // NewContentKeyPoliciesClient creates a new instance of ContentKeyPoliciesClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewContentKeyPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContentKeyPoliciesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewContentKeyPoliciesClient(subscriptionID string, credential azcore.TokenC
 
 // CreateOrUpdate - Create or update a Content Key Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// contentKeyPolicyName - The Content Key Policy name.
-// parameters - The request parameters
-// options - ContentKeyPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ContentKeyPoliciesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - contentKeyPolicyName - The Content Key Policy name.
+//   - parameters - The request parameters
+//   - options - ContentKeyPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ContentKeyPoliciesClient.CreateOrUpdate
+//     method.
 func (client *ContentKeyPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesClientCreateOrUpdateOptions) (ContentKeyPoliciesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, parameters, options)
 	if err != nil {
@@ -121,12 +122,13 @@ func (client *ContentKeyPoliciesClient) createOrUpdateHandleResponse(resp *http.
 
 // Delete - Deletes a Content Key Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// contentKeyPolicyName - The Content Key Policy name.
-// options - ContentKeyPoliciesClientDeleteOptions contains the optional parameters for the ContentKeyPoliciesClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - contentKeyPolicyName - The Content Key Policy name.
+//   - options - ContentKeyPoliciesClientDeleteOptions contains the optional parameters for the ContentKeyPoliciesClient.Delete
+//     method.
 func (client *ContentKeyPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesClientDeleteOptions) (ContentKeyPoliciesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, options)
 	if err != nil {
@@ -174,11 +176,12 @@ func (client *ContentKeyPoliciesClient) deleteCreateRequest(ctx context.Context,
 
 // Get - Get the details of a Content Key Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// contentKeyPolicyName - The Content Key Policy name.
-// options - ContentKeyPoliciesClientGetOptions contains the optional parameters for the ContentKeyPoliciesClient.Get method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - contentKeyPolicyName - The Content Key Policy name.
+//   - options - ContentKeyPoliciesClientGetOptions contains the optional parameters for the ContentKeyPoliciesClient.Get method.
 func (client *ContentKeyPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesClientGetOptions) (ContentKeyPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, options)
 	if err != nil {
@@ -235,12 +238,13 @@ func (client *ContentKeyPoliciesClient) getHandleResponse(resp *http.Response) (
 
 // GetPolicyPropertiesWithSecrets - Get a Content Key Policy including secret values
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// contentKeyPolicyName - The Content Key Policy name.
-// options - ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions contains the optional parameters for the ContentKeyPoliciesClient.GetPolicyPropertiesWithSecrets
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - contentKeyPolicyName - The Content Key Policy name.
+//   - options - ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions contains the optional parameters for the ContentKeyPoliciesClient.GetPolicyPropertiesWithSecrets
+//     method.
 func (client *ContentKeyPoliciesClient) GetPolicyPropertiesWithSecrets(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, options *ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsOptions) (ContentKeyPoliciesClientGetPolicyPropertiesWithSecretsResponse, error) {
 	req, err := client.getPolicyPropertiesWithSecretsCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, options)
 	if err != nil {
@@ -296,10 +300,12 @@ func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsHandleResp
 }
 
 // NewListPager - Lists the Content Key Policies in the account
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// options - ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.List method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - options - ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.NewListPager
+//     method.
 func (client *ContentKeyPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *ContentKeyPoliciesClientListOptions) *runtime.Pager[ContentKeyPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContentKeyPoliciesClientListResponse]{
 		More: func(page ContentKeyPoliciesClientListResponse) bool {
@@ -374,13 +380,14 @@ func (client *ContentKeyPoliciesClient) listHandleResponse(resp *http.Response) 
 
 // Update - Updates an existing Content Key Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// contentKeyPolicyName - The Content Key Policy name.
-// parameters - The request parameters
-// options - ContentKeyPoliciesClientUpdateOptions contains the optional parameters for the ContentKeyPoliciesClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - contentKeyPolicyName - The Content Key Policy name.
+//   - parameters - The request parameters
+//   - options - ContentKeyPoliciesClientUpdateOptions contains the optional parameters for the ContentKeyPoliciesClient.Update
+//     method.
 func (client *ContentKeyPoliciesClient) Update(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy, options *ContentKeyPoliciesClientUpdateOptions) (ContentKeyPoliciesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, contentKeyPolicyName, parameters, options)
 	if err != nil {

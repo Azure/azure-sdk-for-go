@@ -32,9 +32,9 @@ type AssetTrackOperationStatusesClient struct {
 }
 
 // NewAssetTrackOperationStatusesClient creates a new instance of AssetTrackOperationStatusesClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAssetTrackOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssetTrackOperationStatusesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,14 +57,15 @@ func NewAssetTrackOperationStatusesClient(subscriptionID string, credential azco
 
 // Get - Get asset track operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// assetName - The Asset name.
-// trackName - The Asset Track name.
-// operationID - Operation Id.
-// options - AssetTrackOperationStatusesClientGetOptions contains the optional parameters for the AssetTrackOperationStatusesClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - assetName - The Asset name.
+//   - trackName - The Asset Track name.
+//   - operationID - Operation Id.
+//   - options - AssetTrackOperationStatusesClientGetOptions contains the optional parameters for the AssetTrackOperationStatusesClient.Get
+//     method.
 func (client *AssetTrackOperationStatusesClient) Get(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, operationID string, options *AssetTrackOperationStatusesClientGetOptions) (AssetTrackOperationStatusesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, operationID, options)
 	if err != nil {

@@ -32,9 +32,9 @@ type TracksClient struct {
 }
 
 // NewTracksClient creates a new instance of TracksClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTracksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TracksClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,14 +57,15 @@ func NewTracksClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Create or update a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// assetName - The Asset name.
-// trackName - The Asset Track name.
-// parameters - The request parameters
-// options - TracksClientBeginCreateOrUpdateOptions contains the optional parameters for the TracksClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - assetName - The Asset name.
+//   - trackName - The Asset Track name.
+//   - parameters - The request parameters
+//   - options - TracksClientBeginCreateOrUpdateOptions contains the optional parameters for the TracksClient.BeginCreateOrUpdate
+//     method.
 func (client *TracksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginCreateOrUpdateOptions) (*runtime.Poller[TracksClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
@@ -79,6 +80,7 @@ func (client *TracksClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 
 // CreateOrUpdate - Create or update a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *TracksClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
@@ -131,12 +133,13 @@ func (client *TracksClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // BeginDelete - Deletes a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// assetName - The Asset name.
-// trackName - The Asset Track name.
-// options - TracksClientBeginDeleteOptions contains the optional parameters for the TracksClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - assetName - The Asset name.
+//   - trackName - The Asset Track name.
+//   - options - TracksClientBeginDeleteOptions contains the optional parameters for the TracksClient.BeginDelete method.
 func (client *TracksClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginDeleteOptions) (*runtime.Poller[TracksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, assetName, trackName, options)
@@ -151,6 +154,7 @@ func (client *TracksClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Deletes a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *TracksClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, options)
@@ -203,12 +207,13 @@ func (client *TracksClient) deleteCreateRequest(ctx context.Context, resourceGro
 
 // Get - Get the details of a Track in the Asset
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// assetName - The Asset name.
-// trackName - The Asset Track name.
-// options - TracksClientGetOptions contains the optional parameters for the TracksClient.Get method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - assetName - The Asset name.
+//   - trackName - The Asset Track name.
+//   - options - TracksClientGetOptions contains the optional parameters for the TracksClient.Get method.
 func (client *TracksClient) Get(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientGetOptions) (TracksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, options)
 	if err != nil {
@@ -268,11 +273,12 @@ func (client *TracksClient) getHandleResponse(resp *http.Response) (TracksClient
 }
 
 // NewListPager - Lists the Tracks in the asset
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// assetName - The Asset name.
-// options - TracksClientListOptions contains the optional parameters for the TracksClient.List method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - assetName - The Asset name.
+//   - options - TracksClientListOptions contains the optional parameters for the TracksClient.NewListPager method.
 func (client *TracksClient) NewListPager(resourceGroupName string, accountName string, assetName string, options *TracksClientListOptions) *runtime.Pager[TracksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TracksClientListResponse]{
 		More: func(page TracksClientListResponse) bool {
@@ -336,13 +342,14 @@ func (client *TracksClient) listHandleResponse(resp *http.Response) (TracksClien
 
 // BeginUpdate - Updates an existing Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// assetName - The Asset name.
-// trackName - The Asset Track name.
-// parameters - The request parameters
-// options - TracksClientBeginUpdateOptions contains the optional parameters for the TracksClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - assetName - The Asset name.
+//   - trackName - The Asset Track name.
+//   - parameters - The request parameters
+//   - options - TracksClientBeginUpdateOptions contains the optional parameters for the TracksClient.BeginUpdate method.
 func (client *TracksClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginUpdateOptions) (*runtime.Poller[TracksClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
@@ -357,6 +364,7 @@ func (client *TracksClient) BeginUpdate(ctx context.Context, resourceGroupName s
 
 // Update - Updates an existing Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *TracksClient) update(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
@@ -413,13 +421,14 @@ func (client *TracksClient) updateCreateRequest(ctx context.Context, resourceGro
 // may not be reflected immediately. CDN cache may also need to be purged if
 // applicable.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// assetName - The Asset name.
-// trackName - The Asset Track name.
-// options - TracksClientBeginUpdateTrackDataOptions contains the optional parameters for the TracksClient.BeginUpdateTrackData
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - assetName - The Asset name.
+//   - trackName - The Asset Track name.
+//   - options - TracksClientBeginUpdateTrackDataOptions contains the optional parameters for the TracksClient.BeginUpdateTrackData
+//     method.
 func (client *TracksClient) BeginUpdateTrackData(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginUpdateTrackDataOptions) (*runtime.Poller[TracksClientUpdateTrackDataResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateTrackData(ctx, resourceGroupName, accountName, assetName, trackName, options)
@@ -438,6 +447,7 @@ func (client *TracksClient) BeginUpdateTrackData(ctx context.Context, resourceGr
 // may not be reflected immediately. CDN cache may also need to be purged if
 // applicable.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *TracksClient) updateTrackData(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginUpdateTrackDataOptions) (*http.Response, error) {
 	req, err := client.updateTrackDataCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, options)

@@ -75,7 +75,8 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 		resp, err = req.Next()
 	} else {
 		// do challenge process for the initial request
-		challengeReq, err := p.getChallengeRequest(*req)
+		var challengeReq *policy.Request
+		challengeReq, err = p.getChallengeRequest(*req)
 		if err != nil {
 			return nil, err
 		}
@@ -87,24 +88,20 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 
 	// if 401 response, then try to get access token
 	if resp.StatusCode == 401 {
-		service, scope, err := findServiceAndScope(resp)
-		if err != nil {
+		var service, scope, accessToken string
+		if service, scope, err = findServiceAndScope(resp); err != nil {
 			return nil, err
 		}
-
-		accessToken, err := p.getAccessToken(req, service, scope)
-		if err != nil {
+		if accessToken, err = p.getAccessToken(req, service, scope); err != nil {
 			return nil, err
 		}
-
 		p.accessTokenCache = accessToken
 		req.Raw().Header.Set(
 			headerAuthorization,
 			fmt.Sprintf("%s%s", bearerHeader, accessToken),
 		)
 		// since the request may already been used once, body should be rewound
-		err = req.RewindBody()
-		if err != nil {
+		if err = req.RewindBody(); err != nil {
 			return nil, err
 		}
 		return req.Next()

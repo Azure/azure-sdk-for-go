@@ -22,6 +22,7 @@ const (
 	HeaderRetryAfter             = "Retry-After"
 	HeaderUserAgent              = "User-Agent"
 	HeaderWWWAuthenticate        = "WWW-Authenticate"
+	HeaderXMSClientRequestID     = "x-ms-client-request-id"
 )
 
 const BearerTokenPrefix = "Bearer "

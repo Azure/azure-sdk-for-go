@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.0.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2023-02-07)
 
 ### Features Added
 
@@ -23,14 +33,8 @@
   * `CpkScopeInfo` -> `CPKScopeInfo`
   * `RuleId` -> `RuleID`
   * `PolicyId` -> `PolicyID`
-
-### Other Changes
-
-* Exported some missing types in the `blob`, `container` and `service` packages. Fixes [#19775](https://github.com/Azure/azure-sdk-for-go/issues/19775).
-* SAS changes [#19781](https://github.com/Azure/azure-sdk-for-go/pull/19781):
-  * AccountSASPermissions: SetImmutabilityPolicy support
-  * ContainerSASPermissions: Move support
-  * Validations to ensure correct sas perm ordering
+  * `CorsRule` -> `CORSRule`
+* Remove `AccountServices` it is now hardcoded to blobs
 
 ### Bugs Fixed
 
@@ -39,6 +43,12 @@
 * Fixed endless loop during pagination issue [#19773](https://github.com/Azure/azure-sdk-for-go/pull/19773).
 
 ### Other Changes
+
+* Exported some missing types in the `blob`, `container` and `service` packages. Fixes [#19775](https://github.com/Azure/azure-sdk-for-go/issues/19775).
+* SAS changes [#19781](https://github.com/Azure/azure-sdk-for-go/pull/19781):
+  * AccountSASPermissions: SetImmutabilityPolicy support
+  * ContainerSASPermissions: Move support
+  * Validations to ensure correct sas perm ordering
 
 ## 0.6.1 (2022-12-09)
 

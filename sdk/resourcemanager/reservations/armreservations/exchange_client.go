@@ -28,8 +28,8 @@ type ExchangeClient struct {
 }
 
 // NewExchangeClient creates a new instance of ExchangeClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewExchangeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExchangeClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -51,9 +51,10 @@ func NewExchangeClient(credential azcore.TokenCredential, options *arm.ClientOpt
 
 // BeginPost - Returns one or more Reservations in exchange for one or more Reservation purchases.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// body - Request containing the refunds and purchases that need to be executed.
-// options - ExchangeClientBeginPostOptions contains the optional parameters for the ExchangeClient.BeginPost method.
+//
+// Generated from API version 2022-11-01
+//   - body - Request containing the refunds and purchases that need to be executed.
+//   - options - ExchangeClientBeginPostOptions contains the optional parameters for the ExchangeClient.BeginPost method.
 func (client *ExchangeClient) BeginPost(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*runtime.Poller[ExchangeClientPostResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.post(ctx, body, options)
@@ -70,7 +71,8 @@ func (client *ExchangeClient) BeginPost(ctx context.Context, body ExchangeReques
 
 // Post - Returns one or more Reservations in exchange for one or more Reservation purchases.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+//
+// Generated from API version 2022-11-01
 func (client *ExchangeClient) post(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*http.Response, error) {
 	req, err := client.postCreateRequest(ctx, body, options)
 	if err != nil {
@@ -94,7 +96,7 @@ func (client *ExchangeClient) postCreateRequest(ctx context.Context, body Exchan
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

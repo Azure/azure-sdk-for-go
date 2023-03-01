@@ -27,7 +27,7 @@ import (
 
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions struct {
-	azcore.ClientOptions
+	azcore.ClientOptions //nolint:unused
 }
 
 // Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
@@ -243,7 +243,7 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, expiry time.Time, o *GetSASURLOptions) (string, error) {
+func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if s.sharedKey() == nil {
 		return "", bloberror.MissingSharedKeyCredential
 	}
@@ -252,7 +252,6 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 		Version:       sas.Version,
 		Protocol:      sas.ProtocolHTTPS,
 		Permissions:   permissions.String(),
-		Services:      services.String(),
 		ResourceTypes: resources.String(),
 		StartTime:     st,
 		ExpiryTime:    expiry.UTC(),

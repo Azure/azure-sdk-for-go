@@ -263,7 +263,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 	perms := sas.BlobPermissions{Read: true}
 
@@ -345,7 +345,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 	// Get source abClient URL with SAS for AppendBlockFromURL.
 	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 	perms := sas.BlobPermissions{Read: true}
 
@@ -1763,7 +1763,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	parts, err := sas.ParseURL(abClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	// Set Account SAS and set Permanent Delete to true
@@ -1771,7 +1771,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -1873,7 +1872,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 	parts, err := sas.ParseURL(abClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	// Set Account SAS
@@ -1881,7 +1880,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)

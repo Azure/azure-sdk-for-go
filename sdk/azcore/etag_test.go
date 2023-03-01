@@ -18,17 +18,17 @@ func createETag(s string) ETag {
 
 func TestETagEquals(t *testing.T) {
 	e1 := createETag("tag")
-	require.Equal(t, string(e1), "tag")
+	require.Equal(t, "tag", string(e1))
 
 	e2 := createETag("\"tag\"")
-	require.Equal(t, string(e2), "\"tag\"")
+	require.Equal(t, "\"tag\"", string(e2))
 
 	e3 := createETag("W/\"weakETag\"")
-	require.Equal(t, string(e3), "W/\"weakETag\"")
+	require.Equal(t, "W/\"weakETag\"", string(e3))
 	require.Truef(t, e3.IsWeak(), "ETag is expected to be weak")
 
 	strongETag := createETag("\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
-	require.Equal(t, string(strongETag), "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"")
+	require.Equal(t, "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\"", string(strongETag))
 
 	require.Falsef(t, ETagAny.IsWeak(), "ETagAny should not be weak")
 }

@@ -417,12 +417,12 @@ func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	type alias StorageServiceProperties
 	aux := &struct {
 		*alias
-		Cors *[]*CorsRule `xml:"Cors>CorsRule"`
+		CORS *[]*CORSRule `xml:"Cors>CorsRule"`
 	}{
 		alias: (*alias)(&s),
 	}
-	if s.Cors != nil {
-		aux.Cors = &s.Cors
+	if s.CORS != nil {
+		aux.CORS = &s.CORS
 	}
 	return enc.EncodeElement(aux, start)
 }

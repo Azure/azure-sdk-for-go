@@ -11,7 +11,7 @@ package armcosmos
 
 const (
 	moduleName    = "armcosmos"
-	moduleVersion = "v2.2.0-beta.1"
+	moduleVersion = "v2.2.0"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -56,12 +56,11 @@ func PossibleAnalyticalStorageSchemaTypeValues() []AnalyticalStorageSchemaType {
 
 // AuthenticationMethod - Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication,
 // so should not be used except in emergencies. 'Cassandra' is the default password based
-// authentication. The default is 'Cassandra'. 'Ldap' is in preview.
+// authentication. The default is 'Cassandra'.
 type AuthenticationMethod string
 
 const (
 	AuthenticationMethodCassandra AuthenticationMethod = "Cassandra"
-	AuthenticationMethodLdap      AuthenticationMethod = "Ldap"
 	AuthenticationMethodNone      AuthenticationMethod = "None"
 )
 
@@ -69,7 +68,6 @@ const (
 func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 	return []AuthenticationMethod{
 		AuthenticationMethodCassandra,
-		AuthenticationMethodLdap,
 		AuthenticationMethodNone,
 	}
 }
@@ -198,22 +196,6 @@ func PossibleConnectorOfferValues() []ConnectorOffer {
 	}
 }
 
-// ContinuousTier - Enum to indicate type of Continuous backup tier.
-type ContinuousTier string
-
-const (
-	ContinuousTierContinuous30Days ContinuousTier = "Continuous30Days"
-	ContinuousTierContinuous7Days  ContinuousTier = "Continuous7Days"
-)
-
-// PossibleContinuousTierValues returns the possible values for the ContinuousTier const type.
-func PossibleContinuousTierValues() []ContinuousTier {
-	return []ContinuousTier{
-		ContinuousTierContinuous30Days,
-		ContinuousTierContinuous7Days,
-	}
-}
-
 // CreateMode - Enum to indicate the mode of account creation.
 type CreateMode string
 
@@ -247,23 +229,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-type DataTransferComponent string
-
-const (
-	DataTransferComponentAzureBlobStorage  DataTransferComponent = "AzureBlobStorage"
-	DataTransferComponentCosmosDBCassandra DataTransferComponent = "CosmosDBCassandra"
-	DataTransferComponentCosmosDBSQL       DataTransferComponent = "CosmosDBSql"
-)
-
-// PossibleDataTransferComponentValues returns the possible values for the DataTransferComponent const type.
-func PossibleDataTransferComponentValues() []DataTransferComponent {
-	return []DataTransferComponent{
-		DataTransferComponentAzureBlobStorage,
-		DataTransferComponentCosmosDBCassandra,
-		DataTransferComponentCosmosDBSQL,
 	}
 }
 
@@ -328,24 +293,6 @@ func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 		DefaultConsistencyLevelBoundedStaleness,
 		DefaultConsistencyLevelStrong,
 		DefaultConsistencyLevelConsistentPrefix,
-	}
-}
-
-// EnableFullTextQuery - Describe the level of detail with which queries are to be logged.
-type EnableFullTextQuery string
-
-const (
-	EnableFullTextQueryNone  EnableFullTextQuery = "None"
-	EnableFullTextQueryTrue  EnableFullTextQuery = "True"
-	EnableFullTextQueryFalse EnableFullTextQuery = "False"
-)
-
-// PossibleEnableFullTextQueryValues returns the possible values for the EnableFullTextQuery const type.
-func PossibleEnableFullTextQueryValues() []EnableFullTextQuery {
-	return []EnableFullTextQuery{
-		EnableFullTextQueryNone,
-		EnableFullTextQueryTrue,
-		EnableFullTextQueryFalse,
 	}
 }
 
@@ -445,6 +392,25 @@ func PossibleManagedCassandraResourceIdentityTypeValues() []ManagedCassandraReso
 	}
 }
 
+// MinimalTLSVersion - Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's,
+// which only work with Tls 1.2.
+type MinimalTLSVersion string
+
+const (
+	MinimalTLSVersionTLS   MinimalTLSVersion = "Tls"
+	MinimalTLSVersionTls11 MinimalTLSVersion = "Tls11"
+	MinimalTLSVersionTls12 MinimalTLSVersion = "Tls12"
+)
+
+// PossibleMinimalTLSVersionValues returns the possible values for the MinimalTLSVersion const type.
+func PossibleMinimalTLSVersionValues() []MinimalTLSVersion {
+	return []MinimalTLSVersion{
+		MinimalTLSVersionTLS,
+		MinimalTLSVersionTls11,
+		MinimalTLSVersionTls12,
+	}
+}
+
 // MongoRoleDefinitionType - Indicates whether the Role Definition was built-in or user created.
 type MongoRoleDefinitionType string
 
@@ -534,7 +500,6 @@ type OperationType string
 const (
 	OperationTypeCreate          OperationType = "Create"
 	OperationTypeDelete          OperationType = "Delete"
-	OperationTypeRecreate        OperationType = "Recreate"
 	OperationTypeReplace         OperationType = "Replace"
 	OperationTypeSystemOperation OperationType = "SystemOperation"
 )
@@ -544,7 +509,6 @@ func PossibleOperationTypeValues() []OperationType {
 	return []OperationType{
 		OperationTypeCreate,
 		OperationTypeDelete,
-		OperationTypeRecreate,
 		OperationTypeReplace,
 		OperationTypeSystemOperation,
 	}
@@ -760,24 +724,6 @@ func PossibleSpatialTypeValues() []SpatialType {
 		SpatialTypeMultiPolygon,
 		SpatialTypePoint,
 		SpatialTypePolygon,
-	}
-}
-
-// ThroughputPolicyType - ThroughputPolicy to apply for throughput redistribution
-type ThroughputPolicyType string
-
-const (
-	ThroughputPolicyTypeCustom ThroughputPolicyType = "custom"
-	ThroughputPolicyTypeEqual  ThroughputPolicyType = "equal"
-	ThroughputPolicyTypeNone   ThroughputPolicyType = "none"
-)
-
-// PossibleThroughputPolicyTypeValues returns the possible values for the ThroughputPolicyType const type.
-func PossibleThroughputPolicyTypeValues() []ThroughputPolicyType {
-	return []ThroughputPolicyType{
-		ThroughputPolicyTypeCustom,
-		ThroughputPolicyTypeEqual,
-		ThroughputPolicyTypeNone,
 	}
 }
 

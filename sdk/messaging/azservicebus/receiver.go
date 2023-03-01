@@ -45,22 +45,18 @@ const (
 
 // Receiver receives messages using pull based functions (ReceiveMessages).
 type Receiver struct {
-	receiveMode ReceiveMode
-	entityPath  string
-
-	settler        settler
-	retryOptions   RetryOptions
-	cleanupOnClose func()
-
-	lastPeekedSequenceNumber int64
 	amqpLinks                internal.AMQPLinks
-
-	mu        sync.Mutex
-	receiving bool
-
+	cancelReleaser           *atomic.Value
+	cleanupOnClose           func()
 	defaultTimeAfterFirstMsg time.Duration
-
-	cancelReleaser *atomic.Value
+	entityPath               string
+	lastPeekedSequenceNumber int64
+	maxAllowedCredits        uint32
+	mu                       sync.Mutex
+	receiveMode              ReceiveMode
+	receiving                bool
+	retryOptions             RetryOptions
+	settler                  settler
 }
 
 // ReceiverOptions contains options for the `Client.NewReceiverForQueue` or `Client.NewReceiverForSubscription`
@@ -85,7 +81,10 @@ type ReceiverOptions struct {
 	SubQueue SubQueue
 }
 
-const defaultLinkRxBuffer = 2048
+// defaultLinkRxBuffer is the maximum number of transfer frames we can handle
+// on the Receiver. This matches the current default window size that go-amqp
+// uses for sessions.
+const defaultLinkRxBuffer uint32 = 5000
 
 func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverOptions) error {
 	if options == nil {
@@ -113,11 +112,11 @@ func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverO
 }
 
 type newReceiverArgs struct {
-	ns                  internal.NamespaceWithNewAMQPLinks
+	ns                  internal.NamespaceForAMQPLinks
 	entity              entity
 	cleanupOnClose      func()
 	getRecoveryKindFunc func(err error) internal.RecoveryKind
-	newLinkFn           func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error)
+	newLinkFn           func(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error)
 	retryOptions        RetryOptions
 }
 
@@ -131,11 +130,12 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 	}
 
 	receiver := &Receiver{
-		lastPeekedSequenceNumber: 0,
+		cancelReleaser:           &atomic.Value{},
 		cleanupOnClose:           args.cleanupOnClose,
 		defaultTimeAfterFirstMsg: 20 * time.Millisecond,
+		lastPeekedSequenceNumber: 0,
+		maxAllowedCredits:        defaultLinkRxBuffer,
 		retryOptions:             args.retryOptions,
-		cancelReleaser:           &atomic.Value{},
 	}
 
 	receiver.cancelReleaser.Store(emptyCancelFn)
@@ -157,7 +157,12 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 		newLinkFn = args.newLinkFn
 	}
 
-	receiver.amqpLinks = args.ns.NewAMQPLinks(receiver.entityPath, newLinkFn, args.getRecoveryKindFunc)
+	receiver.amqpLinks = internal.NewAMQPLinks(internal.NewAMQPLinksArgs{
+		NS:                  args.ns,
+		EntityPath:          receiver.entityPath,
+		CreateLinkFunc:      newLinkFn,
+		GetRecoveryKindFunc: args.getRecoveryKindFunc,
+	})
 
 	// 'nil' settler handles returning an error message for receiveAndDelete links.
 	if receiver.receiveMode == ReceiveModePeekLock {
@@ -169,7 +174,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 	return receiver, nil
 }
 
-func (r *Receiver) newReceiverLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+func (r *Receiver) newReceiverLink(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
 	linkOptions := createLinkOptions(r.receiveMode)
 	link, err := session.NewReceiver(ctx, r.entityPath, linkOptions)
 	return nil, link, err
@@ -358,6 +363,14 @@ func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessa
 func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	cancelReleaser := r.cancelReleaser.Swap(emptyCancelFn).(func() string)
 	_ = cancelReleaser()
+
+	if maxMessages <= 0 {
+		return nil, internal.NewErrNonRetriable("maxMessages should be greater than 0")
+	}
+
+	if maxMessages > int(r.maxAllowedCredits) {
+		return nil, internal.NewErrNonRetriable(fmt.Sprintf("maxMessages cannot exceed %d", r.maxAllowedCredits))
+	}
 
 	var linksWithID *internal.LinksWithID
 

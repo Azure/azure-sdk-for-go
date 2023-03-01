@@ -12,6 +12,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/stretchr/testify/assert"
@@ -173,9 +174,9 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:operation-cancelled")},
 		errors.New("link is currently draining"), // not yet exposed from go-amqp
 		// simple timeouts from the mgmt link
-		RPCError{Resp: &RPCResponse{Code: 408}},
-		RPCError{Resp: &RPCResponse{Code: 503}},
-		RPCError{Resp: &RPCResponse{Code: 500}},
+		RPCError{Resp: &amqpwrap.RPCResponse{Code: 408}},
+		RPCError{Resp: &amqpwrap.RPCResponse{Code: 503}},
+		RPCError{Resp: &amqpwrap.RPCResponse{Code: 500}},
 	}
 
 	for i, err := range tempErrors {
@@ -215,7 +216,7 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorTransferLimitExceeded},
 		// this can happen when we're recovering the link - the client gets closed and the old link is still being
 		// used by this instance of the client. It needs to recover and attempt it again.
-		RPCError{Resp: &RPCResponse{Code: 401}},
+		RPCError{Resp: &amqpwrap.RPCResponse{Code: 401}},
 	}
 
 	for i, err := range linkErrors {
@@ -240,26 +241,26 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
 	}
 
-	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &RPCResponse{Code: http.StatusNotFound}}))
-	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}}))
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: RPCResponseCodeLockLost}}))
 }
 
 func Test_IsLockLostError(t *testing.T) {
-	require.True(t, isLockLostError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
+	require.True(t, isLockLostError(RPCError{Resp: &amqpwrap.RPCResponse{Code: RPCResponseCodeLockLost}}))
 	require.True(t, isLockLostError(&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:message-lock-lost")}))
 
-	require.True(t, isLockLostError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
+	require.True(t, isLockLostError(RPCError{Resp: &amqpwrap.RPCResponse{Code: RPCResponseCodeLockLost}}))
 }
 
 func Test_TransformError(t *testing.T) {
 	var asExportedErr *exported.Error
 
-	err := TransformError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}})
+	err := TransformError(RPCError{Resp: &amqpwrap.RPCResponse{Code: RPCResponseCodeLockLost}})
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.CodeLockLost, asExportedErr.Code)
 
 	// sanity check, an RPCError but it's not a azservicebus.Code type error.
-	err = TransformError(RPCError{Resp: &RPCResponse{Code: http.StatusNotFound}})
+	err = TransformError(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}})
 	require.False(t, errors.As(err, &asExportedErr))
 
 	err = TransformError(&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:message-lock-lost")})

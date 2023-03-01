@@ -31,8 +31,8 @@ type CalculateRefundClient struct {
 }
 
 // NewCalculateRefundClient creates a new instance of CalculateRefundClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCalculateRefundClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CalculateRefundClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -54,10 +54,11 @@ func NewCalculateRefundClient(credential azcore.TokenCredential, options *arm.Cl
 
 // Post - Calculate price for returning Reservations if there are no policy errors.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// reservationOrderID - Order Id of the reservation
-// body - Information needed for calculating refund of a reservation.
-// options - CalculateRefundClientPostOptions contains the optional parameters for the CalculateRefundClient.Post method.
+//
+// Generated from API version 2022-11-01
+//   - reservationOrderID - Order Id of the reservation
+//   - body - Information needed for calculating refund of a reservation.
+//   - options - CalculateRefundClientPostOptions contains the optional parameters for the CalculateRefundClient.Post method.
 func (client *CalculateRefundClient) Post(ctx context.Context, reservationOrderID string, body CalculateRefundRequest, options *CalculateRefundClientPostOptions) (CalculateRefundClientPostResponse, error) {
 	req, err := client.postCreateRequest(ctx, reservationOrderID, body, options)
 	if err != nil {
@@ -85,7 +86,7 @@ func (client *CalculateRefundClient) postCreateRequest(ctx context.Context, rese
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

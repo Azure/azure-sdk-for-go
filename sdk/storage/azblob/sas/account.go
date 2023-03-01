@@ -31,7 +31,6 @@ type AccountSignatureValues struct {
 	ExpiryTime    time.Time `param:"se"`  // Not specified if IsZero
 	Permissions   string    `param:"sp"`  // Create by initializing a AccountSASPermissions and then call String()
 	IPRange       IPRange   `param:"sip"`
-	Services      string    `param:"ss"`  // Create by initializing AccountSASServices and then call String()
 	ResourceTypes string    `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 
@@ -39,7 +38,7 @@ type AccountSignatureValues struct {
 // the proper SAS query parameters.
 func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
-	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
+	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" {
 		return QueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 	}
 	if v.Version == "" {
@@ -56,7 +55,7 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 	stringToSign := strings.Join([]string{
 		sharedKeyCredential.AccountName(),
 		v.Permissions,
-		v.Services,
+		"b", // blob service
 		v.ResourceTypes,
 		startTime,
 		expiryTime,
@@ -80,7 +79,7 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 		ipRange:     v.IPRange,
 
 		// Account-specific SAS parameters
-		services:      v.Services,
+		services:      "b", // will always be "b"
 		resourceTypes: v.ResourceTypes,
 
 		// Calculated SAS signature
@@ -91,7 +90,7 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 }
 
 // AccountPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call Client.GetSASURL with it or use the String method to set AccountSASSignatureValues Permissions field.
+// Initialize an instance of this type and then call its String method to set AccountSASSignature value's Permissions field.
 type AccountPermissions struct {
 	Read, Write, Delete, DeletePreviousVersion, PermanentDelete, List, Add, Create, Update, Process, FilterByTags, Tag, SetImmutabilityPolicy bool
 }
@@ -178,28 +177,6 @@ func parseAccountPermissions(s string) (AccountPermissions, error) {
 		}
 	}
 	return p, nil
-}
-
-// AccountServices type simplifies creating the services string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues' Services field.
-type AccountServices struct {
-	Blob, Queue, File bool
-}
-
-// String produces the SAS services string for an Azure Storage account.
-// Call this method to set AccountSASSignatureValues' Services field.
-func (s *AccountServices) String() string {
-	var buffer bytes.Buffer
-	if s.Blob {
-		buffer.WriteRune('b')
-	}
-	if s.Queue {
-		buffer.WriteRune('q')
-	}
-	if s.File {
-		buffer.WriteRune('f')
-	}
-	return buffer.String()
 }
 
 // AccountResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.

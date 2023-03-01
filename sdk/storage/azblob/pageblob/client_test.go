@@ -4029,7 +4029,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDelete() {
 	parts, err := sas.ParseURL(pbClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	// Set Account SAS and set Permanent Delete to true
@@ -4037,7 +4037,6 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDelete() {
 		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -4147,7 +4146,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 	parts, err := sas.ParseURL(pbClient.URL()) // Get parts for BlobURL
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	// Set Account SAS
@@ -4155,7 +4154,6 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)

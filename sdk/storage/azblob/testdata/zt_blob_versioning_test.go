@@ -36,7 +36,6 @@ package azblob_test
 //	_require.Nil(err)
 //	blobParts.VersionID = *versionId
 //	blobParts.SAS, err = service.SASSignatureValues{
-//		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
 //		Protocol:      service.SASProtocolHTTPS,
 //		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
 //		Permissions:   to.Ptr(service.SASPermissions{Delete: true, DeletePreviousVersion: true}).String(),

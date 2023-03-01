@@ -40,7 +40,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2?api-version=2022-11-15",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -66,12 +66,12 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:25:45 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -173,7 +173,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -204,7 +204,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -235,7 +235,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -266,7 +266,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -297,7 +297,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -328,7 +328,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -447,7 +447,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql?api-version=2022-11-15",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -471,12 +471,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:27:49 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -492,7 +492,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -523,7 +523,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -554,7 +554,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -598,7 +598,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -643,7 +643,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -692,7 +692,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default?api-version=2022-11-15",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -713,12 +713,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:28:23 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -734,7 +734,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -765,7 +765,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -796,7 +796,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -835,7 +835,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -875,7 +875,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToAutoscale?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToAutoscale?api-version=2022-11-15",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -887,12 +887,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:28:57 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToAutoscale/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToAutoscale/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -908,7 +908,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -939,7 +939,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -970,7 +970,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToAutoscale/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToAutoscale/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1012,7 +1012,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToManualThroughput?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToManualThroughput?api-version=2022-11-15",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1024,12 +1024,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:29:31 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToManualThroughput/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToManualThroughput/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1045,7 +1045,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1076,7 +1076,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1107,7 +1107,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToManualThroughput/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/throughputSettings/default/migrateToManualThroughput/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1146,7 +1146,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer?api-version=2022-11-15",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1211,12 +1211,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:30:03 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1232,7 +1232,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1263,7 +1263,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1294,7 +1294,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1387,7 +1387,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1481,7 +1481,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1570,7 +1570,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default?api-version=2022-11-15",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1591,12 +1591,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:30:39 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1612,7 +1612,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1643,7 +1643,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1674,7 +1674,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1713,7 +1713,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1753,7 +1753,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToAutoscale?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToAutoscale?api-version=2022-11-15",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1765,12 +1765,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:31:14 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToAutoscale/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToAutoscale/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1786,7 +1786,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1817,7 +1817,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1848,7 +1848,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToAutoscale/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToAutoscale/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1890,7 +1890,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToManualThroughput?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToManualThroughput?api-version=2022-11-15",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1902,12 +1902,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:31:46 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToManualThroughput/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToManualThroughput/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1923,7 +1923,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1954,7 +1954,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1985,7 +1985,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToManualThroughput/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/throughputSettings/default/migrateToManualThroughput/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2024,7 +2024,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName?api-version=2022-11-15",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2045,12 +2045,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:32:19 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -2066,7 +2066,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2097,7 +2097,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2128,7 +2128,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2171,7 +2171,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2215,7 +2215,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2263,7 +2263,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName?api-version=2022-11-15",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2273,12 +2273,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:32:52 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/storedProcedures/storedProcedureName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -2294,7 +2294,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2325,7 +2325,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2356,7 +2356,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName?api-version=2022-11-15",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2377,12 +2377,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:33:25 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -2398,7 +2398,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2429,7 +2429,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2460,7 +2460,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2503,7 +2503,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2547,7 +2547,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2595,7 +2595,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName?api-version=2022-11-15",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2605,12 +2605,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:33:59 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/userDefinedFunctions/userDefinedFunctionName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -2626,7 +2626,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2657,7 +2657,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2688,7 +2688,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName?api-version=2022-11-15",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2711,12 +2711,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:34:30 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -2732,7 +2732,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2763,7 +2763,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2794,7 +2794,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2839,7 +2839,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2885,7 +2885,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -2935,7 +2935,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName?api-version=2022-11-15",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2945,12 +2945,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:35:03 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/triggers/triggerName/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -2966,7 +2966,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -2997,7 +2997,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3028,7 +3028,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer?api-version=2022-11-15",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3038,12 +3038,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:35:36 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/containers/cosmos_sqlcontainer/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -3059,7 +3059,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3090,7 +3090,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3121,7 +3121,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql?api-version=2022-11-15",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3131,12 +3131,12 @@
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Cache-Control": "no-store, no-cache",
         "Content-Length": "21",
         "Content-Type": "application/json",
         "Date": "Mon, 29 Aug 2022 08:36:07 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.DocumentDB/databaseAccounts/databaseaccountsql2/sqlDatabases/cosmos_sql/operationResults/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -3152,7 +3152,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -3183,7 +3183,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-08-15-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/00000000-0000-0000-0000-000000000000?api-version=2022-11-15",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",

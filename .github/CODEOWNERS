@@ -1,19 +1,12 @@
 # Instructions for CODEOWNERS file format and automatic build failure notifications:
 # https://github.com/Azure/azure-sdk/blob/master/docs/policies/opensource.md#codeowners
 
-################
-# Automation
-################
-
-# Git Hub integration and bot rules
-/.github/                    @jsquire @jhendrixMSFT @rickwinter @ronniegeraghty
-
 #############
 # SDK (track2)
 ############# 
 
 # Catch all for non-code project files and unowned files | folders
-*                             @rickwinter @jhendrixMSFT
+/**                           @rickwinter @jhendrixMSFT
 /sdk/                         @rickwinter @chlowell @richardpark-msft
 
 # Samples
@@ -41,13 +34,10 @@
 /sdk/keyvault/                @chlowell @jhendrixMSFT
 
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azservicebus/  @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs    @richardpark-msft @jhendrixMSFT
-
-# PRLabel: %Service Bus
-/sdk/messaging/internal       @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azeventhubs/   @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Monitor
 /sdk/monitor/                 @gracewilcox @chlowell @jhendrixMSFT
@@ -58,12 +48,17 @@
 # PRLabel: %Storage
 /sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT @gapra-msft
 
+################
+# Automation
+################
+
+# Git Hub integration and bot rules
+/.github/                    @benbp @jsquire @jhendrixMSFT @rickwinter @ronniegeraghty
+
 ###########
 # Eng Sys
 ###########
 /eng/                         @benbp @weshaggard
-/**/ci.yml                    @benbp
-/**/tests.yml                 @benbp
 
 # PRLabel: %EngSys
 /sdk/template/                @benbp @weshaggard

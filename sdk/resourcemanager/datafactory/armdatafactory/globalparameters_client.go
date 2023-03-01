@@ -32,9 +32,9 @@ type GlobalParametersClient struct {
 }
 
 // NewGlobalParametersClient creates a new instance of GlobalParametersClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGlobalParametersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GlobalParametersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,13 +57,14 @@ func NewGlobalParametersClient(subscriptionID string, credential azcore.TokenCre
 
 // CreateOrUpdate - Creates or updates a Global parameter
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// globalParameterName - The global parameter name.
-// defaultParam - Global parameter resource definition.
-// options - GlobalParametersClientCreateOrUpdateOptions contains the optional parameters for the GlobalParametersClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - globalParameterName - The global parameter name.
+//   - defaultParam - Global parameter resource definition.
+//   - options - GlobalParametersClientCreateOrUpdateOptions contains the optional parameters for the GlobalParametersClient.CreateOrUpdate
+//     method.
 func (client *GlobalParametersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, globalParameterName string, defaultParam GlobalParameterResource, options *GlobalParametersClientCreateOrUpdateOptions) (GlobalParametersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, globalParameterName, defaultParam, options)
 	if err != nil {
@@ -120,11 +121,12 @@ func (client *GlobalParametersClient) createOrUpdateHandleResponse(resp *http.Re
 
 // Delete - Deletes a Global parameter
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// globalParameterName - The global parameter name.
-// options - GlobalParametersClientDeleteOptions contains the optional parameters for the GlobalParametersClient.Delete method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - globalParameterName - The global parameter name.
+//   - options - GlobalParametersClientDeleteOptions contains the optional parameters for the GlobalParametersClient.Delete method.
 func (client *GlobalParametersClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, globalParameterName string, options *GlobalParametersClientDeleteOptions) (GlobalParametersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, globalParameterName, options)
 	if err != nil {
@@ -172,11 +174,12 @@ func (client *GlobalParametersClient) deleteCreateRequest(ctx context.Context, r
 
 // Get - Gets a Global parameter
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// globalParameterName - The global parameter name.
-// options - GlobalParametersClientGetOptions contains the optional parameters for the GlobalParametersClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - globalParameterName - The global parameter name.
+//   - options - GlobalParametersClientGetOptions contains the optional parameters for the GlobalParametersClient.Get method.
 func (client *GlobalParametersClient) Get(ctx context.Context, resourceGroupName string, factoryName string, globalParameterName string, options *GlobalParametersClientGetOptions) (GlobalParametersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, globalParameterName, options)
 	if err != nil {
@@ -232,11 +235,12 @@ func (client *GlobalParametersClient) getHandleResponse(resp *http.Response) (Gl
 }
 
 // NewListByFactoryPager - Lists Global parameters
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - GlobalParametersClientListByFactoryOptions contains the optional parameters for the GlobalParametersClient.ListByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - GlobalParametersClientListByFactoryOptions contains the optional parameters for the GlobalParametersClient.NewListByFactoryPager
+//     method.
 func (client *GlobalParametersClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *GlobalParametersClientListByFactoryOptions) *runtime.Pager[GlobalParametersClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GlobalParametersClientListByFactoryResponse]{
 		More: func(page GlobalParametersClientListByFactoryResponse) bool {

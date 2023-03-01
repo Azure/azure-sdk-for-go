@@ -190,7 +190,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		// Get source blob url with SAS for StageFromURL.
 //		srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 //
-//		credential, err := testcommon.GetGenericCredential(nil, testcommon.TestAccountDefault)
+//		credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
 //		_require.Nil(err)
 //
 //		srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -287,7 +287,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		// Get source blob url with SAS for StageFromURL.
 //		srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 //
-//		credential, err := testcommon.GetGenericCredential(nil, testcommon.TestAccountDefault)
+//		credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
 //		_require.Nil(err)
 //
 //		srcBlobParts.SAS, err = BlobSASSignatureValues{
@@ -387,7 +387,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		contentLanguageVal := "content-language-override"
 //		contentTypeVal := "content-type-override"
 //
-//		credential, err := testcommon.GetGenericCredential(nil, testcommon.TestAccountDefault)
+//		credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
 //		_require.Nil(err)
 //		// Append User Delegation SAS token to URL
 //		blobParts.SAS, err = BlobSASSignatureValues{
@@ -1308,7 +1308,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	if err != nil {
 		s.T().Fatal("Couldn't fetch credential because " + err.Error())
 	}
@@ -1316,7 +1316,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    expiryTime,
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -1370,7 +1369,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 //
 //	// Get source blob url with SAS for StageFromURL.
 //	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
-//	credential, err := testcommon.GetGenericCredential(nil, testcommon.TestAccountDefault)
+//	credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
 //	_require.Nil(err)
 //	srcBlobParts.SAS, err = blob.SASSignatureValues{
 //		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
@@ -2861,7 +2860,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 //		Protocol:      SASProtocolHTTPS,
 //		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
 //		Permissions:   AccountSASPermissions{Read: true, List: true, Write: true, DeletePreviousVersion: true, Tag: true, FilterByTags: true, Create: true}.String(),
-//		Services:      AccountSASServices{Blob: true}.String(),
 //		ResourceTypes: AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
 //	}.Sign(credential)
 //	if err != nil {

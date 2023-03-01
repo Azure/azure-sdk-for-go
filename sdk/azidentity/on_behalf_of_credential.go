@@ -34,6 +34,9 @@ type OnBehalfOfCredential struct {
 type OnBehalfOfCredentialOptions struct {
 	azcore.ClientOptions
 
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
+
 	// SendCertificateChain applies only when the credential is configured to authenticate with a certificate.
 	// This setting controls whether the credential sends the public certificate chain in the x5c header of each
 	// token request's JWT. This is required for, and only used in, Subject Name/Issuer (SNI) authentication.
@@ -67,6 +70,7 @@ func newOnBehalfOfCredential(tenantID, clientID, userAssertion string, cred conf
 	if options.SendCertificateChain {
 		opts = append(opts, confidential.WithX5C())
 	}
+	opts = append(opts, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, opts...)
 	if err != nil {
 		return nil, err

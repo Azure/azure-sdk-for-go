@@ -34,8 +34,8 @@ func GetEnv(key, fallback string) string {
 // a delegate function to delete the created resource group which can be used for clean up
 // and any error during the creation.
 func CreateResourceGroup(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, location string) (*armresources.ResourceGroup, func() (*runtime.Poller[armresources.ResourceGroupsClientDeleteResponse], error), error) {
-	rand.Seed(time.Now().UnixNano())
-	resourceGroupName := fmt.Sprintf("go-sdk-test-%d", rand.Intn(1000))
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	resourceGroupName := fmt.Sprintf("go-sdk-test-%d", r.Intn(1000))
 	rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, cred, options)
 	if err != nil {
 		return nil, nil, err

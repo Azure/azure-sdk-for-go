@@ -1,5 +1,16 @@
 # Release History
 
+## 2.0.0-beta.2 (2023-02-24)
+### Breaking Changes
+
+- Type of `Encryption.KeySource` has been changed from `*KeySource` to `*string`
+- Type alias `KeySource` has been removed
+
+### Features Added
+
+- New field `PremiumMessagingPartitions` in struct `SBNamespaceProperties`
+
+
 ## 2.0.0-beta.1 (2022-05-24)
 ### Breaking Changes
 

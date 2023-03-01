@@ -17,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
 func ProcessorStressTester(ctx context.Context) error {
@@ -77,7 +78,13 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 
 	containerName := testData.runID
 
-	blobStore, err := checkpoints.NewBlobStoreFromConnectionString(testData.StorageConnectionString, containerName, nil)
+	containerClient, err := container.NewClientFromConnectionString(testData.StorageConnectionString, containerName, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	blobStore, err := checkpoints.NewBlobStore(containerClient, nil)
 
 	if err != nil {
 		return nil, err
@@ -117,7 +124,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 			return err
 		}
 
-		shortConsumerID := string(cc.ID()[0:5])
+		shortConsumerID := string(cc.InstanceID()[0:5])
 
 		go func() {
 			for {
@@ -360,7 +367,13 @@ func sliceToMap[T any](values []T, key func(v T) string) map[string]T {
 }
 
 func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
-	cps, err := checkpoints.NewBlobStoreFromConnectionString(inf.StorageConnectionString, inf.containerName, nil)
+	containerClient, err := container.NewClientFromConnectionString(inf.StorageConnectionString, inf.containerName, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	cps, err := checkpoints.NewBlobStore(containerClient, nil)
 
 	if err != nil {
 		return nil, nil, err

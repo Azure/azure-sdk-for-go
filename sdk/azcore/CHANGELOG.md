@@ -1,5 +1,10 @@
 # Release History
 
+## 1.5.0-beta.1 (2023-03-02)
+
+### Features Added
+* This release includes the features added in v1.4.0-beta.1
+
 ## 1.4.0 (2023-03-02)
 > This release doesn't include features added in v1.4.0-beta.1. They will return in v1.5.0-beta.1.
 

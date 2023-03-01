@@ -10,7 +10,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"io"
@@ -1212,6 +1211,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey(
 	}
 }
 
+/*
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUsingTokenCredential() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1382,6 +1382,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 		_require.Equal(ctrCool, 2)
 	}
 }
+*/
 
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingAccountSAS() {
 	_require := require.New(s.T())

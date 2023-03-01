@@ -114,11 +114,12 @@ func CreateBatchRequest(bb *BlobBatchBuilder) ([]byte, string, error) {
 
 	for i, req := range bb.SubRequests {
 		if bb.AuthPolicy != nil {
-			resp, err := bb.AuthPolicy.Do(req)
-			if err != nil && resp != nil {
+			_, err := bb.AuthPolicy.Do(req)
+			if err != nil && !strings.EqualFold(err.Error(), "no more policies") {
 				if log.Should(EventSubmitBatch) {
-					log.Writef(EventSubmitBatch, "failed to authorize sub-request for %v.\nError: %v\nResponse status: %v", req.Raw().URL.Path, err.Error(), resp.Status)
+					log.Writef(EventSubmitBatch, "failed to authorize sub-request for %v.\nError: %v", req.Raw().URL.Path, err.Error())
 				}
+				return nil, "", err
 			}
 		}
 

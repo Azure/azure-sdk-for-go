@@ -58,7 +58,7 @@ func NewTestLinesClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreateOrUpdate - Create a TestLine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - communicationsGatewayName - Unique identifier for this deployment
 //   - testLineName - Unique identifier for this test line
@@ -82,7 +82,7 @@ func (client *TestLinesClient) BeginCreateOrUpdate(ctx context.Context, resource
 // CreateOrUpdate - Create a TestLine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 func (client *TestLinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, communicationsGatewayName string, testLineName string, resource TestLine, options *TestLinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, communicationsGatewayName, testLineName, resource, options)
 	if err != nil {
@@ -122,7 +122,7 @@ func (client *TestLinesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resource)
@@ -131,7 +131,7 @@ func (client *TestLinesClient) createOrUpdateCreateRequest(ctx context.Context, 
 // BeginDelete - Delete a TestLine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - communicationsGatewayName - Unique identifier for this deployment
 //   - testLineName - Unique identifier for this test line
@@ -153,7 +153,7 @@ func (client *TestLinesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Delete a TestLine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 func (client *TestLinesClient) deleteOperation(ctx context.Context, resourceGroupName string, communicationsGatewayName string, testLineName string, options *TestLinesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, communicationsGatewayName, testLineName, options)
 	if err != nil {
@@ -193,7 +193,7 @@ func (client *TestLinesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +202,7 @@ func (client *TestLinesClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Get a TestLine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - communicationsGatewayName - Unique identifier for this deployment
 //   - testLineName - Unique identifier for this test line
@@ -246,7 +246,7 @@ func (client *TestLinesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,7 +263,7 @@ func (client *TestLinesClient) getHandleResponse(resp *http.Response) (TestLines
 
 // NewListByCommunicationsGatewayPager - List TestLine resources by CommunicationsGateway
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - communicationsGatewayName - Unique identifier for this deployment
 //   - options - TestLinesClientListByCommunicationsGatewayOptions contains the optional parameters for the TestLinesClient.NewListByCommunicationsGatewayPager
@@ -316,7 +316,7 @@ func (client *TestLinesClient) listByCommunicationsGatewayCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -334,7 +334,7 @@ func (client *TestLinesClient) listByCommunicationsGatewayHandleResponse(resp *h
 // Update - Update a TestLine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-12-01-preview
+// Generated from API version 2023-01-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - communicationsGatewayName - Unique identifier for this deployment
 //   - testLineName - Unique identifier for this test line
@@ -379,7 +379,7 @@ func (client *TestLinesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-12-01-preview")
+	reqQP.Set("api-version", "2023-01-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)

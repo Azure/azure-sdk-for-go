@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/voiceservices/armvoiceservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/voiceservices/resource-manager/Microsoft.VoiceServices/preview/2022-12-01-preview/examples/Operations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/aa85f59e259c4b12197b57b221067c40fa2fe3f1/specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

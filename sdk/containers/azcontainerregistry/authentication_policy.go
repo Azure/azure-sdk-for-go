@@ -66,9 +66,6 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if req.Raw().Header.Get(headerAuthorization) != "" {
 		// retry request could do the request with existed token directly
 		resp, err = req.Next()
-		if err != nil {
-			return nil, err
-		}
 	} else if p.accessTokenCache != "" {
 		// if there is a previous access token, then we try to use this token to do the request
 		req.Raw().Header.Set(
@@ -76,9 +73,6 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 			fmt.Sprintf("%s%s", bearerHeader, p.accessTokenCache),
 		)
 		resp, err = req.Next()
-		if err != nil {
-			return nil, err
-		}
 	} else {
 		// do challenge process for the initial request
 		challengeReq, err := p.getChallengeRequest(*req)
@@ -86,9 +80,9 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 			return nil, err
 		}
 		resp, err = challengeReq.Next()
-		if err != nil {
-			return nil, err
-		}
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	// if 401 response, then try to get access token

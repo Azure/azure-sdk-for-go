@@ -31,8 +31,8 @@ type DiagnosticSettingsCategoryClient struct {
 }
 
 // NewDiagnosticSettingsCategoryClient creates a new instance of DiagnosticSettingsCategoryClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsCategoryClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -54,11 +54,12 @@ func NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, opti
 
 // Get - Gets the diagnostic settings category for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-05-01-preview
-// resourceURI - The identifier of the resource.
-// name - The name of the diagnostic setting.
-// options - DiagnosticSettingsCategoryClientGetOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.Get
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - name - The name of the diagnostic setting.
+//   - options - DiagnosticSettingsCategoryClientGetOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.Get
+//     method.
 func (client *DiagnosticSettingsCategoryClient) Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsCategoryClientGetOptions) (DiagnosticSettingsCategoryClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, name, options)
 	if err != nil {
@@ -103,10 +104,11 @@ func (client *DiagnosticSettingsCategoryClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Lists the diagnostic settings categories for the specified resource.
+//
 // Generated from API version 2021-05-01-preview
-// resourceURI - The identifier of the resource.
-// options - DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.List
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - options - DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.NewListPager
+//     method.
 func (client *DiagnosticSettingsCategoryClient) NewListPager(resourceURI string, options *DiagnosticSettingsCategoryClientListOptions) *runtime.Pager[DiagnosticSettingsCategoryClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticSettingsCategoryClientListResponse]{
 		More: func(page DiagnosticSettingsCategoryClientListResponse) bool {

@@ -28,8 +28,8 @@ type TenantActivityLogsClient struct {
 }
 
 // NewTenantActivityLogsClient creates a new instance of TenantActivityLogsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantActivityLogsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -53,8 +53,10 @@ func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm
 // for the subscription is applicable to this API (the parameters, $filter, etc.). One thing to
 // point out here is that this API does not retrieve the logs at the individual subscription of the tenant but only surfaces
 // the logs that were generated at the tenant level.
+//
 // Generated from API version 2015-04-01
-// options - TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.List method.
+//   - options - TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.NewListPager
+//     method.
 func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogsClientListOptions) *runtime.Pager[TenantActivityLogsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TenantActivityLogsClientListResponse]{
 		More: func(page TenantActivityLogsClientListResponse) bool {

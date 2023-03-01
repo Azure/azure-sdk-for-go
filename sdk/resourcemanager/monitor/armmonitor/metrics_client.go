@@ -30,8 +30,8 @@ type MetricsClient struct {
 }
 
 // NewMetricsClient creates a new instance of MetricsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMetricsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -53,9 +53,10 @@ func NewMetricsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 
 // List - Lists the metric values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-01-01
-// resourceURI - The identifier of the resource.
-// options - MetricsClientListOptions contains the optional parameters for the MetricsClient.List method.
+//   - resourceURI - The identifier of the resource.
+//   - options - MetricsClientListOptions contains the optional parameters for the MetricsClient.List method.
 func (client *MetricsClient) List(ctx context.Context, resourceURI string, options *MetricsClientListOptions) (MetricsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceURI, options)
 	if err != nil {

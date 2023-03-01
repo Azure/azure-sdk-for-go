@@ -28,8 +28,8 @@ type EventCategoriesClient struct {
 }
 
 // NewEventCategoriesClient creates a new instance of EventCategoriesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EventCategoriesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -51,8 +51,10 @@ func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.Cl
 
 // NewListPager - Get the list of available event categories supported in the Activity Logs Service. The current list includes
 // the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
+//
 // Generated from API version 2015-04-01
-// options - EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.List method.
+//   - options - EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.NewListPager
+//     method.
 func (client *EventCategoriesClient) NewListPager(options *EventCategoriesClientListOptions) *runtime.Pager[EventCategoriesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EventCategoriesClientListResponse]{
 		More: func(page EventCategoriesClientListResponse) bool {

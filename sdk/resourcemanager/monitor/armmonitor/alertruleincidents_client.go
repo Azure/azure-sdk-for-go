@@ -32,9 +32,9 @@ type AlertRuleIncidentsClient struct {
 }
 
 // NewAlertRuleIncidentsClient creates a new instance of AlertRuleIncidentsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAlertRuleIncidentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertRuleIncidentsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewAlertRuleIncidentsClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Gets an incident associated to an alert rule
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// ruleName - The name of the rule.
-// incidentName - The name of the incident to retrieve.
-// options - AlertRuleIncidentsClientGetOptions contains the optional parameters for the AlertRuleIncidentsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - incidentName - The name of the incident to retrieve.
+//   - options - AlertRuleIncidentsClientGetOptions contains the optional parameters for the AlertRuleIncidentsClient.Get method.
 func (client *AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *AlertRuleIncidentsClientGetOptions) (AlertRuleIncidentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ruleName, incidentName, options)
 	if err != nil {
@@ -117,11 +118,12 @@ func (client *AlertRuleIncidentsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListByAlertRulePager - Gets a list of incidents associated to an alert rule
+//
 // Generated from API version 2016-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// ruleName - The name of the rule.
-// options - AlertRuleIncidentsClientListByAlertRuleOptions contains the optional parameters for the AlertRuleIncidentsClient.ListByAlertRule
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - options - AlertRuleIncidentsClientListByAlertRuleOptions contains the optional parameters for the AlertRuleIncidentsClient.NewListByAlertRulePager
+//     method.
 func (client *AlertRuleIncidentsClient) NewListByAlertRulePager(resourceGroupName string, ruleName string, options *AlertRuleIncidentsClientListByAlertRuleOptions) *runtime.Pager[AlertRuleIncidentsClientListByAlertRuleResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertRuleIncidentsClientListByAlertRuleResponse]{
 		More: func(page AlertRuleIncidentsClientListByAlertRuleResponse) bool {

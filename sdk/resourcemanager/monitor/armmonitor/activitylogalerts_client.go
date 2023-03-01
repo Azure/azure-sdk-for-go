@@ -32,9 +32,9 @@ type ActivityLogAlertsClient struct {
 }
 
 // NewActivityLogAlertsClient creates a new instance of ActivityLogAlertsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityLogAlertsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Create a new Activity Log Alert rule or update an existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// activityLogAlertName - The name of the Activity Log Alert rule.
-// activityLogAlertRule - The Activity Log Alert rule to create or use for the update.
-// options - ActivityLogAlertsClientCreateOrUpdateOptions contains the optional parameters for the ActivityLogAlertsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - activityLogAlertName - The name of the Activity Log Alert rule.
+//   - activityLogAlertRule - The Activity Log Alert rule to create or use for the update.
+//   - options - ActivityLogAlertsClientCreateOrUpdateOptions contains the optional parameters for the ActivityLogAlertsClient.CreateOrUpdate
+//     method.
 func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRule ActivityLogAlertResource, options *ActivityLogAlertsClientCreateOrUpdateOptions) (ActivityLogAlertsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlertRule, options)
 	if err != nil {
@@ -115,11 +116,12 @@ func (client *ActivityLogAlertsClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Delete an Activity Log Alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// activityLogAlertName - The name of the Activity Log Alert rule.
-// options - ActivityLogAlertsClientDeleteOptions contains the optional parameters for the ActivityLogAlertsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - activityLogAlertName - The name of the Activity Log Alert rule.
+//   - options - ActivityLogAlertsClientDeleteOptions contains the optional parameters for the ActivityLogAlertsClient.Delete
+//     method.
 func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsClientDeleteOptions) (ActivityLogAlertsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, activityLogAlertName, options)
 	if err != nil {
@@ -163,10 +165,11 @@ func (client *ActivityLogAlertsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Get an Activity Log Alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// activityLogAlertName - The name of the Activity Log Alert rule.
-// options - ActivityLogAlertsClientGetOptions contains the optional parameters for the ActivityLogAlertsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - activityLogAlertName - The name of the Activity Log Alert rule.
+//   - options - ActivityLogAlertsClientGetOptions contains the optional parameters for the ActivityLogAlertsClient.Get method.
 func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsClientGetOptions) (ActivityLogAlertsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, activityLogAlertName, options)
 	if err != nil {
@@ -218,10 +221,11 @@ func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (A
 }
 
 // NewListByResourceGroupPager - Get a list of all Activity Log Alert rules in a resource group.
+//
 // Generated from API version 2020-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - ActivityLogAlertsClientListByResourceGroupOptions contains the optional parameters for the ActivityLogAlertsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ActivityLogAlertsClientListByResourceGroupOptions contains the optional parameters for the ActivityLogAlertsClient.NewListByResourceGroupPager
+//     method.
 func (client *ActivityLogAlertsClient) NewListByResourceGroupPager(resourceGroupName string, options *ActivityLogAlertsClientListByResourceGroupOptions) *runtime.Pager[ActivityLogAlertsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ActivityLogAlertsClientListByResourceGroupResponse]{
 		More: func(page ActivityLogAlertsClientListByResourceGroupResponse) bool {
@@ -282,9 +286,10 @@ func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *h
 }
 
 // NewListBySubscriptionIDPager - Get a list of all Activity Log Alert rules in a subscription.
+//
 // Generated from API version 2020-10-01
-// options - ActivityLogAlertsClientListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlertsClient.ListBySubscriptionID
-// method.
+//   - options - ActivityLogAlertsClientListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlertsClient.NewListBySubscriptionIDPager
+//     method.
 func (client *ActivityLogAlertsClient) NewListBySubscriptionIDPager(options *ActivityLogAlertsClientListBySubscriptionIDOptions) *runtime.Pager[ActivityLogAlertsClientListBySubscriptionIDResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ActivityLogAlertsClientListBySubscriptionIDResponse]{
 		More: func(page ActivityLogAlertsClientListBySubscriptionIDResponse) bool {
@@ -344,12 +349,13 @@ func (client *ActivityLogAlertsClient) listBySubscriptionIDHandleResponse(resp *
 // and to enable or disable the Alert rule. To update other fields use CreateOrUpdate
 // operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// activityLogAlertName - The name of the Activity Log Alert rule.
-// activityLogAlertRulePatch - Parameters supplied to the operation.
-// options - ActivityLogAlertsClientUpdateOptions contains the optional parameters for the ActivityLogAlertsClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - activityLogAlertName - The name of the Activity Log Alert rule.
+//   - activityLogAlertRulePatch - Parameters supplied to the operation.
+//   - options - ActivityLogAlertsClientUpdateOptions contains the optional parameters for the ActivityLogAlertsClient.Update
+//     method.
 func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRulePatch AlertRulePatchObject, options *ActivityLogAlertsClientUpdateOptions) (ActivityLogAlertsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlertRulePatch, options)
 	if err != nil {

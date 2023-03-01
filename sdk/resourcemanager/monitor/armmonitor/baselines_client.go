@@ -29,8 +29,8 @@ type BaselinesClient struct {
 }
 
 // NewBaselinesClient creates a new instance of BaselinesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewBaselinesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BaselinesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -51,9 +51,10 @@ func NewBaselinesClient(credential azcore.TokenCredential, options *arm.ClientOp
 }
 
 // NewListPager - Lists the metric baseline values for a resource.
+//
 // Generated from API version 2019-03-01
-// resourceURI - The identifier of the resource.
-// options - BaselinesClientListOptions contains the optional parameters for the BaselinesClient.List method.
+//   - resourceURI - The identifier of the resource.
+//   - options - BaselinesClientListOptions contains the optional parameters for the BaselinesClient.NewListPager method.
 func (client *BaselinesClient) NewListPager(resourceURI string, options *BaselinesClientListOptions) *runtime.Pager[BaselinesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BaselinesClientListResponse]{
 		More: func(page BaselinesClientListResponse) bool {

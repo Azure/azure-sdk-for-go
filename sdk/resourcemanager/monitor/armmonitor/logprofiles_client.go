@@ -32,9 +32,9 @@ type LogProfilesClient struct {
 }
 
 // NewLogProfilesClient creates a new instance of LogProfilesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLogProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogProfilesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewLogProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Create or update a log profile in Azure Monitoring REST API.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// logProfileName - The name of the log profile.
-// parameters - Parameters supplied to the operation.
-// options - LogProfilesClientCreateOrUpdateOptions contains the optional parameters for the LogProfilesClient.CreateOrUpdate
-// method.
+//   - logProfileName - The name of the log profile.
+//   - parameters - Parameters supplied to the operation.
+//   - options - LogProfilesClientCreateOrUpdateOptions contains the optional parameters for the LogProfilesClient.CreateOrUpdate
+//     method.
 func (client *LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileName string, parameters LogProfileResource, options *LogProfilesClientCreateOrUpdateOptions) (LogProfilesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, logProfileName, parameters, options)
 	if err != nil {
@@ -110,9 +111,10 @@ func (client *LogProfilesClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Deletes the log profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// logProfileName - The name of the log profile.
-// options - LogProfilesClientDeleteOptions contains the optional parameters for the LogProfilesClient.Delete method.
+//   - logProfileName - The name of the log profile.
+//   - options - LogProfilesClientDeleteOptions contains the optional parameters for the LogProfilesClient.Delete method.
 func (client *LogProfilesClient) Delete(ctx context.Context, logProfileName string, options *LogProfilesClientDeleteOptions) (LogProfilesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, logProfileName, options)
 	if err != nil {
@@ -151,9 +153,10 @@ func (client *LogProfilesClient) deleteCreateRequest(ctx context.Context, logPro
 
 // Get - Gets the log profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// logProfileName - The name of the log profile.
-// options - LogProfilesClientGetOptions contains the optional parameters for the LogProfilesClient.Get method.
+//   - logProfileName - The name of the log profile.
+//   - options - LogProfilesClientGetOptions contains the optional parameters for the LogProfilesClient.Get method.
 func (client *LogProfilesClient) Get(ctx context.Context, logProfileName string, options *LogProfilesClientGetOptions) (LogProfilesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, logProfileName, options)
 	if err != nil {
@@ -201,8 +204,9 @@ func (client *LogProfilesClient) getHandleResponse(resp *http.Response) (LogProf
 }
 
 // NewListPager - List the log profiles.
+//
 // Generated from API version 2016-03-01
-// options - LogProfilesClientListOptions contains the optional parameters for the LogProfilesClient.List method.
+//   - options - LogProfilesClientListOptions contains the optional parameters for the LogProfilesClient.NewListPager method.
 func (client *LogProfilesClient) NewListPager(options *LogProfilesClientListOptions) *runtime.Pager[LogProfilesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LogProfilesClientListResponse]{
 		More: func(page LogProfilesClientListResponse) bool {
@@ -254,10 +258,11 @@ func (client *LogProfilesClient) listHandleResponse(resp *http.Response) (LogPro
 
 // Update - Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-03-01
-// logProfileName - The name of the log profile.
-// logProfilesResource - Parameters supplied to the operation.
-// options - LogProfilesClientUpdateOptions contains the optional parameters for the LogProfilesClient.Update method.
+//   - logProfileName - The name of the log profile.
+//   - logProfilesResource - Parameters supplied to the operation.
+//   - options - LogProfilesClientUpdateOptions contains the optional parameters for the LogProfilesClient.Update method.
 func (client *LogProfilesClient) Update(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch, options *LogProfilesClientUpdateOptions) (LogProfilesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, logProfileName, logProfilesResource, options)
 	if err != nil {

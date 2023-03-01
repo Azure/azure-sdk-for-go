@@ -32,9 +32,9 @@ type PrivateLinkScopeOperationStatusClient struct {
 }
 
 // NewPrivateLinkScopeOperationStatusClient creates a new instance of PrivateLinkScopeOperationStatusClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPrivateLinkScopeOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkScopeOperationStatusClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewPrivateLinkScopeOperationStatusClient(subscriptionID string, credential 
 
 // Get - Get the status of an azure asynchronous operation associated with a private link scope operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
-// asyncOperationID - The operation Id.
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - PrivateLinkScopeOperationStatusClientGetOptions contains the optional parameters for the PrivateLinkScopeOperationStatusClient.Get
-// method.
+//   - asyncOperationID - The operation Id.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - PrivateLinkScopeOperationStatusClientGetOptions contains the optional parameters for the PrivateLinkScopeOperationStatusClient.Get
+//     method.
 func (client *PrivateLinkScopeOperationStatusClient) Get(ctx context.Context, asyncOperationID string, resourceGroupName string, options *PrivateLinkScopeOperationStatusClientGetOptions) (PrivateLinkScopeOperationStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, asyncOperationID, resourceGroupName, options)
 	if err != nil {

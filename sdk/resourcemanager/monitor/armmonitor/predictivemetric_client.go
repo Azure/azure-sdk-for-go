@@ -32,9 +32,9 @@ type PredictiveMetricClient struct {
 }
 
 // NewPredictiveMetricClient creates a new instance of PredictiveMetricClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPredictiveMetricClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PredictiveMetricClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,16 +57,17 @@ func NewPredictiveMetricClient(subscriptionID string, credential azcore.TokenCre
 
 // Get - get predictive autoscale metric future data
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// autoscaleSettingName - The autoscale setting name.
-// timespan - The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
-// interval - The interval (i.e. timegrain) of the query.
-// metricNamespace - Metric namespace to query metric definitions for.
-// metricName - The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in
-// it then use %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
-// aggregation - The list of aggregation types (comma separated) to retrieve.
-// options - PredictiveMetricClientGetOptions contains the optional parameters for the PredictiveMetricClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autoscaleSettingName - The autoscale setting name.
+//   - timespan - The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
+//   - interval - The interval (i.e. timegrain) of the query.
+//   - metricNamespace - Metric namespace to query metric definitions for.
+//   - metricName - The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in
+//     it then use %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
+//   - aggregation - The list of aggregation types (comma separated) to retrieve.
+//   - options - PredictiveMetricClientGetOptions contains the optional parameters for the PredictiveMetricClient.Get method.
 func (client *PredictiveMetricClient) Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string, timespan string, interval string, metricNamespace string, metricName string, aggregation string, options *PredictiveMetricClientGetOptions) (PredictiveMetricClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, autoscaleSettingName, timespan, interval, metricNamespace, metricName, aggregation, options)
 	if err != nil {

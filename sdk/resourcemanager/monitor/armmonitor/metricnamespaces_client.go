@@ -29,8 +29,8 @@ type MetricNamespacesClient struct {
 }
 
 // NewMetricNamespacesClient creates a new instance of MetricNamespacesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMetricNamespacesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricNamespacesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -51,9 +51,11 @@ func NewMetricNamespacesClient(credential azcore.TokenCredential, options *arm.C
 }
 
 // NewListPager - Lists the metric namespaces for the resource.
+//
 // Generated from API version 2017-12-01-preview
-// resourceURI - The identifier of the resource.
-// options - MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.List method.
+//   - resourceURI - The identifier of the resource.
+//   - options - MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.NewListPager
+//     method.
 func (client *MetricNamespacesClient) NewListPager(resourceURI string, options *MetricNamespacesClientListOptions) *runtime.Pager[MetricNamespacesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MetricNamespacesClientListResponse]{
 		More: func(page MetricNamespacesClientListResponse) bool {

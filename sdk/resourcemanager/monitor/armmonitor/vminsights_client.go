@@ -29,8 +29,8 @@ type VMInsightsClient struct {
 }
 
 // NewVMInsightsClient creates a new instance of VMInsightsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*VMInsightsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -52,10 +52,11 @@ func NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // GetOnboardingStatus - Retrieves the VM Insights onboarding status for the specified resource or resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-11-27-preview
-// resourceURI - The fully qualified Azure Resource manager identifier of the resource, or scope, whose status to retrieve.
-// options - VMInsightsClientGetOnboardingStatusOptions contains the optional parameters for the VMInsightsClient.GetOnboardingStatus
-// method.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource, or scope, whose status to retrieve.
+//   - options - VMInsightsClientGetOnboardingStatusOptions contains the optional parameters for the VMInsightsClient.GetOnboardingStatus
+//     method.
 func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourceURI string, options *VMInsightsClientGetOnboardingStatusOptions) (VMInsightsClientGetOnboardingStatusResponse, error) {
 	req, err := client.getOnboardingStatusCreateRequest(ctx, resourceURI, options)
 	if err != nil {

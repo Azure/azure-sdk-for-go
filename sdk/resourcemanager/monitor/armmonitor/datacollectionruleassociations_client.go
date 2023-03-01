@@ -32,9 +32,9 @@ type DataCollectionRuleAssociationsClient struct {
 }
 
 // NewDataCollectionRuleAssociationsClient creates a new instance of DataCollectionRuleAssociationsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionRuleAssociationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential a
 
 // Create - Creates or updates an association.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceURI - The identifier of the resource.
-// associationName - The name of the association. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientCreateOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Create
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - associationName - The name of the association. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientCreateOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Create
+//     method.
 func (client *DataCollectionRuleAssociationsClient) Create(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsClientCreateOptions) (DataCollectionRuleAssociationsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceURI, associationName, options)
 	if err != nil {
@@ -110,11 +111,12 @@ func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *h
 
 // Delete - Deletes an association.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceURI - The identifier of the resource.
-// associationName - The name of the association. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientDeleteOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Delete
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - associationName - The name of the association. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientDeleteOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Delete
+//     method.
 func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsClientDeleteOptions) (DataCollectionRuleAssociationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceURI, associationName, options)
 	if err != nil {
@@ -151,11 +153,12 @@ func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx cont
 
 // Get - Returns the specified association.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceURI - The identifier of the resource.
-// associationName - The name of the association. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientGetOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Get
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - associationName - The name of the association. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientGetOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Get
+//     method.
 func (client *DataCollectionRuleAssociationsClient) Get(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsClientGetOptions) (DataCollectionRuleAssociationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, associationName, options)
 	if err != nil {
@@ -200,11 +203,12 @@ func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http
 }
 
 // NewListByDataCollectionEndpointPager - Lists associations for the specified data collection endpoint.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for
-// the DataCollectionRuleAssociationsClient.ListByDataCollectionEndpoint method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for
+//     the DataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager method.
 func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpointPager(resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse) bool {
@@ -269,10 +273,11 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 }
 
 // NewListByResourcePager - Lists associations for the specified resource.
+//
 // Generated from API version 2021-09-01-preview
-// resourceURI - The identifier of the resource.
-// options - DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByResource
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - options - DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByResourcePager
+//     method.
 func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByResourceResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByResourceResponse) bool {
@@ -326,11 +331,12 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse
 }
 
 // NewListByRulePager - Lists associations for the specified data collection rule.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
-// options - DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByRule
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
+//   - options - DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByRulePager
+//     method.
 func (client *DataCollectionRuleAssociationsClient) NewListByRulePager(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByRuleResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionRuleAssociationsClientListByRuleResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByRuleResponse) bool {

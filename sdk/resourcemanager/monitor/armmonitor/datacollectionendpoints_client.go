@@ -32,9 +32,9 @@ type DataCollectionEndpointsClient struct {
 }
 
 // NewDataCollectionEndpointsClient creates a new instance of DataCollectionEndpointsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDataCollectionEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionEndpointsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewDataCollectionEndpointsClient(subscriptionID string, credential azcore.T
 
 // Create - Creates or updates a data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
-// options - DataCollectionEndpointsClientCreateOptions contains the optional parameters for the DataCollectionEndpointsClient.Create
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - options - DataCollectionEndpointsClientCreateOptions contains the optional parameters for the DataCollectionEndpointsClient.Create
+//     method.
 func (client *DataCollectionEndpointsClient) Create(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientCreateOptions) (DataCollectionEndpointsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
 	if err != nil {
@@ -117,11 +118,12 @@ func (client *DataCollectionEndpointsClient) createHandleResponse(resp *http.Res
 
 // Delete - Deletes a data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
-// options - DataCollectionEndpointsClientDeleteOptions contains the optional parameters for the DataCollectionEndpointsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - options - DataCollectionEndpointsClientDeleteOptions contains the optional parameters for the DataCollectionEndpointsClient.Delete
+//     method.
 func (client *DataCollectionEndpointsClient) Delete(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientDeleteOptions) (DataCollectionEndpointsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
 	if err != nil {
@@ -165,11 +167,12 @@ func (client *DataCollectionEndpointsClient) deleteCreateRequest(ctx context.Con
 
 // Get - Returns the specified data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
-// options - DataCollectionEndpointsClientGetOptions contains the optional parameters for the DataCollectionEndpointsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - options - DataCollectionEndpointsClientGetOptions contains the optional parameters for the DataCollectionEndpointsClient.Get
+//     method.
 func (client *DataCollectionEndpointsClient) Get(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientGetOptions) (DataCollectionEndpointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
 	if err != nil {
@@ -221,10 +224,11 @@ func (client *DataCollectionEndpointsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByResourceGroupPager - Lists all data collection endpoints in the specified resource group.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - DataCollectionEndpointsClientListByResourceGroupOptions contains the optional parameters for the DataCollectionEndpointsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - DataCollectionEndpointsClientListByResourceGroupOptions contains the optional parameters for the DataCollectionEndpointsClient.NewListByResourceGroupPager
+//     method.
 func (client *DataCollectionEndpointsClient) NewListByResourceGroupPager(resourceGroupName string, options *DataCollectionEndpointsClientListByResourceGroupOptions) *runtime.Pager[DataCollectionEndpointsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionEndpointsClientListByResourceGroupResponse]{
 		More: func(page DataCollectionEndpointsClientListByResourceGroupResponse) bool {
@@ -285,9 +289,10 @@ func (client *DataCollectionEndpointsClient) listByResourceGroupHandleResponse(r
 }
 
 // NewListBySubscriptionPager - Lists all data collection endpoints in the specified subscription
+//
 // Generated from API version 2021-09-01-preview
-// options - DataCollectionEndpointsClientListBySubscriptionOptions contains the optional parameters for the DataCollectionEndpointsClient.ListBySubscription
-// method.
+//   - options - DataCollectionEndpointsClientListBySubscriptionOptions contains the optional parameters for the DataCollectionEndpointsClient.NewListBySubscriptionPager
+//     method.
 func (client *DataCollectionEndpointsClient) NewListBySubscriptionPager(options *DataCollectionEndpointsClientListBySubscriptionOptions) *runtime.Pager[DataCollectionEndpointsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataCollectionEndpointsClientListBySubscriptionResponse]{
 		More: func(page DataCollectionEndpointsClientListBySubscriptionResponse) bool {
@@ -345,11 +350,12 @@ func (client *DataCollectionEndpointsClient) listBySubscriptionHandleResponse(re
 
 // Update - Updates part of a data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
-// options - DataCollectionEndpointsClientUpdateOptions contains the optional parameters for the DataCollectionEndpointsClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - options - DataCollectionEndpointsClientUpdateOptions contains the optional parameters for the DataCollectionEndpointsClient.Update
+//     method.
 func (client *DataCollectionEndpointsClient) Update(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientUpdateOptions) (DataCollectionEndpointsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
 	if err != nil {

@@ -32,9 +32,9 @@ type PrivateLinkScopedResourcesClient struct {
 }
 
 // NewPrivateLinkScopedResourcesClient creates a new instance of PrivateLinkScopedResourcesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPrivateLinkScopedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkScopedResourcesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewPrivateLinkScopedResourcesClient(subscriptionID string, credential azcor
 
 // BeginCreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// scopeName - The name of the Azure Monitor PrivateLinkScope resource.
-// name - The name of the scoped resource object.
-// options - PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
+//   - name - The name of the scoped resource object.
+//   - options - PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.BeginCreateOrUpdate
+//     method.
 func (client *PrivateLinkScopedResourcesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateLinkScopedResourcesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, scopeName, name, parameters, options)
@@ -77,6 +78,7 @@ func (client *PrivateLinkScopedResourcesClient) BeginCreateOrUpdate(ctx context.
 
 // CreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
 func (client *PrivateLinkScopedResourcesClient) createOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, scopeName, name, parameters, options)
@@ -125,12 +127,13 @@ func (client *PrivateLinkScopedResourcesClient) createOrUpdateCreateRequest(ctx 
 
 // BeginDelete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// scopeName - The name of the Azure Monitor PrivateLinkScope resource.
-// name - The name of the scoped resource object.
-// options - PrivateLinkScopedResourcesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
+//   - name - The name of the scoped resource object.
+//   - options - PrivateLinkScopedResourcesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.BeginDelete
+//     method.
 func (client *PrivateLinkScopedResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesClientBeginDeleteOptions) (*runtime.Poller[PrivateLinkScopedResourcesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, scopeName, name, options)
@@ -145,6 +148,7 @@ func (client *PrivateLinkScopedResourcesClient) BeginDelete(ctx context.Context,
 
 // Delete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
 func (client *PrivateLinkScopedResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scopeName, name, options)
@@ -193,12 +197,13 @@ func (client *PrivateLinkScopedResourcesClient) deleteCreateRequest(ctx context.
 
 // Get - Gets a scoped resource in a private link scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// scopeName - The name of the Azure Monitor PrivateLinkScope resource.
-// name - The name of the scoped resource object.
-// options - PrivateLinkScopedResourcesClientGetOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
+//   - name - The name of the scoped resource object.
+//   - options - PrivateLinkScopedResourcesClientGetOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.Get
+//     method.
 func (client *PrivateLinkScopedResourcesClient) Get(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesClientGetOptions) (PrivateLinkScopedResourcesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, scopeName, name, options)
 	if err != nil {
@@ -254,11 +259,12 @@ func (client *PrivateLinkScopedResourcesClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByPrivateLinkScopePager - Gets all private endpoint connections on a private link scope.
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// scopeName - The name of the Azure Monitor PrivateLinkScope resource.
-// options - PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.ListByPrivateLinkScope
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
+//   - options - PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.NewListByPrivateLinkScopePager
+//     method.
 func (client *PrivateLinkScopedResourcesClient) NewListByPrivateLinkScopePager(resourceGroupName string, scopeName string, options *PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]{
 		More: func(page PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse) bool {

@@ -32,9 +32,9 @@ type MetricAlertsStatusClient struct {
 }
 
 // NewMetricAlertsStatusClient creates a new instance of MetricAlertsStatusClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMetricAlertsStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricAlertsStatusClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,10 +57,11 @@ func NewMetricAlertsStatusClient(subscriptionID string, credential azcore.TokenC
 
 // List - Retrieve an alert rule status.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// ruleName - The name of the rule.
-// options - MetricAlertsStatusClientListOptions contains the optional parameters for the MetricAlertsStatusClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - options - MetricAlertsStatusClientListOptions contains the optional parameters for the MetricAlertsStatusClient.List method.
 func (client *MetricAlertsStatusClient) List(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsStatusClientListOptions) (MetricAlertsStatusClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
@@ -113,12 +114,13 @@ func (client *MetricAlertsStatusClient) listHandleResponse(resp *http.Response) 
 
 // ListByName - Retrieve an alert rule status.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-03-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// ruleName - The name of the rule.
-// statusName - The name of the status.
-// options - MetricAlertsStatusClientListByNameOptions contains the optional parameters for the MetricAlertsStatusClient.ListByName
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - statusName - The name of the status.
+//   - options - MetricAlertsStatusClientListByNameOptions contains the optional parameters for the MetricAlertsStatusClient.ListByName
+//     method.
 func (client *MetricAlertsStatusClient) ListByName(ctx context.Context, resourceGroupName string, ruleName string, statusName string, options *MetricAlertsStatusClientListByNameOptions) (MetricAlertsStatusClientListByNameResponse, error) {
 	req, err := client.listByNameCreateRequest(ctx, resourceGroupName, ruleName, statusName, options)
 	if err != nil {

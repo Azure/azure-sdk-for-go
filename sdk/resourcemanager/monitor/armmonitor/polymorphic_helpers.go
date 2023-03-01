@@ -15,7 +15,7 @@ func unmarshalMetricAlertCriteriaClassification(rawMsg json.RawMessage) (MetricA
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func unmarshalMultiMetricCriteriaClassification(rawMsg json.RawMessage) (MultiMe
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func unmarshalRuleActionClassification(rawMsg json.RawMessage) (RuleActionClassi
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func unmarshalRuleConditionClassification(rawMsg json.RawMessage) (RuleCondition
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -137,7 +137,7 @@ func unmarshalRuleDataSourceClassification(rawMsg json.RawMessage) (RuleDataSour
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

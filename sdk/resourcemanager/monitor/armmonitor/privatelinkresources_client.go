@@ -32,9 +32,9 @@ type PrivateLinkResourcesClient struct {
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // Get - Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// scopeName - The name of the Azure Monitor PrivateLinkScope resource.
-// groupName - The name of the private link resource.
-// options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
+//   - groupName - The name of the private link resource.
+//   - options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
+//     method.
 func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, scopeName string, groupName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, scopeName, groupName, options)
 	if err != nil {
@@ -119,11 +120,12 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 
 // ListByPrivateLinkScope - Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// scopeName - The name of the Azure Monitor PrivateLinkScope resource.
-// options - PrivateLinkResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByPrivateLinkScope
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
+//   - options - PrivateLinkResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByPrivateLinkScope
+//     method.
 func (client *PrivateLinkResourcesClient) ListByPrivateLinkScope(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkResourcesClientListByPrivateLinkScopeOptions) (PrivateLinkResourcesClientListByPrivateLinkScopeResponse, error) {
 	req, err := client.listByPrivateLinkScopeCreateRequest(ctx, resourceGroupName, scopeName, options)
 	if err != nil {

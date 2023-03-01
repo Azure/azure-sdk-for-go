@@ -8,12 +8,12 @@ package azidentity
 
 import (
 	"context"
+	"net/http"
+	"strings"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
 
 func TestOnBehalfOfCredential(t *testing.T) {
@@ -21,68 +21,55 @@ func TestOnBehalfOfCredential(t *testing.T) {
 	t.Cleanup(func() { getConfidentialClient = realGetClient })
 	expectedAssertion := "user-assertion"
 	for _, test := range []struct {
-		ctor    func() (*OnBehalfOfCredential, error)
+		ctor    func(policy.Transporter) (*OnBehalfOfCredential, error)
 		name    string
 		sendX5C bool
 	}{
 		{
-			ctor: func() (*OnBehalfOfCredential, error) {
+			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
 				certs, key := allCertTests[0].certs, allCertTests[0].key
-				return NewOnBehalfOfCredentialFromCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, nil)
+				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}}
+				return NewOnBehalfOfCredentialFromCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
 			},
 			name: "certificate",
 		},
 		{
-			ctor: func() (*OnBehalfOfCredential, error) {
+			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
 				certs, key := allCertTests[0].certs, allCertTests[0].key
-				return NewOnBehalfOfCredentialFromCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &OnBehalfOfCredentialOptions{SendCertificateChain: true})
+				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}, SendCertificateChain: true}
+				return NewOnBehalfOfCredentialFromCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
 			},
-			name:    "certificate_SNI",
+			name:    "SNI",
 			sendX5C: true,
 		},
 		{
-			ctor: func() (*OnBehalfOfCredential, error) {
-				return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, expectedAssertion, "secret", nil)
+			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
+				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}}
+				return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, expectedAssertion, "secret", &o)
 			},
 			name: "secret",
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			called := false
 			key := struct{}{}
 			ctx := context.WithValue(context.Background(), key, true)
-			fake := fakeConfidentialClient{
-				ar: confidential.AuthResult{AccessToken: tokenValue, ExpiresOn: time.Now().Add(time.Hour)},
-				oboCallback: func(c context.Context, assertion string, scopes []string) {
-					called = true
-					if v := c.Value(key); v == nil || !v.(bool) {
-						t.Error("AcquireTokenOnBehalfOf received unexpected Context")
-					}
-					if len(scopes) != 1 || scopes[0] != liveTestScope {
-						t.Errorf(`unexpected scopes "%v"`, scopes)
-					}
-					if assertion != expectedAssertion {
-						t.Errorf(`unexpected assertion "%s"`, assertion)
-					}
-				},
-			}
-			getConfidentialClient = func(clientID, tenantID string, cred confidential.Credential, co *azcore.ClientOptions, opts ...confidential.Option) (confidentialClient, error) {
-				if clientID != fakeClientID {
-					t.Errorf(`unexpected clientID "%s"`, clientID)
+			srv := mockSTS{tokenRequestCallback: func(r *http.Request) {
+				if c := r.Context(); c == nil {
+					t.Fatal("AcquireTokenOnBehalfOf received no Context")
+				} else if v := c.Value(key); v == nil || !v.(bool) {
+					t.Fatal("AcquireTokenOnBehalfOf received unexpected Context")
 				}
-				if tenantID != fakeTenantID {
-					t.Errorf(`unexpected tenantID "%s"`, tenantID)
+				if err := r.ParseForm(); err != nil {
+					t.Fatal(err)
 				}
-				msalOpts := confidential.Options{}
-				for _, o := range opts {
-					o(&msalOpts)
+				if scope := r.FormValue("scope"); !strings.Contains(scope, liveTestScope) {
+					t.Errorf(`unexpected scopes "%v"`, scope)
 				}
-				if test.sendX5C != msalOpts.SendX5C {
-					t.Fatal("incorrect value for SendX5C")
+				if assertion := r.FormValue("assertion"); assertion != expectedAssertion {
+					t.Errorf(`unexpected assertion "%s"`, assertion)
 				}
-				return fake, nil
-			}
-			cred, err := test.ctor()
+			}}
+			cred, err := test.ctor(&srv)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -98,9 +85,6 @@ func TestOnBehalfOfCredential(t *testing.T) {
 			}
 			if tk.ExpiresOn.Location() != time.UTC {
 				t.Error("ExpiresOn isn't UTC")
-			}
-			if !called {
-				t.Fatal("validation function wasn't called")
 			}
 		})
 	}

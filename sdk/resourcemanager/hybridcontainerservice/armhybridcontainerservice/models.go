@@ -413,7 +413,7 @@ type HybridIdentityMetadataClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HybridIdentityMetadataClientListByClusterOptions contains the optional parameters for the HybridIdentityMetadataClient.ListByCluster
+// HybridIdentityMetadataClientListByClusterOptions contains the optional parameters for the HybridIdentityMetadataClient.NewListByClusterPager
 // method.
 type HybridIdentityMetadataClientListByClusterOptions struct {
 	// placeholder for future optional parameters
@@ -594,7 +594,7 @@ type NetworkProfile struct {
 	ServiceCidrs []*string `json:"serviceCidrs,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -657,6 +657,58 @@ type ProvisionedClusterIdentity struct {
 	// READ-ONLY; The tenant id associated with the provisioned cluster. This property will only be provided for a system assigned
 	// identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// ProvisionedClusterPoolUpgradeProfile - The list of available upgrade versions.
+type ProvisionedClusterPoolUpgradeProfile struct {
+	// List of orchestrator types and versions available for upgrade.
+	Upgrades []*ProvisionedClusterPoolUpgradeProfileProperties `json:"upgrades,omitempty"`
+
+	// READ-ONLY; The Kubernetes version (major.minor.patch).
+	KubernetesVersion *string `json:"kubernetesVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Agent Pool name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values
+	// include: 'Linux', 'Windows'
+	OSType *OsType `json:"osType,omitempty" azure:"ro"`
+}
+
+// ProvisionedClusterPoolUpgradeProfileProperties - The upgrade properties.
+type ProvisionedClusterPoolUpgradeProfileProperties struct {
+	// READ-ONLY; Whether the Kubernetes version is currently in preview.
+	IsPreview *bool `json:"isPreview,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Kubernetes version (major.minor.patch).
+	KubernetesVersion *string `json:"kubernetesVersion,omitempty" azure:"ro"`
+}
+
+// ProvisionedClusterUpgradeProfile - The list of available upgrades for compute pools.
+type ProvisionedClusterUpgradeProfile struct {
+	// REQUIRED; The properties of the upgrade profile.
+	Properties *ProvisionedClusterUpgradeProfileProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ProvisionedClusterUpgradeProfileProperties - Control plane and agent pool upgrade profiles.
+type ProvisionedClusterUpgradeProfileProperties struct {
+	// REQUIRED; The list of available upgrade versions for agent pools.
+	AgentPoolProfiles []*ProvisionedClusterPoolUpgradeProfile `json:"agentPoolProfiles,omitempty"`
+
+	// REQUIRED; The list of available upgrade versions for the control plane.
+	ControlPlaneProfile *ProvisionedClusterPoolUpgradeProfile `json:"controlPlaneProfile,omitempty"`
+
+	// READ-ONLY
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // ProvisionedClusters - The provisionedClusters resource definition.
@@ -749,6 +801,13 @@ type ProvisionedClustersClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
+// ProvisionedClustersClientBeginUpgradeNodeImageVersionForEntireClusterOptions contains the optional parameters for the ProvisionedClustersClient.BeginUpgradeNodeImageVersionForEntireCluster
+// method.
+type ProvisionedClustersClientBeginUpgradeNodeImageVersionForEntireClusterOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ProvisionedClustersClientDeleteOptions contains the optional parameters for the ProvisionedClustersClient.Delete method.
 type ProvisionedClustersClientDeleteOptions struct {
 	// placeholder for future optional parameters
@@ -759,13 +818,19 @@ type ProvisionedClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProvisionedClustersClientListByResourceGroupOptions contains the optional parameters for the ProvisionedClustersClient.ListByResourceGroup
+// ProvisionedClustersClientGetUpgradeProfileOptions contains the optional parameters for the ProvisionedClustersClient.GetUpgradeProfile
+// method.
+type ProvisionedClustersClientGetUpgradeProfileOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProvisionedClustersClientListByResourceGroupOptions contains the optional parameters for the ProvisionedClustersClient.NewListByResourceGroupPager
 // method.
 type ProvisionedClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProvisionedClustersClientListBySubscriptionOptions contains the optional parameters for the ProvisionedClustersClient.ListBySubscription
+// ProvisionedClustersClientListBySubscriptionOptions contains the optional parameters for the ProvisionedClustersClient.NewListBySubscriptionPager
 // method.
 type ProvisionedClustersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -989,13 +1054,13 @@ type StorageSpacesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageSpacesClientListByResourceGroupOptions contains the optional parameters for the StorageSpacesClient.ListByResourceGroup
+// StorageSpacesClientListByResourceGroupOptions contains the optional parameters for the StorageSpacesClient.NewListByResourceGroupPager
 // method.
 type StorageSpacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageSpacesClientListBySubscriptionOptions contains the optional parameters for the StorageSpacesClient.ListBySubscription
+// StorageSpacesClientListBySubscriptionOptions contains the optional parameters for the StorageSpacesClient.NewListBySubscriptionPager
 // method.
 type StorageSpacesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1162,13 +1227,13 @@ type VirtualNetworksClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworksClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworksClient.ListByResourceGroup
+// VirtualNetworksClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworksClient.NewListByResourceGroupPager
 // method.
 type VirtualNetworksClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworksClientListBySubscriptionOptions contains the optional parameters for the VirtualNetworksClient.ListBySubscription
+// VirtualNetworksClientListBySubscriptionOptions contains the optional parameters for the VirtualNetworksClient.NewListBySubscriptionPager
 // method.
 type VirtualNetworksClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1200,6 +1265,14 @@ type VirtualNetworksPatch struct {
 
 // VirtualNetworksProperties - HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork
 type VirtualNetworksProperties struct {
+	// Address of the DNS servers associated with the network
+	DNSServers []*string `json:"dnsServers,omitempty"`
+
+	// Address of the Gateway associated with the network
+	Gateway *string `json:"gateway,omitempty"`
+
+	// IP Address Prefix of the network
+	IPAddressPrefix  *string                                    `json:"ipAddressPrefix,omitempty"`
 	InfraVnetProfile *VirtualNetworksPropertiesInfraVnetProfile `json:"infraVnetProfile,omitempty"`
 
 	// Virtual IP Pool for Kubernetes
@@ -1208,17 +1281,8 @@ type VirtualNetworksProperties struct {
 	// IP Pool for Virtual Machines
 	VmipPool []*VirtualNetworksPropertiesVmipPoolItem `json:"vmipPool,omitempty"`
 
-	// READ-ONLY; Address of the DNS servers associated with the network
-	DNSServers []*string `json:"dnsServers,omitempty" azure:"ro"`
-
 	// READ-ONLY; Address of the DHCP servers associated with the network
 	DhcpServers []*string `json:"dhcpServers,omitempty" azure:"ro"`
-
-	// READ-ONLY; Address of the Gateway associated with the network
-	Gateway *string `json:"gateway,omitempty" azure:"ro"`
-
-	// READ-ONLY; IP Address Prefix of the network
-	IPAddressPrefix *string `json:"ipAddressPrefix,omitempty" azure:"ro"`
 
 	// READ-ONLY
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -1234,8 +1298,8 @@ type VirtualNetworksPropertiesInfraVnetProfile struct {
 	// Infra network profile for HCI platform
 	Hci *VirtualNetworksPropertiesInfraVnetProfileHci `json:"hci,omitempty"`
 
-	// Infra network profile for KubeVirt platform
-	Kubevirt *VirtualNetworksPropertiesInfraVnetProfileKubevirt `json:"kubevirt,omitempty"`
+	// Infra network profile for the NetworkCloud platform
+	NetworkCloud *VirtualNetworksPropertiesInfraVnetProfileNetworkCloud `json:"networkCloud,omitempty"`
 
 	// Infra network profile for VMware platform
 	Vmware *VirtualNetworksPropertiesInfraVnetProfileVmware `json:"vmware,omitempty"`
@@ -1253,10 +1317,10 @@ type VirtualNetworksPropertiesInfraVnetProfileHci struct {
 	MocVnetName *string `json:"mocVnetName,omitempty"`
 }
 
-// VirtualNetworksPropertiesInfraVnetProfileKubevirt - Infra network profile for KubeVirt platform
-type VirtualNetworksPropertiesInfraVnetProfileKubevirt struct {
-	// Name of the network in KubeVirt
-	VnetName *string `json:"vnetName,omitempty"`
+// VirtualNetworksPropertiesInfraVnetProfileNetworkCloud - Infra network profile for the NetworkCloud platform
+type VirtualNetworksPropertiesInfraVnetProfileNetworkCloud struct {
+	// The ARM ID of Network Cloud Network Resource to Associate with this VirtualNetwork
+	NetworkID *string `json:"networkId,omitempty"`
 }
 
 // VirtualNetworksPropertiesInfraVnetProfileVmware - Infra network profile for VMware platform

@@ -32,9 +32,9 @@ type ProvisionedClustersClient struct {
 }
 
 // NewProvisionedClustersClient creates a new instance of ProvisionedClustersClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewProvisionedClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProvisionedClustersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,14 +57,15 @@ func NewProvisionedClustersClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Creates the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// options - ProvisionedClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ProvisionedClustersClient.BeginCreateOrUpdate
-// method.
-func (client *ProvisionedClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisionedClustersName string, provisionedClusters ProvisionedClusters, options *ProvisionedClustersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProvisionedClustersClientCreateOrUpdateResponse], error) {
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - options - ProvisionedClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ProvisionedClustersClient.BeginCreateOrUpdate
+//     method.
+func (client *ProvisionedClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, provisionedClusters ProvisionedClusters, options *ProvisionedClustersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProvisionedClustersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, provisionedClustersName, provisionedClusters, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, provisionedClusters, options)
 		if err != nil {
 			return nil, err
 		}
@@ -78,9 +79,10 @@ func (client *ProvisionedClustersClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Creates the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-func (client *ProvisionedClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, provisionedClustersName string, provisionedClusters ProvisionedClusters, options *ProvisionedClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, provisionedClustersName, provisionedClusters, options)
+//
+// Generated from API version 2022-09-01-preview
+func (client *ProvisionedClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, provisionedClusters ProvisionedClusters, options *ProvisionedClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, provisionedClusters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,8 +97,8 @@ func (client *ProvisionedClustersClient) createOrUpdate(ctx context.Context, res
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ProvisionedClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, provisionedClusters ProvisionedClusters, options *ProvisionedClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}"
+func (client *ProvisionedClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, provisionedClusters ProvisionedClusters, options *ProvisionedClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -105,16 +107,16 @@ func (client *ProvisionedClustersClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, provisionedClusters)
@@ -122,13 +124,14 @@ func (client *ProvisionedClustersClient) createOrUpdateCreateRequest(ctx context
 
 // Delete - Deletes the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// options - ProvisionedClustersClientDeleteOptions contains the optional parameters for the ProvisionedClustersClient.Delete
-// method.
-func (client *ProvisionedClustersClient) Delete(ctx context.Context, resourceGroupName string, provisionedClustersName string, options *ProvisionedClustersClientDeleteOptions) (ProvisionedClustersClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, provisionedClustersName, options)
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - options - ProvisionedClustersClientDeleteOptions contains the optional parameters for the ProvisionedClustersClient.Delete
+//     method.
+func (client *ProvisionedClustersClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *ProvisionedClustersClientDeleteOptions) (ProvisionedClustersClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ProvisionedClustersClientDeleteResponse{}, err
 	}
@@ -143,8 +146,8 @@ func (client *ProvisionedClustersClient) Delete(ctx context.Context, resourceGro
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ProvisionedClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, options *ProvisionedClustersClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}"
+func (client *ProvisionedClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ProvisionedClustersClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -153,16 +156,16 @@ func (client *ProvisionedClustersClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -170,12 +173,13 @@ func (client *ProvisionedClustersClient) deleteCreateRequest(ctx context.Context
 
 // Get - Gets the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// options - ProvisionedClustersClientGetOptions contains the optional parameters for the ProvisionedClustersClient.Get method.
-func (client *ProvisionedClustersClient) Get(ctx context.Context, resourceGroupName string, provisionedClustersName string, options *ProvisionedClustersClientGetOptions) (ProvisionedClustersClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, provisionedClustersName, options)
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - options - ProvisionedClustersClientGetOptions contains the optional parameters for the ProvisionedClustersClient.Get method.
+func (client *ProvisionedClustersClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ProvisionedClustersClientGetOptions) (ProvisionedClustersClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ProvisionedClustersClientGetResponse{}, err
 	}
@@ -190,8 +194,8 @@ func (client *ProvisionedClustersClient) Get(ctx context.Context, resourceGroupN
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProvisionedClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, options *ProvisionedClustersClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}"
+func (client *ProvisionedClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ProvisionedClustersClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -200,16 +204,16 @@ func (client *ProvisionedClustersClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -224,11 +228,70 @@ func (client *ProvisionedClustersClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
+// GetUpgradeProfile - Gets the upgrade profile of a provisioned cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - options - ProvisionedClustersClientGetUpgradeProfileOptions contains the optional parameters for the ProvisionedClustersClient.GetUpgradeProfile
+//     method.
+func (client *ProvisionedClustersClient) GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string, options *ProvisionedClustersClientGetUpgradeProfileOptions) (ProvisionedClustersClientGetUpgradeProfileResponse, error) {
+	req, err := client.getUpgradeProfileCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return ProvisionedClustersClientGetUpgradeProfileResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return ProvisionedClustersClientGetUpgradeProfileResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ProvisionedClustersClientGetUpgradeProfileResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getUpgradeProfileHandleResponse(resp)
+}
+
+// getUpgradeProfileCreateRequest creates the GetUpgradeProfile request.
+func (client *ProvisionedClustersClient) getUpgradeProfileCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ProvisionedClustersClientGetUpgradeProfileOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/upgradeProfiles/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getUpgradeProfileHandleResponse handles the GetUpgradeProfile response.
+func (client *ProvisionedClustersClient) getUpgradeProfileHandleResponse(resp *http.Response) (ProvisionedClustersClientGetUpgradeProfileResponse, error) {
+	result := ProvisionedClustersClientGetUpgradeProfileResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProvisionedClusterUpgradeProfile); err != nil {
+		return ProvisionedClustersClientGetUpgradeProfileResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByResourceGroupPager - Gets the Hybrid AKS provisioned cluster in a resource group
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - ProvisionedClustersClientListByResourceGroupOptions contains the optional parameters for the ProvisionedClustersClient.ListByResourceGroup
-// method.
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ProvisionedClustersClientListByResourceGroupOptions contains the optional parameters for the ProvisionedClustersClient.NewListByResourceGroupPager
+//     method.
 func (client *ProvisionedClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ProvisionedClustersClientListByResourceGroupOptions) *runtime.Pager[ProvisionedClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProvisionedClustersClientListByResourceGroupResponse]{
 		More: func(page ProvisionedClustersClientListByResourceGroupResponse) bool {
@@ -273,7 +336,7 @@ func (client *ProvisionedClustersClient) listByResourceGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -289,9 +352,10 @@ func (client *ProvisionedClustersClient) listByResourceGroupHandleResponse(resp 
 }
 
 // NewListBySubscriptionPager - Gets the Hybrid AKS provisioned cluster in a subscription
-// Generated from API version 2022-05-01-preview
-// options - ProvisionedClustersClientListBySubscriptionOptions contains the optional parameters for the ProvisionedClustersClient.ListBySubscription
-// method.
+//
+// Generated from API version 2022-09-01-preview
+//   - options - ProvisionedClustersClientListBySubscriptionOptions contains the optional parameters for the ProvisionedClustersClient.NewListBySubscriptionPager
+//     method.
 func (client *ProvisionedClustersClient) NewListBySubscriptionPager(options *ProvisionedClustersClientListBySubscriptionOptions) *runtime.Pager[ProvisionedClustersClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProvisionedClustersClientListBySubscriptionResponse]{
 		More: func(page ProvisionedClustersClientListBySubscriptionResponse) bool {
@@ -332,7 +396,7 @@ func (client *ProvisionedClustersClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,14 +413,15 @@ func (client *ProvisionedClustersClient) listBySubscriptionHandleResponse(resp *
 
 // BeginUpdate - Updates the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// provisionedClustersName - Parameter for the name of the provisioned cluster
-// options - ProvisionedClustersClientBeginUpdateOptions contains the optional parameters for the ProvisionedClustersClient.BeginUpdate
-// method.
-func (client *ProvisionedClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, provisionedClustersName string, provisionedClusters ProvisionedClustersPatch, options *ProvisionedClustersClientBeginUpdateOptions) (*runtime.Poller[ProvisionedClustersClientUpdateResponse], error) {
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - options - ProvisionedClustersClientBeginUpdateOptions contains the optional parameters for the ProvisionedClustersClient.BeginUpdate
+//     method.
+func (client *ProvisionedClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, provisionedClusters ProvisionedClustersPatch, options *ProvisionedClustersClientBeginUpdateOptions) (*runtime.Poller[ProvisionedClustersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, provisionedClustersName, provisionedClusters, options)
+		resp, err := client.update(ctx, resourceGroupName, resourceName, provisionedClusters, options)
 		if err != nil {
 			return nil, err
 		}
@@ -370,9 +435,10 @@ func (client *ProvisionedClustersClient) BeginUpdate(ctx context.Context, resour
 
 // Update - Updates the Hybrid AKS provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-func (client *ProvisionedClustersClient) update(ctx context.Context, resourceGroupName string, provisionedClustersName string, provisionedClusters ProvisionedClustersPatch, options *ProvisionedClustersClientBeginUpdateOptions) (*http.Response, error) {
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, provisionedClustersName, provisionedClusters, options)
+//
+// Generated from API version 2022-09-01-preview
+func (client *ProvisionedClustersClient) update(ctx context.Context, resourceGroupName string, resourceName string, provisionedClusters ProvisionedClustersPatch, options *ProvisionedClustersClientBeginUpdateOptions) (*http.Response, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, provisionedClusters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -387,8 +453,8 @@ func (client *ProvisionedClustersClient) update(ctx context.Context, resourceGro
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ProvisionedClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, provisionedClustersName string, provisionedClusters ProvisionedClustersPatch, options *ProvisionedClustersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{provisionedClustersName}"
+func (client *ProvisionedClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, provisionedClusters ProvisionedClustersPatch, options *ProvisionedClustersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -397,17 +463,86 @@ func (client *ProvisionedClustersClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if provisionedClustersName == "" {
-		return nil, errors.New("parameter provisionedClustersName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{provisionedClustersName}", url.PathEscape(provisionedClustersName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, provisionedClusters)
+}
+
+// BeginUpgradeNodeImageVersionForEntireCluster - Upgrading the node image version of a cluster applies the newest OS and
+// runtime updates to the nodes.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - Parameter for the name of the provisioned cluster
+//   - options - ProvisionedClustersClientBeginUpgradeNodeImageVersionForEntireClusterOptions contains the optional parameters
+//     for the ProvisionedClustersClient.BeginUpgradeNodeImageVersionForEntireCluster method.
+func (client *ProvisionedClustersClient) BeginUpgradeNodeImageVersionForEntireCluster(ctx context.Context, resourceGroupName string, resourceName string, options *ProvisionedClustersClientBeginUpgradeNodeImageVersionForEntireClusterOptions) (*runtime.Poller[ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.upgradeNodeImageVersionForEntireCluster(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ProvisionedClustersClientUpgradeNodeImageVersionForEntireClusterResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// UpgradeNodeImageVersionForEntireCluster - Upgrading the node image version of a cluster applies the newest OS and runtime
+// updates to the nodes.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-09-01-preview
+func (client *ProvisionedClustersClient) upgradeNodeImageVersionForEntireCluster(ctx context.Context, resourceGroupName string, resourceName string, options *ProvisionedClustersClientBeginUpgradeNodeImageVersionForEntireClusterOptions) (*http.Response, error) {
+	req, err := client.upgradeNodeImageVersionForEntireClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// upgradeNodeImageVersionForEntireClusterCreateRequest creates the UpgradeNodeImageVersionForEntireCluster request.
+func (client *ProvisionedClustersClient) upgradeNodeImageVersionForEntireClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ProvisionedClustersClientBeginUpgradeNodeImageVersionForEntireClusterOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/provisionedClusters/{resourceName}/upgradeNodeImageVersionForEntireCluster"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
 }

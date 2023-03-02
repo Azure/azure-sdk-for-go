@@ -32,9 +32,9 @@ type VirtualNetworksClient struct {
 }
 
 // NewVirtualNetworksClient creates a new instance of VirtualNetworksClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworksClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,11 +57,12 @@ func NewVirtualNetworksClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Puts the Hybrid AKS virtual network
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// virtualNetworksName - Parameter for the name of the virtual network
-// options - VirtualNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworksClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualNetworksName - Parameter for the name of the virtual network
+//   - options - VirtualNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworksClient.BeginCreateOrUpdate
+//     method.
 func (client *VirtualNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworksName string, virtualNetworks VirtualNetworks, options *VirtualNetworksClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualNetworksClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworksName, virtualNetworks, options)
@@ -78,7 +79,8 @@ func (client *VirtualNetworksClient) BeginCreateOrUpdate(ctx context.Context, re
 
 // CreateOrUpdate - Puts the Hybrid AKS virtual network
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
+//
+// Generated from API version 2022-09-01-preview
 func (client *VirtualNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworksName string, virtualNetworks VirtualNetworks, options *VirtualNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworksName, virtualNetworks, options)
 	if err != nil {
@@ -114,7 +116,7 @@ func (client *VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, virtualNetworks)
@@ -122,10 +124,11 @@ func (client *VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 
 // Delete - Deletes the Hybrid AKS virtual network
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// virtualNetworksName - Parameter for the name of the virtual network
-// options - VirtualNetworksClientDeleteOptions contains the optional parameters for the VirtualNetworksClient.Delete method.
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualNetworksName - Parameter for the name of the virtual network
+//   - options - VirtualNetworksClientDeleteOptions contains the optional parameters for the VirtualNetworksClient.Delete method.
 func (client *VirtualNetworksClient) Delete(ctx context.Context, resourceGroupName string, virtualNetworksName string, options *VirtualNetworksClientDeleteOptions) (VirtualNetworksClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworksName, options)
 	if err != nil {
@@ -161,17 +164,18 @@ func (client *VirtualNetworksClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListByResourceGroupPager - Lists the Hybrid AKS virtual networks by resource group
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - VirtualNetworksClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworksClient.ListByResourceGroup
-// method.
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - VirtualNetworksClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworksClient.NewListByResourceGroupPager
+//     method.
 func (client *VirtualNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualNetworksClientListByResourceGroupOptions) *runtime.Pager[VirtualNetworksClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListByResourceGroupResponse]{
 		More: func(page VirtualNetworksClientListByResourceGroupResponse) bool {
@@ -216,7 +220,7 @@ func (client *VirtualNetworksClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -232,9 +236,10 @@ func (client *VirtualNetworksClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Lists the Hybrid AKS virtual networks by subscription
-// Generated from API version 2022-05-01-preview
-// options - VirtualNetworksClientListBySubscriptionOptions contains the optional parameters for the VirtualNetworksClient.ListBySubscription
-// method.
+//
+// Generated from API version 2022-09-01-preview
+//   - options - VirtualNetworksClientListBySubscriptionOptions contains the optional parameters for the VirtualNetworksClient.NewListBySubscriptionPager
+//     method.
 func (client *VirtualNetworksClient) NewListBySubscriptionPager(options *VirtualNetworksClientListBySubscriptionOptions) *runtime.Pager[VirtualNetworksClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListBySubscriptionResponse]{
 		More: func(page VirtualNetworksClientListBySubscriptionResponse) bool {
@@ -275,7 +280,7 @@ func (client *VirtualNetworksClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,11 +297,12 @@ func (client *VirtualNetworksClient) listBySubscriptionHandleResponse(resp *http
 
 // Retrieve - Gets the Hybrid AKS virtual network
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// virtualNetworksName - Parameter for the name of the virtual network
-// options - VirtualNetworksClientRetrieveOptions contains the optional parameters for the VirtualNetworksClient.Retrieve
-// method.
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualNetworksName - Parameter for the name of the virtual network
+//   - options - VirtualNetworksClientRetrieveOptions contains the optional parameters for the VirtualNetworksClient.Retrieve
+//     method.
 func (client *VirtualNetworksClient) Retrieve(ctx context.Context, resourceGroupName string, virtualNetworksName string, options *VirtualNetworksClientRetrieveOptions) (VirtualNetworksClientRetrieveResponse, error) {
 	req, err := client.retrieveCreateRequest(ctx, resourceGroupName, virtualNetworksName, options)
 	if err != nil {
@@ -332,7 +338,7 @@ func (client *VirtualNetworksClient) retrieveCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,11 +355,12 @@ func (client *VirtualNetworksClient) retrieveHandleResponse(resp *http.Response)
 
 // BeginUpdate - Patches the Hybrid AKS virtual network
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// virtualNetworksName - Parameter for the name of the virtual network
-// options - VirtualNetworksClientBeginUpdateOptions contains the optional parameters for the VirtualNetworksClient.BeginUpdate
-// method.
+//
+// Generated from API version 2022-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualNetworksName - Parameter for the name of the virtual network
+//   - options - VirtualNetworksClientBeginUpdateOptions contains the optional parameters for the VirtualNetworksClient.BeginUpdate
+//     method.
 func (client *VirtualNetworksClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualNetworksName string, virtualNetworks VirtualNetworksPatch, options *VirtualNetworksClientBeginUpdateOptions) (*runtime.Poller[VirtualNetworksClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, virtualNetworksName, virtualNetworks, options)
@@ -370,7 +377,8 @@ func (client *VirtualNetworksClient) BeginUpdate(ctx context.Context, resourceGr
 
 // Update - Patches the Hybrid AKS virtual network
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
+//
+// Generated from API version 2022-09-01-preview
 func (client *VirtualNetworksClient) update(ctx context.Context, resourceGroupName string, virtualNetworksName string, virtualNetworks VirtualNetworksPatch, options *VirtualNetworksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualNetworksName, virtualNetworks, options)
 	if err != nil {
@@ -406,7 +414,7 @@ func (client *VirtualNetworksClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, virtualNetworks)

@@ -29,8 +29,8 @@ type Client struct {
 }
 
 // NewClient creates a new instance of Client with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -52,9 +52,10 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // ListOrchestrators - Lists the available orchestrators in a custom location for HybridAKS
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
-// options - ClientListOrchestratorsOptions contains the optional parameters for the Client.ListOrchestrators method.
+//
+// Generated from API version 2022-09-01-preview
+//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+//   - options - ClientListOrchestratorsOptions contains the optional parameters for the Client.ListOrchestrators method.
 func (client *Client) ListOrchestrators(ctx context.Context, customLocationResourceURI string, options *ClientListOrchestratorsOptions) (ClientListOrchestratorsResponse, error) {
 	req, err := client.listOrchestratorsCreateRequest(ctx, customLocationResourceURI, options)
 	if err != nil {
@@ -79,7 +80,7 @@ func (client *Client) listOrchestratorsCreateRequest(ctx context.Context, custom
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -96,9 +97,10 @@ func (client *Client) listOrchestratorsHandleResponse(resp *http.Response) (Clie
 
 // ListVMSKUs - Lists the available VM SKUs in a custom location for HybridAKS
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01-preview
-// customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
-// options - ClientListVMSKUsOptions contains the optional parameters for the Client.ListVMSKUs method.
+//
+// Generated from API version 2022-09-01-preview
+//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+//   - options - ClientListVMSKUsOptions contains the optional parameters for the Client.ListVMSKUs method.
 func (client *Client) ListVMSKUs(ctx context.Context, customLocationResourceURI string, options *ClientListVMSKUsOptions) (ClientListVMSKUsResponse, error) {
 	req, err := client.listVMSKUsCreateRequest(ctx, customLocationResourceURI, options)
 	if err != nil {
@@ -123,7 +125,7 @@ func (client *Client) listVMSKUsCreateRequest(ctx context.Context, customLocatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

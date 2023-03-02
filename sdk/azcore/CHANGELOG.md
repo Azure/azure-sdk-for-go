@@ -1,5 +1,15 @@
 # Release History
 
+## 1.5.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.5.0-beta.1 (2023-03-02)
 
 ### Features Added
@@ -15,18 +25,6 @@
 * ARM's RP registration policy will no longer swallow unrecognized errors.
 * Fixed an issue in `runtime.NewPollerFromResumeToken()` when resuming a `Poller` with a custom `PollingHandler`.
 * Fixed wrong policy copy in `arm/runtime.NewPipeline()`.
-
-## 1.4.0-beta.1 (2023-02-02)
-
-### Features Added
-* Added support for ARM cross-tenant authentication. Set the `AuxiliaryTenants` field of `arm.ClientOptions` to enable.
-* Added `Claims` and `TenantID` fields to `policy.TokenRequestOptions`.
-* ARM bearer token policy handles CAE challenges.
-
-## 1.3.1 (2023-02-02)
-
-### Other Changes
-* Update dependencies to latest versions.
 
 ## 1.4.0-beta.1 (2023-02-02)
 

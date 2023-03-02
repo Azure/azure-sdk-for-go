@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/http"
 	"strings"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -45,7 +46,7 @@ type authenticationPolicyOptions struct {
 // Since the scope will be different for different API/repository/artifact, accessTokenCache will only work when continuously calling same API.
 type authenticationPolicy struct {
 	refreshTokenCache *temporal.Resource[azcore.AccessToken, acquiringResourceState]
-	accessTokenCache  string
+	accessTokenCache  atomic.Value
 	cred              azcore.TokenCredential
 	aadScopes         []string
 	authClient        *authenticationClient
@@ -66,11 +67,11 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if req.Raw().Header.Get(headerAuthorization) != "" {
 		// retry request could do the request with existed token directly
 		resp, err = req.Next()
-	} else if p.accessTokenCache != "" {
+	} else if accessToken := p.accessTokenCache.Load(); accessToken != nil && accessToken != "" {
 		// if there is a previous access token, then we try to use this token to do the request
 		req.Raw().Header.Set(
 			headerAuthorization,
-			fmt.Sprintf("%s%s", bearerHeader, p.accessTokenCache),
+			fmt.Sprintf("%s%s", bearerHeader, accessToken),
 		)
 		resp, err = req.Next()
 	} else {
@@ -87,7 +88,7 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 	}
 
 	// if 401 response, then try to get access token
-	if resp.StatusCode == 401 {
+	if resp.StatusCode == http.StatusUnauthorized {
 		var service, scope, accessToken string
 		if service, scope, err = findServiceAndScope(resp); err != nil {
 			return nil, err
@@ -95,7 +96,7 @@ func (p *authenticationPolicy) Do(req *policy.Request) (*http.Response, error) {
 		if accessToken, err = p.getAccessToken(req, service, scope); err != nil {
 			return nil, err
 		}
-		p.accessTokenCache = accessToken
+		p.accessTokenCache.Store(accessToken)
 		req.Raw().Header.Set(
 			headerAuthorization,
 			fmt.Sprintf("%s%s", bearerHeader, accessToken),

@@ -19,6 +19,7 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -120,7 +121,7 @@ func Test_authenticationPolicy_getAccessToken_live(t *testing.T) {
 	authClient := newAuthenticationClient(endpoint, &authenticationClientOptions{options})
 	p := &authenticationPolicy{
 		temporal.NewResource(acquireRefreshToken),
-		"",
+		atomic.Value{},
 		cred,
 		[]string{options.Cloud.Services[ServiceName].Audience + "/.default"},
 		authClient,

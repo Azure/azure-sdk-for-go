@@ -57,7 +57,8 @@ func NewWorkloadIdentityCredential(tenantID, clientID, file string, options *Wor
 	if err != nil {
 		return nil, err
 	}
-	cred.name = credNameWorkloadIdentity
+	// we want "WorkloadIdentityCredential" in log messages, not "ClientAssertionCredential"
+	cred.s.name = credNameWorkloadIdentity
 	w.cred = cred
 	return &w, nil
 }

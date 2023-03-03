@@ -26,20 +26,11 @@ import (
 	"strings"
 )
 
-type BlobBatchOperationType string
-
 const (
-	batchIdPrefix                                    = "batch_"
-	httpVersion                                      = "HTTP/1.1"
-	httpNewline                                      = "\r\n"
-	BatchDeleteOperationType  BlobBatchOperationType = "delete"
-	BatchSetTierOperationType BlobBatchOperationType = "set tier"
+	batchIdPrefix = "batch_"
+	httpVersion   = "HTTP/1.1"
+	httpNewline   = "\r\n"
 )
-
-type BlobBatchBuilder struct {
-	AuthPolicy  policy.Policy
-	SubRequests []*policy.Request
-}
 
 // createBatchID is used for creating a new batch id which is used as batch boundary in the request body
 func createBatchID() (string, error) {
@@ -203,6 +194,7 @@ func getResponseHeader(key string, resp *http.Response) *string {
 	return &val
 }
 
+// ParseBlobBatchResponse is used for parsing the batch response body into individual sub-responses for each item in the batch.
 func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequests []*policy.Request) ([]*BatchResponseItem, error) {
 	boundary, err := getResponseBoundary(contentType)
 	if err != nil {
@@ -269,3 +261,19 @@ func ParseBlobBatchResponse(respBody io.ReadCloser, contentType *string, subRequ
 
 	return responses, nil
 }
+
+// not exported but used for batch request creation
+
+// BlobBatchBuilder is used for creating the blob batch request
+type BlobBatchBuilder struct {
+	AuthPolicy  policy.Policy
+	SubRequests []*policy.Request
+}
+
+// BlobBatchOperationType defines the operation of the blob batch sub-requests.
+type BlobBatchOperationType string
+
+const (
+	BatchDeleteOperationType  BlobBatchOperationType = "delete"
+	BatchSetTierOperationType BlobBatchOperationType = "set tier"
+)

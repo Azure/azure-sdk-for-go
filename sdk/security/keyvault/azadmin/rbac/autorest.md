@@ -28,30 +28,30 @@ directive:
     transform: return $.replace(/(?:\/\/.*\s)+func NewClient.+\{\s(?:.+\s)+\}\s/, "");
 
     # rename role definition and role assignment operations so they will generate as one access control client
-#   - rename-operation:
-#       from: RoleDefinitions_Delete
-#       to: DeleteRoleDefinition
-#   - rename-operation:
-#       from: RoleAssignments_Delete
-#       to: DeleteRoleAssignment
-#   - rename-operation:
-#       from: RoleDefinitions_CreateOrUpdate
-#       to: CreateOrUpdateRoleDefinition
-#   - rename-operation:
-#       from: RoleAssignments_Create
-#       to: CreateRoleAssignment
-#   - rename-operation:
-#       from: RoleDefinitions_Get
-#       to: GetRoleDefinition
-#   - rename-operation:
-#       from: RoleAssignments_Get
-#       to: GetRoleAssignment
-#   - rename-operation:
-#       from: RoleDefinitions_List
-#       to: ListRoleDefinitions
-#   - rename-operation:
-#       from: RoleAssignments_ListForScope
-#       to: ListRoleAssignments
+  - rename-operation:
+      from: RoleDefinitions_Delete
+      to: DeleteRoleDefinition
+  - rename-operation:
+      from: RoleAssignments_Delete
+      to: DeleteRoleAssignment
+  - rename-operation:
+      from: RoleDefinitions_CreateOrUpdate
+      to: CreateOrUpdateRoleDefinition
+  - rename-operation:
+      from: RoleAssignments_Create
+      to: CreateRoleAssignment
+  - rename-operation:
+      from: RoleDefinitions_Get
+      to: GetRoleDefinition
+  - rename-operation:
+      from: RoleAssignments_Get
+      to: GetRoleAssignment
+  - rename-operation:
+      from: RoleDefinitions_List
+      to: ListRoleDefinitions
+  - rename-operation:
+      from: RoleAssignments_ListForScope
+      to: ListRoleAssignments
 
   # delete unused error models
   - from: models.go

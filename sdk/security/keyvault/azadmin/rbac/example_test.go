@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azadmin_test
+package rbac_test
 
 import (
 	"context"
@@ -9,20 +9,20 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/rbac"
 	"github.com/google/uuid"
 )
 
-var accessControlClient azadmin.AccessControlClient
+var client rbac.Client
 
-func ExampleNewAccessControlClient() {
+func ExampleClient() {
 	vaultURL := "https://<TODO: your vault name>.managedhsm.azure.net/"
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	client, err := azadmin.NewAccessControlClient(vaultURL, cred, nil)
+	client, err := rbac.NewClient(vaultURL, cred, nil)
 	if err != nil {
 		// TODO: handle error
 	}
@@ -30,22 +30,22 @@ func ExampleNewAccessControlClient() {
 	_ = client
 }
 
-func ExampleAccessControlClient_CreateOrUpdateRoleDefinition() {
-	scope := azadmin.RoleScopeGlobal
+func ExampleClient_CreateOrUpdateRoleDefinition() {
+	scope := rbac.RoleScopeGlobal
 	name := uuid.New().String()
-	roleType := azadmin.RoleTypeCustomRole
+	roleType := rbac.RoleTypeCustomRole
 	roleName := "ExampleRoleName"
-	parameters := azadmin.RoleDefinitionCreateParameters{
-		Properties: &azadmin.RoleDefinitionProperties{
-			AssignableScopes: []*azadmin.RoleScope{to.Ptr(scope)},
+	parameters := rbac.RoleDefinitionCreateParameters{
+		Properties: &rbac.RoleDefinitionProperties{
+			AssignableScopes: []*rbac.RoleScope{to.Ptr(scope)},
 			Description:      to.Ptr("Example description"),
-			Permissions:      []*azadmin.Permission{{DataActions: []*azadmin.DataAction{to.Ptr(azadmin.DataActionBackupHsmKeys), to.Ptr(azadmin.DataActionCreateHsmKey)}}},
+			Permissions:      []*rbac.Permission{{DataActions: []*rbac.DataAction{to.Ptr(rbac.DataActionBackupHsmKeys), to.Ptr(rbac.DataActionCreateHsmKey)}}},
 			RoleName:         to.Ptr(roleName),
 			RoleType:         to.Ptr(roleType),
 		},
 	}
 
-	roleDefinition, err := accessControlClient.CreateOrUpdateRoleDefinition(context.TODO(), scope, name, parameters, nil)
+	roleDefinition, err := client.CreateOrUpdateRoleDefinition(context.TODO(), scope, name, parameters, nil)
 	if err != nil {
 		// TODO: handle error
 	}
@@ -53,17 +53,17 @@ func ExampleAccessControlClient_CreateOrUpdateRoleDefinition() {
 	fmt.Printf("Role Definition Name: %s", *roleDefinition.Name)
 }
 
-func ExampleAccessControlClient_CreateRoleAssignment() {
-	scope := azadmin.RoleScopeGlobal
+func ExampleClient_CreateRoleAssignment() {
+	scope := rbac.RoleScopeGlobal
 	name := uuid.New().String()
-	parameters := azadmin.RoleAssignmentCreateParameters{
-		Properties: &azadmin.RoleAssignmentProperties{
+	parameters := rbac.RoleAssignmentCreateParameters{
+		Properties: &rbac.RoleAssignmentProperties{
 			PrincipalID:      to.Ptr("d26e28bc-991f-11ed-a8fc-0242ac120002"),                                                                      // example principal ID
 			RoleDefinitionID: to.Ptr("Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/c368d8da-991f-11ed-a8fc-0242ac120002"), // example role definition ID
 		},
 	}
 
-	roleAssignment, err := accessControlClient.CreateRoleAssignment(context.TODO(), scope, name, parameters, nil)
+	roleAssignment, err := client.CreateRoleAssignment(context.TODO(), scope, name, parameters, nil)
 	if err != nil {
 		// TODO: handle error
 	}

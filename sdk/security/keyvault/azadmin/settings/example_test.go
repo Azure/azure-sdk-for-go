@@ -9,7 +9,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/settings"
 )
 
@@ -22,7 +21,7 @@ func ExampleNewClient() {
 		// TODO: handle error
 	}
 
-	client, err := azadmin.NewSettingsClient(vaultURL, cred, nil)
+	client, err := settings.NewClient(vaultURL, cred, nil)
 	if err != nil {
 		// TODO: handle error
 	}

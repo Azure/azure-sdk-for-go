@@ -9,42 +9,42 @@
 
 package rbac
 
-// RoleAssignmentsClientCreateResponse contains the response from method RoleAssignmentsClient.Create.
-type RoleAssignmentsClientCreateResponse struct {
+// ClientCreateOrUpdateRoleDefinitionResponse contains the response from method Client.CreateOrUpdateRoleDefinition.
+type ClientCreateOrUpdateRoleDefinitionResponse struct {
+	RoleDefinition
+}
+
+// ClientCreateRoleAssignmentResponse contains the response from method Client.CreateRoleAssignment.
+type ClientCreateRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// RoleAssignmentsClientDeleteResponse contains the response from method RoleAssignmentsClient.Delete.
-type RoleAssignmentsClientDeleteResponse struct {
+// ClientDeleteRoleAssignmentResponse contains the response from method Client.DeleteRoleAssignment.
+type ClientDeleteRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// RoleAssignmentsClientGetResponse contains the response from method RoleAssignmentsClient.Get.
-type RoleAssignmentsClientGetResponse struct {
+// ClientDeleteRoleDefinitionResponse contains the response from method Client.DeleteRoleDefinition.
+type ClientDeleteRoleDefinitionResponse struct {
+	RoleDefinition
+}
+
+// ClientGetRoleAssignmentResponse contains the response from method Client.GetRoleAssignment.
+type ClientGetRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// RoleAssignmentsClientListForScopeResponse contains the response from method RoleAssignmentsClient.ListForScope.
-type RoleAssignmentsClientListForScopeResponse struct {
+// ClientGetRoleDefinitionResponse contains the response from method Client.GetRoleDefinition.
+type ClientGetRoleDefinitionResponse struct {
+	RoleDefinition
+}
+
+// ClientListRoleAssignmentsResponse contains the response from method Client.ListRoleAssignments.
+type ClientListRoleAssignmentsResponse struct {
 	RoleAssignmentListResult
 }
 
-// RoleDefinitionsClientCreateOrUpdateResponse contains the response from method RoleDefinitionsClient.CreateOrUpdate.
-type RoleDefinitionsClientCreateOrUpdateResponse struct {
-	RoleDefinition
-}
-
-// RoleDefinitionsClientDeleteResponse contains the response from method RoleDefinitionsClient.Delete.
-type RoleDefinitionsClientDeleteResponse struct {
-	RoleDefinition
-}
-
-// RoleDefinitionsClientGetResponse contains the response from method RoleDefinitionsClient.Get.
-type RoleDefinitionsClientGetResponse struct {
-	RoleDefinition
-}
-
-// RoleDefinitionsClientListResponse contains the response from method RoleDefinitionsClient.List.
-type RoleDefinitionsClientListResponse struct {
+// ClientListRoleDefinitionsResponse contains the response from method Client.ListRoleDefinitions.
+type ClientListRoleDefinitionsResponse struct {
 	RoleDefinitionListResult
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azadmin_test
+package backup_test
 
 import (
 	"context"
@@ -9,19 +9,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup"
 )
 
-var backupClient *azadmin.BackupClient
+var client *backup.Client
 
-func ExampleNewBackupClient() {
+func ExampleNewClient() {
 	vaultURL := "https://<TODO: your vault name>.managedhsm.azure.net/"
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	client, err := azadmin.NewBackupClient(vaultURL, cred, nil)
+	client, err := backup.NewClient(vaultURL, cred, nil)
 	if err != nil {
 		// TODO: handle error
 	}
@@ -29,12 +29,12 @@ func ExampleNewBackupClient() {
 	_ = client
 }
 
-func ExampleBackupClient_BeginFullBackup() {
-	storageParameters := azadmin.SASTokenParameter{
+func ExampleClient_BeginFullBackup() {
+	storageParameters := backup.SASTokenParameter{
 		StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
 		Token:              to.Ptr("SAS_TOKEN"),
 	}
-	backupPoller, err := backupClient.BeginFullBackup(context.Background(), storageParameters, nil)
+	backupPoller, err := client.BeginFullBackup(context.Background(), storageParameters, nil)
 	if err != nil {
 		// TODO: handle error
 	}
@@ -44,18 +44,18 @@ func ExampleBackupClient_BeginFullBackup() {
 	}
 	fmt.Printf("Status of backup: %s", *backupResults.Status)
 }
-func ExampleBackupClient_BeginFullRestore() {
+func ExampleClient_BeginFullRestore() {
 
 	// FolderToRestore can be extracted from blob url returned from the backup operation
 
-	restoreOperationParameters := azadmin.RestoreOperationParameters{
+	restoreOperationParameters := backup.RestoreOperationParameters{
 		FolderToRestore: to.Ptr("FOLDER_NAME"),
-		SasTokenParameters: &azadmin.SASTokenParameter{
+		SasTokenParameters: &backup.SASTokenParameter{
 			StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
 			Token:              to.Ptr("SAS_TOKEN"),
 		},
 	}
-	restorePoller, err := backupClient.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
+	restorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
 	if err != nil {
 		// TODO: handle error
 	}
@@ -69,16 +69,16 @@ func ExampleBackupClient_BeginFullRestore() {
 	fmt.Printf("Status of restore: %s", *restoreResults.Status)
 }
 
-func ExampleBackupClient_BeginSelectiveKeyRestore() {
+func ExampleClient_BeginSelectiveKeyRestore() {
 
-	restoreOperationParameters := azadmin.SelectiveKeyRestoreOperationParameters{
+	restoreOperationParameters := backup.SelectiveKeyRestoreOperationParameters{
 		Folder: to.Ptr("FOLDER_NAME"),
-		SasTokenParameters: &azadmin.SASTokenParameter{
+		SasTokenParameters: &backup.SASTokenParameter{
 			StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
 			Token:              to.Ptr("SAS_TOKEN"),
 		},
 	}
-	selectivePoller, err := backupClient.BeginSelectiveKeyRestore(context.Background(), "keyName", restoreOperationParameters, nil)
+	selectivePoller, err := client.BeginSelectiveKeyRestore(context.Background(), "keyName", restoreOperationParameters, nil)
 	if err != nil {
 		// TODO: handle error
 	}

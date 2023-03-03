@@ -8,10 +8,11 @@ package testutil
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"

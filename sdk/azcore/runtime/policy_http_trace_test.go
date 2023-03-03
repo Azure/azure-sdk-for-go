@@ -73,9 +73,10 @@ func TestHTTPTracePolicy(t *testing.T) {
 	require.EqualValues(t, tracing.SpanStatusUnset, spanStatus)
 	require.EqualValues(t, "HTTP GET", fullSpanName)
 	require.EqualValues(t, tracing.SpanKindClient, spanKind)
-	require.Len(t, spanAttrs, 6)
+	require.Len(t, spanAttrs, 7)
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPMethod, Value: http.MethodGet})
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPURL, Value: srv.URL() + "?foo=REDACTED&visibleqp=bar"})
+	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrNetPeerName, Value: srv.URL()[7:]}) // strip off the http://
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPUserAgent, Value: "my-user-agent"})
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrAZClientReqID, Value: "my-client-request"})
 	require.Contains(t, spanAttrs, tracing.Attribute{Key: attrHTTPStatusCode, Value: http.StatusOK})

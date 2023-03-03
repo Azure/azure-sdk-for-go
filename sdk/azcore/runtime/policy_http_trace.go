@@ -26,6 +26,8 @@ const (
 
 	attrAZClientReqID  = "az.client_request_id"
 	attrAZServiceReqID = "az.service_request_id"
+
+	attrNetPeerName = "net.peer.name"
 )
 
 // newHTTPTracePolicy creates a new instance of the httpTracePolicy.
@@ -46,6 +48,7 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 		attributes := []tracing.Attribute{
 			{Key: attrHTTPMethod, Value: req.Raw().Method},
 			{Key: attrHTTPURL, Value: getSanitizedURL(*req.Raw().URL, h.allowedQP)},
+			{Key: attrNetPeerName, Value: req.Raw().URL.Host},
 		}
 
 		if ua := req.Raw().Header.Get(shared.HeaderUserAgent); ua != "" {

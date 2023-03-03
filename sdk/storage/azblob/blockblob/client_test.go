@@ -586,12 +586,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	_require.Nil(err)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
+func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcClient *service.Client) (*blockblob.Client, *blockblob.Client, *bytes.Reader, time.Time) {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -605,11 +600,22 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 
-	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(body), nil)
+	_, err := srcBBClient.Upload(context.Background(), streaming.NopCloser(body), nil)
 	_require.Nil(err)
 
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_require.Nil(err)
+
+	return srcBBClient, destBBClient, body, expiryTime
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	srcBBClient, destBBClient, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	if err != nil {
@@ -643,33 +649,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-
-	srcBlob := testcommon.GenerateBlobName(testName)
-	srcBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, srcBlob, containerClient)
-
-	dest := testcommon.GenerateBlobName(testName)
-	destBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, dest, containerClient)
-
-	content := make([]byte, 0)
-	body := bytes.NewReader(content)
-
-	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(body), &blockblob.UploadOptions{
-		HTTPHeaders: &testcommon.BasicHeaders,
-	})
-	_require.Nil(err)
-
-	resp, err := srcBBClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
-	h := blob.ParseHTTPHeaders(resp)
-	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
-	_require.EqualValues(h, testcommon.BasicHeaders)
-
-	// Get source blob url with SAS for UploadBlobFromURL.
-	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
-	_require.Nil(err)
+	srcBBClient, destBBClient, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	if err != nil {
@@ -692,9 +672,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	_require.NotNil(pbResp)
 	_require.NoError(err)
 
-	resp, err = destBBClient.GetProperties(context.Background(), nil)
+	resp, err := destBBClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	h = blob.ParseHTTPHeaders(resp)
+	h := blob.ParseHTTPHeaders(resp)
 	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
 	_require.EqualValues(h, testcommon.BasicHeaders)
 }

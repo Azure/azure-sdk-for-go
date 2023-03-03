@@ -224,7 +224,7 @@ func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOpt
 		cp.Frequency = 30 * time.Second
 	}
 
-	ctx, endSpan := StartSpan(ctx, fmt.Sprintf("%s.PollUntilDone", shortenPollerTypeName(reflect.TypeOf(*p).Name())), p.tracer, nil)
+	ctx, endSpan := StartSpan(ctx, fmt.Sprintf("%s.PollUntilDone", shortenTypeName(reflect.TypeOf(*p).Name())), p.tracer, nil)
 	defer func() { endSpan(err) }()
 
 	// skip the floor check when executing tests so they don't take so long
@@ -286,7 +286,7 @@ func (p *Poller[T]) Poll(ctx context.Context) (resp *http.Response, err error) {
 		return
 	}
 
-	ctx, endSpan := StartSpan(ctx, fmt.Sprintf("%s.Poll", shortenPollerTypeName(reflect.TypeOf(*p).Name())), p.tracer, nil)
+	ctx, endSpan := StartSpan(ctx, fmt.Sprintf("%s.Poll", shortenTypeName(reflect.TypeOf(*p).Name())), p.tracer, nil)
 	defer func() { endSpan(err) }()
 
 	resp, err = p.op.Poll(ctx)
@@ -322,7 +322,7 @@ func (p *Poller[T]) Result(ctx context.Context) (res T, err error) {
 		return
 	}
 
-	ctx, endSpan := StartSpan(ctx, fmt.Sprintf("%s.Result", shortenPollerTypeName(reflect.TypeOf(*p).Name())), p.tracer, nil)
+	ctx, endSpan := StartSpan(ctx, fmt.Sprintf("%s.Result", shortenTypeName(reflect.TypeOf(*p).Name())), p.tracer, nil)
 	defer func() { endSpan(err) }()
 
 	err = p.op.Result(ctx, p.result)
@@ -359,7 +359,7 @@ func (p *Poller[T]) ResumeToken() (string, error) {
 }
 
 // extracts the type name from the string returned from reflect.Value.Name()
-func shortenPollerTypeName(s string) string {
+func shortenTypeName(s string) string {
 	// the value is formatted as follows
 	// Poller[module/Package.Type].Method
 	// we want to shorten the generic type parameter string to Type

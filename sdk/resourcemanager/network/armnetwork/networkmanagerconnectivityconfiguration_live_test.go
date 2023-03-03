@@ -46,7 +46,7 @@ func (testsuite *NetworkManagerConnectivityConfigurationTestSuite) SetupSuite() 
 	testsuite.networkManagerName = testutil.GenerateAlphaNumericID(testsuite.T(), "networkmancc", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-00000000-00000000-00000000")
+	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name

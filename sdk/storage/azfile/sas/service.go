@@ -63,7 +63,7 @@ func (v FileSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 	if v.Version == "" {
 		v.Version = Version
 	}
-	startTime, expiryTime, snapshotTime := formatTimesForSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
+	startTime, expiryTime, _ := formatTimesForSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
 
 	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
 	stringToSign := strings.Join([]string{
@@ -75,8 +75,6 @@ func (v FileSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
-		resource,
-		snapshotTime,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce

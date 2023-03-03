@@ -166,6 +166,10 @@ type SignedIdentifier = generated.SignedIdentifier
 // AccessPolicy - An Access policy.
 type AccessPolicy = generated.AccessPolicy
 
+// The AccessPolicyPermission type simplifies creating the permissions string for a share's access policy.
+// Initialize an instance of this type and then call its String method to set AccessPolicy's permission field.
+type AccessPolicyPermission = exported.AccessPolicyPermission
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // SetAccessPolicyOptions contains the optional parameters for the Client.SetAccessPolicy method.

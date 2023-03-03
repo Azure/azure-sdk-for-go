@@ -9,7 +9,9 @@ package testcommon
 
 import (
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/stretchr/testify/require"
 	"os"
 	"strings"
@@ -17,7 +19,8 @@ import (
 )
 
 const (
-	SharePrefix = "gos"
+	SharePrefix     = "gos"
+	DirectoryPrefix = "godir"
 )
 
 func GenerateShareName(testName string) string {
@@ -26,6 +29,21 @@ func GenerateShareName(testName string) string {
 
 func GenerateEntityName(testName string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
+}
+
+func GenerateDirectoryName(testName string) string {
+	return DirectoryPrefix + GenerateEntityName(testName)
+}
+
+func ValidateFileErrorCode(_require *require.Assertions, err error, code fileerror.Code) {
+	_require.NotNil(err)
+	var responseErr *azcore.ResponseError
+	errors.As(err, &responseErr)
+	if responseErr != nil {
+		_require.Equal(string(code), responseErr.ErrorCode)
+	} else {
+		_require.Contains(err.Error(), code)
+	}
 }
 
 // GetRequiredEnv gets an environment variable by name and returns an error if it is not found

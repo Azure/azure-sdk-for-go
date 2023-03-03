@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"os"
 	"testing"
 	"time"
 )
@@ -62,16 +61,22 @@ type ServiceUnrecordedTestsSuite struct {
 func (s *ServiceUnrecordedTestsSuite) TestAccountNewServiceURLValidName() {
 	_require := require.New(s.T())
 
+	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
+	_require.NoError(err)
+
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + "." + testcommon.DefaultFileEndpointSuffix
+	correctURL := "https://" + accountName + "." + testcommon.DefaultFileEndpointSuffix
 	_require.Equal(svcClient.URL(), correctURL)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestAccountNewShareURLValidName() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+
+	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
+	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -80,7 +85,7 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountNewShareURLValidName() {
 	shareClient := svcClient.NewShareClient(shareName)
 	_require.NoError(err)
 
-	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + "." + testcommon.DefaultFileEndpointSuffix + shareName
+	correctURL := "https://" + accountName + "." + testcommon.DefaultFileEndpointSuffix + shareName
 	_require.Equal(shareClient.URL(), correctURL)
 }
 
@@ -234,7 +239,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.file.core.windows.net/", cred.AccountName()), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// shareName := testcommon.GenerateShareName(testName)
 
@@ -253,17 +258,17 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	}
 	expiry := time.Now().Add(time.Hour)
 	sasUrl, err := serviceClient.GetSASURL(resources, permissions, expiry, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClientNoCredential(s.T(), sasUrl, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	// create share using SAS
 	//_, err = svcClient.CreateShare(context.Background(), shareName, nil)
-	//_require.Nil(err)
+	//_require.NoError(err)
 	//
 	//_, err = svcClient.DeleteShare(context.Background(), shareName, nil)
-	//_require.Nil(err)
+	//_require.NoError(err)
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -272,10 +277,11 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 
 func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
 	_require := require.New(s.T())
-	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithNoCredential(fmt.Sprintf("https://%s.file.core.windows.net/", accountName), nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,
@@ -296,13 +302,16 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {
 
 func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientSignNegative() {
 	_require := require.New(s.T())
-	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
-	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
+	_require.NoError(err)
+	accountKey, err := testcommon.GetRequiredEnv(testcommon.AccountKeyEnvVar)
+	_require.NoError(err)
+
 	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
-	_require.Nil(err)
+	_require.NoError(err)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.file.core.windows.net/", accountName), cred, nil)
-	_require.Nil(err)
+	_require.NoError(err)
 	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,

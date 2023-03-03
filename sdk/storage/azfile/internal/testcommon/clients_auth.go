@@ -8,11 +8,14 @@
 package testcommon
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
@@ -38,6 +41,15 @@ const (
 	FakeStorageAccount = "fakestorage"
 	FakeStorageURL     = "https://fakestorage.file.core.windows.net"
 )
+
+var (
+	SampleSDDL = `O:S-1-5-32-548G:S-1-5-21-397955417-626881126-188441444-512D:(A;;RPWPCCDCLCSWRCWDWOGA;;;S-1-0-0)`
+)
+
+var BasicMetadata = map[string]*string{
+	"foo": to.Ptr("foovalue"),
+	"bar": to.Ptr("barvalue"),
+}
 
 func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Logging.AllowedHeaders = append(opts.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
@@ -121,4 +133,20 @@ func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountT
 	}
 	svcClient, err := service.NewClientFromConnectionString(*cred, options)
 	return svcClient, err
+}
+
+func GetShareClient(shareName string, s *service.Client) *share.Client {
+	return s.NewShareClient(shareName)
+}
+
+func CreateNewShare(ctx context.Context, _require *require.Assertions, shareName string, svcClient *service.Client) *share.Client {
+	shareClient := GetShareClient(shareName, svcClient)
+	_, err := shareClient.Create(ctx, nil)
+	_require.NoError(err)
+	return shareClient
+}
+
+func DeleteShare(ctx context.Context, _require *require.Assertions, shareClient *share.Client) {
+	_, err := shareClient.Delete(ctx, nil)
+	_require.NoError(err)
 }

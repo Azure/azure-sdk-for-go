@@ -33,6 +33,10 @@ type WorkloadIdentityCredential struct {
 type WorkloadIdentityCredentialOptions struct {
 	azcore.ClientOptions
 
+	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire tokens.
+	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
+	// application is registered.
+	AdditionallyAllowedTenants []string
 	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
 	DisableInstanceDiscovery bool
 }
@@ -44,7 +48,11 @@ func NewWorkloadIdentityCredential(tenantID, clientID, file string, options *Wor
 		options = &WorkloadIdentityCredentialOptions{}
 	}
 	w := WorkloadIdentityCredential{file: file, mtx: &sync.RWMutex{}}
-	caco := ClientAssertionCredentialOptions{ClientOptions: options.ClientOptions, DisableInstanceDiscovery: options.DisableInstanceDiscovery}
+	caco := ClientAssertionCredentialOptions{
+		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
+		ClientOptions:              options.ClientOptions,
+		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
+	}
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
 	if err != nil {
 		return nil, err

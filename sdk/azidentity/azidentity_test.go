@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -278,6 +279,10 @@ func Test_NonHTTPSAuthorityHost(t *testing.T) {
 }
 
 func TestAdditionallyAllowedTenants(t *testing.T) {
+	af := filepath.Join(t.TempDir(), t.Name()+credNameWorkloadIdentity)
+	if err := os.WriteFile(af, []byte("assertion"), os.ModePerm); err != nil {
+		t.Fatal(err)
+	}
 	tenantA := "A"
 	tenantB := "B"
 	for _, test := range []struct {
@@ -386,6 +391,13 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				},
 			},
 			{
+				name: credNameWorkloadIdentity,
+				ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+					o := WorkloadIdentityCredentialOptions{AdditionallyAllowedTenants: test.allowed, ClientOptions: co}
+					return NewWorkloadIdentityCredential(fakeTenantID, fakeClientID, af, &o)
+				},
+			},
+			{
 				name: "DefaultAzureCredential/EnvironmentCredential",
 				ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
 					o := DefaultAzureCredentialOptions{ClientOptions: co, TenantID: test.tenant}
@@ -408,6 +420,20 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 					azureAdditionallyAllowedTenants: "not-" + test.tenant,
 					azureClientID:                   fakeClientID,
 					azureClientSecret:               fakeSecret,
+					azureTenantID:                   fakeTenantID,
+				},
+			},
+			{
+				name: "DefaultAzureCredential/" + credNameWorkloadIdentity,
+				ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
+					o := DefaultAzureCredentialOptions{AdditionallyAllowedTenants: test.allowed, ClientOptions: co}
+					return NewDefaultAzureCredential(&o)
+				},
+				env: map[string]string{
+					azureAdditionallyAllowedTenants: strings.Join(test.allowed, ";"),
+					azureAuthorityHost:              "https://login.microsoftonline.com",
+					azureClientID:                   fakeClientID,
+					azureFederatedTokenFile:         af,
 					azureTenantID:                   fakeTenantID,
 				},
 			},

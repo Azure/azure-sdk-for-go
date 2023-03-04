@@ -31,6 +31,13 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 	})
 
 	if err != nil {
+		// In some circumstances we can end up in a situation where the link closing was cancelled
+		// or interrupted, leaving $cbs still open by some dangling receiver or sender. The only way
+		// to fix this is to restart the connection.
+		if IsNotAllowedError(err) {
+			return errConnResetNeeded
+		}
+
 		return err
 	}
 

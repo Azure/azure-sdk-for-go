@@ -323,6 +323,13 @@ func IsErrNotFound(err error) bool {
 	return ok
 }
 
+func IsNotAllowedError(err error) bool {
+	var e *amqp.Error
+
+	return errors.As(err, &e) &&
+		e.Condition == amqp.ErrorNotAllowed
+}
+
 func (e ErrConnectionClosed) Error() string {
 	return fmt.Sprintf("the connection has been closed: %s", string(e))
 }

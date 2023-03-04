@@ -101,7 +101,11 @@ type ConnectionParamsForTest struct {
 }
 
 func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
-	_ = godotenv.Load()
+	if _, err := os.Stat("../.env"); err == nil {
+		_ = godotenv.Load("../.env")
+	} else {
+		_ = godotenv.Load()
+	}
 
 	envVars := mustGetEnvironmentVars(t, []string{
 		"AZURE_SUBSCRIPTION_ID",

@@ -11,7 +11,7 @@
 - Prevent over-requesting credit (#19965) or requesting negative/zero credits (#19743), both of
   which could cause issues with go-amqp. (PR#19992)
 - Recover the connection when the $cbs Receiver/Sender is not closed properly. This would cause
-  clients to return an error saying "$cbs node has already been opened." (PR#TBD)
+  clients to return an error saying "$cbs node has already been opened." (PR#20334)
 
 ### Other Changes
 

@@ -15,7 +15,7 @@
 ### Bugs Fixed
 
 - Recover the connection when the $cbs Receiver/Sender is not closed properly. This would cause
-  clients to return an error saying "$cbs node has already been opened." (PR#TBD)
+  clients to return an error saying "$cbs node has already been opened." (PR#20334)
 
 ### Other Changes
 

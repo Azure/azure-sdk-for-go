@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
@@ -39,6 +40,7 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 		// or interrupted, leaving $cbs still open by some dangling receiver or sender. The only way
 		// to fix this is to restart the connection.
 		if IsNotAllowedError(err) {
+			log.Writef(exported.EventAuth, "Not allowed to open, connection will be reset: %s", err)
 			return errConnResetNeeded
 		}
 

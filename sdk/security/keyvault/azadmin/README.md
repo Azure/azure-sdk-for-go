@@ -40,11 +40,7 @@ The clients accept any [azidentity][azure_identity] credential. See the [azident
 
 #### Create a client
 
-Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal.
-
-- Example AccessControlClient
-- Example BackupClient
-- Example SettingsClient
+Constructing the client also requires your Managed HSM's URL, which you can get from the Azure CLI or the Azure Portal.
 
 ## Key concepts
 

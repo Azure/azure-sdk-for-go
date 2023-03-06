@@ -83,7 +83,7 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-		err = recording.AddGeneralRegexSanitizer(fakeToken, token, nil)
+		err = recording.AddBodyRegexSanitizer(fakeToken, `sv=[^"]*`, nil)
 		if err != nil {
 			panic(err)
 		}

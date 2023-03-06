@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.3.2-0.20230223183848-56bc1ff11325
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.1
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.3-0.20230201001603-01633acee879
 	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys v0.9.0

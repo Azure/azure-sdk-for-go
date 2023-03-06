@@ -146,6 +146,6 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 
 	// additional waiting to avoid conflicts with resources in other tests
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		time.Sleep(61 * time.Second)
+		time.Sleep(60 * time.Second)
 	}
 }

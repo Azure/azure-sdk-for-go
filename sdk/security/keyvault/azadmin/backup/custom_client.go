@@ -44,8 +44,8 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 	return &Client{endpoint: vaultURL, pl: pl}, nil
 }
 
-// Error - The code and message for an error.
-type Error struct {
+// ServerError - Internal error from Azure Key Vault server.
+type ServerError struct {
 	// REQUIRED; A machine readable error code.
 	Code string
 
@@ -54,7 +54,7 @@ type Error struct {
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type Error.
-func (e *Error) UnmarshalJSON(data []byte) error {
+func (e *ServerError) UnmarshalJSON(data []byte) error {
 	e.data = data
 	ei := struct{ Code string }{}
 	if err := json.Unmarshal(data, &ei); err != nil {
@@ -66,7 +66,7 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 }
 
 // Error implements a custom error for type Error.
-func (e *Error) Error() string {
+func (e *ServerError) Error() string {
 	return string(e.data)
 }
 

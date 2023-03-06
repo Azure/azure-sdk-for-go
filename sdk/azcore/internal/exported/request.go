@@ -170,6 +170,14 @@ func (req *Request) Clone(ctx context.Context) *Request {
 	return &r2
 }
 
+// WithContext returns a shallow copy of the request with its context changed to ctx.
+func (req *Request) WithContext(ctx context.Context) *Request {
+	r2 := new(Request)
+	*r2 = *req
+	r2.req = r2.req.WithContext(ctx)
+	return r2
+}
+
 // not exported but dependent on Request
 
 // PolicyFunc is a type that implements the Policy interface.

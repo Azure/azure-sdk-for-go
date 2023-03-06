@@ -1176,3 +1176,17 @@ func TestNewPollerWithCustomHandler(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, "value", *result.Field)
 }
+
+func TestShortenPollerTypeName(t *testing.T) {
+	result := shortenTypeName("Poller[module/package.ClientOperationResponse].PollUntilDone")
+	require.EqualValues(t, "Poller[ClientOperationResponse].PollUntilDone", result)
+
+	result = shortenTypeName("Poller[package.ClientOperationResponse].PollUntilDone")
+	require.EqualValues(t, "Poller[ClientOperationResponse].PollUntilDone", result)
+
+	result = shortenTypeName("Poller[ClientOperationResponse].PollUntilDone")
+	require.EqualValues(t, "Poller[ClientOperationResponse].PollUntilDone", result)
+
+	result = shortenTypeName("Poller.PollUntilDone")
+	require.EqualValues(t, "Poller.PollUntilDone", result)
+}

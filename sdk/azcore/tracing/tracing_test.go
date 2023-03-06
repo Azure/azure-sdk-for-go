@@ -17,6 +17,8 @@ func TestProviderZeroValues(t *testing.T) {
 	pr := Provider{}
 	tr := pr.NewTracer("name", "version")
 	require.Zero(t, tr)
+	require.False(t, tr.Enabled())
+	tr.SetAttributes()
 	ctx, sp := tr.Start(context.Background(), "spanName", nil)
 	require.Equal(t, context.Background(), ctx)
 	require.Zero(t, sp)
@@ -25,6 +27,9 @@ func TestProviderZeroValues(t *testing.T) {
 	sp.End()
 	sp.SetAttributes(Attribute{})
 	sp.SetStatus(SpanStatusError, "boom")
+	sp, ok := tr.SpanFromContext(ctx)
+	require.False(t, ok)
+	require.Zero(t, sp)
 }
 
 func TestProvider(t *testing.T) {
@@ -33,6 +38,7 @@ func TestProvider(t *testing.T) {
 	var endCalled bool
 	var setAttributesCalled bool
 	var setStatusCalled bool
+	var spanFromContextCalled bool
 
 	pr := NewProvider(func(name, version string) Tracer {
 		return NewTracer(func(context.Context, string, *SpanOptions) (context.Context, Span) {
@@ -43,10 +49,23 @@ func TestProvider(t *testing.T) {
 				SetAttributes: func(...Attribute) { setAttributesCalled = true },
 				SetStatus:     func(SpanStatus, string) { setStatusCalled = true },
 			})
-		}, nil)
+		}, &TracerOptions{
+			SpanFromContext: func(context.Context) (Span, bool) {
+				spanFromContextCalled = true
+				return Span{}, true
+			},
+		})
 	}, nil)
 	tr := pr.NewTracer("name", "version")
 	require.NotZero(t, tr)
+	require.True(t, tr.Enabled())
+	sp, ok := tr.SpanFromContext(context.Background())
+	require.True(t, ok)
+	require.Zero(t, sp)
+	tr.SetAttributes(Attribute{Key: "some", Value: "attribute"})
+	require.Len(t, tr.attrs, 1)
+	require.EqualValues(t, tr.attrs[0].Key, "some")
+	require.EqualValues(t, tr.attrs[0].Value, "attribute")
 
 	ctx, sp := tr.Start(context.Background(), "name", nil)
 	require.NotEqual(t, context.Background(), ctx)
@@ -62,4 +81,5 @@ func TestProvider(t *testing.T) {
 	require.True(t, endCalled)
 	require.True(t, setAttributesCalled)
 	require.True(t, setStatusCalled)
+	require.True(t, spanFromContextCalled)
 }

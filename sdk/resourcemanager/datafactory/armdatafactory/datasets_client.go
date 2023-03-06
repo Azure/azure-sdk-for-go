@@ -32,9 +32,9 @@ type DatasetsClient struct {
 }
 
 // NewDatasetsClient creates a new instance of DatasetsClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDatasetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatasetsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewDatasetsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Creates or updates a dataset.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// datasetName - The dataset name.
-// dataset - Dataset resource definition.
-// options - DatasetsClientCreateOrUpdateOptions contains the optional parameters for the DatasetsClient.CreateOrUpdate method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - datasetName - The dataset name.
+//   - dataset - Dataset resource definition.
+//   - options - DatasetsClientCreateOrUpdateOptions contains the optional parameters for the DatasetsClient.CreateOrUpdate method.
 func (client *DatasetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, datasetName string, dataset DatasetResource, options *DatasetsClientCreateOrUpdateOptions) (DatasetsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, datasetName, dataset, options)
 	if err != nil {
@@ -122,11 +123,12 @@ func (client *DatasetsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a dataset.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// datasetName - The dataset name.
-// options - DatasetsClientDeleteOptions contains the optional parameters for the DatasetsClient.Delete method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - datasetName - The dataset name.
+//   - options - DatasetsClientDeleteOptions contains the optional parameters for the DatasetsClient.Delete method.
 func (client *DatasetsClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, datasetName string, options *DatasetsClientDeleteOptions) (DatasetsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, datasetName, options)
 	if err != nil {
@@ -174,11 +176,12 @@ func (client *DatasetsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets a dataset.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// datasetName - The dataset name.
-// options - DatasetsClientGetOptions contains the optional parameters for the DatasetsClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - datasetName - The dataset name.
+//   - options - DatasetsClientGetOptions contains the optional parameters for the DatasetsClient.Get method.
 func (client *DatasetsClient) Get(ctx context.Context, resourceGroupName string, factoryName string, datasetName string, options *DatasetsClientGetOptions) (DatasetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, datasetName, options)
 	if err != nil {
@@ -237,10 +240,12 @@ func (client *DatasetsClient) getHandleResponse(resp *http.Response) (DatasetsCl
 }
 
 // NewListByFactoryPager - Lists datasets.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - DatasetsClientListByFactoryOptions contains the optional parameters for the DatasetsClient.ListByFactory method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - DatasetsClientListByFactoryOptions contains the optional parameters for the DatasetsClient.NewListByFactoryPager
+//     method.
 func (client *DatasetsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *DatasetsClientListByFactoryOptions) *runtime.Pager[DatasetsClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DatasetsClientListByFactoryResponse]{
 		More: func(page DatasetsClientListByFactoryResponse) bool {

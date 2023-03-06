@@ -49,6 +49,23 @@ func SetupRPC(sender *MockAMQPSenderCloser, receiver *MockAMQPReceiverCloser, ex
 	}
 }
 
+type ContextWithValueMatcher[KT comparable, VT comparable] struct {
+	Key   KT
+	Value VT
+}
+
+func NewContextWithValueMatcher[KT comparable, VT comparable](key KT, value VT) ContextWithValueMatcher[KT, VT] {
+	return ContextWithValueMatcher[KT, VT]{key, value}
+}
+
+func (m ContextWithValueMatcher[KT, VT]) Matches(x interface{}) bool {
+	ctx := x.(context.Context)
+	return ctx.Value(m.Key) == m.Value
+}
+func (m ContextWithValueMatcher[KT, VT]) String() string {
+	return fmt.Sprintf("Context has key %v and value %v", m.Key, m.Value)
+}
+
 // Cancelled matches context.Context instances that are cancelled.
 var Cancelled gomock.Matcher = ContextCancelledMatcher{true}
 

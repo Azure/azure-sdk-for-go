@@ -32,9 +32,9 @@ type RestorableTablesClient struct {
 }
 
 // NewRestorableTablesClient creates a new instance of RestorableTablesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRestorableTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTablesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,10 +58,12 @@ func NewRestorableTablesClient(subscriptionID string, credential azcore.TokenCre
 // NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB Tables. This helps in scenario where
 // table was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
-// Generated from API version 2022-08-15-preview
-// location - Cosmos DB region, with spaces between words and each word capitalized.
-// instanceID - The instanceId GUID of a restorable database account.
-// options - RestorableTablesClientListOptions contains the optional parameters for the RestorableTablesClient.List method.
+//
+// Generated from API version 2022-11-15
+//   - location - Cosmos DB region, with spaces between words and each word capitalized.
+//   - instanceID - The instanceId GUID of a restorable database account.
+//   - options - RestorableTablesClientListOptions contains the optional parameters for the RestorableTablesClient.NewListPager
+//     method.
 func (client *RestorableTablesClient) NewListPager(location string, instanceID string, options *RestorableTablesClientListOptions) *runtime.Pager[RestorableTablesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RestorableTablesClientListResponse]{
 		More: func(page RestorableTablesClientListResponse) bool {
@@ -104,7 +106,7 @@ func (client *RestorableTablesClient) listCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	if options != nil && options.StartTime != nil {
 		reqQP.Set("startTime", *options.StartTime)
 	}

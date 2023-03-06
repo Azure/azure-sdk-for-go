@@ -13,3 +13,20 @@ func (client *Client) Update(resourceGroupName string, options *ClientUpdateOpti
 type ClientUpdateOptions struct{}
 
 type ClientUpdateResponse struct{}
+
+func (client *Client) BeingDelete(resourceGroupName string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientBeginDeleteResponse], error) {
+
+	return &runtime.Poller[ClientBeginDeleteResponse]{}, nil
+}
+
+type ClientBeginDeleteOptions struct{}
+
+type ClientBeginDeleteResponse struct{}
+
+func (client *Client) NewListPager(resourceGroupName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+	return &runtime.Pager[ClientListResponse]
+}
+
+type ClientListOptions struct{}
+
+type ClientListResponse struct{}

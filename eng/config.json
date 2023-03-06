@@ -25,6 +25,10 @@
             "CoverageGoal": 0.68
         },
         {
+            "Name": "azqueue",
+            "CoverageGoal": 0.60
+        },
+        {
             "Name": "aztemplate",
             "CoverageGoal": 0.50
         },

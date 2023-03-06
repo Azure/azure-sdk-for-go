@@ -94,9 +94,13 @@ func writeChangelogForPackage(r *report.Package) string {
 	}
 
 	// write additional changes
+	toAny := typeToAny(r.BreakingChanges, true)
 	additives := getNewContents(r.AdditiveChanges)
-	if len(additives) > 0 {
+	if len(additives) > 0 || len(toAny) > 0 {
 		md.WriteHeader("Features Added")
+		for _, item := range toAny {
+			md.WriteListItem(item)
+		}
 		for _, item := range additives {
 			md.WriteListItem(item)
 		}
@@ -261,15 +265,8 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 		}
 	}
 	// write struct changes
-	if len(b.Structs) > 0 {
-		for _, k := range sortChangeItem(b.Structs) {
-			v := b.Structs[k]
-			for f, d := range v.Fields {
-				line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
-				items = append(items, line)
-			}
-		}
-	}
+	items = append(items, typeToAny(b, false)...)
+
 	// interfaces are skipped, which are identical to some of the functions
 
 	return items
@@ -316,22 +313,33 @@ func getRemovedContent(removed *delta.Content) []string {
 	// write functions
 	if len(removed.Funcs) > 0 {
 		var lroItem []string
+		var paginationItem []string
 		for _, k := range sortFuncItem(removed.Funcs) {
 			v := removed.Funcs[k]
 			if v.ReplacedBy != nil {
 				var line string
-				if !strings.Contains(k, "Begin") {
-					line = fmt.Sprintf("Operation `%s` has been changed to LRO, use `%s` instead.", k, *v.ReplacedBy)
-				} else {
-					line = fmt.Sprintf("Operation `%s` has been changed to non-LRO, use `%s` instead.", k, *v.ReplacedBy)
+				if strings.Contains(k, "Begin") || strings.Contains(*v.ReplacedBy, "Begin") {
+					if !strings.Contains(k, "Begin") {
+						line = fmt.Sprintf("Operation `%s` has been changed to LRO, use `%s` instead.", k, *v.ReplacedBy)
+					} else {
+						line = fmt.Sprintf("Operation `%s` has been changed to non-LRO, use `%s` instead.", k, *v.ReplacedBy)
+					}
+					lroItem = append(lroItem, line)
+				} else if strings.Contains(k, "Pager") || strings.Contains(*v.ReplacedBy, "Pager") {
+					if !strings.Contains(k, "Pager") {
+						line = fmt.Sprintf("Operation `%s` has supported pagination, use `%s` instead.", k, *v.ReplacedBy)
+					} else {
+						line = fmt.Sprintf("Operation `%s` does not support pagination anymore, use `%s` instead.", k, *v.ReplacedBy)
+					}
+					paginationItem = append(paginationItem, line)
 				}
-				lroItem = append(lroItem, line)
 				continue
 			}
 			line := fmt.Sprintf("Function `%s` has been removed", k)
 			items = append(items, line)
 		}
 		items = append(items, lroItem...)
+		items = append(items, paginationItem...)
 	}
 	// write complete struct removal
 	if len(removed.CompleteStructs) > 0 {
@@ -364,6 +372,10 @@ type sortItem interface {
 }
 
 func sortChangeItem[T sortItem](change map[string]T) []string {
+	if len(change) == 0 {
+		return nil
+	}
+
 	s := make([]string, 0, len(change))
 	for k := range change {
 		s = append(s, k)
@@ -418,4 +430,27 @@ func removePattern(funcName string, returnValue string) string {
 	}
 
 	return fmt.Sprintf("%s.%s", before, after)
+}
+
+func typeToAny(b *report.BreakingChanges, flag bool) []string {
+	var items []string
+
+	if b == nil || b.IsEmpty() {
+		return items
+	}
+
+	if len(b.Structs) > 0 {
+		for _, k := range sortChangeItem(b.Structs) {
+			v := b.Structs[k]
+			for _, f := range sortChangeItem(v.Fields) {
+				d := v.Fields[f]
+				if flag == (d.To == "any") {
+					line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
+					items = append(items, line)
+				}
+			}
+		}
+	}
+
+	return items
 }

@@ -4,6 +4,7 @@ package azeventhubs_test
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"sync"
 	"testing"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
@@ -710,6 +712,66 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 	}
 }
 
+func TestConsumerClient_InstanceID(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	var instanceID string
+
+	// create a partition client with owner level 1 that's fully initialized.
+	{
+		producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, producerClient)
+
+		props := sendEventToPartition(t, producerClient, "0", []*azeventhubs.EventData{
+			{Body: []byte("hello")},
+		})
+
+		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+			// We'll just let this one be auto-generated.
+			//InstanceID: "",
+		})
+		require.NoError(t, err)
+		defer test.RequireClose(t, consumerClient)
+
+		parsedUUID, err := uuid.Parse(consumerClient.InstanceID())
+		require.NotZero(t, parsedUUID)
+		require.NoError(t, err)
+
+		instanceID = consumerClient.InstanceID()
+
+		partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
+			OwnerLevel:    to.Ptr(int64(1)),
+			StartPosition: getStartPosition(props),
+		})
+		require.NoError(t, err)
+
+		// receive an event so we know the link is alive.
+		events, err := partitionClient.ReceiveEvents(context.Background(), 1, nil)
+		require.NotEmpty(t, events)
+		require.NoError(t, err)
+	}
+
+	failedConsumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		InstanceID: "LosesBecauseOfLowOwnerLevel",
+		RetryOptions: azeventhubs.RetryOptions{
+			MaxRetries: -1, // just fail immediately, don't retry.
+		},
+	})
+	require.NoError(t, err)
+	defer test.RequireClose(t, failedConsumerClient)
+
+	failedPartitionClient, err := failedConsumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
+		// the other partition client already has the partition open with owner level 1. So our attempt to connect will fail.
+		OwnerLevel: to.Ptr(int64(0)),
+	})
+	require.NoError(t, err)
+
+	_, err = failedPartitionClient.ReceiveEvents(context.Background(), 1, nil)
+
+	require.Contains(t, err.Error(), fmt.Sprintf("Description: Receiver '%s' with a higher epoch '1' already exists. Receiver 'LosesBecauseOfLowOwnerLevel' with epoch 0 cannot be created. Make sure you are creating receiver with increasing epoch value to ensure connectivity, or ensure all old epoch receivers are closed or disconnected", instanceID))
+}
+
 // mustSendEventsToAllPartitions sends the event given in evt to each partition in the
 // eventHub, returning the sequence number just before the new message.
 //
@@ -741,29 +803,8 @@ func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData
 		go func(partitionID string) {
 			defer wg.Done()
 
-			partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, nil)
-			require.NoError(t, err)
+			partProps := sendEventToPartition(t, producer, partitionID, events)
 			partitionsCh <- partProps
-
-			// send the message to the partition.
-			batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
-				PartitionID: &partitionID,
-			})
-			require.NoError(t, err)
-
-			for _, event := range events {
-				if event.Properties == nil {
-					event.Properties = map[string]any{}
-				}
-
-				event.Properties["DestPartitionID"] = partitionID
-
-				err = batch.AddEventData(event, nil)
-				require.NoError(t, err)
-			}
-
-			err = producer.SendEventDataBatch(context.Background(), batch, nil)
-			require.NoError(t, err)
 		}(partitionID)
 	}
 
@@ -801,4 +842,37 @@ func getSortedBodies(events []*azeventhubs.ReceivedEventData) []string {
 	}
 
 	return bodies
+}
+
+func sendEventToPartition(t *testing.T, producer *azeventhubs.ProducerClient, partitionID string, events []*azeventhubs.EventData) azeventhubs.PartitionProperties {
+	partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, nil)
+	require.NoError(t, err)
+
+	// send the message to the partition.
+	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionID: &partitionID,
+	})
+	require.NoError(t, err)
+
+	for _, event := range events {
+		eventToSend := *event
+
+		props := map[string]any{
+			"DestPartitionID": partitionID,
+		}
+
+		for k, v := range event.Properties {
+			props[k] = v
+		}
+
+		eventToSend.Properties = props
+
+		err = batch.AddEventData(event, nil)
+		require.NoError(t, err)
+	}
+
+	err = producer.SendEventDataBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
+
+	return partProps
 }

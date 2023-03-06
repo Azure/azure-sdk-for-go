@@ -27,7 +27,8 @@ func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 		amqpLinks:   fakeAMQPLinks,
 		receiveMode: ReceiveModePeekLock,
 		// TODO: need to make this test rely less on stubbing.
-		cancelReleaser: &atomic.Value{},
+		cancelReleaser:    &atomic.Value{},
+		maxAllowedCredits: defaultLinkRxBuffer,
 	}
 
 	receiver.cancelReleaser.Store(emptyCancelFn)
@@ -63,7 +64,8 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 			amqpLinks: &internal.FakeAMQPLinks{
 				Receiver: &internal.FakeAMQPReceiver{},
 			},
-			cancelReleaser: &atomic.Value{},
+			cancelReleaser:    &atomic.Value{},
+			maxAllowedCredits: defaultLinkRxBuffer,
 		}
 
 		r.cancelReleaser.Store(emptyCancelFn)
@@ -89,7 +91,8 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 					},
 				},
 			},
-			cancelReleaser: &atomic.Value{},
+			cancelReleaser:    &atomic.Value{},
+			maxAllowedCredits: defaultLinkRxBuffer,
 		}
 
 		r.cancelReleaser.Store(emptyCancelFn)

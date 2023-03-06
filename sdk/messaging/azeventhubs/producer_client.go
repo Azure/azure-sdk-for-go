@@ -28,9 +28,6 @@ type RetryOptions = exported.RetryOptions
 // ProducerClientOptions contains options for the `NewProducerClient` and `NewProducerClientFromConnectionString`
 // functions.
 type ProducerClientOptions struct {
-	// TLSConfig configures a client with a custom *tls.Config.
-	TLSConfig *tls.Config
-
 	// Application ID that will be passed to the namespace.
 	ApplicationID string
 
@@ -41,15 +38,17 @@ type ProducerClientOptions struct {
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
 	RetryOptions RetryOptions
+
+	// TLSConfig configures a client with a custom *tls.Config.
+	TLSConfig *tls.Config
 }
 
 // ProducerClient can be used to send events to an Event Hub.
 type ProducerClient struct {
-	retryOptions RetryOptions
-	namespace    internal.NamespaceForProducerOrConsumer
 	eventHub     string
-
-	links *internal.Links[amqpwrap.AMQPSenderCloser]
+	links        *internal.Links[amqpwrap.AMQPSenderCloser]
+	namespace    internal.NamespaceForProducerOrConsumer
+	retryOptions RetryOptions
 }
 
 // anyPartitionID is what we target if we want to send a message and let Event Hubs pick a partition
@@ -262,6 +261,10 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 		}
 
 		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(options.RetryOptions))
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	tmpNS, err := internal.NewNamespace(nsOptions...)

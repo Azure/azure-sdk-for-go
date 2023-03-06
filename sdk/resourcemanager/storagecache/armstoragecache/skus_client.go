@@ -32,10 +32,10 @@ type SKUsClient struct {
 }
 
 // NewSKUsClient creates a new instance of SKUsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,9 +57,9 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 }
 
 // NewListPager - Get the list of StorageCache.Cache SKUs available to this subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
-// options - SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+//
+// Generated from API version 2023-01-01
+//   - options - SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SKUsClientListResponse]{
 		More: func(page SKUsClientListResponse) bool {
@@ -100,7 +100,7 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsCl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

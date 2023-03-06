@@ -32,9 +32,9 @@ type OperationStatusResourceGroupContextClient struct {
 }
 
 // NewOperationStatusResourceGroupContextClient creates a new instance of OperationStatusResourceGroupContextClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationStatusResourceGroupContextClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusResourceGroupContextClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,10 +57,11 @@ func NewOperationStatusResourceGroupContextClient(subscriptionID string, credent
 
 // Get - Gets the operation status for an operation over a ResourceGroup's context.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group where the backup vault is present.
-// options - OperationStatusResourceGroupContextClientGetOptions contains the optional parameters for the OperationStatusResourceGroupContextClient.Get
-// method.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - OperationStatusResourceGroupContextClientGetOptions contains the optional parameters for the OperationStatusResourceGroupContextClient.Get
+//     method.
 func (client *OperationStatusResourceGroupContextClient) Get(ctx context.Context, resourceGroupName string, operationID string, options *OperationStatusResourceGroupContextClientGetOptions) (OperationStatusResourceGroupContextClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, operationID, options)
 	if err != nil {
@@ -83,9 +84,6 @@ func (client *OperationStatusResourceGroupContextClient) getCreateRequest(ctx co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
@@ -96,7 +94,7 @@ func (client *OperationStatusResourceGroupContextClient) getCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -32,9 +32,9 @@ type ActivityRunsClient struct {
 }
 
 // NewActivityRunsClient creates a new instance of ActivityRunsClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewActivityRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityRunsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,13 +57,14 @@ func NewActivityRunsClient(subscriptionID string, credential azcore.TokenCredent
 
 // QueryByPipelineRun - Query activity runs based on input filter conditions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// runID - The pipeline run identifier.
-// filterParameters - Parameters to filter the activity runs.
-// options - ActivityRunsClientQueryByPipelineRunOptions contains the optional parameters for the ActivityRunsClient.QueryByPipelineRun
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - runID - The pipeline run identifier.
+//   - filterParameters - Parameters to filter the activity runs.
+//   - options - ActivityRunsClientQueryByPipelineRunOptions contains the optional parameters for the ActivityRunsClient.QueryByPipelineRun
+//     method.
 func (client *ActivityRunsClient) QueryByPipelineRun(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, options *ActivityRunsClientQueryByPipelineRunOptions) (ActivityRunsClientQueryByPipelineRunResponse, error) {
 	req, err := client.queryByPipelineRunCreateRequest(ctx, resourceGroupName, factoryName, runID, filterParameters, options)
 	if err != nil {

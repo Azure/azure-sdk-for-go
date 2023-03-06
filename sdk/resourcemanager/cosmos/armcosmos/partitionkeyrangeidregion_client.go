@@ -32,9 +32,9 @@ type PartitionKeyRangeIDRegionClient struct {
 }
 
 // NewPartitionKeyRangeIDRegionClient creates a new instance of PartitionKeyRangeIDRegionClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPartitionKeyRangeIDRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PartitionKeyRangeIDRegionClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -56,18 +56,19 @@ func NewPartitionKeyRangeIDRegionClient(subscriptionID string, credential azcore
 }
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given partition key range id and region.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// region - Cosmos DB region, with spaces between words and each word capitalized.
-// databaseRid - Cosmos DB database rid.
-// collectionRid - Cosmos DB collection rid.
-// partitionKeyRangeID - Partition Key Range Id for which to get data.
-// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
-// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
-// and timeGrain. The supported operator is eq.
-// options - PartitionKeyRangeIDRegionClientListMetricsOptions contains the optional parameters for the PartitionKeyRangeIDRegionClient.ListMetrics
-// method.
+//
+// Generated from API version 2022-11-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - region - Cosmos DB region, with spaces between words and each word capitalized.
+//   - databaseRid - Cosmos DB database rid.
+//   - collectionRid - Cosmos DB collection rid.
+//   - partitionKeyRangeID - Partition Key Range Id for which to get data.
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//     name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+//     and timeGrain. The supported operator is eq.
+//   - options - PartitionKeyRangeIDRegionClientListMetricsOptions contains the optional parameters for the PartitionKeyRangeIDRegionClient.NewListMetricsPager
+//     method.
 func (client *PartitionKeyRangeIDRegionClient) NewListMetricsPager(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDRegionClientListMetricsOptions) *runtime.Pager[PartitionKeyRangeIDRegionClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PartitionKeyRangeIDRegionClientListMetricsResponse]{
 		More: func(page PartitionKeyRangeIDRegionClientListMetricsResponse) bool {
@@ -126,7 +127,7 @@ func (client *PartitionKeyRangeIDRegionClient) listMetricsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2022-11-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

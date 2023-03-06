@@ -621,7 +621,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyNonDefaultDeleteAndM
 	start := time.Now().UTC().Truncate(10000 * time.Millisecond)
 	expiry := start.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
-	permissions := make([]*share.SignedIdentifier, 2, 2)
+	permissions := make([]*share.SignedIdentifier, 2)
 	for i := 0; i < 2; i++ {
 		permissions[i] = &share.SignedIdentifier{
 			ID: to.Ptr("000" + strconv.Itoa(i)),
@@ -669,7 +669,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyDeleteAllPolicies() 
 	start := time.Now().UTC()
 	expiry := start.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
-	permissions := make([]*share.SignedIdentifier, 2, 2)
+	permissions := make([]*share.SignedIdentifier, 2)
 	for i := 0; i < 2; i++ {
 		permissions[i] = &share.SignedIdentifier{
 			ID: to.Ptr("000" + strconv.Itoa(i)),
@@ -712,7 +712,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegativeInvalidPolicy
 	expiry := time.Now().UTC()
 	start := expiry.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
-	permissions := make([]*share.SignedIdentifier, 2, 2)
+	permissions := make([]*share.SignedIdentifier, 2)
 	for i := 0; i < 2; i++ {
 		permissions[i] = &share.SignedIdentifier{
 			ID: to.Ptr("000" + strconv.Itoa(i)),
@@ -753,7 +753,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegative() {
 	expiry := time.Now().UTC()
 	start := expiry.Add(5 * time.Minute).UTC()
 	accessPermission := share.AccessPolicyPermission{List: true}.String()
-	permissions := make([]*share.SignedIdentifier, 2, 2)
+	permissions := make([]*share.SignedIdentifier, 2)
 	for i := 0; i < 2; i++ {
 		permissions[i] = &share.SignedIdentifier{
 			ID: to.Ptr(id),

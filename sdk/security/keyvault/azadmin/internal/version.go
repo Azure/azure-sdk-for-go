@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package shared
+package internal
 
 const (
 	ModuleName = "azadmin"

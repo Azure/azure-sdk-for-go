@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/internal/shared"
+	ainternal "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 )
 
@@ -40,7 +40,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
 		},
 	)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.Version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	pl := runtime.NewPipeline(ainternal.ModuleName, ainternal.Version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &Client{endpoint: vaultURL, pl: pl}, nil
 }
 

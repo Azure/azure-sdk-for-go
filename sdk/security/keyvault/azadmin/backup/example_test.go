@@ -47,7 +47,6 @@ func ExampleClient_BeginFullBackup() {
 func ExampleClient_BeginFullRestore() {
 
 	// FolderToRestore can be extracted from blob url returned from the backup operation
-
 	restoreOperationParameters := backup.RestoreOperationParameters{
 		FolderToRestore: to.Ptr("FOLDER_NAME"),
 		SasTokenParameters: &backup.SASTokenParameter{

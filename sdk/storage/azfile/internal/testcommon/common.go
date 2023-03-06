@@ -36,7 +36,7 @@ func GenerateDirectoryName(testName string) string {
 }
 
 func ValidateFileErrorCode(_require *require.Assertions, err error, code fileerror.Code) {
-	_require.NotNil(err)
+	_require.Error(err)
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)
 	if responseErr != nil {

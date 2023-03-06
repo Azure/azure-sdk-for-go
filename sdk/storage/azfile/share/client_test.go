@@ -275,7 +275,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateNegativeInvalidMetadata() {
 		Metadata: map[string]*string{"!@#$%^&*()": to.Ptr("!@#$%^&*()")},
 		Quota:    to.Ptr(int32(0)),
 	})
-	_require.NotNil(err)
+	_require.Error(err)
 }
 
 func (s *ShareUnrecordedTestsSuite) TestShareDeleteNegativeNonExistent() {
@@ -364,7 +364,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetQuotaNegative() {
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
 	_, err = shareClient.SetProperties(context.Background(), &share.SetPropertiesOptions{Quota: to.Ptr(int32(-1))})
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidHeaderValue)
 }
 
@@ -378,7 +378,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetPropertiesNegative() {
 	shareClient := testcommon.GetShareClient(shareName, svcClient)
 
 	_, err = shareClient.GetProperties(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
 }
 
@@ -604,7 +604,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareGetAccessPolicyNegative() {
 	shareClient := testcommon.GetShareClient(shareName, svcClient)
 
 	_, err = shareClient.GetAccessPolicy(context.Background(), nil)
-	_require.NotNil(err)
+	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
 }
 
@@ -696,4 +696,597 @@ func (s *ShareUnrecordedTestsSuite) TestShareSetAccessPolicyDeleteAllPolicies() 
 	resp2, err := shareClient.GetAccessPolicy(context.Background(), nil)
 	_require.NoError(err)
 	_require.Len(resp2.SignedIdentifiers, 0)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegativeInvalidPolicyTimes() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// Swap start and expiry
+	expiry := time.Now().UTC()
+	start := expiry.Add(5 * time.Minute).UTC()
+	accessPermission := share.AccessPolicyPermission{List: true}.String()
+	permissions := make([]*share.SignedIdentifier, 2, 2)
+	for i := 0; i < 2; i++ {
+		permissions[i] = &share.SignedIdentifier{
+			ID: to.Ptr("000" + strconv.Itoa(i)),
+			AccessPolicy: &share.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &accessPermission,
+			},
+		}
+	}
+
+	_, err = shareClient.SetAccessPolicy(context.Background(), &share.SetAccessPolicyOptions{
+		ShareACL: permissions,
+	})
+	_require.NoError(err)
+
+	resp, err := shareClient.GetAccessPolicy(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.SignedIdentifiers, len(permissions))
+	_require.EqualValues(resp.SignedIdentifiers, permissions)
+}
+
+// SignedIdentifier ID too long
+func (s *ShareUnrecordedTestsSuite) TestShareSetPermissionsNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	id := ""
+	for i := 0; i < 65; i++ {
+		id += "a"
+	}
+	expiry := time.Now().UTC()
+	start := expiry.Add(5 * time.Minute).UTC()
+	accessPermission := share.AccessPolicyPermission{List: true}.String()
+	permissions := make([]*share.SignedIdentifier, 2, 2)
+	for i := 0; i < 2; i++ {
+		permissions[i] = &share.SignedIdentifier{
+			ID: to.Ptr(id),
+			AccessPolicy: &share.AccessPolicy{
+				Start:      &start,
+				Expiry:     &expiry,
+				Permission: &accessPermission,
+			},
+		}
+	}
+
+	_, err = shareClient.SetAccessPolicy(context.Background(), &share.SetAccessPolicyOptions{
+		ShareACL: permissions,
+	})
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidXMLDocument)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareGetSetMetadataDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	sResp, err := shareClient.SetMetadata(context.Background(), &share.SetMetadataOptions{
+		Metadata: map[string]*string{},
+	})
+	_require.NoError(err)
+	_require.Equal(sResp.Date.IsZero(), false)
+	_require.NotNil(sResp.ETag)
+	_require.Equal(sResp.LastModified.IsZero(), false)
+	_require.NotNil(sResp.RequestID)
+	_require.NotNil(sResp.Version)
+
+	gResp, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(gResp.Date.IsZero(), false)
+	_require.NotNil(gResp.ETag)
+	_require.Equal(gResp.LastModified.IsZero(), false)
+	_require.NotNil(gResp.RequestID)
+	_require.NotNil(gResp.Version)
+	_require.Len(gResp.Metadata, 0)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareGetSetMetadataNonDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	md := map[string]*string{
+		"Foo": to.Ptr("FooValuE"),
+		"Bar": to.Ptr("bArvaLue"),
+	}
+	sResp, err := shareClient.SetMetadata(context.Background(), &share.SetMetadataOptions{
+		Metadata: md,
+	})
+	_require.NoError(err)
+	_require.Equal(sResp.Date.IsZero(), false)
+	_require.NotNil(sResp.ETag)
+	_require.Equal(sResp.LastModified.IsZero(), false)
+	_require.NotNil(sResp.RequestID)
+	_require.NotNil(sResp.Version)
+
+	gResp, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(gResp.Date.IsZero(), false)
+	_require.NotNil(gResp.ETag)
+	_require.Equal(gResp.LastModified.IsZero(), false)
+	_require.NotNil(gResp.RequestID)
+	_require.NotNil(gResp.Version)
+	_require.EqualValues(gResp.Metadata, md)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareSetMetadataNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	md := map[string]*string{
+		"!@#$%^&*()": to.Ptr("!@#$%^&*()"),
+	}
+	_, err = shareClient.SetMetadata(context.Background(), &share.SetMetadataOptions{
+		Metadata: md,
+	})
+	_require.Error(err)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareGetStats() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	newQuota := int32(300)
+
+	// In order to test and get LastModified property.
+	_, err = shareClient.SetProperties(context.Background(), &share.SetPropertiesOptions{Quota: to.Ptr(newQuota)})
+	_require.NoError(err)
+
+	gResp, err := shareClient.GetStatistics(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(gResp.Date.IsZero(), false)
+	// _require.NotEqual(*gResp.ETag, "") // TODO: The ETag would be ""
+	// _require.Equal(gResp.LastModified.IsZero(), false) // TODO: Even share is once updated, no LastModified would be returned.
+	_require.NotNil(gResp.RequestID)
+	_require.NotNil(gResp.Version)
+	_require.Equal(*gResp.ShareUsageBytes, int32(0))
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareGetStatsNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.GetShareClient(shareName, svcClient)
+
+	_, err = shareClient.GetStatistics(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
+}
+
+// TODO: uncomment this test after directory and file clients are added
+/*func (s *ShareUnrecordedTestsSuite) TestSetAndGetStatistics() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.GetShareClient(shareName, svcClient)
+
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{Quota: to.Ptr(int32(1024))})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirClient := shareClient.NewDirectoryClient("testdir")
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileClient := dirClient.NewFileClient("testfile")
+	_, err = fileClient.Create(context.Background(), int64(1024 * 1024 * 1024 * 1024), nil)
+	_require.NoError(err)
+
+	getStats, err := shareClient.GetStatistics(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*getStats.ShareUsageBytes, int64(1024*1024*1024*1024))
+}*/
+
+func deleteShare(ctx context.Context, _require *require.Assertions, shareClient *share.Client, o *share.DeleteOptions) {
+	_, err := shareClient.Delete(ctx, o)
+	_require.NoError(err)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNonDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+
+	cResp, err := shareClient.CreateSnapshot(context.Background(), &share.CreateSnapshotOptions{Metadata: testcommon.BasicMetadata})
+	_require.NoError(err)
+	_require.Equal(cResp.Date.IsZero(), false)
+	_require.NotNil(cResp.ETag)
+	_require.NotEqual(*cResp.ETag, "")
+	_require.Equal(cResp.LastModified.IsZero(), false)
+	_require.NotNil(cResp.RequestID)
+	_require.NotNil(cResp.Version)
+	_require.NotNil(cResp.Snapshot)
+	_require.NotEqual(*cResp.Snapshot, "")
+
+	cSnapshot := *cResp.Snapshot
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Metadata: true, Snapshots: true},
+		Prefix:  &shareName,
+	})
+
+	foundSnapshot := false
+	for pager.More() {
+		lResp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(lResp.Shares, 2)
+
+		for _, s := range lResp.Shares {
+			if s.Snapshot != nil {
+				foundSnapshot = true
+				_require.Equal(*s.Snapshot, cSnapshot)
+				_require.NotNil(s.Metadata)
+				_require.EqualValues(s.Metadata, testcommon.BasicMetadata)
+			} else {
+				_require.Len(s.Metadata, 0)
+			}
+		}
+	}
+	_require.True(foundSnapshot)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeShareNotExist() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+
+	_, err = shareClient.CreateSnapshot(context.Background(), &share.CreateSnapshotOptions{Metadata: map[string]*string{}})
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareNotFound)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareDeleteSnapshot() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+
+	resp1, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp1.Snapshot)
+	_require.NotEmpty(*resp1.Snapshot)
+
+	resp2, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp2.Snapshot)
+	_require.NotEmpty(*resp2.Snapshot)
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Snapshots: true},
+		Prefix:  &shareName,
+	})
+
+	snapshotsCtr := 0
+	for pager.More() {
+		lResp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(lResp.Shares, 3) // 2 snapshots and 1 share
+
+		for _, s := range lResp.Shares {
+			if s.Snapshot != nil {
+				snapshotsCtr++
+			}
+		}
+	}
+	_require.Equal(snapshotsCtr, 2)
+
+	snapClient, err := shareClient.WithSnapshot(*resp1.Snapshot)
+	_require.NoError(err)
+
+	_, err = snapClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+
+	pager = svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Snapshots: true},
+		Prefix:  &shareName,
+	})
+
+	snapshotsCtr = 0
+	for pager.More() {
+		lResp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(lResp.Shares, 2)
+
+		for _, s := range lResp.Shares {
+			if s.Snapshot != nil {
+				snapshotsCtr++
+				_require.Equal(*s.Snapshot, *resp2.Snapshot)
+			}
+		}
+	}
+	_require.Equal(snapshotsCtr, 1)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeMetadataInvalid() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_, err = shareClient.CreateSnapshot(context.Background(), &share.CreateSnapshotOptions{Metadata: map[string]*string{"!@#$%^&*()": to.Ptr("!@#$%^&*()")}})
+	_require.Error(err)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotNegativeSnapshotOfSnapshot() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+
+	snapshotClient, err := shareClient.WithSnapshot(time.Now().UTC().String())
+	_require.NoError(err)
+
+	cResp, err := snapshotClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err) //Note: this would not fail, snapshot would be ignored.
+	_require.NotNil(cResp)
+	_require.NotEmpty(*cResp.Snapshot)
+
+	snapshotRecursiveClient, err := shareClient.WithSnapshot(*cResp.Snapshot)
+	_require.NoError(err)
+	_, err = snapshotRecursiveClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err) //Note: this would not fail, snapshot would be ignored.
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareDeleteSnapshotsInclude() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+
+	_, err = shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Snapshots: true},
+		Prefix:  &shareName,
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Shares, 2)
+	}
+
+	_, err = shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+	_require.NoError(err)
+
+	pager = svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Snapshots: true},
+		Prefix:  &shareName,
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Len(resp.Shares, 0)
+	}
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareDeleteSnapshotsNoneWithSnapshots() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+
+	_, err = shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.ShareHasSnapshots)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareRestore() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	_require.NoError(err)
+
+	// wait for share deletion
+	time.Sleep(60 * time.Second)
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Deleted: true},
+		Prefix:  &shareName,
+	})
+
+	shareVersion := ""
+	shareCtr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		for _, s := range resp.Shares {
+			if s.Deleted != nil && *s.Deleted {
+				shareVersion = *s.Version
+			} else {
+				shareCtr++
+			}
+		}
+	}
+	_require.NotEmpty(shareVersion)
+	_require.Equal(shareCtr, 0)
+
+	rResp, err := shareClient.Restore(context.Background(), shareVersion, nil)
+	_require.NoError(err)
+	_require.NotNil(rResp.ETag)
+	_require.NotNil(rResp.RequestID)
+	_require.NotNil(rResp.Version)
+
+	pager = svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: &shareName,
+	})
+
+	shareCtr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		shareCtr += len(resp.Shares)
+	}
+	_require.Equal(shareCtr, 1)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareRestoreFailures() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_, err = shareClient.Restore(context.Background(), "", nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.MissingRequiredHeader)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestShareRestoreWithSnapshots() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+
+	cResp, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.Snapshot)
+
+	_, err = shareClient.Delete(context.Background(), &share.DeleteOptions{
+		DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude),
+	})
+	_require.NoError(err)
+
+	// wait for share deletion
+	time.Sleep(60 * time.Second)
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Deleted: true},
+		Prefix:  &shareName,
+	})
+
+	shareVersion := ""
+	shareCtr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		for _, s := range resp.Shares {
+			if s.Deleted != nil && *s.Deleted {
+				shareVersion = *s.Version
+			} else {
+				shareCtr++
+			}
+		}
+	}
+	_require.NotEmpty(shareVersion)
+	_require.Equal(shareCtr, 0)
+
+	rResp, err := shareClient.Restore(context.Background(), shareVersion, nil)
+	_require.NoError(err)
+	_require.NotNil(rResp.ETag)
+	_require.NotNil(rResp.RequestID)
+	_require.NotNil(rResp.Version)
+
+	pager = svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Snapshots: true},
+		Prefix:  &shareName,
+	})
+
+	shareCtr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		shareCtr += len(resp.Shares)
+		for _, s := range resp.Shares {
+			if s.Snapshot != nil {
+				_require.Equal(*s.Snapshot, *cResp.Snapshot)
+			}
+		}
+	}
+	_require.Equal(shareCtr, 2) // 1 share and 1 snapshot
 }

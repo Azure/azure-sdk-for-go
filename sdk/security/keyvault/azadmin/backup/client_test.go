@@ -114,15 +114,17 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 	backupClient, sasToken := startBackupTest(t)
 
 	// create a key to selectively restore
-	cred := credential
-	keyClient, err := azkeys.NewClient(hsmURL, cred, nil)
-	require.NoError(t, err)
-	params := azkeys.CreateKeyParameters{
-		KeySize: to.Ptr(int32(2048)),
-		Kty:     to.Ptr(azkeys.JSONWebKeyTypeRSA),
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		cred := credential
+		keyClient, err := azkeys.NewClient(hsmURL, cred, nil)
+		require.NoError(t, err)
+		params := azkeys.CreateKeyParameters{
+			KeySize: to.Ptr(int32(2048)),
+			Kty:     to.Ptr(azkeys.JSONWebKeyTypeRSA),
+		}
+		_, err = keyClient.CreateKey(context.TODO(), "selective-restore-test-key", params, nil)
+		require.NoError(t, err)
 	}
-	_, err = keyClient.CreateKey(context.TODO(), "selective-restore-test-key", params, nil)
-	require.NoError(t, err)
 
 	// backup the vault
 	backupPoller, err := backupClient.BeginFullBackup(context.Background(), sasToken, nil)

@@ -1222,7 +1222,7 @@ func (s *ShareUnrecordedTestsSuite) TestShareRestoreFailures() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.MissingRequiredHeader)
 }
 
-func (s *ShareUnrecordedTestsSuite) TestShareRestoreWithSnapshots() {
+func (s *ShareUnrecordedTestsSuite) TestShareRestoreWithSnapshotsAgain() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
@@ -1289,4 +1289,55 @@ func (s *ShareUnrecordedTestsSuite) TestShareRestoreWithSnapshots() {
 		}
 	}
 	_require.Equal(shareCtr, 2) // 1 share and 1 snapshot
+}
+
+func (s *ShareUnrecordedTestsSuite) TestSASShareClientNoKey() {
+	_require := require.New(s.T())
+	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient, err := share.NewClientWithNoCredential(fmt.Sprintf("https://%s.file.core.windows.net/%v", accountName, shareName), nil)
+	_require.NoError(err)
+
+	permissions := sas.SharePermissions{
+		Read:   true,
+		Write:  true,
+		Delete: true,
+		List:   true,
+		Create: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	_, err = shareClient.GetSASURL(permissions, expiry, nil)
+	_require.Equal(err, fileerror.MissingSharedKeyCredential)
+}
+
+func (s *ShareUnrecordedTestsSuite) TestSASShareClientSignNegative() {
+	_require := require.New(s.T())
+	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
+	_require.NoError(err)
+	accountKey, err := testcommon.GetRequiredEnv(testcommon.AccountKeyEnvVar)
+	_require.NoError(err)
+
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient, err := share.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.file.core.windows.net/%v", accountName, shareName), cred, nil)
+	_require.NoError(err)
+
+	permissions := sas.SharePermissions{
+		Read:   true,
+		Write:  true,
+		Delete: true,
+		List:   true,
+		Create: true,
+	}
+	expiry := time.Time{}
+
+	_, err = shareClient.GetSASURL(permissions, expiry, nil)
+	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }

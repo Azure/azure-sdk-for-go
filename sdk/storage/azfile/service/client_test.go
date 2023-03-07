@@ -15,8 +15,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -178,7 +180,9 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountListSharesNonDefault() {
 	_require.NoError(err)
 
 	mySharePrefix := testcommon.GenerateEntityName(testName)
-	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{Prefix: to.Ptr(mySharePrefix)})
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: to.Ptr(mySharePrefix),
+	})
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
@@ -189,20 +193,16 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountListSharesNonDefault() {
 		_require.Len(resp.Shares, 0)
 	}
 
-	/*shareClients := map[string]*share.Client{}
+	shareClients := map[string]*share.Client{}
 	for i := 0; i < 4; i++ {
 		shareName := mySharePrefix + "share" + strconv.Itoa(i)
-		shareClients[shareName] = createNewShare(_require, shareName, svcClient)
+		shareClients[shareName] = testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+		defer testcommon.DeleteShare(context.Background(), _require, shareClients[shareName])
 
-		_, err := shareClients[shareName].SetMetadata(context.Background(), basicMetadata, nil)
-		_require.NoError(err)
-
-		_, err = shareClients[shareName].CreateSnapshot(context.Background(), nil)
-		_require.NoError(err)
-
-		defer delShare(_require, shareClients[shareName], &ShareDeleteOptions{
-			DeleteSnapshots: to.Ptr(DeleteSnapshotsOptionTypeInclude),
+		_, err := shareClients[shareName].SetMetadata(context.Background(), &share.SetMetadataOptions{
+			Metadata: testcommon.BasicMetadata,
 		})
+		_require.NoError(err)
 	}
 
 	pager = svcClient.NewListSharesPager(&service.ListSharesOptions{
@@ -221,27 +221,20 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountListSharesNonDefault() {
 			_require.NotNil(shareItem.Properties)
 			_require.NotNil(shareItem.Properties.LastModified)
 			_require.NotNil(shareItem.Properties.ETag)
-			_require.Len(shareItem.Metadata, len(basicMetadata))
-			for key, val1 := range basicMetadata {
-				if val2, ok := shareItem.Metadata[key]; !(ok && val1 == *val2) {
-					_require.Fail("metadata mismatch")
-				}
-			}
-			_require.NotNil(resp.Shares[0].Snapshot)
-			_require.Nil(resp.Shares[1].Snapshot)
+			_require.EqualValues(shareItem.Metadata, testcommon.BasicMetadata)
 		}
-	}*/
+	}
 }
 
-func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
+func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientRestoreShare() {
 	_require := require.New(s.T())
-	// testName := s.T().Name()
+	testName := s.T().Name()
 	cred, _ := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 
 	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.file.core.windows.net/", cred.AccountName()), cred, nil)
 	_require.NoError(err)
 
-	// shareName := testcommon.GenerateShareName(testName)
+	shareName := testcommon.GenerateShareName(testName)
 
 	// Note: Always set all permissions, services, types to true to ensure order of string formed is correct.
 	resources := sas.AccountResourceTypes{
@@ -263,16 +256,64 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	svcClient, err := testcommon.GetServiceClientNoCredential(s.T(), sasUrl, nil)
 	_require.NoError(err)
 
-	// create share using SAS
-	//_, err = svcClient.CreateShare(context.Background(), shareName, nil)
-	//_require.NoError(err)
-	//
-	//_, err = svcClient.DeleteShare(context.Background(), shareName, nil)
-	//_require.NoError(err)
-
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(resp.RequestID)
+
+	// create share using account SAS
+	_, err = svcClient.CreateShare(context.Background(), shareName, nil)
+	_require.NoError(err)
+
+	defer func() {
+		_, err := svcClient.DeleteShare(context.Background(), shareName, nil)
+		_require.NoError(err)
+	}()
+
+	_, err = svcClient.DeleteShare(context.Background(), shareName, nil)
+	_require.NoError(err)
+
+	// wait for share deletion
+	time.Sleep(60 * time.Second)
+
+	sharesCnt := 0
+	shareVersion := ""
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Deleted: true},
+		Prefix:  &shareName,
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, s := range resp.Shares {
+			if s.Deleted != nil && *s.Deleted {
+				_require.NotNil(s.Version)
+				shareVersion = *s.Version
+			} else {
+				sharesCnt++
+			}
+		}
+	}
+
+	_require.Equal(sharesCnt, 0)
+	_require.NotEmpty(shareVersion)
+
+	restoreResp, err := svcClient.RestoreShare(context.Background(), shareName, shareVersion, nil)
+	_require.NoError(err)
+	_require.NotNil(restoreResp.RequestID)
+
+	sharesCnt = 0
+	pager = svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: &shareName,
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		sharesCnt += len(resp.Shares)
+	}
+	_require.Equal(sharesCnt, 1)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestSASServiceClientNoKey() {

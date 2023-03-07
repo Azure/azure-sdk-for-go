@@ -44,7 +44,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
 	}
-	cred, err := confidential.NewCredFromCertChain(certs, key)
+	cred, err := confidential.NewCredFromCert(certs, key)
 	if err != nil {
 		return nil, err
 	}

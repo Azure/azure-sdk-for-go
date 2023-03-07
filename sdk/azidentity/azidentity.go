@@ -49,13 +49,13 @@ func getConfidentialClient(clientID, tenantID string, cred confidential.Credenti
 	if err != nil {
 		return confidential.Client{}, err
 	}
+	authority := runtime.JoinPaths(authorityHost, tenantID)
 	o := []confidential.Option{
-		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
 		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
 		confidential.WithHTTPClient(newPipelineAdapter(co)),
 	}
 	o = append(o, additionalOpts...)
-	return confidential.New(clientID, cred, o...)
+	return confidential.New(authority, clientID, cred, o...)
 }
 
 func getPublicClient(clientID, tenantID string, co *azcore.ClientOptions) (public.Client, error) {

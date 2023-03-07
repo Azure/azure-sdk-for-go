@@ -50,7 +50,7 @@ type OnBehalfOfCredentialOptions struct {
 // NewOnBehalfOfCredentialFromCertificate constructs an OnBehalfOfCredential that authenticates with a certificate.
 // See [ParseCertificates] for help loading a certificate.
 func NewOnBehalfOfCredentialFromCertificate(tenantID, clientID, userAssertion string, certs []*x509.Certificate, key crypto.PrivateKey, options *OnBehalfOfCredentialOptions) (*OnBehalfOfCredential, error) {
-	cred, err := confidential.NewCredFromCertChain(certs, key)
+	cred, err := confidential.NewCredFromCert(certs, key)
 	if err != nil {
 		return nil, err
 	}

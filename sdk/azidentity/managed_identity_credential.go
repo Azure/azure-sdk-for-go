@@ -92,7 +92,8 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	if options.ID != nil {
 		clientID = options.ID.String()
 	}
-	c, err := confidential.New(clientID, cred)
+	// similarly, it's okay to give MSAL an incorrect authority URL because that URL won't be used
+	c, err := confidential.New("https://login.microsoftonline.com/common", clientID, cred)
 	if err != nil {
 		return nil, err
 	}

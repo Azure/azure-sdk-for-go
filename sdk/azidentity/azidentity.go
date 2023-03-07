@@ -59,8 +59,8 @@ var getConfidentialClient = func(clientID, tenantID string, cred confidential.Cr
 	if err != nil {
 		return confidential.Client{}, err
 	}
+	authority := runtime.JoinPaths(authorityHost, tenantID)
 	o := []confidential.Option{
-		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
 		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
 		confidential.WithHTTPClient(newPipelineAdapter(co)),
 	}
@@ -71,7 +71,7 @@ var getConfidentialClient = func(clientID, tenantID string, cred confidential.Cr
 	if strings.ToLower(tenantID) == "adfs" {
 		o = append(o, confidential.WithInstanceDiscovery(false))
 	}
-	return confidential.New(clientID, cred, o...)
+	return confidential.New(authority, clientID, cred, o...)
 }
 
 var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions, additionalOpts ...public.Option) (public.Client, error) {
@@ -93,9 +93,7 @@ var getPublicClient = func(clientID, tenantID string, co *azcore.ClientOptions, 
 	if strings.ToLower(tenantID) == "adfs" {
 		o = append(o, public.WithInstanceDiscovery(false))
 	}
-	return public.New(clientID,
-		o...,
-	)
+	return public.New(clientID, o...)
 }
 
 // resolveAdditionallyAllowedTenants returns a copy of tenants, simplified when tenants contains a wildcard

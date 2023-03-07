@@ -46,8 +46,8 @@ type GetUserDelegationKeyResponse = generated.ServiceClientGetUserDelegationKeyR
 
 // SubmitBatchResponse contains the response from method Client.SubmitBatch.
 type SubmitBatchResponse struct {
-	// SubResponses contains the responses of the sub-requests in the batch
-	SubResponses []*BatchResponseItem
+	// Responses contains the responses of the sub-requests in the batch
+	Responses []*BatchResponseItem
 
 	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string

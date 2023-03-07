@@ -1269,7 +1269,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUs
 	_require.NotNil(resp.RequestID)
 
 	var ctrSuccess, ctrFailure = 0, 0
-	for _, subResp := range resp.SubResponses {
+	for _, subResp := range resp.Responses {
 		_require.NotNil(subResp.ContentID)
 		_require.NotNil(subResp.ContainerName)
 		_require.NotNil(subResp.BlobName)
@@ -1355,7 +1355,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 	_require.NoError(err)
 	_require.NotNil(resp.RequestID)
 
-	for _, subResp := range resp.SubResponses {
+	for _, subResp := range resp.Responses {
 		_require.NotNil(subResp.ContentID)
 		_require.NotNil(subResp.ContainerName)
 		_require.NotNil(subResp.BlobName)
@@ -1646,7 +1646,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteMoreThan256() {
 	resp, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
 	_require.NotNil(resp.RequestID)
-	for _, subResp := range resp.SubResponses {
+	for _, subResp := range resp.Responses {
 		_require.Nil(subResp.Error)
 	}
 
@@ -1701,8 +1701,8 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
 	resp1, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
 	_require.NotNil(resp1.RequestID)
-	_require.Equal(len(resp1.SubResponses), 1)
-	_require.NoError(resp1.SubResponses[0].Error)
+	_require.Equal(len(resp1.Responses), 1)
+	_require.NoError(resp1.Responses[0].Error)
 
 	pager = containerClient.NewListBlobsFlatPager(nil)
 	ctr = 0
@@ -1716,9 +1716,9 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
 	resp2, err := svcClient.SubmitBatch(context.Background(), bb, nil)
 	_require.NoError(err)
 	_require.NotNil(resp2.RequestID)
-	_require.Equal(len(resp2.SubResponses), 1)
-	_require.Error(resp2.SubResponses[0].Error)
-	testcommon.ValidateBlobErrorCode(_require, resp2.SubResponses[0].Error, bloberror.BlobNotFound)
+	_require.Equal(len(resp2.Responses), 1)
+	_require.Error(resp2.Responses[0].Error)
+	testcommon.ValidateBlobErrorCode(_require, resp2.Responses[0].Error, bloberror.BlobNotFound)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchErrors() {

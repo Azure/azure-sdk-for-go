@@ -352,9 +352,9 @@ func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	}
 
 	return SubmitBatchResponse{
-		SubResponses: batchResponses,
-		ContentType:  resp.ContentType,
-		RequestID:    resp.RequestID,
-		Version:      resp.Version,
+		Responses:   batchResponses,
+		ContentType: resp.ContentType,
+		RequestID:   resp.RequestID,
+		Version:     resp.Version,
 	}, nil
 }

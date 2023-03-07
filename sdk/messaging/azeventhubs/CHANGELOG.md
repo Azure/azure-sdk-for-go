@@ -1,6 +1,6 @@
 # Release History
 
-## 0.6.0 (Unreleased)
+## 0.6.0 (2023-03-07)
 
 ### Features Added
 
@@ -14,7 +14,8 @@
 
 ### Bugs Fixed
 
-### Other Changes
+- Recover the connection when the $cbs Receiver/Sender is not closed properly. This would cause
+  clients to return an error saying "$cbs node has already been opened." (PR#20334)
 
 ## 0.5.0 (2023-02-07)
 

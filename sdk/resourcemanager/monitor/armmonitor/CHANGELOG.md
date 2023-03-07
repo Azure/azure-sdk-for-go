@@ -1,6 +1,6 @@
 # Release History
 
-## 0.9.0 (2023-03-07)
+## 0.9.0 (2023-03-24)
 ### Breaking Changes
 
 - Function `NewMetricDefinitionsClient` parameter(s) have been changed from `(azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`

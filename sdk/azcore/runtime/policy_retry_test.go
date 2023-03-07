@@ -672,14 +672,14 @@ func TestRetryPolicySuccessWithPerTryTimeoutNoRetryWithBodyDownload(t *testing.T
 	require.Equal(t, largeBody, body)
 }
 
-func TestRetryPolicyWithPredicateNoRetry(t *testing.T) {
+func TestRetryPolicyWithShouldRetryNoRetry(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
 
 	pl := exported.NewPipeline(srv, NewRetryPolicy(&policy.RetryOptions{
 		RetryDelay: time.Millisecond,
-		Predicate: func(r *http.Response, err error) bool {
+		ShouldRetry: func(r *http.Response, err error) bool {
 			return r.StatusCode != http.StatusRequestTimeout
 		},
 	}))
@@ -691,7 +691,7 @@ func TestRetryPolicyWithPredicateNoRetry(t *testing.T) {
 	require.EqualValues(t, 1, srv.Requests())
 }
 
-func TestRetryPolicyWithPredicateRetry(t *testing.T) {
+func TestRetryPolicyWithShouldRetryRetry(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
@@ -699,7 +699,7 @@ func TestRetryPolicyWithPredicateRetry(t *testing.T) {
 
 	pl := exported.NewPipeline(srv, NewRetryPolicy(&policy.RetryOptions{
 		RetryDelay: time.Millisecond,
-		Predicate: func(r *http.Response, err error) bool {
+		ShouldRetry: func(r *http.Response, err error) bool {
 			return r.StatusCode == http.StatusRequestTimeout
 		},
 	}))

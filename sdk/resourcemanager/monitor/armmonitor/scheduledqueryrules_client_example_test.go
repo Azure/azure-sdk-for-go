@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/listScheduledQueryRulesBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/listScheduledQueryRulesBySubscription.json
 func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/listScheduledQueryRulesByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/listScheduledQueryRulesByResourceGroup.json
 func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +300,7 @@ func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/getScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/getScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,7 +381,7 @@ func ExampleScheduledQueryRulesClient_Get() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQueryRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,7 +516,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleResourceGroup.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQueryRuleOnResourceGroupS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -628,7 +628,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleSubscription.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQueryRuleOnSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -767,7 +767,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/patchScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/patchScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -841,7 +841,7 @@ func ExampleScheduledQueryRulesClient_Update() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/deleteScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/deleteScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

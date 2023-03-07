@@ -11,6 +11,7 @@ package armmonitor
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
@@ -18,20 +19,23 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
 // MetricDefinitionsClient contains the methods for the MetricDefinitions group.
 // Don't use this type directly, use NewMetricDefinitionsClient() instead.
 type MetricDefinitionsClient struct {
-	host string
-	pl   runtime.Pipeline
+	host           string
+	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMetricDefinitionsClient creates a new instance of MetricDefinitionsClient with the specified values.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewMetricDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricDefinitionsClient, error) {
+func NewMetricDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricDefinitionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -44,15 +48,16 @@ func NewMetricDefinitionsClient(credential azcore.TokenCredential, options *arm.
 		return nil, err
 	}
 	client := &MetricDefinitionsClient{
-		host: ep,
-		pl:   pl,
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
 	}
 	return client, nil
 }
 
 // NewListPager - Lists the metric definitions for the resource.
 //
-// Generated from API version 2018-01-01
+// Generated from API version 2021-05-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricDefinitionsClientListOptions contains the optional parameters for the MetricDefinitionsClient.NewListPager
 //     method.
@@ -87,7 +92,7 @@ func (client *MetricDefinitionsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-01-01")
+	reqQP.Set("api-version", "2021-05-01")
 	if options != nil && options.Metricnamespace != nil {
 		reqQP.Set("metricnamespace", *options.Metricnamespace)
 	}
@@ -101,6 +106,65 @@ func (client *MetricDefinitionsClient) listHandleResponse(resp *http.Response) (
 	result := MetricDefinitionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionCollection); err != nil {
 		return MetricDefinitionsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAtSubscriptionScopePager - Lists the metric definitions for the subscription.
+//
+// Generated from API version 2021-05-01
+//   - region - The region where the metrics you want reside.
+//   - options - MetricDefinitionsClientListAtSubscriptionScopeOptions contains the optional parameters for the MetricDefinitionsClient.NewListAtSubscriptionScopePager
+//     method.
+func (client *MetricDefinitionsClient) NewListAtSubscriptionScopePager(region string, options *MetricDefinitionsClientListAtSubscriptionScopeOptions) *runtime.Pager[MetricDefinitionsClientListAtSubscriptionScopeResponse] {
+	return runtime.NewPager(runtime.PagingHandler[MetricDefinitionsClientListAtSubscriptionScopeResponse]{
+		More: func(page MetricDefinitionsClientListAtSubscriptionScopeResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *MetricDefinitionsClientListAtSubscriptionScopeResponse) (MetricDefinitionsClientListAtSubscriptionScopeResponse, error) {
+			req, err := client.listAtSubscriptionScopeCreateRequest(ctx, region, options)
+			if err != nil {
+				return MetricDefinitionsClientListAtSubscriptionScopeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return MetricDefinitionsClientListAtSubscriptionScopeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return MetricDefinitionsClientListAtSubscriptionScopeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAtSubscriptionScopeHandleResponse(resp)
+		},
+	})
+}
+
+// listAtSubscriptionScopeCreateRequest creates the ListAtSubscriptionScope request.
+func (client *MetricDefinitionsClient) listAtSubscriptionScopeCreateRequest(ctx context.Context, region string, options *MetricDefinitionsClientListAtSubscriptionScopeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricDefinitions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("region", region)
+	if options != nil && options.Metricnamespace != nil {
+		reqQP.Set("metricnamespace", *options.Metricnamespace)
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listAtSubscriptionScopeHandleResponse handles the ListAtSubscriptionScope response.
+func (client *MetricDefinitionsClient) listAtSubscriptionScopeHandleResponse(resp *http.Response) (MetricDefinitionsClientListAtSubscriptionScopeResponse, error) {
+	result := MetricDefinitionsClientListAtSubscriptionScopeResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionScopeMetricDefinitionCollection); err != nil {
+		return MetricDefinitionsClientListAtSubscriptionScopeResponse{}, err
 	}
 	return result, nil
 }

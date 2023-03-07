@@ -384,6 +384,11 @@ type MetricAlertsStatusClientListResponse struct {
 	MetricAlertStatusCollection
 }
 
+// MetricDefinitionsClientListAtSubscriptionScopeResponse contains the response from method MetricDefinitionsClient.NewListAtSubscriptionScopePager.
+type MetricDefinitionsClientListAtSubscriptionScopeResponse struct {
+	SubscriptionScopeMetricDefinitionCollection
+}
+
 // MetricDefinitionsClientListResponse contains the response from method MetricDefinitionsClient.NewListPager.
 type MetricDefinitionsClientListResponse struct {
 	MetricDefinitionCollection
@@ -392,6 +397,16 @@ type MetricDefinitionsClientListResponse struct {
 // MetricNamespacesClientListResponse contains the response from method MetricNamespacesClient.NewListPager.
 type MetricNamespacesClientListResponse struct {
 	MetricNamespaceCollection
+}
+
+// MetricsClientListAtSubscriptionScopePostResponse contains the response from method MetricsClient.ListAtSubscriptionScopePost.
+type MetricsClientListAtSubscriptionScopePostResponse struct {
+	SubscriptionScopeMetricResponse
+}
+
+// MetricsClientListAtSubscriptionScopeResponse contains the response from method MetricsClient.ListAtSubscriptionScope.
+type MetricsClientListAtSubscriptionScopeResponse struct {
+	SubscriptionScopeMetricResponse
 }
 
 // MetricsClientListResponse contains the response from method MetricsClient.List.

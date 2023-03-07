@@ -707,6 +707,30 @@ func PossibleKnownWindowsEventLogDataSourceStreamsValues() []KnownWindowsEventLo
 	}
 }
 
+// MetricAggregationType - the aggregation type of the metric.
+type MetricAggregationType string
+
+const (
+	MetricAggregationTypeAverage MetricAggregationType = "Average"
+	MetricAggregationTypeCount   MetricAggregationType = "Count"
+	MetricAggregationTypeMaximum MetricAggregationType = "Maximum"
+	MetricAggregationTypeMinimum MetricAggregationType = "Minimum"
+	MetricAggregationTypeNone    MetricAggregationType = "None"
+	MetricAggregationTypeTotal   MetricAggregationType = "Total"
+)
+
+// PossibleMetricAggregationTypeValues returns the possible values for the MetricAggregationType const type.
+func PossibleMetricAggregationTypeValues() []MetricAggregationType {
+	return []MetricAggregationType{
+		MetricAggregationTypeAverage,
+		MetricAggregationTypeCount,
+		MetricAggregationTypeMaximum,
+		MetricAggregationTypeMinimum,
+		MetricAggregationTypeNone,
+		MetricAggregationTypeTotal,
+	}
+}
+
 // MetricClass - The class of the metric.
 type MetricClass string
 
@@ -726,6 +750,23 @@ func PossibleMetricClassValues() []MetricClass {
 		MetricClassLatency,
 		MetricClassSaturation,
 		MetricClassTransactions,
+	}
+}
+
+// MetricResultType - Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's
+// description for details.
+type MetricResultType string
+
+const (
+	MetricResultTypeData     MetricResultType = "Data"
+	MetricResultTypeMetadata MetricResultType = "Metadata"
+)
+
+// PossibleMetricResultTypeValues returns the possible values for the MetricResultType const type.
+func PossibleMetricResultTypeValues() []MetricResultType {
+	return []MetricResultType{
+		MetricResultTypeData,
+		MetricResultTypeMetadata,
 	}
 }
 
@@ -1165,5 +1206,43 @@ func PossibleTimeAggregationTypeValues() []TimeAggregationType {
 		TimeAggregationTypeTotal,
 		TimeAggregationTypeCount,
 		TimeAggregationTypeLast,
+	}
+}
+
+// Unit - The unit of the metric.
+type Unit string
+
+const (
+	UnitCount          Unit = "Count"
+	UnitBytes          Unit = "Bytes"
+	UnitSeconds        Unit = "Seconds"
+	UnitCountPerSecond Unit = "CountPerSecond"
+	UnitBytesPerSecond Unit = "BytesPerSecond"
+	UnitPercent        Unit = "Percent"
+	UnitMilliSeconds   Unit = "MilliSeconds"
+	UnitByteSeconds    Unit = "ByteSeconds"
+	UnitUnspecified    Unit = "Unspecified"
+	UnitCores          Unit = "Cores"
+	UnitMilliCores     Unit = "MilliCores"
+	UnitNanoCores      Unit = "NanoCores"
+	UnitBitsPerSecond  Unit = "BitsPerSecond"
+)
+
+// PossibleUnitValues returns the possible values for the Unit const type.
+func PossibleUnitValues() []Unit {
+	return []Unit{
+		UnitCount,
+		UnitBytes,
+		UnitSeconds,
+		UnitCountPerSecond,
+		UnitBytesPerSecond,
+		UnitPercent,
+		UnitMilliSeconds,
+		UnitByteSeconds,
+		UnitUnspecified,
+		UnitCores,
+		UnitMilliCores,
+		UnitNanoCores,
+		UnitBitsPerSecond,
 	}
 }

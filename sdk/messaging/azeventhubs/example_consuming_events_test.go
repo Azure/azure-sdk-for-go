@@ -16,8 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 )
 
-// Example_consumingEventsUsingConsumerClient shows how to start consuming events in partitions
-// in an Event Hub.
+// Shows how to start consuming events in partitions in an Event Hub.
 //
 // If you have an Azure Storage account you can use the [Processor] type instead, which will handle
 // distributing partitions between multiple consumers. See example_processor_test.go for usage of

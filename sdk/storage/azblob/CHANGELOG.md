@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Added TransactionalContentMD5 to UploadOptions and CommitBlockListOptions. Fixes [20092](https://github.com/Azure/azure-sdk-for-go/issues/20092).
 
 ### Other Changes
 

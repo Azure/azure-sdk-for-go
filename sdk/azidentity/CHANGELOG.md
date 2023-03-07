@@ -3,6 +3,7 @@
 ## 1.3.0-beta.4 (Unreleased)
 
 ### Features Added
+* Added `WorkloadIdentityCredentialOptions.AdditionallyAllowedTenants` and `.DisableInstanceDiscovery`
 
 ### Breaking Changes
 

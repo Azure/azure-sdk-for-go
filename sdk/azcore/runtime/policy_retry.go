@@ -146,11 +146,7 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 			log.Writef(log.EventRetryPolicy, "error %v", err)
 		}
 
-		if err == nil && !HasStatusCode(resp, options.StatusCodes...) {
-			// if there is no error and the response code isn't in the list of retry codes then we're done.
-			log.Write(log.EventRetryPolicy, "exit due to non-retriable status code")
-			return
-		} else if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
+		if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
 			// don't retry if the parent context has been cancelled or its deadline exceeded
 			err = ctxErr
 			log.Writef(log.EventRetryPolicy, "abort due to %v", err)
@@ -162,6 +158,19 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 		if errors.As(err, &nre) {
 			// the error says it's not retriable so don't retry
 			log.Writef(log.EventRetryPolicy, "non-retriable error %T", nre)
+			return
+		}
+
+		if options.Predicate != nil {
+			// a non-nil Predicate overrides our HTTP status code check
+			if !options.Predicate(resp, err) {
+				// predicate says we shouldn't retry
+				log.Write(log.EventRetryPolicy, "exit due to Predicate")
+				return
+			}
+		} else if err == nil && !HasStatusCode(resp, options.StatusCodes...) {
+			// if there is no error and the response code isn't in the list of retry codes then we're done.
+			log.Write(log.EventRetryPolicy, "exit due to non-retriable status code")
 			return
 		}
 

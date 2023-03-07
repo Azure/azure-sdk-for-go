@@ -113,6 +113,14 @@ type RetryOptions struct {
 	// Specifying values will replace the default values.
 	// Specifying an empty slice will disable retries for HTTP status codes.
 	StatusCodes []int
+
+	// Predicate evaluates if the retry policy should retry the request.
+	// When present, the Predicate overrides comparison against the list of
+	// HTTP status codes and error checking within the retry policy. Context
+	// and NonRetriable errors remain evaluated before the Predicate.
+	// The *http.Response and error parameters are mutually exclusive.
+	// A return value of true means the retry policy should retry.
+	Predicate func(*http.Response, error) bool
 }
 
 // TelemetryOptions configures the telemetry policy's behavior.

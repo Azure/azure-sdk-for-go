@@ -8,6 +8,8 @@ package azblob_test
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -333,6 +335,78 @@ func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadFileNonZeroOffsetAndCo
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, concurrency, downloadOffset, downloadCount)
+}
+
+func (s *AZBlobUnrecordedTestsSuite) TestMD5SmallFileUpload() {
+	_require := require.New(s.T())
+	fileSize := 1 * 1024 * 1024 // 1 MB file
+
+	md5sum, resp, err := performUploadWithMD5Check(s.T(), _require, s.T().Name(), fileSize)
+
+	_require.NoError(err)
+
+	md5sumStr := hex.EncodeToString(md5sum)
+	respMd5 := hex.EncodeToString(resp.ContentMD5)
+	_require.Equal(md5sumStr, respMd5)
+
+}
+
+func (s *AZBlobUnrecordedTestsSuite) TestMD5LargeFileUpload() {
+	_require := require.New(s.T())
+	fileSize := 257 * 1024 * 1024 // 257 MB file, 256 MB is the max for calculate md5 and service md5 won't match
+
+	md5sum, resp, err := performUploadWithMD5Check(s.T(), _require, s.T().Name(), fileSize)
+
+	_require.ErrorContains(err, "400 The MD5 value specified in the request did not match with the MD5 value calculated by the server.")
+
+	md5sumStr := hex.EncodeToString(md5sum)
+	respMd5 := hex.EncodeToString(resp.ContentMD5)
+	_require.NotEqual(md5sumStr, respMd5)
+
+}
+
+func performUploadWithMD5Check(t *testing.T, _require *require.Assertions, testName string, fileSize int) ([]byte, blockblob.UploadFileResponse, error) {
+	// Set up file to upload
+	fileName := "BigFile.bin"
+	_ = generateFile(fileName, fileSize)
+
+	// Open the file to upload
+	file, err := os.Open(fileName)
+	_require.NoError(err)
+	defer func(file *os.File) {
+		_ = file.Close()
+	}(file)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(fileName)
+
+	client, err := testcommon.GetClient(t, testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err := client.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
+
+	// calculate md5 sum
+	h := md5.New()
+	if _, err := io.Copy(h, file); err != nil {
+		_require.NoError(err)
+	}
+	md5sum := h.Sum(nil)
+	// Set up test blob
+	blobName := testcommon.GenerateBlobName(testName)
+
+	// Upload the file to a block blob
+	resp, err := client.UploadFile(context.Background(), containerName, blobName, file,
+		&blockblob.UploadFileOptions{
+			TransactionalContentMD5: md5sum,
+		})
+
+	return md5sum, resp, err
 }
 
 func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertions, testName string, blobSize, blockSize, concurrency, downloadOffset, downloadCount int) {

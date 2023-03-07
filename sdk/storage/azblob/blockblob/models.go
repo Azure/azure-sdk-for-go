@@ -228,24 +228,26 @@ func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
 
 func (o *uploadFromReaderOptions) getUploadBlockBlobOptions() *UploadOptions {
 	return &UploadOptions{
-		Tags:             o.Tags,
-		Metadata:         o.Metadata,
-		Tier:             o.AccessTier,
-		HTTPHeaders:      o.HTTPHeaders,
-		AccessConditions: o.AccessConditions,
-		CPKInfo:          o.CPKInfo,
-		CPKScopeInfo:     o.CPKScopeInfo,
+		Tags:                    o.Tags,
+		Metadata:                o.Metadata,
+		Tier:                    o.AccessTier,
+		TransactionalContentMD5: o.TransactionalContentMD5,
+		HTTPHeaders:             o.HTTPHeaders,
+		AccessConditions:        o.AccessConditions,
+		CPKInfo:                 o.CPKInfo,
+		CPKScopeInfo:            o.CPKScopeInfo,
 	}
 }
 
 func (o *uploadFromReaderOptions) getCommitBlockListOptions() *CommitBlockListOptions {
 	return &CommitBlockListOptions{
-		Tags:         o.Tags,
-		Metadata:     o.Metadata,
-		Tier:         o.AccessTier,
-		HTTPHeaders:  o.HTTPHeaders,
-		CPKInfo:      o.CPKInfo,
-		CPKScopeInfo: o.CPKScopeInfo,
+		Tags:                    o.Tags,
+		Metadata:                o.Metadata,
+		Tier:                    o.AccessTier,
+		TransactionalContentMD5: o.TransactionalContentMD5,
+		HTTPHeaders:             o.HTTPHeaders,
+		CPKInfo:                 o.CPKInfo,
+		CPKScopeInfo:            o.CPKScopeInfo,
 	}
 }
 

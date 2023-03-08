@@ -1,5 +1,17 @@
 # Release History
 
+## 3.0.0 (2023-03-24)
+### Breaking Changes
+
+- Field `RefundResponse` of struct `ReturnClientPostResponse` has been removed
+
+### Features Added
+
+- New field `P3Y` in struct `CatalogMsrp`
+- New field `P5Y` in struct `CatalogMsrp`
+- New anonymous field `ReservationOrderResponse` in struct `ReturnClientPostResponse`
+
+
 ## 2.0.0 (2023-02-24)
 ### Breaking Changes
 

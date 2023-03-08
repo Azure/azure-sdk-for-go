@@ -164,5 +164,5 @@ type ReservationOrderClientPurchaseResponse struct {
 
 // ReturnClientPostResponse contains the response from method ReturnClient.BeginPost.
 type ReturnClientPostResponse struct {
-	RefundResponse
+	ReservationOrderResponse
 }

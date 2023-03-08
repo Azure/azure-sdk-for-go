@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/monitors_List.json
 func ExampleMonitorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,8 +44,8 @@ func ExampleMonitorsClient_NewListPager() {
 		// 	Value: []*armworkloads.Monitor{
 		// 		{
 		// 			Name: to.Ptr("mySapMonitor1"),
-		// 			Type: to.Ptr("Microsoft.Workloads/workloads"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor1"),
+		// 			Type: to.Ptr("Microsoft.Workloads/monitors"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor1"),
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"key": to.Ptr("value"),
@@ -68,8 +68,8 @@ func ExampleMonitorsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("mySapMonitor2"),
-		// 			Type: to.Ptr("Microsoft.Workloads/workloads"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor2"),
+		// 			Type: to.Ptr("Microsoft.Workloads/monitors"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor2"),
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"key": to.Ptr("value"),
@@ -93,7 +93,7 @@ func ExampleMonitorsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_ListByRG.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/monitors_ListByRG.json
 func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleMonitorsClient_NewListByResourceGroupPager() {
 		// 	Value: []*armworkloads.Monitor{
 		// 		{
 		// 			Name: to.Ptr("mySapMonitor1"),
-		// 			Type: to.Ptr("Microsoft.Workloads/workloads"),
+		// 			Type: to.Ptr("Microsoft.Workloads/monitors"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Workloads/monitors/mySapMonitor1"),
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
@@ -143,8 +143,8 @@ func ExampleMonitorsClient_NewListByResourceGroupPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("mySapMonitor2"),
-		// 			Type: to.Ptr("Microsoft.Workloads/workloads"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Workloads/workloads/mySapMonitor2"),
+		// 			Type: to.Ptr("Microsoft.Workloads/monitors"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Workloads/monitors/mySapMonitor2"),
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"key": to.Ptr("value"),
@@ -168,7 +168,7 @@ func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/monitors_Get.json
 func ExampleMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,8 +188,8 @@ func ExampleMonitorsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Monitor = armworkloads.Monitor{
 	// 	Name: to.Ptr("mySapMonitor1"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -220,7 +220,7 @@ func ExampleMonitorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/monitors_Create.json
 func ExampleMonitorsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,8 +258,8 @@ func ExampleMonitorsClient_BeginCreate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Monitor = armworkloads.Monitor{
 	// 	Name: to.Ptr("mySapMonitor"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -290,7 +290,7 @@ func ExampleMonitorsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/monitors_Delete.json
 func ExampleMonitorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleMonitorsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_PatchTags_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/monitors_PatchTags_Delete.json
 func ExampleMonitorsClient_Update_deleteTagsFieldOfASapMonitor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,8 +346,8 @@ func ExampleMonitorsClient_Update_deleteTagsFieldOfASapMonitor() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Monitor = armworkloads.Monitor{
 	// 	Name: to.Ptr("mySapMonitor"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -381,7 +381,7 @@ func ExampleMonitorsClient_Update_deleteTagsFieldOfASapMonitor() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/monitors_PatchTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/monitors_PatchTags.json
 func ExampleMonitorsClient_Update_updateTagsFieldOfASapMonitor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -408,8 +408,8 @@ func ExampleMonitorsClient_Update_updateTagsFieldOfASapMonitor() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Monitor = armworkloads.Monitor{
 	// 	Name: to.Ptr("mySapMonitor"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),

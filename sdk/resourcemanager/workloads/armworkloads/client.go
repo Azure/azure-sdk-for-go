@@ -58,7 +58,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // SAPAvailabilityZoneDetails - Get the recommended SAP Availability Zone Pair Details for your region.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - location - The name of Azure region.
 //   - options - ClientSAPAvailabilityZoneDetailsOptions contains the optional parameters for the Client.SAPAvailabilityZoneDetails
 //     method.
@@ -93,7 +93,7 @@ func (client *Client) sapAvailabilityZoneDetailsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SAPAvailabilityZoneDetails != nil {
@@ -114,7 +114,7 @@ func (client *Client) sapAvailabilityZoneDetailsHandleResponse(resp *http.Respon
 // SAPDiskConfigurations - Get the SAP Disk Configuration Layout prod/non-prod SAP System.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - location - The name of Azure region.
 //   - options - ClientSAPDiskConfigurationsOptions contains the optional parameters for the Client.SAPDiskConfigurations method.
 func (client *Client) SAPDiskConfigurations(ctx context.Context, location string, options *ClientSAPDiskConfigurationsOptions) (ClientSAPDiskConfigurationsResponse, error) {
@@ -148,7 +148,7 @@ func (client *Client) sapDiskConfigurationsCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SAPDiskConfigurations != nil {
@@ -170,7 +170,7 @@ func (client *Client) sapDiskConfigurationsHandleResponse(resp *http.Response) (
 // for database tier
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - location - The name of Azure region.
 //   - options - ClientSAPSizingRecommendationsOptions contains the optional parameters for the Client.SAPSizingRecommendations
 //     method.
@@ -205,7 +205,7 @@ func (client *Client) sapSizingRecommendationsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SAPSizingRecommendation != nil {
@@ -226,7 +226,7 @@ func (client *Client) sapSizingRecommendationsHandleResponse(resp *http.Response
 // SAPSupportedSKU - Get a list of SAP supported SKUs for ASCS, Application and Database tier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - location - The name of Azure region.
 //   - options - ClientSAPSupportedSKUOptions contains the optional parameters for the Client.SAPSupportedSKU method.
 func (client *Client) SAPSupportedSKU(ctx context.Context, location string, options *ClientSAPSupportedSKUOptions) (ClientSAPSupportedSKUResponse, error) {
@@ -260,7 +260,7 @@ func (client *Client) sapSupportedSKUCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SAPSupportedSKU != nil {

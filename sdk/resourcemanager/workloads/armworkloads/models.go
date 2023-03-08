@@ -109,12 +109,15 @@ type ClientSAPSupportedSKUOptions struct {
 	SAPSupportedSKU *SAPSupportedSKUsRequest
 }
 
-// CreateAndMountFileShareConfiguration - Gets or sets the file share configuration for file share created with the VIS case.
+// CreateAndMountFileShareConfiguration - Gets or sets the file share configuration where the transport directory fileshare
+// is created and mounted as a part of the create infra flow. Please pre-create the resource group you intend to place
+// the transport directory in. The storage account and fileshare will be auto-created by the ACSS and doesn’t need to pre-created.
 type CreateAndMountFileShareConfiguration struct {
 	// REQUIRED; The type of file share config.
 	ConfigurationType *ConfigurationType `json:"configurationType,omitempty"`
 
-	// The name of file share resource group. The app rg is used in case of missing input.
+	// The name of transport file share resource group. This should be pre created by the customer. The app rg is used in case
+	// of missing input.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
 	// The name of file share storage account name . A custom name is used in case of missing input.
@@ -317,14 +320,14 @@ type DiskDetails struct {
 	// The minimum supported disk count.
 	MinimumSupportedDiskCount *int64 `json:"minimumSupportedDiskCount,omitempty"`
 
-	// The disk sku.
+	// The type of disk sku. For example, StandardLRS, StandardZRS, PremiumLRS, PremiumZRS.
 	SKU *DiskSKU `json:"sku,omitempty"`
 
 	// The disk size in GB.
 	SizeGB *int64 `json:"sizeGB,omitempty"`
 }
 
-// DiskSKU - The disk sku.
+// DiskSKU - The type of disk sku. For example, StandardLRS, StandardZRS, PremiumLRS, PremiumZRS.
 type DiskSKU struct {
 	// Defines the disk sku name.
 	Name *DiskSKUName `json:"name,omitempty"`
@@ -572,20 +575,12 @@ type ImageReference struct {
 	// The image SKU.
 	SKU *string `json:"sku,omitempty"`
 
-	// Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image GET call.
-	SharedGalleryImageID *string `json:"sharedGalleryImageId,omitempty"`
-
 	// Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed formats
 	// are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers.
 	// Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image
 	// will not automatically update after deploy time even if a new version becomes
 	// available.
 	Version *string `json:"version,omitempty"`
-
-	// READ-ONLY; Specifies in decimal numbers, the version of platform image or marketplace image used to create the virtual
-	// machine. This readonly field differs from 'version', only if the value specified in
-	// 'version' field is 'latest'.
-	ExactVersion *string `json:"exactVersion,omitempty" azure:"ro"`
 }
 
 // InfrastructureConfigurationClassification provides polymorphic access to related types.
@@ -692,7 +687,7 @@ type Monitor struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
-	// Managed service identity (user assigned identities)
+	// [currently not in use] Managed service identity(user assigned identities)
 	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// SAP monitor properties
@@ -809,7 +804,8 @@ type MonitorsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MountFileShareConfiguration - Gets or sets the file share configuration for externally mounted cases.
+// MountFileShareConfiguration - Gets or sets the file share configuration where the transport directory fileshare already
+// exists, and user wishes to mount the fileshare as a part of the create infra flow.
 type MountFileShareConfiguration struct {
 	// REQUIRED; The type of file share config.
 	ConfigurationType *ConfigurationType `json:"configurationType,omitempty"`
@@ -1160,7 +1156,7 @@ func (p *PrometheusOSProviderInstanceProperties) GetProviderSpecificProperties()
 
 // ProviderInstance - A provider instance associated with SAP monitor.
 type ProviderInstance struct {
-	// Managed service identity (user assigned identities)
+	// [currently not in use] Managed service identity(user assigned identities)
 	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// Provider Instance properties
@@ -1190,7 +1186,7 @@ type ProviderInstanceListResult struct {
 
 // ProviderInstanceProperties - Describes the properties of a provider instance.
 type ProviderInstanceProperties struct {
-	// Defines the provider instance errors.
+	// Defines the provider specific properties.
 	ProviderSettings ProviderSpecificPropertiesClassification `json:"providerSettings,omitempty"`
 
 	// READ-ONLY; Defines the provider instance errors.
@@ -1866,7 +1862,8 @@ type SAPVirtualInstance struct {
 	// REQUIRED; Defines the Virtual Instance for SAP solutions resource properties.
 	Properties *SAPVirtualInstanceProperties `json:"properties,omitempty"`
 
-	// Managed service identity (user assigned identities)
+	// A pre-created user assigned identity with appropriate roles assigned. To learn more on identity and roles required, visit
+	// the ACSS how-to-guide.
 	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// Resource tags.
@@ -2191,7 +2188,8 @@ type SharedStorageResourceNames struct {
 	SharedStorageAccountPrivateEndPointName *string `json:"sharedStorageAccountPrivateEndPointName,omitempty"`
 }
 
-// SingleServerConfiguration - Gets or sets the single server configuration.
+// SingleServerConfiguration - Gets or sets the single server configuration. For prerequisites for creating the infrastructure,
+// please see here [https://go.microsoft.com/fwlink/?linkid=2212611&clcid=0x409]
 type SingleServerConfiguration struct {
 	// REQUIRED; The application resource group where SAP system resources will be deployed.
 	AppResourceGroup *string `json:"appResourceGroup,omitempty"`
@@ -2280,7 +2278,8 @@ func (s *SingleServerRecommendationResult) GetSAPSizingRecommendationResult() *S
 	}
 }
 
-// SkipFileShareConfiguration - Gets or sets the skip file share configuration
+// SkipFileShareConfiguration - Gets or sets the file share configuration for scenarios where transport directory fileshare
+// is not created or required.
 type SkipFileShareConfiguration struct {
 	// REQUIRED; The type of file share config.
 	ConfigurationType *ConfigurationType `json:"configurationType,omitempty"`
@@ -2360,7 +2359,8 @@ type Tags struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// ThreeTierConfiguration - Gets or sets the three tier SAP configuration.
+// ThreeTierConfiguration - Gets or sets the three tier SAP configuration. For prerequisites for creating the infrastructure,
+// please see here [https://go.microsoft.com/fwlink/?linkid=2212611&clcid=0x409]
 type ThreeTierConfiguration struct {
 	// REQUIRED; The application resource group where SAP system resources will be deployed.
 	AppResourceGroup *string `json:"appResourceGroup,omitempty"`
@@ -2502,7 +2502,7 @@ type TrackedResource struct {
 
 // UpdateMonitorRequest - Defines the request body for updating SAP monitor resource.
 type UpdateMonitorRequest struct {
-	// Managed service identity (user assigned identities)
+	// [currently not in use] Managed service identity(user assigned identities)
 	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// Gets or sets the Resource tags.
@@ -2529,7 +2529,8 @@ type UpdateSAPDatabaseInstanceRequest struct {
 
 // UpdateSAPVirtualInstanceRequest - Defines the request body for updating Virtual Instance for SAP.
 type UpdateSAPVirtualInstanceRequest struct {
-	// Managed service identity (user assigned identities)
+	// A pre-created user assigned identity with appropriate roles assigned. To learn more on identity and roles required, visit
+	// the ACSS how-to-guide.
 	Identity *UserAssignedServiceIdentity `json:"identity,omitempty"`
 
 	// Gets or sets the Resource tags.
@@ -2545,7 +2546,8 @@ type UserAssignedIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
-// UserAssignedServiceIdentity - Managed service identity (user assigned identities)
+// UserAssignedServiceIdentity - A pre-created user assigned identity with appropriate roles assigned. To learn more on identity
+// and roles required, visit the ACSS how-to-guide.
 type UserAssignedServiceIdentity struct {
 	// REQUIRED; Type of manage identity
 	Type *ManagedServiceIdentityType `json:"type,omitempty"`

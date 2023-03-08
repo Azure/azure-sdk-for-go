@@ -58,7 +58,7 @@ func NewSapLandscapeMonitorClient(subscriptionID string, credential azcore.Token
 // Create - Creates a SAP Landscape Monitor Dashboard for the specified subscription, resource group, and resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Name of the SAP monitor resource.
 //   - sapLandscapeMonitorParameter - Request body representing a configuration for Sap Landscape Monitor Dashboard
@@ -99,7 +99,7 @@ func (client *SapLandscapeMonitorClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, sapLandscapeMonitorParameter)
@@ -117,7 +117,7 @@ func (client *SapLandscapeMonitorClient) createHandleResponse(resp *http.Respons
 // Delete - Deletes a SAP Landscape Monitor Dashboard with the specified subscription, resource group, and SAP monitor name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Name of the SAP monitor resource.
 //   - options - SapLandscapeMonitorClientDeleteOptions contains the optional parameters for the SapLandscapeMonitorClient.Delete
@@ -157,7 +157,7 @@ func (client *SapLandscapeMonitorClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -167,7 +167,7 @@ func (client *SapLandscapeMonitorClient) deleteCreateRequest(ctx context.Context
 // and resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Name of the SAP monitor resource.
 //   - options - SapLandscapeMonitorClientGetOptions contains the optional parameters for the SapLandscapeMonitorClient.Get method.
@@ -206,7 +206,7 @@ func (client *SapLandscapeMonitorClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -225,7 +225,7 @@ func (client *SapLandscapeMonitorClient) getHandleResponse(resp *http.Response) 
 // and resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Name of the SAP monitor resource.
 //   - options - SapLandscapeMonitorClientListOptions contains the optional parameters for the SapLandscapeMonitorClient.List
@@ -265,7 +265,7 @@ func (client *SapLandscapeMonitorClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *SapLandscapeMonitorClient) listHandleResponse(resp *http.Response)
 // Update - Patches the SAP Landscape Monitor Dashboard for the specified subscription, resource group, and SAP monitor name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Name of the SAP monitor resource.
 //   - sapLandscapeMonitorParameter - Request body representing a configuration for Sap Landscape Monitor Dashboard
@@ -324,7 +324,7 @@ func (client *SapLandscapeMonitorClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, sapLandscapeMonitorParameter)

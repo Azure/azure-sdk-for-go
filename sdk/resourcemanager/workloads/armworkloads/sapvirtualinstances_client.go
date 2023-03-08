@@ -58,7 +58,7 @@ func NewSAPVirtualInstancesClient(subscriptionID string, credential azcore.Token
 // BeginCreate - Creates a Virtual Instance for SAP solutions (VIS) resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - body - Virtual Instance for SAP solutions resource request body.
@@ -81,7 +81,7 @@ func (client *SAPVirtualInstancesClient) BeginCreate(ctx context.Context, resour
 // Create - Creates a Virtual Instance for SAP solutions (VIS) resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 func (client *SAPVirtualInstancesClient) create(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, body SAPVirtualInstance, options *SAPVirtualInstancesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, body, options)
 	if err != nil {
@@ -117,7 +117,7 @@ func (client *SAPVirtualInstancesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -127,7 +127,7 @@ func (client *SAPVirtualInstancesClient) createCreateRequest(ctx context.Context
 // Services Instance, Application Server Instances and Database Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - options - SAPVirtualInstancesClientBeginDeleteOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginDelete
@@ -150,7 +150,7 @@ func (client *SAPVirtualInstancesClient) BeginDelete(ctx context.Context, resour
 // Services Instance, Application Server Instances and Database Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 func (client *SAPVirtualInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
 	if err != nil {
@@ -186,7 +186,7 @@ func (client *SAPVirtualInstancesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -195,7 +195,7 @@ func (client *SAPVirtualInstancesClient) deleteCreateRequest(ctx context.Context
 // Get - Gets a Virtual Instance for SAP solutions resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - options - SAPVirtualInstancesClientGetOptions contains the optional parameters for the SAPVirtualInstancesClient.Get method.
@@ -234,7 +234,7 @@ func (client *SAPVirtualInstancesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -251,7 +251,7 @@ func (client *SAPVirtualInstancesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - Gets all Virtual Instances for SAP solutions resources in a Resource Group.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SAPVirtualInstancesClientListByResourceGroupOptions contains the optional parameters for the SAPVirtualInstancesClient.NewListByResourceGroupPager
 //     method.
@@ -299,7 +299,7 @@ func (client *SAPVirtualInstancesClient) listByResourceGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -316,7 +316,7 @@ func (client *SAPVirtualInstancesClient) listByResourceGroupHandleResponse(resp 
 
 // NewListBySubscriptionPager - Gets all Virtual Instances for SAP solutions resources in a Subscription.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - options - SAPVirtualInstancesClientListBySubscriptionOptions contains the optional parameters for the SAPVirtualInstancesClient.NewListBySubscriptionPager
 //     method.
 func (client *SAPVirtualInstancesClient) NewListBySubscriptionPager(options *SAPVirtualInstancesClientListBySubscriptionOptions) *runtime.Pager[SAPVirtualInstancesClientListBySubscriptionResponse] {
@@ -359,7 +359,7 @@ func (client *SAPVirtualInstancesClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -377,7 +377,7 @@ func (client *SAPVirtualInstancesClient) listBySubscriptionHandleResponse(resp *
 // BeginStart - Starts the SAP application, that is the Central Services instance and Application server instances.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - options - SAPVirtualInstancesClientBeginStartOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStart
@@ -399,7 +399,7 @@ func (client *SAPVirtualInstancesClient) BeginStart(ctx context.Context, resourc
 // Start - Starts the SAP application, that is the Central Services instance and Application server instances.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 func (client *SAPVirtualInstancesClient) start(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
 	if err != nil {
@@ -435,7 +435,7 @@ func (client *SAPVirtualInstancesClient) startCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -444,7 +444,7 @@ func (client *SAPVirtualInstancesClient) startCreateRequest(ctx context.Context,
 // BeginStop - Stops the SAP Application, that is the Application server instances and Central Services instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - options - SAPVirtualInstancesClientBeginStopOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStop
@@ -466,7 +466,7 @@ func (client *SAPVirtualInstancesClient) BeginStop(ctx context.Context, resource
 // Stop - Stops the SAP Application, that is the Application server instances and Central Services instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 func (client *SAPVirtualInstancesClient) stop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
 	if err != nil {
@@ -502,7 +502,7 @@ func (client *SAPVirtualInstancesClient) stopCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -514,7 +514,7 @@ func (client *SAPVirtualInstancesClient) stopCreateRequest(ctx context.Context, 
 // Update - Updates a Virtual Instance for SAP solutions resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - body - Request body to update a Virtual Instance for SAP solutions resource.
@@ -555,7 +555,7 @@ func (client *SAPVirtualInstancesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

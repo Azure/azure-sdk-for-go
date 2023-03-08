@@ -1,5 +1,12 @@
 # Release History
 
+## 1.0.0 (2023-03-24)
+### Breaking Changes
+
+- Field `ExactVersion` of struct `ImageReference` has been removed
+- Field `SharedGalleryImageID` of struct `ImageReference` has been removed
+
+
 ## 0.3.0 (2023-02-24)
 ### Breaking Changes
 

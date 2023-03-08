@@ -11,7 +11,7 @@ package armworkloads
 
 const (
 	moduleName    = "armworkloads"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -352,8 +352,7 @@ func PossibleSAPHealthStateValues() []SAPHealthState {
 	}
 }
 
-// SAPHighAvailabilityType - The high availability Type. AvailabilitySet guarantees 99.95% availability. Availability Zone
-// guarantees 99.99% availability.
+// SAPHighAvailabilityType - The high availability type (AvailabilitySet or AvailabilityZone).
 type SAPHighAvailabilityType string
 
 const (

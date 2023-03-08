@@ -59,7 +59,7 @@ func NewSAPDatabaseInstancesClient(subscriptionID string, credential azcore.Toke
 // This will be used by service only. PUT by end user will return a Bad Request error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
@@ -84,7 +84,7 @@ func (client *SAPDatabaseInstancesClient) BeginCreate(ctx context.Context, resou
 // This will be used by service only. PUT by end user will return a Bad Request error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 func (client *SAPDatabaseInstancesClient) create(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, body SAPDatabaseInstance, options *SAPDatabaseInstancesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, options)
 	if err != nil {
@@ -124,7 +124,7 @@ func (client *SAPDatabaseInstancesClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -134,7 +134,7 @@ func (client *SAPDatabaseInstancesClient) createCreateRequest(ctx context.Contex
 // This will be used by service only. Delete by end user will return a Bad Request error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
@@ -158,7 +158,7 @@ func (client *SAPDatabaseInstancesClient) BeginDelete(ctx context.Context, resou
 // This will be used by service only. Delete by end user will return a Bad Request error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 func (client *SAPDatabaseInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
 	if err != nil {
@@ -198,7 +198,7 @@ func (client *SAPDatabaseInstancesClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -207,7 +207,7 @@ func (client *SAPDatabaseInstancesClient) deleteCreateRequest(ctx context.Contex
 // Get - Gets the SAP Database Instance resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
@@ -252,7 +252,7 @@ func (client *SAPDatabaseInstancesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -269,7 +269,7 @@ func (client *SAPDatabaseInstancesClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - options - SAPDatabaseInstancesClientListOptions contains the optional parameters for the SAPDatabaseInstancesClient.NewListPager
@@ -322,7 +322,7 @@ func (client *SAPDatabaseInstancesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -340,7 +340,7 @@ func (client *SAPDatabaseInstancesClient) listHandleResponse(resp *http.Response
 // BeginStartInstance - Starts the database instance of the SAP system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
@@ -363,7 +363,7 @@ func (client *SAPDatabaseInstancesClient) BeginStartInstance(ctx context.Context
 // StartInstance - Starts the database instance of the SAP system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 func (client *SAPDatabaseInstancesClient) startInstance(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginStartInstanceOptions) (*http.Response, error) {
 	req, err := client.startInstanceCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
 	if err != nil {
@@ -403,7 +403,7 @@ func (client *SAPDatabaseInstancesClient) startInstanceCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -412,7 +412,7 @@ func (client *SAPDatabaseInstancesClient) startInstanceCreateRequest(ctx context
 // BeginStopInstance - Stops the database instance of the SAP system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
@@ -435,7 +435,7 @@ func (client *SAPDatabaseInstancesClient) BeginStopInstance(ctx context.Context,
 // StopInstance - Stops the database instance of the SAP system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 func (client *SAPDatabaseInstancesClient) stopInstance(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, options *SAPDatabaseInstancesClientBeginStopInstanceOptions) (*http.Response, error) {
 	req, err := client.stopInstanceCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, options)
 	if err != nil {
@@ -475,7 +475,7 @@ func (client *SAPDatabaseInstancesClient) stopInstanceCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -487,7 +487,7 @@ func (client *SAPDatabaseInstancesClient) stopInstanceCreateRequest(ctx context.
 // BeginUpdate - Updates the Database resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
 //   - databaseInstanceName - Database resource name string modeled as parameter for auto generation to work correctly.
@@ -511,7 +511,7 @@ func (client *SAPDatabaseInstancesClient) BeginUpdate(ctx context.Context, resou
 // Update - Updates the Database resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2023-04-01
 func (client *SAPDatabaseInstancesClient) update(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, databaseInstanceName string, body UpdateSAPDatabaseInstanceRequest, options *SAPDatabaseInstancesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, options)
 	if err != nil {
@@ -551,7 +551,7 @@ func (client *SAPDatabaseInstancesClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

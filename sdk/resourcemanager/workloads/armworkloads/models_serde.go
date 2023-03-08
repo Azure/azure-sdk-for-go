@@ -1242,11 +1242,9 @@ func (h *HighAvailabilitySoftwareConfiguration) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type ImageReference.
 func (i ImageReference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "exactVersion", i.ExactVersion)
 	populate(objectMap, "offer", i.Offer)
 	populate(objectMap, "publisher", i.Publisher)
 	populate(objectMap, "sku", i.SKU)
-	populate(objectMap, "sharedGalleryImageId", i.SharedGalleryImageID)
 	populate(objectMap, "version", i.Version)
 	return json.Marshal(objectMap)
 }
@@ -1260,9 +1258,6 @@ func (i *ImageReference) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "exactVersion":
-			err = unpopulate(val, "ExactVersion", &i.ExactVersion)
-			delete(rawMsg, key)
 		case "offer":
 			err = unpopulate(val, "Offer", &i.Offer)
 			delete(rawMsg, key)
@@ -1271,9 +1266,6 @@ func (i *ImageReference) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sku":
 			err = unpopulate(val, "SKU", &i.SKU)
-			delete(rawMsg, key)
-		case "sharedGalleryImageId":
-			err = unpopulate(val, "SharedGalleryImageID", &i.SharedGalleryImageID)
 			delete(rawMsg, key)
 		case "version":
 			err = unpopulate(val, "Version", &i.Version)

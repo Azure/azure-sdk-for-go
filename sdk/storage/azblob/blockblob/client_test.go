@@ -586,27 +586,27 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	_require.Nil(err)
 }
 
-func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcClient *service.Client) (*blockblob.Client, *blockblob.Client, *bytes.Reader, time.Time) {
+func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcClient *service.Client) (*container.Client, *blockblob.Client, *blockblob.Client, *bytes.Reader, time.Time) {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	srcBlob := testcommon.GenerateBlobName(testName)
+	srcBlob := testcommon.GenerateBlobName("src" + testName)
 	srcBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, srcBlob, containerClient)
 
-	dest := testcommon.GenerateBlobName(testName)
+	dest := testcommon.GenerateBlobName("dest" + testName)
 	destBBClient := testcommon.CreateNewBlockBlob(context.Background(), _require, dest, containerClient)
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 
-	_, err := srcBBClient.Upload(context.Background(), streaming.NopCloser(body), nil)
+	// create empty dest blob
+	_, err := destBBClient.Upload(context.Background(), streaming.NopCloser(body), nil)
 	_require.Nil(err)
 
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_require.Nil(err)
 
-	return srcBBClient, destBBClient, body, expiryTime
+	return containerClient, srcBBClient, destBBClient, body, expiryTime
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
@@ -615,7 +615,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	srcBBClient, destBBClient, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	containerClient, srcBBClient, destBBClient, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	if err != nil {
@@ -634,13 +635,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURL() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	pbResp, err := destBBClient.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.UploadBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	pbResp, err := destBBClient.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, nil)
 	_require.NotNil(pbResp)
 	_require.NoError(err)
-
-	resp, err := srcBBClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.Equal(resp.ETag, pbResp.ETag)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
@@ -649,7 +646,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	srcBBClient, destBBClient, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	containerClient, srcBBClient, destBBClient, _, expiryTime := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	if err != nil {
@@ -668,7 +666,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	pbResp, err := destBBClient.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &blockblob.UploadBlobFromURLOptions{HTTPHeaders: &testcommon.BasicHeaders})
+	options := blockblob.UploadBlobFromURLOptions{
+		Tags:        testcommon.BasicBlobTagsMap,
+		HTTPHeaders: &testcommon.BasicHeaders,
+		Metadata:    testcommon.BasicMetadata,
+		Tier:        &testcommon.CoolAccessTier,
+	}
+
+	pbResp, err := destBBClient.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
 	_require.NotNil(pbResp)
 	_require.NoError(err)
 
@@ -677,6 +682,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlobPutBlobFromURLWithHeaders() {
 	h := blob.ParseHTTPHeaders(resp)
 	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
 	_require.EqualValues(h, testcommon.BasicHeaders)
+	_require.EqualValues(resp.AccessTier, &testcommon.CoolAccessTier)
+	tagcount := int64(len(testcommon.BasicBlobTagsMap))
+	_require.EqualValues(resp.TagCount, &tagcount)
+	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {

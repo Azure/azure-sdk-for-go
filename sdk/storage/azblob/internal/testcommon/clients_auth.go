@@ -53,6 +53,12 @@ const (
 )
 
 var (
+	CoolAccessTier    = blob.AccessTierCool
+	HotAccessTier     = blob.AccessTierHot
+	ArchiveAccessTier = blob.AccessTierArchive
+)
+
+var (
 	BlobContentType        = "my_type"
 	BlobContentDisposition = "my_disposition"
 	BlobCacheControl       = "control"

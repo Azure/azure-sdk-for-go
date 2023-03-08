@@ -22,8 +22,10 @@ import (
 func TestIsTerminalState(t *testing.T) {
 	require.False(t, IsTerminalState("Updating"), "Updating is not a terminal state")
 	require.True(t, IsTerminalState("Succeeded"), "Succeeded is a terminal state")
+	require.True(t, IsTerminalState("Completed"), "Completed is a terminal state")
 	require.True(t, IsTerminalState("failed"), "failed is a terminal state")
 	require.True(t, IsTerminalState("canceled"), "canceled is a terminal state")
+	require.True(t, IsTerminalState("cancelled"), "cancelled is a terminal state")
 }
 
 func TestStatusCodeValid(t *testing.T) {
@@ -91,6 +93,7 @@ func TestFailed(t *testing.T) {
 	require.False(t, Failed("Succeeded"))
 	require.False(t, Failed("Updating"))
 	require.True(t, Failed("failed"))
+	require.True(t, Failed("Cancelled"))
 }
 
 func TestGetJSON(t *testing.T) {

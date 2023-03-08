@@ -59,7 +59,7 @@ func NewRestorableGremlinGraphsClient(subscriptionID string, credential azcore.T
 // This helps in scenario where container was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 //
-// Generated from API version 2022-11-15
+// Generated from API version 2022-11-15-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableGremlinGraphsClientListOptions contains the optional parameters for the RestorableGremlinGraphsClient.NewListPager
@@ -106,7 +106,7 @@ func (client *RestorableGremlinGraphsClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-15")
+	reqQP.Set("api-version", "2022-11-15-preview")
 	if options != nil && options.RestorableGremlinDatabaseRid != nil {
 		reqQP.Set("restorableGremlinDatabaseRid", *options.RestorableGremlinDatabaseRid)
 	}

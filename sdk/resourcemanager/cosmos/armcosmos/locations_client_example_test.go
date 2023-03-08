@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBLocationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-11-15-preview/examples/CosmosDBLocationList.json
 func ExampleLocationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,6 +50,7 @@ func ExampleLocationsClient_NewListPager() {
 		// 					to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 		// 					to.Ptr(armcosmos.BackupStorageRedundancyGeo)},
 		// 					IsResidencyRestricted: to.Ptr(false),
+		// 					Status: to.Ptr("ProductionSLA"),
 		// 					SupportsAvailabilityZone: to.Ptr(false),
 		// 				},
 		// 			},
@@ -62,6 +63,7 @@ func ExampleLocationsClient_NewListPager() {
 		// 						to.Ptr(armcosmos.BackupStorageRedundancyZone),
 		// 						to.Ptr(armcosmos.BackupStorageRedundancyGeo)},
 		// 						IsResidencyRestricted: to.Ptr(false),
+		// 						Status: to.Ptr("ProductionSLA"),
 		// 						SupportsAvailabilityZone: to.Ptr(true),
 		// 					},
 		// 			}},
@@ -69,7 +71,7 @@ func ExampleLocationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBLocationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-11-15-preview/examples/CosmosDBLocationGet.json
 func ExampleLocationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,6 +98,7 @@ func ExampleLocationsClient_Get() {
 	// 			to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 	// 			to.Ptr(armcosmos.BackupStorageRedundancyGeo)},
 	// 			IsResidencyRestricted: to.Ptr(true),
+	// 			Status: to.Ptr("ProductionSLA"),
 	// 			SupportsAvailabilityZone: to.Ptr(true),
 	// 		},
 	// 	}

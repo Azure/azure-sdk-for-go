@@ -80,21 +80,18 @@ Blob Storage offers three types of resources:
 
 - The _storage account_
 - One or more _containers_ in a storage account
-- One ore more _blobs_ in a container
+- One or more _blobs_ in a container
 
 Instances of the `azblob.Client` type provide methods for manipulating containers and blobs within a storage account.
 The storage account is specified when the `azblob.Client` is constructed.
 
 ### Specialized clients
 
-The Azure Blob Storage client module for Go also provides specialized clients in various subpackages. Use these clients when you need to interact with a specific kind of blob.
-Learn more about the various types of blobs from the following links.
+The Azure Blob Storage client module for Go also provides specialized clients in various subpackages. Use these clients when you need to interact with a specific kind of blob. Learn more about [block blobs, append blobs, and page blobs](https://learn.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blob).
 
-- [appendblob][append_blob] - [REST API documentation](https://learn.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-append-blobs)
-
-- [blockblob][block_blob] - [REST API documentation](https://learn.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-block-blobs)
-
-- [pageblob][page_blob] - [REST API documentation](https://learn.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-page-blobs)
+- [appendblob][append_blob]
+- [blockblob][block_blob]
+- [pageblob][page_blob]
 
 The [blob][blob] package contains APIs common to all blob types.  This includes APIs for deleting and undeleting a blob, setting metadata, and more.
 

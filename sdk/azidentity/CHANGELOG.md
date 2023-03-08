@@ -8,6 +8,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Credentials now synchronize within `GetToken()` so a single instance can be shared among goroutines
+  ([#20044](https://github.com/Azure/azure-sdk-for-go/issues/20044))
 
 ### Other Changes
 

@@ -73,6 +73,7 @@ type ManagedIdentityCredentialOptions struct {
 type ManagedIdentityCredential struct {
 	client confidentialClient
 	mic    *managedIdentityClient
+	s      *syncer
 }
 
 // NewManagedIdentityCredential creates a ManagedIdentityCredential. Pass nil to accept default options.
@@ -97,7 +98,9 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	if err != nil {
 		return nil, err
 	}
-	return &ManagedIdentityCredential{client: c, mic: mic}, nil
+	m := ManagedIdentityCredential{client: c, mic: mic}
+	m.s = newSyncer(credNameManagedIdentity, "", nil, m.requestToken, m.silentAuth)
+	return &m, nil
 }
 
 // GetToken requests an access token from the hosting environment. This method is called automatically by Azure SDK clients.
@@ -107,17 +110,17 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.To
 		return azcore.AccessToken{}, err
 	}
 	// managed identity endpoints require an AADv1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
-	scopes := []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
-	ar, err := c.client.AcquireTokenSilent(ctx, scopes)
-	if err == nil {
-		logGetTokenSuccess(c, opts)
-		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, nil
-	}
-	ar, err = c.client.AcquireTokenByCredential(ctx, scopes)
-	if err != nil {
-		return azcore.AccessToken{}, err
-	}
-	logGetTokenSuccess(c, opts)
+	opts.Scopes = []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
+	return c.s.GetToken(ctx, opts)
+}
+
+func (c *ManagedIdentityCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	ar, err := c.client.AcquireTokenByCredential(ctx, opts.Scopes)
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+}
+
+func (c *ManagedIdentityCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

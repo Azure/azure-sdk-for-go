@@ -138,22 +138,22 @@ func TestDeleteRoleDefinition_FailureInvalidRole(t *testing.T) {
 func TestRoleAssignment(t *testing.T) {
 	client := startAccessControlTest(t)
 
-	var name, principalID string
+	var name, principalID, roleDefinitionID string
+	scope := rbac.RoleScopeGlobal
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		name, principalID = "bedc5fb2-8738-40a4-8b20-cedfb43a1922", "c023eb03-4e31-464c-84f7-001b7f23bd13"
+		name, principalID, roleDefinitionID = "bedc5fb2-8738-40a4-8b20-cedfb43a1922", "c023eb03-4e31-464c-84f7-001b7f23bd13", "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/33413926-3206-4cdd-b39a-83574fe37a17"
 	} else {
 		name, principalID = uuid.New().String(), uuid.New().String()
+		// get random role definition to use for their service principal
+		pager := client.NewListRoleDefinitionsPager(scope, nil)
+		require.True(t, pager.More())
+		roleDefinitions, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.NotNil(t, roleDefinitions.Value)
+		roleDefinitionID = *roleDefinitions.Value[rand.Intn(len(roleDefinitions.Value))].ID
 	}
-	scope := rbac.RoleScopeGlobal
 
-	// get random role definition to use for their service principal
-	pager := client.NewListRoleDefinitionsPager(scope, nil)
-	require.True(t, pager.More())
-	roleDefinitions, err := pager.NextPage(context.Background())
-	require.NoError(t, err)
-	require.NotNil(t, roleDefinitions.Value)
-	roleDefinition := roleDefinitions.Value[rand.Intn(len(roleDefinitions.Value))]
-	roleAssignment := rbac.RoleAssignmentCreateParameters{Properties: &rbac.RoleAssignmentProperties{PrincipalID: to.Ptr(principalID), RoleDefinitionID: roleDefinition.ID}}
+	roleAssignment := rbac.RoleAssignmentCreateParameters{Properties: &rbac.RoleAssignmentProperties{PrincipalID: to.Ptr(principalID), RoleDefinitionID: to.Ptr(roleDefinitionID)}}
 	testSerde(t, &roleAssignment)
 
 	// create role assignment
@@ -162,7 +162,7 @@ func TestRoleAssignment(t *testing.T) {
 	require.Equal(t, name, *createdAssignment.Name)
 	require.Equal(t, scope, *createdAssignment.Properties.Scope)
 	require.Equal(t, principalID, *createdAssignment.Properties.PrincipalID)
-	require.Equal(t, *roleDefinition.ID, *createdAssignment.Properties.RoleDefinitionID)
+	require.Equal(t, roleDefinitionID, *createdAssignment.Properties.RoleDefinitionID)
 
 	// test if able to get role assignment
 	gotAssignment, err := client.GetRoleAssignment(context.Background(), scope, name, nil)

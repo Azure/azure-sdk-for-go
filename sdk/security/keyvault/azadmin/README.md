@@ -12,7 +12,7 @@ cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validate
 
 The Azure Key Vault administration library clients support administrative tasks such as full backup / restore and key-level role-based access control (RBAC).
 
-[Source code][azadmin_repo] | Package (pkg.go.dev)| [Product documentation][managed_hsm_docs] | [Samples][azadmin_examples]
+[Source code][azadmin_repo] | Package (pkg.go.dev)| [Product documentation][managed_hsm_docs] | Samples
 
 ## Getting started
 
@@ -69,7 +69,7 @@ A `BackupClient` allows for performing full key backups, full key restores, and 
 
 ## Examples
 
-Get started with our [examples][azadmin_examples].
+Get started with our examples.
 
 ## Troubleshooting
 
@@ -138,7 +138,6 @@ or contact opencode@microsoft.com with any
 additional questions or comments.
 
 <!-- LINKS -->
-[azadmin_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin#pkg-examples
 [azadmin_repo]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/security/keyvault/azadmin
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free

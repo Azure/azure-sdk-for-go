@@ -12,7 +12,7 @@ cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validate
 
 The Azure Key Vault administration library clients support administrative tasks such as full backup / restore and key-level role-based access control (RBAC).
 
-[Source code][azadmin_repo] | [Package (pkg.go.dev)][azadmin_pkg_go] | [Product documentation][managed_hsm_docs] | [Samples][azadmin_examples]
+[Source code][azadmin_repo] | Package (pkg.go.dev)| [Product documentation][managed_hsm_docs] | [Samples][azadmin_examples]
 
 ## Getting started
 
@@ -80,7 +80,7 @@ All methods which send HTTP requests return `*azcore.ResponseError` when these r
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-resp, err := client.GetSecret(context.Background(), "secretName", nil)
+settings, err := client.GetSettings(context.Background(), nil)
 if err != nil {
     var httpErr *azcore.ResponseError
     if errors.As(err, &httpErr) {
@@ -116,7 +116,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
 var response *http.Response
 ctx := runtime.WithCaptureResponse(context.TODO(), &response)
-_, err = client.GetSecret(ctx, "secretName", nil)
+_, err = client.GetSettings(context.Background(), nil)
 if err != nil {
     // TODO: handle error
 }
@@ -138,10 +138,10 @@ or contact opencode@microsoft.com with any
 additional questions or comments.
 
 <!-- LINKS -->
-[azadmin_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin
 [azadmin_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin#pkg-examples
 [azadmin_repo]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/security/keyvault/azadmin
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
+[azure_sub]: https://azure.microsoft.com/free
 [create_managed_hsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential

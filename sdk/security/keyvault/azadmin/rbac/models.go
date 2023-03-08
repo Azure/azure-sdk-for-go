@@ -9,47 +9,47 @@
 
 package rbac
 
-// ClientCreateOrUpdateRoleDefinitionOptions contains the optional parameters for the Client.CreateOrUpdateRoleDefinition
+// CreateOrUpdateRoleDefinitionOptions contains the optional parameters for the Client.CreateOrUpdateRoleDefinition
 // method.
-type ClientCreateOrUpdateRoleDefinitionOptions struct {
+type CreateOrUpdateRoleDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientCreateRoleAssignmentOptions contains the optional parameters for the Client.CreateRoleAssignment method.
-type ClientCreateRoleAssignmentOptions struct {
+// CreateRoleAssignmentOptions contains the optional parameters for the Client.CreateRoleAssignment method.
+type CreateRoleAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientDeleteRoleAssignmentOptions contains the optional parameters for the Client.DeleteRoleAssignment method.
-type ClientDeleteRoleAssignmentOptions struct {
+// DeleteRoleAssignmentOptions contains the optional parameters for the Client.DeleteRoleAssignment method.
+type DeleteRoleAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientDeleteRoleDefinitionOptions contains the optional parameters for the Client.DeleteRoleDefinition method.
-type ClientDeleteRoleDefinitionOptions struct {
+// DeleteRoleDefinitionOptions contains the optional parameters for the Client.DeleteRoleDefinition method.
+type DeleteRoleDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientGetRoleAssignmentOptions contains the optional parameters for the Client.GetRoleAssignment method.
-type ClientGetRoleAssignmentOptions struct {
+// GetRoleAssignmentOptions contains the optional parameters for the Client.GetRoleAssignment method.
+type GetRoleAssignmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientGetRoleDefinitionOptions contains the optional parameters for the Client.GetRoleDefinition method.
-type ClientGetRoleDefinitionOptions struct {
+// GetRoleDefinitionOptions contains the optional parameters for the Client.GetRoleDefinition method.
+type GetRoleDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListRoleAssignmentsOptions contains the optional parameters for the Client.ListRoleAssignments method.
-type ClientListRoleAssignmentsOptions struct {
+// ListRoleAssignmentsOptions contains the optional parameters for the Client.ListRoleAssignments method.
+type ListRoleAssignmentsOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
 	// eq {id} to return all role assignments at, above or below the
 	// scope for the specified principal.
 	Filter *string
 }
 
-// ClientListRoleDefinitionsOptions contains the optional parameters for the Client.ListRoleDefinitions method.
-type ClientListRoleDefinitionsOptions struct {
+// ListRoleDefinitionsOptions contains the optional parameters for the Client.ListRoleDefinitions method.
+type ListRoleDefinitionsOptions struct {
 	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
 	Filter *string
 }

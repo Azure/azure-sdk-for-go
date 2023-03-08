@@ -70,7 +70,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 	// create a new poller from a continuation token
 	token, err := backupPoller.ResumeToken()
 	require.NoError(t, err)
-	newBackupPoller, err := client.BeginFullBackup(context.Background(), sasToken, &backup.ClientBeginFullBackupOptions{ResumeToken: token})
+	newBackupPoller, err := client.BeginFullBackup(context.Background(), sasToken, &backup.BeginFullBackupOptions{ResumeToken: token})
 	require.NoError(t, err)
 	backupResults, err := newBackupPoller.PollUntilDone(context.Background(), nil)
 	require.NoError(t, err)
@@ -93,7 +93,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 	// create a new poller from a continuation token
 	restoreToken, err := restorePoller.ResumeToken()
 	require.NoError(t, err)
-	newRestorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, &backup.ClientBeginFullRestoreOptions{ResumeToken: restoreToken})
+	newRestorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, &backup.BeginFullRestoreOptions{ResumeToken: restoreToken})
 	require.NoError(t, err)
 	restoreResults, err := newRestorePoller.PollUntilDone(context.Background(), nil)
 	require.NoError(t, err)

@@ -76,4 +76,13 @@ directive:
   - from: client.go
     where: $
     transform:  return $.replace(/scope\)/g, "string(scope))");
+  
+  # delete client name prefix from method options and response types
+  - from:
+      - client.go
+      - models.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
+
 ```

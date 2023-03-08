@@ -11,20 +11,20 @@ package backup
 
 import "time"
 
-// ClientBeginFullBackupOptions contains the optional parameters for the Client.BeginFullBackup method.
-type ClientBeginFullBackupOptions struct {
+// BeginFullBackupOptions contains the optional parameters for the Client.BeginFullBackup method.
+type BeginFullBackupOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// ClientBeginFullRestoreOptions contains the optional parameters for the Client.BeginFullRestore method.
-type ClientBeginFullRestoreOptions struct {
+// BeginFullRestoreOptions contains the optional parameters for the Client.BeginFullRestore method.
+type BeginFullRestoreOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// ClientBeginSelectiveKeyRestoreOptions contains the optional parameters for the Client.BeginSelectiveKeyRestore method.
-type ClientBeginSelectiveKeyRestoreOptions struct {
+// BeginSelectiveKeyRestoreOptions contains the optional parameters for the Client.BeginSelectiveKeyRestore method.
+type BeginSelectiveKeyRestoreOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -74,14 +74,16 @@ type RestoreOperation struct {
 	StatusDetails *string `json:"statusDetails,omitempty"`
 }
 
+// RestoreOperationParameters - Parameters for the restore operation
 type RestoreOperationParameters struct {
 	// REQUIRED; The Folder name of the blob where the previous successful full backup was stored
 	FolderToRestore *string `json:"folderToRestore,omitempty"`
 
-	// REQUIRED
+	// REQUIRED; Contains the information required to access blob storage.
 	SasTokenParameters *SASTokenParameter `json:"sasTokenParameters,omitempty"`
 }
 
+// SASTokenParameter - Contains the information required to access blob storage.
 type SASTokenParameter struct {
 	// REQUIRED; Azure Blob storage container Uri
 	StorageResourceURI *string `json:"storageResourceUri,omitempty"`
@@ -111,10 +113,11 @@ type SelectiveKeyRestoreOperation struct {
 	StatusDetails *string `json:"statusDetails,omitempty"`
 }
 
+// SelectiveKeyRestoreOperationParameters - Parameters for the selective restore operation
 type SelectiveKeyRestoreOperationParameters struct {
 	// REQUIRED; The Folder name of the blob where the previous successful full backup was stored
 	Folder *string `json:"folder,omitempty"`
 
-	// REQUIRED
+	// REQUIRED; Contains the information required to access blob storage.
 	SasTokenParameters *SASTokenParameter `json:"sasTokenParameters,omitempty"`
 }

@@ -32,25 +32,25 @@ type Client struct {
 // azureStorageBlobContainerURI - Azure blob shared access signature token pointing to a valid Azure blob container where
 // full backup needs to be stored. This token needs to be valid for at least next 24 hours from the time of making
 // this call
-// options - ClientBeginFullBackupOptions contains the optional parameters for the Client.BeginFullBackup method.
-func (client *Client) BeginFullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameter, options *ClientBeginFullBackupOptions) (*runtime.Poller[ClientFullBackupResponse], error) {
+// options - BeginFullBackupOptions contains the optional parameters for the Client.BeginFullBackup method.
+func (client *Client) BeginFullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameter, options *BeginFullBackupOptions) (*runtime.Poller[FullBackupResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.fullBackup(ctx, azureStorageBlobContainerURI, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientFullBackupResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FullBackupResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientFullBackupResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FullBackupResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // FullBackup - Creates a full backup using a user-provided SAS token to an Azure blob storage container.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.4
-func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameter, options *ClientBeginFullBackupOptions) (*http.Response, error) {
+func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameter, options *BeginFullBackupOptions) (*http.Response, error) {
 	req, err := client.fullBackupCreateRequest(ctx, azureStorageBlobContainerURI, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +66,7 @@ func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerU
 }
 
 // fullBackupCreateRequest creates the FullBackup request.
-func (client *Client) fullBackupCreateRequest(ctx context.Context, azureStorageBlobContainerURI SASTokenParameter, options *ClientBeginFullBackupOptions) (*policy.Request, error) {
+func (client *Client) fullBackupCreateRequest(ctx context.Context, azureStorageBlobContainerURI SASTokenParameter, options *BeginFullBackupOptions) (*policy.Request, error) {
 	urlPath := "/backup"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -84,8 +84,8 @@ func (client *Client) fullBackupCreateRequest(ctx context.Context, azureStorageB
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.4
 // restoreBlobDetails - The Azure blob SAS token pointing to a folder where the previous successful full backup was stored
-// options - ClientBeginFullRestoreOptions contains the optional parameters for the Client.BeginFullRestore method.
-func (client *Client) BeginFullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *ClientBeginFullRestoreOptions) (*runtime.Poller[ClientFullRestoreResponse], error) {
+// options - BeginFullRestoreOptions contains the optional parameters for the Client.BeginFullRestore method.
+func (client *Client) BeginFullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BeginFullRestoreOptions) (*runtime.Poller[FullRestoreResponse], error) {
 	return client.beginFullRestore(ctx, restoreBlobDetails, options)
 }
 
@@ -93,7 +93,7 @@ func (client *Client) BeginFullRestore(ctx context.Context, restoreBlobDetails R
 // folder
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.4
-func (client *Client) fullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *ClientBeginFullRestoreOptions) (*http.Response, error) {
+func (client *Client) fullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BeginFullRestoreOptions) (*http.Response, error) {
 	req, err := client.fullRestoreCreateRequest(ctx, restoreBlobDetails, options)
 	if err != nil {
 		return nil, err
@@ -109,7 +109,7 @@ func (client *Client) fullRestore(ctx context.Context, restoreBlobDetails Restor
 }
 
 // fullRestoreCreateRequest creates the FullRestore request.
-func (client *Client) fullRestoreCreateRequest(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *ClientBeginFullRestoreOptions) (*policy.Request, error) {
+func (client *Client) fullRestoreCreateRequest(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BeginFullRestoreOptions) (*policy.Request, error) {
 	urlPath := "/restore"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -128,9 +128,9 @@ func (client *Client) fullRestoreCreateRequest(ctx context.Context, restoreBlobD
 // Generated from API version 7.4
 // keyName - The name of the key to be restored from the user supplied backup
 // restoreBlobDetails - The Azure blob SAS token pointing to a folder where the previous successful full backup was stored
-// options - ClientBeginSelectiveKeyRestoreOptions contains the optional parameters for the Client.BeginSelectiveKeyRestore
+// options - BeginSelectiveKeyRestoreOptions contains the optional parameters for the Client.BeginSelectiveKeyRestore
 // method.
-func (client *Client) BeginSelectiveKeyRestore(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *ClientBeginSelectiveKeyRestoreOptions) (*runtime.Poller[ClientSelectiveKeyRestoreResponse], error) {
+func (client *Client) BeginSelectiveKeyRestore(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *BeginSelectiveKeyRestoreOptions) (*runtime.Poller[SelectiveKeyRestoreResponse], error) {
 	return client.beginSelectiveKeyRestore(ctx, keyName, restoreBlobDetails, options)
 }
 
@@ -138,7 +138,7 @@ func (client *Client) BeginSelectiveKeyRestore(ctx context.Context, keyName stri
 // Azure Blob storage backup folder
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.4
-func (client *Client) selectiveKeyRestore(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *ClientBeginSelectiveKeyRestoreOptions) (*http.Response, error) {
+func (client *Client) selectiveKeyRestore(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *BeginSelectiveKeyRestoreOptions) (*http.Response, error) {
 	req, err := client.selectiveKeyRestoreCreateRequest(ctx, keyName, restoreBlobDetails, options)
 	if err != nil {
 		return nil, err
@@ -154,7 +154,7 @@ func (client *Client) selectiveKeyRestore(ctx context.Context, keyName string, r
 }
 
 // selectiveKeyRestoreCreateRequest creates the SelectiveKeyRestore request.
-func (client *Client) selectiveKeyRestoreCreateRequest(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *ClientBeginSelectiveKeyRestoreOptions) (*policy.Request, error) {
+func (client *Client) selectiveKeyRestoreCreateRequest(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *BeginSelectiveKeyRestoreOptions) (*policy.Request, error) {
 	urlPath := "/keys/{keyName}/restore"
 	if keyName == "" {
 		return nil, errors.New("parameter keyName cannot be empty")

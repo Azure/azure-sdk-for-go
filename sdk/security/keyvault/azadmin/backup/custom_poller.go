@@ -7,6 +7,7 @@
 package backup
 
 // this file contains handwritten additions to the generated code
+// custom poller handler for restore operations
 
 import (
 	"context"
@@ -16,7 +17,6 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/pollers"
 )
 
 func pollHelper(ctx context.Context, endpoint string, pl runtime.Pipeline, update func(resp *http.Response) (string, error)) error {
@@ -43,7 +43,7 @@ func resultHelper[T any](resp *http.Response, failed bool, out *T) error {
 	}
 
 	defer resp.Body.Close()
-	if !pollers.StatusCodeValid(resp) || failed {
+	if !statusCodeValid(resp) || failed {
 		// the LRO failed.  unmarshall the error and update state
 		return runtime.NewResponseError(resp)
 	}
@@ -99,15 +99,15 @@ func newRestorePoller[T any](pl runtime.Pipeline, resp *http.Response, finalStat
 	if asyncURL == "" {
 		return nil, errors.New("response is missing Azure-AsyncOperation header")
 	}
-	if !pollers.IsValidURL(asyncURL) {
+	if !isValidURL(asyncURL) {
 		return nil, fmt.Errorf("invalid polling URL %s", asyncURL)
 	}
 	// check for provisioning state.  if the operation is a RELO
 	// and terminates synchronously this will prevent extra polling.
 	// it's ok if there's no provisioning state.
-	state, _ := pollers.GetProvisioningState(resp)
+	state, _ := getProvisioningState(resp)
 	if state == "" {
-		state = pollers.StatusInProgress
+		state = statusInProgress
 	}
 	p := &restorePoller[T]{
 		pl:         pl,
@@ -124,17 +124,17 @@ func newRestorePoller[T any](pl runtime.Pipeline, resp *http.Response, finalStat
 
 // Done returns true if the LRO is in a terminal state.
 func (p *restorePoller[T]) Done() bool {
-	return pollers.IsTerminalState(p.CurState)
+	return isTerminalState(p.CurState)
 }
 
 // Poll retrieves the current state of the LRO.
 func (p *restorePoller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	err := pollHelper(ctx, p.AsyncURL, p.pl, func(resp *http.Response) (string, error) {
-		if !pollers.StatusCodeValid(resp) {
+		if !statusCodeValid(resp) {
 			p.resp = resp
 			return "", runtime.NewResponseError(resp)
 		}
-		state, err := pollers.GetStatus(resp)
+		state, err := getStatus(resp)
 		if err != nil {
 			return "", err
 		} else if state == "" {
@@ -153,9 +153,9 @@ func (p *restorePoller[T]) Poll(ctx context.Context) (*http.Response, error) {
 func (p *restorePoller[T]) Result(ctx context.Context, out *T) error {
 	if p.resp.StatusCode == http.StatusNoContent {
 		return nil
-	} else if pollers.Failed(p.CurState) {
+	} else if failed(p.CurState) {
 		return runtime.NewResponseError(p.resp)
 	}
 
-	return resultHelper(p.resp, pollers.Failed(p.CurState), out)
+	return resultHelper(p.resp, failed(p.CurState), out)
 }

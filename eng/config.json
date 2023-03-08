@@ -80,6 +80,10 @@
         {
             "Name": "resourcemanager",
             "CoverageGoal": 0.0
+        },
+        {
+            "Name": "security/keyvault/azadmin",
+            "CoverageGoal": 0.80
         }
     ]
 }

@@ -30,24 +30,24 @@ type Client struct {
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.4
 // settingName - The name of the account setting. Must be a valid settings option.
-// options - ClientGetSettingOptions contains the optional parameters for the Client.GetSetting method.
-func (client *Client) GetSetting(ctx context.Context, settingName string, options *ClientGetSettingOptions) (ClientGetSettingResponse, error) {
+// options - GetSettingOptions contains the optional parameters for the Client.GetSetting method.
+func (client *Client) GetSetting(ctx context.Context, settingName string, options *GetSettingOptions) (GetSettingResponse, error) {
 	req, err := client.getSettingCreateRequest(ctx, settingName, options)
 	if err != nil {
-		return ClientGetSettingResponse{}, err
+		return GetSettingResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClientGetSettingResponse{}, err
+		return GetSettingResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientGetSettingResponse{}, runtime.NewResponseError(resp)
+		return GetSettingResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSettingHandleResponse(resp)
 }
 
 // getSettingCreateRequest creates the GetSetting request.
-func (client *Client) getSettingCreateRequest(ctx context.Context, settingName string, options *ClientGetSettingOptions) (*policy.Request, error) {
+func (client *Client) getSettingCreateRequest(ctx context.Context, settingName string, options *GetSettingOptions) (*policy.Request, error) {
 	urlPath := "/settings/{setting-name}"
 	if settingName == "" {
 		return nil, errors.New("parameter settingName cannot be empty")
@@ -65,10 +65,10 @@ func (client *Client) getSettingCreateRequest(ctx context.Context, settingName s
 }
 
 // getSettingHandleResponse handles the GetSetting response.
-func (client *Client) getSettingHandleResponse(resp *http.Response) (ClientGetSettingResponse, error) {
-	result := ClientGetSettingResponse{}
+func (client *Client) getSettingHandleResponse(resp *http.Response) (GetSettingResponse, error) {
+	result := GetSettingResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Setting); err != nil {
-		return ClientGetSettingResponse{}, err
+		return GetSettingResponse{}, err
 	}
 	return result, nil
 }
@@ -76,24 +76,24 @@ func (client *Client) getSettingHandleResponse(resp *http.Response) (ClientGetSe
 // GetSettings - Retrieves a list of all the available account settings that can be configured.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.4
-// options - ClientGetSettingsOptions contains the optional parameters for the Client.GetSettings method.
-func (client *Client) GetSettings(ctx context.Context, options *ClientGetSettingsOptions) (ClientGetSettingsResponse, error) {
+// options - GetSettingsOptions contains the optional parameters for the Client.GetSettings method.
+func (client *Client) GetSettings(ctx context.Context, options *GetSettingsOptions) (GetSettingsResponse, error) {
 	req, err := client.getSettingsCreateRequest(ctx, options)
 	if err != nil {
-		return ClientGetSettingsResponse{}, err
+		return GetSettingsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClientGetSettingsResponse{}, err
+		return GetSettingsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientGetSettingsResponse{}, runtime.NewResponseError(resp)
+		return GetSettingsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getSettingsHandleResponse(resp)
 }
 
 // getSettingsCreateRequest creates the GetSettings request.
-func (client *Client) getSettingsCreateRequest(ctx context.Context, options *ClientGetSettingsOptions) (*policy.Request, error) {
+func (client *Client) getSettingsCreateRequest(ctx context.Context, options *GetSettingsOptions) (*policy.Request, error) {
 	urlPath := "/settings"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -107,10 +107,10 @@ func (client *Client) getSettingsCreateRequest(ctx context.Context, options *Cli
 }
 
 // getSettingsHandleResponse handles the GetSettings response.
-func (client *Client) getSettingsHandleResponse(resp *http.Response) (ClientGetSettingsResponse, error) {
-	result := ClientGetSettingsResponse{}
+func (client *Client) getSettingsHandleResponse(resp *http.Response) (GetSettingsResponse, error) {
+	result := GetSettingsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
-		return ClientGetSettingsResponse{}, err
+		return GetSettingsResponse{}, err
 	}
 	return result, nil
 }
@@ -120,24 +120,24 @@ func (client *Client) getSettingsHandleResponse(resp *http.Response) (ClientGetS
 // Generated from API version 7.4
 // settingName - The name of the account setting. Must be a valid settings option.
 // parameters - The parameters to update an account setting.
-// options - ClientUpdateSettingOptions contains the optional parameters for the Client.UpdateSetting method.
-func (client *Client) UpdateSetting(ctx context.Context, settingName string, parameters UpdateSettingRequest, options *ClientUpdateSettingOptions) (ClientUpdateSettingResponse, error) {
+// options - UpdateSettingOptions contains the optional parameters for the Client.UpdateSetting method.
+func (client *Client) UpdateSetting(ctx context.Context, settingName string, parameters UpdateSettingRequest, options *UpdateSettingOptions) (UpdateSettingResponse, error) {
 	req, err := client.updateSettingCreateRequest(ctx, settingName, parameters, options)
 	if err != nil {
-		return ClientUpdateSettingResponse{}, err
+		return UpdateSettingResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClientUpdateSettingResponse{}, err
+		return UpdateSettingResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClientUpdateSettingResponse{}, runtime.NewResponseError(resp)
+		return UpdateSettingResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateSettingHandleResponse(resp)
 }
 
 // updateSettingCreateRequest creates the UpdateSetting request.
-func (client *Client) updateSettingCreateRequest(ctx context.Context, settingName string, parameters UpdateSettingRequest, options *ClientUpdateSettingOptions) (*policy.Request, error) {
+func (client *Client) updateSettingCreateRequest(ctx context.Context, settingName string, parameters UpdateSettingRequest, options *UpdateSettingOptions) (*policy.Request, error) {
 	urlPath := "/settings/{setting-name}"
 	if settingName == "" {
 		return nil, errors.New("parameter settingName cannot be empty")
@@ -155,10 +155,10 @@ func (client *Client) updateSettingCreateRequest(ctx context.Context, settingNam
 }
 
 // updateSettingHandleResponse handles the UpdateSetting response.
-func (client *Client) updateSettingHandleResponse(resp *http.Response) (ClientUpdateSettingResponse, error) {
-	result := ClientUpdateSettingResponse{}
+func (client *Client) updateSettingHandleResponse(resp *http.Response) (UpdateSettingResponse, error) {
+	result := UpdateSettingResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Setting); err != nil {
-		return ClientUpdateSettingResponse{}, err
+		return UpdateSettingResponse{}, err
 	}
 	return result, nil
 }

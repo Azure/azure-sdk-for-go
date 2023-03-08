@@ -30,6 +30,8 @@ type ClientOptions struct {
 	DisableChallengeResourceVerification bool
 }
 
+// NewClient creates a client that performs backup and restore operations for a Managed HSM.
+// You should validate that vaultURL references a valid Managed HSM. See https://aka.ms/azsdk/blog/vault-uri for details.
 func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
@@ -65,55 +67,57 @@ func (e *ServerError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Error implements a custom error for type Error.
+// Error implements a custom error for type ServerError.
 func (e *ServerError) Error() string {
 	return string(e.data)
 }
 
 // beginFullRestore is a custom implementation of BeginFullRestore
 // Uses custom poller handler
-func (client *Client) beginFullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *ClientBeginFullRestoreOptions) (*runtime.Poller[ClientFullRestoreResponse], error) {
+func (client *Client) beginFullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BeginFullRestoreOptions) (*runtime.Poller[FullRestoreResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.fullRestore(ctx, restoreBlobDetails, options)
 		if err != nil {
 			return nil, err
 		}
-		handler, err := newRestorePoller[ClientFullRestoreResponse](client.pl, resp, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := newRestorePoller[FullRestoreResponse](client.pl, resp, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientFullRestoreResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FullRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
 		})
 	} else {
-		handler, err := newRestorePoller[ClientFullRestoreResponse](client.pl, nil, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := newRestorePoller[FullRestoreResponse](client.pl, nil, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[ClientFullRestoreResponse]{Handler: handler})
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[FullRestoreResponse]{Handler: handler})
 	}
 }
 
-func (client *Client) beginSelectiveKeyRestore(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *ClientBeginSelectiveKeyRestoreOptions) (*runtime.Poller[ClientSelectiveKeyRestoreResponse], error) {
+// beginSelectiveKeyRestore is a custom implementation of BeginFullRestore
+// Uses custom poller handler
+func (client *Client) beginSelectiveKeyRestore(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *BeginSelectiveKeyRestoreOptions) (*runtime.Poller[SelectiveKeyRestoreResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.selectiveKeyRestore(ctx, keyName, restoreBlobDetails, options)
 		if err != nil {
 			return nil, err
 		}
-		handler, err := newRestorePoller[ClientSelectiveKeyRestoreResponse](client.pl, resp, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := newRestorePoller[SelectiveKeyRestoreResponse](client.pl, resp, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientSelectiveKeyRestoreResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SelectiveKeyRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
 		})
 	} else {
-		handler, err := newRestorePoller[ClientSelectiveKeyRestoreResponse](client.pl, nil, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := newRestorePoller[SelectiveKeyRestoreResponse](client.pl, nil, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[ClientSelectiveKeyRestoreResponse]{Handler: handler})
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[SelectiveKeyRestoreResponse]{Handler: handler})
 	}
 }

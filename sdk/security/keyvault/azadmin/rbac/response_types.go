@@ -9,42 +9,42 @@
 
 package rbac
 
-// ClientCreateOrUpdateRoleDefinitionResponse contains the response from method Client.CreateOrUpdateRoleDefinition.
-type ClientCreateOrUpdateRoleDefinitionResponse struct {
+// CreateOrUpdateRoleDefinitionResponse contains the response from method Client.CreateOrUpdateRoleDefinition.
+type CreateOrUpdateRoleDefinitionResponse struct {
 	RoleDefinition
 }
 
-// ClientCreateRoleAssignmentResponse contains the response from method Client.CreateRoleAssignment.
-type ClientCreateRoleAssignmentResponse struct {
+// CreateRoleAssignmentResponse contains the response from method Client.CreateRoleAssignment.
+type CreateRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// ClientDeleteRoleAssignmentResponse contains the response from method Client.DeleteRoleAssignment.
-type ClientDeleteRoleAssignmentResponse struct {
+// DeleteRoleAssignmentResponse contains the response from method Client.DeleteRoleAssignment.
+type DeleteRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// ClientDeleteRoleDefinitionResponse contains the response from method Client.DeleteRoleDefinition.
-type ClientDeleteRoleDefinitionResponse struct {
+// DeleteRoleDefinitionResponse contains the response from method Client.DeleteRoleDefinition.
+type DeleteRoleDefinitionResponse struct {
 	RoleDefinition
 }
 
-// ClientGetRoleAssignmentResponse contains the response from method Client.GetRoleAssignment.
-type ClientGetRoleAssignmentResponse struct {
+// GetRoleAssignmentResponse contains the response from method Client.GetRoleAssignment.
+type GetRoleAssignmentResponse struct {
 	RoleAssignment
 }
 
-// ClientGetRoleDefinitionResponse contains the response from method Client.GetRoleDefinition.
-type ClientGetRoleDefinitionResponse struct {
+// GetRoleDefinitionResponse contains the response from method Client.GetRoleDefinition.
+type GetRoleDefinitionResponse struct {
 	RoleDefinition
 }
 
-// ClientListRoleAssignmentsResponse contains the response from method Client.ListRoleAssignments.
-type ClientListRoleAssignmentsResponse struct {
+// ListRoleAssignmentsResponse contains the response from method Client.ListRoleAssignments.
+type ListRoleAssignmentsResponse struct {
 	RoleAssignmentListResult
 }
 
-// ClientListRoleDefinitionsResponse contains the response from method Client.ListRoleDefinitions.
-type ClientListRoleDefinitionsResponse struct {
+// ListRoleDefinitionsResponse contains the response from method Client.ListRoleDefinitions.
+type ListRoleDefinitionsResponse struct {
 	RoleDefinitionListResult
 }

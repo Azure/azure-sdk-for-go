@@ -26,6 +26,8 @@ type ClientOptions struct {
 	DisableChallengeResourceVerification bool
 }
 
+// NewClient creates a client that provides methods to update, get, and list settings for a Managed HSM.
+// You should validate that vaultURL references a valid Managed HSM. See https://aka.ms/azsdk/blog/vault-uri for details.
 func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}

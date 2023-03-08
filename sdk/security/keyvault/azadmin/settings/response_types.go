@@ -9,17 +9,17 @@
 
 package settings
 
-// ClientGetSettingResponse contains the response from method Client.GetSetting.
-type ClientGetSettingResponse struct {
+// GetSettingResponse contains the response from method Client.GetSetting.
+type GetSettingResponse struct {
 	Setting
 }
 
-// ClientGetSettingsResponse contains the response from method Client.GetSettings.
-type ClientGetSettingsResponse struct {
+// GetSettingsResponse contains the response from method Client.GetSettings.
+type GetSettingsResponse struct {
 	ListResult
 }
 
-// ClientUpdateSettingResponse contains the response from method Client.UpdateSetting.
-type ClientUpdateSettingResponse struct {
+// UpdateSettingResponse contains the response from method Client.UpdateSetting.
+type UpdateSettingResponse struct {
 	Setting
 }

@@ -9,18 +9,18 @@
 
 package settings
 
-// ClientGetSettingOptions contains the optional parameters for the Client.GetSetting method.
-type ClientGetSettingOptions struct {
+// GetSettingOptions contains the optional parameters for the Client.GetSetting method.
+type GetSettingOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientGetSettingsOptions contains the optional parameters for the Client.GetSettings method.
-type ClientGetSettingsOptions struct {
+// GetSettingsOptions contains the optional parameters for the Client.GetSettings method.
+type GetSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientUpdateSettingOptions contains the optional parameters for the Client.UpdateSetting method.
-type ClientUpdateSettingOptions struct {
+// UpdateSettingOptions contains the optional parameters for the Client.UpdateSetting method.
+type UpdateSettingOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -30,6 +30,7 @@ type ListResult struct {
 	Settings []*Setting `json:"settings,omitempty" azure:"ro"`
 }
 
+// Setting - A Key Vault setting.
 type Setting struct {
 	// REQUIRED; The account setting to be updated
 	Name *string `json:"name,omitempty"`

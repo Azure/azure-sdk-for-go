@@ -68,4 +68,23 @@ directive:
   - from: client.go
     where: $
     transform:  return $.replace(/\[ClientSelectiveKeyRestoreResponse\], error\) \{\s(?:.+\s)+\}/, "[ClientSelectiveKeyRestoreResponse], error) {return client.beginSelectiveKeyRestore(ctx, keyName, restoreBlobDetails, options)}");
+
+  # delete client name prefix from method options and response types
+  - from:
+      - client.go
+      - models.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
+
+  # add doc comments for models with missing descriptions
+  - from: swagger-document
+    where: $.definitions.SASTokenParameter
+    transform: $["description"] = "Contains the information required to access blob storage."
+  - from: swagger-document
+    where: $.definitions.RestoreOperationParameters
+    transform: $["description"] = "Parameters for the restore operation"
+  - from: swagger-document
+    where: $.definitions.SelectiveKeyRestoreOperationParameters
+    transform: $["description"] = "Parameters for the selective restore operation"
 ```

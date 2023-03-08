@@ -22,12 +22,6 @@ directive:
     where: $["x-ms-parameterized-host"]
     transform: $.parameters[0]["x-ms-parameter-location"] = "client"
 
-  # fix bug- change ListResult.Value to ListResult.Settings
-  - where-model: SettingsListResult
-    rename-property:
-      from: value
-      to: settings
-
   # delete generated client constructor
   - from: client.go
     where: $
@@ -41,6 +35,15 @@ directive:
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:Error|KeyVaultError)\).*\{\s(?:.+\s)+\}\s/g, "");
 
-  # fix bug- change ListResult.Value to ListResult.Settings
-
-```
+  # delete client name prefix from method options and response types
+  - from:
+      - client.go
+      - models.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
+  
+  # add doc comment for Setting
+  - from: swagger-document
+    where: $.definitions.Setting
+    transform: $["description"] = "A Key Vault setting."

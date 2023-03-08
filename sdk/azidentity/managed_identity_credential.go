@@ -115,12 +115,12 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.To
 }
 
 func (c *ManagedIdentityCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenByCredential(ctx, opts.Scopes, confidential.WithClaims(opts.Claims), confidential.WithTenantID(opts.TenantID))
+	ar, err := c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
 func (c *ManagedIdentityCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, confidential.WithClaims(opts.Claims), confidential.WithTenantID(opts.TenantID))
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

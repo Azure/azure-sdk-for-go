@@ -11,7 +11,7 @@ package armnetapp
 
 const (
 	moduleName    = "armnetapp"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v4.0.0"
 )
 
 // ActiveDirectoryStatus - Status of the Active Directory
@@ -242,23 +242,22 @@ func PossibleEndpointTypeValues() []EndpointType {
 	}
 }
 
-// IdentityType - The identity type.
-type IdentityType string
+// FileAccessLogs - Flag indicating whether file access logs are enabled for the volume, based on active diagnostic settings
+// present on the volume.
+type FileAccessLogs string
 
 const (
-	IdentityTypeNone                       IdentityType = "None"
-	IdentityTypeSystemAssigned             IdentityType = "SystemAssigned"
-	IdentityTypeSystemAssignedUserAssigned IdentityType = "SystemAssigned,UserAssigned"
-	IdentityTypeUserAssigned               IdentityType = "UserAssigned"
+	// FileAccessLogsDisabled - fileAccessLogs are not enabled
+	FileAccessLogsDisabled FileAccessLogs = "Disabled"
+	// FileAccessLogsEnabled - fileAccessLogs are enabled
+	FileAccessLogsEnabled FileAccessLogs = "Enabled"
 )
 
-// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
-		IdentityTypeNone,
-		IdentityTypeSystemAssigned,
-		IdentityTypeSystemAssignedUserAssigned,
-		IdentityTypeUserAssigned,
+// PossibleFileAccessLogsValues returns the possible values for the FileAccessLogs const type.
+func PossibleFileAccessLogsValues() []FileAccessLogs {
+	return []FileAccessLogs{
+		FileAccessLogsDisabled,
+		FileAccessLogsEnabled,
 	}
 }
 
@@ -321,6 +320,26 @@ func PossibleKeyVaultStatusValues() []KeyVaultStatus {
 		KeyVaultStatusError,
 		KeyVaultStatusInUse,
 		KeyVaultStatusUpdating,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 

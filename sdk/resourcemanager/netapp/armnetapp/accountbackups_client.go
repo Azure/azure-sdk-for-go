@@ -32,10 +32,9 @@ type AccountBackupsClient struct {
 }
 
 // NewAccountBackupsClient creates a new instance of AccountBackupsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAccountBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountBackupsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +57,13 @@ func NewAccountBackupsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginDelete - Delete the specified Backup for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group.
-// accountName - The name of the NetApp account
-// backupName - The name of the backup
-// options - AccountBackupsClientBeginDeleteOptions contains the optional parameters for the AccountBackupsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - backupName - The name of the backup
+//   - options - AccountBackupsClientBeginDeleteOptions contains the optional parameters for the AccountBackupsClient.BeginDelete
+//     method.
 func (client *AccountBackupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientBeginDeleteOptions) (*runtime.Poller[AccountBackupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, backupName, options)
@@ -80,7 +80,8 @@ func (client *AccountBackupsClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Delete the specified Backup for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+//
+// Generated from API version 2022-09-01
 func (client *AccountBackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, backupName, options)
 	if err != nil {
@@ -120,18 +121,19 @@ func (client *AccountBackupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the specified backup for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group.
-// accountName - The name of the NetApp account
-// backupName - The name of the backup
-// options - AccountBackupsClientGetOptions contains the optional parameters for the AccountBackupsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - backupName - The name of the backup
+//   - options - AccountBackupsClientGetOptions contains the optional parameters for the AccountBackupsClient.Get method.
 func (client *AccountBackupsClient) Get(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientGetOptions) (AccountBackupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, backupName, options)
 	if err != nil {
@@ -171,7 +173,7 @@ func (client *AccountBackupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -187,10 +189,11 @@ func (client *AccountBackupsClient) getHandleResponse(resp *http.Response) (Acco
 }
 
 // NewListPager - List all Backups for a Netapp Account
-// Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group.
-// accountName - The name of the NetApp account
-// options - AccountBackupsClientListOptions contains the optional parameters for the AccountBackupsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - options - AccountBackupsClientListOptions contains the optional parameters for the AccountBackupsClient.NewListPager method.
 func (client *AccountBackupsClient) NewListPager(resourceGroupName string, accountName string, options *AccountBackupsClientListOptions) *runtime.Pager[AccountBackupsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountBackupsClientListResponse]{
 		More: func(page AccountBackupsClientListResponse) bool {
@@ -233,7 +236,7 @@ func (client *AccountBackupsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

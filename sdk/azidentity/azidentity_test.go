@@ -340,7 +340,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 						AdditionallyAllowedTenants: test.allowed,
 						tokenProvider: func(ctx context.Context, resource, tenantID string) ([]byte, error) {
 							if tenantID != test.expected {
-								t.Logf(`unexpected tenantID "%s"`, tenantID)
+								t.Errorf(`unexpected tenantID "%s"`, tenantID)
 							}
 							return mockCLITokenProviderSuccess(ctx, resource, tenantID)
 						},

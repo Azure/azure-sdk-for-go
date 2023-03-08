@@ -12,7 +12,7 @@ cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validate
 
 The Azure Key Vault administration library clients support administrative tasks such as full backup / restore and key-level role-based access control (RBAC).
 
-[Source code][azadmin_repo] | Package (pkg.go.dev)| [Product documentation][managed_hsm_docs] | Samples
+Source code | Package (pkg.go.dev)| [Product documentation][managed_hsm_docs] | Samples
 
 ## Getting started
 
@@ -40,11 +40,7 @@ The clients accept any [azidentity][azure_identity] credential. See the [azident
 
 #### Create a client
 
-Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal.
-
-- Example AccessControlClient
-- Example BackupClient
-- Example SettingsClient
+Constructing the client also requires your Managed HSM's URL, which you can get from the Azure CLI or the Azure Portal.
 
 ## Key concepts
 
@@ -123,8 +119,6 @@ if err != nil {
 // TODO: do something with response
 ```
 
-To learn more about other logging mechanisms see [here][logging].
-
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require
@@ -138,7 +132,6 @@ or contact opencode@microsoft.com with any
 additional questions or comments.
 
 <!-- LINKS -->
-[azadmin_repo]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/security/keyvault/azadmin
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free
 [create_managed_hsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli

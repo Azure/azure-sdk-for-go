@@ -26,7 +26,7 @@ type FileSignatureValues struct {
 	StartTime           time.Time `param:"st"`  // Not specified if IsZero
 	ExpiryTime          time.Time `param:"se"`  // Not specified if IsZero
 	SnapshotTime        time.Time
-	Permissions         string  `param:"sp"` // Create by initializing a SharePermissions or FilePermissions and then call String()
+	Permissions         string  `param:"sp"` // Create by initializing SharePermissions or FilePermissions and then call String()
 	IPRange             IPRange `param:"sip"`
 	Identifier          string  `param:"si"`
 	ShareName           string
@@ -142,7 +142,7 @@ type SharePermissions struct {
 }
 
 // String produces the SAS permissions string for an Azure Storage share.
-// Call this method to set FileSignatureValues' FilePermissions field.
+// Call this method to set FileSignatureValues' Permissions field.
 func (p *SharePermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
@@ -193,7 +193,7 @@ type FilePermissions struct {
 }
 
 // String produces the SAS permissions string for an Azure Storage file.
-// Call this method to set FileSASSignatureValues' FilePermissions field.
+// Call this method to set FileSignatureValues' Permissions field.
 func (p *FilePermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {

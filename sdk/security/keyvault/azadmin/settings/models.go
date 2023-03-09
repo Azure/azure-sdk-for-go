@@ -39,7 +39,7 @@ type Setting struct {
 	Value *string `json:"value,omitempty"`
 
 	// The type specifier of the value.
-	Type *SettingTypeEnum `json:"type,omitempty"`
+	Type *SettingType `json:"type,omitempty"`
 }
 
 // UpdateSettingRequest - The update settings request object.

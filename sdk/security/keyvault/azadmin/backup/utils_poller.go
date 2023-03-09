@@ -12,11 +12,10 @@ package backup
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/exported"
 )
 
 // the well-known set of LRO status/provisioning state values.
@@ -39,7 +38,7 @@ func failed(s string) bool {
 
 // returns true if the LRO response contains a valid HTTP status code
 func statusCodeValid(resp *http.Response) bool {
-	return exported.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusCreated, http.StatusNoContent)
+	return hasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusCreated, http.StatusNoContent)
 }
 
 // isValidURL verifies that the URL is valid and absolute.
@@ -54,7 +53,7 @@ var errNoBody = errors.New("the response did not contain a body")
 // getJSON reads the response body into a raw JSON object.
 // It returns ErrNoBody if there was no content.
 func getJSON(resp *http.Response) (map[string]any, error) {
-	body, err := exported.Payload(resp)
+	body, err := payload(resp)
 	if err != nil {
 		return nil, err
 	}
@@ -122,4 +121,89 @@ func getProvisioningState(resp *http.Response) (string, error) {
 		return "", err
 	}
 	return provisioningState(jsonBody), nil
+}
+
+// hasStatusCode returns true if the Response's status code is one of the specified values.
+// Exported as runtime.HasStatusCode().
+func hasStatusCode(resp *http.Response, statusCodes ...int) bool {
+	if resp == nil {
+		return false
+	}
+	for _, sc := range statusCodes {
+		if resp.StatusCode == sc {
+			return true
+		}
+	}
+	return false
+}
+
+// payload reads and returns the response body or an error.
+// On a successful read, the response body is cached.
+// Subsequent reads will access the cached value.
+// Exported as runtime.Payload().
+func payload(resp *http.Response) ([]byte, error) {
+	// r.Body won't be a nopClosingBytesReader if downloading was skipped
+	if buf, ok := resp.Body.(*nopClosingBytesReader); ok {
+		return buf.Bytes(), nil
+	}
+	bytesBody, err := io.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
+	resp.Body = &nopClosingBytesReader{s: bytesBody}
+	return bytesBody, nil
+}
+
+// nopClosingBytesReader is an io.ReadSeekCloser around a byte slice.
+// It also provides direct access to the byte slice to avoid rereading.
+type nopClosingBytesReader struct {
+	s []byte
+	i int64
+}
+
+// Bytes returns the underlying byte slice.
+func (r *nopClosingBytesReader) Bytes() []byte {
+	return r.s
+}
+
+// Close implements the io.Closer interface.
+func (*nopClosingBytesReader) Close() error {
+	return nil
+}
+
+// Read implements the io.Reader interface.
+func (r *nopClosingBytesReader) Read(b []byte) (n int, err error) {
+	if r.i >= int64(len(r.s)) {
+		return 0, io.EOF
+	}
+	n = copy(b, r.s[r.i:])
+	r.i += int64(n)
+	return
+}
+
+// Set replaces the existing byte slice with the specified byte slice and resets the reader.
+func (r *nopClosingBytesReader) Set(b []byte) {
+	r.s = b
+	r.i = 0
+}
+
+// Seek implements the io.Seeker interface.
+func (r *nopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
+	var i int64
+	switch whence {
+	case io.SeekStart:
+		i = offset
+	case io.SeekCurrent:
+		i = r.i + offset
+	case io.SeekEnd:
+		i = int64(len(r.s)) + offset
+	default:
+		return 0, errors.New("nopClosingBytesReader: invalid whence")
+	}
+	if i < 0 {
+		return 0, errors.New("nopClosingBytesReader: negative position")
+	}
+	r.i = i
+	return i, nil
 }

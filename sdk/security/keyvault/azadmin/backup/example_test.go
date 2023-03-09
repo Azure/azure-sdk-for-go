@@ -6,13 +6,16 @@ package backup_test
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup"
 )
 
 var client *backup.Client
+var keyClient *azkeys.Client
 
 func ExampleNewClient() {
 	vaultURL := "https://<TODO: your vault name>.managedhsm.azure.net/"
@@ -32,7 +35,7 @@ func ExampleNewClient() {
 func ExampleClient_BeginFullBackup() {
 	storageParameters := backup.SASTokenParameter{
 		StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
-		Token:              to.Ptr("SAS_TOKEN"),
+		Token:              to.Ptr("<your SAS token>"),
 	}
 	backupPoller, err := client.BeginFullBackup(context.Background(), storageParameters, nil)
 	if err != nil {
@@ -45,13 +48,31 @@ func ExampleClient_BeginFullBackup() {
 	fmt.Printf("Status of backup: %s", *backupResults.Status)
 }
 func ExampleClient_BeginFullRestore() {
+	// first, backup the managed HSM to a blob storage container
+	storageParameters := backup.SASTokenParameter{
+		StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
+		Token:              to.Ptr("<your SAS token>"),
+	}
+	backupPoller, err := client.BeginFullBackup(context.Background(), storageParameters, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+	backupResults, err := backupPoller.PollUntilDone(context.Background(), nil)
+	if err != nil {
+		// TODO: handle error
+	}
 
-	// FolderToRestore can be extracted from blob url returned from the backup operation
+	// FolderToRestore is the folder in the blob container your managed HSM was uploaded to
+	// FolderToRestore can be extracted from the returned backupResults.AzureStorageBlobContainerURI
+	s := *backupResults.AzureStorageBlobContainerURI
+	folderName := s[strings.LastIndex(s, "/")+1:]
+
+	// begin the restore operation
 	restoreOperationParameters := backup.RestoreOperationParameters{
-		FolderToRestore: to.Ptr("FOLDER_NAME"),
+		FolderToRestore: to.Ptr(folderName),
 		SasTokenParameters: &backup.SASTokenParameter{
 			StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
-			Token:              to.Ptr("SAS_TOKEN"),
+			Token:              to.Ptr("<your SAS token>"),
 		},
 	}
 	restorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
@@ -69,15 +90,43 @@ func ExampleClient_BeginFullRestore() {
 }
 
 func ExampleClient_BeginSelectiveKeyRestore() {
+	// first, create a key to backup
+	params := azkeys.CreateKeyParameters{
+		KeySize: to.Ptr(int32(2048)),
+		Kty:     to.Ptr(azkeys.JSONWebKeyTypeRSA),
+	}
+	_, err := keyClient.CreateKey(context.TODO(), "<key-name>", params, nil)
+	if err != nil {
+		// TODO: handle error
+	}
 
+	// backup the vault
+	storageParameters := backup.SASTokenParameter{
+		StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
+		Token:              to.Ptr("<your SAS token>"),
+	}
+	backupPoller, err := client.BeginFullBackup(context.Background(), storageParameters, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+	backupResults, err := backupPoller.PollUntilDone(context.Background(), nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	// extract the folder name where the vault was backed up
+	s := *backupResults.AzureStorageBlobContainerURI
+	folderName := s[strings.LastIndex(s, "/")+1:]
+
+	// restore the key
 	restoreOperationParameters := backup.SelectiveKeyRestoreOperationParameters{
-		Folder: to.Ptr("FOLDER_NAME"),
+		Folder: to.Ptr(folderName),
 		SasTokenParameters: &backup.SASTokenParameter{
 			StorageResourceURI: to.Ptr("https://<storage-account>.blob.core.windows.net/<container>"),
-			Token:              to.Ptr("SAS_TOKEN"),
+			Token:              to.Ptr("<your SAS token>"),
 		},
 	}
-	selectivePoller, err := client.BeginSelectiveKeyRestore(context.Background(), "keyName", restoreOperationParameters, nil)
+	selectivePoller, err := client.BeginSelectiveKeyRestore(context.Background(), "<key-name>", restoreOperationParameters, nil)
 	if err != nil {
 		// TODO: handle error
 	}

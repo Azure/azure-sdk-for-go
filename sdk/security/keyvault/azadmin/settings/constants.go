@@ -9,16 +9,16 @@
 
 package settings
 
-// SettingTypeEnum - The type specifier of the value.
-type SettingTypeEnum string
+// SettingType - The type specifier of the value.
+type SettingType string
 
 const (
-	SettingTypeEnumBoolean SettingTypeEnum = "boolean"
+	SettingTypeBoolean SettingType = "boolean"
 )
 
-// PossibleSettingTypeEnumValues returns the possible values for the SettingTypeEnum const type.
-func PossibleSettingTypeEnumValues() []SettingTypeEnum {
-	return []SettingTypeEnum{
-		SettingTypeEnumBoolean,
+// PossibleSettingTypeValues returns the possible values for the SettingType const type.
+func PossibleSettingTypeValues() []SettingType {
+	return []SettingType{
+		SettingTypeBoolean,
 	}
 }

@@ -3,14 +3,14 @@
 >**Note:** The Administration module only works with [Managed HSM][managed_hsm] – functions targeting a Key Vault will fail.
 
 * Vault administration (this module) - role-based access control (RBAC), settings, and vault-level backup and restore options
-* Certificate management (azcertificates) - create, manage, and deploy public and private SSL/TLS certificates
-* Cryptographic key management (azkeys) - create, store, and control access to the keys used to encrypt your data
-* Secrets management (azsecrets) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
+* Certificate management ([azcertificates](https://aka.ms/azsdk/go/keyvault-certificates/docs)) - create, manage, and deploy public and private SSL/TLS certificates
+* Cryptographic key management ([azkeys](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys)) - create, store, and control access to the keys used to encrypt your data
+* Secrets management ([azsecrets](https://aka.ms/azsdk/go/keyvault-secrets/docs)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
 
 Azure Key Vault Managed HSM is a fully-managed, highly-available, single-tenant, standards-compliant cloud service that enables you to safeguard
 cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validated HSMs.
 
-The Azure Key Vault administration library clients support administrative tasks such as full backup / restore and key-level role-based access control (RBAC).
+The Azure Key Vault administration library clients support administrative tasks such as full backup / restore, key-level role-based access control (RBAC), and settings management.
 
 Source code | Package (pkg.go.dev)| [Product documentation][managed_hsm_docs] | Samples
 
@@ -55,13 +55,17 @@ RoleDefinitions can be listed and specified as part of a `RoleAssignment`.
 
 A `RoleAssignment` is the association of a RoleDefinition to a service principal. They can be created, listed, fetched individually, and deleted.
 
-### AccessControlClient
+### rbac.Client
 
-An `AccessControlClient` allows for management of `RoleDefinition` and `RoleAssignment` types.
+An `rbac.Client` allows for management of `RoleDefinition` and `RoleAssignment` types.
 
-### BackupClient
+### backup.Client
 
-A `BackupClient` allows for performing full key backups, full key restores, and selective key restores.
+A `backup.Client` allows for performing full key backups, full key restores, and selective key restores.
+
+### settings.Client
+
+A `settings.Client` provides methods to update, get, and list settings for a Managed HSM.
 
 ## Examples
 

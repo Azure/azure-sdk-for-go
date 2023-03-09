@@ -24,7 +24,7 @@ func TestGetSetting(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, res)
 	require.Equal(t, *res.Name, settingName)
-	require.Equal(t, *res.Type, settings.SettingTypeEnumBoolean)
+	require.Equal(t, *res.Type, settings.SettingTypeBoolean)
 	require.NotNil(t, res.Value)
 	testSerde(t, &res)
 }
@@ -88,7 +88,7 @@ func TestUpdateSetting(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, res)
 	require.Equal(t, settingName, *res.Name)
-	require.Equal(t, settings.SettingTypeEnumBoolean, *res.Type)
+	require.Equal(t, settings.SettingTypeBoolean, *res.Type)
 
 	require.NotEqual(t, res.Value, update.Value)
 	_ = update

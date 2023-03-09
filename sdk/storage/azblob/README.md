@@ -21,7 +21,7 @@ Key links:
 
 - Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
 - Azure subscription - [Create a free account](https://azure.microsoft.com/free/)
-- Azure storage account - To create a storage account, you can use tools including the [Azure portal][storage_account_create_portal],
+- Azure storage account - To create a storage account, use tools including the [Azure portal][storage_account_create_portal],
 [Azure PowerShell][storage_account_create_ps], or the [Azure CLI][storage_account_create_cli].
 Here's an example using the Azure CLI:
 

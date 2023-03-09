@@ -42,7 +42,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
-	return (*Client)(base.NewBlobClient(blobURL, pl, nil)), nil
+	return (*Client)(base.NewBlobClient(blobURL, pl, &cred)), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -100,6 +100,10 @@ func (b *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.BlobClient])(b))
 }
 
+func (b *Client) credential() any {
+	return base.Credential((*base.Client[generated.BlobClient])(b))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (b *Client) URL() string {
 	return b.generated().Endpoint()
@@ -114,7 +118,7 @@ func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.sharedKey())), nil
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.credential())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -126,7 +130,7 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.sharedKey())), nil
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().Pipeline(), b.credential())), nil
 }
 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.

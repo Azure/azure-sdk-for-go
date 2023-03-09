@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesList.json
 func ExamplePrivateLinkScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExamplePrivateLinkScopesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesListByResourceGroup.json
 func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesDelete.json
 func ExamplePrivateLinkScopesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExamplePrivateLinkScopesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesGet.json
 func ExamplePrivateLinkScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func ExamplePrivateLinkScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesCreate.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +294,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesUpdate.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +352,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesUpdateTagsOnly.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesUpdateTagsOnly.json
 func ExamplePrivateLinkScopesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

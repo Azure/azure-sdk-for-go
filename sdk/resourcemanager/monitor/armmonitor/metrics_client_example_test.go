@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetric.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetric.json
 func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +386,7 @@ func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricData
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetricMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetricMetadata.json
 func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,7 +455,7 @@ func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricMeta
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/PostMultiResourceMetricBody.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/PostMultiResourceMetricBody.json
 func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscriptionLevelMetricDataUsingBodyParams() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -837,7 +837,7 @@ func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscription
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetric.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetric.json
 func ExampleMetricsClient_List_getMetricForData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1310,7 +1310,7 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricMetadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricMetadata.json
 func ExampleMetricsClient_List_getMetricForMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1409,7 +1409,7 @@ func ExampleMetricsClient_List_getMetricForMetadata() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fbfcfd2df9357735a95fc0aba82dd4577ffc1e63/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricError.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/add28efcd3a5fd422285d992fb1ec5ee5a7a40a6/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricError.json
 func ExampleMetricsClient_List_getMetricWithError() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

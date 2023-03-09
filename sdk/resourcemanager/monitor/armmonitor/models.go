@@ -1075,8 +1075,21 @@ type DataCollectionEndpoint struct {
 	// The endpoint used by clients to ingest logs.
 	LogsIngestion *DataCollectionEndpointLogsIngestion `json:"logsIngestion,omitempty"`
 
+	// The endpoint used by clients to ingest metrics.
+	MetricsIngestion *DataCollectionEndpointMetricsIngestion `json:"metricsIngestion,omitempty"`
+
 	// Network access control rules for the endpoints.
 	NetworkACLs *DataCollectionEndpointNetworkACLs `json:"networkAcls,omitempty"`
+
+	// READ-ONLY; Failover configuration on this endpoint. This property is READ-ONLY.
+	FailoverConfiguration *DataCollectionEndpointFailoverConfiguration `json:"failoverConfiguration,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata for the resource. This property is READ-ONLY.
+	Metadata *DataCollectionEndpointMetadata `json:"metadata,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of Azure Monitor Private Link Scope Resources to which this data collection endpoint resource is associated.
+	// This property is READ-ONLY.
+	PrivateLinkScopedResources []*PrivateLinkScopedResource `json:"privateLinkScopedResources,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource provisioning state. This property is READ-ONLY.
 	ProvisioningState *KnownDataCollectionEndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -1088,8 +1101,32 @@ type DataCollectionEndpointConfigurationAccess struct {
 	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
 }
 
+// DataCollectionEndpointFailoverConfiguration - Failover configuration on this endpoint. This property is READ-ONLY.
+type DataCollectionEndpointFailoverConfiguration struct {
+	// Active location where data flow will occur.
+	ActiveLocation *string `json:"activeLocation,omitempty"`
+
+	// Locations that are configured for failover.
+	Locations []*LocationSpec `json:"locations,omitempty"`
+}
+
 // DataCollectionEndpointLogsIngestion - The endpoint used by clients to ingest logs.
 type DataCollectionEndpointLogsIngestion struct {
+	// READ-ONLY; The endpoint. This property is READ-ONLY.
+	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+}
+
+// DataCollectionEndpointMetadata - Metadata for the resource. This property is READ-ONLY.
+type DataCollectionEndpointMetadata struct {
+	// READ-ONLY; Azure offering managing this resource on-behalf-of customer.
+	ProvisionedBy *string `json:"provisionedBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Id of azure offering managing this resource on-behalf-of customer.
+	ProvisionedByResourceID *string `json:"provisionedByResourceId,omitempty" azure:"ro"`
+}
+
+// DataCollectionEndpointMetricsIngestion - The endpoint used by clients to ingest metrics.
+type DataCollectionEndpointMetricsIngestion struct {
 	// READ-ONLY; The endpoint. This property is READ-ONLY.
 	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
 }
@@ -1104,6 +1141,9 @@ type DataCollectionEndpointNetworkACLs struct {
 type DataCollectionEndpointResource struct {
 	// REQUIRED; The geo-location where the resource lives.
 	Location *string `json:"location,omitempty"`
+
+	// Managed service identity of the resource.
+	Identity *DataCollectionEndpointResourceIdentity `json:"identity,omitempty"`
 
 	// The kind of the resource.
 	Kind *KnownDataCollectionEndpointResourceKind `json:"kind,omitempty"`
@@ -1130,6 +1170,26 @@ type DataCollectionEndpointResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// DataCollectionEndpointResourceIdentity - Managed service identity of the resource.
+type DataCollectionEndpointResourceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
 // DataCollectionEndpointResourceListResult - A pageable list of resources.
 type DataCollectionEndpointResourceListResult struct {
 	// REQUIRED; A list of resources.
@@ -1153,8 +1213,21 @@ type DataCollectionEndpointResourceProperties struct {
 	// The endpoint used by clients to ingest logs.
 	LogsIngestion *DataCollectionEndpointLogsIngestion `json:"logsIngestion,omitempty"`
 
+	// The endpoint used by clients to ingest metrics.
+	MetricsIngestion *DataCollectionEndpointMetricsIngestion `json:"metricsIngestion,omitempty"`
+
 	// Network access control rules for the endpoints.
 	NetworkACLs *DataCollectionEndpointNetworkACLs `json:"networkAcls,omitempty"`
+
+	// READ-ONLY; Failover configuration on this endpoint. This property is READ-ONLY.
+	FailoverConfiguration *DataCollectionEndpointFailoverConfiguration `json:"failoverConfiguration,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata for the resource. This property is READ-ONLY.
+	Metadata *DataCollectionEndpointMetadata `json:"metadata,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of Azure Monitor Private Link Scope Resources to which this data collection endpoint resource is associated.
+	// This property is READ-ONLY.
+	PrivateLinkScopedResources []*PrivateLinkScopedResource `json:"privateLinkScopedResources,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource provisioning state. This property is READ-ONLY.
 	ProvisioningState *KnownDataCollectionEndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -1271,6 +1344,9 @@ type DataCollectionRuleAssociation struct {
 type DataCollectionRuleAssociationMetadata struct {
 	// READ-ONLY; Azure offering managing this resource on-behalf-of customer.
 	ProvisionedBy *string `json:"provisionedBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Id of azure offering managing this resource on-behalf-of customer.
+	ProvisionedByResourceID *string `json:"provisionedByResourceId,omitempty" azure:"ro"`
 }
 
 // DataCollectionRuleAssociationProxyOnlyResource - Definition of generic ARM proxy resource.
@@ -1383,6 +1459,9 @@ type DataCollectionRuleAssociationsClientListByRuleOptions struct {
 // DataCollectionRuleDataSources - The specification of data sources. This property is optional and can be omitted if the
 // rule is meant to be used via direct calls to the provisioned endpoint.
 type DataCollectionRuleDataSources struct {
+	// Specifications of pull based data sources
+	DataImports *DataSourcesSpecDataImports `json:"dataImports,omitempty"`
+
 	// The list of Azure VM extension data source configurations.
 	Extensions []*ExtensionDataSource `json:"extensions,omitempty"`
 
@@ -1395,11 +1474,20 @@ type DataCollectionRuleDataSources struct {
 	// The list of performance counter data source configurations.
 	PerformanceCounters []*PerfCounterDataSource `json:"performanceCounters,omitempty"`
 
+	// The list of platform telemetry configurations
+	PlatformTelemetry []*PlatformTelemetryDataSource `json:"platformTelemetry,omitempty"`
+
+	// The list of Prometheus forwarder data source configurations.
+	PrometheusForwarder []*PrometheusForwarderDataSource `json:"prometheusForwarder,omitempty"`
+
 	// The list of Syslog data source configurations.
 	Syslog []*SyslogDataSource `json:"syslog,omitempty"`
 
 	// The list of Windows Event Log data source configurations.
 	WindowsEventLogs []*WindowsEventLogDataSource `json:"windowsEventLogs,omitempty"`
+
+	// The list of Windows Firewall logs source configurations.
+	WindowsFirewallLogs []*WindowsFirewallLogsDataSource `json:"windowsFirewallLogs,omitempty"`
 }
 
 // DataCollectionRuleDestinations - The specification of destinations.
@@ -1407,20 +1495,44 @@ type DataCollectionRuleDestinations struct {
 	// Azure Monitor Metrics destination.
 	AzureMonitorMetrics *DestinationsSpecAzureMonitorMetrics `json:"azureMonitorMetrics,omitempty"`
 
+	// List of Event Hubs destinations.
+	EventHubs []*EventHubDestination `json:"eventHubs,omitempty"`
+
+	// List of Event Hubs Direct destinations.
+	EventHubsDirect []*EventHubDirectDestination `json:"eventHubsDirect,omitempty"`
+
 	// List of Log Analytics destinations.
 	LogAnalytics []*LogAnalyticsDestination `json:"logAnalytics,omitempty"`
+
+	// List of monitoring account destinations.
+	MonitoringAccounts []*MonitoringAccountDestination `json:"monitoringAccounts,omitempty"`
+
+	// List of storage accounts destinations.
+	StorageAccounts []*StorageBlobDestination `json:"storageAccounts,omitempty"`
+
+	// List of Storage Blob Direct destinations. To be used only for sending data directly to store from the agent.
+	StorageBlobsDirect []*StorageBlobDestination `json:"storageBlobsDirect,omitempty"`
+
+	// List of Storage Table Direct destinations.
+	StorageTablesDirect []*StorageTableDestination `json:"storageTablesDirect,omitempty"`
 }
 
 // DataCollectionRuleMetadata - Metadata about the resource
 type DataCollectionRuleMetadata struct {
 	// READ-ONLY; Azure offering managing this resource on-behalf-of customer.
 	ProvisionedBy *string `json:"provisionedBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Id of azure offering managing this resource on-behalf-of customer.
+	ProvisionedByResourceID *string `json:"provisionedByResourceId,omitempty" azure:"ro"`
 }
 
 // DataCollectionRuleResource - Definition of ARM tracked top level resource.
 type DataCollectionRuleResource struct {
 	// REQUIRED; The geo-location where the resource lives.
 	Location *string `json:"location,omitempty"`
+
+	// Managed service identity of the resource.
+	Identity *DataCollectionRuleResourceIdentity `json:"identity,omitempty"`
 
 	// The kind of the resource.
 	Kind *KnownDataCollectionRuleResourceKind `json:"kind,omitempty"`
@@ -1445,6 +1557,26 @@ type DataCollectionRuleResource struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DataCollectionRuleResourceIdentity - Managed service identity of the resource.
+type DataCollectionRuleResourceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 // DataCollectionRuleResourceListResult - A pageable list of resources.
@@ -1550,6 +1682,9 @@ type DataContainer struct {
 
 // DataFlow - Definition of which streams are sent to which destinations.
 type DataFlow struct {
+	// The builtIn transform to transform stream data
+	BuiltInTransform *string `json:"builtInTransform,omitempty"`
+
 	// List of destinations for this data flow.
 	Destinations []*string `json:"destinations,omitempty"`
 
@@ -1563,8 +1698,29 @@ type DataFlow struct {
 	TransformKql *string `json:"transformKql,omitempty"`
 }
 
+type DataImportSources struct {
+	// Definition of Event Hub configuration.
+	EventHub *DataImportSourcesEventHub `json:"eventHub,omitempty"`
+}
+
+// DataImportSourcesEventHub - Definition of Event Hub configuration.
+type DataImportSourcesEventHub struct {
+	// Event Hub consumer group name
+	ConsumerGroup *string `json:"consumerGroup,omitempty"`
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
+
+	// The stream to collect from EventHub
+	Stream *string `json:"stream,omitempty"`
+}
+
 // DataSourcesSpec - Specification of data sources that will be collected.
 type DataSourcesSpec struct {
+	// Specifications of pull based data sources
+	DataImports *DataSourcesSpecDataImports `json:"dataImports,omitempty"`
+
 	// The list of Azure VM extension data source configurations.
 	Extensions []*ExtensionDataSource `json:"extensions,omitempty"`
 
@@ -1577,11 +1733,26 @@ type DataSourcesSpec struct {
 	// The list of performance counter data source configurations.
 	PerformanceCounters []*PerfCounterDataSource `json:"performanceCounters,omitempty"`
 
+	// The list of platform telemetry configurations
+	PlatformTelemetry []*PlatformTelemetryDataSource `json:"platformTelemetry,omitempty"`
+
+	// The list of Prometheus forwarder data source configurations.
+	PrometheusForwarder []*PrometheusForwarderDataSource `json:"prometheusForwarder,omitempty"`
+
 	// The list of Syslog data source configurations.
 	Syslog []*SyslogDataSource `json:"syslog,omitempty"`
 
 	// The list of Windows Event Log data source configurations.
 	WindowsEventLogs []*WindowsEventLogDataSource `json:"windowsEventLogs,omitempty"`
+
+	// The list of Windows Firewall logs source configurations.
+	WindowsFirewallLogs []*WindowsFirewallLogsDataSource `json:"windowsFirewallLogs,omitempty"`
+}
+
+// DataSourcesSpecDataImports - Specifications of pull based data sources
+type DataSourcesSpecDataImports struct {
+	// Definition of Event Hub configuration.
+	EventHub *DataImportSourcesEventHub `json:"eventHub,omitempty"`
 }
 
 // DefaultErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
@@ -1596,8 +1767,26 @@ type DestinationsSpec struct {
 	// Azure Monitor Metrics destination.
 	AzureMonitorMetrics *DestinationsSpecAzureMonitorMetrics `json:"azureMonitorMetrics,omitempty"`
 
+	// List of Event Hubs destinations.
+	EventHubs []*EventHubDestination `json:"eventHubs,omitempty"`
+
+	// List of Event Hubs Direct destinations.
+	EventHubsDirect []*EventHubDirectDestination `json:"eventHubsDirect,omitempty"`
+
 	// List of Log Analytics destinations.
 	LogAnalytics []*LogAnalyticsDestination `json:"logAnalytics,omitempty"`
+
+	// List of monitoring account destinations.
+	MonitoringAccounts []*MonitoringAccountDestination `json:"monitoringAccounts,omitempty"`
+
+	// List of storage accounts destinations.
+	StorageAccounts []*StorageBlobDestination `json:"storageAccounts,omitempty"`
+
+	// List of Storage Blob Direct destinations. To be used only for sending data directly to store from the agent.
+	StorageBlobsDirect []*StorageBlobDestination `json:"storageBlobsDirect,omitempty"`
+
+	// List of Storage Table Direct destinations.
+	StorageTablesDirect []*StorageTableDestination `json:"storageTablesDirect,omitempty"`
 }
 
 // DestinationsSpecAzureMonitorMetrics - Azure Monitor Metrics destination.
@@ -2091,6 +2280,36 @@ type EventDataCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+type EventHubDataSource struct {
+	// Event Hub consumer group name
+	ConsumerGroup *string `json:"consumerGroup,omitempty"`
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
+
+	// The stream to collect from EventHub
+	Stream *string `json:"stream,omitempty"`
+}
+
+type EventHubDestination struct {
+	// The resource ID of the event hub.
+	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
+
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
+}
+
+type EventHubDirectDestination struct {
+	// The resource ID of the event hub.
+	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
+
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
+}
+
 // EventHubReceiver - An Event hub receiver.
 type EventHubReceiver struct {
 	// REQUIRED; The name of the specific Event Hub queue
@@ -2132,6 +2351,14 @@ type ExtensionDataSource struct {
 	// List of streams that this data source will be sent to. A stream indicates what schema will be used for this data and usually
 	// what table in Log Analytics the data will be sent to.
 	Streams []*KnownExtensionDataSourceStreams `json:"streams,omitempty"`
+}
+
+type FailoverConfigurationSpec struct {
+	// Active location where data flow will occur.
+	ActiveLocation *string `json:"activeLocation,omitempty"`
+
+	// Locations that are configured for failover.
+	Locations []*LocationSpec `json:"locations,omitempty"`
 }
 
 // HTTPRequestInfo - The Http request info.
@@ -2238,6 +2465,14 @@ type LocalizableString struct {
 
 	// the locale specific value.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+type LocationSpec struct {
+	// Name of location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource provisioning state in this location.
+	ProvisioningStatus *KnownLocationSpecProvisioningStatus `json:"provisioningStatus,omitempty"`
 }
 
 // LocationThresholdRuleCondition - A rule condition based on a certain number of locations failing.
@@ -2445,6 +2680,26 @@ type LogsIngestionEndpointSpec struct {
 	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
 }
 
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
 // ManagementEventAggregationCondition - How the data that is collected should be combined over time.
 type ManagementEventAggregationCondition struct {
 	// the condition operator.
@@ -2486,6 +2741,9 @@ func (m *ManagementEventRuleCondition) GetRuleCondition() *RuleCondition {
 type Metadata struct {
 	// READ-ONLY; Azure offering managing this resource on-behalf-of customer.
 	ProvisionedBy *string `json:"provisionedBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource Id of azure offering managing this resource on-behalf-of customer.
+	ProvisionedByResourceID *string `json:"provisionedByResourceId,omitempty" azure:"ro"`
 }
 
 // MetadataValue - Represents a metric metadata value.
@@ -3211,6 +3469,25 @@ type MetricsClientListOptions struct {
 	ValidateDimensions *bool
 }
 
+// MetricsIngestionEndpointSpec - Definition of the endpoint used for ingesting metrics.
+type MetricsIngestionEndpointSpec struct {
+	// READ-ONLY; The endpoint. This property is READ-ONLY.
+	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+}
+
+// MonitoringAccountDestination - Monitoring account destination.
+type MonitoringAccountDestination struct {
+	// The resource ID of the monitoring account.
+	AccountResourceID *string `json:"accountResourceId,omitempty"`
+
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
+
+	// READ-ONLY; The immutable ID of the account.
+	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+}
+
 // MultiMetricCriteriaClassification provides polymorphic access to related types.
 // Call the interface's GetMultiMetricCriteria() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -3430,6 +3707,16 @@ type PerfCounterDataSource struct {
 	Streams []*KnownPerfCounterDataSourceStreams `json:"streams,omitempty"`
 }
 
+// PlatformTelemetryDataSource - Definition of platform telemetry data source configuration
+type PlatformTelemetryDataSource struct {
+	// REQUIRED; List of platform telemetry streams to collect
+	Streams []*string `json:"streams,omitempty"`
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
+}
+
 // PredictiveAutoscalePolicy - The parameters for enabling predictive autoscale.
 type PredictiveAutoscalePolicy struct {
 	// REQUIRED; the predictive autoscale mode
@@ -3591,6 +3878,15 @@ type PrivateLinkScopeOperationStatusClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+type PrivateLinkScopedResource struct {
+	// The resourceId of the Azure Monitor Private Link Scope Scoped Resource through which this DCE is associated with a Azure
+	// Monitor Private Link Scope.
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// The immutableId of the Azure Monitor Private Link Scope Resource to which the association is.
+	ScopeID *string `json:"scopeId,omitempty"`
+}
+
 // PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.BeginCreateOrUpdate
 // method.
 type PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions struct {
@@ -3662,6 +3958,20 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+}
+
+// PrometheusForwarderDataSource - Definition of Prometheus metrics forwarding configuration.
+type PrometheusForwarderDataSource struct {
+	// The list of label inclusion filters in the form of label "name-value" pairs. Currently only one label is supported: 'microsoftmetricsinclude_label'.
+	// Label values are matched case-insensitively.
+	LabelIncludeFilter map[string]*string `json:"labelIncludeFilter,omitempty"`
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
+
+	// List of streams that this data source will be sent to.
+	Streams []*KnownPrometheusForwarderDataSourceStreams `json:"streams,omitempty"`
 }
 
 // ProxyResource - An azure resource object
@@ -3848,8 +4158,31 @@ type ResourceAutoGenerated5 struct {
 
 // ResourceForUpdate - Definition of ARM tracked top level resource properties for update operation.
 type ResourceForUpdate struct {
+	// Managed Service Identity.
+	Identity *ResourceForUpdateIdentity `json:"identity,omitempty"`
+
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// ResourceForUpdateIdentity - Managed Service Identity.
+type ResourceForUpdateIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 // Response - The response to a metrics query.
@@ -4441,6 +4774,30 @@ type SmsReceiverAutoGenerated struct {
 	Status *ReceiverStatus `json:"status,omitempty" azure:"ro"`
 }
 
+type StorageBlobDestination struct {
+	// The container name of the Storage Blob.
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
+
+	// The resource ID of the storage account.
+	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
+}
+
+type StorageTableDestination struct {
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
+
+	// The resource ID of the storage account.
+	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
+
+	// The name of the Storage Table.
+	TableName *string `json:"tableName,omitempty"`
+}
+
 // StreamDeclaration - Declaration of a custom stream.
 type StreamDeclaration struct {
 	// List of columns used by data in this stream.
@@ -4914,6 +5271,15 @@ type TrackedResourceAutoGenerated struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+}
+
 // UserIdentityProperties - User assigned identity properties.
 type UserIdentityProperties struct {
 	// READ-ONLY; The client id of user assigned identity.
@@ -5081,6 +5447,16 @@ type WindowsEventLogDataSource struct {
 
 	// A list of Windows Event Log queries in XPATH format.
 	XPathQueries []*string `json:"xPathQueries,omitempty"`
+}
+
+// WindowsFirewallLogsDataSource - Enables Firewall logs to be collected by this data collection rule.
+type WindowsFirewallLogsDataSource struct {
+	// REQUIRED; Firewall logs streams
+	Streams []*string `json:"streams,omitempty"`
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string `json:"name,omitempty"`
 }
 
 // WorkspaceInfo - Information about a Log Analytics Workspace.

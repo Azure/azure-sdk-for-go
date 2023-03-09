@@ -3,7 +3,7 @@
 ## 1.4.1 (Unreleased)
 
 ### Features Added
-* Added `Predicate` to `policy.RetryOptions` for finer-grained control over when to retry.
+* Added `ShouldRetry` to `policy.RetryOptions` for finer-grained control over when to retry.
 
 ### Breaking Changes
 

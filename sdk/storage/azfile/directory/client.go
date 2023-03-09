@@ -12,7 +12,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"net/url"
+	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -28,7 +32,10 @@ type Client base.Client[generated.DirectoryClient]
 //   - directoryURL - the URL of the directory e.g. https://<account>.file.core.windows.net/share/directory?<sas token>
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	conOptions := shared.GetClientOptions(options)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewDirectoryClient(directoryURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -36,7 +43,12 @@ func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Cl
 //   - cred - a SharedKeyCredential created with the matching directory's storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	authPolicy := exported.NewSharedKeyCredPolicy(cred)
+	conOptions := shared.GetClientOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewDirectoryClient(directoryURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -45,7 +57,23 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 //   - directoryPath - the path of the directory within the share
 //   - options - client options; pass nil to accept the default values
 func NewClientFromConnectionString(connectionString string, shareName string, directoryPath string, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	parsed, err := shared.ParseConnectionString(connectionString)
+	if err != nil {
+		return nil, err
+	}
+
+	directoryPath = strings.ReplaceAll(directoryPath, "\\", "/")
+	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, shareName, directoryPath)
+
+	if parsed.AccountKey != "" && parsed.AccountName != "" {
+		credential, err := exported.NewSharedKeyCredential(parsed.AccountName, parsed.AccountKey)
+		if err != nil {
+			return nil, err
+		}
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
+	}
+
+	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
 func (d *Client) generated() *generated.DirectoryClient {
@@ -64,13 +92,17 @@ func (d *Client) URL() string {
 // NewSubdirectoryClient creates a new Client object by concatenating subDirectoryName to the end of this Client's URL.
 // The new subdirectory Client uses the same request policy pipeline as the parent directory Client.
 func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
-	return nil
+	subDirectoryName = url.PathEscape(subDirectoryName)
+	subDirectoryURL := runtime.JoinPaths(d.URL(), subDirectoryName)
+	return (*Client)(base.NewDirectoryClient(subDirectoryURL, d.generated().Pipeline(), d.sharedKey()))
 }
 
 // NewFileClient creates a new file.Client object by concatenating fileName to the end of this Client's URL.
 // The new file.Client uses the same request policy pipeline as the Client.
 func (d *Client) NewFileClient(fileName string) *file.Client {
-	return nil
+	fileName = url.PathEscape(fileName)
+	fileURL := runtime.JoinPaths(d.URL(), fileName)
+	return (*file.Client)(base.NewFileClient(fileURL, d.generated().Pipeline(), d.sharedKey()))
 }
 
 // Create operation creates a new directory under the specified share or parent directory.

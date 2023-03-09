@@ -244,3 +244,17 @@ directive:
         replace(/\(client \*ServiceClient\) listSharesSegmentCreateRequest\(/, `(client *ServiceClient) ListSharesSegmentCreateRequest(`).
         replace(/\(client \*ServiceClient\) listSharesSegmentHandleResponse\(/, `(client *ServiceClient) ListSharesSegmentHandleResponse(`);
 ```
+
+### Use string type for FileCreationTime and FileLastWriteTime
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FileCreationTime
+  transform: >
+    $.format = "str";
+- from: swagger-document
+  where: $.parameters.FileLastWriteTime
+  transform: >
+    $.format = "str";
+```

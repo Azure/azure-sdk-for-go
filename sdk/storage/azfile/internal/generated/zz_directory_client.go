@@ -49,7 +49,7 @@ func NewDirectoryClient(endpoint string, pl runtime.Pipeline) *DirectoryClient {
 //   - fileCreationTime - Creation time for the file/directory. Default value: Now.
 //   - fileLastWriteTime - Last write time for the file/directory. Default value: Now.
 //   - options - DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
-func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
+func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
 		return DirectoryClientCreateResponse{}, err
@@ -65,7 +65,7 @@ func (client *DirectoryClient) Create(ctx context.Context, fileAttributes string
 }
 
 // createCreateRequest creates the Create request.
-func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientCreateOptions) (*policy.Request, error) {
+func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryClientCreateOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -91,8 +91,8 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, fileAttr
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
 	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
-	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime.Format(time.RFC1123)}
-	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime.Format(time.RFC1123)}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
@@ -681,7 +681,7 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 //   - fileCreationTime - Creation time for the file/directory. Default value: Now.
 //   - fileLastWriteTime - Last write time for the file/directory. Default value: Now.
 //   - options - DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
-func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
+func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
 	req, err := client.setPropertiesCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
 		return DirectoryClientSetPropertiesResponse{}, err
@@ -697,7 +697,7 @@ func (client *DirectoryClient) SetProperties(ctx context.Context, fileAttributes
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryClientSetPropertiesOptions) (*policy.Request, error) {
+func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryClientSetPropertiesOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -717,8 +717,8 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, f
 		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
 	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
-	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime.Format(time.RFC1123)}
-	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime.Format(time.RFC1123)}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }

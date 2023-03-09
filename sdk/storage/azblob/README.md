@@ -13,7 +13,7 @@ Use the Azure Blob Storage client module `github.com/Azure/azure-sdk-for-go/sdk/
 
 Key links:
 
-[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples](https://github.com/Azure-Samples/azure-sdk-for-go-samples)
+[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][go_samples]
 
 ## Getting started
 
@@ -250,11 +250,12 @@ additional questions or comments.
 
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob
-[docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
+[docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azblob#section_documentation
 [rest_docs]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [godevdl]: https://go.dev/dl/
 [goget]: https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
+[go_samples]: (https://github.com/Azure-Samples/azure-sdk-for-go-samples)
 [storage_account_docs]: https://learn.microsoft.com/azure/storage/common/storage-account-overview
 [storage_account_create_ps]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
 [storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli

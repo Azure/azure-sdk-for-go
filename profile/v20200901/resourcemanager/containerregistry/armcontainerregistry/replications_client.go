@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,65 +25,58 @@ import (
 // ReplicationsClient contains the methods for the Replications group.
 // Don't use this type directly, use NewReplicationsClient() instead.
 type ReplicationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewReplicationsClient creates a new instance of ReplicationsClient with the specified values.
-// subscriptionID - The Microsoft Azure subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Microsoft Azure subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewReplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".ReplicationsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReplicationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Creates a replication for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// replicationName - The name of the replication.
-// replication - The parameters for creating a replication.
-// options - ReplicationsClientBeginCreateOptions contains the optional parameters for the ReplicationsClient.BeginCreate
-// method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - replicationName - The name of the replication.
+//   - replication - The parameters for creating a replication.
+//   - options - ReplicationsClientBeginCreateOptions contains the optional parameters for the ReplicationsClient.BeginCreate
+//     method.
 func (client *ReplicationsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication Replication, options *ReplicationsClientBeginCreateOptions) (*runtime.Poller[ReplicationsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, registryName, replicationName, replication, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ReplicationsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationsClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Creates a replication for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
 func (client *ReplicationsClient) create(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication Replication, options *ReplicationsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, replicationName, replication, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +105,7 @@ func (client *ReplicationsClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter replicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{replicationName}", url.PathEscape(replicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,33 +118,35 @@ func (client *ReplicationsClient) createCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Deletes a replication from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// replicationName - The name of the replication.
-// options - ReplicationsClientBeginDeleteOptions contains the optional parameters for the ReplicationsClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - replicationName - The name of the replication.
+//   - options - ReplicationsClientBeginDeleteOptions contains the optional parameters for the ReplicationsClient.BeginDelete
+//     method.
 func (client *ReplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientBeginDeleteOptions) (*runtime.Poller[ReplicationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, replicationName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ReplicationsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a replication from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
 func (client *ReplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, replicationName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +175,7 @@ func (client *ReplicationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter replicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{replicationName}", url.PathEscape(replicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,17 +187,18 @@ func (client *ReplicationsClient) deleteCreateRequest(ctx context.Context, resou
 
 // Get - Gets the properties of the specified replication.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// replicationName - The name of the replication.
-// options - ReplicationsClientGetOptions contains the optional parameters for the ReplicationsClient.Get method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - replicationName - The name of the replication.
+//   - options - ReplicationsClientGetOptions contains the optional parameters for the ReplicationsClient.Get method.
 func (client *ReplicationsClient) Get(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *ReplicationsClientGetOptions) (ReplicationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, replicationName, options)
 	if err != nil {
 		return ReplicationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReplicationsClientGetResponse{}, err
 	}
@@ -233,7 +227,7 @@ func (client *ReplicationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter replicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{replicationName}", url.PathEscape(replicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -254,10 +248,11 @@ func (client *ReplicationsClient) getHandleResponse(resp *http.Response) (Replic
 }
 
 // NewListPager - Lists all the replications for the specified container registry.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// options - ReplicationsClientListOptions contains the optional parameters for the ReplicationsClient.List method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - options - ReplicationsClientListOptions contains the optional parameters for the ReplicationsClient.NewListPager method.
 func (client *ReplicationsClient) NewListPager(resourceGroupName string, registryName string, options *ReplicationsClientListOptions) *runtime.Pager[ReplicationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationsClientListResponse]{
 		More: func(page ReplicationsClientListResponse) bool {
@@ -274,7 +269,7 @@ func (client *ReplicationsClient) NewListPager(resourceGroupName string, registr
 			if err != nil {
 				return ReplicationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReplicationsClientListResponse{}, err
 			}
@@ -301,7 +296,7 @@ func (client *ReplicationsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -323,34 +318,36 @@ func (client *ReplicationsClient) listHandleResponse(resp *http.Response) (Repli
 
 // BeginUpdate - Updates a replication for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// replicationName - The name of the replication.
-// replicationUpdateParameters - The parameters for updating a replication.
-// options - ReplicationsClientBeginUpdateOptions contains the optional parameters for the ReplicationsClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - replicationName - The name of the replication.
+//   - replicationUpdateParameters - The parameters for updating a replication.
+//   - options - ReplicationsClientBeginUpdateOptions contains the optional parameters for the ReplicationsClient.BeginUpdate
+//     method.
 func (client *ReplicationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters ReplicationUpdateParameters, options *ReplicationsClientBeginUpdateOptions) (*runtime.Poller[ReplicationsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, registryName, replicationName, replicationUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ReplicationsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Updates a replication for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
 func (client *ReplicationsClient) update(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters ReplicationUpdateParameters, options *ReplicationsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, replicationName, replicationUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -379,7 +376,7 @@ func (client *ReplicationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter replicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{replicationName}", url.PathEscape(replicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

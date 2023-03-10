@@ -553,13 +553,13 @@ type CertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.ListByResourceGroup
+// CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.NewListByResourceGroupPager
 // method.
 type CertificatesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
 type CertificatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -702,7 +702,7 @@ type ContinuousWebJobProperties struct {
 	RunCommand *string `json:"run_command,omitempty"`
 
 	// Job settings.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]any `json:"settings,omitempty"`
 
 	// Job status.
 	Status *ContinuousWebJobStatus `json:"status,omitempty"`
@@ -1236,7 +1236,7 @@ type FunctionEnvelopeCollection struct {
 // FunctionEnvelopeProperties - FunctionEnvelope resource specific properties
 type FunctionEnvelopeProperties struct {
 	// Config information.
-	Config interface{} `json:"config,omitempty"`
+	Config any `json:"config,omitempty"`
 
 	// Config URI.
 	ConfigHref *string `json:"config_href,omitempty"`
@@ -2314,7 +2314,8 @@ type PlansClientGetVnetGatewayOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.ListByResourceGroup method.
+// PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.NewListByResourceGroupPager
+// method.
 type PlansClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2330,17 +2331,19 @@ type PlansClientListHybridConnectionKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListHybridConnectionsOptions contains the optional parameters for the PlansClient.ListHybridConnections method.
+// PlansClientListHybridConnectionsOptions contains the optional parameters for the PlansClient.NewListHybridConnectionsPager
+// method.
 type PlansClientListHybridConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListMetricDefintionsOptions contains the optional parameters for the PlansClient.ListMetricDefintions method.
+// PlansClientListMetricDefintionsOptions contains the optional parameters for the PlansClient.NewListMetricDefintionsPager
+// method.
 type PlansClientListMetricDefintionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListMetricsOptions contains the optional parameters for the PlansClient.ListMetrics method.
+// PlansClientListMetricsOptions contains the optional parameters for the PlansClient.NewListMetricsPager method.
 type PlansClientListMetricsOptions struct {
 	// Specify true to include instance details. The default is false.
 	Details *bool
@@ -2350,7 +2353,7 @@ type PlansClientListMetricsOptions struct {
 	Filter *string
 }
 
-// PlansClientListOptions contains the optional parameters for the PlansClient.List method.
+// PlansClientListOptions contains the optional parameters for the PlansClient.NewListPager method.
 type PlansClientListOptions struct {
 	// Specify true to return all App Service plan properties. The default is false, which returns a subset of the properties.
 	// Retrieval of all properties may increase the API latency.
@@ -2362,7 +2365,7 @@ type PlansClientListRoutesForVnetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListUsagesOptions contains the optional parameters for the PlansClient.ListUsages method.
+// PlansClientListUsagesOptions contains the optional parameters for the PlansClient.NewListUsagesPager method.
 type PlansClientListUsagesOptions struct {
 	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1'
 	// or name.value eq 'Metric2').
@@ -2374,13 +2377,13 @@ type PlansClientListVnetsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListWebAppsByHybridConnectionOptions contains the optional parameters for the PlansClient.ListWebAppsByHybridConnection
+// PlansClientListWebAppsByHybridConnectionOptions contains the optional parameters for the PlansClient.NewListWebAppsByHybridConnectionPager
 // method.
 type PlansClientListWebAppsByHybridConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.ListWebApps method.
+// PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.NewListWebAppsPager method.
 type PlansClientListWebAppsOptions struct {
 	// Supported filter: $filter=state eq running. Returns only web apps that are currently running
 	Filter *string
@@ -2879,18 +2882,19 @@ type ProcessThreadInfoProperties struct {
 	Identifier *int32 `json:"identifier,omitempty" azure:"ro"`
 }
 
-// ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.GetAvailableStacksOnPrem
+// ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksOnPremPager
 // method.
 type ProviderClientGetAvailableStacksOnPremOptions struct {
 	OSTypeSelected *Enum12
 }
 
-// ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.GetAvailableStacks method.
+// ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksPager
+// method.
 type ProviderClientGetAvailableStacksOptions struct {
 	OSTypeSelected *Enum11
 }
 
-// ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.ListOperations method.
+// ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.NewListOperationsPager method.
 type ProviderClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3226,7 +3230,7 @@ type RecommendationsClientGetRuleDetailsByWebAppOptions struct {
 	UpdateSeen *bool
 }
 
-// RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ListHistoryForHostingEnvironment
+// RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.NewListHistoryForHostingEnvironmentPager
 // method.
 type RecommendationsClientListHistoryForHostingEnvironmentOptions struct {
 	// Specify false to return all recommendations. The default is true, which returns only expired recommendations.
@@ -3237,7 +3241,7 @@ type RecommendationsClientListHistoryForHostingEnvironmentOptions struct {
 	Filter *string
 }
 
-// RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.ListHistoryForWebApp
+// RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.NewListHistoryForWebAppPager
 // method.
 type RecommendationsClientListHistoryForWebAppOptions struct {
 	// Specify false to return all recommendations. The default is true, which returns only expired recommendations.
@@ -3248,7 +3252,7 @@ type RecommendationsClientListHistoryForWebAppOptions struct {
 	Filter *string
 }
 
-// RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
+// RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager method.
 type RecommendationsClientListOptions struct {
 	// Specify true to return only the most critical recommendations. The default is false, which returns all recommendations.
 	Featured *bool
@@ -3258,7 +3262,7 @@ type RecommendationsClientListOptions struct {
 	Filter *string
 }
 
-// RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ListRecommendedRulesForHostingEnvironment
+// RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.NewListRecommendedRulesForHostingEnvironmentPager
 // method.
 type RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions struct {
 	// Specify true to return only the most critical recommendations. The default is false, which returns all recommendations.
@@ -3268,7 +3272,7 @@ type RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions struc
 	Filter *string
 }
 
-// RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.ListRecommendedRulesForWebApp
+// RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.NewListRecommendedRulesForWebAppPager
 // method.
 type RecommendationsClientListRecommendedRulesForWebAppOptions struct {
 	// Specify true to return only the most critical recommendations. The default is false, which returns all recommendations.
@@ -5112,7 +5116,7 @@ type TriggeredWebJobProperties struct {
 	SchedulerLogsURL *string `json:"scheduler_logs_url,omitempty"`
 
 	// Job settings.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]any `json:"settings,omitempty"`
 
 	// Job URL.
 	URL *string `json:"url,omitempty"`
@@ -6731,41 +6735,43 @@ type WebAppsClientListBackupStatusSecretsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListBackupsOptions contains the optional parameters for the WebAppsClient.ListBackups method.
+// WebAppsClientListBackupsOptions contains the optional parameters for the WebAppsClient.NewListBackupsPager method.
 type WebAppsClientListBackupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListBackupsSlotOptions contains the optional parameters for the WebAppsClient.ListBackupsSlot method.
+// WebAppsClientListBackupsSlotOptions contains the optional parameters for the WebAppsClient.NewListBackupsSlotPager method.
 type WebAppsClientListBackupsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.ListByResourceGroup method.
+// WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.NewListByResourceGroupPager
+// method.
 type WebAppsClientListByResourceGroupOptions struct {
 	// Specify true to include deployment slots in results. The default is false, which only gives you the production slot of
 	// all apps.
 	IncludeSlots *bool
 }
 
-// WebAppsClientListConfigurationSnapshotInfoOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfo
+// WebAppsClientListConfigurationSnapshotInfoOptions contains the optional parameters for the WebAppsClient.NewListConfigurationSnapshotInfoPager
 // method.
 type WebAppsClientListConfigurationSnapshotInfoOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListConfigurationSnapshotInfoSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfoSlot
+// WebAppsClientListConfigurationSnapshotInfoSlotOptions contains the optional parameters for the WebAppsClient.NewListConfigurationSnapshotInfoSlotPager
 // method.
 type WebAppsClientListConfigurationSnapshotInfoSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListConfigurationsOptions contains the optional parameters for the WebAppsClient.ListConfigurations method.
+// WebAppsClientListConfigurationsOptions contains the optional parameters for the WebAppsClient.NewListConfigurationsPager
+// method.
 type WebAppsClientListConfigurationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListConfigurationsSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationsSlot
+// WebAppsClientListConfigurationsSlotOptions contains the optional parameters for the WebAppsClient.NewListConfigurationsSlotPager
 // method.
 type WebAppsClientListConfigurationsSlotOptions struct {
 	// placeholder for future optional parameters
@@ -6783,13 +6789,13 @@ type WebAppsClientListConnectionStringsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListContinuousWebJobsOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobs
+// WebAppsClientListContinuousWebJobsOptions contains the optional parameters for the WebAppsClient.NewListContinuousWebJobsPager
 // method.
 type WebAppsClientListContinuousWebJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListContinuousWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobsSlot
+// WebAppsClientListContinuousWebJobsSlotOptions contains the optional parameters for the WebAppsClient.NewListContinuousWebJobsSlotPager
 // method.
 type WebAppsClientListContinuousWebJobsSlotOptions struct {
 	// placeholder for future optional parameters
@@ -6806,23 +6812,24 @@ type WebAppsClientListDeploymentLogSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListDeploymentsOptions contains the optional parameters for the WebAppsClient.ListDeployments method.
+// WebAppsClientListDeploymentsOptions contains the optional parameters for the WebAppsClient.NewListDeploymentsPager method.
 type WebAppsClientListDeploymentsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListDeploymentsSlotOptions contains the optional parameters for the WebAppsClient.ListDeploymentsSlot method.
+// WebAppsClientListDeploymentsSlotOptions contains the optional parameters for the WebAppsClient.NewListDeploymentsSlotPager
+// method.
 type WebAppsClientListDeploymentsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiers
+// WebAppsClientListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebAppsClient.NewListDomainOwnershipIdentifiersPager
 // method.
 type WebAppsClientListDomainOwnershipIdentifiersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListDomainOwnershipIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiersSlot
+// WebAppsClientListDomainOwnershipIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.NewListDomainOwnershipIdentifiersSlotPager
 // method.
 type WebAppsClientListDomainOwnershipIdentifiersSlotOptions struct {
 	// placeholder for future optional parameters
@@ -6849,7 +6856,7 @@ type WebAppsClientListFunctionSecretsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListFunctionsOptions contains the optional parameters for the WebAppsClient.ListFunctions method.
+// WebAppsClientListFunctionsOptions contains the optional parameters for the WebAppsClient.NewListFunctionsPager method.
 type WebAppsClientListFunctionsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6864,12 +6871,13 @@ type WebAppsClientListHostKeysSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListHostNameBindingsOptions contains the optional parameters for the WebAppsClient.ListHostNameBindings method.
+// WebAppsClientListHostNameBindingsOptions contains the optional parameters for the WebAppsClient.NewListHostNameBindingsPager
+// method.
 type WebAppsClientListHostNameBindingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListHostNameBindingsSlotOptions contains the optional parameters for the WebAppsClient.ListHostNameBindingsSlot
+// WebAppsClientListHostNameBindingsSlotOptions contains the optional parameters for the WebAppsClient.NewListHostNameBindingsSlotPager
 // method.
 type WebAppsClientListHostNameBindingsSlotOptions struct {
 	// placeholder for future optional parameters
@@ -6899,55 +6907,55 @@ type WebAppsClientListHybridConnectionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceFunctionsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceFunctionsSlot
+// WebAppsClientListInstanceFunctionsSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceFunctionsSlotPager
 // method.
 type WebAppsClientListInstanceFunctionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceIdentifiersOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiers
+// WebAppsClientListInstanceIdentifiersOptions contains the optional parameters for the WebAppsClient.NewListInstanceIdentifiersPager
 // method.
 type WebAppsClientListInstanceIdentifiersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiersSlot
+// WebAppsClientListInstanceIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceIdentifiersSlotPager
 // method.
 type WebAppsClientListInstanceIdentifiersSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessModulesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModules
+// WebAppsClientListInstanceProcessModulesOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessModulesPager
 // method.
 type WebAppsClientListInstanceProcessModulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModulesSlot
+// WebAppsClientListInstanceProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessModulesSlotPager
 // method.
 type WebAppsClientListInstanceProcessModulesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreads
+// WebAppsClientListInstanceProcessThreadsOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessThreadsPager
 // method.
 type WebAppsClientListInstanceProcessThreadsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreadsSlot
+// WebAppsClientListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessThreadsSlotPager
 // method.
 type WebAppsClientListInstanceProcessThreadsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcesses
+// WebAppsClientListInstanceProcessesOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessesPager
 // method.
 type WebAppsClientListInstanceProcessesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessesSlot
+// WebAppsClientListInstanceProcessesSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessesSlotPager
 // method.
 type WebAppsClientListInstanceProcessesSlotOptions struct {
 	// placeholder for future optional parameters
@@ -6963,19 +6971,19 @@ type WebAppsClientListMetadataSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListMetricDefinitionsOptions contains the optional parameters for the WebAppsClient.ListMetricDefinitions
+// WebAppsClientListMetricDefinitionsOptions contains the optional parameters for the WebAppsClient.NewListMetricDefinitionsPager
 // method.
 type WebAppsClientListMetricDefinitionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListMetricDefinitionsSlotOptions contains the optional parameters for the WebAppsClient.ListMetricDefinitionsSlot
+// WebAppsClientListMetricDefinitionsSlotOptions contains the optional parameters for the WebAppsClient.NewListMetricDefinitionsSlotPager
 // method.
 type WebAppsClientListMetricDefinitionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListMetricsOptions contains the optional parameters for the WebAppsClient.ListMetrics method.
+// WebAppsClientListMetricsOptions contains the optional parameters for the WebAppsClient.NewListMetricsPager method.
 type WebAppsClientListMetricsOptions struct {
 	// Specify "true" to include metric details in the response. It is "false" by default.
 	Details *bool
@@ -6985,7 +6993,7 @@ type WebAppsClientListMetricsOptions struct {
 	Filter *string
 }
 
-// WebAppsClientListMetricsSlotOptions contains the optional parameters for the WebAppsClient.ListMetricsSlot method.
+// WebAppsClientListMetricsSlotOptions contains the optional parameters for the WebAppsClient.NewListMetricsSlotPager method.
 type WebAppsClientListMetricsSlotOptions struct {
 	// Specify "true" to include metric details in the response. It is "false" by default.
 	Details *bool
@@ -7006,12 +7014,13 @@ type WebAppsClientListNetworkFeaturesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListOptions contains the optional parameters for the WebAppsClient.List method.
+// WebAppsClientListOptions contains the optional parameters for the WebAppsClient.NewListPager method.
 type WebAppsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListPerfMonCountersOptions contains the optional parameters for the WebAppsClient.ListPerfMonCounters method.
+// WebAppsClientListPerfMonCountersOptions contains the optional parameters for the WebAppsClient.NewListPerfMonCountersPager
+// method.
 type WebAppsClientListPerfMonCountersOptions struct {
 	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z
 	// and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
@@ -7019,7 +7028,7 @@ type WebAppsClientListPerfMonCountersOptions struct {
 	Filter *string
 }
 
-// WebAppsClientListPerfMonCountersSlotOptions contains the optional parameters for the WebAppsClient.ListPerfMonCountersSlot
+// WebAppsClientListPerfMonCountersSlotOptions contains the optional parameters for the WebAppsClient.NewListPerfMonCountersSlotPager
 // method.
 type WebAppsClientListPerfMonCountersSlotOptions struct {
 	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z
@@ -7039,45 +7048,48 @@ type WebAppsClientListPremierAddOnsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessModulesOptions contains the optional parameters for the WebAppsClient.ListProcessModules method.
+// WebAppsClientListProcessModulesOptions contains the optional parameters for the WebAppsClient.NewListProcessModulesPager
+// method.
 type WebAppsClientListProcessModulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessModulesSlot
+// WebAppsClientListProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessModulesSlotPager
 // method.
 type WebAppsClientListProcessModulesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListProcessThreads method.
+// WebAppsClientListProcessThreadsOptions contains the optional parameters for the WebAppsClient.NewListProcessThreadsPager
+// method.
 type WebAppsClientListProcessThreadsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListProcessThreadsSlot
+// WebAppsClientListProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessThreadsSlotPager
 // method.
 type WebAppsClientListProcessThreadsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessesOptions contains the optional parameters for the WebAppsClient.ListProcesses method.
+// WebAppsClientListProcessesOptions contains the optional parameters for the WebAppsClient.NewListProcessesPager method.
 type WebAppsClientListProcessesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessesSlot method.
+// WebAppsClientListProcessesSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessesSlotPager
+// method.
 type WebAppsClientListProcessesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListPublicCertificatesOptions contains the optional parameters for the WebAppsClient.ListPublicCertificates
+// WebAppsClientListPublicCertificatesOptions contains the optional parameters for the WebAppsClient.NewListPublicCertificatesPager
 // method.
 type WebAppsClientListPublicCertificatesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListPublicCertificatesSlotOptions contains the optional parameters for the WebAppsClient.ListPublicCertificatesSlot
+// WebAppsClientListPublicCertificatesSlotOptions contains the optional parameters for the WebAppsClient.NewListPublicCertificatesSlotPager
 // method.
 type WebAppsClientListPublicCertificatesSlotOptions struct {
 	// placeholder for future optional parameters
@@ -7107,12 +7119,13 @@ type WebAppsClientListRelayServiceConnectionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSiteExtensionsOptions contains the optional parameters for the WebAppsClient.ListSiteExtensions method.
+// WebAppsClientListSiteExtensionsOptions contains the optional parameters for the WebAppsClient.NewListSiteExtensionsPager
+// method.
 type WebAppsClientListSiteExtensionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSiteExtensionsSlotOptions contains the optional parameters for the WebAppsClient.ListSiteExtensionsSlot
+// WebAppsClientListSiteExtensionsSlotOptions contains the optional parameters for the WebAppsClient.NewListSiteExtensionsSlotPager
 // method.
 type WebAppsClientListSiteExtensionsSlotOptions struct {
 	// placeholder for future optional parameters
@@ -7135,41 +7148,42 @@ type WebAppsClientListSlotConfigurationNamesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSlotDifferencesFromProductionOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesFromProduction
+// WebAppsClientListSlotDifferencesFromProductionOptions contains the optional parameters for the WebAppsClient.NewListSlotDifferencesFromProductionPager
 // method.
 type WebAppsClientListSlotDifferencesFromProductionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSlotDifferencesSlotOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesSlot
+// WebAppsClientListSlotDifferencesSlotOptions contains the optional parameters for the WebAppsClient.NewListSlotDifferencesSlotPager
 // method.
 type WebAppsClientListSlotDifferencesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSlotsOptions contains the optional parameters for the WebAppsClient.ListSlots method.
+// WebAppsClientListSlotsOptions contains the optional parameters for the WebAppsClient.NewListSlotsPager method.
 type WebAppsClientListSlotsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondary
+// WebAppsClientListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsFromDRSecondaryPager
 // method.
 type WebAppsClientListSnapshotsFromDRSecondaryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSnapshotsFromDRSecondarySlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondarySlot
+// WebAppsClientListSnapshotsFromDRSecondarySlotOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsFromDRSecondarySlotPager
 // method.
 type WebAppsClientListSnapshotsFromDRSecondarySlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSnapshotsOptions contains the optional parameters for the WebAppsClient.ListSnapshots method.
+// WebAppsClientListSnapshotsOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsPager method.
 type WebAppsClientListSnapshotsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSnapshotsSlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsSlot method.
+// WebAppsClientListSnapshotsSlotOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsSlotPager
+// method.
 type WebAppsClientListSnapshotsSlotOptions struct {
 	// placeholder for future optional parameters
 }
@@ -7196,30 +7210,31 @@ type WebAppsClientListSyncStatusSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistory
+// WebAppsClientListTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobHistoryPager
 // method.
 type WebAppsClientListTriggeredWebJobHistoryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistorySlot
+// WebAppsClientListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobHistorySlotPager
 // method.
 type WebAppsClientListTriggeredWebJobHistorySlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListTriggeredWebJobsOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobs method.
+// WebAppsClientListTriggeredWebJobsOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobsPager
+// method.
 type WebAppsClientListTriggeredWebJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListTriggeredWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobsSlot
+// WebAppsClientListTriggeredWebJobsSlotOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobsSlotPager
 // method.
 type WebAppsClientListTriggeredWebJobsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListUsagesOptions contains the optional parameters for the WebAppsClient.ListUsages method.
+// WebAppsClientListUsagesOptions contains the optional parameters for the WebAppsClient.NewListUsagesPager method.
 type WebAppsClientListUsagesOptions struct {
 	// Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or
 	// name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
@@ -7227,7 +7242,7 @@ type WebAppsClientListUsagesOptions struct {
 	Filter *string
 }
 
-// WebAppsClientListUsagesSlotOptions contains the optional parameters for the WebAppsClient.ListUsagesSlot method.
+// WebAppsClientListUsagesSlotOptions contains the optional parameters for the WebAppsClient.NewListUsagesSlotPager method.
 type WebAppsClientListUsagesSlotOptions struct {
 	// Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or
 	// name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
@@ -7246,12 +7261,12 @@ type WebAppsClientListVnetConnectionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListWebJobsOptions contains the optional parameters for the WebAppsClient.ListWebJobs method.
+// WebAppsClientListWebJobsOptions contains the optional parameters for the WebAppsClient.NewListWebJobsPager method.
 type WebAppsClientListWebJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListWebJobsSlot method.
+// WebAppsClientListWebJobsSlotOptions contains the optional parameters for the WebAppsClient.NewListWebJobsSlotPager method.
 type WebAppsClientListWebJobsSlotOptions struct {
 	// placeholder for future optional parameters
 }
@@ -7690,7 +7705,7 @@ type WebJobProperties struct {
 	RunCommand *string `json:"run_command,omitempty"`
 
 	// Job settings.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]any `json:"settings,omitempty"`
 
 	// Job URL.
 	URL *string `json:"url,omitempty"`
@@ -7726,7 +7741,7 @@ type WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientListBillingMetersOptions contains the optional parameters for the WebSiteManagementClient.ListBillingMeters
+// WebSiteManagementClientListBillingMetersOptions contains the optional parameters for the WebSiteManagementClient.NewListBillingMetersPager
 // method.
 type WebSiteManagementClientListBillingMetersOptions struct {
 	// Azure Location of billable resource
@@ -7735,7 +7750,7 @@ type WebSiteManagementClientListBillingMetersOptions struct {
 	OSType *string
 }
 
-// WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.ListGeoRegions
+// WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.NewListGeoRegionsPager
 // method.
 type WebSiteManagementClientListGeoRegionsOptions struct {
 	// Specify true if you want to filter to only regions that support Linux Consumption Workers.
@@ -7748,7 +7763,7 @@ type WebSiteManagementClientListGeoRegionsOptions struct {
 	XenonWorkersEnabled *bool
 }
 
-// WebSiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the WebSiteManagementClient.ListPremierAddOnOffers
+// WebSiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the WebSiteManagementClient.NewListPremierAddOnOffersPager
 // method.
 type WebSiteManagementClientListPremierAddOnOffersOptions struct {
 	// placeholder for future optional parameters
@@ -7759,13 +7774,13 @@ type WebSiteManagementClientListSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions contains the optional parameters for the WebSiteManagementClient.ListSiteIdentifiersAssignedToHostName
+// WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions contains the optional parameters for the WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager
 // method.
 type WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientListSourceControlsOptions contains the optional parameters for the WebSiteManagementClient.ListSourceControls
+// WebSiteManagementClientListSourceControlsOptions contains the optional parameters for the WebSiteManagementClient.NewListSourceControlsPager
 // method.
 type WebSiteManagementClientListSourceControlsOptions struct {
 	// placeholder for future optional parameters

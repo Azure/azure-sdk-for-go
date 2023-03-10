@@ -511,7 +511,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -668,7 +668,8 @@ type ResourceClientExportDevicesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceClientGetEndpointHealthOptions contains the optional parameters for the ResourceClient.GetEndpointHealth method.
+// ResourceClientGetEndpointHealthOptions contains the optional parameters for the ResourceClient.NewGetEndpointHealthPager
+// method.
 type ResourceClientGetEndpointHealthOptions struct {
 	// placeholder for future optional parameters
 }
@@ -694,7 +695,7 @@ type ResourceClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceClientGetQuotaMetricsOptions contains the optional parameters for the ResourceClient.GetQuotaMetrics method.
+// ResourceClientGetQuotaMetricsOptions contains the optional parameters for the ResourceClient.NewGetQuotaMetricsPager method.
 type ResourceClientGetQuotaMetricsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -704,7 +705,7 @@ type ResourceClientGetStatsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceClientGetValidSKUsOptions contains the optional parameters for the ResourceClient.GetValidSKUs method.
+// ResourceClientGetValidSKUsOptions contains the optional parameters for the ResourceClient.NewGetValidSKUsPager method.
 type ResourceClientGetValidSKUsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -714,28 +715,30 @@ type ResourceClientImportDevicesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceClientListByResourceGroupOptions contains the optional parameters for the ResourceClient.ListByResourceGroup method.
+// ResourceClientListByResourceGroupOptions contains the optional parameters for the ResourceClient.NewListByResourceGroupPager
+// method.
 type ResourceClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceClientListBySubscriptionOptions contains the optional parameters for the ResourceClient.ListBySubscription method.
+// ResourceClientListBySubscriptionOptions contains the optional parameters for the ResourceClient.NewListBySubscriptionPager
+// method.
 type ResourceClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceClientListEventHubConsumerGroupsOptions contains the optional parameters for the ResourceClient.ListEventHubConsumerGroups
+// ResourceClientListEventHubConsumerGroupsOptions contains the optional parameters for the ResourceClient.NewListEventHubConsumerGroupsPager
 // method.
 type ResourceClientListEventHubConsumerGroupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceClientListJobsOptions contains the optional parameters for the ResourceClient.ListJobs method.
+// ResourceClientListJobsOptions contains the optional parameters for the ResourceClient.NewListJobsPager method.
 type ResourceClientListJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceClientListKeysOptions contains the optional parameters for the ResourceClient.ListKeys method.
+// ResourceClientListKeysOptions contains the optional parameters for the ResourceClient.NewListKeysPager method.
 type ResourceClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
@@ -954,15 +957,15 @@ type RoutingTwin struct {
 	Properties *RoutingTwinProperties `json:"properties,omitempty"`
 
 	// Twin Tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags any `json:"tags,omitempty"`
 }
 
 type RoutingTwinProperties struct {
 	// Twin desired properties
-	Desired interface{} `json:"desired,omitempty"`
+	Desired any `json:"desired,omitempty"`
 
 	// Twin desired properties
-	Reported interface{} `json:"reported,omitempty"`
+	Reported any `json:"reported,omitempty"`
 }
 
 // SKUDescription - SKU properties.

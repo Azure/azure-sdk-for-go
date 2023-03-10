@@ -205,7 +205,8 @@ type ClustersClientListAvailableClusterRegionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
+// method.
 type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -278,7 +279,7 @@ type ConsumerGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConsumerGroupsClientListByEventHubOptions contains the optional parameters for the ConsumerGroupsClient.ListByEventHub
+// ConsumerGroupsClientListByEventHubOptions contains the optional parameters for the ConsumerGroupsClient.NewListByEventHubPager
 // method.
 type ConsumerGroupsClientListByEventHubOptions struct {
 	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
@@ -318,7 +319,7 @@ type DisasterRecoveryConfigsClientGetAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DisasterRecoveryConfigsClientListAuthorizationRulesOptions contains the optional parameters for the DisasterRecoveryConfigsClient.ListAuthorizationRules
+// DisasterRecoveryConfigsClientListAuthorizationRulesOptions contains the optional parameters for the DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager
 // method.
 type DisasterRecoveryConfigsClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
@@ -470,13 +471,14 @@ type EventHubsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsClientListAuthorizationRulesOptions contains the optional parameters for the EventHubsClient.ListAuthorizationRules
+// EventHubsClientListAuthorizationRulesOptions contains the optional parameters for the EventHubsClient.NewListAuthorizationRulesPager
 // method.
 type EventHubsClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventHubsClientListByNamespaceOptions contains the optional parameters for the EventHubsClient.ListByNamespace method.
+// EventHubsClientListByNamespaceOptions contains the optional parameters for the EventHubsClient.NewListByNamespacePager
+// method.
 type EventHubsClientListByNamespaceOptions struct {
 	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
 	// the value of the nextLink element will include a skip parameter that specifies
@@ -625,13 +627,13 @@ type NamespacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.ListAuthorizationRules
+// NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.NewListAuthorizationRulesPager
 // method.
 type NamespacesClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.ListByResourceGroup
+// NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.NewListByResourceGroupPager
 // method.
 type NamespacesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
@@ -642,7 +644,7 @@ type NamespacesClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientListOptions contains the optional parameters for the NamespacesClient.List method.
+// NamespacesClientListOptions contains the optional parameters for the NamespacesClient.NewListPager method.
 type NamespacesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -688,7 +690,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -754,7 +756,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -835,7 +837,7 @@ type RegenerateAccessKeyParameters struct {
 	Key *string `json:"key,omitempty"`
 }
 
-// RegionsClientListBySKUOptions contains the optional parameters for the RegionsClient.ListBySKU method.
+// RegionsClientListBySKUOptions contains the optional parameters for the RegionsClient.NewListBySKUPager method.
 type RegionsClientListBySKUOptions struct {
 	// placeholder for future optional parameters
 }

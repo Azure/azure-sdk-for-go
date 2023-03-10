@@ -9,7 +9,7 @@
 
 package armcontainerregistry
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -19,12 +19,12 @@ type RegistriesClientCheckNameAvailabilityResponse struct {
 	RegistryNameStatus
 }
 
-// RegistriesClientCreateResponse contains the response from method RegistriesClient.Create.
+// RegistriesClientCreateResponse contains the response from method RegistriesClient.BeginCreate.
 type RegistriesClientCreateResponse struct {
 	Registry
 }
 
-// RegistriesClientDeleteResponse contains the response from method RegistriesClient.Delete.
+// RegistriesClientDeleteResponse contains the response from method RegistriesClient.BeginDelete.
 type RegistriesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -34,12 +34,12 @@ type RegistriesClientGetResponse struct {
 	Registry
 }
 
-// RegistriesClientImportImageResponse contains the response from method RegistriesClient.ImportImage.
+// RegistriesClientImportImageResponse contains the response from method RegistriesClient.BeginImportImage.
 type RegistriesClientImportImageResponse struct {
 	// placeholder for future response values
 }
 
-// RegistriesClientListByResourceGroupResponse contains the response from method RegistriesClient.ListByResourceGroup.
+// RegistriesClientListByResourceGroupResponse contains the response from method RegistriesClient.NewListByResourceGroupPager.
 type RegistriesClientListByResourceGroupResponse struct {
 	RegistryListResult
 }
@@ -49,7 +49,7 @@ type RegistriesClientListCredentialsResponse struct {
 	RegistryListCredentialsResult
 }
 
-// RegistriesClientListResponse contains the response from method RegistriesClient.List.
+// RegistriesClientListResponse contains the response from method RegistriesClient.NewListPager.
 type RegistriesClientListResponse struct {
 	RegistryListResult
 }
@@ -64,17 +64,17 @@ type RegistriesClientRegenerateCredentialResponse struct {
 	RegistryListCredentialsResult
 }
 
-// RegistriesClientUpdateResponse contains the response from method RegistriesClient.Update.
+// RegistriesClientUpdateResponse contains the response from method RegistriesClient.BeginUpdate.
 type RegistriesClientUpdateResponse struct {
 	Registry
 }
 
-// ReplicationsClientCreateResponse contains the response from method ReplicationsClient.Create.
+// ReplicationsClientCreateResponse contains the response from method ReplicationsClient.BeginCreate.
 type ReplicationsClientCreateResponse struct {
 	Replication
 }
 
-// ReplicationsClientDeleteResponse contains the response from method ReplicationsClient.Delete.
+// ReplicationsClientDeleteResponse contains the response from method ReplicationsClient.BeginDelete.
 type ReplicationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -84,22 +84,22 @@ type ReplicationsClientGetResponse struct {
 	Replication
 }
 
-// ReplicationsClientListResponse contains the response from method ReplicationsClient.List.
+// ReplicationsClientListResponse contains the response from method ReplicationsClient.NewListPager.
 type ReplicationsClientListResponse struct {
 	ReplicationListResult
 }
 
-// ReplicationsClientUpdateResponse contains the response from method ReplicationsClient.Update.
+// ReplicationsClientUpdateResponse contains the response from method ReplicationsClient.BeginUpdate.
 type ReplicationsClientUpdateResponse struct {
 	Replication
 }
 
-// WebhooksClientCreateResponse contains the response from method WebhooksClient.Create.
+// WebhooksClientCreateResponse contains the response from method WebhooksClient.BeginCreate.
 type WebhooksClientCreateResponse struct {
 	Webhook
 }
 
-// WebhooksClientDeleteResponse contains the response from method WebhooksClient.Delete.
+// WebhooksClientDeleteResponse contains the response from method WebhooksClient.BeginDelete.
 type WebhooksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -114,12 +114,12 @@ type WebhooksClientGetResponse struct {
 	Webhook
 }
 
-// WebhooksClientListEventsResponse contains the response from method WebhooksClient.ListEvents.
+// WebhooksClientListEventsResponse contains the response from method WebhooksClient.NewListEventsPager.
 type WebhooksClientListEventsResponse struct {
 	EventListResult
 }
 
-// WebhooksClientListResponse contains the response from method WebhooksClient.List.
+// WebhooksClientListResponse contains the response from method WebhooksClient.NewListPager.
 type WebhooksClientListResponse struct {
 	WebhookListResult
 }
@@ -129,7 +129,7 @@ type WebhooksClientPingResponse struct {
 	EventInfo
 }
 
-// WebhooksClientUpdateResponse contains the response from method WebhooksClient.Update.
+// WebhooksClientUpdateResponse contains the response from method WebhooksClient.BeginUpdate.
 type WebhooksClientUpdateResponse struct {
 	Webhook
 }

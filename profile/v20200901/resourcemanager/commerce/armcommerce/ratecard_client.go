@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,32 +25,23 @@ import (
 // RateCardClient contains the methods for the RateCard group.
 // Don't use this type directly, use NewRateCardClient() instead.
 type RateCardClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRateCardClient creates a new instance of RateCardClient with the specified values.
-// subscriptionID - It uniquely identifies Microsoft Azure subscription. The subscription ID forms part of the URI for every
-// service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - It uniquely identifies Microsoft Azure subscription. The subscription ID forms part of the URI for every
+//     service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRateCardClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RateCardClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".RateCardClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RateCardClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -65,17 +54,18 @@ func NewRateCardClient(subscriptionID string, credential azcore.TokenCredential,
 // to change due to a new billing model, you will be notified in advance of the
 // change.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-06-01-preview
-// filter - The filter to apply on the operation. It ONLY supports the 'eq' and 'and' logical operators at this time. All
-// the 4 query parameters 'OfferDurableId', 'Currency', 'Locale', 'Region' are required to be
-// a part of the $filter.
-// options - RateCardClientGetOptions contains the optional parameters for the RateCardClient.Get method.
+//   - filter - The filter to apply on the operation. It ONLY supports the 'eq' and 'and' logical operators at this time. All
+//     the 4 query parameters 'OfferDurableId', 'Currency', 'Locale', 'Region' are required to be
+//     a part of the $filter.
+//   - options - RateCardClientGetOptions contains the optional parameters for the RateCardClient.Get method.
 func (client *RateCardClient) Get(ctx context.Context, filter string, options *RateCardClientGetOptions) (RateCardClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, filter, options)
 	if err != nil {
 		return RateCardClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RateCardClientGetResponse{}, err
 	}
@@ -92,7 +82,7 @@ func (client *RateCardClient) getCreateRequest(ctx context.Context, filter strin
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,63 +25,56 @@ import (
 // Client contains the methods for the IotHub group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewClient creates a new instance of Client with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginManualFailover - Perform manual fail over of given hub
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-07-01-preview
-// iotHubName - IotHub to fail over
-// resourceGroupName - resource group which Iot Hub belongs to
-// failoverInput - Region to failover to. Must be a azure DR pair
-// options - ClientBeginManualFailoverOptions contains the optional parameters for the Client.BeginManualFailover method.
+//   - iotHubName - IotHub to fail over
+//   - resourceGroupName - resource group which Iot Hub belongs to
+//   - failoverInput - Region to failover to. Must be a azure DR pair
+//   - options - ClientBeginManualFailoverOptions contains the optional parameters for the Client.BeginManualFailover method.
 func (client *Client) BeginManualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*runtime.Poller[ClientManualFailoverResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.manualFailover(ctx, iotHubName, resourceGroupName, failoverInput, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientManualFailoverResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientManualFailoverResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientManualFailoverResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientManualFailoverResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // ManualFailover - Perform manual fail over of given hub
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-07-01-preview
 func (client *Client) manualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*http.Response, error) {
 	req, err := client.manualFailoverCreateRequest(ctx, iotHubName, resourceGroupName, failoverInput, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +99,7 @@ func (client *Client) manualFailoverCreateRequest(ctx context.Context, iotHubNam
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

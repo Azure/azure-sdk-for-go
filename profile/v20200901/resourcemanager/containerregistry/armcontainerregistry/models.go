@@ -248,7 +248,7 @@ type OperationServiceSpecificationDefinition struct {
 	MetricSpecifications []*OperationMetricSpecificationDefinition `json:"metricSpecifications,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -312,7 +312,7 @@ type RegistriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegistriesClientListByResourceGroupOptions contains the optional parameters for the RegistriesClient.ListByResourceGroup
+// RegistriesClientListByResourceGroupOptions contains the optional parameters for the RegistriesClient.NewListByResourceGroupPager
 // method.
 type RegistriesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
@@ -323,7 +323,7 @@ type RegistriesClientListCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegistriesClientListOptions contains the optional parameters for the RegistriesClient.List method.
+// RegistriesClientListOptions contains the optional parameters for the RegistriesClient.NewListPager method.
 type RegistriesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -554,7 +554,7 @@ type ReplicationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationsClientListOptions contains the optional parameters for the ReplicationsClient.List method.
+// ReplicationsClientListOptions contains the optional parameters for the ReplicationsClient.NewListPager method.
 type ReplicationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -831,12 +831,12 @@ type WebhooksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebhooksClientListEventsOptions contains the optional parameters for the WebhooksClient.ListEvents method.
+// WebhooksClientListEventsOptions contains the optional parameters for the WebhooksClient.NewListEventsPager method.
 type WebhooksClientListEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebhooksClientListOptions contains the optional parameters for the WebhooksClient.List method.
+// WebhooksClientListOptions contains the optional parameters for the WebhooksClient.NewListPager method.
 type WebhooksClientListOptions struct {
 	// placeholder for future optional parameters
 }

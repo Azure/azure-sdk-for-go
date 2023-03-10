@@ -40,6 +40,7 @@ directive:
   - from:
       - "*_client.go"
       - "client.go"
+      - "client_factory.go"
     where: $
     transform: return $.replace(/import \(\n/, "import (\n\"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal\"\n");
 ```
@@ -51,6 +52,7 @@ directive:
   - from:
       - "*_client.go"
       - "client.go"
+      - "client_factory.go"
     where: $
-    transform: return $.replace(/moduleName, moduleVersion/, "internal.ModuleName, internal.ModuleVersion");
+    transform: return $.replace(/moduleVersion/, "internal.ModuleVersion").replace(/moduleName/, "internal.ModuleName");
 ```

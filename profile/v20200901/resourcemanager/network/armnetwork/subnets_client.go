@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,66 +25,59 @@ import (
 // SubnetsClient contains the methods for the Subnets group.
 // Don't use this type directly, use NewSubnetsClient() instead.
 type SubnetsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSubnetsClient creates a new instance of SubnetsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSubnetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubnetsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".SubnetsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SubnetsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a subnet in the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-11-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// subnetName - The name of the subnet.
-// subnetParameters - Parameters supplied to the create or update subnet operation.
-// options - SubnetsClientBeginCreateOrUpdateOptions contains the optional parameters for the SubnetsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - subnetName - The name of the subnet.
+//   - subnetParameters - Parameters supplied to the create or update subnet operation.
+//   - options - SubnetsClientBeginCreateOrUpdateOptions contains the optional parameters for the SubnetsClient.BeginCreateOrUpdate
+//     method.
 func (client *SubnetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet, options *SubnetsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SubnetsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworkName, subnetName, subnetParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SubnetsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SubnetsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[SubnetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubnetsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a subnet in the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-11-01
 func (client *SubnetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet, options *SubnetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, subnetParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +106,7 @@ func (client *SubnetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,32 +119,34 @@ func (client *SubnetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // BeginDelete - Deletes the specified subnet.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-11-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// subnetName - The name of the subnet.
-// options - SubnetsClientBeginDeleteOptions contains the optional parameters for the SubnetsClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - subnetName - The name of the subnet.
+//   - options - SubnetsClientBeginDeleteOptions contains the optional parameters for the SubnetsClient.BeginDelete method.
 func (client *SubnetsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetsClientBeginDeleteOptions) (*runtime.Poller[SubnetsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SubnetsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SubnetsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[SubnetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubnetsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified subnet.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-11-01
 func (client *SubnetsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +175,7 @@ func (client *SubnetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,17 +187,18 @@ func (client *SubnetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Gets the specified subnet by virtual network and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-11-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// subnetName - The name of the subnet.
-// options - SubnetsClientGetOptions contains the optional parameters for the SubnetsClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - subnetName - The name of the subnet.
+//   - options - SubnetsClientGetOptions contains the optional parameters for the SubnetsClient.Get method.
 func (client *SubnetsClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *SubnetsClientGetOptions) (SubnetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
 		return SubnetsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SubnetsClientGetResponse{}, err
 	}
@@ -233,7 +227,7 @@ func (client *SubnetsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -257,10 +251,11 @@ func (client *SubnetsClient) getHandleResponse(resp *http.Response) (SubnetsClie
 }
 
 // NewListPager - Gets all subnets in a virtual network.
+//
 // Generated from API version 2018-11-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// options - SubnetsClientListOptions contains the optional parameters for the SubnetsClient.List method.
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - options - SubnetsClientListOptions contains the optional parameters for the SubnetsClient.NewListPager method.
 func (client *SubnetsClient) NewListPager(resourceGroupName string, virtualNetworkName string, options *SubnetsClientListOptions) *runtime.Pager[SubnetsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SubnetsClientListResponse]{
 		More: func(page SubnetsClientListResponse) bool {
@@ -277,7 +272,7 @@ func (client *SubnetsClient) NewListPager(resourceGroupName string, virtualNetwo
 			if err != nil {
 				return SubnetsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SubnetsClientListResponse{}, err
 			}
@@ -304,7 +299,7 @@ func (client *SubnetsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,48 +25,40 @@ import (
 // DefinitionsClient contains the methods for the PolicyDefinitions group.
 // Don't use this type directly, use NewDefinitionsClient() instead.
 type DefinitionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDefinitionsClient creates a new instance of DefinitionsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefinitionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".DefinitionsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DefinitionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a policy definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyDefinitionName - The name of the policy definition to create.
-// parameters - The policy definition properties.
-// options - DefinitionsClientCreateOrUpdateOptions contains the optional parameters for the DefinitionsClient.CreateOrUpdate
-// method.
+//   - policyDefinitionName - The name of the policy definition to create.
+//   - parameters - The policy definition properties.
+//   - options - DefinitionsClientCreateOrUpdateOptions contains the optional parameters for the DefinitionsClient.CreateOrUpdate
+//     method.
 func (client *DefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefinitionName string, parameters Definition, options *DefinitionsClientCreateOrUpdateOptions) (DefinitionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, policyDefinitionName, parameters, options)
 	if err != nil {
 		return DefinitionsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DefinitionsClientCreateOrUpdateResponse{}, err
 	}
@@ -89,7 +79,7 @@ func (client *DefinitionsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -111,18 +101,19 @@ func (client *DefinitionsClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // CreateOrUpdateAtManagementGroup - Creates or updates a policy definition at management group level.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyDefinitionName - The name of the policy definition to create.
-// managementGroupID - The ID of the management group.
-// parameters - The policy definition properties.
-// options - DefinitionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.CreateOrUpdateAtManagementGroup
-// method.
+//   - policyDefinitionName - The name of the policy definition to create.
+//   - managementGroupID - The ID of the management group.
+//   - parameters - The policy definition properties.
+//   - options - DefinitionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.CreateOrUpdateAtManagementGroup
+//     method.
 func (client *DefinitionsClient) CreateOrUpdateAtManagementGroup(ctx context.Context, policyDefinitionName string, managementGroupID string, parameters Definition, options *DefinitionsClientCreateOrUpdateAtManagementGroupOptions) (DefinitionsClientCreateOrUpdateAtManagementGroupResponse, error) {
 	req, err := client.createOrUpdateAtManagementGroupCreateRequest(ctx, policyDefinitionName, managementGroupID, parameters, options)
 	if err != nil {
 		return DefinitionsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DefinitionsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
@@ -143,7 +134,7 @@ func (client *DefinitionsClient) createOrUpdateAtManagementGroupCreateRequest(ct
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,15 +156,16 @@ func (client *DefinitionsClient) createOrUpdateAtManagementGroupHandleResponse(r
 
 // Delete - Deletes a policy definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyDefinitionName - The name of the policy definition to delete.
-// options - DefinitionsClientDeleteOptions contains the optional parameters for the DefinitionsClient.Delete method.
+//   - policyDefinitionName - The name of the policy definition to delete.
+//   - options - DefinitionsClientDeleteOptions contains the optional parameters for the DefinitionsClient.Delete method.
 func (client *DefinitionsClient) Delete(ctx context.Context, policyDefinitionName string, options *DefinitionsClientDeleteOptions) (DefinitionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, policyDefinitionName, options)
 	if err != nil {
 		return DefinitionsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DefinitionsClientDeleteResponse{}, err
 	}
@@ -194,7 +186,7 @@ func (client *DefinitionsClient) deleteCreateRequest(ctx context.Context, policy
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -206,17 +198,18 @@ func (client *DefinitionsClient) deleteCreateRequest(ctx context.Context, policy
 
 // DeleteAtManagementGroup - Deletes a policy definition at management group level.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyDefinitionName - The name of the policy definition to delete.
-// managementGroupID - The ID of the management group.
-// options - DefinitionsClientDeleteAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.DeleteAtManagementGroup
-// method.
+//   - policyDefinitionName - The name of the policy definition to delete.
+//   - managementGroupID - The ID of the management group.
+//   - options - DefinitionsClientDeleteAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.DeleteAtManagementGroup
+//     method.
 func (client *DefinitionsClient) DeleteAtManagementGroup(ctx context.Context, policyDefinitionName string, managementGroupID string, options *DefinitionsClientDeleteAtManagementGroupOptions) (DefinitionsClientDeleteAtManagementGroupResponse, error) {
 	req, err := client.deleteAtManagementGroupCreateRequest(ctx, policyDefinitionName, managementGroupID, options)
 	if err != nil {
 		return DefinitionsClientDeleteAtManagementGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DefinitionsClientDeleteAtManagementGroupResponse{}, err
 	}
@@ -237,7 +230,7 @@ func (client *DefinitionsClient) deleteAtManagementGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,15 +242,16 @@ func (client *DefinitionsClient) deleteAtManagementGroupCreateRequest(ctx contex
 
 // Get - Gets the policy definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyDefinitionName - The name of the policy definition to get.
-// options - DefinitionsClientGetOptions contains the optional parameters for the DefinitionsClient.Get method.
+//   - policyDefinitionName - The name of the policy definition to get.
+//   - options - DefinitionsClientGetOptions contains the optional parameters for the DefinitionsClient.Get method.
 func (client *DefinitionsClient) Get(ctx context.Context, policyDefinitionName string, options *DefinitionsClientGetOptions) (DefinitionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, policyDefinitionName, options)
 	if err != nil {
 		return DefinitionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DefinitionsClientGetResponse{}, err
 	}
@@ -278,7 +272,7 @@ func (client *DefinitionsClient) getCreateRequest(ctx context.Context, policyDef
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -300,17 +294,18 @@ func (client *DefinitionsClient) getHandleResponse(resp *http.Response) (Definit
 
 // GetAtManagementGroup - Gets the policy definition at management group level.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyDefinitionName - The name of the policy definition to get.
-// managementGroupID - The ID of the management group.
-// options - DefinitionsClientGetAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.GetAtManagementGroup
-// method.
+//   - policyDefinitionName - The name of the policy definition to get.
+//   - managementGroupID - The ID of the management group.
+//   - options - DefinitionsClientGetAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.GetAtManagementGroup
+//     method.
 func (client *DefinitionsClient) GetAtManagementGroup(ctx context.Context, policyDefinitionName string, managementGroupID string, options *DefinitionsClientGetAtManagementGroupOptions) (DefinitionsClientGetAtManagementGroupResponse, error) {
 	req, err := client.getAtManagementGroupCreateRequest(ctx, policyDefinitionName, managementGroupID, options)
 	if err != nil {
 		return DefinitionsClientGetAtManagementGroupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DefinitionsClientGetAtManagementGroupResponse{}, err
 	}
@@ -331,7 +326,7 @@ func (client *DefinitionsClient) getAtManagementGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -353,15 +348,16 @@ func (client *DefinitionsClient) getAtManagementGroupHandleResponse(resp *http.R
 
 // GetBuiltIn - Gets the built in policy definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyDefinitionName - The name of the built in policy definition to get.
-// options - DefinitionsClientGetBuiltInOptions contains the optional parameters for the DefinitionsClient.GetBuiltIn method.
+//   - policyDefinitionName - The name of the built in policy definition to get.
+//   - options - DefinitionsClientGetBuiltInOptions contains the optional parameters for the DefinitionsClient.GetBuiltIn method.
 func (client *DefinitionsClient) GetBuiltIn(ctx context.Context, policyDefinitionName string, options *DefinitionsClientGetBuiltInOptions) (DefinitionsClientGetBuiltInResponse, error) {
 	req, err := client.getBuiltInCreateRequest(ctx, policyDefinitionName, options)
 	if err != nil {
 		return DefinitionsClientGetBuiltInResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DefinitionsClientGetBuiltInResponse{}, err
 	}
@@ -378,7 +374,7 @@ func (client *DefinitionsClient) getBuiltInCreateRequest(ctx context.Context, po
 		return nil, errors.New("parameter policyDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyDefinitionName}", url.PathEscape(policyDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -399,8 +395,9 @@ func (client *DefinitionsClient) getBuiltInHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets all the policy definitions for a subscription.
+//
 // Generated from API version 2016-12-01
-// options - DefinitionsClientListOptions contains the optional parameters for the DefinitionsClient.List method.
+//   - options - DefinitionsClientListOptions contains the optional parameters for the DefinitionsClient.NewListPager method.
 func (client *DefinitionsClient) NewListPager(options *DefinitionsClientListOptions) *runtime.Pager[DefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DefinitionsClientListResponse]{
 		More: func(page DefinitionsClientListResponse) bool {
@@ -417,7 +414,7 @@ func (client *DefinitionsClient) NewListPager(options *DefinitionsClientListOpti
 			if err != nil {
 				return DefinitionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DefinitionsClientListResponse{}, err
 			}
@@ -436,7 +433,7 @@ func (client *DefinitionsClient) listCreateRequest(ctx context.Context, options 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -457,8 +454,10 @@ func (client *DefinitionsClient) listHandleResponse(resp *http.Response) (Defini
 }
 
 // NewListBuiltInPager - Gets all the built in policy definitions.
+//
 // Generated from API version 2016-12-01
-// options - DefinitionsClientListBuiltInOptions contains the optional parameters for the DefinitionsClient.ListBuiltIn method.
+//   - options - DefinitionsClientListBuiltInOptions contains the optional parameters for the DefinitionsClient.NewListBuiltInPager
+//     method.
 func (client *DefinitionsClient) NewListBuiltInPager(options *DefinitionsClientListBuiltInOptions) *runtime.Pager[DefinitionsClientListBuiltInResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DefinitionsClientListBuiltInResponse]{
 		More: func(page DefinitionsClientListBuiltInResponse) bool {
@@ -475,7 +474,7 @@ func (client *DefinitionsClient) NewListBuiltInPager(options *DefinitionsClientL
 			if err != nil {
 				return DefinitionsClientListBuiltInResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DefinitionsClientListBuiltInResponse{}, err
 			}
@@ -490,7 +489,7 @@ func (client *DefinitionsClient) NewListBuiltInPager(options *DefinitionsClientL
 // listBuiltInCreateRequest creates the ListBuiltIn request.
 func (client *DefinitionsClient) listBuiltInCreateRequest(ctx context.Context, options *DefinitionsClientListBuiltInOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/policyDefinitions"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -511,10 +510,11 @@ func (client *DefinitionsClient) listBuiltInHandleResponse(resp *http.Response) 
 }
 
 // NewListByManagementGroupPager - Gets all the policy definitions for a subscription at management group level.
+//
 // Generated from API version 2016-12-01
-// managementGroupID - The ID of the management group.
-// options - DefinitionsClientListByManagementGroupOptions contains the optional parameters for the DefinitionsClient.ListByManagementGroup
-// method.
+//   - managementGroupID - The ID of the management group.
+//   - options - DefinitionsClientListByManagementGroupOptions contains the optional parameters for the DefinitionsClient.NewListByManagementGroupPager
+//     method.
 func (client *DefinitionsClient) NewListByManagementGroupPager(managementGroupID string, options *DefinitionsClientListByManagementGroupOptions) *runtime.Pager[DefinitionsClientListByManagementGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DefinitionsClientListByManagementGroupResponse]{
 		More: func(page DefinitionsClientListByManagementGroupResponse) bool {
@@ -531,7 +531,7 @@ func (client *DefinitionsClient) NewListByManagementGroupPager(managementGroupID
 			if err != nil {
 				return DefinitionsClientListByManagementGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DefinitionsClientListByManagementGroupResponse{}, err
 			}
@@ -550,7 +550,7 @@ func (client *DefinitionsClient) listByManagementGroupCreateRequest(ctx context.
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

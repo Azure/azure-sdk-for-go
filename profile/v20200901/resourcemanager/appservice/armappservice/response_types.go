@@ -29,12 +29,12 @@ type CertificatesClientGetResponse struct {
 	AppCertificate
 }
 
-// CertificatesClientListByResourceGroupResponse contains the response from method CertificatesClient.ListByResourceGroup.
+// CertificatesClientListByResourceGroupResponse contains the response from method CertificatesClient.NewListByResourceGroupPager.
 type CertificatesClientListByResourceGroupResponse struct {
 	AppCertificateCollection
 }
 
-// CertificatesClientListResponse contains the response from method CertificatesClient.List.
+// CertificatesClientListResponse contains the response from method CertificatesClient.NewListPager.
 type CertificatesClientListResponse struct {
 	AppCertificateCollection
 }
@@ -44,7 +44,7 @@ type CertificatesClientUpdateResponse struct {
 	AppCertificate
 }
 
-// PlansClientCreateOrUpdateResponse contains the response from method PlansClient.CreateOrUpdate.
+// PlansClientCreateOrUpdateResponse contains the response from method PlansClient.BeginCreateOrUpdate.
 type PlansClientCreateOrUpdateResponse struct {
 	Plan
 }
@@ -93,7 +93,7 @@ type PlansClientGetRouteForVnetResponse struct {
 // PlansClientGetServerFarmSKUsResponse contains the response from method PlansClient.GetServerFarmSKUs.
 type PlansClientGetServerFarmSKUsResponse struct {
 	// Anything
-	Interface interface{}
+	Interface any
 }
 
 // PlansClientGetVnetFromServerFarmResponse contains the response from method PlansClient.GetVnetFromServerFarm.
@@ -106,7 +106,7 @@ type PlansClientGetVnetGatewayResponse struct {
 	VnetGateway
 }
 
-// PlansClientListByResourceGroupResponse contains the response from method PlansClient.ListByResourceGroup.
+// PlansClientListByResourceGroupResponse contains the response from method PlansClient.NewListByResourceGroupPager.
 type PlansClientListByResourceGroupResponse struct {
 	PlanCollection
 }
@@ -122,22 +122,22 @@ type PlansClientListHybridConnectionKeysResponse struct {
 	HybridConnectionKey
 }
 
-// PlansClientListHybridConnectionsResponse contains the response from method PlansClient.ListHybridConnections.
+// PlansClientListHybridConnectionsResponse contains the response from method PlansClient.NewListHybridConnectionsPager.
 type PlansClientListHybridConnectionsResponse struct {
 	HybridConnectionCollection
 }
 
-// PlansClientListMetricDefintionsResponse contains the response from method PlansClient.ListMetricDefintions.
+// PlansClientListMetricDefintionsResponse contains the response from method PlansClient.NewListMetricDefintionsPager.
 type PlansClientListMetricDefintionsResponse struct {
 	ResourceMetricDefinitionCollection
 }
 
-// PlansClientListMetricsResponse contains the response from method PlansClient.ListMetrics.
+// PlansClientListMetricsResponse contains the response from method PlansClient.NewListMetricsPager.
 type PlansClientListMetricsResponse struct {
 	ResourceMetricCollection
 }
 
-// PlansClientListResponse contains the response from method PlansClient.List.
+// PlansClientListResponse contains the response from method PlansClient.NewListPager.
 type PlansClientListResponse struct {
 	PlanCollection
 }
@@ -148,7 +148,7 @@ type PlansClientListRoutesForVnetResponse struct {
 	VnetRouteArray []*VnetRoute
 }
 
-// PlansClientListUsagesResponse contains the response from method PlansClient.ListUsages.
+// PlansClientListUsagesResponse contains the response from method PlansClient.NewListUsagesPager.
 type PlansClientListUsagesResponse struct {
 	CsmUsageQuotaCollection
 }
@@ -159,12 +159,12 @@ type PlansClientListVnetsResponse struct {
 	VnetInfoArray []*VnetInfo
 }
 
-// PlansClientListWebAppsByHybridConnectionResponse contains the response from method PlansClient.ListWebAppsByHybridConnection.
+// PlansClientListWebAppsByHybridConnectionResponse contains the response from method PlansClient.NewListWebAppsByHybridConnectionPager.
 type PlansClientListWebAppsByHybridConnectionResponse struct {
 	ResourceCollection
 }
 
-// PlansClientListWebAppsResponse contains the response from method PlansClient.ListWebApps.
+// PlansClientListWebAppsResponse contains the response from method PlansClient.NewListWebAppsPager.
 type PlansClientListWebAppsResponse struct {
 	WebAppCollection
 }
@@ -194,17 +194,17 @@ type PlansClientUpdateVnetRouteResponse struct {
 	VnetRoute
 }
 
-// ProviderClientGetAvailableStacksOnPremResponse contains the response from method ProviderClient.GetAvailableStacksOnPrem.
+// ProviderClientGetAvailableStacksOnPremResponse contains the response from method ProviderClient.NewGetAvailableStacksOnPremPager.
 type ProviderClientGetAvailableStacksOnPremResponse struct {
 	ApplicationStackCollection
 }
 
-// ProviderClientGetAvailableStacksResponse contains the response from method ProviderClient.GetAvailableStacks.
+// ProviderClientGetAvailableStacksResponse contains the response from method ProviderClient.NewGetAvailableStacksPager.
 type ProviderClientGetAvailableStacksResponse struct {
 	ApplicationStackCollection
 }
 
-// ProviderClientListOperationsResponse contains the response from method ProviderClient.ListOperations.
+// ProviderClientListOperationsResponse contains the response from method ProviderClient.NewListOperationsPager.
 type ProviderClientListOperationsResponse struct {
 	CsmOperationCollection
 }
@@ -244,27 +244,27 @@ type RecommendationsClientGetRuleDetailsByWebAppResponse struct {
 	RecommendationRule
 }
 
-// RecommendationsClientListHistoryForHostingEnvironmentResponse contains the response from method RecommendationsClient.ListHistoryForHostingEnvironment.
+// RecommendationsClientListHistoryForHostingEnvironmentResponse contains the response from method RecommendationsClient.NewListHistoryForHostingEnvironmentPager.
 type RecommendationsClientListHistoryForHostingEnvironmentResponse struct {
 	RecommendationCollection
 }
 
-// RecommendationsClientListHistoryForWebAppResponse contains the response from method RecommendationsClient.ListHistoryForWebApp.
+// RecommendationsClientListHistoryForWebAppResponse contains the response from method RecommendationsClient.NewListHistoryForWebAppPager.
 type RecommendationsClientListHistoryForWebAppResponse struct {
 	RecommendationCollection
 }
 
-// RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse contains the response from method RecommendationsClient.ListRecommendedRulesForHostingEnvironment.
+// RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse contains the response from method RecommendationsClient.NewListRecommendedRulesForHostingEnvironmentPager.
 type RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse struct {
 	RecommendationCollection
 }
 
-// RecommendationsClientListRecommendedRulesForWebAppResponse contains the response from method RecommendationsClient.ListRecommendedRulesForWebApp.
+// RecommendationsClientListRecommendedRulesForWebAppResponse contains the response from method RecommendationsClient.NewListRecommendedRulesForWebAppPager.
 type RecommendationsClientListRecommendedRulesForWebAppResponse struct {
 	RecommendationCollection
 }
 
-// RecommendationsClientListResponse contains the response from method RecommendationsClient.List.
+// RecommendationsClientListResponse contains the response from method RecommendationsClient.NewListPager.
 type RecommendationsClientListResponse struct {
 	RecommendationCollection
 }
@@ -334,32 +334,32 @@ type WebAppsClientCreateDeploymentSlotResponse struct {
 	Deployment
 }
 
-// WebAppsClientCreateFunctionResponse contains the response from method WebAppsClient.CreateFunction.
+// WebAppsClientCreateFunctionResponse contains the response from method WebAppsClient.BeginCreateFunction.
 type WebAppsClientCreateFunctionResponse struct {
 	FunctionEnvelope
 }
 
-// WebAppsClientCreateInstanceFunctionSlotResponse contains the response from method WebAppsClient.CreateInstanceFunctionSlot.
+// WebAppsClientCreateInstanceFunctionSlotResponse contains the response from method WebAppsClient.BeginCreateInstanceFunctionSlot.
 type WebAppsClientCreateInstanceFunctionSlotResponse struct {
 	FunctionEnvelope
 }
 
-// WebAppsClientCreateInstanceMSDeployOperationResponse contains the response from method WebAppsClient.CreateInstanceMSDeployOperation.
+// WebAppsClientCreateInstanceMSDeployOperationResponse contains the response from method WebAppsClient.BeginCreateInstanceMSDeployOperation.
 type WebAppsClientCreateInstanceMSDeployOperationResponse struct {
 	MSDeployStatus
 }
 
-// WebAppsClientCreateInstanceMSDeployOperationSlotResponse contains the response from method WebAppsClient.CreateInstanceMSDeployOperationSlot.
+// WebAppsClientCreateInstanceMSDeployOperationSlotResponse contains the response from method WebAppsClient.BeginCreateInstanceMSDeployOperationSlot.
 type WebAppsClientCreateInstanceMSDeployOperationSlotResponse struct {
 	MSDeployStatus
 }
 
-// WebAppsClientCreateMSDeployOperationResponse contains the response from method WebAppsClient.CreateMSDeployOperation.
+// WebAppsClientCreateMSDeployOperationResponse contains the response from method WebAppsClient.BeginCreateMSDeployOperation.
 type WebAppsClientCreateMSDeployOperationResponse struct {
 	MSDeployStatus
 }
 
-// WebAppsClientCreateMSDeployOperationSlotResponse contains the response from method WebAppsClient.CreateMSDeployOperationSlot.
+// WebAppsClientCreateMSDeployOperationSlotResponse contains the response from method WebAppsClient.BeginCreateMSDeployOperationSlot.
 type WebAppsClientCreateMSDeployOperationSlotResponse struct {
 	MSDeployStatus
 }
@@ -444,22 +444,22 @@ type WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsClientCreateOrUpdateResponse contains the response from method WebAppsClient.CreateOrUpdate.
+// WebAppsClientCreateOrUpdateResponse contains the response from method WebAppsClient.BeginCreateOrUpdate.
 type WebAppsClientCreateOrUpdateResponse struct {
 	Site
 }
 
-// WebAppsClientCreateOrUpdateSlotResponse contains the response from method WebAppsClient.CreateOrUpdateSlot.
+// WebAppsClientCreateOrUpdateSlotResponse contains the response from method WebAppsClient.BeginCreateOrUpdateSlot.
 type WebAppsClientCreateOrUpdateSlotResponse struct {
 	Site
 }
 
-// WebAppsClientCreateOrUpdateSourceControlResponse contains the response from method WebAppsClient.CreateOrUpdateSourceControl.
+// WebAppsClientCreateOrUpdateSourceControlResponse contains the response from method WebAppsClient.BeginCreateOrUpdateSourceControl.
 type WebAppsClientCreateOrUpdateSourceControlResponse struct {
 	SiteSourceControl
 }
 
-// WebAppsClientCreateOrUpdateSourceControlSlotResponse contains the response from method WebAppsClient.CreateOrUpdateSourceControlSlot.
+// WebAppsClientCreateOrUpdateSourceControlSlotResponse contains the response from method WebAppsClient.BeginCreateOrUpdateSourceControlSlot.
 type WebAppsClientCreateOrUpdateSourceControlSlotResponse struct {
 	SiteSourceControl
 }
@@ -1200,12 +1200,12 @@ type WebAppsClientGetWebSiteContainerLogsSlotResponse struct {
 	Body io.ReadCloser
 }
 
-// WebAppsClientInstallSiteExtensionResponse contains the response from method WebAppsClient.InstallSiteExtension.
+// WebAppsClientInstallSiteExtensionResponse contains the response from method WebAppsClient.BeginInstallSiteExtension.
 type WebAppsClientInstallSiteExtensionResponse struct {
 	SiteExtensionInfo
 }
 
-// WebAppsClientInstallSiteExtensionSlotResponse contains the response from method WebAppsClient.InstallSiteExtensionSlot.
+// WebAppsClientInstallSiteExtensionSlotResponse contains the response from method WebAppsClient.BeginInstallSiteExtensionSlot.
 type WebAppsClientInstallSiteExtensionSlotResponse struct {
 	SiteExtensionInfo
 }
@@ -1250,37 +1250,37 @@ type WebAppsClientListBackupStatusSecretsSlotResponse struct {
 	BackupItem
 }
 
-// WebAppsClientListBackupsResponse contains the response from method WebAppsClient.ListBackups.
+// WebAppsClientListBackupsResponse contains the response from method WebAppsClient.NewListBackupsPager.
 type WebAppsClientListBackupsResponse struct {
 	BackupItemCollection
 }
 
-// WebAppsClientListBackupsSlotResponse contains the response from method WebAppsClient.ListBackupsSlot.
+// WebAppsClientListBackupsSlotResponse contains the response from method WebAppsClient.NewListBackupsSlotPager.
 type WebAppsClientListBackupsSlotResponse struct {
 	BackupItemCollection
 }
 
-// WebAppsClientListByResourceGroupResponse contains the response from method WebAppsClient.ListByResourceGroup.
+// WebAppsClientListByResourceGroupResponse contains the response from method WebAppsClient.NewListByResourceGroupPager.
 type WebAppsClientListByResourceGroupResponse struct {
 	WebAppCollection
 }
 
-// WebAppsClientListConfigurationSnapshotInfoResponse contains the response from method WebAppsClient.ListConfigurationSnapshotInfo.
+// WebAppsClientListConfigurationSnapshotInfoResponse contains the response from method WebAppsClient.NewListConfigurationSnapshotInfoPager.
 type WebAppsClientListConfigurationSnapshotInfoResponse struct {
 	SiteConfigurationSnapshotInfoCollection
 }
 
-// WebAppsClientListConfigurationSnapshotInfoSlotResponse contains the response from method WebAppsClient.ListConfigurationSnapshotInfoSlot.
+// WebAppsClientListConfigurationSnapshotInfoSlotResponse contains the response from method WebAppsClient.NewListConfigurationSnapshotInfoSlotPager.
 type WebAppsClientListConfigurationSnapshotInfoSlotResponse struct {
 	SiteConfigurationSnapshotInfoCollection
 }
 
-// WebAppsClientListConfigurationsResponse contains the response from method WebAppsClient.ListConfigurations.
+// WebAppsClientListConfigurationsResponse contains the response from method WebAppsClient.NewListConfigurationsPager.
 type WebAppsClientListConfigurationsResponse struct {
 	SiteConfigResourceCollection
 }
 
-// WebAppsClientListConfigurationsSlotResponse contains the response from method WebAppsClient.ListConfigurationsSlot.
+// WebAppsClientListConfigurationsSlotResponse contains the response from method WebAppsClient.NewListConfigurationsSlotPager.
 type WebAppsClientListConfigurationsSlotResponse struct {
 	SiteConfigResourceCollection
 }
@@ -1295,12 +1295,12 @@ type WebAppsClientListConnectionStringsSlotResponse struct {
 	ConnectionStringDictionary
 }
 
-// WebAppsClientListContinuousWebJobsResponse contains the response from method WebAppsClient.ListContinuousWebJobs.
+// WebAppsClientListContinuousWebJobsResponse contains the response from method WebAppsClient.NewListContinuousWebJobsPager.
 type WebAppsClientListContinuousWebJobsResponse struct {
 	ContinuousWebJobCollection
 }
 
-// WebAppsClientListContinuousWebJobsSlotResponse contains the response from method WebAppsClient.ListContinuousWebJobsSlot.
+// WebAppsClientListContinuousWebJobsSlotResponse contains the response from method WebAppsClient.NewListContinuousWebJobsSlotPager.
 type WebAppsClientListContinuousWebJobsSlotResponse struct {
 	ContinuousWebJobCollection
 }
@@ -1315,22 +1315,22 @@ type WebAppsClientListDeploymentLogSlotResponse struct {
 	Deployment
 }
 
-// WebAppsClientListDeploymentsResponse contains the response from method WebAppsClient.ListDeployments.
+// WebAppsClientListDeploymentsResponse contains the response from method WebAppsClient.NewListDeploymentsPager.
 type WebAppsClientListDeploymentsResponse struct {
 	DeploymentCollection
 }
 
-// WebAppsClientListDeploymentsSlotResponse contains the response from method WebAppsClient.ListDeploymentsSlot.
+// WebAppsClientListDeploymentsSlotResponse contains the response from method WebAppsClient.NewListDeploymentsSlotPager.
 type WebAppsClientListDeploymentsSlotResponse struct {
 	DeploymentCollection
 }
 
-// WebAppsClientListDomainOwnershipIdentifiersResponse contains the response from method WebAppsClient.ListDomainOwnershipIdentifiers.
+// WebAppsClientListDomainOwnershipIdentifiersResponse contains the response from method WebAppsClient.NewListDomainOwnershipIdentifiersPager.
 type WebAppsClientListDomainOwnershipIdentifiersResponse struct {
 	IdentifierCollection
 }
 
-// WebAppsClientListDomainOwnershipIdentifiersSlotResponse contains the response from method WebAppsClient.ListDomainOwnershipIdentifiersSlot.
+// WebAppsClientListDomainOwnershipIdentifiersSlotResponse contains the response from method WebAppsClient.NewListDomainOwnershipIdentifiersSlotPager.
 type WebAppsClientListDomainOwnershipIdentifiersSlotResponse struct {
 	IdentifierCollection
 }
@@ -1355,7 +1355,7 @@ type WebAppsClientListFunctionSecretsSlotResponse struct {
 	FunctionSecrets
 }
 
-// WebAppsClientListFunctionsResponse contains the response from method WebAppsClient.ListFunctions.
+// WebAppsClientListFunctionsResponse contains the response from method WebAppsClient.NewListFunctionsPager.
 type WebAppsClientListFunctionsResponse struct {
 	FunctionEnvelopeCollection
 }
@@ -1370,12 +1370,12 @@ type WebAppsClientListHostKeysSlotResponse struct {
 	HostKeys
 }
 
-// WebAppsClientListHostNameBindingsResponse contains the response from method WebAppsClient.ListHostNameBindings.
+// WebAppsClientListHostNameBindingsResponse contains the response from method WebAppsClient.NewListHostNameBindingsPager.
 type WebAppsClientListHostNameBindingsResponse struct {
 	HostNameBindingCollection
 }
 
-// WebAppsClientListHostNameBindingsSlotResponse contains the response from method WebAppsClient.ListHostNameBindingsSlot.
+// WebAppsClientListHostNameBindingsSlotResponse contains the response from method WebAppsClient.NewListHostNameBindingsSlotPager.
 type WebAppsClientListHostNameBindingsSlotResponse struct {
 	HostNameBindingCollection
 }
@@ -1400,47 +1400,47 @@ type WebAppsClientListHybridConnectionsSlotResponse struct {
 	HybridConnection
 }
 
-// WebAppsClientListInstanceFunctionsSlotResponse contains the response from method WebAppsClient.ListInstanceFunctionsSlot.
+// WebAppsClientListInstanceFunctionsSlotResponse contains the response from method WebAppsClient.NewListInstanceFunctionsSlotPager.
 type WebAppsClientListInstanceFunctionsSlotResponse struct {
 	FunctionEnvelopeCollection
 }
 
-// WebAppsClientListInstanceIdentifiersResponse contains the response from method WebAppsClient.ListInstanceIdentifiers.
+// WebAppsClientListInstanceIdentifiersResponse contains the response from method WebAppsClient.NewListInstanceIdentifiersPager.
 type WebAppsClientListInstanceIdentifiersResponse struct {
 	WebAppInstanceCollection
 }
 
-// WebAppsClientListInstanceIdentifiersSlotResponse contains the response from method WebAppsClient.ListInstanceIdentifiersSlot.
+// WebAppsClientListInstanceIdentifiersSlotResponse contains the response from method WebAppsClient.NewListInstanceIdentifiersSlotPager.
 type WebAppsClientListInstanceIdentifiersSlotResponse struct {
 	WebAppInstanceCollection
 }
 
-// WebAppsClientListInstanceProcessModulesResponse contains the response from method WebAppsClient.ListInstanceProcessModules.
+// WebAppsClientListInstanceProcessModulesResponse contains the response from method WebAppsClient.NewListInstanceProcessModulesPager.
 type WebAppsClientListInstanceProcessModulesResponse struct {
 	ProcessModuleInfoCollection
 }
 
-// WebAppsClientListInstanceProcessModulesSlotResponse contains the response from method WebAppsClient.ListInstanceProcessModulesSlot.
+// WebAppsClientListInstanceProcessModulesSlotResponse contains the response from method WebAppsClient.NewListInstanceProcessModulesSlotPager.
 type WebAppsClientListInstanceProcessModulesSlotResponse struct {
 	ProcessModuleInfoCollection
 }
 
-// WebAppsClientListInstanceProcessThreadsResponse contains the response from method WebAppsClient.ListInstanceProcessThreads.
+// WebAppsClientListInstanceProcessThreadsResponse contains the response from method WebAppsClient.NewListInstanceProcessThreadsPager.
 type WebAppsClientListInstanceProcessThreadsResponse struct {
 	ProcessThreadInfoCollection
 }
 
-// WebAppsClientListInstanceProcessThreadsSlotResponse contains the response from method WebAppsClient.ListInstanceProcessThreadsSlot.
+// WebAppsClientListInstanceProcessThreadsSlotResponse contains the response from method WebAppsClient.NewListInstanceProcessThreadsSlotPager.
 type WebAppsClientListInstanceProcessThreadsSlotResponse struct {
 	ProcessThreadInfoCollection
 }
 
-// WebAppsClientListInstanceProcessesResponse contains the response from method WebAppsClient.ListInstanceProcesses.
+// WebAppsClientListInstanceProcessesResponse contains the response from method WebAppsClient.NewListInstanceProcessesPager.
 type WebAppsClientListInstanceProcessesResponse struct {
 	ProcessInfoCollection
 }
 
-// WebAppsClientListInstanceProcessesSlotResponse contains the response from method WebAppsClient.ListInstanceProcessesSlot.
+// WebAppsClientListInstanceProcessesSlotResponse contains the response from method WebAppsClient.NewListInstanceProcessesSlotPager.
 type WebAppsClientListInstanceProcessesSlotResponse struct {
 	ProcessInfoCollection
 }
@@ -1455,22 +1455,22 @@ type WebAppsClientListMetadataSlotResponse struct {
 	StringDictionary
 }
 
-// WebAppsClientListMetricDefinitionsResponse contains the response from method WebAppsClient.ListMetricDefinitions.
+// WebAppsClientListMetricDefinitionsResponse contains the response from method WebAppsClient.NewListMetricDefinitionsPager.
 type WebAppsClientListMetricDefinitionsResponse struct {
 	ResourceMetricDefinitionCollection
 }
 
-// WebAppsClientListMetricDefinitionsSlotResponse contains the response from method WebAppsClient.ListMetricDefinitionsSlot.
+// WebAppsClientListMetricDefinitionsSlotResponse contains the response from method WebAppsClient.NewListMetricDefinitionsSlotPager.
 type WebAppsClientListMetricDefinitionsSlotResponse struct {
 	ResourceMetricDefinitionCollection
 }
 
-// WebAppsClientListMetricsResponse contains the response from method WebAppsClient.ListMetrics.
+// WebAppsClientListMetricsResponse contains the response from method WebAppsClient.NewListMetricsPager.
 type WebAppsClientListMetricsResponse struct {
 	ResourceMetricCollection
 }
 
-// WebAppsClientListMetricsSlotResponse contains the response from method WebAppsClient.ListMetricsSlot.
+// WebAppsClientListMetricsSlotResponse contains the response from method WebAppsClient.NewListMetricsSlotPager.
 type WebAppsClientListMetricsSlotResponse struct {
 	ResourceMetricCollection
 }
@@ -1485,12 +1485,12 @@ type WebAppsClientListNetworkFeaturesSlotResponse struct {
 	NetworkFeatures
 }
 
-// WebAppsClientListPerfMonCountersResponse contains the response from method WebAppsClient.ListPerfMonCounters.
+// WebAppsClientListPerfMonCountersResponse contains the response from method WebAppsClient.NewListPerfMonCountersPager.
 type WebAppsClientListPerfMonCountersResponse struct {
 	PerfMonCounterCollection
 }
 
-// WebAppsClientListPerfMonCountersSlotResponse contains the response from method WebAppsClient.ListPerfMonCountersSlot.
+// WebAppsClientListPerfMonCountersSlotResponse contains the response from method WebAppsClient.NewListPerfMonCountersSlotPager.
 type WebAppsClientListPerfMonCountersSlotResponse struct {
 	PerfMonCounterCollection
 }
@@ -1505,52 +1505,52 @@ type WebAppsClientListPremierAddOnsSlotResponse struct {
 	PremierAddOn
 }
 
-// WebAppsClientListProcessModulesResponse contains the response from method WebAppsClient.ListProcessModules.
+// WebAppsClientListProcessModulesResponse contains the response from method WebAppsClient.NewListProcessModulesPager.
 type WebAppsClientListProcessModulesResponse struct {
 	ProcessModuleInfoCollection
 }
 
-// WebAppsClientListProcessModulesSlotResponse contains the response from method WebAppsClient.ListProcessModulesSlot.
+// WebAppsClientListProcessModulesSlotResponse contains the response from method WebAppsClient.NewListProcessModulesSlotPager.
 type WebAppsClientListProcessModulesSlotResponse struct {
 	ProcessModuleInfoCollection
 }
 
-// WebAppsClientListProcessThreadsResponse contains the response from method WebAppsClient.ListProcessThreads.
+// WebAppsClientListProcessThreadsResponse contains the response from method WebAppsClient.NewListProcessThreadsPager.
 type WebAppsClientListProcessThreadsResponse struct {
 	ProcessThreadInfoCollection
 }
 
-// WebAppsClientListProcessThreadsSlotResponse contains the response from method WebAppsClient.ListProcessThreadsSlot.
+// WebAppsClientListProcessThreadsSlotResponse contains the response from method WebAppsClient.NewListProcessThreadsSlotPager.
 type WebAppsClientListProcessThreadsSlotResponse struct {
 	ProcessThreadInfoCollection
 }
 
-// WebAppsClientListProcessesResponse contains the response from method WebAppsClient.ListProcesses.
+// WebAppsClientListProcessesResponse contains the response from method WebAppsClient.NewListProcessesPager.
 type WebAppsClientListProcessesResponse struct {
 	ProcessInfoCollection
 }
 
-// WebAppsClientListProcessesSlotResponse contains the response from method WebAppsClient.ListProcessesSlot.
+// WebAppsClientListProcessesSlotResponse contains the response from method WebAppsClient.NewListProcessesSlotPager.
 type WebAppsClientListProcessesSlotResponse struct {
 	ProcessInfoCollection
 }
 
-// WebAppsClientListPublicCertificatesResponse contains the response from method WebAppsClient.ListPublicCertificates.
+// WebAppsClientListPublicCertificatesResponse contains the response from method WebAppsClient.NewListPublicCertificatesPager.
 type WebAppsClientListPublicCertificatesResponse struct {
 	PublicCertificateCollection
 }
 
-// WebAppsClientListPublicCertificatesSlotResponse contains the response from method WebAppsClient.ListPublicCertificatesSlot.
+// WebAppsClientListPublicCertificatesSlotResponse contains the response from method WebAppsClient.NewListPublicCertificatesSlotPager.
 type WebAppsClientListPublicCertificatesSlotResponse struct {
 	PublicCertificateCollection
 }
 
-// WebAppsClientListPublishingCredentialsResponse contains the response from method WebAppsClient.ListPublishingCredentials.
+// WebAppsClientListPublishingCredentialsResponse contains the response from method WebAppsClient.BeginListPublishingCredentials.
 type WebAppsClientListPublishingCredentialsResponse struct {
 	User
 }
 
-// WebAppsClientListPublishingCredentialsSlotResponse contains the response from method WebAppsClient.ListPublishingCredentialsSlot.
+// WebAppsClientListPublishingCredentialsSlotResponse contains the response from method WebAppsClient.BeginListPublishingCredentialsSlot.
 type WebAppsClientListPublishingCredentialsSlotResponse struct {
 	User
 }
@@ -1577,17 +1577,17 @@ type WebAppsClientListRelayServiceConnectionsSlotResponse struct {
 	RelayServiceConnectionEntity
 }
 
-// WebAppsClientListResponse contains the response from method WebAppsClient.List.
+// WebAppsClientListResponse contains the response from method WebAppsClient.NewListPager.
 type WebAppsClientListResponse struct {
 	WebAppCollection
 }
 
-// WebAppsClientListSiteExtensionsResponse contains the response from method WebAppsClient.ListSiteExtensions.
+// WebAppsClientListSiteExtensionsResponse contains the response from method WebAppsClient.NewListSiteExtensionsPager.
 type WebAppsClientListSiteExtensionsResponse struct {
 	SiteExtensionInfoCollection
 }
 
-// WebAppsClientListSiteExtensionsSlotResponse contains the response from method WebAppsClient.ListSiteExtensionsSlot.
+// WebAppsClientListSiteExtensionsSlotResponse contains the response from method WebAppsClient.NewListSiteExtensionsSlotPager.
 type WebAppsClientListSiteExtensionsSlotResponse struct {
 	SiteExtensionInfoCollection
 }
@@ -1607,37 +1607,37 @@ type WebAppsClientListSlotConfigurationNamesResponse struct {
 	SlotConfigNamesResource
 }
 
-// WebAppsClientListSlotDifferencesFromProductionResponse contains the response from method WebAppsClient.ListSlotDifferencesFromProduction.
+// WebAppsClientListSlotDifferencesFromProductionResponse contains the response from method WebAppsClient.NewListSlotDifferencesFromProductionPager.
 type WebAppsClientListSlotDifferencesFromProductionResponse struct {
 	SlotDifferenceCollection
 }
 
-// WebAppsClientListSlotDifferencesSlotResponse contains the response from method WebAppsClient.ListSlotDifferencesSlot.
+// WebAppsClientListSlotDifferencesSlotResponse contains the response from method WebAppsClient.NewListSlotDifferencesSlotPager.
 type WebAppsClientListSlotDifferencesSlotResponse struct {
 	SlotDifferenceCollection
 }
 
-// WebAppsClientListSlotsResponse contains the response from method WebAppsClient.ListSlots.
+// WebAppsClientListSlotsResponse contains the response from method WebAppsClient.NewListSlotsPager.
 type WebAppsClientListSlotsResponse struct {
 	WebAppCollection
 }
 
-// WebAppsClientListSnapshotsFromDRSecondaryResponse contains the response from method WebAppsClient.ListSnapshotsFromDRSecondary.
+// WebAppsClientListSnapshotsFromDRSecondaryResponse contains the response from method WebAppsClient.NewListSnapshotsFromDRSecondaryPager.
 type WebAppsClientListSnapshotsFromDRSecondaryResponse struct {
 	SnapshotCollection
 }
 
-// WebAppsClientListSnapshotsFromDRSecondarySlotResponse contains the response from method WebAppsClient.ListSnapshotsFromDRSecondarySlot.
+// WebAppsClientListSnapshotsFromDRSecondarySlotResponse contains the response from method WebAppsClient.NewListSnapshotsFromDRSecondarySlotPager.
 type WebAppsClientListSnapshotsFromDRSecondarySlotResponse struct {
 	SnapshotCollection
 }
 
-// WebAppsClientListSnapshotsResponse contains the response from method WebAppsClient.ListSnapshots.
+// WebAppsClientListSnapshotsResponse contains the response from method WebAppsClient.NewListSnapshotsPager.
 type WebAppsClientListSnapshotsResponse struct {
 	SnapshotCollection
 }
 
-// WebAppsClientListSnapshotsSlotResponse contains the response from method WebAppsClient.ListSnapshotsSlot.
+// WebAppsClientListSnapshotsSlotResponse contains the response from method WebAppsClient.NewListSnapshotsSlotPager.
 type WebAppsClientListSnapshotsSlotResponse struct {
 	SnapshotCollection
 }
@@ -1662,32 +1662,32 @@ type WebAppsClientListSyncStatusSlotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientListTriggeredWebJobHistoryResponse contains the response from method WebAppsClient.ListTriggeredWebJobHistory.
+// WebAppsClientListTriggeredWebJobHistoryResponse contains the response from method WebAppsClient.NewListTriggeredWebJobHistoryPager.
 type WebAppsClientListTriggeredWebJobHistoryResponse struct {
 	TriggeredJobHistoryCollection
 }
 
-// WebAppsClientListTriggeredWebJobHistorySlotResponse contains the response from method WebAppsClient.ListTriggeredWebJobHistorySlot.
+// WebAppsClientListTriggeredWebJobHistorySlotResponse contains the response from method WebAppsClient.NewListTriggeredWebJobHistorySlotPager.
 type WebAppsClientListTriggeredWebJobHistorySlotResponse struct {
 	TriggeredJobHistoryCollection
 }
 
-// WebAppsClientListTriggeredWebJobsResponse contains the response from method WebAppsClient.ListTriggeredWebJobs.
+// WebAppsClientListTriggeredWebJobsResponse contains the response from method WebAppsClient.NewListTriggeredWebJobsPager.
 type WebAppsClientListTriggeredWebJobsResponse struct {
 	TriggeredWebJobCollection
 }
 
-// WebAppsClientListTriggeredWebJobsSlotResponse contains the response from method WebAppsClient.ListTriggeredWebJobsSlot.
+// WebAppsClientListTriggeredWebJobsSlotResponse contains the response from method WebAppsClient.NewListTriggeredWebJobsSlotPager.
 type WebAppsClientListTriggeredWebJobsSlotResponse struct {
 	TriggeredWebJobCollection
 }
 
-// WebAppsClientListUsagesResponse contains the response from method WebAppsClient.ListUsages.
+// WebAppsClientListUsagesResponse contains the response from method WebAppsClient.NewListUsagesPager.
 type WebAppsClientListUsagesResponse struct {
 	CsmUsageQuotaCollection
 }
 
-// WebAppsClientListUsagesSlotResponse contains the response from method WebAppsClient.ListUsagesSlot.
+// WebAppsClientListUsagesSlotResponse contains the response from method WebAppsClient.NewListUsagesSlotPager.
 type WebAppsClientListUsagesSlotResponse struct {
 	CsmUsageQuotaCollection
 }
@@ -1704,22 +1704,22 @@ type WebAppsClientListVnetConnectionsSlotResponse struct {
 	VnetInfoArray []*VnetInfo
 }
 
-// WebAppsClientListWebJobsResponse contains the response from method WebAppsClient.ListWebJobs.
+// WebAppsClientListWebJobsResponse contains the response from method WebAppsClient.NewListWebJobsPager.
 type WebAppsClientListWebJobsResponse struct {
 	WebJobCollection
 }
 
-// WebAppsClientListWebJobsSlotResponse contains the response from method WebAppsClient.ListWebJobsSlot.
+// WebAppsClientListWebJobsSlotResponse contains the response from method WebAppsClient.NewListWebJobsSlotPager.
 type WebAppsClientListWebJobsSlotResponse struct {
 	WebJobCollection
 }
 
-// WebAppsClientMigrateMySQLResponse contains the response from method WebAppsClient.MigrateMySQL.
+// WebAppsClientMigrateMySQLResponse contains the response from method WebAppsClient.BeginMigrateMySQL.
 type WebAppsClientMigrateMySQLResponse struct {
 	Operation
 }
 
-// WebAppsClientMigrateStorageResponse contains the response from method WebAppsClient.MigrateStorage.
+// WebAppsClientMigrateStorageResponse contains the response from method WebAppsClient.BeginMigrateStorage.
 type WebAppsClientMigrateStorageResponse struct {
 	StorageMigrationResponse
 }
@@ -1764,42 +1764,42 @@ type WebAppsClientRestartSlotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientRestoreFromBackupBlobResponse contains the response from method WebAppsClient.RestoreFromBackupBlob.
+// WebAppsClientRestoreFromBackupBlobResponse contains the response from method WebAppsClient.BeginRestoreFromBackupBlob.
 type WebAppsClientRestoreFromBackupBlobResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientRestoreFromBackupBlobSlotResponse contains the response from method WebAppsClient.RestoreFromBackupBlobSlot.
+// WebAppsClientRestoreFromBackupBlobSlotResponse contains the response from method WebAppsClient.BeginRestoreFromBackupBlobSlot.
 type WebAppsClientRestoreFromBackupBlobSlotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientRestoreFromDeletedAppResponse contains the response from method WebAppsClient.RestoreFromDeletedApp.
+// WebAppsClientRestoreFromDeletedAppResponse contains the response from method WebAppsClient.BeginRestoreFromDeletedApp.
 type WebAppsClientRestoreFromDeletedAppResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientRestoreFromDeletedAppSlotResponse contains the response from method WebAppsClient.RestoreFromDeletedAppSlot.
+// WebAppsClientRestoreFromDeletedAppSlotResponse contains the response from method WebAppsClient.BeginRestoreFromDeletedAppSlot.
 type WebAppsClientRestoreFromDeletedAppSlotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientRestoreResponse contains the response from method WebAppsClient.Restore.
+// WebAppsClientRestoreResponse contains the response from method WebAppsClient.BeginRestore.
 type WebAppsClientRestoreResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientRestoreSlotResponse contains the response from method WebAppsClient.RestoreSlot.
+// WebAppsClientRestoreSlotResponse contains the response from method WebAppsClient.BeginRestoreSlot.
 type WebAppsClientRestoreSlotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientRestoreSnapshotResponse contains the response from method WebAppsClient.RestoreSnapshot.
+// WebAppsClientRestoreSnapshotResponse contains the response from method WebAppsClient.BeginRestoreSnapshot.
 type WebAppsClientRestoreSnapshotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientRestoreSnapshotSlotResponse contains the response from method WebAppsClient.RestoreSnapshotSlot.
+// WebAppsClientRestoreSnapshotSlotResponse contains the response from method WebAppsClient.BeginRestoreSnapshotSlot.
 type WebAppsClientRestoreSnapshotSlotResponse struct {
 	// placeholder for future response values
 }
@@ -1824,7 +1824,7 @@ type WebAppsClientStartContinuousWebJobSlotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientStartNetworkTraceResponse contains the response from method WebAppsClient.StartNetworkTrace.
+// WebAppsClientStartNetworkTraceResponse contains the response from method WebAppsClient.BeginStartNetworkTrace.
 type WebAppsClientStartNetworkTraceResponse struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
@@ -1835,7 +1835,7 @@ func (w *WebAppsClientStartNetworkTraceResponse) UnmarshalJSON(data []byte) erro
 	return json.Unmarshal(data, &w.NetworkTraceArray)
 }
 
-// WebAppsClientStartNetworkTraceSlotResponse contains the response from method WebAppsClient.StartNetworkTraceSlot.
+// WebAppsClientStartNetworkTraceSlotResponse contains the response from method WebAppsClient.BeginStartNetworkTraceSlot.
 type WebAppsClientStartNetworkTraceSlotResponse struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
@@ -1856,7 +1856,7 @@ type WebAppsClientStartSlotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientStartWebSiteNetworkTraceOperationResponse contains the response from method WebAppsClient.StartWebSiteNetworkTraceOperation.
+// WebAppsClientStartWebSiteNetworkTraceOperationResponse contains the response from method WebAppsClient.BeginStartWebSiteNetworkTraceOperation.
 type WebAppsClientStartWebSiteNetworkTraceOperationResponse struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
@@ -1867,7 +1867,7 @@ func (w *WebAppsClientStartWebSiteNetworkTraceOperationResponse) UnmarshalJSON(d
 	return json.Unmarshal(data, &w.NetworkTraceArray)
 }
 
-// WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse contains the response from method WebAppsClient.StartWebSiteNetworkTraceOperationSlot.
+// WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse contains the response from method WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot.
 type WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse struct {
 	// Array of NetworkTrace
 	NetworkTraceArray []*NetworkTrace
@@ -1928,12 +1928,12 @@ type WebAppsClientStopWebSiteNetworkTraceSlotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientSwapSlotResponse contains the response from method WebAppsClient.SwapSlot.
+// WebAppsClientSwapSlotResponse contains the response from method WebAppsClient.BeginSwapSlot.
 type WebAppsClientSwapSlotResponse struct {
 	// placeholder for future response values
 }
 
-// WebAppsClientSwapSlotWithProductionResponse contains the response from method WebAppsClient.SwapSlotWithProduction.
+// WebAppsClientSwapSlotWithProductionResponse contains the response from method WebAppsClient.BeginSwapSlotWithProduction.
 type WebAppsClientSwapSlotWithProductionResponse struct {
 	// placeholder for future response values
 }
@@ -2173,17 +2173,17 @@ type WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse struct {
 	DeploymentLocations
 }
 
-// WebSiteManagementClientListBillingMetersResponse contains the response from method WebSiteManagementClient.ListBillingMeters.
+// WebSiteManagementClientListBillingMetersResponse contains the response from method WebSiteManagementClient.NewListBillingMetersPager.
 type WebSiteManagementClientListBillingMetersResponse struct {
 	BillingMeterCollection
 }
 
-// WebSiteManagementClientListGeoRegionsResponse contains the response from method WebSiteManagementClient.ListGeoRegions.
+// WebSiteManagementClientListGeoRegionsResponse contains the response from method WebSiteManagementClient.NewListGeoRegionsPager.
 type WebSiteManagementClientListGeoRegionsResponse struct {
 	GeoRegionCollection
 }
 
-// WebSiteManagementClientListPremierAddOnOffersResponse contains the response from method WebSiteManagementClient.ListPremierAddOnOffers.
+// WebSiteManagementClientListPremierAddOnOffersResponse contains the response from method WebSiteManagementClient.NewListPremierAddOnOffersPager.
 type WebSiteManagementClientListPremierAddOnOffersResponse struct {
 	PremierAddOnOfferCollection
 }
@@ -2193,12 +2193,12 @@ type WebSiteManagementClientListSKUsResponse struct {
 	SKUInfos
 }
 
-// WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse contains the response from method WebSiteManagementClient.ListSiteIdentifiersAssignedToHostName.
+// WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse contains the response from method WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager.
 type WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse struct {
 	IdentifierCollection
 }
 
-// WebSiteManagementClientListSourceControlsResponse contains the response from method WebSiteManagementClient.ListSourceControls.
+// WebSiteManagementClientListSourceControlsResponse contains the response from method WebSiteManagementClient.NewListSourceControlsPager.
 type WebSiteManagementClientListSourceControlsResponse struct {
 	SourceControlCollection
 }
@@ -2221,7 +2221,7 @@ type WebSiteManagementClientUpdateSourceControlResponse struct {
 // WebSiteManagementClientValidateContainerSettingsResponse contains the response from method WebSiteManagementClient.ValidateContainerSettings.
 type WebSiteManagementClientValidateContainerSettingsResponse struct {
 	// Anything
-	Interface interface{}
+	Interface any
 }
 
 // WebSiteManagementClientValidateMoveResponse contains the response from method WebSiteManagementClient.ValidateMove.

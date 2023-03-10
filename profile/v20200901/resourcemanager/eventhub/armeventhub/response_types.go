@@ -9,12 +9,12 @@
 
 package armeventhub
 
-// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.CreateOrUpdate.
+// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
 type ClustersClientCreateOrUpdateResponse struct {
 	Cluster
 }
 
-// ClustersClientDeleteResponse contains the response from method ClustersClient.Delete.
+// ClustersClientDeleteResponse contains the response from method ClustersClient.BeginDelete.
 type ClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -29,7 +29,7 @@ type ClustersClientListAvailableClusterRegionResponse struct {
 	AvailableClustersList
 }
 
-// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.ListByResourceGroup.
+// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.NewListByResourceGroupPager.
 type ClustersClientListByResourceGroupResponse struct {
 	ClusterListResult
 }
@@ -39,7 +39,7 @@ type ClustersClientListNamespacesResponse struct {
 	EHNamespaceIDListResult
 }
 
-// ClustersClientUpdateResponse contains the response from method ClustersClient.Update.
+// ClustersClientUpdateResponse contains the response from method ClustersClient.BeginUpdate.
 type ClustersClientUpdateResponse struct {
 	Cluster
 }
@@ -59,7 +59,7 @@ type ConsumerGroupsClientGetResponse struct {
 	ConsumerGroup
 }
 
-// ConsumerGroupsClientListByEventHubResponse contains the response from method ConsumerGroupsClient.ListByEventHub.
+// ConsumerGroupsClientListByEventHubResponse contains the response from method ConsumerGroupsClient.NewListByEventHubPager.
 type ConsumerGroupsClientListByEventHubResponse struct {
 	ConsumerGroupListResult
 }
@@ -69,7 +69,7 @@ type DisasterRecoveryConfigsClientGetAuthorizationRuleResponse struct {
 	AuthorizationRule
 }
 
-// DisasterRecoveryConfigsClientListAuthorizationRulesResponse contains the response from method DisasterRecoveryConfigsClient.ListAuthorizationRules.
+// DisasterRecoveryConfigsClientListAuthorizationRulesResponse contains the response from method DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager.
 type DisasterRecoveryConfigsClientListAuthorizationRulesResponse struct {
 	AuthorizationRuleListResult
 }
@@ -109,12 +109,12 @@ type EventHubsClientGetResponse struct {
 	Eventhub
 }
 
-// EventHubsClientListAuthorizationRulesResponse contains the response from method EventHubsClient.ListAuthorizationRules.
+// EventHubsClientListAuthorizationRulesResponse contains the response from method EventHubsClient.NewListAuthorizationRulesPager.
 type EventHubsClientListAuthorizationRulesResponse struct {
 	AuthorizationRuleListResult
 }
 
-// EventHubsClientListByNamespaceResponse contains the response from method EventHubsClient.ListByNamespace.
+// EventHubsClientListByNamespaceResponse contains the response from method EventHubsClient.NewListByNamespacePager.
 type EventHubsClientListByNamespaceResponse struct {
 	ListResult
 }
@@ -139,7 +139,7 @@ type NamespacesClientCreateOrUpdateAuthorizationRuleResponse struct {
 	AuthorizationRule
 }
 
-// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.CreateOrUpdate.
+// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.BeginCreateOrUpdate.
 type NamespacesClientCreateOrUpdateResponse struct {
 	EHNamespace
 }
@@ -149,7 +149,7 @@ type NamespacesClientDeleteAuthorizationRuleResponse struct {
 	// placeholder for future response values
 }
 
-// NamespacesClientDeleteResponse contains the response from method NamespacesClient.Delete.
+// NamespacesClientDeleteResponse contains the response from method NamespacesClient.BeginDelete.
 type NamespacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -164,12 +164,12 @@ type NamespacesClientGetResponse struct {
 	EHNamespace
 }
 
-// NamespacesClientListAuthorizationRulesResponse contains the response from method NamespacesClient.ListAuthorizationRules.
+// NamespacesClientListAuthorizationRulesResponse contains the response from method NamespacesClient.NewListAuthorizationRulesPager.
 type NamespacesClientListAuthorizationRulesResponse struct {
 	AuthorizationRuleListResult
 }
 
-// NamespacesClientListByResourceGroupResponse contains the response from method NamespacesClient.ListByResourceGroup.
+// NamespacesClientListByResourceGroupResponse contains the response from method NamespacesClient.NewListByResourceGroupPager.
 type NamespacesClientListByResourceGroupResponse struct {
 	EHNamespaceListResult
 }
@@ -179,7 +179,7 @@ type NamespacesClientListKeysResponse struct {
 	AccessKeys
 }
 
-// NamespacesClientListResponse contains the response from method NamespacesClient.List.
+// NamespacesClientListResponse contains the response from method NamespacesClient.NewListPager.
 type NamespacesClientListResponse struct {
 	EHNamespaceListResult
 }
@@ -194,7 +194,7 @@ type NamespacesClientUpdateResponse struct {
 	EHNamespace
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -204,7 +204,7 @@ type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -214,7 +214,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
@@ -224,7 +224,7 @@ type PrivateLinkResourcesClientGetResponse struct {
 	PrivateLinkResourcesListResult
 }
 
-// RegionsClientListBySKUResponse contains the response from method RegionsClient.ListBySKU.
+// RegionsClientListBySKUResponse contains the response from method RegionsClient.NewListBySKUPager.
 type RegionsClientListBySKUResponse struct {
 	MessagingRegionsListResult
 }

@@ -39,12 +39,12 @@ type CertificatesClientVerifyResponse struct {
 	CertificateDescription
 }
 
-// ClientManualFailoverResponse contains the response from method Client.ManualFailover.
+// ClientManualFailoverResponse contains the response from method Client.BeginManualFailover.
 type ClientManualFailoverResponse struct {
 	// placeholder for future response values
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -59,7 +59,7 @@ type ResourceClientCreateEventHubConsumerGroupResponse struct {
 	EventHubConsumerGroupInfo
 }
 
-// ResourceClientCreateOrUpdateResponse contains the response from method ResourceClient.CreateOrUpdate.
+// ResourceClientCreateOrUpdateResponse contains the response from method ResourceClient.BeginCreateOrUpdate.
 type ResourceClientCreateOrUpdateResponse struct {
 	Description
 }
@@ -69,7 +69,7 @@ type ResourceClientDeleteEventHubConsumerGroupResponse struct {
 	// placeholder for future response values
 }
 
-// ResourceClientDeleteResponse contains the response from method ResourceClient.Delete.
+// ResourceClientDeleteResponse contains the response from method ResourceClient.BeginDelete.
 type ResourceClientDeleteResponse struct {
 	Description
 }
@@ -79,7 +79,7 @@ type ResourceClientExportDevicesResponse struct {
 	JobResponse
 }
 
-// ResourceClientGetEndpointHealthResponse contains the response from method ResourceClient.GetEndpointHealth.
+// ResourceClientGetEndpointHealthResponse contains the response from method ResourceClient.NewGetEndpointHealthPager.
 type ResourceClientGetEndpointHealthResponse struct {
 	EndpointHealthDataListResult
 }
@@ -99,7 +99,7 @@ type ResourceClientGetKeysForKeyNameResponse struct {
 	SharedAccessSignatureAuthorizationRule
 }
 
-// ResourceClientGetQuotaMetricsResponse contains the response from method ResourceClient.GetQuotaMetrics.
+// ResourceClientGetQuotaMetricsResponse contains the response from method ResourceClient.NewGetQuotaMetricsPager.
 type ResourceClientGetQuotaMetricsResponse struct {
 	QuotaMetricInfoListResult
 }
@@ -114,7 +114,7 @@ type ResourceClientGetStatsResponse struct {
 	RegistryStatistics
 }
 
-// ResourceClientGetValidSKUsResponse contains the response from method ResourceClient.GetValidSKUs.
+// ResourceClientGetValidSKUsResponse contains the response from method ResourceClient.NewGetValidSKUsPager.
 type ResourceClientGetValidSKUsResponse struct {
 	SKUDescriptionListResult
 }
@@ -124,27 +124,27 @@ type ResourceClientImportDevicesResponse struct {
 	JobResponse
 }
 
-// ResourceClientListByResourceGroupResponse contains the response from method ResourceClient.ListByResourceGroup.
+// ResourceClientListByResourceGroupResponse contains the response from method ResourceClient.NewListByResourceGroupPager.
 type ResourceClientListByResourceGroupResponse struct {
 	DescriptionListResult
 }
 
-// ResourceClientListBySubscriptionResponse contains the response from method ResourceClient.ListBySubscription.
+// ResourceClientListBySubscriptionResponse contains the response from method ResourceClient.NewListBySubscriptionPager.
 type ResourceClientListBySubscriptionResponse struct {
 	DescriptionListResult
 }
 
-// ResourceClientListEventHubConsumerGroupsResponse contains the response from method ResourceClient.ListEventHubConsumerGroups.
+// ResourceClientListEventHubConsumerGroupsResponse contains the response from method ResourceClient.NewListEventHubConsumerGroupsPager.
 type ResourceClientListEventHubConsumerGroupsResponse struct {
 	EventHubConsumerGroupsListResult
 }
 
-// ResourceClientListJobsResponse contains the response from method ResourceClient.ListJobs.
+// ResourceClientListJobsResponse contains the response from method ResourceClient.NewListJobsPager.
 type ResourceClientListJobsResponse struct {
 	JobResponseListResult
 }
 
-// ResourceClientListKeysResponse contains the response from method ResourceClient.ListKeys.
+// ResourceClientListKeysResponse contains the response from method ResourceClient.NewListKeysPager.
 type ResourceClientListKeysResponse struct {
 	SharedAccessSignatureAuthorizationRuleListResult
 }
@@ -159,7 +159,7 @@ type ResourceClientTestRouteResponse struct {
 	TestRouteResult
 }
 
-// ResourceClientUpdateResponse contains the response from method ResourceClient.Update.
+// ResourceClientUpdateResponse contains the response from method ResourceClient.BeginUpdate.
 type ResourceClientUpdateResponse struct {
 	Description
 }

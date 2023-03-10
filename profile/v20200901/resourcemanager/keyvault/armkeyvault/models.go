@@ -236,7 +236,7 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -530,7 +530,7 @@ type SecretsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SecretsClientListOptions contains the optional parameters for the SecretsClient.List method.
+// SecretsClientListOptions contains the optional parameters for the SecretsClient.NewListPager method.
 type SecretsClientListOptions struct {
 	// Maximum number of results to return.
 	Top *int32
@@ -783,24 +783,26 @@ type VaultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VaultsClientListByResourceGroupOptions contains the optional parameters for the VaultsClient.ListByResourceGroup method.
+// VaultsClientListByResourceGroupOptions contains the optional parameters for the VaultsClient.NewListByResourceGroupPager
+// method.
 type VaultsClientListByResourceGroupOptions struct {
 	// Maximum number of results to return.
 	Top *int32
 }
 
-// VaultsClientListBySubscriptionOptions contains the optional parameters for the VaultsClient.ListBySubscription method.
+// VaultsClientListBySubscriptionOptions contains the optional parameters for the VaultsClient.NewListBySubscriptionPager
+// method.
 type VaultsClientListBySubscriptionOptions struct {
 	// Maximum number of results to return.
 	Top *int32
 }
 
-// VaultsClientListDeletedOptions contains the optional parameters for the VaultsClient.ListDeleted method.
+// VaultsClientListDeletedOptions contains the optional parameters for the VaultsClient.NewListDeletedPager method.
 type VaultsClientListDeletedOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VaultsClientListOptions contains the optional parameters for the VaultsClient.List method.
+// VaultsClientListOptions contains the optional parameters for the VaultsClient.NewListPager method.
 type VaultsClientListOptions struct {
 	// Maximum number of results to return.
 	Top *int32

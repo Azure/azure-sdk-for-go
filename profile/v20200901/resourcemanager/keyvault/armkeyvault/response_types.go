@@ -9,12 +9,12 @@
 
 package armkeyvault
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	PrivateEndpointConnection
 }
@@ -49,7 +49,7 @@ type SecretsClientGetResponse struct {
 	Secret
 }
 
-// SecretsClientListResponse contains the response from method SecretsClient.List.
+// SecretsClientListResponse contains the response from method SecretsClient.NewListPager.
 type SecretsClientListResponse struct {
 	SecretListResult
 }
@@ -64,7 +64,7 @@ type VaultsClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResult
 }
 
-// VaultsClientCreateOrUpdateResponse contains the response from method VaultsClient.CreateOrUpdate.
+// VaultsClientCreateOrUpdateResponse contains the response from method VaultsClient.BeginCreateOrUpdate.
 type VaultsClientCreateOrUpdateResponse struct {
 	Vault
 }
@@ -84,27 +84,27 @@ type VaultsClientGetResponse struct {
 	Vault
 }
 
-// VaultsClientListByResourceGroupResponse contains the response from method VaultsClient.ListByResourceGroup.
+// VaultsClientListByResourceGroupResponse contains the response from method VaultsClient.NewListByResourceGroupPager.
 type VaultsClientListByResourceGroupResponse struct {
 	VaultListResult
 }
 
-// VaultsClientListBySubscriptionResponse contains the response from method VaultsClient.ListBySubscription.
+// VaultsClientListBySubscriptionResponse contains the response from method VaultsClient.NewListBySubscriptionPager.
 type VaultsClientListBySubscriptionResponse struct {
 	VaultListResult
 }
 
-// VaultsClientListDeletedResponse contains the response from method VaultsClient.ListDeleted.
+// VaultsClientListDeletedResponse contains the response from method VaultsClient.NewListDeletedPager.
 type VaultsClientListDeletedResponse struct {
 	DeletedVaultListResult
 }
 
-// VaultsClientListResponse contains the response from method VaultsClient.List.
+// VaultsClientListResponse contains the response from method VaultsClient.NewListPager.
 type VaultsClientListResponse struct {
 	ResourceListResult
 }
 
-// VaultsClientPurgeDeletedResponse contains the response from method VaultsClient.PurgeDeleted.
+// VaultsClientPurgeDeletedResponse contains the response from method VaultsClient.BeginPurgeDeleted.
 type VaultsClientPurgeDeletedResponse struct {
 	// placeholder for future response values
 }

@@ -39,12 +39,12 @@ type DiagnosticSettingsClientListResponse struct {
 	DiagnosticSettingsResourceCollection
 }
 
-// EventCategoriesClientListResponse contains the response from method EventCategoriesClient.List.
+// EventCategoriesClientListResponse contains the response from method EventCategoriesClient.NewListPager.
 type EventCategoriesClientListResponse struct {
 	EventCategoryCollection
 }
 
-// MetricDefinitionsClientListResponse contains the response from method MetricDefinitionsClient.List.
+// MetricDefinitionsClientListResponse contains the response from method MetricDefinitionsClient.NewListPager.
 type MetricDefinitionsClientListResponse struct {
 	MetricDefinitionCollection
 }

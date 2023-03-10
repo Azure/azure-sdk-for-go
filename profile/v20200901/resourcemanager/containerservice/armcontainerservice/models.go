@@ -187,7 +187,7 @@ type AgentPoolsClientGetUpgradeProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.List method.
+// AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.NewListPager method.
 type AgentPoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -291,13 +291,13 @@ type ContainerServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerServicesClientListByResourceGroupOptions contains the optional parameters for the ContainerServicesClient.ListByResourceGroup
+// ContainerServicesClientListByResourceGroupOptions contains the optional parameters for the ContainerServicesClient.NewListByResourceGroupPager
 // method.
 type ContainerServicesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerServicesClientListOptions contains the optional parameters for the ContainerServicesClient.List method.
+// ContainerServicesClientListOptions contains the optional parameters for the ContainerServicesClient.NewListPager method.
 type ContainerServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1088,7 +1088,7 @@ type ManagedClustersClientGetUpgradeProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.ListByResourceGroup
+// ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.NewListByResourceGroupPager
 // method.
 type ManagedClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
@@ -1112,7 +1112,7 @@ type ManagedClustersClientListClusterUserCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagedClustersClientListOptions contains the optional parameters for the ManagedClustersClient.List method.
+// ManagedClustersClientListOptions contains the optional parameters for the ManagedClustersClient.NewListPager method.
 type ManagedClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1214,7 +1214,7 @@ type OperationValueDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }

@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,48 +26,40 @@ import (
 // RecommendationsClient contains the methods for the Recommendations group.
 // Don't use this type directly, use NewRecommendationsClient() instead.
 type RecommendationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRecommendationsClient creates a new instance of RecommendationsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".RecommendationsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RecommendationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // DisableAllForHostingEnvironment - Disable all recommendations for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// environmentName - Name of the app.
-// options - RecommendationsClientDisableAllForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.DisableAllForHostingEnvironment
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - environmentName - Name of the app.
+//   - options - RecommendationsClientDisableAllForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.DisableAllForHostingEnvironment
+//     method.
 func (client *RecommendationsClient) DisableAllForHostingEnvironment(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsClientDisableAllForHostingEnvironmentOptions) (RecommendationsClientDisableAllForHostingEnvironmentResponse, error) {
 	req, err := client.disableAllForHostingEnvironmentCreateRequest(ctx, resourceGroupName, environmentName, hostingEnvironmentName, options)
 	if err != nil {
 		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, err
 	}
@@ -94,7 +84,7 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -107,17 +97,18 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateReques
 
 // DisableAllForWebApp - Disable all recommendations for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Name of the app.
-// options - RecommendationsClientDisableAllForWebAppOptions contains the optional parameters for the RecommendationsClient.DisableAllForWebApp
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Name of the app.
+//   - options - RecommendationsClientDisableAllForWebAppOptions contains the optional parameters for the RecommendationsClient.DisableAllForWebApp
+//     method.
 func (client *RecommendationsClient) DisableAllForWebApp(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsClientDisableAllForWebAppOptions) (RecommendationsClientDisableAllForWebAppResponse, error) {
 	req, err := client.disableAllForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
 	if err != nil {
 		return RecommendationsClientDisableAllForWebAppResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableAllForWebAppResponse{}, err
 	}
@@ -142,7 +133,7 @@ func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -154,18 +145,19 @@ func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx contex
 
 // DisableRecommendationForHostingEnvironment - Disables the specific rule for a web site permanently.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// environmentName - Site name
-// name - Rule name
-// options - RecommendationsClientDisableRecommendationForHostingEnvironmentOptions contains the optional parameters for the
-// RecommendationsClient.DisableRecommendationForHostingEnvironment method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - environmentName - Site name
+//   - name - Rule name
+//   - options - RecommendationsClientDisableRecommendationForHostingEnvironmentOptions contains the optional parameters for the
+//     RecommendationsClient.DisableRecommendationForHostingEnvironment method.
 func (client *RecommendationsClient) DisableRecommendationForHostingEnvironment(ctx context.Context, resourceGroupName string, environmentName string, name string, hostingEnvironmentName string, options *RecommendationsClientDisableRecommendationForHostingEnvironmentOptions) (RecommendationsClientDisableRecommendationForHostingEnvironmentResponse, error) {
 	req, err := client.disableRecommendationForHostingEnvironmentCreateRequest(ctx, resourceGroupName, environmentName, name, hostingEnvironmentName, options)
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
@@ -194,7 +186,7 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentC
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,18 +199,19 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentC
 
 // DisableRecommendationForSite - Disables the specific rule for a web site permanently.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Site name
-// name - Rule name
-// options - RecommendationsClientDisableRecommendationForSiteOptions contains the optional parameters for the RecommendationsClient.DisableRecommendationForSite
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Site name
+//   - name - Rule name
+//   - options - RecommendationsClientDisableRecommendationForSiteOptions contains the optional parameters for the RecommendationsClient.DisableRecommendationForSite
+//     method.
 func (client *RecommendationsClient) DisableRecommendationForSite(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsClientDisableRecommendationForSiteOptions) (RecommendationsClientDisableRecommendationForSiteResponse, error) {
 	req, err := client.disableRecommendationForSiteCreateRequest(ctx, resourceGroupName, siteName, name, options)
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForSiteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForSiteResponse{}, err
 	}
@@ -247,7 +240,7 @@ func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -259,16 +252,17 @@ func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(c
 
 // DisableRecommendationForSubscription - Disables the specified rule so it will not apply to a subscription in the future.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// name - Rule name
-// options - RecommendationsClientDisableRecommendationForSubscriptionOptions contains the optional parameters for the RecommendationsClient.DisableRecommendationForSubscription
-// method.
+//   - name - Rule name
+//   - options - RecommendationsClientDisableRecommendationForSubscriptionOptions contains the optional parameters for the RecommendationsClient.DisableRecommendationForSubscription
+//     method.
 func (client *RecommendationsClient) DisableRecommendationForSubscription(ctx context.Context, name string, options *RecommendationsClientDisableRecommendationForSubscriptionOptions) (RecommendationsClientDisableRecommendationForSubscriptionResponse, error) {
 	req, err := client.disableRecommendationForSubscriptionCreateRequest(ctx, name, options)
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, err
 	}
@@ -289,7 +283,7 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -301,18 +295,19 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateR
 
 // GetRuleDetailsByHostingEnvironment - Get a recommendation rule for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// hostingEnvironmentName - Name of the hosting environment.
-// name - Name of the recommendation.
-// options - RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.GetRuleDetailsByHostingEnvironment
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - hostingEnvironmentName - Name of the hosting environment.
+//   - name - Name of the recommendation.
+//   - options - RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.GetRuleDetailsByHostingEnvironment
+//     method.
 func (client *RecommendationsClient) GetRuleDetailsByHostingEnvironment(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, name string, options *RecommendationsClientGetRuleDetailsByHostingEnvironmentOptions) (RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse, error) {
 	req, err := client.getRuleDetailsByHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, name, options)
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
@@ -341,7 +336,7 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -369,18 +364,19 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleRes
 
 // GetRuleDetailsByWebApp - Get a recommendation rule for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Name of the app.
-// name - Name of the recommendation.
-// options - RecommendationsClientGetRuleDetailsByWebAppOptions contains the optional parameters for the RecommendationsClient.GetRuleDetailsByWebApp
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Name of the app.
+//   - name - Name of the recommendation.
+//   - options - RecommendationsClientGetRuleDetailsByWebAppOptions contains the optional parameters for the RecommendationsClient.GetRuleDetailsByWebApp
+//     method.
 func (client *RecommendationsClient) GetRuleDetailsByWebApp(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsClientGetRuleDetailsByWebAppOptions) (RecommendationsClientGetRuleDetailsByWebAppResponse, error) {
 	req, err := client.getRuleDetailsByWebAppCreateRequest(ctx, resourceGroupName, siteName, name, options)
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByWebAppResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByWebAppResponse{}, err
 	}
@@ -409,7 +405,7 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -436,8 +432,10 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *
 }
 
 // NewListPager - List all recommendations for a subscription.
+//
 // Generated from API version 2018-02-01
-// options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
+//   - options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager
+//     method.
 func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListResponse]{
 		More: func(page RecommendationsClientListResponse) bool {
@@ -454,7 +452,7 @@ func (client *RecommendationsClient) NewListPager(options *RecommendationsClient
 			if err != nil {
 				return RecommendationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListResponse{}, err
 			}
@@ -473,7 +471,7 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -502,11 +500,12 @@ func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (Re
 }
 
 // NewListHistoryForHostingEnvironmentPager - Get past recommendations for an app, optionally specified by the time range.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// hostingEnvironmentName - Name of the hosting environment.
-// options - RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ListHistoryForHostingEnvironment
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - hostingEnvironmentName - Name of the hosting environment.
+//   - options - RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.NewListHistoryForHostingEnvironmentPager
+//     method.
 func (client *RecommendationsClient) NewListHistoryForHostingEnvironmentPager(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListHistoryForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListHistoryForHostingEnvironmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListHistoryForHostingEnvironmentResponse]{
 		More: func(page RecommendationsClientListHistoryForHostingEnvironmentResponse) bool {
@@ -523,7 +522,7 @@ func (client *RecommendationsClient) NewListHistoryForHostingEnvironmentPager(re
 			if err != nil {
 				return RecommendationsClientListHistoryForHostingEnvironmentResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListHistoryForHostingEnvironmentResponse{}, err
 			}
@@ -550,7 +549,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -579,11 +578,12 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleRespo
 }
 
 // NewListHistoryForWebAppPager - Get past recommendations for an app, optionally specified by the time range.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Name of the app.
-// options - RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.ListHistoryForWebApp
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Name of the app.
+//   - options - RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.NewListHistoryForWebAppPager
+//     method.
 func (client *RecommendationsClient) NewListHistoryForWebAppPager(resourceGroupName string, siteName string, options *RecommendationsClientListHistoryForWebAppOptions) *runtime.Pager[RecommendationsClientListHistoryForWebAppResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListHistoryForWebAppResponse]{
 		More: func(page RecommendationsClientListHistoryForWebAppResponse) bool {
@@ -600,7 +600,7 @@ func (client *RecommendationsClient) NewListHistoryForWebAppPager(resourceGroupN
 			if err != nil {
 				return RecommendationsClientListHistoryForWebAppResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListHistoryForWebAppResponse{}, err
 			}
@@ -627,7 +627,7 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -656,11 +656,12 @@ func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *ht
 }
 
 // NewListRecommendedRulesForHostingEnvironmentPager - Get all recommendations for an app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// hostingEnvironmentName - Name of the app.
-// options - RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the
-// RecommendationsClient.ListRecommendedRulesForHostingEnvironment method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - hostingEnvironmentName - Name of the app.
+//   - options - RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the
+//     RecommendationsClient.NewListRecommendedRulesForHostingEnvironmentPager method.
 func (client *RecommendationsClient) NewListRecommendedRulesForHostingEnvironmentPager(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse]{
 		More: func(page RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse) bool {
@@ -677,7 +678,7 @@ func (client *RecommendationsClient) NewListRecommendedRulesForHostingEnvironmen
 			if err != nil {
 				return RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListRecommendedRulesForHostingEnvironmentResponse{}, err
 			}
@@ -704,7 +705,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -733,11 +734,12 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHa
 }
 
 // NewListRecommendedRulesForWebAppPager - Get all recommendations for an app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Name of the app.
-// options - RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.ListRecommendedRulesForWebApp
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Name of the app.
+//   - options - RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.NewListRecommendedRulesForWebAppPager
+//     method.
 func (client *RecommendationsClient) NewListRecommendedRulesForWebAppPager(resourceGroupName string, siteName string, options *RecommendationsClientListRecommendedRulesForWebAppOptions) *runtime.Pager[RecommendationsClientListRecommendedRulesForWebAppResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListRecommendedRulesForWebAppResponse]{
 		More: func(page RecommendationsClientListRecommendedRulesForWebAppResponse) bool {
@@ -754,7 +756,7 @@ func (client *RecommendationsClient) NewListRecommendedRulesForWebAppPager(resou
 			if err != nil {
 				return RecommendationsClientListRecommendedRulesForWebAppResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecommendationsClientListRecommendedRulesForWebAppResponse{}, err
 			}
@@ -781,7 +783,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -811,15 +813,16 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleResponse
 
 // ResetAllFilters - Reset all recommendation opt-out settings for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// options - RecommendationsClientResetAllFiltersOptions contains the optional parameters for the RecommendationsClient.ResetAllFilters
-// method.
+//   - options - RecommendationsClientResetAllFiltersOptions contains the optional parameters for the RecommendationsClient.ResetAllFilters
+//     method.
 func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, options *RecommendationsClientResetAllFiltersOptions) (RecommendationsClientResetAllFiltersResponse, error) {
 	req, err := client.resetAllFiltersCreateRequest(ctx, options)
 	if err != nil {
 		return RecommendationsClientResetAllFiltersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientResetAllFiltersResponse{}, err
 	}
@@ -836,7 +839,7 @@ func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -848,17 +851,18 @@ func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Co
 
 // ResetAllFiltersForHostingEnvironment - Reset all recommendation opt-out settings for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// environmentName - Name of the app.
-// options - RecommendationsClientResetAllFiltersForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ResetAllFiltersForHostingEnvironment
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - environmentName - Name of the app.
+//   - options - RecommendationsClientResetAllFiltersForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ResetAllFiltersForHostingEnvironment
+//     method.
 func (client *RecommendationsClient) ResetAllFiltersForHostingEnvironment(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsClientResetAllFiltersForHostingEnvironmentOptions) (RecommendationsClientResetAllFiltersForHostingEnvironmentResponse, error) {
 	req, err := client.resetAllFiltersForHostingEnvironmentCreateRequest(ctx, resourceGroupName, environmentName, hostingEnvironmentName, options)
 	if err != nil {
 		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
@@ -883,7 +887,7 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -896,17 +900,18 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateR
 
 // ResetAllFiltersForWebApp - Reset all recommendation opt-out settings for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// siteName - Name of the app.
-// options - RecommendationsClientResetAllFiltersForWebAppOptions contains the optional parameters for the RecommendationsClient.ResetAllFiltersForWebApp
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - siteName - Name of the app.
+//   - options - RecommendationsClientResetAllFiltersForWebAppOptions contains the optional parameters for the RecommendationsClient.ResetAllFiltersForWebApp
+//     method.
 func (client *RecommendationsClient) ResetAllFiltersForWebApp(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsClientResetAllFiltersForWebAppOptions) (RecommendationsClientResetAllFiltersForWebAppResponse, error) {
 	req, err := client.resetAllFiltersForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
 	if err != nil {
 		return RecommendationsClientResetAllFiltersForWebAppResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecommendationsClientResetAllFiltersForWebAppResponse{}, err
 	}
@@ -931,7 +936,7 @@ func (client *RecommendationsClient) resetAllFiltersForWebAppCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

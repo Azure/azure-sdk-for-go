@@ -46,7 +46,7 @@ func (t *timeRFC1123) UnmarshalText(data []byte) error {
 	return err
 }
 
-func populateTimeRFC1123(m map[string]interface{}, k string, t *time.Time) {
+func populateTimeRFC1123(m map[string]any, k string, t *time.Time) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {

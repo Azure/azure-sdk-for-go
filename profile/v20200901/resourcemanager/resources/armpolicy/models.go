@@ -42,7 +42,7 @@ type AssignmentProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required if a parameter is used in policy rule.
-	Parameters interface{} `json:"parameters,omitempty"`
+	Parameters any `json:"parameters,omitempty"`
 
 	// The ID of the policy definition.
 	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
@@ -81,20 +81,21 @@ type AssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.ListForResourceGroup
+// AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.NewListForResourceGroupPager
 // method.
 type AssignmentsClientListForResourceGroupOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 }
 
-// AssignmentsClientListForResourceOptions contains the optional parameters for the AssignmentsClient.ListForResource method.
+// AssignmentsClientListForResourceOptions contains the optional parameters for the AssignmentsClient.NewListForResourcePager
+// method.
 type AssignmentsClientListForResourceOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 }
 
-// AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
+// AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.NewListPager method.
 type AssignmentsClientListOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
@@ -130,16 +131,16 @@ type DefinitionProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// The policy definition metadata.
-	Metadata interface{} `json:"metadata,omitempty"`
+	Metadata any `json:"metadata,omitempty"`
 
 	// The policy definition mode. Possible values are NotSpecified, Indexed, and All.
 	Mode *PolicyMode `json:"mode,omitempty"`
 
 	// Required if a parameter is used in policy rule.
-	Parameters interface{} `json:"parameters,omitempty"`
+	Parameters any `json:"parameters,omitempty"`
 
 	// The policy rule.
-	PolicyRule interface{} `json:"policyRule,omitempty"`
+	PolicyRule any `json:"policyRule,omitempty"`
 
 	// The type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom.
 	PolicyType *PolicyType `json:"policyType,omitempty"`
@@ -183,18 +184,18 @@ type DefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DefinitionsClientListBuiltInOptions contains the optional parameters for the DefinitionsClient.ListBuiltIn method.
+// DefinitionsClientListBuiltInOptions contains the optional parameters for the DefinitionsClient.NewListBuiltInPager method.
 type DefinitionsClientListBuiltInOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DefinitionsClientListByManagementGroupOptions contains the optional parameters for the DefinitionsClient.ListByManagementGroup
+// DefinitionsClientListByManagementGroupOptions contains the optional parameters for the DefinitionsClient.NewListByManagementGroupPager
 // method.
 type DefinitionsClientListByManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DefinitionsClientListOptions contains the optional parameters for the DefinitionsClient.List method.
+// DefinitionsClientListOptions contains the optional parameters for the DefinitionsClient.NewListPager method.
 type DefinitionsClientListOptions struct {
 	// placeholder for future optional parameters
 }

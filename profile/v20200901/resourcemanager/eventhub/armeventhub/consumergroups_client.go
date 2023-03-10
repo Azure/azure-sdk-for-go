@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,52 +26,44 @@ import (
 // ConsumerGroupsClient contains the methods for the ConsumerGroups group.
 // Don't use this type directly, use NewConsumerGroupsClient() instead.
 type ConsumerGroupsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewConsumerGroupsClient creates a new instance of ConsumerGroupsClient with the specified values.
-// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConsumerGroupsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".ConsumerGroupsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ConsumerGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// consumerGroupName - The consumer group name
-// parameters - Parameters supplied to create or update a consumer group resource.
-// options - ConsumerGroupsClientCreateOrUpdateOptions contains the optional parameters for the ConsumerGroupsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - consumerGroupName - The consumer group name
+//   - parameters - Parameters supplied to create or update a consumer group resource.
+//   - options - ConsumerGroupsClientCreateOrUpdateOptions contains the optional parameters for the ConsumerGroupsClient.CreateOrUpdate
+//     method.
 func (client *ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroup, options *ConsumerGroupsClientCreateOrUpdateOptions) (ConsumerGroupsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupName, parameters, options)
 	if err != nil {
 		return ConsumerGroupsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConsumerGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -106,7 +96,7 @@ func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,18 +118,19 @@ func (client *ConsumerGroupsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes a consumer group from the specified Event Hub and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// consumerGroupName - The consumer group name
-// options - ConsumerGroupsClientDeleteOptions contains the optional parameters for the ConsumerGroupsClient.Delete method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - consumerGroupName - The consumer group name
+//   - options - ConsumerGroupsClientDeleteOptions contains the optional parameters for the ConsumerGroupsClient.Delete method.
 func (client *ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsClientDeleteOptions) (ConsumerGroupsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupName, options)
 	if err != nil {
 		return ConsumerGroupsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConsumerGroupsClientDeleteResponse{}, err
 	}
@@ -172,7 +163,7 @@ func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -185,18 +176,19 @@ func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets a description for the specified consumer group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// consumerGroupName - The consumer group name
-// options - ConsumerGroupsClientGetOptions contains the optional parameters for the ConsumerGroupsClient.Get method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - consumerGroupName - The consumer group name
+//   - options - ConsumerGroupsClientGetOptions contains the optional parameters for the ConsumerGroupsClient.Get method.
 func (client *ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsClientGetOptions) (ConsumerGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupName, options)
 	if err != nil {
 		return ConsumerGroupsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConsumerGroupsClientGetResponse{}, err
 	}
@@ -229,7 +221,7 @@ func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,12 +243,13 @@ func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (Cons
 
 // NewListByEventHubPager - Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists
 // in the Namespace.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// options - ConsumerGroupsClientListByEventHubOptions contains the optional parameters for the ConsumerGroupsClient.ListByEventHub
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - options - ConsumerGroupsClientListByEventHubOptions contains the optional parameters for the ConsumerGroupsClient.NewListByEventHubPager
+//     method.
 func (client *ConsumerGroupsClient) NewListByEventHubPager(resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsClientListByEventHubOptions) *runtime.Pager[ConsumerGroupsClientListByEventHubResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConsumerGroupsClientListByEventHubResponse]{
 		More: func(page ConsumerGroupsClientListByEventHubResponse) bool {
@@ -273,7 +266,7 @@ func (client *ConsumerGroupsClient) NewListByEventHubPager(resourceGroupName str
 			if err != nil {
 				return ConsumerGroupsClientListByEventHubResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ConsumerGroupsClientListByEventHubResponse{}, err
 			}
@@ -304,7 +297,7 @@ func (client *ConsumerGroupsClient) listByEventHubCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,51 +26,43 @@ import (
 // EventHubsClient contains the methods for the EventHubs group.
 // Don't use this type directly, use NewEventHubsClient() instead.
 type EventHubsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewEventHubsClient creates a new instance of EventHubsClient with the specified values.
-// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEventHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventHubsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".EventHubsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EventHubsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a new Event Hub as a nested resource within a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// parameters - Parameters supplied to create an Event Hub resource.
-// options - EventHubsClientCreateOrUpdateOptions contains the optional parameters for the EventHubsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - parameters - Parameters supplied to create an Event Hub resource.
+//   - options - EventHubsClientCreateOrUpdateOptions contains the optional parameters for the EventHubsClient.CreateOrUpdate
+//     method.
 func (client *EventHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, parameters Eventhub, options *EventHubsClientCreateOrUpdateOptions) (EventHubsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, parameters, options)
 	if err != nil {
 		return EventHubsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EventHubsClientCreateOrUpdateResponse{}, err
 	}
@@ -101,7 +91,7 @@ func (client *EventHubsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,20 +114,21 @@ func (client *EventHubsClient) createOrUpdateHandleResponse(resp *http.Response)
 // CreateOrUpdateAuthorizationRule - Creates or updates an AuthorizationRule for the specified Event Hub. Creation/update
 // of the AuthorizationRule will take a few seconds to take effect.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// authorizationRuleName - The authorization rule name.
-// parameters - The shared access AuthorizationRule.
-// options - EventHubsClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the EventHubsClient.CreateOrUpdateAuthorizationRule
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - authorizationRuleName - The authorization rule name.
+//   - parameters - The shared access AuthorizationRule.
+//   - options - EventHubsClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the EventHubsClient.CreateOrUpdateAuthorizationRule
+//     method.
 func (client *EventHubsClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters AuthorizationRule, options *EventHubsClientCreateOrUpdateAuthorizationRuleOptions) (EventHubsClientCreateOrUpdateAuthorizationRuleResponse, error) {
 	req, err := client.createOrUpdateAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters, options)
 	if err != nil {
 		return EventHubsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EventHubsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -170,7 +161,7 @@ func (client *EventHubsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,17 +183,18 @@ func (client *EventHubsClient) createOrUpdateAuthorizationRuleHandleResponse(res
 
 // Delete - Deletes an Event Hub from the specified Namespace and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// options - EventHubsClientDeleteOptions contains the optional parameters for the EventHubsClient.Delete method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - options - EventHubsClientDeleteOptions contains the optional parameters for the EventHubsClient.Delete method.
 func (client *EventHubsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientDeleteOptions) (EventHubsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
 	if err != nil {
 		return EventHubsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EventHubsClientDeleteResponse{}, err
 	}
@@ -231,7 +223,7 @@ func (client *EventHubsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -244,19 +236,20 @@ func (client *EventHubsClient) deleteCreateRequest(ctx context.Context, resource
 
 // DeleteAuthorizationRule - Deletes an Event Hub AuthorizationRule.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// authorizationRuleName - The authorization rule name.
-// options - EventHubsClientDeleteAuthorizationRuleOptions contains the optional parameters for the EventHubsClient.DeleteAuthorizationRule
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - authorizationRuleName - The authorization rule name.
+//   - options - EventHubsClientDeleteAuthorizationRuleOptions contains the optional parameters for the EventHubsClient.DeleteAuthorizationRule
+//     method.
 func (client *EventHubsClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsClientDeleteAuthorizationRuleOptions) (EventHubsClientDeleteAuthorizationRuleResponse, error) {
 	req, err := client.deleteAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, options)
 	if err != nil {
 		return EventHubsClientDeleteAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EventHubsClientDeleteAuthorizationRuleResponse{}, err
 	}
@@ -289,7 +282,7 @@ func (client *EventHubsClient) deleteAuthorizationRuleCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -302,17 +295,18 @@ func (client *EventHubsClient) deleteAuthorizationRuleCreateRequest(ctx context.
 
 // Get - Gets an Event Hubs description for the specified Event Hub.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// options - EventHubsClientGetOptions contains the optional parameters for the EventHubsClient.Get method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - options - EventHubsClientGetOptions contains the optional parameters for the EventHubsClient.Get method.
 func (client *EventHubsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientGetOptions) (EventHubsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
 	if err != nil {
 		return EventHubsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EventHubsClientGetResponse{}, err
 	}
@@ -341,7 +335,7 @@ func (client *EventHubsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -363,19 +357,20 @@ func (client *EventHubsClient) getHandleResponse(resp *http.Response) (EventHubs
 
 // GetAuthorizationRule - Gets an AuthorizationRule for an Event Hub by rule name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// authorizationRuleName - The authorization rule name.
-// options - EventHubsClientGetAuthorizationRuleOptions contains the optional parameters for the EventHubsClient.GetAuthorizationRule
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - authorizationRuleName - The authorization rule name.
+//   - options - EventHubsClientGetAuthorizationRuleOptions contains the optional parameters for the EventHubsClient.GetAuthorizationRule
+//     method.
 func (client *EventHubsClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsClientGetAuthorizationRuleOptions) (EventHubsClientGetAuthorizationRuleResponse, error) {
 	req, err := client.getAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, options)
 	if err != nil {
 		return EventHubsClientGetAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EventHubsClientGetAuthorizationRuleResponse{}, err
 	}
@@ -408,7 +403,7 @@ func (client *EventHubsClient) getAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -429,12 +424,13 @@ func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Res
 }
 
 // NewListAuthorizationRulesPager - Gets the authorization rules for an Event Hub.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// options - EventHubsClientListAuthorizationRulesOptions contains the optional parameters for the EventHubsClient.ListAuthorizationRules
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - options - EventHubsClientListAuthorizationRulesOptions contains the optional parameters for the EventHubsClient.NewListAuthorizationRulesPager
+//     method.
 func (client *EventHubsClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsClientListAuthorizationRulesOptions) *runtime.Pager[EventHubsClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EventHubsClientListAuthorizationRulesResponse]{
 		More: func(page EventHubsClientListAuthorizationRulesResponse) bool {
@@ -451,7 +447,7 @@ func (client *EventHubsClient) NewListAuthorizationRulesPager(resourceGroupName 
 			if err != nil {
 				return EventHubsClientListAuthorizationRulesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EventHubsClientListAuthorizationRulesResponse{}, err
 			}
@@ -482,7 +478,7 @@ func (client *EventHubsClient) listAuthorizationRulesCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -503,11 +499,12 @@ func (client *EventHubsClient) listAuthorizationRulesHandleResponse(resp *http.R
 }
 
 // NewListByNamespacePager - Gets all the Event Hubs in a Namespace.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// options - EventHubsClientListByNamespaceOptions contains the optional parameters for the EventHubsClient.ListByNamespace
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - options - EventHubsClientListByNamespaceOptions contains the optional parameters for the EventHubsClient.NewListByNamespacePager
+//     method.
 func (client *EventHubsClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *EventHubsClientListByNamespaceOptions) *runtime.Pager[EventHubsClientListByNamespaceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EventHubsClientListByNamespaceResponse]{
 		More: func(page EventHubsClientListByNamespaceResponse) bool {
@@ -524,7 +521,7 @@ func (client *EventHubsClient) NewListByNamespacePager(resourceGroupName string,
 			if err != nil {
 				return EventHubsClientListByNamespaceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EventHubsClientListByNamespaceResponse{}, err
 			}
@@ -551,7 +548,7 @@ func (client *EventHubsClient) listByNamespaceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -579,18 +576,19 @@ func (client *EventHubsClient) listByNamespaceHandleResponse(resp *http.Response
 
 // ListKeys - Gets the ACS and SAS connection strings for the Event Hub.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// authorizationRuleName - The authorization rule name.
-// options - EventHubsClientListKeysOptions contains the optional parameters for the EventHubsClient.ListKeys method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - authorizationRuleName - The authorization rule name.
+//   - options - EventHubsClientListKeysOptions contains the optional parameters for the EventHubsClient.ListKeys method.
 func (client *EventHubsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsClientListKeysOptions) (EventHubsClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, options)
 	if err != nil {
 		return EventHubsClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EventHubsClientListKeysResponse{}, err
 	}
@@ -623,7 +621,7 @@ func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -645,20 +643,21 @@ func (client *EventHubsClient) listKeysHandleResponse(resp *http.Response) (Even
 
 // RegenerateKeys - Regenerates the ACS and SAS connection strings for the Event Hub.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// eventHubName - The Event Hub name
-// authorizationRuleName - The authorization rule name.
-// parameters - Parameters supplied to regenerate the AuthorizationRule Keys (PrimaryKey/SecondaryKey).
-// options - EventHubsClientRegenerateKeysOptions contains the optional parameters for the EventHubsClient.RegenerateKeys
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - authorizationRuleName - The authorization rule name.
+//   - parameters - Parameters supplied to regenerate the AuthorizationRule Keys (PrimaryKey/SecondaryKey).
+//   - options - EventHubsClientRegenerateKeysOptions contains the optional parameters for the EventHubsClient.RegenerateKeys
+//     method.
 func (client *EventHubsClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *EventHubsClientRegenerateKeysOptions) (EventHubsClientRegenerateKeysResponse, error) {
 	req, err := client.regenerateKeysCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters, options)
 	if err != nil {
 		return EventHubsClientRegenerateKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return EventHubsClientRegenerateKeysResponse{}, err
 	}
@@ -691,7 +690,7 @@ func (client *EventHubsClient) regenerateKeysCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

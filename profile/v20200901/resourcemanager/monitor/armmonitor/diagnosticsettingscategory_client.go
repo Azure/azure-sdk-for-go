@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,45 +25,37 @@ import (
 // DiagnosticSettingsCategoryClient contains the methods for the DiagnosticSettingsCategory group.
 // Don't use this type directly, use NewDiagnosticSettingsCategoryClient() instead.
 type DiagnosticSettingsCategoryClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewDiagnosticSettingsCategoryClient creates a new instance of DiagnosticSettingsCategoryClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsCategoryClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".DiagnosticSettingsCategoryClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DiagnosticSettingsCategoryClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Gets the diagnostic settings category for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-05-01-preview
-// resourceURI - The identifier of the resource.
-// name - The name of the diagnostic setting.
-// options - DiagnosticSettingsCategoryClientGetOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.Get
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - name - The name of the diagnostic setting.
+//   - options - DiagnosticSettingsCategoryClientGetOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.Get
+//     method.
 func (client *DiagnosticSettingsCategoryClient) Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsCategoryClientGetOptions) (DiagnosticSettingsCategoryClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, name, options)
 	if err != nil {
 		return DiagnosticSettingsCategoryClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticSettingsCategoryClientGetResponse{}, err
 	}
@@ -83,7 +73,7 @@ func (client *DiagnosticSettingsCategoryClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,16 +95,17 @@ func (client *DiagnosticSettingsCategoryClient) getHandleResponse(resp *http.Res
 
 // List - Lists the diagnostic settings categories for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-05-01-preview
-// resourceURI - The identifier of the resource.
-// options - DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.List
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - options - DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.List
+//     method.
 func (client *DiagnosticSettingsCategoryClient) List(ctx context.Context, resourceURI string, options *DiagnosticSettingsCategoryClientListOptions) (DiagnosticSettingsCategoryClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return DiagnosticSettingsCategoryClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticSettingsCategoryClientListResponse{}, err
 	}
@@ -128,7 +119,7 @@ func (client *DiagnosticSettingsCategoryClient) List(ctx context.Context, resour
 func (client *DiagnosticSettingsCategoryClient) listCreateRequest(ctx context.Context, resourceURI string, options *DiagnosticSettingsCategoryClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

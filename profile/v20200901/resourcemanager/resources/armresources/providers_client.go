@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,46 +26,38 @@ import (
 // ProvidersClient contains the methods for the Providers group.
 // Don't use this type directly, use NewProvidersClient() instead.
 type ProvidersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewProvidersClient creates a new instance of ProvidersClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProvidersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".ProvidersClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProvidersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets the specified resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// resourceProviderNamespace - The namespace of the resource provider.
-// options - ProvidersClientGetOptions contains the optional parameters for the ProvidersClient.Get method.
+//   - resourceProviderNamespace - The namespace of the resource provider.
+//   - options - ProvidersClientGetOptions contains the optional parameters for the ProvidersClient.Get method.
 func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientGetOptions) (ProvidersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return ProvidersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProvidersClientGetResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourcePro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,16 +103,17 @@ func (client *ProvidersClient) getHandleResponse(resp *http.Response) (Providers
 
 // GetAtTenantScope - Gets the specified resource provider at the tenant level.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// resourceProviderNamespace - The namespace of the resource provider.
-// options - ProvidersClientGetAtTenantScopeOptions contains the optional parameters for the ProvidersClient.GetAtTenantScope
-// method.
+//   - resourceProviderNamespace - The namespace of the resource provider.
+//   - options - ProvidersClientGetAtTenantScopeOptions contains the optional parameters for the ProvidersClient.GetAtTenantScope
+//     method.
 func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientGetAtTenantScopeOptions) (ProvidersClientGetAtTenantScopeResponse, error) {
 	req, err := client.getAtTenantScopeCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return ProvidersClientGetAtTenantScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProvidersClientGetAtTenantScopeResponse{}, err
 	}
@@ -139,7 +130,7 @@ func (client *ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,8 +154,9 @@ func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Gets all resource providers for a subscription.
+//
 // Generated from API version 2019-10-01
-// options - ProvidersClientListOptions contains the optional parameters for the ProvidersClient.List method.
+//   - options - ProvidersClientListOptions contains the optional parameters for the ProvidersClient.NewListPager method.
 func (client *ProvidersClient) NewListPager(options *ProvidersClientListOptions) *runtime.Pager[ProvidersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProvidersClientListResponse]{
 		More: func(page ProvidersClientListResponse) bool {
@@ -181,7 +173,7 @@ func (client *ProvidersClient) NewListPager(options *ProvidersClientListOptions)
 			if err != nil {
 				return ProvidersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProvidersClientListResponse{}, err
 			}
@@ -200,7 +192,7 @@ func (client *ProvidersClient) listCreateRequest(ctx context.Context, options *P
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -227,9 +219,10 @@ func (client *ProvidersClient) listHandleResponse(resp *http.Response) (Provider
 }
 
 // NewListAtTenantScopePager - Gets all resource providers for the tenant.
+//
 // Generated from API version 2019-10-01
-// options - ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.ListAtTenantScope
-// method.
+//   - options - ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.NewListAtTenantScopePager
+//     method.
 func (client *ProvidersClient) NewListAtTenantScopePager(options *ProvidersClientListAtTenantScopeOptions) *runtime.Pager[ProvidersClientListAtTenantScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProvidersClientListAtTenantScopeResponse]{
 		More: func(page ProvidersClientListAtTenantScopeResponse) bool {
@@ -246,7 +239,7 @@ func (client *ProvidersClient) NewListAtTenantScopePager(options *ProvidersClien
 			if err != nil {
 				return ProvidersClientListAtTenantScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProvidersClientListAtTenantScopeResponse{}, err
 			}
@@ -261,7 +254,7 @@ func (client *ProvidersClient) NewListAtTenantScopePager(options *ProvidersClien
 // listAtTenantScopeCreateRequest creates the ListAtTenantScope request.
 func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Context, options *ProvidersClientListAtTenantScopeOptions) (*policy.Request, error) {
 	urlPath := "/providers"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -289,15 +282,16 @@ func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *http.Respon
 
 // Register - Registers a subscription with a resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// resourceProviderNamespace - The namespace of the resource provider to register.
-// options - ProvidersClientRegisterOptions contains the optional parameters for the ProvidersClient.Register method.
+//   - resourceProviderNamespace - The namespace of the resource provider to register.
+//   - options - ProvidersClientRegisterOptions contains the optional parameters for the ProvidersClient.Register method.
 func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientRegisterOptions) (ProvidersClientRegisterResponse, error) {
 	req, err := client.registerCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return ProvidersClientRegisterResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProvidersClientRegisterResponse{}, err
 	}
@@ -318,7 +312,7 @@ func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -340,15 +334,16 @@ func (client *ProvidersClient) registerHandleResponse(resp *http.Response) (Prov
 
 // Unregister - Unregisters a subscription from a resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// resourceProviderNamespace - The namespace of the resource provider to unregister.
-// options - ProvidersClientUnregisterOptions contains the optional parameters for the ProvidersClient.Unregister method.
+//   - resourceProviderNamespace - The namespace of the resource provider to unregister.
+//   - options - ProvidersClientUnregisterOptions contains the optional parameters for the ProvidersClient.Unregister method.
 func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientUnregisterOptions) (ProvidersClientUnregisterResponse, error) {
 	req, err := client.unregisterCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return ProvidersClientUnregisterResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProvidersClientUnregisterResponse{}, err
 	}
@@ -369,7 +364,7 @@ func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

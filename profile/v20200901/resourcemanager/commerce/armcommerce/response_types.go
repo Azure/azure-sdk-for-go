@@ -14,7 +14,7 @@ type RateCardClientGetResponse struct {
 	ResourceRateCardInfo
 }
 
-// UsageAggregatesClientListResponse contains the response from method UsageAggregatesClient.List.
+// UsageAggregatesClientListResponse contains the response from method UsageAggregatesClient.NewListPager.
 type UsageAggregatesClientListResponse struct {
 	UsageAggregationListResult
 }

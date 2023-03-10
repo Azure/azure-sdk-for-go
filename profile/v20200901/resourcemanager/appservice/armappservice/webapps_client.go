@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,49 +26,41 @@ import (
 // WebAppsClient contains the methods for the WebApps group.
 // Don't use this type directly, use NewWebAppsClient() instead.
 type WebAppsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWebAppsClient creates a new instance of WebAppsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWebAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebAppsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".WebAppsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WebAppsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // AddPremierAddOn - Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// premierAddOnName - Add-on name.
-// premierAddOn - A JSON representation of the edited premier add-on.
-// options - WebAppsClientAddPremierAddOnOptions contains the optional parameters for the WebAppsClient.AddPremierAddOn method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - premierAddOnName - Add-on name.
+//   - premierAddOn - A JSON representation of the edited premier add-on.
+//   - options - WebAppsClientAddPremierAddOnOptions contains the optional parameters for the WebAppsClient.AddPremierAddOn method.
 func (client *WebAppsClient) AddPremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOn, options *WebAppsClientAddPremierAddOnOptions) (WebAppsClientAddPremierAddOnResponse, error) {
 	req, err := client.addPremierAddOnCreateRequest(ctx, resourceGroupName, name, premierAddOnName, premierAddOn, options)
 	if err != nil {
 		return WebAppsClientAddPremierAddOnResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientAddPremierAddOnResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *WebAppsClient) addPremierAddOnCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,21 +111,22 @@ func (client *WebAppsClient) addPremierAddOnHandleResponse(resp *http.Response) 
 
 // AddPremierAddOnSlot - Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// premierAddOnName - Add-on name.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production
-// slot.
-// premierAddOn - A JSON representation of the edited premier add-on.
-// options - WebAppsClientAddPremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.AddPremierAddOnSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - premierAddOnName - Add-on name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production
+//     slot.
+//   - premierAddOn - A JSON representation of the edited premier add-on.
+//   - options - WebAppsClientAddPremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.AddPremierAddOnSlot
+//     method.
 func (client *WebAppsClient) AddPremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn PremierAddOn, options *WebAppsClientAddPremierAddOnSlotOptions) (WebAppsClientAddPremierAddOnSlotResponse, error) {
 	req, err := client.addPremierAddOnSlotCreateRequest(ctx, resourceGroupName, name, premierAddOnName, slot, premierAddOn, options)
 	if err != nil {
 		return WebAppsClientAddPremierAddOnSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientAddPremierAddOnSlotResponse{}, err
 	}
@@ -168,7 +159,7 @@ func (client *WebAppsClient) addPremierAddOnSlotCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -190,17 +181,18 @@ func (client *WebAppsClient) addPremierAddOnSlotHandleResponse(resp *http.Respon
 
 // AnalyzeCustomHostname - Analyze a custom hostname.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientAnalyzeCustomHostnameOptions contains the optional parameters for the WebAppsClient.AnalyzeCustomHostname
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientAnalyzeCustomHostnameOptions contains the optional parameters for the WebAppsClient.AnalyzeCustomHostname
+//     method.
 func (client *WebAppsClient) AnalyzeCustomHostname(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientAnalyzeCustomHostnameOptions) (WebAppsClientAnalyzeCustomHostnameResponse, error) {
 	req, err := client.analyzeCustomHostnameCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientAnalyzeCustomHostnameResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientAnalyzeCustomHostnameResponse{}, err
 	}
@@ -225,7 +217,7 @@ func (client *WebAppsClient) analyzeCustomHostnameCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,18 +242,19 @@ func (client *WebAppsClient) analyzeCustomHostnameHandleResponse(resp *http.Resp
 
 // AnalyzeCustomHostnameSlot - Analyze a custom hostname.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientAnalyzeCustomHostnameSlotOptions contains the optional parameters for the WebAppsClient.AnalyzeCustomHostnameSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientAnalyzeCustomHostnameSlotOptions contains the optional parameters for the WebAppsClient.AnalyzeCustomHostnameSlot
+//     method.
 func (client *WebAppsClient) AnalyzeCustomHostnameSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientAnalyzeCustomHostnameSlotOptions) (WebAppsClientAnalyzeCustomHostnameSlotResponse, error) {
 	req, err := client.analyzeCustomHostnameSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientAnalyzeCustomHostnameSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientAnalyzeCustomHostnameSlotResponse{}, err
 	}
@@ -290,7 +283,7 @@ func (client *WebAppsClient) analyzeCustomHostnameSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -315,18 +308,19 @@ func (client *WebAppsClient) analyzeCustomHostnameSlotHandleResponse(resp *http.
 
 // ApplySlotConfigToProduction - Applies the configuration settings from the target slot onto the current slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slotSwapEntity - JSON object that contains the target slot name. See example.
-// options - WebAppsClientApplySlotConfigToProductionOptions contains the optional parameters for the WebAppsClient.ApplySlotConfigToProduction
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slotSwapEntity - JSON object that contains the target slot name. See example.
+//   - options - WebAppsClientApplySlotConfigToProductionOptions contains the optional parameters for the WebAppsClient.ApplySlotConfigToProduction
+//     method.
 func (client *WebAppsClient) ApplySlotConfigToProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsClientApplySlotConfigToProductionOptions) (WebAppsClientApplySlotConfigToProductionResponse, error) {
 	req, err := client.applySlotConfigToProductionCreateRequest(ctx, resourceGroupName, name, slotSwapEntity, options)
 	if err != nil {
 		return WebAppsClientApplySlotConfigToProductionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientApplySlotConfigToProductionResponse{}, err
 	}
@@ -351,7 +345,7 @@ func (client *WebAppsClient) applySlotConfigToProductionCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -363,19 +357,20 @@ func (client *WebAppsClient) applySlotConfigToProductionCreateRequest(ctx contex
 
 // ApplySlotConfigurationSlot - Applies the configuration settings from the target slot onto the current slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
-// slotSwapEntity - JSON object that contains the target slot name. See example.
-// options - WebAppsClientApplySlotConfigurationSlotOptions contains the optional parameters for the WebAppsClient.ApplySlotConfigurationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+//   - slotSwapEntity - JSON object that contains the target slot name. See example.
+//   - options - WebAppsClientApplySlotConfigurationSlotOptions contains the optional parameters for the WebAppsClient.ApplySlotConfigurationSlot
+//     method.
 func (client *WebAppsClient) ApplySlotConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsClientApplySlotConfigurationSlotOptions) (WebAppsClientApplySlotConfigurationSlotResponse, error) {
 	req, err := client.applySlotConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, slotSwapEntity, options)
 	if err != nil {
 		return WebAppsClientApplySlotConfigurationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientApplySlotConfigurationSlotResponse{}, err
 	}
@@ -404,7 +399,7 @@ func (client *WebAppsClient) applySlotConfigurationSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -416,17 +411,18 @@ func (client *WebAppsClient) applySlotConfigurationSlotCreateRequest(ctx context
 
 // Backup - Creates a backup of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// request - Backup configuration. You can use the JSON response from the POST action as input here.
-// options - WebAppsClientBackupOptions contains the optional parameters for the WebAppsClient.Backup method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - request - Backup configuration. You can use the JSON response from the POST action as input here.
+//   - options - WebAppsClientBackupOptions contains the optional parameters for the WebAppsClient.Backup method.
 func (client *WebAppsClient) Backup(ctx context.Context, resourceGroupName string, name string, request BackupRequest, options *WebAppsClientBackupOptions) (WebAppsClientBackupResponse, error) {
 	req, err := client.backupCreateRequest(ctx, resourceGroupName, name, request, options)
 	if err != nil {
 		return WebAppsClientBackupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientBackupResponse{}, err
 	}
@@ -451,7 +447,7 @@ func (client *WebAppsClient) backupCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -473,18 +469,19 @@ func (client *WebAppsClient) backupHandleResponse(resp *http.Response) (WebAppsC
 
 // BackupSlot - Creates a backup of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will create a backup for the production slot.
-// request - Backup configuration. You can use the JSON response from the POST action as input here.
-// options - WebAppsClientBackupSlotOptions contains the optional parameters for the WebAppsClient.BackupSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will create a backup for the production slot.
+//   - request - Backup configuration. You can use the JSON response from the POST action as input here.
+//   - options - WebAppsClientBackupSlotOptions contains the optional parameters for the WebAppsClient.BackupSlot method.
 func (client *WebAppsClient) BackupSlot(ctx context.Context, resourceGroupName string, name string, slot string, request BackupRequest, options *WebAppsClientBackupSlotOptions) (WebAppsClientBackupSlotResponse, error) {
 	req, err := client.backupSlotCreateRequest(ctx, resourceGroupName, name, slot, request, options)
 	if err != nil {
 		return WebAppsClientBackupSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientBackupSlotResponse{}, err
 	}
@@ -513,7 +510,7 @@ func (client *WebAppsClient) backupSlotCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -535,19 +532,20 @@ func (client *WebAppsClient) backupSlotHandleResponse(resp *http.Response) (WebA
 
 // CreateDeployment - Create a deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// id - ID of an existing deployment.
-// deployment - Deployment details.
-// options - WebAppsClientCreateDeploymentOptions contains the optional parameters for the WebAppsClient.CreateDeployment
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - id - ID of an existing deployment.
+//   - deployment - Deployment details.
+//   - options - WebAppsClientCreateDeploymentOptions contains the optional parameters for the WebAppsClient.CreateDeployment
+//     method.
 func (client *WebAppsClient) CreateDeployment(ctx context.Context, resourceGroupName string, name string, id string, deployment Deployment, options *WebAppsClientCreateDeploymentOptions) (WebAppsClientCreateDeploymentResponse, error) {
 	req, err := client.createDeploymentCreateRequest(ctx, resourceGroupName, name, id, deployment, options)
 	if err != nil {
 		return WebAppsClientCreateDeploymentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateDeploymentResponse{}, err
 	}
@@ -576,7 +574,7 @@ func (client *WebAppsClient) createDeploymentCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -598,20 +596,21 @@ func (client *WebAppsClient) createDeploymentHandleResponse(resp *http.Response)
 
 // CreateDeploymentSlot - Create a deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// id - ID of an existing deployment.
-// slot - Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
-// deployment - Deployment details.
-// options - WebAppsClientCreateDeploymentSlotOptions contains the optional parameters for the WebAppsClient.CreateDeploymentSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - id - ID of an existing deployment.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API creates a deployment for the production slot.
+//   - deployment - Deployment details.
+//   - options - WebAppsClientCreateDeploymentSlotOptions contains the optional parameters for the WebAppsClient.CreateDeploymentSlot
+//     method.
 func (client *WebAppsClient) CreateDeploymentSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, deployment Deployment, options *WebAppsClientCreateDeploymentSlotOptions) (WebAppsClientCreateDeploymentSlotResponse, error) {
 	req, err := client.createDeploymentSlotCreateRequest(ctx, resourceGroupName, name, id, slot, deployment, options)
 	if err != nil {
 		return WebAppsClientCreateDeploymentSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateDeploymentSlotResponse{}, err
 	}
@@ -644,7 +643,7 @@ func (client *WebAppsClient) createDeploymentSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -666,34 +665,36 @@ func (client *WebAppsClient) createDeploymentSlotHandleResponse(resp *http.Respo
 
 // BeginCreateFunction - Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// functionEnvelope - Function details.
-// options - WebAppsClientBeginCreateFunctionOptions contains the optional parameters for the WebAppsClient.BeginCreateFunction
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - functionEnvelope - Function details.
+//   - options - WebAppsClientBeginCreateFunctionOptions contains the optional parameters for the WebAppsClient.BeginCreateFunction
+//     method.
 func (client *WebAppsClient) BeginCreateFunction(ctx context.Context, resourceGroupName string, name string, functionName string, functionEnvelope FunctionEnvelope, options *WebAppsClientBeginCreateFunctionOptions) (*runtime.Poller[WebAppsClientCreateFunctionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createFunction(ctx, resourceGroupName, name, functionName, functionEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateFunctionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateFunctionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateFunctionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateFunctionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateFunction - Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createFunction(ctx context.Context, resourceGroupName string, name string, functionName string, functionEnvelope FunctionEnvelope, options *WebAppsClientBeginCreateFunctionOptions) (*http.Response, error) {
 	req, err := client.createFunctionCreateRequest(ctx, resourceGroupName, name, functionName, functionEnvelope, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -722,7 +723,7 @@ func (client *WebAppsClient) createFunctionCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -735,35 +736,37 @@ func (client *WebAppsClient) createFunctionCreateRequest(ctx context.Context, re
 
 // BeginCreateInstanceFunctionSlot - Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// slot - Name of the deployment slot.
-// functionEnvelope - Function details.
-// options - WebAppsClientBeginCreateInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceFunctionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - slot - Name of the deployment slot.
+//   - functionEnvelope - Function details.
+//   - options - WebAppsClientBeginCreateInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceFunctionSlot
+//     method.
 func (client *WebAppsClient) BeginCreateInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope FunctionEnvelope, options *WebAppsClientBeginCreateInstanceFunctionSlotOptions) (*runtime.Poller[WebAppsClientCreateInstanceFunctionSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createInstanceFunctionSlot(ctx, resourceGroupName, name, functionName, slot, functionEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateInstanceFunctionSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateInstanceFunctionSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateInstanceFunctionSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateInstanceFunctionSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateInstanceFunctionSlot - Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope FunctionEnvelope, options *WebAppsClientBeginCreateInstanceFunctionSlotOptions) (*http.Response, error) {
 	req, err := client.createInstanceFunctionSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, functionEnvelope, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -796,7 +799,7 @@ func (client *WebAppsClient) createInstanceFunctionSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -809,34 +812,36 @@ func (client *WebAppsClient) createInstanceFunctionSlotCreateRequest(ctx context
 
 // BeginCreateInstanceMSDeployOperation - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// instanceID - ID of web app instance.
-// msDeploy - Details of MSDeploy operation
-// options - WebAppsClientBeginCreateInstanceMSDeployOperationOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceMSDeployOperation
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - instanceID - ID of web app instance.
+//   - msDeploy - Details of MSDeploy operation
+//   - options - WebAppsClientBeginCreateInstanceMSDeployOperationOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceMSDeployOperation
+//     method.
 func (client *WebAppsClient) BeginCreateInstanceMSDeployOperation(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy MSDeploy, options *WebAppsClientBeginCreateInstanceMSDeployOperationOptions) (*runtime.Poller[WebAppsClientCreateInstanceMSDeployOperationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createInstanceMSDeployOperation(ctx, resourceGroupName, name, instanceID, msDeploy, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateInstanceMSDeployOperationResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateInstanceMSDeployOperationResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateInstanceMSDeployOperationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateInstanceMSDeployOperationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateInstanceMSDeployOperation - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createInstanceMSDeployOperation(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy MSDeploy, options *WebAppsClientBeginCreateInstanceMSDeployOperationOptions) (*http.Response, error) {
 	req, err := client.createInstanceMSDeployOperationCreateRequest(ctx, resourceGroupName, name, instanceID, msDeploy, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -865,7 +870,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperationCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -878,35 +883,37 @@ func (client *WebAppsClient) createInstanceMSDeployOperationCreateRequest(ctx co
 
 // BeginCreateInstanceMSDeployOperationSlot - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// instanceID - ID of web app instance.
-// msDeploy - Details of MSDeploy operation
-// options - WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceMSDeployOperationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - instanceID - ID of web app instance.
+//   - msDeploy - Details of MSDeploy operation
+//   - options - WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateInstanceMSDeployOperationSlot
+//     method.
 func (client *WebAppsClient) BeginCreateInstanceMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy MSDeploy, options *WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions) (*runtime.Poller[WebAppsClientCreateInstanceMSDeployOperationSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createInstanceMSDeployOperationSlot(ctx, resourceGroupName, name, slot, instanceID, msDeploy, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateInstanceMSDeployOperationSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateInstanceMSDeployOperationSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateInstanceMSDeployOperationSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateInstanceMSDeployOperationSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateInstanceMSDeployOperationSlot - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createInstanceMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy MSDeploy, options *WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions) (*http.Response, error) {
 	req, err := client.createInstanceMSDeployOperationSlotCreateRequest(ctx, resourceGroupName, name, slot, instanceID, msDeploy, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -939,7 +946,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlotCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -952,33 +959,35 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlotCreateRequest(ct
 
 // BeginCreateMSDeployOperation - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// msDeploy - Details of MSDeploy operation
-// options - WebAppsClientBeginCreateMSDeployOperationOptions contains the optional parameters for the WebAppsClient.BeginCreateMSDeployOperation
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - msDeploy - Details of MSDeploy operation
+//   - options - WebAppsClientBeginCreateMSDeployOperationOptions contains the optional parameters for the WebAppsClient.BeginCreateMSDeployOperation
+//     method.
 func (client *WebAppsClient) BeginCreateMSDeployOperation(ctx context.Context, resourceGroupName string, name string, msDeploy MSDeploy, options *WebAppsClientBeginCreateMSDeployOperationOptions) (*runtime.Poller[WebAppsClientCreateMSDeployOperationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createMSDeployOperation(ctx, resourceGroupName, name, msDeploy, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateMSDeployOperationResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateMSDeployOperationResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateMSDeployOperationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateMSDeployOperationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateMSDeployOperation - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createMSDeployOperation(ctx context.Context, resourceGroupName string, name string, msDeploy MSDeploy, options *WebAppsClientBeginCreateMSDeployOperationOptions) (*http.Response, error) {
 	req, err := client.createMSDeployOperationCreateRequest(ctx, resourceGroupName, name, msDeploy, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1003,7 +1012,7 @@ func (client *WebAppsClient) createMSDeployOperationCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1016,34 +1025,36 @@ func (client *WebAppsClient) createMSDeployOperationCreateRequest(ctx context.Co
 
 // BeginCreateMSDeployOperationSlot - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// msDeploy - Details of MSDeploy operation
-// options - WebAppsClientBeginCreateMSDeployOperationSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateMSDeployOperationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - msDeploy - Details of MSDeploy operation
+//   - options - WebAppsClientBeginCreateMSDeployOperationSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateMSDeployOperationSlot
+//     method.
 func (client *WebAppsClient) BeginCreateMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy MSDeploy, options *WebAppsClientBeginCreateMSDeployOperationSlotOptions) (*runtime.Poller[WebAppsClientCreateMSDeployOperationSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createMSDeployOperationSlot(ctx, resourceGroupName, name, slot, msDeploy, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateMSDeployOperationSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateMSDeployOperationSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateMSDeployOperationSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateMSDeployOperationSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateMSDeployOperationSlot - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy MSDeploy, options *WebAppsClientBeginCreateMSDeployOperationSlotOptions) (*http.Response, error) {
 	req, err := client.createMSDeployOperationSlotCreateRequest(ctx, resourceGroupName, name, slot, msDeploy, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1072,7 +1083,7 @@ func (client *WebAppsClient) createMSDeployOperationSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1085,33 +1096,35 @@ func (client *WebAppsClient) createMSDeployOperationSlotCreateRequest(ctx contex
 
 // BeginCreateOrUpdate - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
-// siteEnvelope - A JSON representation of the app properties. See example.
-// options - WebAppsClientBeginCreateOrUpdateOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+//   - siteEnvelope - A JSON representation of the app properties. See example.
+//   - options - WebAppsClientBeginCreateOrUpdateOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdate
+//     method.
 func (client *WebAppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, options *WebAppsClientBeginCreateOrUpdateOptions) (*runtime.Poller[WebAppsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, siteEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, options *WebAppsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, siteEnvelope, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1136,7 +1149,7 @@ func (client *WebAppsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1149,18 +1162,19 @@ func (client *WebAppsClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // CreateOrUpdateConfiguration - Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// siteConfig - JSON representation of a SiteConfig object. See example.
-// options - WebAppsClientCreateOrUpdateConfigurationOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateConfiguration
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - siteConfig - JSON representation of a SiteConfig object. See example.
+//   - options - WebAppsClientCreateOrUpdateConfigurationOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateConfiguration
+//     method.
 func (client *WebAppsClient) CreateOrUpdateConfiguration(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfigResource, options *WebAppsClientCreateOrUpdateConfigurationOptions) (WebAppsClientCreateOrUpdateConfigurationResponse, error) {
 	req, err := client.createOrUpdateConfigurationCreateRequest(ctx, resourceGroupName, name, siteConfig, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationResponse{}, err
 	}
@@ -1185,7 +1199,7 @@ func (client *WebAppsClient) createOrUpdateConfigurationCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1207,19 +1221,20 @@ func (client *WebAppsClient) createOrUpdateConfigurationHandleResponse(resp *htt
 
 // CreateOrUpdateConfigurationSlot - Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
-// siteConfig - JSON representation of a SiteConfig object. See example.
-// options - WebAppsClientCreateOrUpdateConfigurationSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateConfigurationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
+//   - siteConfig - JSON representation of a SiteConfig object. See example.
+//   - options - WebAppsClientCreateOrUpdateConfigurationSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateConfigurationSlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdateConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig SiteConfigResource, options *WebAppsClientCreateOrUpdateConfigurationSlotOptions) (WebAppsClientCreateOrUpdateConfigurationSlotResponse, error) {
 	req, err := client.createOrUpdateConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, siteConfig, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationSlotResponse{}, err
 	}
@@ -1248,7 +1263,7 @@ func (client *WebAppsClient) createOrUpdateConfigurationSlotCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1271,19 +1286,20 @@ func (client *WebAppsClient) createOrUpdateConfigurationSlotHandleResponse(resp 
 // CreateOrUpdateDomainOwnershipIdentifier - Creates a domain ownership identifier for web app, or updates an existing ownership
 // identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// domainOwnershipIdentifierName - Name of domain ownership identifier.
-// domainOwnershipIdentifier - A JSON representation of the domain ownership properties.
-// options - WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateDomainOwnershipIdentifier
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - domainOwnershipIdentifierName - Name of domain ownership identifier.
+//   - domainOwnershipIdentifier - A JSON representation of the domain ownership properties.
+//   - options - WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateDomainOwnershipIdentifier
+//     method.
 func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier Identifier, options *WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions) (WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse, error) {
 	req, err := client.createOrUpdateDomainOwnershipIdentifierCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse{}, err
 	}
@@ -1312,7 +1328,7 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1335,20 +1351,21 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierHandleRespon
 // CreateOrUpdateDomainOwnershipIdentifierSlot - Creates a domain ownership identifier for web app, or updates an existing
 // ownership identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// domainOwnershipIdentifierName - Name of domain ownership identifier.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
-// domainOwnershipIdentifier - A JSON representation of the domain ownership properties.
-// options - WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateDomainOwnershipIdentifierSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - domainOwnershipIdentifierName - Name of domain ownership identifier.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+//   - domainOwnershipIdentifier - A JSON representation of the domain ownership properties.
+//   - options - WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateDomainOwnershipIdentifierSlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier Identifier, options *WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions) (WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse, error) {
 	req, err := client.createOrUpdateDomainOwnershipIdentifierSlotCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
@@ -1381,7 +1398,7 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1403,20 +1420,21 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotHandleRe
 
 // CreateOrUpdateFunctionSecret - Add or update a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - The name of the function.
-// keyName - The name of the key.
-// key - The key to create or update
-// options - WebAppsClientCreateOrUpdateFunctionSecretOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateFunctionSecret
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - The name of the function.
+//   - keyName - The name of the key.
+//   - key - The key to create or update
+//   - options - WebAppsClientCreateOrUpdateFunctionSecretOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateFunctionSecret
+//     method.
 func (client *WebAppsClient) CreateOrUpdateFunctionSecret(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, key KeyInfo, options *WebAppsClientCreateOrUpdateFunctionSecretOptions) (WebAppsClientCreateOrUpdateFunctionSecretResponse, error) {
 	req, err := client.createOrUpdateFunctionSecretCreateRequest(ctx, resourceGroupName, name, functionName, keyName, key, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretResponse{}, err
 	}
@@ -1449,7 +1467,7 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1471,21 +1489,22 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretHandleResponse(resp *ht
 
 // CreateOrUpdateFunctionSecretSlot - Add or update a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - The name of the function.
-// keyName - The name of the key.
-// slot - Name of the deployment slot.
-// key - The key to create or update
-// options - WebAppsClientCreateOrUpdateFunctionSecretSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateFunctionSecretSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - The name of the function.
+//   - keyName - The name of the key.
+//   - slot - Name of the deployment slot.
+//   - key - The key to create or update
+//   - options - WebAppsClientCreateOrUpdateFunctionSecretSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateFunctionSecretSlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdateFunctionSecretSlot(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, key KeyInfo, options *WebAppsClientCreateOrUpdateFunctionSecretSlotOptions) (WebAppsClientCreateOrUpdateFunctionSecretSlotResponse, error) {
 	req, err := client.createOrUpdateFunctionSecretSlotCreateRequest(ctx, resourceGroupName, name, functionName, keyName, slot, key, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretSlotResponse{}, err
 	}
@@ -1522,7 +1541,7 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretSlotCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1544,19 +1563,20 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretSlotHandleResponse(resp
 
 // CreateOrUpdateHostNameBinding - Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// hostName - Hostname in the hostname binding.
-// hostNameBinding - Binding details. This is the JSON representation of a HostNameBinding object.
-// options - WebAppsClientCreateOrUpdateHostNameBindingOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostNameBinding
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - hostName - Hostname in the hostname binding.
+//   - hostNameBinding - Binding details. This is the JSON representation of a HostNameBinding object.
+//   - options - WebAppsClientCreateOrUpdateHostNameBindingOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostNameBinding
+//     method.
 func (client *WebAppsClient) CreateOrUpdateHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, hostNameBinding HostNameBinding, options *WebAppsClientCreateOrUpdateHostNameBindingOptions) (WebAppsClientCreateOrUpdateHostNameBindingResponse, error) {
 	req, err := client.createOrUpdateHostNameBindingCreateRequest(ctx, resourceGroupName, name, hostName, hostNameBinding, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingResponse{}, err
 	}
@@ -1585,7 +1605,7 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1607,20 +1627,21 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingHandleResponse(resp *h
 
 // CreateOrUpdateHostNameBindingSlot - Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// hostName - Hostname in the hostname binding.
-// slot - Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
-// hostNameBinding - Binding details. This is the JSON representation of a HostNameBinding object.
-// options - WebAppsClientCreateOrUpdateHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostNameBindingSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - hostName - Hostname in the hostname binding.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
+//   - hostNameBinding - Binding details. This is the JSON representation of a HostNameBinding object.
+//   - options - WebAppsClientCreateOrUpdateHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostNameBindingSlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdateHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, hostName string, slot string, hostNameBinding HostNameBinding, options *WebAppsClientCreateOrUpdateHostNameBindingSlotOptions) (WebAppsClientCreateOrUpdateHostNameBindingSlotResponse, error) {
 	req, err := client.createOrUpdateHostNameBindingSlotCreateRequest(ctx, resourceGroupName, name, hostName, slot, hostNameBinding, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingSlotResponse{}, err
 	}
@@ -1653,7 +1674,7 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingSlotCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1675,20 +1696,21 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingSlotHandleResponse(res
 
 // CreateOrUpdateHostSecret - Add or update a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// keyType - The type of host key.
-// keyName - The name of the key.
-// key - The key to create or update
-// options - WebAppsClientCreateOrUpdateHostSecretOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostSecret
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - keyType - The type of host key.
+//   - keyName - The name of the key.
+//   - key - The key to create or update
+//   - options - WebAppsClientCreateOrUpdateHostSecretOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostSecret
+//     method.
 func (client *WebAppsClient) CreateOrUpdateHostSecret(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, key KeyInfo, options *WebAppsClientCreateOrUpdateHostSecretOptions) (WebAppsClientCreateOrUpdateHostSecretResponse, error) {
 	req, err := client.createOrUpdateHostSecretCreateRequest(ctx, resourceGroupName, name, keyType, keyName, key, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretResponse{}, err
 	}
@@ -1721,7 +1743,7 @@ func (client *WebAppsClient) createOrUpdateHostSecretCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1743,21 +1765,22 @@ func (client *WebAppsClient) createOrUpdateHostSecretHandleResponse(resp *http.R
 
 // CreateOrUpdateHostSecretSlot - Add or update a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// keyType - The type of host key.
-// keyName - The name of the key.
-// slot - Name of the deployment slot.
-// key - The key to create or update
-// options - WebAppsClientCreateOrUpdateHostSecretSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostSecretSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - keyType - The type of host key.
+//   - keyName - The name of the key.
+//   - slot - Name of the deployment slot.
+//   - key - The key to create or update
+//   - options - WebAppsClientCreateOrUpdateHostSecretSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHostSecretSlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdateHostSecretSlot(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, key KeyInfo, options *WebAppsClientCreateOrUpdateHostSecretSlotOptions) (WebAppsClientCreateOrUpdateHostSecretSlotResponse, error) {
 	req, err := client.createOrUpdateHostSecretSlotCreateRequest(ctx, resourceGroupName, name, keyType, keyName, slot, key, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretSlotResponse{}, err
 	}
@@ -1794,7 +1817,7 @@ func (client *WebAppsClient) createOrUpdateHostSecretSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1816,20 +1839,21 @@ func (client *WebAppsClient) createOrUpdateHostSecretSlotHandleResponse(resp *ht
 
 // CreateOrUpdateHybridConnection - Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// connectionEnvelope - The details of the hybrid connection.
-// options - WebAppsClientCreateOrUpdateHybridConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHybridConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - connectionEnvelope - The details of the hybrid connection.
+//   - options - WebAppsClientCreateOrUpdateHybridConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHybridConnection
+//     method.
 func (client *WebAppsClient) CreateOrUpdateHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope HybridConnection, options *WebAppsClientCreateOrUpdateHybridConnectionOptions) (WebAppsClientCreateOrUpdateHybridConnectionResponse, error) {
 	req, err := client.createOrUpdateHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionResponse{}, err
 	}
@@ -1862,7 +1886,7 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1884,21 +1908,22 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionHandleResponse(resp *
 
 // CreateOrUpdateHybridConnectionSlot - Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// slot - The name of the slot for the web app.
-// connectionEnvelope - The details of the hybrid connection.
-// options - WebAppsClientCreateOrUpdateHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHybridConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - slot - The name of the slot for the web app.
+//   - connectionEnvelope - The details of the hybrid connection.
+//   - options - WebAppsClientCreateOrUpdateHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateHybridConnectionSlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdateHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope HybridConnection, options *WebAppsClientCreateOrUpdateHybridConnectionSlotOptions) (WebAppsClientCreateOrUpdateHybridConnectionSlotResponse, error) {
 	req, err := client.createOrUpdateHybridConnectionSlotCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionSlotResponse{}, err
 	}
@@ -1935,7 +1960,7 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionSlotCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1957,19 +1982,20 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionSlotHandleResponse(re
 
 // CreateOrUpdatePublicCertificate - Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// publicCertificateName - Public certificate name.
-// publicCertificate - Public certificate details. This is the JSON representation of a PublicCertificate object.
-// options - WebAppsClientCreateOrUpdatePublicCertificateOptions contains the optional parameters for the WebAppsClient.CreateOrUpdatePublicCertificate
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - publicCertificateName - Public certificate name.
+//   - publicCertificate - Public certificate details. This is the JSON representation of a PublicCertificate object.
+//   - options - WebAppsClientCreateOrUpdatePublicCertificateOptions contains the optional parameters for the WebAppsClient.CreateOrUpdatePublicCertificate
+//     method.
 func (client *WebAppsClient) CreateOrUpdatePublicCertificate(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, publicCertificate PublicCertificate, options *WebAppsClientCreateOrUpdatePublicCertificateOptions) (WebAppsClientCreateOrUpdatePublicCertificateResponse, error) {
 	req, err := client.createOrUpdatePublicCertificateCreateRequest(ctx, resourceGroupName, name, publicCertificateName, publicCertificate, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateResponse{}, err
 	}
@@ -1998,7 +2024,7 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2020,20 +2046,21 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateHandleResponse(resp 
 
 // CreateOrUpdatePublicCertificateSlot - Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// publicCertificateName - Public certificate name.
-// slot - Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
-// publicCertificate - Public certificate details. This is the JSON representation of a PublicCertificate object.
-// options - WebAppsClientCreateOrUpdatePublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdatePublicCertificateSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - publicCertificateName - Public certificate name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will create a binding for the production slot.
+//   - publicCertificate - Public certificate details. This is the JSON representation of a PublicCertificate object.
+//   - options - WebAppsClientCreateOrUpdatePublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdatePublicCertificateSlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdatePublicCertificateSlot(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, slot string, publicCertificate PublicCertificate, options *WebAppsClientCreateOrUpdatePublicCertificateSlotOptions) (WebAppsClientCreateOrUpdatePublicCertificateSlotResponse, error) {
 	req, err := client.createOrUpdatePublicCertificateSlotCreateRequest(ctx, resourceGroupName, name, publicCertificateName, slot, publicCertificate, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateSlotResponse{}, err
 	}
@@ -2066,7 +2093,7 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateSlotCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2089,19 +2116,20 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateSlotHandleResponse(r
 // CreateOrUpdateRelayServiceConnection - Creates a new hybrid connection configuration (PUT), or updates an existing one
 // (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// entityName - Name of the hybrid connection configuration.
-// connectionEnvelope - Details of the hybrid connection configuration.
-// options - WebAppsClientCreateOrUpdateRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateRelayServiceConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - entityName - Name of the hybrid connection configuration.
+//   - connectionEnvelope - Details of the hybrid connection configuration.
+//   - options - WebAppsClientCreateOrUpdateRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateRelayServiceConnection
+//     method.
 func (client *WebAppsClient) CreateOrUpdateRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsClientCreateOrUpdateRelayServiceConnectionOptions) (WebAppsClientCreateOrUpdateRelayServiceConnectionResponse, error) {
 	req, err := client.createOrUpdateRelayServiceConnectionCreateRequest(ctx, resourceGroupName, name, entityName, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionResponse{}, err
 	}
@@ -2130,7 +2158,7 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2153,21 +2181,22 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionHandleResponse(
 // CreateOrUpdateRelayServiceConnectionSlot - Creates a new hybrid connection configuration (PUT), or updates an existing
 // one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// entityName - Name of the hybrid connection configuration.
-// slot - Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the
-// production slot.
-// connectionEnvelope - Details of the hybrid connection configuration.
-// options - WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateRelayServiceConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - entityName - Name of the hybrid connection configuration.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the
+//     production slot.
+//   - connectionEnvelope - Details of the hybrid connection configuration.
+//   - options - WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateRelayServiceConnectionSlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdateRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions) (WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse, error) {
 	req, err := client.createOrUpdateRelayServiceConnectionSlotCreateRequest(ctx, resourceGroupName, name, entityName, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse{}, err
 	}
@@ -2200,7 +2229,7 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2222,34 +2251,36 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotHandleRespo
 
 // BeginCreateOrUpdateSlot - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
-// slot - Name of the deployment slot to create or update. The name 'production' is reserved.
-// siteEnvelope - A JSON representation of the app properties. See example.
-// options - WebAppsClientBeginCreateOrUpdateSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdateSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+//   - slot - Name of the deployment slot to create or update. The name 'production' is reserved.
+//   - siteEnvelope - A JSON representation of the app properties. See example.
+//   - options - WebAppsClientBeginCreateOrUpdateSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdateSlot
+//     method.
 func (client *WebAppsClient) BeginCreateOrUpdateSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope Site, options *WebAppsClientBeginCreateOrUpdateSlotOptions) (*runtime.Poller[WebAppsClientCreateOrUpdateSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateSlot(ctx, resourceGroupName, name, slot, siteEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateOrUpdateSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateOrUpdateSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateOrUpdateSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateOrUpdateSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdateSlot - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createOrUpdateSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope Site, options *WebAppsClientBeginCreateOrUpdateSlotOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateSlotCreateRequest(ctx, resourceGroupName, name, slot, siteEnvelope, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2278,7 +2309,7 @@ func (client *WebAppsClient) createOrUpdateSlotCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2291,33 +2322,35 @@ func (client *WebAppsClient) createOrUpdateSlotCreateRequest(ctx context.Context
 
 // BeginCreateOrUpdateSourceControl - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// siteSourceControl - JSON representation of a SiteSourceControl object. See example.
-// options - WebAppsClientBeginCreateOrUpdateSourceControlOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdateSourceControl
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - siteSourceControl - JSON representation of a SiteSourceControl object. See example.
+//   - options - WebAppsClientBeginCreateOrUpdateSourceControlOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdateSourceControl
+//     method.
 func (client *WebAppsClient) BeginCreateOrUpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, options *WebAppsClientBeginCreateOrUpdateSourceControlOptions) (*runtime.Poller[WebAppsClientCreateOrUpdateSourceControlResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateSourceControl(ctx, resourceGroupName, name, siteSourceControl, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateOrUpdateSourceControlResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateOrUpdateSourceControlResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateOrUpdateSourceControlResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateOrUpdateSourceControlResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdateSourceControl - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createOrUpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, options *WebAppsClientBeginCreateOrUpdateSourceControlOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateSourceControlCreateRequest(ctx, resourceGroupName, name, siteSourceControl, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2342,7 +2375,7 @@ func (client *WebAppsClient) createOrUpdateSourceControlCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2355,35 +2388,37 @@ func (client *WebAppsClient) createOrUpdateSourceControlCreateRequest(ctx contex
 
 // BeginCreateOrUpdateSourceControlSlot - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for
-// the production slot.
-// siteSourceControl - JSON representation of a SiteSourceControl object. See example.
-// options - WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdateSourceControlSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for
+//     the production slot.
+//   - siteSourceControl - JSON representation of a SiteSourceControl object. See example.
+//   - options - WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions contains the optional parameters for the WebAppsClient.BeginCreateOrUpdateSourceControlSlot
+//     method.
 func (client *WebAppsClient) BeginCreateOrUpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, options *WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions) (*runtime.Poller[WebAppsClientCreateOrUpdateSourceControlSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateSourceControlSlot(ctx, resourceGroupName, name, slot, siteSourceControl, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientCreateOrUpdateSourceControlSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientCreateOrUpdateSourceControlSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientCreateOrUpdateSourceControlSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientCreateOrUpdateSourceControlSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdateSourceControlSlot - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) createOrUpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, options *WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateSourceControlSlotCreateRequest(ctx, resourceGroupName, name, slot, siteSourceControl, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -2412,7 +2447,7 @@ func (client *WebAppsClient) createOrUpdateSourceControlSlotCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2427,18 +2462,19 @@ func (client *WebAppsClient) createOrUpdateSourceControlSlotCreateRequest(ctx co
 // is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is
 // not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// connectionEnvelope - Properties of the Virtual Network connection. See example.
-// options - WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - connectionEnvelope - Properties of the Virtual Network connection. See example.
+//   - options - WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnection
+//     method.
 func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnection(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionOptions) (WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionResponse, error) {
 	req, err := client.createOrUpdateSwiftVirtualNetworkConnectionCreateRequest(ctx, resourceGroupName, name, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionResponse{}, err
 	}
@@ -2463,7 +2499,7 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2488,20 +2524,21 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionHandleRe
 // and is
 // not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production
-// slot.
-// connectionEnvelope - Properties of the Virtual Network connection. See example.
-// options - WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionSlotOptions contains the optional parameters for the
-// WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production
+//     slot.
+//   - connectionEnvelope - Properties of the Virtual Network connection. See example.
+//   - options - WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionSlotOptions contains the optional parameters for the
+//     WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionSlot method.
 func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlot(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionSlotOptions) (WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionSlotResponse, error) {
 	req, err := client.createOrUpdateSwiftVirtualNetworkConnectionSlotCreateRequest(ctx, resourceGroupName, name, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
@@ -2530,7 +2567,7 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionSlotCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2553,19 +2590,20 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionSlotHand
 // CreateOrUpdateVnetConnection - Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
 // (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of an existing Virtual Network.
-// connectionEnvelope - Properties of the Virtual Network connection. See example.
-// options - WebAppsClientCreateOrUpdateVnetConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of an existing Virtual Network.
+//   - connectionEnvelope - Properties of the Virtual Network connection. See example.
+//   - options - WebAppsClientCreateOrUpdateVnetConnectionOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnection
+//     method.
 func (client *WebAppsClient) CreateOrUpdateVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo, options *WebAppsClientCreateOrUpdateVnetConnectionOptions) (WebAppsClientCreateOrUpdateVnetConnectionResponse, error) {
 	req, err := client.createOrUpdateVnetConnectionCreateRequest(ctx, resourceGroupName, name, vnetName, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionResponse{}, err
 	}
@@ -2594,7 +2632,7 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2616,20 +2654,21 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionHandleResponse(resp *ht
 
 // CreateOrUpdateVnetConnectionGateway - Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the Virtual Network.
-// gatewayName - Name of the gateway. Currently, the only supported string is "primary".
-// connectionEnvelope - The properties to update this gateway with.
-// options - WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionGateway
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the Virtual Network.
+//   - gatewayName - Name of the gateway. Currently, the only supported string is "primary".
+//   - connectionEnvelope - The properties to update this gateway with.
+//   - options - WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionGateway
+//     method.
 func (client *WebAppsClient) CreateOrUpdateVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions) (WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse, error) {
 	req, err := client.createOrUpdateVnetConnectionGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse{}, err
 	}
@@ -2662,7 +2701,7 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2684,22 +2723,23 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayHandleResponse(r
 
 // CreateOrUpdateVnetConnectionGatewaySlot - Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the Virtual Network.
-// gatewayName - Name of the gateway. Currently, the only supported string is "primary".
-// slot - Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production
-// slot's Virtual Network.
-// connectionEnvelope - The properties to update this gateway with.
-// options - WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionGatewaySlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the Virtual Network.
+//   - gatewayName - Name of the gateway. Currently, the only supported string is "primary".
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production
+//     slot's Virtual Network.
+//   - connectionEnvelope - The properties to update this gateway with.
+//   - options - WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionGatewaySlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdateVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope VnetGateway, options *WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions) (WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse, error) {
 	req, err := client.createOrUpdateVnetConnectionGatewaySlotCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
@@ -2736,7 +2776,7 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2759,21 +2799,22 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotHandleRespon
 // CreateOrUpdateVnetConnectionSlot - Adds a Virtual Network connection to an app or slot (PUT) or updates the connection
 // properties (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of an existing Virtual Network.
-// slot - Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production
-// slot.
-// connectionEnvelope - Properties of the Virtual Network connection. See example.
-// options - WebAppsClientCreateOrUpdateVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of an existing Virtual Network.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production
+//     slot.
+//   - connectionEnvelope - Properties of the Virtual Network connection. See example.
+//   - options - WebAppsClientCreateOrUpdateVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.CreateOrUpdateVnetConnectionSlot
+//     method.
 func (client *WebAppsClient) CreateOrUpdateVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope VnetInfo, options *WebAppsClientCreateOrUpdateVnetConnectionSlotOptions) (WebAppsClientCreateOrUpdateVnetConnectionSlotResponse, error) {
 	req, err := client.createOrUpdateVnetConnectionSlotCreateRequest(ctx, resourceGroupName, name, vnetName, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionSlotResponse{}, err
 	}
@@ -2806,7 +2847,7 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionSlotCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2828,16 +2869,17 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionSlotHandleResponse(resp
 
 // Delete - Deletes a web, mobile, or API app, or one of the deployment slots.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app to delete.
-// options - WebAppsClientDeleteOptions contains the optional parameters for the WebAppsClient.Delete method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app to delete.
+//   - options - WebAppsClientDeleteOptions contains the optional parameters for the WebAppsClient.Delete method.
 func (client *WebAppsClient) Delete(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientDeleteOptions) (WebAppsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteResponse{}, err
 	}
@@ -2862,7 +2904,7 @@ func (client *WebAppsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2880,17 +2922,18 @@ func (client *WebAppsClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // DeleteBackup - Deletes a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// backupID - ID of the backup.
-// options - WebAppsClientDeleteBackupOptions contains the optional parameters for the WebAppsClient.DeleteBackup method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - backupID - ID of the backup.
+//   - options - WebAppsClientDeleteBackupOptions contains the optional parameters for the WebAppsClient.DeleteBackup method.
 func (client *WebAppsClient) DeleteBackup(ctx context.Context, resourceGroupName string, name string, backupID string, options *WebAppsClientDeleteBackupOptions) (WebAppsClientDeleteBackupResponse, error) {
 	req, err := client.deleteBackupCreateRequest(ctx, resourceGroupName, name, backupID, options)
 	if err != nil {
 		return WebAppsClientDeleteBackupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteBackupResponse{}, err
 	}
@@ -2919,7 +2962,7 @@ func (client *WebAppsClient) deleteBackupCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2931,17 +2974,18 @@ func (client *WebAppsClient) deleteBackupCreateRequest(ctx context.Context, reso
 
 // DeleteBackupConfiguration - Deletes the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientDeleteBackupConfigurationOptions contains the optional parameters for the WebAppsClient.DeleteBackupConfiguration
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientDeleteBackupConfigurationOptions contains the optional parameters for the WebAppsClient.DeleteBackupConfiguration
+//     method.
 func (client *WebAppsClient) DeleteBackupConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientDeleteBackupConfigurationOptions) (WebAppsClientDeleteBackupConfigurationResponse, error) {
 	req, err := client.deleteBackupConfigurationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientDeleteBackupConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteBackupConfigurationResponse{}, err
 	}
@@ -2966,7 +3010,7 @@ func (client *WebAppsClient) deleteBackupConfigurationCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -2978,19 +3022,20 @@ func (client *WebAppsClient) deleteBackupConfigurationCreateRequest(ctx context.
 
 // DeleteBackupConfigurationSlot - Deletes the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration for the production
-// slot.
-// options - WebAppsClientDeleteBackupConfigurationSlotOptions contains the optional parameters for the WebAppsClient.DeleteBackupConfigurationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration for the production
+//     slot.
+//   - options - WebAppsClientDeleteBackupConfigurationSlotOptions contains the optional parameters for the WebAppsClient.DeleteBackupConfigurationSlot
+//     method.
 func (client *WebAppsClient) DeleteBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientDeleteBackupConfigurationSlotOptions) (WebAppsClientDeleteBackupConfigurationSlotResponse, error) {
 	req, err := client.deleteBackupConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteBackupConfigurationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteBackupConfigurationSlotResponse{}, err
 	}
@@ -3019,7 +3064,7 @@ func (client *WebAppsClient) deleteBackupConfigurationSlotCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3031,19 +3076,20 @@ func (client *WebAppsClient) deleteBackupConfigurationSlotCreateRequest(ctx cont
 
 // DeleteBackupSlot - Deletes a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// backupID - ID of the backup.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete a backup of the production slot.
-// options - WebAppsClientDeleteBackupSlotOptions contains the optional parameters for the WebAppsClient.DeleteBackupSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - backupID - ID of the backup.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete a backup of the production slot.
+//   - options - WebAppsClientDeleteBackupSlotOptions contains the optional parameters for the WebAppsClient.DeleteBackupSlot
+//     method.
 func (client *WebAppsClient) DeleteBackupSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *WebAppsClientDeleteBackupSlotOptions) (WebAppsClientDeleteBackupSlotResponse, error) {
 	req, err := client.deleteBackupSlotCreateRequest(ctx, resourceGroupName, name, backupID, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteBackupSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteBackupSlotResponse{}, err
 	}
@@ -3076,7 +3122,7 @@ func (client *WebAppsClient) deleteBackupSlotCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3088,18 +3134,19 @@ func (client *WebAppsClient) deleteBackupSlotCreateRequest(ctx context.Context, 
 
 // DeleteContinuousWebJob - Delete a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// options - WebAppsClientDeleteContinuousWebJobOptions contains the optional parameters for the WebAppsClient.DeleteContinuousWebJob
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - options - WebAppsClientDeleteContinuousWebJobOptions contains the optional parameters for the WebAppsClient.DeleteContinuousWebJob
+//     method.
 func (client *WebAppsClient) DeleteContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsClientDeleteContinuousWebJobOptions) (WebAppsClientDeleteContinuousWebJobResponse, error) {
 	req, err := client.deleteContinuousWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
 		return WebAppsClientDeleteContinuousWebJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteContinuousWebJobResponse{}, err
 	}
@@ -3128,7 +3175,7 @@ func (client *WebAppsClient) deleteContinuousWebJobCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3140,19 +3187,20 @@ func (client *WebAppsClient) deleteContinuousWebJobCreateRequest(ctx context.Con
 
 // DeleteContinuousWebJobSlot - Delete a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientDeleteContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.DeleteContinuousWebJobSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientDeleteContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.DeleteContinuousWebJobSlot
+//     method.
 func (client *WebAppsClient) DeleteContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientDeleteContinuousWebJobSlotOptions) (WebAppsClientDeleteContinuousWebJobSlotResponse, error) {
 	req, err := client.deleteContinuousWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteContinuousWebJobSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteContinuousWebJobSlotResponse{}, err
 	}
@@ -3185,7 +3233,7 @@ func (client *WebAppsClient) deleteContinuousWebJobSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3197,18 +3245,19 @@ func (client *WebAppsClient) deleteContinuousWebJobSlotCreateRequest(ctx context
 
 // DeleteDeployment - Delete a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// id - Deployment ID.
-// options - WebAppsClientDeleteDeploymentOptions contains the optional parameters for the WebAppsClient.DeleteDeployment
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - id - Deployment ID.
+//   - options - WebAppsClientDeleteDeploymentOptions contains the optional parameters for the WebAppsClient.DeleteDeployment
+//     method.
 func (client *WebAppsClient) DeleteDeployment(ctx context.Context, resourceGroupName string, name string, id string, options *WebAppsClientDeleteDeploymentOptions) (WebAppsClientDeleteDeploymentResponse, error) {
 	req, err := client.deleteDeploymentCreateRequest(ctx, resourceGroupName, name, id, options)
 	if err != nil {
 		return WebAppsClientDeleteDeploymentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteDeploymentResponse{}, err
 	}
@@ -3237,7 +3286,7 @@ func (client *WebAppsClient) deleteDeploymentCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3249,19 +3298,20 @@ func (client *WebAppsClient) deleteDeploymentCreateRequest(ctx context.Context, 
 
 // DeleteDeploymentSlot - Delete a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// id - Deployment ID.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientDeleteDeploymentSlotOptions contains the optional parameters for the WebAppsClient.DeleteDeploymentSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - id - Deployment ID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientDeleteDeploymentSlotOptions contains the optional parameters for the WebAppsClient.DeleteDeploymentSlot
+//     method.
 func (client *WebAppsClient) DeleteDeploymentSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *WebAppsClientDeleteDeploymentSlotOptions) (WebAppsClientDeleteDeploymentSlotResponse, error) {
 	req, err := client.deleteDeploymentSlotCreateRequest(ctx, resourceGroupName, name, id, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteDeploymentSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteDeploymentSlotResponse{}, err
 	}
@@ -3294,7 +3344,7 @@ func (client *WebAppsClient) deleteDeploymentSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3306,18 +3356,19 @@ func (client *WebAppsClient) deleteDeploymentSlotCreateRequest(ctx context.Conte
 
 // DeleteDomainOwnershipIdentifier - Deletes a domain ownership identifier for a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// domainOwnershipIdentifierName - Name of domain ownership identifier.
-// options - WebAppsClientDeleteDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.DeleteDomainOwnershipIdentifier
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - domainOwnershipIdentifierName - Name of domain ownership identifier.
+//   - options - WebAppsClientDeleteDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.DeleteDomainOwnershipIdentifier
+//     method.
 func (client *WebAppsClient) DeleteDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *WebAppsClientDeleteDomainOwnershipIdentifierOptions) (WebAppsClientDeleteDomainOwnershipIdentifierResponse, error) {
 	req, err := client.deleteDomainOwnershipIdentifierCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, options)
 	if err != nil {
 		return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, err
 	}
@@ -3346,7 +3397,7 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3358,19 +3409,20 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierCreateRequest(ctx co
 
 // DeleteDomainOwnershipIdentifierSlot - Deletes a domain ownership identifier for a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// domainOwnershipIdentifierName - Name of domain ownership identifier.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
-// options - WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.DeleteDomainOwnershipIdentifierSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - domainOwnershipIdentifierName - Name of domain ownership identifier.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+//   - options - WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.DeleteDomainOwnershipIdentifierSlot
+//     method.
 func (client *WebAppsClient) DeleteDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions) (WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse, error) {
 	req, err := client.deleteDomainOwnershipIdentifierSlotCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, err
 	}
@@ -3403,7 +3455,7 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierSlotCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3415,17 +3467,18 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierSlotCreateRequest(ct
 
 // DeleteFunction - Delete a function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// options - WebAppsClientDeleteFunctionOptions contains the optional parameters for the WebAppsClient.DeleteFunction method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - options - WebAppsClientDeleteFunctionOptions contains the optional parameters for the WebAppsClient.DeleteFunction method.
 func (client *WebAppsClient) DeleteFunction(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsClientDeleteFunctionOptions) (WebAppsClientDeleteFunctionResponse, error) {
 	req, err := client.deleteFunctionCreateRequest(ctx, resourceGroupName, name, functionName, options)
 	if err != nil {
 		return WebAppsClientDeleteFunctionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteFunctionResponse{}, err
 	}
@@ -3454,7 +3507,7 @@ func (client *WebAppsClient) deleteFunctionCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3466,19 +3519,20 @@ func (client *WebAppsClient) deleteFunctionCreateRequest(ctx context.Context, re
 
 // DeleteFunctionSecret - Delete a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - The name of the function.
-// keyName - The name of the key.
-// options - WebAppsClientDeleteFunctionSecretOptions contains the optional parameters for the WebAppsClient.DeleteFunctionSecret
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - The name of the function.
+//   - keyName - The name of the key.
+//   - options - WebAppsClientDeleteFunctionSecretOptions contains the optional parameters for the WebAppsClient.DeleteFunctionSecret
+//     method.
 func (client *WebAppsClient) DeleteFunctionSecret(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, options *WebAppsClientDeleteFunctionSecretOptions) (WebAppsClientDeleteFunctionSecretResponse, error) {
 	req, err := client.deleteFunctionSecretCreateRequest(ctx, resourceGroupName, name, functionName, keyName, options)
 	if err != nil {
 		return WebAppsClientDeleteFunctionSecretResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteFunctionSecretResponse{}, err
 	}
@@ -3511,7 +3565,7 @@ func (client *WebAppsClient) deleteFunctionSecretCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3523,20 +3577,21 @@ func (client *WebAppsClient) deleteFunctionSecretCreateRequest(ctx context.Conte
 
 // DeleteFunctionSecretSlot - Delete a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - The name of the function.
-// keyName - The name of the key.
-// slot - Name of the deployment slot.
-// options - WebAppsClientDeleteFunctionSecretSlotOptions contains the optional parameters for the WebAppsClient.DeleteFunctionSecretSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - The name of the function.
+//   - keyName - The name of the key.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientDeleteFunctionSecretSlotOptions contains the optional parameters for the WebAppsClient.DeleteFunctionSecretSlot
+//     method.
 func (client *WebAppsClient) DeleteFunctionSecretSlot(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, options *WebAppsClientDeleteFunctionSecretSlotOptions) (WebAppsClientDeleteFunctionSecretSlotResponse, error) {
 	req, err := client.deleteFunctionSecretSlotCreateRequest(ctx, resourceGroupName, name, functionName, keyName, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteFunctionSecretSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteFunctionSecretSlotResponse{}, err
 	}
@@ -3573,7 +3628,7 @@ func (client *WebAppsClient) deleteFunctionSecretSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3585,18 +3640,19 @@ func (client *WebAppsClient) deleteFunctionSecretSlotCreateRequest(ctx context.C
 
 // DeleteHostNameBinding - Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// hostName - Hostname in the hostname binding.
-// options - WebAppsClientDeleteHostNameBindingOptions contains the optional parameters for the WebAppsClient.DeleteHostNameBinding
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - hostName - Hostname in the hostname binding.
+//   - options - WebAppsClientDeleteHostNameBindingOptions contains the optional parameters for the WebAppsClient.DeleteHostNameBinding
+//     method.
 func (client *WebAppsClient) DeleteHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, options *WebAppsClientDeleteHostNameBindingOptions) (WebAppsClientDeleteHostNameBindingResponse, error) {
 	req, err := client.deleteHostNameBindingCreateRequest(ctx, resourceGroupName, name, hostName, options)
 	if err != nil {
 		return WebAppsClientDeleteHostNameBindingResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteHostNameBindingResponse{}, err
 	}
@@ -3625,7 +3681,7 @@ func (client *WebAppsClient) deleteHostNameBindingCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3637,19 +3693,20 @@ func (client *WebAppsClient) deleteHostNameBindingCreateRequest(ctx context.Cont
 
 // DeleteHostNameBindingSlot - Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
-// hostName - Hostname in the hostname binding.
-// options - WebAppsClientDeleteHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.DeleteHostNameBindingSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+//   - hostName - Hostname in the hostname binding.
+//   - options - WebAppsClientDeleteHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.DeleteHostNameBindingSlot
+//     method.
 func (client *WebAppsClient) DeleteHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *WebAppsClientDeleteHostNameBindingSlotOptions) (WebAppsClientDeleteHostNameBindingSlotResponse, error) {
 	req, err := client.deleteHostNameBindingSlotCreateRequest(ctx, resourceGroupName, name, slot, hostName, options)
 	if err != nil {
 		return WebAppsClientDeleteHostNameBindingSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteHostNameBindingSlotResponse{}, err
 	}
@@ -3682,7 +3739,7 @@ func (client *WebAppsClient) deleteHostNameBindingSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3694,19 +3751,20 @@ func (client *WebAppsClient) deleteHostNameBindingSlotCreateRequest(ctx context.
 
 // DeleteHostSecret - Delete a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// keyType - The type of host key.
-// keyName - The name of the key.
-// options - WebAppsClientDeleteHostSecretOptions contains the optional parameters for the WebAppsClient.DeleteHostSecret
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - keyType - The type of host key.
+//   - keyName - The name of the key.
+//   - options - WebAppsClientDeleteHostSecretOptions contains the optional parameters for the WebAppsClient.DeleteHostSecret
+//     method.
 func (client *WebAppsClient) DeleteHostSecret(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, options *WebAppsClientDeleteHostSecretOptions) (WebAppsClientDeleteHostSecretResponse, error) {
 	req, err := client.deleteHostSecretCreateRequest(ctx, resourceGroupName, name, keyType, keyName, options)
 	if err != nil {
 		return WebAppsClientDeleteHostSecretResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteHostSecretResponse{}, err
 	}
@@ -3739,7 +3797,7 @@ func (client *WebAppsClient) deleteHostSecretCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3752,20 +3810,21 @@ func (client *WebAppsClient) deleteHostSecretCreateRequest(ctx context.Context, 
 
 // DeleteHostSecretSlot - Delete a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// keyType - The type of host key.
-// keyName - The name of the key.
-// slot - Name of the deployment slot.
-// options - WebAppsClientDeleteHostSecretSlotOptions contains the optional parameters for the WebAppsClient.DeleteHostSecretSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - keyType - The type of host key.
+//   - keyName - The name of the key.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientDeleteHostSecretSlotOptions contains the optional parameters for the WebAppsClient.DeleteHostSecretSlot
+//     method.
 func (client *WebAppsClient) DeleteHostSecretSlot(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, options *WebAppsClientDeleteHostSecretSlotOptions) (WebAppsClientDeleteHostSecretSlotResponse, error) {
 	req, err := client.deleteHostSecretSlotCreateRequest(ctx, resourceGroupName, name, keyType, keyName, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteHostSecretSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteHostSecretSlotResponse{}, err
 	}
@@ -3802,7 +3861,7 @@ func (client *WebAppsClient) deleteHostSecretSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3815,19 +3874,20 @@ func (client *WebAppsClient) deleteHostSecretSlotCreateRequest(ctx context.Conte
 
 // DeleteHybridConnection - Removes a Hybrid Connection from this site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// options - WebAppsClientDeleteHybridConnectionOptions contains the optional parameters for the WebAppsClient.DeleteHybridConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - options - WebAppsClientDeleteHybridConnectionOptions contains the optional parameters for the WebAppsClient.DeleteHybridConnection
+//     method.
 func (client *WebAppsClient) DeleteHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *WebAppsClientDeleteHybridConnectionOptions) (WebAppsClientDeleteHybridConnectionResponse, error) {
 	req, err := client.deleteHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
 		return WebAppsClientDeleteHybridConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteHybridConnectionResponse{}, err
 	}
@@ -3860,7 +3920,7 @@ func (client *WebAppsClient) deleteHybridConnectionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3872,20 +3932,21 @@ func (client *WebAppsClient) deleteHybridConnectionCreateRequest(ctx context.Con
 
 // DeleteHybridConnectionSlot - Removes a Hybrid Connection from this site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// slot - The name of the slot for the web app.
-// options - WebAppsClientDeleteHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteHybridConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - slot - The name of the slot for the web app.
+//   - options - WebAppsClientDeleteHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteHybridConnectionSlot
+//     method.
 func (client *WebAppsClient) DeleteHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *WebAppsClientDeleteHybridConnectionSlotOptions) (WebAppsClientDeleteHybridConnectionSlotResponse, error) {
 	req, err := client.deleteHybridConnectionSlotCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteHybridConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteHybridConnectionSlotResponse{}, err
 	}
@@ -3922,7 +3983,7 @@ func (client *WebAppsClient) deleteHybridConnectionSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3934,19 +3995,20 @@ func (client *WebAppsClient) deleteHybridConnectionSlotCreateRequest(ctx context
 
 // DeleteInstanceFunctionSlot - Delete a function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// slot - Name of the deployment slot.
-// options - WebAppsClientDeleteInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.DeleteInstanceFunctionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientDeleteInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.DeleteInstanceFunctionSlot
+//     method.
 func (client *WebAppsClient) DeleteInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsClientDeleteInstanceFunctionSlotOptions) (WebAppsClientDeleteInstanceFunctionSlotResponse, error) {
 	req, err := client.deleteInstanceFunctionSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteInstanceFunctionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteInstanceFunctionSlotResponse{}, err
 	}
@@ -3979,7 +4041,7 @@ func (client *WebAppsClient) deleteInstanceFunctionSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -3992,20 +4054,21 @@ func (client *WebAppsClient) deleteInstanceFunctionSlotCreateRequest(ctx context
 // DeleteInstanceProcess - Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance
 // in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientDeleteInstanceProcessOptions contains the optional parameters for the WebAppsClient.DeleteInstanceProcess
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientDeleteInstanceProcessOptions contains the optional parameters for the WebAppsClient.DeleteInstanceProcess
+//     method.
 func (client *WebAppsClient) DeleteInstanceProcess(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *WebAppsClientDeleteInstanceProcessOptions) (WebAppsClientDeleteInstanceProcessResponse, error) {
 	req, err := client.deleteInstanceProcessCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
 	if err != nil {
 		return WebAppsClientDeleteInstanceProcessResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteInstanceProcessResponse{}, err
 	}
@@ -4038,7 +4101,7 @@ func (client *WebAppsClient) deleteInstanceProcessCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4051,21 +4114,22 @@ func (client *WebAppsClient) deleteInstanceProcessCreateRequest(ctx context.Cont
 // DeleteInstanceProcessSlot - Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
 // instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientDeleteInstanceProcessSlotOptions contains the optional parameters for the WebAppsClient.DeleteInstanceProcessSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientDeleteInstanceProcessSlotOptions contains the optional parameters for the WebAppsClient.DeleteInstanceProcessSlot
+//     method.
 func (client *WebAppsClient) DeleteInstanceProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsClientDeleteInstanceProcessSlotOptions) (WebAppsClientDeleteInstanceProcessSlotResponse, error) {
 	req, err := client.deleteInstanceProcessSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
 	if err != nil {
 		return WebAppsClientDeleteInstanceProcessSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteInstanceProcessSlotResponse{}, err
 	}
@@ -4102,7 +4166,7 @@ func (client *WebAppsClient) deleteInstanceProcessSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4114,18 +4178,19 @@ func (client *WebAppsClient) deleteInstanceProcessSlotCreateRequest(ctx context.
 
 // DeletePremierAddOn - Delete a premier add-on from an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// premierAddOnName - Add-on name.
-// options - WebAppsClientDeletePremierAddOnOptions contains the optional parameters for the WebAppsClient.DeletePremierAddOn
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - premierAddOnName - Add-on name.
+//   - options - WebAppsClientDeletePremierAddOnOptions contains the optional parameters for the WebAppsClient.DeletePremierAddOn
+//     method.
 func (client *WebAppsClient) DeletePremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *WebAppsClientDeletePremierAddOnOptions) (WebAppsClientDeletePremierAddOnResponse, error) {
 	req, err := client.deletePremierAddOnCreateRequest(ctx, resourceGroupName, name, premierAddOnName, options)
 	if err != nil {
 		return WebAppsClientDeletePremierAddOnResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeletePremierAddOnResponse{}, err
 	}
@@ -4154,7 +4219,7 @@ func (client *WebAppsClient) deletePremierAddOnCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4166,20 +4231,21 @@ func (client *WebAppsClient) deletePremierAddOnCreateRequest(ctx context.Context
 
 // DeletePremierAddOnSlot - Delete a premier add-on from an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// premierAddOnName - Add-on name.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the named add-on for the production
-// slot.
-// options - WebAppsClientDeletePremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.DeletePremierAddOnSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - premierAddOnName - Add-on name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the named add-on for the production
+//     slot.
+//   - options - WebAppsClientDeletePremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.DeletePremierAddOnSlot
+//     method.
 func (client *WebAppsClient) DeletePremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *WebAppsClientDeletePremierAddOnSlotOptions) (WebAppsClientDeletePremierAddOnSlotResponse, error) {
 	req, err := client.deletePremierAddOnSlotCreateRequest(ctx, resourceGroupName, name, premierAddOnName, slot, options)
 	if err != nil {
 		return WebAppsClientDeletePremierAddOnSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeletePremierAddOnSlotResponse{}, err
 	}
@@ -4212,7 +4278,7 @@ func (client *WebAppsClient) deletePremierAddOnSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4225,17 +4291,18 @@ func (client *WebAppsClient) deletePremierAddOnSlotCreateRequest(ctx context.Con
 // DeleteProcess - Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in
 // a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// options - WebAppsClientDeleteProcessOptions contains the optional parameters for the WebAppsClient.DeleteProcess method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - options - WebAppsClientDeleteProcessOptions contains the optional parameters for the WebAppsClient.DeleteProcess method.
 func (client *WebAppsClient) DeleteProcess(ctx context.Context, resourceGroupName string, name string, processID string, options *WebAppsClientDeleteProcessOptions) (WebAppsClientDeleteProcessResponse, error) {
 	req, err := client.deleteProcessCreateRequest(ctx, resourceGroupName, name, processID, options)
 	if err != nil {
 		return WebAppsClientDeleteProcessResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteProcessResponse{}, err
 	}
@@ -4264,7 +4331,7 @@ func (client *WebAppsClient) deleteProcessCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4277,19 +4344,20 @@ func (client *WebAppsClient) deleteProcessCreateRequest(ctx context.Context, res
 // DeleteProcessSlot - Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance
 // in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientDeleteProcessSlotOptions contains the optional parameters for the WebAppsClient.DeleteProcessSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientDeleteProcessSlotOptions contains the optional parameters for the WebAppsClient.DeleteProcessSlot
+//     method.
 func (client *WebAppsClient) DeleteProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsClientDeleteProcessSlotOptions) (WebAppsClientDeleteProcessSlotResponse, error) {
 	req, err := client.deleteProcessSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteProcessSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteProcessSlotResponse{}, err
 	}
@@ -4322,7 +4390,7 @@ func (client *WebAppsClient) deleteProcessSlotCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4334,18 +4402,19 @@ func (client *WebAppsClient) deleteProcessSlotCreateRequest(ctx context.Context,
 
 // DeletePublicCertificate - Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// publicCertificateName - Public certificate name.
-// options - WebAppsClientDeletePublicCertificateOptions contains the optional parameters for the WebAppsClient.DeletePublicCertificate
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - publicCertificateName - Public certificate name.
+//   - options - WebAppsClientDeletePublicCertificateOptions contains the optional parameters for the WebAppsClient.DeletePublicCertificate
+//     method.
 func (client *WebAppsClient) DeletePublicCertificate(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *WebAppsClientDeletePublicCertificateOptions) (WebAppsClientDeletePublicCertificateResponse, error) {
 	req, err := client.deletePublicCertificateCreateRequest(ctx, resourceGroupName, name, publicCertificateName, options)
 	if err != nil {
 		return WebAppsClientDeletePublicCertificateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeletePublicCertificateResponse{}, err
 	}
@@ -4374,7 +4443,7 @@ func (client *WebAppsClient) deletePublicCertificateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4386,19 +4455,20 @@ func (client *WebAppsClient) deletePublicCertificateCreateRequest(ctx context.Co
 
 // DeletePublicCertificateSlot - Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
-// publicCertificateName - Public certificate name.
-// options - WebAppsClientDeletePublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.DeletePublicCertificateSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+//   - publicCertificateName - Public certificate name.
+//   - options - WebAppsClientDeletePublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.DeletePublicCertificateSlot
+//     method.
 func (client *WebAppsClient) DeletePublicCertificateSlot(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *WebAppsClientDeletePublicCertificateSlotOptions) (WebAppsClientDeletePublicCertificateSlotResponse, error) {
 	req, err := client.deletePublicCertificateSlotCreateRequest(ctx, resourceGroupName, name, slot, publicCertificateName, options)
 	if err != nil {
 		return WebAppsClientDeletePublicCertificateSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeletePublicCertificateSlotResponse{}, err
 	}
@@ -4431,7 +4501,7 @@ func (client *WebAppsClient) deletePublicCertificateSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4443,18 +4513,19 @@ func (client *WebAppsClient) deletePublicCertificateSlotCreateRequest(ctx contex
 
 // DeleteRelayServiceConnection - Deletes a relay service connection by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// entityName - Name of the hybrid connection configuration.
-// options - WebAppsClientDeleteRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.DeleteRelayServiceConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - entityName - Name of the hybrid connection configuration.
+//   - options - WebAppsClientDeleteRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.DeleteRelayServiceConnection
+//     method.
 func (client *WebAppsClient) DeleteRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, options *WebAppsClientDeleteRelayServiceConnectionOptions) (WebAppsClientDeleteRelayServiceConnectionResponse, error) {
 	req, err := client.deleteRelayServiceConnectionCreateRequest(ctx, resourceGroupName, name, entityName, options)
 	if err != nil {
 		return WebAppsClientDeleteRelayServiceConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteRelayServiceConnectionResponse{}, err
 	}
@@ -4483,7 +4554,7 @@ func (client *WebAppsClient) deleteRelayServiceConnectionCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4495,20 +4566,21 @@ func (client *WebAppsClient) deleteRelayServiceConnectionCreateRequest(ctx conte
 
 // DeleteRelayServiceConnectionSlot - Deletes a relay service connection by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// entityName - Name of the hybrid connection configuration.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for the production
-// slot.
-// options - WebAppsClientDeleteRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteRelayServiceConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - entityName - Name of the hybrid connection configuration.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for the production
+//     slot.
+//   - options - WebAppsClientDeleteRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteRelayServiceConnectionSlot
+//     method.
 func (client *WebAppsClient) DeleteRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *WebAppsClientDeleteRelayServiceConnectionSlotOptions) (WebAppsClientDeleteRelayServiceConnectionSlotResponse, error) {
 	req, err := client.deleteRelayServiceConnectionSlotCreateRequest(ctx, resourceGroupName, name, entityName, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, err
 	}
@@ -4541,7 +4613,7 @@ func (client *WebAppsClient) deleteRelayServiceConnectionSlotCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4553,18 +4625,19 @@ func (client *WebAppsClient) deleteRelayServiceConnectionSlotCreateRequest(ctx c
 
 // DeleteSiteExtension - Remove a site extension from a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// siteExtensionID - Site extension name.
-// options - WebAppsClientDeleteSiteExtensionOptions contains the optional parameters for the WebAppsClient.DeleteSiteExtension
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - siteExtensionID - Site extension name.
+//   - options - WebAppsClientDeleteSiteExtensionOptions contains the optional parameters for the WebAppsClient.DeleteSiteExtension
+//     method.
 func (client *WebAppsClient) DeleteSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsClientDeleteSiteExtensionOptions) (WebAppsClientDeleteSiteExtensionResponse, error) {
 	req, err := client.deleteSiteExtensionCreateRequest(ctx, resourceGroupName, name, siteExtensionID, options)
 	if err != nil {
 		return WebAppsClientDeleteSiteExtensionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteSiteExtensionResponse{}, err
 	}
@@ -4593,7 +4666,7 @@ func (client *WebAppsClient) deleteSiteExtensionCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4605,19 +4678,20 @@ func (client *WebAppsClient) deleteSiteExtensionCreateRequest(ctx context.Contex
 
 // DeleteSiteExtensionSlot - Remove a site extension from a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// siteExtensionID - Site extension name.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientDeleteSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.DeleteSiteExtensionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - siteExtensionID - Site extension name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientDeleteSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.DeleteSiteExtensionSlot
+//     method.
 func (client *WebAppsClient) DeleteSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsClientDeleteSiteExtensionSlotOptions) (WebAppsClientDeleteSiteExtensionSlotResponse, error) {
 	req, err := client.deleteSiteExtensionSlotCreateRequest(ctx, resourceGroupName, name, siteExtensionID, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteSiteExtensionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteSiteExtensionSlotResponse{}, err
 	}
@@ -4650,7 +4724,7 @@ func (client *WebAppsClient) deleteSiteExtensionSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4662,17 +4736,18 @@ func (client *WebAppsClient) deleteSiteExtensionSlotCreateRequest(ctx context.Co
 
 // DeleteSlot - Deletes a web, mobile, or API app, or one of the deployment slots.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app to delete.
-// slot - Name of the deployment slot to delete. By default, the API deletes the production slot.
-// options - WebAppsClientDeleteSlotOptions contains the optional parameters for the WebAppsClient.DeleteSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app to delete.
+//   - slot - Name of the deployment slot to delete. By default, the API deletes the production slot.
+//   - options - WebAppsClientDeleteSlotOptions contains the optional parameters for the WebAppsClient.DeleteSlot method.
 func (client *WebAppsClient) DeleteSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientDeleteSlotOptions) (WebAppsClientDeleteSlotResponse, error) {
 	req, err := client.deleteSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteSlotResponse{}, err
 	}
@@ -4701,7 +4776,7 @@ func (client *WebAppsClient) deleteSlotCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4719,17 +4794,18 @@ func (client *WebAppsClient) deleteSlotCreateRequest(ctx context.Context, resour
 
 // DeleteSourceControl - Deletes the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientDeleteSourceControlOptions contains the optional parameters for the WebAppsClient.DeleteSourceControl
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientDeleteSourceControlOptions contains the optional parameters for the WebAppsClient.DeleteSourceControl
+//     method.
 func (client *WebAppsClient) DeleteSourceControl(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientDeleteSourceControlOptions) (WebAppsClientDeleteSourceControlResponse, error) {
 	req, err := client.deleteSourceControlCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientDeleteSourceControlResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteSourceControlResponse{}, err
 	}
@@ -4754,7 +4830,7 @@ func (client *WebAppsClient) deleteSourceControlCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4766,19 +4842,20 @@ func (client *WebAppsClient) deleteSourceControlCreateRequest(ctx context.Contex
 
 // DeleteSourceControlSlot - Deletes the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the source control configuration for
-// the production slot.
-// options - WebAppsClientDeleteSourceControlSlotOptions contains the optional parameters for the WebAppsClient.DeleteSourceControlSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the source control configuration for
+//     the production slot.
+//   - options - WebAppsClientDeleteSourceControlSlotOptions contains the optional parameters for the WebAppsClient.DeleteSourceControlSlot
+//     method.
 func (client *WebAppsClient) DeleteSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientDeleteSourceControlSlotOptions) (WebAppsClientDeleteSourceControlSlotResponse, error) {
 	req, err := client.deleteSourceControlSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteSourceControlSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteSourceControlSlotResponse{}, err
 	}
@@ -4807,7 +4884,7 @@ func (client *WebAppsClient) deleteSourceControlSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4819,17 +4896,18 @@ func (client *WebAppsClient) deleteSourceControlSlotCreateRequest(ctx context.Co
 
 // DeleteSwiftVirtualNetwork - Deletes a Swift Virtual Network connection from an app (or deployment slot).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientDeleteSwiftVirtualNetworkOptions contains the optional parameters for the WebAppsClient.DeleteSwiftVirtualNetwork
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientDeleteSwiftVirtualNetworkOptions contains the optional parameters for the WebAppsClient.DeleteSwiftVirtualNetwork
+//     method.
 func (client *WebAppsClient) DeleteSwiftVirtualNetwork(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientDeleteSwiftVirtualNetworkOptions) (WebAppsClientDeleteSwiftVirtualNetworkResponse, error) {
 	req, err := client.deleteSwiftVirtualNetworkCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, err
 	}
@@ -4854,7 +4932,7 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4866,18 +4944,19 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkCreateRequest(ctx context.
 
 // DeleteSwiftVirtualNetworkSlot - Deletes a Swift Virtual Network connection from an app (or deployment slot).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
-// options - WebAppsClientDeleteSwiftVirtualNetworkSlotOptions contains the optional parameters for the WebAppsClient.DeleteSwiftVirtualNetworkSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+//   - options - WebAppsClientDeleteSwiftVirtualNetworkSlotOptions contains the optional parameters for the WebAppsClient.DeleteSwiftVirtualNetworkSlot
+//     method.
 func (client *WebAppsClient) DeleteSwiftVirtualNetworkSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientDeleteSwiftVirtualNetworkSlotOptions) (WebAppsClientDeleteSwiftVirtualNetworkSlotResponse, error) {
 	req, err := client.deleteSwiftVirtualNetworkSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, err
 	}
@@ -4906,7 +4985,7 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkSlotCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4918,18 +4997,19 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkSlotCreateRequest(ctx cont
 
 // DeleteTriggeredWebJob - Delete a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// options - WebAppsClientDeleteTriggeredWebJobOptions contains the optional parameters for the WebAppsClient.DeleteTriggeredWebJob
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - options - WebAppsClientDeleteTriggeredWebJobOptions contains the optional parameters for the WebAppsClient.DeleteTriggeredWebJob
+//     method.
 func (client *WebAppsClient) DeleteTriggeredWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsClientDeleteTriggeredWebJobOptions) (WebAppsClientDeleteTriggeredWebJobResponse, error) {
 	req, err := client.deleteTriggeredWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
 		return WebAppsClientDeleteTriggeredWebJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteTriggeredWebJobResponse{}, err
 	}
@@ -4958,7 +5038,7 @@ func (client *WebAppsClient) deleteTriggeredWebJobCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -4970,19 +5050,20 @@ func (client *WebAppsClient) deleteTriggeredWebJobCreateRequest(ctx context.Cont
 
 // DeleteTriggeredWebJobSlot - Delete a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientDeleteTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.DeleteTriggeredWebJobSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientDeleteTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.DeleteTriggeredWebJobSlot
+//     method.
 func (client *WebAppsClient) DeleteTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientDeleteTriggeredWebJobSlotOptions) (WebAppsClientDeleteTriggeredWebJobSlotResponse, error) {
 	req, err := client.deleteTriggeredWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, err
 	}
@@ -5015,7 +5096,7 @@ func (client *WebAppsClient) deleteTriggeredWebJobSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5027,18 +5108,19 @@ func (client *WebAppsClient) deleteTriggeredWebJobSlotCreateRequest(ctx context.
 
 // DeleteVnetConnection - Deletes a connection from an app (or deployment slot to a named virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the virtual network.
-// options - WebAppsClientDeleteVnetConnectionOptions contains the optional parameters for the WebAppsClient.DeleteVnetConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the virtual network.
+//   - options - WebAppsClientDeleteVnetConnectionOptions contains the optional parameters for the WebAppsClient.DeleteVnetConnection
+//     method.
 func (client *WebAppsClient) DeleteVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, options *WebAppsClientDeleteVnetConnectionOptions) (WebAppsClientDeleteVnetConnectionResponse, error) {
 	req, err := client.deleteVnetConnectionCreateRequest(ctx, resourceGroupName, name, vnetName, options)
 	if err != nil {
 		return WebAppsClientDeleteVnetConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteVnetConnectionResponse{}, err
 	}
@@ -5067,7 +5149,7 @@ func (client *WebAppsClient) deleteVnetConnectionCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5079,19 +5161,20 @@ func (client *WebAppsClient) deleteVnetConnectionCreateRequest(ctx context.Conte
 
 // DeleteVnetConnectionSlot - Deletes a connection from an app (or deployment slot to a named virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the virtual network.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
-// options - WebAppsClientDeleteVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteVnetConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the virtual network.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+//   - options - WebAppsClientDeleteVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.DeleteVnetConnectionSlot
+//     method.
 func (client *WebAppsClient) DeleteVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *WebAppsClientDeleteVnetConnectionSlotOptions) (WebAppsClientDeleteVnetConnectionSlotResponse, error) {
 	req, err := client.deleteVnetConnectionSlotCreateRequest(ctx, resourceGroupName, name, vnetName, slot, options)
 	if err != nil {
 		return WebAppsClientDeleteVnetConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDeleteVnetConnectionSlotResponse{}, err
 	}
@@ -5124,7 +5207,7 @@ func (client *WebAppsClient) deleteVnetConnectionSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5137,17 +5220,18 @@ func (client *WebAppsClient) deleteVnetConnectionSlotCreateRequest(ctx context.C
 // DiscoverBackup - Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
 // about the databases stored in a backup.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// request - A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-// options - WebAppsClientDiscoverBackupOptions contains the optional parameters for the WebAppsClient.DiscoverBackup method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - request - A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+//   - options - WebAppsClientDiscoverBackupOptions contains the optional parameters for the WebAppsClient.DiscoverBackup method.
 func (client *WebAppsClient) DiscoverBackup(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, options *WebAppsClientDiscoverBackupOptions) (WebAppsClientDiscoverBackupResponse, error) {
 	req, err := client.discoverBackupCreateRequest(ctx, resourceGroupName, name, request, options)
 	if err != nil {
 		return WebAppsClientDiscoverBackupResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDiscoverBackupResponse{}, err
 	}
@@ -5172,7 +5256,7 @@ func (client *WebAppsClient) discoverBackupCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5195,19 +5279,20 @@ func (client *WebAppsClient) discoverBackupHandleResponse(resp *http.Response) (
 // DiscoverBackupSlot - Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get
 // information about the databases stored in a backup.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
-// request - A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
-// options - WebAppsClientDiscoverBackupSlotOptions contains the optional parameters for the WebAppsClient.DiscoverBackupSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will perform discovery for the production slot.
+//   - request - A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
+//   - options - WebAppsClientDiscoverBackupSlotOptions contains the optional parameters for the WebAppsClient.DiscoverBackupSlot
+//     method.
 func (client *WebAppsClient) DiscoverBackupSlot(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, options *WebAppsClientDiscoverBackupSlotOptions) (WebAppsClientDiscoverBackupSlotResponse, error) {
 	req, err := client.discoverBackupSlotCreateRequest(ctx, resourceGroupName, name, slot, request, options)
 	if err != nil {
 		return WebAppsClientDiscoverBackupSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientDiscoverBackupSlotResponse{}, err
 	}
@@ -5236,7 +5321,7 @@ func (client *WebAppsClient) discoverBackupSlotCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5258,17 +5343,18 @@ func (client *WebAppsClient) discoverBackupSlotHandleResponse(resp *http.Respons
 
 // GenerateNewSitePublishingPassword - Generates a new publishing password for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientGenerateNewSitePublishingPasswordOptions contains the optional parameters for the WebAppsClient.GenerateNewSitePublishingPassword
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientGenerateNewSitePublishingPasswordOptions contains the optional parameters for the WebAppsClient.GenerateNewSitePublishingPassword
+//     method.
 func (client *WebAppsClient) GenerateNewSitePublishingPassword(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGenerateNewSitePublishingPasswordOptions) (WebAppsClientGenerateNewSitePublishingPasswordResponse, error) {
 	req, err := client.generateNewSitePublishingPasswordCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, err
 	}
@@ -5293,7 +5379,7 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5305,19 +5391,20 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordCreateRequest(ctx 
 
 // GenerateNewSitePublishingPasswordSlot - Generates a new publishing password for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API generate a new publishing password for the production
-// slot.
-// options - WebAppsClientGenerateNewSitePublishingPasswordSlotOptions contains the optional parameters for the WebAppsClient.GenerateNewSitePublishingPasswordSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API generate a new publishing password for the production
+//     slot.
+//   - options - WebAppsClientGenerateNewSitePublishingPasswordSlotOptions contains the optional parameters for the WebAppsClient.GenerateNewSitePublishingPasswordSlot
+//     method.
 func (client *WebAppsClient) GenerateNewSitePublishingPasswordSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGenerateNewSitePublishingPasswordSlotOptions) (WebAppsClientGenerateNewSitePublishingPasswordSlotResponse, error) {
 	req, err := client.generateNewSitePublishingPasswordSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, err
 	}
@@ -5346,7 +5433,7 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordSlotCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5358,16 +5445,17 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordSlotCreateRequest(
 
 // Get - Gets the details of a web, mobile, or API app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientGetOptions contains the optional parameters for the WebAppsClient.Get method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientGetOptions contains the optional parameters for the WebAppsClient.Get method.
 func (client *WebAppsClient) Get(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetOptions) (WebAppsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetResponse{}, err
 	}
@@ -5392,7 +5480,7 @@ func (client *WebAppsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5414,16 +5502,17 @@ func (client *WebAppsClient) getHandleResponse(resp *http.Response) (WebAppsClie
 
 // GetAuthSettings - Gets the Authentication/Authorization settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientGetAuthSettingsOptions contains the optional parameters for the WebAppsClient.GetAuthSettings method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientGetAuthSettingsOptions contains the optional parameters for the WebAppsClient.GetAuthSettings method.
 func (client *WebAppsClient) GetAuthSettings(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetAuthSettingsOptions) (WebAppsClientGetAuthSettingsResponse, error) {
 	req, err := client.getAuthSettingsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetAuthSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetAuthSettingsResponse{}, err
 	}
@@ -5448,7 +5537,7 @@ func (client *WebAppsClient) getAuthSettingsCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5470,18 +5559,19 @@ func (client *WebAppsClient) getAuthSettingsHandleResponse(resp *http.Response) 
 
 // GetAuthSettingsSlot - Gets the Authentication/Authorization settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
-// options - WebAppsClientGetAuthSettingsSlotOptions contains the optional parameters for the WebAppsClient.GetAuthSettingsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the settings for the production slot.
+//   - options - WebAppsClientGetAuthSettingsSlotOptions contains the optional parameters for the WebAppsClient.GetAuthSettingsSlot
+//     method.
 func (client *WebAppsClient) GetAuthSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetAuthSettingsSlotOptions) (WebAppsClientGetAuthSettingsSlotResponse, error) {
 	req, err := client.getAuthSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetAuthSettingsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetAuthSettingsSlotResponse{}, err
 	}
@@ -5510,7 +5600,7 @@ func (client *WebAppsClient) getAuthSettingsSlotCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5532,17 +5622,18 @@ func (client *WebAppsClient) getAuthSettingsSlotHandleResponse(resp *http.Respon
 
 // GetBackupConfiguration - Gets the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientGetBackupConfigurationOptions contains the optional parameters for the WebAppsClient.GetBackupConfiguration
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientGetBackupConfigurationOptions contains the optional parameters for the WebAppsClient.GetBackupConfiguration
+//     method.
 func (client *WebAppsClient) GetBackupConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetBackupConfigurationOptions) (WebAppsClientGetBackupConfigurationResponse, error) {
 	req, err := client.getBackupConfigurationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetBackupConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetBackupConfigurationResponse{}, err
 	}
@@ -5567,7 +5658,7 @@ func (client *WebAppsClient) getBackupConfigurationCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5589,19 +5680,20 @@ func (client *WebAppsClient) getBackupConfigurationHandleResponse(resp *http.Res
 
 // GetBackupConfigurationSlot - Gets the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the backup configuration for the production
-// slot.
-// options - WebAppsClientGetBackupConfigurationSlotOptions contains the optional parameters for the WebAppsClient.GetBackupConfigurationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the backup configuration for the production
+//     slot.
+//   - options - WebAppsClientGetBackupConfigurationSlotOptions contains the optional parameters for the WebAppsClient.GetBackupConfigurationSlot
+//     method.
 func (client *WebAppsClient) GetBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetBackupConfigurationSlotOptions) (WebAppsClientGetBackupConfigurationSlotResponse, error) {
 	req, err := client.getBackupConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetBackupConfigurationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetBackupConfigurationSlotResponse{}, err
 	}
@@ -5630,7 +5722,7 @@ func (client *WebAppsClient) getBackupConfigurationSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5652,17 +5744,18 @@ func (client *WebAppsClient) getBackupConfigurationSlotHandleResponse(resp *http
 
 // GetBackupStatus - Gets a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// backupID - ID of the backup.
-// options - WebAppsClientGetBackupStatusOptions contains the optional parameters for the WebAppsClient.GetBackupStatus method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - backupID - ID of the backup.
+//   - options - WebAppsClientGetBackupStatusOptions contains the optional parameters for the WebAppsClient.GetBackupStatus method.
 func (client *WebAppsClient) GetBackupStatus(ctx context.Context, resourceGroupName string, name string, backupID string, options *WebAppsClientGetBackupStatusOptions) (WebAppsClientGetBackupStatusResponse, error) {
 	req, err := client.getBackupStatusCreateRequest(ctx, resourceGroupName, name, backupID, options)
 	if err != nil {
 		return WebAppsClientGetBackupStatusResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetBackupStatusResponse{}, err
 	}
@@ -5691,7 +5784,7 @@ func (client *WebAppsClient) getBackupStatusCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5713,19 +5806,20 @@ func (client *WebAppsClient) getBackupStatusHandleResponse(resp *http.Response) 
 
 // GetBackupStatusSlot - Gets a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// backupID - ID of the backup.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get a backup of the production slot.
-// options - WebAppsClientGetBackupStatusSlotOptions contains the optional parameters for the WebAppsClient.GetBackupStatusSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - backupID - ID of the backup.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get a backup of the production slot.
+//   - options - WebAppsClientGetBackupStatusSlotOptions contains the optional parameters for the WebAppsClient.GetBackupStatusSlot
+//     method.
 func (client *WebAppsClient) GetBackupStatusSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *WebAppsClientGetBackupStatusSlotOptions) (WebAppsClientGetBackupStatusSlotResponse, error) {
 	req, err := client.getBackupStatusSlotCreateRequest(ctx, resourceGroupName, name, backupID, slot, options)
 	if err != nil {
 		return WebAppsClientGetBackupStatusSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetBackupStatusSlotResponse{}, err
 	}
@@ -5758,7 +5852,7 @@ func (client *WebAppsClient) getBackupStatusSlotCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5781,17 +5875,18 @@ func (client *WebAppsClient) getBackupStatusSlotHandleResponse(resp *http.Respon
 // GetConfiguration - Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
 // Always On, etc.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientGetConfigurationOptions contains the optional parameters for the WebAppsClient.GetConfiguration
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientGetConfigurationOptions contains the optional parameters for the WebAppsClient.GetConfiguration
+//     method.
 func (client *WebAppsClient) GetConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetConfigurationOptions) (WebAppsClientGetConfigurationResponse, error) {
 	req, err := client.getConfigurationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetConfigurationResponse{}, err
 	}
@@ -5816,7 +5911,7 @@ func (client *WebAppsClient) getConfigurationCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5839,18 +5934,19 @@ func (client *WebAppsClient) getConfigurationHandleResponse(resp *http.Response)
 // GetConfigurationSlot - Gets the configuration of an app, such as platform version and bitness, default documents, virtual
 // applications, Always On, etc.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
-// options - WebAppsClientGetConfigurationSlotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+//   - options - WebAppsClientGetConfigurationSlotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSlot
+//     method.
 func (client *WebAppsClient) GetConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetConfigurationSlotOptions) (WebAppsClientGetConfigurationSlotResponse, error) {
 	req, err := client.getConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetConfigurationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetConfigurationSlotResponse{}, err
 	}
@@ -5879,7 +5975,7 @@ func (client *WebAppsClient) getConfigurationSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5901,18 +5997,19 @@ func (client *WebAppsClient) getConfigurationSlotHandleResponse(resp *http.Respo
 
 // GetConfigurationSnapshot - Gets a snapshot of the configuration of an app at a previous point in time.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// snapshotID - The ID of the snapshot to read.
-// options - WebAppsClientGetConfigurationSnapshotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSnapshot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - snapshotID - The ID of the snapshot to read.
+//   - options - WebAppsClientGetConfigurationSnapshotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSnapshot
+//     method.
 func (client *WebAppsClient) GetConfigurationSnapshot(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *WebAppsClientGetConfigurationSnapshotOptions) (WebAppsClientGetConfigurationSnapshotResponse, error) {
 	req, err := client.getConfigurationSnapshotCreateRequest(ctx, resourceGroupName, name, snapshotID, options)
 	if err != nil {
 		return WebAppsClientGetConfigurationSnapshotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetConfigurationSnapshotResponse{}, err
 	}
@@ -5941,7 +6038,7 @@ func (client *WebAppsClient) getConfigurationSnapshotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -5963,19 +6060,20 @@ func (client *WebAppsClient) getConfigurationSnapshotHandleResponse(resp *http.R
 
 // GetConfigurationSnapshotSlot - Gets a snapshot of the configuration of an app at a previous point in time.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// snapshotID - The ID of the snapshot to read.
-// slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
-// options - WebAppsClientGetConfigurationSnapshotSlotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSnapshotSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - snapshotID - The ID of the snapshot to read.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+//   - options - WebAppsClientGetConfigurationSnapshotSlotOptions contains the optional parameters for the WebAppsClient.GetConfigurationSnapshotSlot
+//     method.
 func (client *WebAppsClient) GetConfigurationSnapshotSlot(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *WebAppsClientGetConfigurationSnapshotSlotOptions) (WebAppsClientGetConfigurationSnapshotSlotResponse, error) {
 	req, err := client.getConfigurationSnapshotSlotCreateRequest(ctx, resourceGroupName, name, snapshotID, slot, options)
 	if err != nil {
 		return WebAppsClientGetConfigurationSnapshotSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetConfigurationSnapshotSlotResponse{}, err
 	}
@@ -6008,7 +6106,7 @@ func (client *WebAppsClient) getConfigurationSnapshotSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6030,17 +6128,18 @@ func (client *WebAppsClient) getConfigurationSnapshotSlotHandleResponse(resp *ht
 
 // GetContainerLogsZip - Gets the ZIP archived docker log files for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientGetContainerLogsZipOptions contains the optional parameters for the WebAppsClient.GetContainerLogsZip
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientGetContainerLogsZipOptions contains the optional parameters for the WebAppsClient.GetContainerLogsZip
+//     method.
 func (client *WebAppsClient) GetContainerLogsZip(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetContainerLogsZipOptions) (WebAppsClientGetContainerLogsZipResponse, error) {
 	req, err := client.getContainerLogsZipCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetContainerLogsZipResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetContainerLogsZipResponse{}, err
 	}
@@ -6065,7 +6164,7 @@ func (client *WebAppsClient) getContainerLogsZipCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6079,18 +6178,19 @@ func (client *WebAppsClient) getContainerLogsZipCreateRequest(ctx context.Contex
 
 // GetContainerLogsZipSlot - Gets the ZIP archived docker log files for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientGetContainerLogsZipSlotOptions contains the optional parameters for the WebAppsClient.GetContainerLogsZipSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientGetContainerLogsZipSlotOptions contains the optional parameters for the WebAppsClient.GetContainerLogsZipSlot
+//     method.
 func (client *WebAppsClient) GetContainerLogsZipSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetContainerLogsZipSlotOptions) (WebAppsClientGetContainerLogsZipSlotResponse, error) {
 	req, err := client.getContainerLogsZipSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetContainerLogsZipSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetContainerLogsZipSlotResponse{}, err
 	}
@@ -6119,7 +6219,7 @@ func (client *WebAppsClient) getContainerLogsZipSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6133,18 +6233,19 @@ func (client *WebAppsClient) getContainerLogsZipSlotCreateRequest(ctx context.Co
 
 // GetContinuousWebJob - Gets a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// options - WebAppsClientGetContinuousWebJobOptions contains the optional parameters for the WebAppsClient.GetContinuousWebJob
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - options - WebAppsClientGetContinuousWebJobOptions contains the optional parameters for the WebAppsClient.GetContinuousWebJob
+//     method.
 func (client *WebAppsClient) GetContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsClientGetContinuousWebJobOptions) (WebAppsClientGetContinuousWebJobResponse, error) {
 	req, err := client.getContinuousWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
 		return WebAppsClientGetContinuousWebJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetContinuousWebJobResponse{}, err
 	}
@@ -6173,7 +6274,7 @@ func (client *WebAppsClient) getContinuousWebJobCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6195,19 +6296,20 @@ func (client *WebAppsClient) getContinuousWebJobHandleResponse(resp *http.Respon
 
 // GetContinuousWebJobSlot - Gets a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientGetContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetContinuousWebJobSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientGetContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetContinuousWebJobSlot
+//     method.
 func (client *WebAppsClient) GetContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientGetContinuousWebJobSlotOptions) (WebAppsClientGetContinuousWebJobSlotResponse, error) {
 	req, err := client.getContinuousWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
 		return WebAppsClientGetContinuousWebJobSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetContinuousWebJobSlotResponse{}, err
 	}
@@ -6240,7 +6342,7 @@ func (client *WebAppsClient) getContinuousWebJobSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6262,17 +6364,18 @@ func (client *WebAppsClient) getContinuousWebJobSlotHandleResponse(resp *http.Re
 
 // GetDeployment - Get a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// id - Deployment ID.
-// options - WebAppsClientGetDeploymentOptions contains the optional parameters for the WebAppsClient.GetDeployment method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - id - Deployment ID.
+//   - options - WebAppsClientGetDeploymentOptions contains the optional parameters for the WebAppsClient.GetDeployment method.
 func (client *WebAppsClient) GetDeployment(ctx context.Context, resourceGroupName string, name string, id string, options *WebAppsClientGetDeploymentOptions) (WebAppsClientGetDeploymentResponse, error) {
 	req, err := client.getDeploymentCreateRequest(ctx, resourceGroupName, name, id, options)
 	if err != nil {
 		return WebAppsClientGetDeploymentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetDeploymentResponse{}, err
 	}
@@ -6301,7 +6404,7 @@ func (client *WebAppsClient) getDeploymentCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6323,19 +6426,20 @@ func (client *WebAppsClient) getDeploymentHandleResponse(resp *http.Response) (W
 
 // GetDeploymentSlot - Get a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// id - Deployment ID.
-// slot - Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
-// options - WebAppsClientGetDeploymentSlotOptions contains the optional parameters for the WebAppsClient.GetDeploymentSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - id - Deployment ID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API gets a deployment for the production slot.
+//   - options - WebAppsClientGetDeploymentSlotOptions contains the optional parameters for the WebAppsClient.GetDeploymentSlot
+//     method.
 func (client *WebAppsClient) GetDeploymentSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *WebAppsClientGetDeploymentSlotOptions) (WebAppsClientGetDeploymentSlotResponse, error) {
 	req, err := client.getDeploymentSlotCreateRequest(ctx, resourceGroupName, name, id, slot, options)
 	if err != nil {
 		return WebAppsClientGetDeploymentSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetDeploymentSlotResponse{}, err
 	}
@@ -6368,7 +6472,7 @@ func (client *WebAppsClient) getDeploymentSlotCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6390,17 +6494,18 @@ func (client *WebAppsClient) getDeploymentSlotHandleResponse(resp *http.Response
 
 // GetDiagnosticLogsConfiguration - Gets the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientGetDiagnosticLogsConfigurationOptions contains the optional parameters for the WebAppsClient.GetDiagnosticLogsConfiguration
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientGetDiagnosticLogsConfigurationOptions contains the optional parameters for the WebAppsClient.GetDiagnosticLogsConfiguration
+//     method.
 func (client *WebAppsClient) GetDiagnosticLogsConfiguration(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetDiagnosticLogsConfigurationOptions) (WebAppsClientGetDiagnosticLogsConfigurationResponse, error) {
 	req, err := client.getDiagnosticLogsConfigurationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationResponse{}, err
 	}
@@ -6425,7 +6530,7 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6447,19 +6552,20 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationHandleResponse(resp *
 
 // GetDiagnosticLogsConfigurationSlot - Gets the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the logging configuration for the production
-// slot.
-// options - WebAppsClientGetDiagnosticLogsConfigurationSlotOptions contains the optional parameters for the WebAppsClient.GetDiagnosticLogsConfigurationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the logging configuration for the production
+//     slot.
+//   - options - WebAppsClientGetDiagnosticLogsConfigurationSlotOptions contains the optional parameters for the WebAppsClient.GetDiagnosticLogsConfigurationSlot
+//     method.
 func (client *WebAppsClient) GetDiagnosticLogsConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetDiagnosticLogsConfigurationSlotOptions) (WebAppsClientGetDiagnosticLogsConfigurationSlotResponse, error) {
 	req, err := client.getDiagnosticLogsConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationSlotResponse{}, err
 	}
@@ -6488,7 +6594,7 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6510,18 +6616,19 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotHandleResponse(re
 
 // GetDomainOwnershipIdentifier - Get domain ownership identifier for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// domainOwnershipIdentifierName - Name of domain ownership identifier.
-// options - WebAppsClientGetDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.GetDomainOwnershipIdentifier
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - domainOwnershipIdentifierName - Name of domain ownership identifier.
+//   - options - WebAppsClientGetDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.GetDomainOwnershipIdentifier
+//     method.
 func (client *WebAppsClient) GetDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *WebAppsClientGetDomainOwnershipIdentifierOptions) (WebAppsClientGetDomainOwnershipIdentifierResponse, error) {
 	req, err := client.getDomainOwnershipIdentifierCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, options)
 	if err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierResponse{}, err
 	}
@@ -6550,7 +6657,7 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6572,19 +6679,20 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierHandleResponse(resp *ht
 
 // GetDomainOwnershipIdentifierSlot - Get domain ownership identifier for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// domainOwnershipIdentifierName - Name of domain ownership identifier.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
-// options - WebAppsClientGetDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.GetDomainOwnershipIdentifierSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - domainOwnershipIdentifierName - Name of domain ownership identifier.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+//   - options - WebAppsClientGetDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.GetDomainOwnershipIdentifierSlot
+//     method.
 func (client *WebAppsClient) GetDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *WebAppsClientGetDomainOwnershipIdentifierSlotOptions) (WebAppsClientGetDomainOwnershipIdentifierSlotResponse, error) {
 	req, err := client.getDomainOwnershipIdentifierSlotCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, slot, options)
 	if err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierSlotResponse{}, err
 	}
@@ -6617,7 +6725,7 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierSlotCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6639,17 +6747,18 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierSlotHandleResponse(resp
 
 // GetFunction - Get function information by its ID for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// options - WebAppsClientGetFunctionOptions contains the optional parameters for the WebAppsClient.GetFunction method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - options - WebAppsClientGetFunctionOptions contains the optional parameters for the WebAppsClient.GetFunction method.
 func (client *WebAppsClient) GetFunction(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsClientGetFunctionOptions) (WebAppsClientGetFunctionResponse, error) {
 	req, err := client.getFunctionCreateRequest(ctx, resourceGroupName, name, functionName, options)
 	if err != nil {
 		return WebAppsClientGetFunctionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetFunctionResponse{}, err
 	}
@@ -6678,7 +6787,7 @@ func (client *WebAppsClient) getFunctionCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6700,17 +6809,18 @@ func (client *WebAppsClient) getFunctionHandleResponse(resp *http.Response) (Web
 
 // GetFunctionsAdminToken - Fetch a short lived token that can be exchanged for a master key.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientGetFunctionsAdminTokenOptions contains the optional parameters for the WebAppsClient.GetFunctionsAdminToken
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientGetFunctionsAdminTokenOptions contains the optional parameters for the WebAppsClient.GetFunctionsAdminToken
+//     method.
 func (client *WebAppsClient) GetFunctionsAdminToken(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetFunctionsAdminTokenOptions) (WebAppsClientGetFunctionsAdminTokenResponse, error) {
 	req, err := client.getFunctionsAdminTokenCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetFunctionsAdminTokenResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetFunctionsAdminTokenResponse{}, err
 	}
@@ -6735,7 +6845,7 @@ func (client *WebAppsClient) getFunctionsAdminTokenCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6757,18 +6867,19 @@ func (client *WebAppsClient) getFunctionsAdminTokenHandleResponse(resp *http.Res
 
 // GetFunctionsAdminTokenSlot - Fetch a short lived token that can be exchanged for a master key.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientGetFunctionsAdminTokenSlotOptions contains the optional parameters for the WebAppsClient.GetFunctionsAdminTokenSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientGetFunctionsAdminTokenSlotOptions contains the optional parameters for the WebAppsClient.GetFunctionsAdminTokenSlot
+//     method.
 func (client *WebAppsClient) GetFunctionsAdminTokenSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetFunctionsAdminTokenSlotOptions) (WebAppsClientGetFunctionsAdminTokenSlotResponse, error) {
 	req, err := client.getFunctionsAdminTokenSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetFunctionsAdminTokenSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetFunctionsAdminTokenSlotResponse{}, err
 	}
@@ -6797,7 +6908,7 @@ func (client *WebAppsClient) getFunctionsAdminTokenSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6819,18 +6930,19 @@ func (client *WebAppsClient) getFunctionsAdminTokenSlotHandleResponse(resp *http
 
 // GetHostNameBinding - Get the named hostname binding for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// hostName - Hostname in the hostname binding.
-// options - WebAppsClientGetHostNameBindingOptions contains the optional parameters for the WebAppsClient.GetHostNameBinding
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - hostName - Hostname in the hostname binding.
+//   - options - WebAppsClientGetHostNameBindingOptions contains the optional parameters for the WebAppsClient.GetHostNameBinding
+//     method.
 func (client *WebAppsClient) GetHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, options *WebAppsClientGetHostNameBindingOptions) (WebAppsClientGetHostNameBindingResponse, error) {
 	req, err := client.getHostNameBindingCreateRequest(ctx, resourceGroupName, name, hostName, options)
 	if err != nil {
 		return WebAppsClientGetHostNameBindingResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetHostNameBindingResponse{}, err
 	}
@@ -6859,7 +6971,7 @@ func (client *WebAppsClient) getHostNameBindingCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6881,19 +6993,20 @@ func (client *WebAppsClient) getHostNameBindingHandleResponse(resp *http.Respons
 
 // GetHostNameBindingSlot - Get the named hostname binding for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
-// hostName - Hostname in the hostname binding.
-// options - WebAppsClientGetHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.GetHostNameBindingSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
+//   - hostName - Hostname in the hostname binding.
+//   - options - WebAppsClientGetHostNameBindingSlotOptions contains the optional parameters for the WebAppsClient.GetHostNameBindingSlot
+//     method.
 func (client *WebAppsClient) GetHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *WebAppsClientGetHostNameBindingSlotOptions) (WebAppsClientGetHostNameBindingSlotResponse, error) {
 	req, err := client.getHostNameBindingSlotCreateRequest(ctx, resourceGroupName, name, slot, hostName, options)
 	if err != nil {
 		return WebAppsClientGetHostNameBindingSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetHostNameBindingSlotResponse{}, err
 	}
@@ -6926,7 +7039,7 @@ func (client *WebAppsClient) getHostNameBindingSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -6948,19 +7061,20 @@ func (client *WebAppsClient) getHostNameBindingSlotHandleResponse(resp *http.Res
 
 // GetHybridConnection - Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// options - WebAppsClientGetHybridConnectionOptions contains the optional parameters for the WebAppsClient.GetHybridConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - options - WebAppsClientGetHybridConnectionOptions contains the optional parameters for the WebAppsClient.GetHybridConnection
+//     method.
 func (client *WebAppsClient) GetHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *WebAppsClientGetHybridConnectionOptions) (WebAppsClientGetHybridConnectionResponse, error) {
 	req, err := client.getHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
 		return WebAppsClientGetHybridConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetHybridConnectionResponse{}, err
 	}
@@ -6993,7 +7107,7 @@ func (client *WebAppsClient) getHybridConnectionCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7015,20 +7129,21 @@ func (client *WebAppsClient) getHybridConnectionHandleResponse(resp *http.Respon
 
 // GetHybridConnectionSlot - Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// slot - The name of the slot for the web app.
-// options - WebAppsClientGetHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetHybridConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - slot - The name of the slot for the web app.
+//   - options - WebAppsClientGetHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetHybridConnectionSlot
+//     method.
 func (client *WebAppsClient) GetHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *WebAppsClientGetHybridConnectionSlotOptions) (WebAppsClientGetHybridConnectionSlotResponse, error) {
 	req, err := client.getHybridConnectionSlotCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, slot, options)
 	if err != nil {
 		return WebAppsClientGetHybridConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetHybridConnectionSlotResponse{}, err
 	}
@@ -7065,7 +7180,7 @@ func (client *WebAppsClient) getHybridConnectionSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7087,19 +7202,20 @@ func (client *WebAppsClient) getHybridConnectionSlotHandleResponse(resp *http.Re
 
 // GetInstanceFunctionSlot - Get function information by its ID for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// slot - Name of the deployment slot.
-// options - WebAppsClientGetInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceFunctionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientGetInstanceFunctionSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceFunctionSlot
+//     method.
 func (client *WebAppsClient) GetInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsClientGetInstanceFunctionSlotOptions) (WebAppsClientGetInstanceFunctionSlotResponse, error) {
 	req, err := client.getInstanceFunctionSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, options)
 	if err != nil {
 		return WebAppsClientGetInstanceFunctionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceFunctionSlotResponse{}, err
 	}
@@ -7132,7 +7248,7 @@ func (client *WebAppsClient) getInstanceFunctionSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7154,18 +7270,19 @@ func (client *WebAppsClient) getInstanceFunctionSlotHandleResponse(resp *http.Re
 
 // GetInstanceMSDeployLog - Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// instanceID - ID of web app instance.
-// options - WebAppsClientGetInstanceMSDeployLogOptions contains the optional parameters for the WebAppsClient.GetInstanceMSDeployLog
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - instanceID - ID of web app instance.
+//   - options - WebAppsClientGetInstanceMSDeployLogOptions contains the optional parameters for the WebAppsClient.GetInstanceMSDeployLog
+//     method.
 func (client *WebAppsClient) GetInstanceMSDeployLog(ctx context.Context, resourceGroupName string, name string, instanceID string, options *WebAppsClientGetInstanceMSDeployLogOptions) (WebAppsClientGetInstanceMSDeployLogResponse, error) {
 	req, err := client.getInstanceMSDeployLogCreateRequest(ctx, resourceGroupName, name, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceMSDeployLogResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceMSDeployLogResponse{}, err
 	}
@@ -7194,7 +7311,7 @@ func (client *WebAppsClient) getInstanceMSDeployLogCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7216,19 +7333,20 @@ func (client *WebAppsClient) getInstanceMSDeployLogHandleResponse(resp *http.Res
 
 // GetInstanceMSDeployLogSlot - Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// instanceID - ID of web app instance.
-// options - WebAppsClientGetInstanceMSDeployLogSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceMSDeployLogSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - instanceID - ID of web app instance.
+//   - options - WebAppsClientGetInstanceMSDeployLogSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceMSDeployLogSlot
+//     method.
 func (client *WebAppsClient) GetInstanceMSDeployLogSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *WebAppsClientGetInstanceMSDeployLogSlotOptions) (WebAppsClientGetInstanceMSDeployLogSlotResponse, error) {
 	req, err := client.getInstanceMSDeployLogSlotCreateRequest(ctx, resourceGroupName, name, slot, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceMSDeployLogSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceMSDeployLogSlotResponse{}, err
 	}
@@ -7261,7 +7379,7 @@ func (client *WebAppsClient) getInstanceMSDeployLogSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7283,18 +7401,19 @@ func (client *WebAppsClient) getInstanceMSDeployLogSlotHandleResponse(resp *http
 
 // GetInstanceMsDeployStatus - Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// instanceID - ID of web app instance.
-// options - WebAppsClientGetInstanceMsDeployStatusOptions contains the optional parameters for the WebAppsClient.GetInstanceMsDeployStatus
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - instanceID - ID of web app instance.
+//   - options - WebAppsClientGetInstanceMsDeployStatusOptions contains the optional parameters for the WebAppsClient.GetInstanceMsDeployStatus
+//     method.
 func (client *WebAppsClient) GetInstanceMsDeployStatus(ctx context.Context, resourceGroupName string, name string, instanceID string, options *WebAppsClientGetInstanceMsDeployStatusOptions) (WebAppsClientGetInstanceMsDeployStatusResponse, error) {
 	req, err := client.getInstanceMsDeployStatusCreateRequest(ctx, resourceGroupName, name, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusResponse{}, err
 	}
@@ -7323,7 +7442,7 @@ func (client *WebAppsClient) getInstanceMsDeployStatusCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7345,19 +7464,20 @@ func (client *WebAppsClient) getInstanceMsDeployStatusHandleResponse(resp *http.
 
 // GetInstanceMsDeployStatusSlot - Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// instanceID - ID of web app instance.
-// options - WebAppsClientGetInstanceMsDeployStatusSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceMsDeployStatusSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - instanceID - ID of web app instance.
+//   - options - WebAppsClientGetInstanceMsDeployStatusSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceMsDeployStatusSlot
+//     method.
 func (client *WebAppsClient) GetInstanceMsDeployStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *WebAppsClientGetInstanceMsDeployStatusSlotOptions) (WebAppsClientGetInstanceMsDeployStatusSlotResponse, error) {
 	req, err := client.getInstanceMsDeployStatusSlotCreateRequest(ctx, resourceGroupName, name, slot, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusSlotResponse{}, err
 	}
@@ -7390,7 +7510,7 @@ func (client *WebAppsClient) getInstanceMsDeployStatusSlotCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7412,20 +7532,21 @@ func (client *WebAppsClient) getInstanceMsDeployStatusSlotHandleResponse(resp *h
 
 // GetInstanceProcess - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientGetInstanceProcessOptions contains the optional parameters for the WebAppsClient.GetInstanceProcess
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientGetInstanceProcessOptions contains the optional parameters for the WebAppsClient.GetInstanceProcess
+//     method.
 func (client *WebAppsClient) GetInstanceProcess(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *WebAppsClientGetInstanceProcessOptions) (WebAppsClientGetInstanceProcessResponse, error) {
 	req, err := client.getInstanceProcessCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessResponse{}, err
 	}
@@ -7458,7 +7579,7 @@ func (client *WebAppsClient) getInstanceProcessCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7480,20 +7601,21 @@ func (client *WebAppsClient) getInstanceProcessHandleResponse(resp *http.Respons
 
 // GetInstanceProcessDump - Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientGetInstanceProcessDumpOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessDump
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientGetInstanceProcessDumpOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessDump
+//     method.
 func (client *WebAppsClient) GetInstanceProcessDump(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *WebAppsClientGetInstanceProcessDumpOptions) (WebAppsClientGetInstanceProcessDumpResponse, error) {
 	req, err := client.getInstanceProcessDumpCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessDumpResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessDumpResponse{}, err
 	}
@@ -7526,7 +7648,7 @@ func (client *WebAppsClient) getInstanceProcessDumpCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7540,21 +7662,22 @@ func (client *WebAppsClient) getInstanceProcessDumpCreateRequest(ctx context.Con
 
 // GetInstanceProcessDumpSlot - Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientGetInstanceProcessDumpSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessDumpSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientGetInstanceProcessDumpSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessDumpSlot
+//     method.
 func (client *WebAppsClient) GetInstanceProcessDumpSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsClientGetInstanceProcessDumpSlotOptions) (WebAppsClientGetInstanceProcessDumpSlotResponse, error) {
 	req, err := client.getInstanceProcessDumpSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessDumpSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessDumpSlotResponse{}, err
 	}
@@ -7591,7 +7714,7 @@ func (client *WebAppsClient) getInstanceProcessDumpSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7605,21 +7728,22 @@ func (client *WebAppsClient) getInstanceProcessDumpSlotCreateRequest(ctx context
 
 // GetInstanceProcessModule - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// baseAddress - Module base address.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientGetInstanceProcessModuleOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessModule
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - baseAddress - Module base address.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientGetInstanceProcessModuleOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessModule
+//     method.
 func (client *WebAppsClient) GetInstanceProcessModule(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, instanceID string, options *WebAppsClientGetInstanceProcessModuleOptions) (WebAppsClientGetInstanceProcessModuleResponse, error) {
 	req, err := client.getInstanceProcessModuleCreateRequest(ctx, resourceGroupName, name, processID, baseAddress, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessModuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessModuleResponse{}, err
 	}
@@ -7656,7 +7780,7 @@ func (client *WebAppsClient) getInstanceProcessModuleCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7678,22 +7802,23 @@ func (client *WebAppsClient) getInstanceProcessModuleHandleResponse(resp *http.R
 
 // GetInstanceProcessModuleSlot - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// baseAddress - Module base address.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientGetInstanceProcessModuleSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessModuleSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - baseAddress - Module base address.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientGetInstanceProcessModuleSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessModuleSlot
+//     method.
 func (client *WebAppsClient) GetInstanceProcessModuleSlot(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string, options *WebAppsClientGetInstanceProcessModuleSlotOptions) (WebAppsClientGetInstanceProcessModuleSlotResponse, error) {
 	req, err := client.getInstanceProcessModuleSlotCreateRequest(ctx, resourceGroupName, name, processID, baseAddress, slot, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessModuleSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessModuleSlotResponse{}, err
 	}
@@ -7734,7 +7859,7 @@ func (client *WebAppsClient) getInstanceProcessModuleSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7756,21 +7881,22 @@ func (client *WebAppsClient) getInstanceProcessModuleSlotHandleResponse(resp *ht
 
 // GetInstanceProcessSlot - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientGetInstanceProcessSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientGetInstanceProcessSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessSlot
+//     method.
 func (client *WebAppsClient) GetInstanceProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsClientGetInstanceProcessSlotOptions) (WebAppsClientGetInstanceProcessSlotResponse, error) {
 	req, err := client.getInstanceProcessSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessSlotResponse{}, err
 	}
@@ -7807,7 +7933,7 @@ func (client *WebAppsClient) getInstanceProcessSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7830,21 +7956,22 @@ func (client *WebAppsClient) getInstanceProcessSlotHandleResponse(resp *http.Res
 // GetInstanceProcessThread - Get thread information by Thread ID for a specific process, in a specific scaled-out instance
 // in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// threadID - TID.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientGetInstanceProcessThreadOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessThread
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - threadID - TID.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientGetInstanceProcessThreadOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessThread
+//     method.
 func (client *WebAppsClient) GetInstanceProcessThread(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, instanceID string, options *WebAppsClientGetInstanceProcessThreadOptions) (WebAppsClientGetInstanceProcessThreadResponse, error) {
 	req, err := client.getInstanceProcessThreadCreateRequest(ctx, resourceGroupName, name, processID, threadID, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessThreadResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessThreadResponse{}, err
 	}
@@ -7881,7 +8008,7 @@ func (client *WebAppsClient) getInstanceProcessThreadCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7904,22 +8031,23 @@ func (client *WebAppsClient) getInstanceProcessThreadHandleResponse(resp *http.R
 // GetInstanceProcessThreadSlot - Get thread information by Thread ID for a specific process, in a specific scaled-out instance
 // in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// threadID - TID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientGetInstanceProcessThreadSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessThreadSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - threadID - TID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientGetInstanceProcessThreadSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceProcessThreadSlot
+//     method.
 func (client *WebAppsClient) GetInstanceProcessThreadSlot(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, slot string, instanceID string, options *WebAppsClientGetInstanceProcessThreadSlotOptions) (WebAppsClientGetInstanceProcessThreadSlotResponse, error) {
 	req, err := client.getInstanceProcessThreadSlotCreateRequest(ctx, resourceGroupName, name, processID, threadID, slot, instanceID, options)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessThreadSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetInstanceProcessThreadSlotResponse{}, err
 	}
@@ -7960,7 +8088,7 @@ func (client *WebAppsClient) getInstanceProcessThreadSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -7982,16 +8110,17 @@ func (client *WebAppsClient) getInstanceProcessThreadSlotHandleResponse(resp *ht
 
 // GetMSDeployLog - Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientGetMSDeployLogOptions contains the optional parameters for the WebAppsClient.GetMSDeployLog method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientGetMSDeployLogOptions contains the optional parameters for the WebAppsClient.GetMSDeployLog method.
 func (client *WebAppsClient) GetMSDeployLog(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetMSDeployLogOptions) (WebAppsClientGetMSDeployLogResponse, error) {
 	req, err := client.getMSDeployLogCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetMSDeployLogResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetMSDeployLogResponse{}, err
 	}
@@ -8016,7 +8145,7 @@ func (client *WebAppsClient) getMSDeployLogCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8038,18 +8167,19 @@ func (client *WebAppsClient) getMSDeployLogHandleResponse(resp *http.Response) (
 
 // GetMSDeployLogSlot - Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientGetMSDeployLogSlotOptions contains the optional parameters for the WebAppsClient.GetMSDeployLogSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientGetMSDeployLogSlotOptions contains the optional parameters for the WebAppsClient.GetMSDeployLogSlot
+//     method.
 func (client *WebAppsClient) GetMSDeployLogSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetMSDeployLogSlotOptions) (WebAppsClientGetMSDeployLogSlotResponse, error) {
 	req, err := client.getMSDeployLogSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetMSDeployLogSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetMSDeployLogSlotResponse{}, err
 	}
@@ -8078,7 +8208,7 @@ func (client *WebAppsClient) getMSDeployLogSlotCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8100,17 +8230,18 @@ func (client *WebAppsClient) getMSDeployLogSlotHandleResponse(resp *http.Respons
 
 // GetMSDeployStatus - Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientGetMSDeployStatusOptions contains the optional parameters for the WebAppsClient.GetMSDeployStatus
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientGetMSDeployStatusOptions contains the optional parameters for the WebAppsClient.GetMSDeployStatus
+//     method.
 func (client *WebAppsClient) GetMSDeployStatus(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetMSDeployStatusOptions) (WebAppsClientGetMSDeployStatusResponse, error) {
 	req, err := client.getMSDeployStatusCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetMSDeployStatusResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetMSDeployStatusResponse{}, err
 	}
@@ -8135,7 +8266,7 @@ func (client *WebAppsClient) getMSDeployStatusCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8157,18 +8288,19 @@ func (client *WebAppsClient) getMSDeployStatusHandleResponse(resp *http.Response
 
 // GetMSDeployStatusSlot - Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientGetMSDeployStatusSlotOptions contains the optional parameters for the WebAppsClient.GetMSDeployStatusSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientGetMSDeployStatusSlotOptions contains the optional parameters for the WebAppsClient.GetMSDeployStatusSlot
+//     method.
 func (client *WebAppsClient) GetMSDeployStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetMSDeployStatusSlotOptions) (WebAppsClientGetMSDeployStatusSlotResponse, error) {
 	req, err := client.getMSDeployStatusSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetMSDeployStatusSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetMSDeployStatusSlotResponse{}, err
 	}
@@ -8197,7 +8329,7 @@ func (client *WebAppsClient) getMSDeployStatusSlotCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8220,17 +8352,18 @@ func (client *WebAppsClient) getMSDeployStatusSlotHandleResponse(resp *http.Resp
 // GetMigrateMySQLStatus - Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
 // is enabled
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientGetMigrateMySQLStatusOptions contains the optional parameters for the WebAppsClient.GetMigrateMySQLStatus
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientGetMigrateMySQLStatusOptions contains the optional parameters for the WebAppsClient.GetMigrateMySQLStatus
+//     method.
 func (client *WebAppsClient) GetMigrateMySQLStatus(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetMigrateMySQLStatusOptions) (WebAppsClientGetMigrateMySQLStatusResponse, error) {
 	req, err := client.getMigrateMySQLStatusCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetMigrateMySQLStatusResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetMigrateMySQLStatusResponse{}, err
 	}
@@ -8255,7 +8388,7 @@ func (client *WebAppsClient) getMigrateMySQLStatusCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8278,18 +8411,19 @@ func (client *WebAppsClient) getMigrateMySQLStatusHandleResponse(resp *http.Resp
 // GetMigrateMySQLStatusSlot - Returns the status of MySql in app migration, if one is active, and whether or not MySql in
 // app is enabled
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of the deployment slot.
-// options - WebAppsClientGetMigrateMySQLStatusSlotOptions contains the optional parameters for the WebAppsClient.GetMigrateMySQLStatusSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientGetMigrateMySQLStatusSlotOptions contains the optional parameters for the WebAppsClient.GetMigrateMySQLStatusSlot
+//     method.
 func (client *WebAppsClient) GetMigrateMySQLStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetMigrateMySQLStatusSlotOptions) (WebAppsClientGetMigrateMySQLStatusSlotResponse, error) {
 	req, err := client.getMigrateMySQLStatusSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetMigrateMySQLStatusSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetMigrateMySQLStatusSlotResponse{}, err
 	}
@@ -8318,7 +8452,7 @@ func (client *WebAppsClient) getMigrateMySQLStatusSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8340,18 +8474,19 @@ func (client *WebAppsClient) getMigrateMySQLStatusSlotHandleResponse(resp *http.
 
 // GetNetworkTraceOperation - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// operationID - GUID of the operation.
-// options - WebAppsClientGetNetworkTraceOperationOptions contains the optional parameters for the WebAppsClient.GetNetworkTraceOperation
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - operationID - GUID of the operation.
+//   - options - WebAppsClientGetNetworkTraceOperationOptions contains the optional parameters for the WebAppsClient.GetNetworkTraceOperation
+//     method.
 func (client *WebAppsClient) GetNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsClientGetNetworkTraceOperationOptions) (WebAppsClientGetNetworkTraceOperationResponse, error) {
 	req, err := client.getNetworkTraceOperationCreateRequest(ctx, resourceGroupName, name, operationID, options)
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationResponse{}, err
 	}
@@ -8380,7 +8515,7 @@ func (client *WebAppsClient) getNetworkTraceOperationCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8402,19 +8537,20 @@ func (client *WebAppsClient) getNetworkTraceOperationHandleResponse(resp *http.R
 
 // GetNetworkTraceOperationSlot - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// operationID - GUID of the operation.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
-// options - WebAppsClientGetNetworkTraceOperationSlotOptions contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - operationID - GUID of the operation.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+//   - options - WebAppsClientGetNetworkTraceOperationSlotOptions contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationSlot
+//     method.
 func (client *WebAppsClient) GetNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsClientGetNetworkTraceOperationSlotOptions) (WebAppsClientGetNetworkTraceOperationSlotResponse, error) {
 	req, err := client.getNetworkTraceOperationSlotCreateRequest(ctx, resourceGroupName, name, operationID, slot, options)
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotResponse{}, err
 	}
@@ -8447,7 +8583,7 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8469,19 +8605,20 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotHandleResponse(resp *ht
 
 // GetNetworkTraceOperationSlotV2 - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// operationID - GUID of the operation.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
-// options - WebAppsClientGetNetworkTraceOperationSlotV2Options contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationSlotV2
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - operationID - GUID of the operation.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+//   - options - WebAppsClientGetNetworkTraceOperationSlotV2Options contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationSlotV2
+//     method.
 func (client *WebAppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsClientGetNetworkTraceOperationSlotV2Options) (WebAppsClientGetNetworkTraceOperationSlotV2Response, error) {
 	req, err := client.getNetworkTraceOperationSlotV2CreateRequest(ctx, resourceGroupName, name, operationID, slot, options)
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotV2Response{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotV2Response{}, err
 	}
@@ -8514,7 +8651,7 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotV2CreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8536,18 +8673,19 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotV2HandleResponse(resp *
 
 // GetNetworkTraceOperationV2 - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// operationID - GUID of the operation.
-// options - WebAppsClientGetNetworkTraceOperationV2Options contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationV2
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - operationID - GUID of the operation.
+//   - options - WebAppsClientGetNetworkTraceOperationV2Options contains the optional parameters for the WebAppsClient.GetNetworkTraceOperationV2
+//     method.
 func (client *WebAppsClient) GetNetworkTraceOperationV2(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsClientGetNetworkTraceOperationV2Options) (WebAppsClientGetNetworkTraceOperationV2Response, error) {
 	req, err := client.getNetworkTraceOperationV2CreateRequest(ctx, resourceGroupName, name, operationID, options)
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationV2Response{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationV2Response{}, err
 	}
@@ -8576,7 +8714,7 @@ func (client *WebAppsClient) getNetworkTraceOperationV2CreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8598,18 +8736,19 @@ func (client *WebAppsClient) getNetworkTraceOperationV2HandleResponse(resp *http
 
 // GetNetworkTraces - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// operationID - GUID of the operation.
-// options - WebAppsClientGetNetworkTracesOptions contains the optional parameters for the WebAppsClient.GetNetworkTraces
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - operationID - GUID of the operation.
+//   - options - WebAppsClientGetNetworkTracesOptions contains the optional parameters for the WebAppsClient.GetNetworkTraces
+//     method.
 func (client *WebAppsClient) GetNetworkTraces(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsClientGetNetworkTracesOptions) (WebAppsClientGetNetworkTracesResponse, error) {
 	req, err := client.getNetworkTracesCreateRequest(ctx, resourceGroupName, name, operationID, options)
 	if err != nil {
 		return WebAppsClientGetNetworkTracesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetNetworkTracesResponse{}, err
 	}
@@ -8638,7 +8777,7 @@ func (client *WebAppsClient) getNetworkTracesCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8660,19 +8799,20 @@ func (client *WebAppsClient) getNetworkTracesHandleResponse(resp *http.Response)
 
 // GetNetworkTracesSlot - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// operationID - GUID of the operation.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
-// options - WebAppsClientGetNetworkTracesSlotOptions contains the optional parameters for the WebAppsClient.GetNetworkTracesSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - operationID - GUID of the operation.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+//   - options - WebAppsClientGetNetworkTracesSlotOptions contains the optional parameters for the WebAppsClient.GetNetworkTracesSlot
+//     method.
 func (client *WebAppsClient) GetNetworkTracesSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsClientGetNetworkTracesSlotOptions) (WebAppsClientGetNetworkTracesSlotResponse, error) {
 	req, err := client.getNetworkTracesSlotCreateRequest(ctx, resourceGroupName, name, operationID, slot, options)
 	if err != nil {
 		return WebAppsClientGetNetworkTracesSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetNetworkTracesSlotResponse{}, err
 	}
@@ -8705,7 +8845,7 @@ func (client *WebAppsClient) getNetworkTracesSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8727,19 +8867,20 @@ func (client *WebAppsClient) getNetworkTracesSlotHandleResponse(resp *http.Respo
 
 // GetNetworkTracesSlotV2 - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// operationID - GUID of the operation.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
-// options - WebAppsClientGetNetworkTracesSlotV2Options contains the optional parameters for the WebAppsClient.GetNetworkTracesSlotV2
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - operationID - GUID of the operation.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+//   - options - WebAppsClientGetNetworkTracesSlotV2Options contains the optional parameters for the WebAppsClient.GetNetworkTracesSlotV2
+//     method.
 func (client *WebAppsClient) GetNetworkTracesSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *WebAppsClientGetNetworkTracesSlotV2Options) (WebAppsClientGetNetworkTracesSlotV2Response, error) {
 	req, err := client.getNetworkTracesSlotV2CreateRequest(ctx, resourceGroupName, name, operationID, slot, options)
 	if err != nil {
 		return WebAppsClientGetNetworkTracesSlotV2Response{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetNetworkTracesSlotV2Response{}, err
 	}
@@ -8772,7 +8913,7 @@ func (client *WebAppsClient) getNetworkTracesSlotV2CreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8794,18 +8935,19 @@ func (client *WebAppsClient) getNetworkTracesSlotV2HandleResponse(resp *http.Res
 
 // GetNetworkTracesV2 - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// operationID - GUID of the operation.
-// options - WebAppsClientGetNetworkTracesV2Options contains the optional parameters for the WebAppsClient.GetNetworkTracesV2
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - operationID - GUID of the operation.
+//   - options - WebAppsClientGetNetworkTracesV2Options contains the optional parameters for the WebAppsClient.GetNetworkTracesV2
+//     method.
 func (client *WebAppsClient) GetNetworkTracesV2(ctx context.Context, resourceGroupName string, name string, operationID string, options *WebAppsClientGetNetworkTracesV2Options) (WebAppsClientGetNetworkTracesV2Response, error) {
 	req, err := client.getNetworkTracesV2CreateRequest(ctx, resourceGroupName, name, operationID, options)
 	if err != nil {
 		return WebAppsClientGetNetworkTracesV2Response{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetNetworkTracesV2Response{}, err
 	}
@@ -8834,7 +8976,7 @@ func (client *WebAppsClient) getNetworkTracesV2CreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8856,17 +8998,18 @@ func (client *WebAppsClient) getNetworkTracesV2HandleResponse(resp *http.Respons
 
 // GetPremierAddOn - Gets a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// premierAddOnName - Add-on name.
-// options - WebAppsClientGetPremierAddOnOptions contains the optional parameters for the WebAppsClient.GetPremierAddOn method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - premierAddOnName - Add-on name.
+//   - options - WebAppsClientGetPremierAddOnOptions contains the optional parameters for the WebAppsClient.GetPremierAddOn method.
 func (client *WebAppsClient) GetPremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *WebAppsClientGetPremierAddOnOptions) (WebAppsClientGetPremierAddOnResponse, error) {
 	req, err := client.getPremierAddOnCreateRequest(ctx, resourceGroupName, name, premierAddOnName, options)
 	if err != nil {
 		return WebAppsClientGetPremierAddOnResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetPremierAddOnResponse{}, err
 	}
@@ -8895,7 +9038,7 @@ func (client *WebAppsClient) getPremierAddOnCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8917,19 +9060,20 @@ func (client *WebAppsClient) getPremierAddOnHandleResponse(resp *http.Response) 
 
 // GetPremierAddOnSlot - Gets a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// premierAddOnName - Add-on name.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the named add-on for the production slot.
-// options - WebAppsClientGetPremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.GetPremierAddOnSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - premierAddOnName - Add-on name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the named add-on for the production slot.
+//   - options - WebAppsClientGetPremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.GetPremierAddOnSlot
+//     method.
 func (client *WebAppsClient) GetPremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *WebAppsClientGetPremierAddOnSlotOptions) (WebAppsClientGetPremierAddOnSlotResponse, error) {
 	req, err := client.getPremierAddOnSlotCreateRequest(ctx, resourceGroupName, name, premierAddOnName, slot, options)
 	if err != nil {
 		return WebAppsClientGetPremierAddOnSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetPremierAddOnSlotResponse{}, err
 	}
@@ -8962,7 +9106,7 @@ func (client *WebAppsClient) getPremierAddOnSlotCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -8985,17 +9129,18 @@ func (client *WebAppsClient) getPremierAddOnSlotHandleResponse(resp *http.Respon
 // GetPrivateAccess - Gets data around private site access enablement and authorized Virtual Networks that can access the
 // site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// options - WebAppsClientGetPrivateAccessOptions contains the optional parameters for the WebAppsClient.GetPrivateAccess
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - options - WebAppsClientGetPrivateAccessOptions contains the optional parameters for the WebAppsClient.GetPrivateAccess
+//     method.
 func (client *WebAppsClient) GetPrivateAccess(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetPrivateAccessOptions) (WebAppsClientGetPrivateAccessResponse, error) {
 	req, err := client.getPrivateAccessCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetPrivateAccessResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetPrivateAccessResponse{}, err
 	}
@@ -9020,7 +9165,7 @@ func (client *WebAppsClient) getPrivateAccessCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9043,18 +9188,19 @@ func (client *WebAppsClient) getPrivateAccessHandleResponse(resp *http.Response)
 // GetPrivateAccessSlot - Gets data around private site access enablement and authorized Virtual Networks that can access
 // the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// slot - The name of the slot for the web app.
-// options - WebAppsClientGetPrivateAccessSlotOptions contains the optional parameters for the WebAppsClient.GetPrivateAccessSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - slot - The name of the slot for the web app.
+//   - options - WebAppsClientGetPrivateAccessSlotOptions contains the optional parameters for the WebAppsClient.GetPrivateAccessSlot
+//     method.
 func (client *WebAppsClient) GetPrivateAccessSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetPrivateAccessSlotOptions) (WebAppsClientGetPrivateAccessSlotResponse, error) {
 	req, err := client.getPrivateAccessSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetPrivateAccessSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetPrivateAccessSlotResponse{}, err
 	}
@@ -9083,7 +9229,7 @@ func (client *WebAppsClient) getPrivateAccessSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9105,17 +9251,18 @@ func (client *WebAppsClient) getPrivateAccessSlotHandleResponse(resp *http.Respo
 
 // GetProcess - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// options - WebAppsClientGetProcessOptions contains the optional parameters for the WebAppsClient.GetProcess method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - options - WebAppsClientGetProcessOptions contains the optional parameters for the WebAppsClient.GetProcess method.
 func (client *WebAppsClient) GetProcess(ctx context.Context, resourceGroupName string, name string, processID string, options *WebAppsClientGetProcessOptions) (WebAppsClientGetProcessResponse, error) {
 	req, err := client.getProcessCreateRequest(ctx, resourceGroupName, name, processID, options)
 	if err != nil {
 		return WebAppsClientGetProcessResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetProcessResponse{}, err
 	}
@@ -9144,7 +9291,7 @@ func (client *WebAppsClient) getProcessCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9166,17 +9313,18 @@ func (client *WebAppsClient) getProcessHandleResponse(resp *http.Response) (WebA
 
 // GetProcessDump - Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// options - WebAppsClientGetProcessDumpOptions contains the optional parameters for the WebAppsClient.GetProcessDump method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - options - WebAppsClientGetProcessDumpOptions contains the optional parameters for the WebAppsClient.GetProcessDump method.
 func (client *WebAppsClient) GetProcessDump(ctx context.Context, resourceGroupName string, name string, processID string, options *WebAppsClientGetProcessDumpOptions) (WebAppsClientGetProcessDumpResponse, error) {
 	req, err := client.getProcessDumpCreateRequest(ctx, resourceGroupName, name, processID, options)
 	if err != nil {
 		return WebAppsClientGetProcessDumpResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetProcessDumpResponse{}, err
 	}
@@ -9205,7 +9353,7 @@ func (client *WebAppsClient) getProcessDumpCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9219,19 +9367,20 @@ func (client *WebAppsClient) getProcessDumpCreateRequest(ctx context.Context, re
 
 // GetProcessDumpSlot - Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientGetProcessDumpSlotOptions contains the optional parameters for the WebAppsClient.GetProcessDumpSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientGetProcessDumpSlotOptions contains the optional parameters for the WebAppsClient.GetProcessDumpSlot
+//     method.
 func (client *WebAppsClient) GetProcessDumpSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsClientGetProcessDumpSlotOptions) (WebAppsClientGetProcessDumpSlotResponse, error) {
 	req, err := client.getProcessDumpSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
 	if err != nil {
 		return WebAppsClientGetProcessDumpSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetProcessDumpSlotResponse{}, err
 	}
@@ -9264,7 +9413,7 @@ func (client *WebAppsClient) getProcessDumpSlotCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9278,19 +9427,20 @@ func (client *WebAppsClient) getProcessDumpSlotCreateRequest(ctx context.Context
 
 // GetProcessModule - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// baseAddress - Module base address.
-// options - WebAppsClientGetProcessModuleOptions contains the optional parameters for the WebAppsClient.GetProcessModule
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - baseAddress - Module base address.
+//   - options - WebAppsClientGetProcessModuleOptions contains the optional parameters for the WebAppsClient.GetProcessModule
+//     method.
 func (client *WebAppsClient) GetProcessModule(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, options *WebAppsClientGetProcessModuleOptions) (WebAppsClientGetProcessModuleResponse, error) {
 	req, err := client.getProcessModuleCreateRequest(ctx, resourceGroupName, name, processID, baseAddress, options)
 	if err != nil {
 		return WebAppsClientGetProcessModuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetProcessModuleResponse{}, err
 	}
@@ -9323,7 +9473,7 @@ func (client *WebAppsClient) getProcessModuleCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9345,20 +9495,21 @@ func (client *WebAppsClient) getProcessModuleHandleResponse(resp *http.Response)
 
 // GetProcessModuleSlot - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// baseAddress - Module base address.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientGetProcessModuleSlotOptions contains the optional parameters for the WebAppsClient.GetProcessModuleSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - baseAddress - Module base address.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientGetProcessModuleSlotOptions contains the optional parameters for the WebAppsClient.GetProcessModuleSlot
+//     method.
 func (client *WebAppsClient) GetProcessModuleSlot(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, options *WebAppsClientGetProcessModuleSlotOptions) (WebAppsClientGetProcessModuleSlotResponse, error) {
 	req, err := client.getProcessModuleSlotCreateRequest(ctx, resourceGroupName, name, processID, baseAddress, slot, options)
 	if err != nil {
 		return WebAppsClientGetProcessModuleSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetProcessModuleSlotResponse{}, err
 	}
@@ -9395,7 +9546,7 @@ func (client *WebAppsClient) getProcessModuleSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9417,18 +9568,19 @@ func (client *WebAppsClient) getProcessModuleSlotHandleResponse(resp *http.Respo
 
 // GetProcessSlot - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientGetProcessSlotOptions contains the optional parameters for the WebAppsClient.GetProcessSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientGetProcessSlotOptions contains the optional parameters for the WebAppsClient.GetProcessSlot method.
 func (client *WebAppsClient) GetProcessSlot(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *WebAppsClientGetProcessSlotOptions) (WebAppsClientGetProcessSlotResponse, error) {
 	req, err := client.getProcessSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
 	if err != nil {
 		return WebAppsClientGetProcessSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetProcessSlotResponse{}, err
 	}
@@ -9461,7 +9613,7 @@ func (client *WebAppsClient) getProcessSlotCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9484,19 +9636,20 @@ func (client *WebAppsClient) getProcessSlotHandleResponse(resp *http.Response) (
 // GetProcessThread - Get thread information by Thread ID for a specific process, in a specific scaled-out instance in a web
 // site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// threadID - TID.
-// options - WebAppsClientGetProcessThreadOptions contains the optional parameters for the WebAppsClient.GetProcessThread
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - threadID - TID.
+//   - options - WebAppsClientGetProcessThreadOptions contains the optional parameters for the WebAppsClient.GetProcessThread
+//     method.
 func (client *WebAppsClient) GetProcessThread(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, options *WebAppsClientGetProcessThreadOptions) (WebAppsClientGetProcessThreadResponse, error) {
 	req, err := client.getProcessThreadCreateRequest(ctx, resourceGroupName, name, processID, threadID, options)
 	if err != nil {
 		return WebAppsClientGetProcessThreadResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetProcessThreadResponse{}, err
 	}
@@ -9529,7 +9682,7 @@ func (client *WebAppsClient) getProcessThreadCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9552,20 +9705,21 @@ func (client *WebAppsClient) getProcessThreadHandleResponse(resp *http.Response)
 // GetProcessThreadSlot - Get thread information by Thread ID for a specific process, in a specific scaled-out instance in
 // a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// threadID - TID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientGetProcessThreadSlotOptions contains the optional parameters for the WebAppsClient.GetProcessThreadSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - threadID - TID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientGetProcessThreadSlotOptions contains the optional parameters for the WebAppsClient.GetProcessThreadSlot
+//     method.
 func (client *WebAppsClient) GetProcessThreadSlot(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, slot string, options *WebAppsClientGetProcessThreadSlotOptions) (WebAppsClientGetProcessThreadSlotResponse, error) {
 	req, err := client.getProcessThreadSlotCreateRequest(ctx, resourceGroupName, name, processID, threadID, slot, options)
 	if err != nil {
 		return WebAppsClientGetProcessThreadSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetProcessThreadSlotResponse{}, err
 	}
@@ -9602,7 +9756,7 @@ func (client *WebAppsClient) getProcessThreadSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9624,18 +9778,19 @@ func (client *WebAppsClient) getProcessThreadSlotHandleResponse(resp *http.Respo
 
 // GetPublicCertificate - Get the named public certificate for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// publicCertificateName - Public certificate name.
-// options - WebAppsClientGetPublicCertificateOptions contains the optional parameters for the WebAppsClient.GetPublicCertificate
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - publicCertificateName - Public certificate name.
+//   - options - WebAppsClientGetPublicCertificateOptions contains the optional parameters for the WebAppsClient.GetPublicCertificate
+//     method.
 func (client *WebAppsClient) GetPublicCertificate(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *WebAppsClientGetPublicCertificateOptions) (WebAppsClientGetPublicCertificateResponse, error) {
 	req, err := client.getPublicCertificateCreateRequest(ctx, resourceGroupName, name, publicCertificateName, options)
 	if err != nil {
 		return WebAppsClientGetPublicCertificateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetPublicCertificateResponse{}, err
 	}
@@ -9664,7 +9819,7 @@ func (client *WebAppsClient) getPublicCertificateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9686,19 +9841,20 @@ func (client *WebAppsClient) getPublicCertificateHandleResponse(resp *http.Respo
 
 // GetPublicCertificateSlot - Get the named public certificate for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
-// publicCertificateName - Public certificate name.
-// options - WebAppsClientGetPublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.GetPublicCertificateSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API the named binding for the production slot.
+//   - publicCertificateName - Public certificate name.
+//   - options - WebAppsClientGetPublicCertificateSlotOptions contains the optional parameters for the WebAppsClient.GetPublicCertificateSlot
+//     method.
 func (client *WebAppsClient) GetPublicCertificateSlot(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *WebAppsClientGetPublicCertificateSlotOptions) (WebAppsClientGetPublicCertificateSlotResponse, error) {
 	req, err := client.getPublicCertificateSlotCreateRequest(ctx, resourceGroupName, name, slot, publicCertificateName, options)
 	if err != nil {
 		return WebAppsClientGetPublicCertificateSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetPublicCertificateSlotResponse{}, err
 	}
@@ -9731,7 +9887,7 @@ func (client *WebAppsClient) getPublicCertificateSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9753,18 +9909,19 @@ func (client *WebAppsClient) getPublicCertificateSlotHandleResponse(resp *http.R
 
 // GetRelayServiceConnection - Gets a hybrid connection configuration by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// entityName - Name of the hybrid connection.
-// options - WebAppsClientGetRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.GetRelayServiceConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - entityName - Name of the hybrid connection.
+//   - options - WebAppsClientGetRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.GetRelayServiceConnection
+//     method.
 func (client *WebAppsClient) GetRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, options *WebAppsClientGetRelayServiceConnectionOptions) (WebAppsClientGetRelayServiceConnectionResponse, error) {
 	req, err := client.getRelayServiceConnectionCreateRequest(ctx, resourceGroupName, name, entityName, options)
 	if err != nil {
 		return WebAppsClientGetRelayServiceConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetRelayServiceConnectionResponse{}, err
 	}
@@ -9793,7 +9950,7 @@ func (client *WebAppsClient) getRelayServiceConnectionCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9815,20 +9972,21 @@ func (client *WebAppsClient) getRelayServiceConnectionHandleResponse(resp *http.
 
 // GetRelayServiceConnectionSlot - Gets a hybrid connection configuration by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// entityName - Name of the hybrid connection.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get a hybrid connection for the production
-// slot.
-// options - WebAppsClientGetRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetRelayServiceConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - entityName - Name of the hybrid connection.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get a hybrid connection for the production
+//     slot.
+//   - options - WebAppsClientGetRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetRelayServiceConnectionSlot
+//     method.
 func (client *WebAppsClient) GetRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *WebAppsClientGetRelayServiceConnectionSlotOptions) (WebAppsClientGetRelayServiceConnectionSlotResponse, error) {
 	req, err := client.getRelayServiceConnectionSlotCreateRequest(ctx, resourceGroupName, name, entityName, slot, options)
 	if err != nil {
 		return WebAppsClientGetRelayServiceConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetRelayServiceConnectionSlotResponse{}, err
 	}
@@ -9861,7 +10019,7 @@ func (client *WebAppsClient) getRelayServiceConnectionSlotCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9883,18 +10041,19 @@ func (client *WebAppsClient) getRelayServiceConnectionSlotHandleResponse(resp *h
 
 // GetSiteExtension - Get site extension information by its ID for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// siteExtensionID - Site extension name.
-// options - WebAppsClientGetSiteExtensionOptions contains the optional parameters for the WebAppsClient.GetSiteExtension
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - siteExtensionID - Site extension name.
+//   - options - WebAppsClientGetSiteExtensionOptions contains the optional parameters for the WebAppsClient.GetSiteExtension
+//     method.
 func (client *WebAppsClient) GetSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsClientGetSiteExtensionOptions) (WebAppsClientGetSiteExtensionResponse, error) {
 	req, err := client.getSiteExtensionCreateRequest(ctx, resourceGroupName, name, siteExtensionID, options)
 	if err != nil {
 		return WebAppsClientGetSiteExtensionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetSiteExtensionResponse{}, err
 	}
@@ -9923,7 +10082,7 @@ func (client *WebAppsClient) getSiteExtensionCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -9945,19 +10104,20 @@ func (client *WebAppsClient) getSiteExtensionHandleResponse(resp *http.Response)
 
 // GetSiteExtensionSlot - Get site extension information by its ID for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// siteExtensionID - Site extension name.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientGetSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.GetSiteExtensionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - siteExtensionID - Site extension name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientGetSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.GetSiteExtensionSlot
+//     method.
 func (client *WebAppsClient) GetSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsClientGetSiteExtensionSlotOptions) (WebAppsClientGetSiteExtensionSlotResponse, error) {
 	req, err := client.getSiteExtensionSlotCreateRequest(ctx, resourceGroupName, name, siteExtensionID, slot, options)
 	if err != nil {
 		return WebAppsClientGetSiteExtensionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetSiteExtensionSlotResponse{}, err
 	}
@@ -9990,7 +10150,7 @@ func (client *WebAppsClient) getSiteExtensionSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10012,17 +10172,18 @@ func (client *WebAppsClient) getSiteExtensionSlotHandleResponse(resp *http.Respo
 
 // GetSitePhpErrorLogFlag - Gets web app's event logs.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientGetSitePhpErrorLogFlagOptions contains the optional parameters for the WebAppsClient.GetSitePhpErrorLogFlag
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientGetSitePhpErrorLogFlagOptions contains the optional parameters for the WebAppsClient.GetSitePhpErrorLogFlag
+//     method.
 func (client *WebAppsClient) GetSitePhpErrorLogFlag(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetSitePhpErrorLogFlagOptions) (WebAppsClientGetSitePhpErrorLogFlagResponse, error) {
 	req, err := client.getSitePhpErrorLogFlagCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagResponse{}, err
 	}
@@ -10047,7 +10208,7 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10069,18 +10230,19 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagHandleResponse(resp *http.Res
 
 // GetSitePhpErrorLogFlagSlot - Gets web app's event logs.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientGetSitePhpErrorLogFlagSlotOptions contains the optional parameters for the WebAppsClient.GetSitePhpErrorLogFlagSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientGetSitePhpErrorLogFlagSlotOptions contains the optional parameters for the WebAppsClient.GetSitePhpErrorLogFlagSlot
+//     method.
 func (client *WebAppsClient) GetSitePhpErrorLogFlagSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetSitePhpErrorLogFlagSlotOptions) (WebAppsClientGetSitePhpErrorLogFlagSlotResponse, error) {
 	req, err := client.getSitePhpErrorLogFlagSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagSlotResponse{}, err
 	}
@@ -10109,7 +10271,7 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10131,17 +10293,18 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagSlotHandleResponse(resp *http
 
 // GetSlot - Gets the details of a web, mobile, or API app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. By default, this API returns the production slot.
-// options - WebAppsClientGetSlotOptions contains the optional parameters for the WebAppsClient.GetSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. By default, this API returns the production slot.
+//   - options - WebAppsClientGetSlotOptions contains the optional parameters for the WebAppsClient.GetSlot method.
 func (client *WebAppsClient) GetSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetSlotOptions) (WebAppsClientGetSlotResponse, error) {
 	req, err := client.getSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetSlotResponse{}, err
 	}
@@ -10170,7 +10333,7 @@ func (client *WebAppsClient) getSlotCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10192,17 +10355,18 @@ func (client *WebAppsClient) getSlotHandleResponse(resp *http.Response) (WebApps
 
 // GetSourceControl - Gets the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientGetSourceControlOptions contains the optional parameters for the WebAppsClient.GetSourceControl
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientGetSourceControlOptions contains the optional parameters for the WebAppsClient.GetSourceControl
+//     method.
 func (client *WebAppsClient) GetSourceControl(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetSourceControlOptions) (WebAppsClientGetSourceControlResponse, error) {
 	req, err := client.getSourceControlCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetSourceControlResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetSourceControlResponse{}, err
 	}
@@ -10227,7 +10391,7 @@ func (client *WebAppsClient) getSourceControlCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10249,19 +10413,20 @@ func (client *WebAppsClient) getSourceControlHandleResponse(resp *http.Response)
 
 // GetSourceControlSlot - Gets the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the
-// production slot.
-// options - WebAppsClientGetSourceControlSlotOptions contains the optional parameters for the WebAppsClient.GetSourceControlSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the source control configuration for the
+//     production slot.
+//   - options - WebAppsClientGetSourceControlSlotOptions contains the optional parameters for the WebAppsClient.GetSourceControlSlot
+//     method.
 func (client *WebAppsClient) GetSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetSourceControlSlotOptions) (WebAppsClientGetSourceControlSlotResponse, error) {
 	req, err := client.getSourceControlSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetSourceControlSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetSourceControlSlotResponse{}, err
 	}
@@ -10290,7 +10455,7 @@ func (client *WebAppsClient) getSourceControlSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10312,17 +10477,18 @@ func (client *WebAppsClient) getSourceControlSlotHandleResponse(resp *http.Respo
 
 // GetSwiftVirtualNetworkConnection - Gets a Swift Virtual Network connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientGetSwiftVirtualNetworkConnectionOptions contains the optional parameters for the WebAppsClient.GetSwiftVirtualNetworkConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientGetSwiftVirtualNetworkConnectionOptions contains the optional parameters for the WebAppsClient.GetSwiftVirtualNetworkConnection
+//     method.
 func (client *WebAppsClient) GetSwiftVirtualNetworkConnection(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetSwiftVirtualNetworkConnectionOptions) (WebAppsClientGetSwiftVirtualNetworkConnectionResponse, error) {
 	req, err := client.getSwiftVirtualNetworkConnectionCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionResponse{}, err
 	}
@@ -10347,7 +10513,7 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10369,19 +10535,20 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionHandleResponse(resp
 
 // GetSwiftVirtualNetworkConnectionSlot - Gets a Swift Virtual Network connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual
-// Network.
-// options - WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetSwiftVirtualNetworkConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual
+//     Network.
+//   - options - WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetSwiftVirtualNetworkConnectionSlot
+//     method.
 func (client *WebAppsClient) GetSwiftVirtualNetworkConnectionSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions) (WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse, error) {
 	req, err := client.getSwiftVirtualNetworkConnectionSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
@@ -10410,7 +10577,7 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10432,18 +10599,19 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotHandleResponse(
 
 // GetTriggeredWebJob - Gets a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// options - WebAppsClientGetTriggeredWebJobOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJob
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - options - WebAppsClientGetTriggeredWebJobOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJob
+//     method.
 func (client *WebAppsClient) GetTriggeredWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsClientGetTriggeredWebJobOptions) (WebAppsClientGetTriggeredWebJobResponse, error) {
 	req, err := client.getTriggeredWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobResponse{}, err
 	}
@@ -10472,7 +10640,7 @@ func (client *WebAppsClient) getTriggeredWebJobCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10494,19 +10662,20 @@ func (client *WebAppsClient) getTriggeredWebJobHandleResponse(resp *http.Respons
 
 // GetTriggeredWebJobHistory - Gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// id - History ID.
-// options - WebAppsClientGetTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobHistory
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - id - History ID.
+//   - options - WebAppsClientGetTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobHistory
+//     method.
 func (client *WebAppsClient) GetTriggeredWebJobHistory(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, options *WebAppsClientGetTriggeredWebJobHistoryOptions) (WebAppsClientGetTriggeredWebJobHistoryResponse, error) {
 	req, err := client.getTriggeredWebJobHistoryCreateRequest(ctx, resourceGroupName, name, webJobName, id, options)
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobHistoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobHistoryResponse{}, err
 	}
@@ -10539,7 +10708,7 @@ func (client *WebAppsClient) getTriggeredWebJobHistoryCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10561,20 +10730,21 @@ func (client *WebAppsClient) getTriggeredWebJobHistoryHandleResponse(resp *http.
 
 // GetTriggeredWebJobHistorySlot - Gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// id - History ID.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientGetTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobHistorySlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - id - History ID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientGetTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobHistorySlot
+//     method.
 func (client *WebAppsClient) GetTriggeredWebJobHistorySlot(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, slot string, options *WebAppsClientGetTriggeredWebJobHistorySlotOptions) (WebAppsClientGetTriggeredWebJobHistorySlotResponse, error) {
 	req, err := client.getTriggeredWebJobHistorySlotCreateRequest(ctx, resourceGroupName, name, webJobName, id, slot, options)
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobHistorySlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobHistorySlotResponse{}, err
 	}
@@ -10611,7 +10781,7 @@ func (client *WebAppsClient) getTriggeredWebJobHistorySlotCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10633,19 +10803,20 @@ func (client *WebAppsClient) getTriggeredWebJobHistorySlotHandleResponse(resp *h
 
 // GetTriggeredWebJobSlot - Gets a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientGetTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientGetTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetTriggeredWebJobSlot
+//     method.
 func (client *WebAppsClient) GetTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientGetTriggeredWebJobSlotOptions) (WebAppsClientGetTriggeredWebJobSlotResponse, error) {
 	req, err := client.getTriggeredWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobSlotResponse{}, err
 	}
@@ -10678,7 +10849,7 @@ func (client *WebAppsClient) getTriggeredWebJobSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10700,18 +10871,19 @@ func (client *WebAppsClient) getTriggeredWebJobSlotHandleResponse(resp *http.Res
 
 // GetVnetConnection - Gets a virtual network the app (or deployment slot) is connected to by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the virtual network.
-// options - WebAppsClientGetVnetConnectionOptions contains the optional parameters for the WebAppsClient.GetVnetConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the virtual network.
+//   - options - WebAppsClientGetVnetConnectionOptions contains the optional parameters for the WebAppsClient.GetVnetConnection
+//     method.
 func (client *WebAppsClient) GetVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, options *WebAppsClientGetVnetConnectionOptions) (WebAppsClientGetVnetConnectionResponse, error) {
 	req, err := client.getVnetConnectionCreateRequest(ctx, resourceGroupName, name, vnetName, options)
 	if err != nil {
 		return WebAppsClientGetVnetConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetVnetConnectionResponse{}, err
 	}
@@ -10740,7 +10912,7 @@ func (client *WebAppsClient) getVnetConnectionCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10762,19 +10934,20 @@ func (client *WebAppsClient) getVnetConnectionHandleResponse(resp *http.Response
 
 // GetVnetConnectionGateway - Gets an app's Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the Virtual Network.
-// gatewayName - Name of the gateway. Currently, the only supported string is "primary".
-// options - WebAppsClientGetVnetConnectionGatewayOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionGateway
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the Virtual Network.
+//   - gatewayName - Name of the gateway. Currently, the only supported string is "primary".
+//   - options - WebAppsClientGetVnetConnectionGatewayOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionGateway
+//     method.
 func (client *WebAppsClient) GetVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *WebAppsClientGetVnetConnectionGatewayOptions) (WebAppsClientGetVnetConnectionGatewayResponse, error) {
 	req, err := client.getVnetConnectionGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, options)
 	if err != nil {
 		return WebAppsClientGetVnetConnectionGatewayResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetVnetConnectionGatewayResponse{}, err
 	}
@@ -10807,7 +10980,7 @@ func (client *WebAppsClient) getVnetConnectionGatewayCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10829,21 +11002,22 @@ func (client *WebAppsClient) getVnetConnectionGatewayHandleResponse(resp *http.R
 
 // GetVnetConnectionGatewaySlot - Gets an app's Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the Virtual Network.
-// gatewayName - Name of the gateway. Currently, the only supported string is "primary".
-// slot - Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual
-// Network.
-// options - WebAppsClientGetVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionGatewaySlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the Virtual Network.
+//   - gatewayName - Name of the gateway. Currently, the only supported string is "primary".
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual
+//     Network.
+//   - options - WebAppsClientGetVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionGatewaySlot
+//     method.
 func (client *WebAppsClient) GetVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, options *WebAppsClientGetVnetConnectionGatewaySlotOptions) (WebAppsClientGetVnetConnectionGatewaySlotResponse, error) {
 	req, err := client.getVnetConnectionGatewaySlotCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, slot, options)
 	if err != nil {
 		return WebAppsClientGetVnetConnectionGatewaySlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetVnetConnectionGatewaySlotResponse{}, err
 	}
@@ -10880,7 +11054,7 @@ func (client *WebAppsClient) getVnetConnectionGatewaySlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10902,20 +11076,21 @@ func (client *WebAppsClient) getVnetConnectionGatewaySlotHandleResponse(resp *ht
 
 // GetVnetConnectionSlot - Gets a virtual network the app (or deployment slot) is connected to by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the virtual network.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the named virtual network for the production
-// slot.
-// options - WebAppsClientGetVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the virtual network.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the named virtual network for the production
+//     slot.
+//   - options - WebAppsClientGetVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.GetVnetConnectionSlot
+//     method.
 func (client *WebAppsClient) GetVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *WebAppsClientGetVnetConnectionSlotOptions) (WebAppsClientGetVnetConnectionSlotResponse, error) {
 	req, err := client.getVnetConnectionSlotCreateRequest(ctx, resourceGroupName, name, vnetName, slot, options)
 	if err != nil {
 		return WebAppsClientGetVnetConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetVnetConnectionSlotResponse{}, err
 	}
@@ -10948,7 +11123,7 @@ func (client *WebAppsClient) getVnetConnectionSlotCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -10970,17 +11145,18 @@ func (client *WebAppsClient) getVnetConnectionSlotHandleResponse(resp *http.Resp
 
 // GetWebJob - Get webjob information for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of the web job.
-// options - WebAppsClientGetWebJobOptions contains the optional parameters for the WebAppsClient.GetWebJob method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of the web job.
+//   - options - WebAppsClientGetWebJobOptions contains the optional parameters for the WebAppsClient.GetWebJob method.
 func (client *WebAppsClient) GetWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsClientGetWebJobOptions) (WebAppsClientGetWebJobResponse, error) {
 	req, err := client.getWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
 		return WebAppsClientGetWebJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetWebJobResponse{}, err
 	}
@@ -11009,7 +11185,7 @@ func (client *WebAppsClient) getWebJobCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11031,18 +11207,19 @@ func (client *WebAppsClient) getWebJobHandleResponse(resp *http.Response) (WebAp
 
 // GetWebJobSlot - Get webjob information for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of the web job.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientGetWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetWebJobSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of the web job.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientGetWebJobSlotOptions contains the optional parameters for the WebAppsClient.GetWebJobSlot method.
 func (client *WebAppsClient) GetWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientGetWebJobSlotOptions) (WebAppsClientGetWebJobSlotResponse, error) {
 	req, err := client.getWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
 		return WebAppsClientGetWebJobSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetWebJobSlotResponse{}, err
 	}
@@ -11075,7 +11252,7 @@ func (client *WebAppsClient) getWebJobSlotCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11097,17 +11274,18 @@ func (client *WebAppsClient) getWebJobSlotHandleResponse(resp *http.Response) (W
 
 // GetWebSiteContainerLogs - Gets the last lines of docker logs for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientGetWebSiteContainerLogsOptions contains the optional parameters for the WebAppsClient.GetWebSiteContainerLogs
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientGetWebSiteContainerLogsOptions contains the optional parameters for the WebAppsClient.GetWebSiteContainerLogs
+//     method.
 func (client *WebAppsClient) GetWebSiteContainerLogs(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientGetWebSiteContainerLogsOptions) (WebAppsClientGetWebSiteContainerLogsResponse, error) {
 	req, err := client.getWebSiteContainerLogsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientGetWebSiteContainerLogsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetWebSiteContainerLogsResponse{}, err
 	}
@@ -11132,7 +11310,7 @@ func (client *WebAppsClient) getWebSiteContainerLogsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11146,18 +11324,19 @@ func (client *WebAppsClient) getWebSiteContainerLogsCreateRequest(ctx context.Co
 
 // GetWebSiteContainerLogsSlot - Gets the last lines of docker logs for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientGetWebSiteContainerLogsSlotOptions contains the optional parameters for the WebAppsClient.GetWebSiteContainerLogsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientGetWebSiteContainerLogsSlotOptions contains the optional parameters for the WebAppsClient.GetWebSiteContainerLogsSlot
+//     method.
 func (client *WebAppsClient) GetWebSiteContainerLogsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientGetWebSiteContainerLogsSlotOptions) (WebAppsClientGetWebSiteContainerLogsSlotResponse, error) {
 	req, err := client.getWebSiteContainerLogsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientGetWebSiteContainerLogsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientGetWebSiteContainerLogsSlotResponse{}, err
 	}
@@ -11186,7 +11365,7 @@ func (client *WebAppsClient) getWebSiteContainerLogsSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11200,33 +11379,35 @@ func (client *WebAppsClient) getWebSiteContainerLogsSlotCreateRequest(ctx contex
 
 // BeginInstallSiteExtension - Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// siteExtensionID - Site extension name.
-// options - WebAppsClientBeginInstallSiteExtensionOptions contains the optional parameters for the WebAppsClient.BeginInstallSiteExtension
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - siteExtensionID - Site extension name.
+//   - options - WebAppsClientBeginInstallSiteExtensionOptions contains the optional parameters for the WebAppsClient.BeginInstallSiteExtension
+//     method.
 func (client *WebAppsClient) BeginInstallSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsClientBeginInstallSiteExtensionOptions) (*runtime.Poller[WebAppsClientInstallSiteExtensionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.installSiteExtension(ctx, resourceGroupName, name, siteExtensionID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientInstallSiteExtensionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientInstallSiteExtensionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientInstallSiteExtensionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientInstallSiteExtensionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // InstallSiteExtension - Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) installSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsClientBeginInstallSiteExtensionOptions) (*http.Response, error) {
 	req, err := client.installSiteExtensionCreateRequest(ctx, resourceGroupName, name, siteExtensionID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -11255,7 +11436,7 @@ func (client *WebAppsClient) installSiteExtensionCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11268,34 +11449,36 @@ func (client *WebAppsClient) installSiteExtensionCreateRequest(ctx context.Conte
 
 // BeginInstallSiteExtensionSlot - Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// siteExtensionID - Site extension name.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientBeginInstallSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.BeginInstallSiteExtensionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - siteExtensionID - Site extension name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientBeginInstallSiteExtensionSlotOptions contains the optional parameters for the WebAppsClient.BeginInstallSiteExtensionSlot
+//     method.
 func (client *WebAppsClient) BeginInstallSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsClientBeginInstallSiteExtensionSlotOptions) (*runtime.Poller[WebAppsClientInstallSiteExtensionSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.installSiteExtensionSlot(ctx, resourceGroupName, name, siteExtensionID, slot, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientInstallSiteExtensionSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientInstallSiteExtensionSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientInstallSiteExtensionSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientInstallSiteExtensionSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // InstallSiteExtensionSlot - Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) installSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsClientBeginInstallSiteExtensionSlotOptions) (*http.Response, error) {
 	req, err := client.installSiteExtensionSlotCreateRequest(ctx, resourceGroupName, name, siteExtensionID, slot, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -11328,7 +11511,7 @@ func (client *WebAppsClient) installSiteExtensionSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11341,16 +11524,17 @@ func (client *WebAppsClient) installSiteExtensionSlotCreateRequest(ctx context.C
 
 // IsCloneable - Shows whether an app can be cloned to another resource group or subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientIsCloneableOptions contains the optional parameters for the WebAppsClient.IsCloneable method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientIsCloneableOptions contains the optional parameters for the WebAppsClient.IsCloneable method.
 func (client *WebAppsClient) IsCloneable(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientIsCloneableOptions) (WebAppsClientIsCloneableResponse, error) {
 	req, err := client.isCloneableCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientIsCloneableResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientIsCloneableResponse{}, err
 	}
@@ -11375,7 +11559,7 @@ func (client *WebAppsClient) isCloneableCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11397,17 +11581,18 @@ func (client *WebAppsClient) isCloneableHandleResponse(resp *http.Response) (Web
 
 // IsCloneableSlot - Shows whether an app can be cloned to another resource group or subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. By default, this API returns information on the production slot.
-// options - WebAppsClientIsCloneableSlotOptions contains the optional parameters for the WebAppsClient.IsCloneableSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. By default, this API returns information on the production slot.
+//   - options - WebAppsClientIsCloneableSlotOptions contains the optional parameters for the WebAppsClient.IsCloneableSlot method.
 func (client *WebAppsClient) IsCloneableSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientIsCloneableSlotOptions) (WebAppsClientIsCloneableSlotResponse, error) {
 	req, err := client.isCloneableSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientIsCloneableSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientIsCloneableSlotResponse{}, err
 	}
@@ -11436,7 +11621,7 @@ func (client *WebAppsClient) isCloneableSlotCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11457,8 +11642,9 @@ func (client *WebAppsClient) isCloneableSlotHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Get all apps for a subscription.
+//
 // Generated from API version 2018-02-01
-// options - WebAppsClientListOptions contains the optional parameters for the WebAppsClient.List method.
+//   - options - WebAppsClientListOptions contains the optional parameters for the WebAppsClient.NewListPager method.
 func (client *WebAppsClient) NewListPager(options *WebAppsClientListOptions) *runtime.Pager[WebAppsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListResponse]{
 		More: func(page WebAppsClientListResponse) bool {
@@ -11475,7 +11661,7 @@ func (client *WebAppsClient) NewListPager(options *WebAppsClientListOptions) *ru
 			if err != nil {
 				return WebAppsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListResponse{}, err
 			}
@@ -11494,7 +11680,7 @@ func (client *WebAppsClient) listCreateRequest(ctx context.Context, options *Web
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11516,17 +11702,18 @@ func (client *WebAppsClient) listHandleResponse(resp *http.Response) (WebAppsCli
 
 // ListApplicationSettings - Gets the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListApplicationSettingsOptions contains the optional parameters for the WebAppsClient.ListApplicationSettings
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListApplicationSettingsOptions contains the optional parameters for the WebAppsClient.ListApplicationSettings
+//     method.
 func (client *WebAppsClient) ListApplicationSettings(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListApplicationSettingsOptions) (WebAppsClientListApplicationSettingsResponse, error) {
 	req, err := client.listApplicationSettingsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListApplicationSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListApplicationSettingsResponse{}, err
 	}
@@ -11551,7 +11738,7 @@ func (client *WebAppsClient) listApplicationSettingsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11573,19 +11760,20 @@ func (client *WebAppsClient) listApplicationSettingsHandleResponse(resp *http.Re
 
 // ListApplicationSettingsSlot - Gets the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the application settings for the production
-// slot.
-// options - WebAppsClientListApplicationSettingsSlotOptions contains the optional parameters for the WebAppsClient.ListApplicationSettingsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the application settings for the production
+//     slot.
+//   - options - WebAppsClientListApplicationSettingsSlotOptions contains the optional parameters for the WebAppsClient.ListApplicationSettingsSlot
+//     method.
 func (client *WebAppsClient) ListApplicationSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListApplicationSettingsSlotOptions) (WebAppsClientListApplicationSettingsSlotResponse, error) {
 	req, err := client.listApplicationSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListApplicationSettingsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListApplicationSettingsSlotResponse{}, err
 	}
@@ -11614,7 +11802,7 @@ func (client *WebAppsClient) listApplicationSettingsSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11636,17 +11824,18 @@ func (client *WebAppsClient) listApplicationSettingsSlotHandleResponse(resp *htt
 
 // ListAzureStorageAccounts - Gets the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListAzureStorageAccountsOptions contains the optional parameters for the WebAppsClient.ListAzureStorageAccounts
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListAzureStorageAccountsOptions contains the optional parameters for the WebAppsClient.ListAzureStorageAccounts
+//     method.
 func (client *WebAppsClient) ListAzureStorageAccounts(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListAzureStorageAccountsOptions) (WebAppsClientListAzureStorageAccountsResponse, error) {
 	req, err := client.listAzureStorageAccountsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListAzureStorageAccountsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListAzureStorageAccountsResponse{}, err
 	}
@@ -11671,7 +11860,7 @@ func (client *WebAppsClient) listAzureStorageAccountsCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11693,19 +11882,20 @@ func (client *WebAppsClient) listAzureStorageAccountsHandleResponse(resp *http.R
 
 // ListAzureStorageAccountsSlot - Gets the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations
-// for the production slot.
-// options - WebAppsClientListAzureStorageAccountsSlotOptions contains the optional parameters for the WebAppsClient.ListAzureStorageAccountsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations
+//     for the production slot.
+//   - options - WebAppsClientListAzureStorageAccountsSlotOptions contains the optional parameters for the WebAppsClient.ListAzureStorageAccountsSlot
+//     method.
 func (client *WebAppsClient) ListAzureStorageAccountsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListAzureStorageAccountsSlotOptions) (WebAppsClientListAzureStorageAccountsSlotResponse, error) {
 	req, err := client.listAzureStorageAccountsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListAzureStorageAccountsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListAzureStorageAccountsSlotResponse{}, err
 	}
@@ -11734,7 +11924,7 @@ func (client *WebAppsClient) listAzureStorageAccountsSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11758,19 +11948,20 @@ func (client *WebAppsClient) listAzureStorageAccountsSlotHandleResponse(resp *ht
 // backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new
 // URL is passed in the request body.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// backupID - ID of backup.
-// request - Information on backup request.
-// options - WebAppsClientListBackupStatusSecretsOptions contains the optional parameters for the WebAppsClient.ListBackupStatusSecrets
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - backupID - ID of backup.
+//   - request - Information on backup request.
+//   - options - WebAppsClientListBackupStatusSecretsOptions contains the optional parameters for the WebAppsClient.ListBackupStatusSecrets
+//     method.
 func (client *WebAppsClient) ListBackupStatusSecrets(ctx context.Context, resourceGroupName string, name string, backupID string, request BackupRequest, options *WebAppsClientListBackupStatusSecretsOptions) (WebAppsClientListBackupStatusSecretsResponse, error) {
 	req, err := client.listBackupStatusSecretsCreateRequest(ctx, resourceGroupName, name, backupID, request, options)
 	if err != nil {
 		return WebAppsClientListBackupStatusSecretsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListBackupStatusSecretsResponse{}, err
 	}
@@ -11799,7 +11990,7 @@ func (client *WebAppsClient) listBackupStatusSecretsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11823,20 +12014,21 @@ func (client *WebAppsClient) listBackupStatusSecretsHandleResponse(resp *http.Re
 // the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new
 // URL is passed in the request body.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// backupID - ID of backup.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// request - Information on backup request.
-// options - WebAppsClientListBackupStatusSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListBackupStatusSecretsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - backupID - ID of backup.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - request - Information on backup request.
+//   - options - WebAppsClientListBackupStatusSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListBackupStatusSecretsSlot
+//     method.
 func (client *WebAppsClient) ListBackupStatusSecretsSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request BackupRequest, options *WebAppsClientListBackupStatusSecretsSlotOptions) (WebAppsClientListBackupStatusSecretsSlotResponse, error) {
 	req, err := client.listBackupStatusSecretsSlotCreateRequest(ctx, resourceGroupName, name, backupID, slot, request, options)
 	if err != nil {
 		return WebAppsClientListBackupStatusSecretsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListBackupStatusSecretsSlotResponse{}, err
 	}
@@ -11869,7 +12061,7 @@ func (client *WebAppsClient) listBackupStatusSecretsSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11890,10 +12082,11 @@ func (client *WebAppsClient) listBackupStatusSecretsSlotHandleResponse(resp *htt
 }
 
 // NewListBackupsPager - Gets existing backups of an app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListBackupsOptions contains the optional parameters for the WebAppsClient.ListBackups method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListBackupsOptions contains the optional parameters for the WebAppsClient.NewListBackupsPager method.
 func (client *WebAppsClient) NewListBackupsPager(resourceGroupName string, name string, options *WebAppsClientListBackupsOptions) *runtime.Pager[WebAppsClientListBackupsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListBackupsResponse]{
 		More: func(page WebAppsClientListBackupsResponse) bool {
@@ -11910,7 +12103,7 @@ func (client *WebAppsClient) NewListBackupsPager(resourceGroupName string, name 
 			if err != nil {
 				return WebAppsClientListBackupsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListBackupsResponse{}, err
 			}
@@ -11937,7 +12130,7 @@ func (client *WebAppsClient) listBackupsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -11958,11 +12151,13 @@ func (client *WebAppsClient) listBackupsHandleResponse(resp *http.Response) (Web
 }
 
 // NewListBackupsSlotPager - Gets existing backups of an app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
-// options - WebAppsClientListBackupsSlotOptions contains the optional parameters for the WebAppsClient.ListBackupsSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
+//   - options - WebAppsClientListBackupsSlotOptions contains the optional parameters for the WebAppsClient.NewListBackupsSlotPager
+//     method.
 func (client *WebAppsClient) NewListBackupsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListBackupsSlotOptions) *runtime.Pager[WebAppsClientListBackupsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListBackupsSlotResponse]{
 		More: func(page WebAppsClientListBackupsSlotResponse) bool {
@@ -11979,7 +12174,7 @@ func (client *WebAppsClient) NewListBackupsSlotPager(resourceGroupName string, n
 			if err != nil {
 				return WebAppsClientListBackupsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListBackupsSlotResponse{}, err
 			}
@@ -12010,7 +12205,7 @@ func (client *WebAppsClient) listBackupsSlotCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12031,10 +12226,11 @@ func (client *WebAppsClient) listBackupsSlotHandleResponse(resp *http.Response) 
 }
 
 // NewListByResourceGroupPager - Gets all web, mobile, and API apps in the specified resource group.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// options - WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - options - WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.NewListByResourceGroupPager
+//     method.
 func (client *WebAppsClient) NewListByResourceGroupPager(resourceGroupName string, options *WebAppsClientListByResourceGroupOptions) *runtime.Pager[WebAppsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListByResourceGroupResponse]{
 		More: func(page WebAppsClientListByResourceGroupResponse) bool {
@@ -12051,7 +12247,7 @@ func (client *WebAppsClient) NewListByResourceGroupPager(resourceGroupName strin
 			if err != nil {
 				return WebAppsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListByResourceGroupResponse{}, err
 			}
@@ -12074,7 +12270,7 @@ func (client *WebAppsClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12099,11 +12295,12 @@ func (client *WebAppsClient) listByResourceGroupHandleResponse(resp *http.Respon
 
 // NewListConfigurationSnapshotInfoPager - Gets a list of web app configuration snapshots identifiers. Each element of the
 // list contains a timestamp and the ID of the snapshot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListConfigurationSnapshotInfoOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfo
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListConfigurationSnapshotInfoOptions contains the optional parameters for the WebAppsClient.NewListConfigurationSnapshotInfoPager
+//     method.
 func (client *WebAppsClient) NewListConfigurationSnapshotInfoPager(resourceGroupName string, name string, options *WebAppsClientListConfigurationSnapshotInfoOptions) *runtime.Pager[WebAppsClientListConfigurationSnapshotInfoResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListConfigurationSnapshotInfoResponse]{
 		More: func(page WebAppsClientListConfigurationSnapshotInfoResponse) bool {
@@ -12120,7 +12317,7 @@ func (client *WebAppsClient) NewListConfigurationSnapshotInfoPager(resourceGroup
 			if err != nil {
 				return WebAppsClientListConfigurationSnapshotInfoResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListConfigurationSnapshotInfoResponse{}, err
 			}
@@ -12147,7 +12344,7 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12169,12 +12366,13 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoHandleResponse(resp *h
 
 // NewListConfigurationSnapshotInfoSlotPager - Gets a list of web app configuration snapshots identifiers. Each element of
 // the list contains a timestamp and the ID of the snapshot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
-// options - WebAppsClientListConfigurationSnapshotInfoSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfoSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+//   - options - WebAppsClientListConfigurationSnapshotInfoSlotOptions contains the optional parameters for the WebAppsClient.NewListConfigurationSnapshotInfoSlotPager
+//     method.
 func (client *WebAppsClient) NewListConfigurationSnapshotInfoSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListConfigurationSnapshotInfoSlotOptions) *runtime.Pager[WebAppsClientListConfigurationSnapshotInfoSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListConfigurationSnapshotInfoSlotResponse]{
 		More: func(page WebAppsClientListConfigurationSnapshotInfoSlotResponse) bool {
@@ -12191,7 +12389,7 @@ func (client *WebAppsClient) NewListConfigurationSnapshotInfoSlotPager(resourceG
 			if err != nil {
 				return WebAppsClientListConfigurationSnapshotInfoSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListConfigurationSnapshotInfoSlotResponse{}, err
 			}
@@ -12222,7 +12420,7 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoSlotCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12243,11 +12441,12 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoSlotHandleResponse(res
 }
 
 // NewListConfigurationsPager - List the configurations of an app
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListConfigurationsOptions contains the optional parameters for the WebAppsClient.ListConfigurations
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListConfigurationsOptions contains the optional parameters for the WebAppsClient.NewListConfigurationsPager
+//     method.
 func (client *WebAppsClient) NewListConfigurationsPager(resourceGroupName string, name string, options *WebAppsClientListConfigurationsOptions) *runtime.Pager[WebAppsClientListConfigurationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListConfigurationsResponse]{
 		More: func(page WebAppsClientListConfigurationsResponse) bool {
@@ -12264,7 +12463,7 @@ func (client *WebAppsClient) NewListConfigurationsPager(resourceGroupName string
 			if err != nil {
 				return WebAppsClientListConfigurationsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListConfigurationsResponse{}, err
 			}
@@ -12291,7 +12490,7 @@ func (client *WebAppsClient) listConfigurationsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12312,12 +12511,13 @@ func (client *WebAppsClient) listConfigurationsHandleResponse(resp *http.Respons
 }
 
 // NewListConfigurationsSlotPager - List the configurations of an app
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
-// options - WebAppsClientListConfigurationsSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+//   - options - WebAppsClientListConfigurationsSlotOptions contains the optional parameters for the WebAppsClient.NewListConfigurationsSlotPager
+//     method.
 func (client *WebAppsClient) NewListConfigurationsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListConfigurationsSlotOptions) *runtime.Pager[WebAppsClientListConfigurationsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListConfigurationsSlotResponse]{
 		More: func(page WebAppsClientListConfigurationsSlotResponse) bool {
@@ -12334,7 +12534,7 @@ func (client *WebAppsClient) NewListConfigurationsSlotPager(resourceGroupName st
 			if err != nil {
 				return WebAppsClientListConfigurationsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListConfigurationsSlotResponse{}, err
 			}
@@ -12365,7 +12565,7 @@ func (client *WebAppsClient) listConfigurationsSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12387,17 +12587,18 @@ func (client *WebAppsClient) listConfigurationsSlotHandleResponse(resp *http.Res
 
 // ListConnectionStrings - Gets the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListConnectionStringsOptions contains the optional parameters for the WebAppsClient.ListConnectionStrings
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListConnectionStringsOptions contains the optional parameters for the WebAppsClient.ListConnectionStrings
+//     method.
 func (client *WebAppsClient) ListConnectionStrings(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListConnectionStringsOptions) (WebAppsClientListConnectionStringsResponse, error) {
 	req, err := client.listConnectionStringsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListConnectionStringsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListConnectionStringsResponse{}, err
 	}
@@ -12422,7 +12623,7 @@ func (client *WebAppsClient) listConnectionStringsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12444,19 +12645,20 @@ func (client *WebAppsClient) listConnectionStringsHandleResponse(resp *http.Resp
 
 // ListConnectionStringsSlot - Gets the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the connection settings for the production
-// slot.
-// options - WebAppsClientListConnectionStringsSlotOptions contains the optional parameters for the WebAppsClient.ListConnectionStringsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the connection settings for the production
+//     slot.
+//   - options - WebAppsClientListConnectionStringsSlotOptions contains the optional parameters for the WebAppsClient.ListConnectionStringsSlot
+//     method.
 func (client *WebAppsClient) ListConnectionStringsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListConnectionStringsSlotOptions) (WebAppsClientListConnectionStringsSlotResponse, error) {
 	req, err := client.listConnectionStringsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListConnectionStringsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListConnectionStringsSlotResponse{}, err
 	}
@@ -12485,7 +12687,7 @@ func (client *WebAppsClient) listConnectionStringsSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12506,11 +12708,12 @@ func (client *WebAppsClient) listConnectionStringsSlotHandleResponse(resp *http.
 }
 
 // NewListContinuousWebJobsPager - List continuous web jobs for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// options - WebAppsClientListContinuousWebJobsOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobs
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - options - WebAppsClientListContinuousWebJobsOptions contains the optional parameters for the WebAppsClient.NewListContinuousWebJobsPager
+//     method.
 func (client *WebAppsClient) NewListContinuousWebJobsPager(resourceGroupName string, name string, options *WebAppsClientListContinuousWebJobsOptions) *runtime.Pager[WebAppsClientListContinuousWebJobsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListContinuousWebJobsResponse]{
 		More: func(page WebAppsClientListContinuousWebJobsResponse) bool {
@@ -12527,7 +12730,7 @@ func (client *WebAppsClient) NewListContinuousWebJobsPager(resourceGroupName str
 			if err != nil {
 				return WebAppsClientListContinuousWebJobsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListContinuousWebJobsResponse{}, err
 			}
@@ -12554,7 +12757,7 @@ func (client *WebAppsClient) listContinuousWebJobsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12575,12 +12778,13 @@ func (client *WebAppsClient) listContinuousWebJobsHandleResponse(resp *http.Resp
 }
 
 // NewListContinuousWebJobsSlotPager - List continuous web jobs for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientListContinuousWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientListContinuousWebJobsSlotOptions contains the optional parameters for the WebAppsClient.NewListContinuousWebJobsSlotPager
+//     method.
 func (client *WebAppsClient) NewListContinuousWebJobsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListContinuousWebJobsSlotOptions) *runtime.Pager[WebAppsClientListContinuousWebJobsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListContinuousWebJobsSlotResponse]{
 		More: func(page WebAppsClientListContinuousWebJobsSlotResponse) bool {
@@ -12597,7 +12801,7 @@ func (client *WebAppsClient) NewListContinuousWebJobsSlotPager(resourceGroupName
 			if err != nil {
 				return WebAppsClientListContinuousWebJobsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListContinuousWebJobsSlotResponse{}, err
 			}
@@ -12628,7 +12832,7 @@ func (client *WebAppsClient) listContinuousWebJobsSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12650,18 +12854,19 @@ func (client *WebAppsClient) listContinuousWebJobsSlotHandleResponse(resp *http.
 
 // ListDeploymentLog - List deployment log for specific deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// id - The ID of a specific deployment. This is the value of the name property in the JSON response from "GET /api/sites/{siteName}/deployments".
-// options - WebAppsClientListDeploymentLogOptions contains the optional parameters for the WebAppsClient.ListDeploymentLog
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - id - The ID of a specific deployment. This is the value of the name property in the JSON response from "GET /api/sites/{siteName}/deployments".
+//   - options - WebAppsClientListDeploymentLogOptions contains the optional parameters for the WebAppsClient.ListDeploymentLog
+//     method.
 func (client *WebAppsClient) ListDeploymentLog(ctx context.Context, resourceGroupName string, name string, id string, options *WebAppsClientListDeploymentLogOptions) (WebAppsClientListDeploymentLogResponse, error) {
 	req, err := client.listDeploymentLogCreateRequest(ctx, resourceGroupName, name, id, options)
 	if err != nil {
 		return WebAppsClientListDeploymentLogResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListDeploymentLogResponse{}, err
 	}
@@ -12690,7 +12895,7 @@ func (client *WebAppsClient) listDeploymentLogCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12712,19 +12917,20 @@ func (client *WebAppsClient) listDeploymentLogHandleResponse(resp *http.Response
 
 // ListDeploymentLogSlot - List deployment log for specific deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// id - The ID of a specific deployment. This is the value of the name property in the JSON response from "GET /api/sites/{siteName}/deployments".
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientListDeploymentLogSlotOptions contains the optional parameters for the WebAppsClient.ListDeploymentLogSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - id - The ID of a specific deployment. This is the value of the name property in the JSON response from "GET /api/sites/{siteName}/deployments".
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientListDeploymentLogSlotOptions contains the optional parameters for the WebAppsClient.ListDeploymentLogSlot
+//     method.
 func (client *WebAppsClient) ListDeploymentLogSlot(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *WebAppsClientListDeploymentLogSlotOptions) (WebAppsClientListDeploymentLogSlotResponse, error) {
 	req, err := client.listDeploymentLogSlotCreateRequest(ctx, resourceGroupName, name, id, slot, options)
 	if err != nil {
 		return WebAppsClientListDeploymentLogSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListDeploymentLogSlotResponse{}, err
 	}
@@ -12757,7 +12963,7 @@ func (client *WebAppsClient) listDeploymentLogSlotCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12778,10 +12984,12 @@ func (client *WebAppsClient) listDeploymentLogSlotHandleResponse(resp *http.Resp
 }
 
 // NewListDeploymentsPager - List deployments for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListDeploymentsOptions contains the optional parameters for the WebAppsClient.ListDeployments method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListDeploymentsOptions contains the optional parameters for the WebAppsClient.NewListDeploymentsPager
+//     method.
 func (client *WebAppsClient) NewListDeploymentsPager(resourceGroupName string, name string, options *WebAppsClientListDeploymentsOptions) *runtime.Pager[WebAppsClientListDeploymentsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListDeploymentsResponse]{
 		More: func(page WebAppsClientListDeploymentsResponse) bool {
@@ -12798,7 +13006,7 @@ func (client *WebAppsClient) NewListDeploymentsPager(resourceGroupName string, n
 			if err != nil {
 				return WebAppsClientListDeploymentsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListDeploymentsResponse{}, err
 			}
@@ -12825,7 +13033,7 @@ func (client *WebAppsClient) listDeploymentsCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12846,12 +13054,13 @@ func (client *WebAppsClient) listDeploymentsHandleResponse(resp *http.Response) 
 }
 
 // NewListDeploymentsSlotPager - List deployments for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientListDeploymentsSlotOptions contains the optional parameters for the WebAppsClient.ListDeploymentsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientListDeploymentsSlotOptions contains the optional parameters for the WebAppsClient.NewListDeploymentsSlotPager
+//     method.
 func (client *WebAppsClient) NewListDeploymentsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListDeploymentsSlotOptions) *runtime.Pager[WebAppsClientListDeploymentsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListDeploymentsSlotResponse]{
 		More: func(page WebAppsClientListDeploymentsSlotResponse) bool {
@@ -12868,7 +13077,7 @@ func (client *WebAppsClient) NewListDeploymentsSlotPager(resourceGroupName strin
 			if err != nil {
 				return WebAppsClientListDeploymentsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListDeploymentsSlotResponse{}, err
 			}
@@ -12899,7 +13108,7 @@ func (client *WebAppsClient) listDeploymentsSlotCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12920,11 +13129,12 @@ func (client *WebAppsClient) listDeploymentsSlotHandleResponse(resp *http.Respon
 }
 
 // NewListDomainOwnershipIdentifiersPager - Lists ownership identifiers for domain associated with web app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiers
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebAppsClient.NewListDomainOwnershipIdentifiersPager
+//     method.
 func (client *WebAppsClient) NewListDomainOwnershipIdentifiersPager(resourceGroupName string, name string, options *WebAppsClientListDomainOwnershipIdentifiersOptions) *runtime.Pager[WebAppsClientListDomainOwnershipIdentifiersResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListDomainOwnershipIdentifiersResponse]{
 		More: func(page WebAppsClientListDomainOwnershipIdentifiersResponse) bool {
@@ -12941,7 +13151,7 @@ func (client *WebAppsClient) NewListDomainOwnershipIdentifiersPager(resourceGrou
 			if err != nil {
 				return WebAppsClientListDomainOwnershipIdentifiersResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListDomainOwnershipIdentifiersResponse{}, err
 			}
@@ -12968,7 +13178,7 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -12989,12 +13199,13 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersHandleResponse(resp *
 }
 
 // NewListDomainOwnershipIdentifiersSlotPager - Lists ownership identifiers for domain associated with web app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
-// options - WebAppsClientListDomainOwnershipIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiersSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+//   - options - WebAppsClientListDomainOwnershipIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.NewListDomainOwnershipIdentifiersSlotPager
+//     method.
 func (client *WebAppsClient) NewListDomainOwnershipIdentifiersSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListDomainOwnershipIdentifiersSlotOptions) *runtime.Pager[WebAppsClientListDomainOwnershipIdentifiersSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListDomainOwnershipIdentifiersSlotResponse]{
 		More: func(page WebAppsClientListDomainOwnershipIdentifiersSlotResponse) bool {
@@ -13011,7 +13222,7 @@ func (client *WebAppsClient) NewListDomainOwnershipIdentifiersSlotPager(resource
 			if err != nil {
 				return WebAppsClientListDomainOwnershipIdentifiersSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListDomainOwnershipIdentifiersSlotResponse{}, err
 			}
@@ -13042,7 +13253,7 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13064,18 +13275,19 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotHandleResponse(re
 
 // ListFunctionKeys - Get function keys for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// options - WebAppsClientListFunctionKeysOptions contains the optional parameters for the WebAppsClient.ListFunctionKeys
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - options - WebAppsClientListFunctionKeysOptions contains the optional parameters for the WebAppsClient.ListFunctionKeys
+//     method.
 func (client *WebAppsClient) ListFunctionKeys(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsClientListFunctionKeysOptions) (WebAppsClientListFunctionKeysResponse, error) {
 	req, err := client.listFunctionKeysCreateRequest(ctx, resourceGroupName, name, functionName, options)
 	if err != nil {
 		return WebAppsClientListFunctionKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListFunctionKeysResponse{}, err
 	}
@@ -13104,7 +13316,7 @@ func (client *WebAppsClient) listFunctionKeysCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13126,19 +13338,20 @@ func (client *WebAppsClient) listFunctionKeysHandleResponse(resp *http.Response)
 
 // ListFunctionKeysSlot - Get function keys for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// slot - Name of the deployment slot.
-// options - WebAppsClientListFunctionKeysSlotOptions contains the optional parameters for the WebAppsClient.ListFunctionKeysSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientListFunctionKeysSlotOptions contains the optional parameters for the WebAppsClient.ListFunctionKeysSlot
+//     method.
 func (client *WebAppsClient) ListFunctionKeysSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsClientListFunctionKeysSlotOptions) (WebAppsClientListFunctionKeysSlotResponse, error) {
 	req, err := client.listFunctionKeysSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, options)
 	if err != nil {
 		return WebAppsClientListFunctionKeysSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListFunctionKeysSlotResponse{}, err
 	}
@@ -13171,7 +13384,7 @@ func (client *WebAppsClient) listFunctionKeysSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13193,18 +13406,19 @@ func (client *WebAppsClient) listFunctionKeysSlotHandleResponse(resp *http.Respo
 
 // ListFunctionSecrets - Get function secrets for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// options - WebAppsClientListFunctionSecretsOptions contains the optional parameters for the WebAppsClient.ListFunctionSecrets
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - options - WebAppsClientListFunctionSecretsOptions contains the optional parameters for the WebAppsClient.ListFunctionSecrets
+//     method.
 func (client *WebAppsClient) ListFunctionSecrets(ctx context.Context, resourceGroupName string, name string, functionName string, options *WebAppsClientListFunctionSecretsOptions) (WebAppsClientListFunctionSecretsResponse, error) {
 	req, err := client.listFunctionSecretsCreateRequest(ctx, resourceGroupName, name, functionName, options)
 	if err != nil {
 		return WebAppsClientListFunctionSecretsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListFunctionSecretsResponse{}, err
 	}
@@ -13233,7 +13447,7 @@ func (client *WebAppsClient) listFunctionSecretsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13255,19 +13469,20 @@ func (client *WebAppsClient) listFunctionSecretsHandleResponse(resp *http.Respon
 
 // ListFunctionSecretsSlot - Get function secrets for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// functionName - Function name.
-// slot - Name of the deployment slot.
-// options - WebAppsClientListFunctionSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListFunctionSecretsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - functionName - Function name.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientListFunctionSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListFunctionSecretsSlot
+//     method.
 func (client *WebAppsClient) ListFunctionSecretsSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *WebAppsClientListFunctionSecretsSlotOptions) (WebAppsClientListFunctionSecretsSlotResponse, error) {
 	req, err := client.listFunctionSecretsSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, options)
 	if err != nil {
 		return WebAppsClientListFunctionSecretsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListFunctionSecretsSlotResponse{}, err
 	}
@@ -13300,7 +13515,7 @@ func (client *WebAppsClient) listFunctionSecretsSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13321,10 +13536,12 @@ func (client *WebAppsClient) listFunctionSecretsSlotHandleResponse(resp *http.Re
 }
 
 // NewListFunctionsPager - List the functions for a web site, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// options - WebAppsClientListFunctionsOptions contains the optional parameters for the WebAppsClient.ListFunctions method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - options - WebAppsClientListFunctionsOptions contains the optional parameters for the WebAppsClient.NewListFunctionsPager
+//     method.
 func (client *WebAppsClient) NewListFunctionsPager(resourceGroupName string, name string, options *WebAppsClientListFunctionsOptions) *runtime.Pager[WebAppsClientListFunctionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListFunctionsResponse]{
 		More: func(page WebAppsClientListFunctionsResponse) bool {
@@ -13341,7 +13558,7 @@ func (client *WebAppsClient) NewListFunctionsPager(resourceGroupName string, nam
 			if err != nil {
 				return WebAppsClientListFunctionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListFunctionsResponse{}, err
 			}
@@ -13368,7 +13585,7 @@ func (client *WebAppsClient) listFunctionsCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13390,16 +13607,17 @@ func (client *WebAppsClient) listFunctionsHandleResponse(resp *http.Response) (W
 
 // ListHostKeys - Get host secrets for a function app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// options - WebAppsClientListHostKeysOptions contains the optional parameters for the WebAppsClient.ListHostKeys method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - options - WebAppsClientListHostKeysOptions contains the optional parameters for the WebAppsClient.ListHostKeys method.
 func (client *WebAppsClient) ListHostKeys(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListHostKeysOptions) (WebAppsClientListHostKeysResponse, error) {
 	req, err := client.listHostKeysCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListHostKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListHostKeysResponse{}, err
 	}
@@ -13424,7 +13642,7 @@ func (client *WebAppsClient) listHostKeysCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13446,18 +13664,19 @@ func (client *WebAppsClient) listHostKeysHandleResponse(resp *http.Response) (We
 
 // ListHostKeysSlot - Get host secrets for a function app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// slot - Name of the deployment slot.
-// options - WebAppsClientListHostKeysSlotOptions contains the optional parameters for the WebAppsClient.ListHostKeysSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientListHostKeysSlotOptions contains the optional parameters for the WebAppsClient.ListHostKeysSlot
+//     method.
 func (client *WebAppsClient) ListHostKeysSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListHostKeysSlotOptions) (WebAppsClientListHostKeysSlotResponse, error) {
 	req, err := client.listHostKeysSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListHostKeysSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListHostKeysSlotResponse{}, err
 	}
@@ -13486,7 +13705,7 @@ func (client *WebAppsClient) listHostKeysSlotCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13507,11 +13726,12 @@ func (client *WebAppsClient) listHostKeysSlotHandleResponse(resp *http.Response)
 }
 
 // NewListHostNameBindingsPager - Get hostname bindings for an app or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListHostNameBindingsOptions contains the optional parameters for the WebAppsClient.ListHostNameBindings
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListHostNameBindingsOptions contains the optional parameters for the WebAppsClient.NewListHostNameBindingsPager
+//     method.
 func (client *WebAppsClient) NewListHostNameBindingsPager(resourceGroupName string, name string, options *WebAppsClientListHostNameBindingsOptions) *runtime.Pager[WebAppsClientListHostNameBindingsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListHostNameBindingsResponse]{
 		More: func(page WebAppsClientListHostNameBindingsResponse) bool {
@@ -13528,7 +13748,7 @@ func (client *WebAppsClient) NewListHostNameBindingsPager(resourceGroupName stri
 			if err != nil {
 				return WebAppsClientListHostNameBindingsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListHostNameBindingsResponse{}, err
 			}
@@ -13555,7 +13775,7 @@ func (client *WebAppsClient) listHostNameBindingsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13576,12 +13796,13 @@ func (client *WebAppsClient) listHostNameBindingsHandleResponse(resp *http.Respo
 }
 
 // NewListHostNameBindingsSlotPager - Get hostname bindings for an app or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
-// options - WebAppsClientListHostNameBindingsSlotOptions contains the optional parameters for the WebAppsClient.ListHostNameBindingsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
+//   - options - WebAppsClientListHostNameBindingsSlotOptions contains the optional parameters for the WebAppsClient.NewListHostNameBindingsSlotPager
+//     method.
 func (client *WebAppsClient) NewListHostNameBindingsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListHostNameBindingsSlotOptions) *runtime.Pager[WebAppsClientListHostNameBindingsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListHostNameBindingsSlotResponse]{
 		More: func(page WebAppsClientListHostNameBindingsSlotResponse) bool {
@@ -13598,7 +13819,7 @@ func (client *WebAppsClient) NewListHostNameBindingsSlotPager(resourceGroupName 
 			if err != nil {
 				return WebAppsClientListHostNameBindingsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListHostNameBindingsSlotResponse{}, err
 			}
@@ -13629,7 +13850,7 @@ func (client *WebAppsClient) listHostNameBindingsSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13651,19 +13872,20 @@ func (client *WebAppsClient) listHostNameBindingsSlotHandleResponse(resp *http.R
 
 // ListHybridConnectionKeys - Gets the send key name and value for a Hybrid Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// options - WebAppsClientListHybridConnectionKeysOptions contains the optional parameters for the WebAppsClient.ListHybridConnectionKeys
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - options - WebAppsClientListHybridConnectionKeysOptions contains the optional parameters for the WebAppsClient.ListHybridConnectionKeys
+//     method.
 func (client *WebAppsClient) ListHybridConnectionKeys(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *WebAppsClientListHybridConnectionKeysOptions) (WebAppsClientListHybridConnectionKeysResponse, error) {
 	req, err := client.listHybridConnectionKeysCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 	if err != nil {
 		return WebAppsClientListHybridConnectionKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListHybridConnectionKeysResponse{}, err
 	}
@@ -13696,7 +13918,7 @@ func (client *WebAppsClient) listHybridConnectionKeysCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13718,20 +13940,21 @@ func (client *WebAppsClient) listHybridConnectionKeysHandleResponse(resp *http.R
 
 // ListHybridConnectionKeysSlot - Gets the send key name and value for a Hybrid Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// slot - The name of the slot for the web app.
-// options - WebAppsClientListHybridConnectionKeysSlotOptions contains the optional parameters for the WebAppsClient.ListHybridConnectionKeysSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - slot - The name of the slot for the web app.
+//   - options - WebAppsClientListHybridConnectionKeysSlotOptions contains the optional parameters for the WebAppsClient.ListHybridConnectionKeysSlot
+//     method.
 func (client *WebAppsClient) ListHybridConnectionKeysSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *WebAppsClientListHybridConnectionKeysSlotOptions) (WebAppsClientListHybridConnectionKeysSlotResponse, error) {
 	req, err := client.listHybridConnectionKeysSlotCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, slot, options)
 	if err != nil {
 		return WebAppsClientListHybridConnectionKeysSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListHybridConnectionKeysSlotResponse{}, err
 	}
@@ -13768,7 +13991,7 @@ func (client *WebAppsClient) listHybridConnectionKeysSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13790,17 +14013,18 @@ func (client *WebAppsClient) listHybridConnectionKeysSlotHandleResponse(resp *ht
 
 // ListHybridConnections - Retrieves all Service Bus Hybrid Connections used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// options - WebAppsClientListHybridConnectionsOptions contains the optional parameters for the WebAppsClient.ListHybridConnections
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - options - WebAppsClientListHybridConnectionsOptions contains the optional parameters for the WebAppsClient.ListHybridConnections
+//     method.
 func (client *WebAppsClient) ListHybridConnections(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListHybridConnectionsOptions) (WebAppsClientListHybridConnectionsResponse, error) {
 	req, err := client.listHybridConnectionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListHybridConnectionsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListHybridConnectionsResponse{}, err
 	}
@@ -13825,7 +14049,7 @@ func (client *WebAppsClient) listHybridConnectionsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13847,18 +14071,19 @@ func (client *WebAppsClient) listHybridConnectionsHandleResponse(resp *http.Resp
 
 // ListHybridConnectionsSlot - Retrieves all Service Bus Hybrid Connections used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// slot - The name of the slot for the web app.
-// options - WebAppsClientListHybridConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListHybridConnectionsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - slot - The name of the slot for the web app.
+//   - options - WebAppsClientListHybridConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListHybridConnectionsSlot
+//     method.
 func (client *WebAppsClient) ListHybridConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListHybridConnectionsSlotOptions) (WebAppsClientListHybridConnectionsSlotResponse, error) {
 	req, err := client.listHybridConnectionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListHybridConnectionsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListHybridConnectionsSlotResponse{}, err
 	}
@@ -13887,7 +14112,7 @@ func (client *WebAppsClient) listHybridConnectionsSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13908,12 +14133,13 @@ func (client *WebAppsClient) listHybridConnectionsSlotHandleResponse(resp *http.
 }
 
 // NewListInstanceFunctionsSlotPager - List the functions for a web site, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// slot - Name of the deployment slot.
-// options - WebAppsClientListInstanceFunctionsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceFunctionsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientListInstanceFunctionsSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceFunctionsSlotPager
+//     method.
 func (client *WebAppsClient) NewListInstanceFunctionsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListInstanceFunctionsSlotOptions) *runtime.Pager[WebAppsClientListInstanceFunctionsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListInstanceFunctionsSlotResponse]{
 		More: func(page WebAppsClientListInstanceFunctionsSlotResponse) bool {
@@ -13930,7 +14156,7 @@ func (client *WebAppsClient) NewListInstanceFunctionsSlotPager(resourceGroupName
 			if err != nil {
 				return WebAppsClientListInstanceFunctionsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListInstanceFunctionsSlotResponse{}, err
 			}
@@ -13961,7 +14187,7 @@ func (client *WebAppsClient) listInstanceFunctionsSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -13982,11 +14208,12 @@ func (client *WebAppsClient) listInstanceFunctionsSlotHandleResponse(resp *http.
 }
 
 // NewListInstanceIdentifiersPager - Gets all scale-out instances of an app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListInstanceIdentifiersOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiers
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListInstanceIdentifiersOptions contains the optional parameters for the WebAppsClient.NewListInstanceIdentifiersPager
+//     method.
 func (client *WebAppsClient) NewListInstanceIdentifiersPager(resourceGroupName string, name string, options *WebAppsClientListInstanceIdentifiersOptions) *runtime.Pager[WebAppsClientListInstanceIdentifiersResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListInstanceIdentifiersResponse]{
 		More: func(page WebAppsClientListInstanceIdentifiersResponse) bool {
@@ -14003,7 +14230,7 @@ func (client *WebAppsClient) NewListInstanceIdentifiersPager(resourceGroupName s
 			if err != nil {
 				return WebAppsClientListInstanceIdentifiersResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListInstanceIdentifiersResponse{}, err
 			}
@@ -14030,7 +14257,7 @@ func (client *WebAppsClient) listInstanceIdentifiersCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14051,12 +14278,13 @@ func (client *WebAppsClient) listInstanceIdentifiersHandleResponse(resp *http.Re
 }
 
 // NewListInstanceIdentifiersSlotPager - Gets all scale-out instances of an app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
-// options - WebAppsClientListInstanceIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiersSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
+//   - options - WebAppsClientListInstanceIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceIdentifiersSlotPager
+//     method.
 func (client *WebAppsClient) NewListInstanceIdentifiersSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListInstanceIdentifiersSlotOptions) *runtime.Pager[WebAppsClientListInstanceIdentifiersSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListInstanceIdentifiersSlotResponse]{
 		More: func(page WebAppsClientListInstanceIdentifiersSlotResponse) bool {
@@ -14073,7 +14301,7 @@ func (client *WebAppsClient) NewListInstanceIdentifiersSlotPager(resourceGroupNa
 			if err != nil {
 				return WebAppsClientListInstanceIdentifiersSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListInstanceIdentifiersSlotResponse{}, err
 			}
@@ -14104,7 +14332,7 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14126,14 +14354,15 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotHandleResponse(resp *htt
 
 // NewListInstanceProcessModulesPager - List module information for a process by its ID for a specific scaled-out instance
 // in a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientListInstanceProcessModulesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModules
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientListInstanceProcessModulesOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessModulesPager
+//     method.
 func (client *WebAppsClient) NewListInstanceProcessModulesPager(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsClientListInstanceProcessModulesOptions) *runtime.Pager[WebAppsClientListInstanceProcessModulesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListInstanceProcessModulesResponse]{
 		More: func(page WebAppsClientListInstanceProcessModulesResponse) bool {
@@ -14150,7 +14379,7 @@ func (client *WebAppsClient) NewListInstanceProcessModulesPager(resourceGroupNam
 			if err != nil {
 				return WebAppsClientListInstanceProcessModulesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListInstanceProcessModulesResponse{}, err
 			}
@@ -14185,7 +14414,7 @@ func (client *WebAppsClient) listInstanceProcessModulesCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14207,15 +14436,16 @@ func (client *WebAppsClient) listInstanceProcessModulesHandleResponse(resp *http
 
 // NewListInstanceProcessModulesSlotPager - List module information for a process by its ID for a specific scaled-out instance
 // in a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientListInstanceProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModulesSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientListInstanceProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessModulesSlotPager
+//     method.
 func (client *WebAppsClient) NewListInstanceProcessModulesSlotPager(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsClientListInstanceProcessModulesSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessModulesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListInstanceProcessModulesSlotResponse]{
 		More: func(page WebAppsClientListInstanceProcessModulesSlotResponse) bool {
@@ -14232,7 +14462,7 @@ func (client *WebAppsClient) NewListInstanceProcessModulesSlotPager(resourceGrou
 			if err != nil {
 				return WebAppsClientListInstanceProcessModulesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListInstanceProcessModulesSlotResponse{}, err
 			}
@@ -14271,7 +14501,7 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14293,14 +14523,15 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotHandleResponse(resp *
 
 // NewListInstanceProcessThreadsPager - List the threads in a process by its ID for a specific scaled-out instance in a web
 // site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientListInstanceProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreads
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientListInstanceProcessThreadsOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessThreadsPager
+//     method.
 func (client *WebAppsClient) NewListInstanceProcessThreadsPager(resourceGroupName string, name string, processID string, instanceID string, options *WebAppsClientListInstanceProcessThreadsOptions) *runtime.Pager[WebAppsClientListInstanceProcessThreadsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListInstanceProcessThreadsResponse]{
 		More: func(page WebAppsClientListInstanceProcessThreadsResponse) bool {
@@ -14317,7 +14548,7 @@ func (client *WebAppsClient) NewListInstanceProcessThreadsPager(resourceGroupNam
 			if err != nil {
 				return WebAppsClientListInstanceProcessThreadsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListInstanceProcessThreadsResponse{}, err
 			}
@@ -14352,7 +14583,7 @@ func (client *WebAppsClient) listInstanceProcessThreadsCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14374,15 +14605,16 @@ func (client *WebAppsClient) listInstanceProcessThreadsHandleResponse(resp *http
 
 // NewListInstanceProcessThreadsSlotPager - List the threads in a process by its ID for a specific scaled-out instance in
 // a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreadsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessThreadsSlotPager
+//     method.
 func (client *WebAppsClient) NewListInstanceProcessThreadsSlotPager(resourceGroupName string, name string, processID string, slot string, instanceID string, options *WebAppsClientListInstanceProcessThreadsSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessThreadsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListInstanceProcessThreadsSlotResponse]{
 		More: func(page WebAppsClientListInstanceProcessThreadsSlotResponse) bool {
@@ -14399,7 +14631,7 @@ func (client *WebAppsClient) NewListInstanceProcessThreadsSlotPager(resourceGrou
 			if err != nil {
 				return WebAppsClientListInstanceProcessThreadsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListInstanceProcessThreadsSlotResponse{}, err
 			}
@@ -14438,7 +14670,7 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14460,13 +14692,14 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleResponse(resp *
 
 // NewListInstanceProcessesPager - Get list of processes for a web site, or a deployment slot, or for a specific scaled-out
 // instance in a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientListInstanceProcessesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcesses
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientListInstanceProcessesOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessesPager
+//     method.
 func (client *WebAppsClient) NewListInstanceProcessesPager(resourceGroupName string, name string, instanceID string, options *WebAppsClientListInstanceProcessesOptions) *runtime.Pager[WebAppsClientListInstanceProcessesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListInstanceProcessesResponse]{
 		More: func(page WebAppsClientListInstanceProcessesResponse) bool {
@@ -14483,7 +14716,7 @@ func (client *WebAppsClient) NewListInstanceProcessesPager(resourceGroupName str
 			if err != nil {
 				return WebAppsClientListInstanceProcessesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListInstanceProcessesResponse{}, err
 			}
@@ -14514,7 +14747,7 @@ func (client *WebAppsClient) listInstanceProcessesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14536,14 +14769,15 @@ func (client *WebAppsClient) listInstanceProcessesHandleResponse(resp *http.Resp
 
 // NewListInstanceProcessesSlotPager - Get list of processes for a web site, or a deployment slot, or for a specific scaled-out
 // instance in a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
-// api/sites/{siteName}/instances".
-// options - WebAppsClientListInstanceProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessesSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON response from "GET
+//     api/sites/{siteName}/instances".
+//   - options - WebAppsClientListInstanceProcessesSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessesSlotPager
+//     method.
 func (client *WebAppsClient) NewListInstanceProcessesSlotPager(resourceGroupName string, name string, slot string, instanceID string, options *WebAppsClientListInstanceProcessesSlotOptions) *runtime.Pager[WebAppsClientListInstanceProcessesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListInstanceProcessesSlotResponse]{
 		More: func(page WebAppsClientListInstanceProcessesSlotResponse) bool {
@@ -14560,7 +14794,7 @@ func (client *WebAppsClient) NewListInstanceProcessesSlotPager(resourceGroupName
 			if err != nil {
 				return WebAppsClientListInstanceProcessesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListInstanceProcessesSlotResponse{}, err
 			}
@@ -14595,7 +14829,7 @@ func (client *WebAppsClient) listInstanceProcessesSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14617,16 +14851,17 @@ func (client *WebAppsClient) listInstanceProcessesSlotHandleResponse(resp *http.
 
 // ListMetadata - Gets the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListMetadataOptions contains the optional parameters for the WebAppsClient.ListMetadata method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListMetadataOptions contains the optional parameters for the WebAppsClient.ListMetadata method.
 func (client *WebAppsClient) ListMetadata(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListMetadataOptions) (WebAppsClientListMetadataResponse, error) {
 	req, err := client.listMetadataCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListMetadataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListMetadataResponse{}, err
 	}
@@ -14651,7 +14886,7 @@ func (client *WebAppsClient) listMetadataCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14673,18 +14908,19 @@ func (client *WebAppsClient) listMetadataHandleResponse(resp *http.Response) (We
 
 // ListMetadataSlot - Gets the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the metadata for the production slot.
-// options - WebAppsClientListMetadataSlotOptions contains the optional parameters for the WebAppsClient.ListMetadataSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the metadata for the production slot.
+//   - options - WebAppsClientListMetadataSlotOptions contains the optional parameters for the WebAppsClient.ListMetadataSlot
+//     method.
 func (client *WebAppsClient) ListMetadataSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListMetadataSlotOptions) (WebAppsClientListMetadataSlotResponse, error) {
 	req, err := client.listMetadataSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListMetadataSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListMetadataSlotResponse{}, err
 	}
@@ -14713,7 +14949,7 @@ func (client *WebAppsClient) listMetadataSlotCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14734,11 +14970,12 @@ func (client *WebAppsClient) listMetadataSlotHandleResponse(resp *http.Response)
 }
 
 // NewListMetricDefinitionsPager - Gets all metric definitions of an app (or deployment slot, if specified).
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListMetricDefinitionsOptions contains the optional parameters for the WebAppsClient.ListMetricDefinitions
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListMetricDefinitionsOptions contains the optional parameters for the WebAppsClient.NewListMetricDefinitionsPager
+//     method.
 func (client *WebAppsClient) NewListMetricDefinitionsPager(resourceGroupName string, name string, options *WebAppsClientListMetricDefinitionsOptions) *runtime.Pager[WebAppsClientListMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListMetricDefinitionsResponse]{
 		More: func(page WebAppsClientListMetricDefinitionsResponse) bool {
@@ -14755,7 +14992,7 @@ func (client *WebAppsClient) NewListMetricDefinitionsPager(resourceGroupName str
 			if err != nil {
 				return WebAppsClientListMetricDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListMetricDefinitionsResponse{}, err
 			}
@@ -14782,7 +15019,7 @@ func (client *WebAppsClient) listMetricDefinitionsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14803,12 +15040,13 @@ func (client *WebAppsClient) listMetricDefinitionsHandleResponse(resp *http.Resp
 }
 
 // NewListMetricDefinitionsSlotPager - Gets all metric definitions of an app (or deployment slot, if specified).
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get metric definitions of the production slot.
-// options - WebAppsClientListMetricDefinitionsSlotOptions contains the optional parameters for the WebAppsClient.ListMetricDefinitionsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get metric definitions of the production slot.
+//   - options - WebAppsClientListMetricDefinitionsSlotOptions contains the optional parameters for the WebAppsClient.NewListMetricDefinitionsSlotPager
+//     method.
 func (client *WebAppsClient) NewListMetricDefinitionsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListMetricDefinitionsSlotOptions) *runtime.Pager[WebAppsClientListMetricDefinitionsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListMetricDefinitionsSlotResponse]{
 		More: func(page WebAppsClientListMetricDefinitionsSlotResponse) bool {
@@ -14825,7 +15063,7 @@ func (client *WebAppsClient) NewListMetricDefinitionsSlotPager(resourceGroupName
 			if err != nil {
 				return WebAppsClientListMetricDefinitionsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListMetricDefinitionsSlotResponse{}, err
 			}
@@ -14856,7 +15094,7 @@ func (client *WebAppsClient) listMetricDefinitionsSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14877,10 +15115,11 @@ func (client *WebAppsClient) listMetricDefinitionsSlotHandleResponse(resp *http.
 }
 
 // NewListMetricsPager - Gets performance metrics of an app (or deployment slot, if specified).
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListMetricsOptions contains the optional parameters for the WebAppsClient.ListMetrics method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListMetricsOptions contains the optional parameters for the WebAppsClient.NewListMetricsPager method.
 func (client *WebAppsClient) NewListMetricsPager(resourceGroupName string, name string, options *WebAppsClientListMetricsOptions) *runtime.Pager[WebAppsClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListMetricsResponse]{
 		More: func(page WebAppsClientListMetricsResponse) bool {
@@ -14897,7 +15136,7 @@ func (client *WebAppsClient) NewListMetricsPager(resourceGroupName string, name 
 			if err != nil {
 				return WebAppsClientListMetricsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListMetricsResponse{}, err
 			}
@@ -14924,7 +15163,7 @@ func (client *WebAppsClient) listMetricsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -14953,11 +15192,13 @@ func (client *WebAppsClient) listMetricsHandleResponse(resp *http.Response) (Web
 }
 
 // NewListMetricsSlotPager - Gets performance metrics of an app (or deployment slot, if specified).
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
-// options - WebAppsClientListMetricsSlotOptions contains the optional parameters for the WebAppsClient.ListMetricsSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get metrics of the production slot.
+//   - options - WebAppsClientListMetricsSlotOptions contains the optional parameters for the WebAppsClient.NewListMetricsSlotPager
+//     method.
 func (client *WebAppsClient) NewListMetricsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListMetricsSlotOptions) *runtime.Pager[WebAppsClientListMetricsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListMetricsSlotResponse]{
 		More: func(page WebAppsClientListMetricsSlotResponse) bool {
@@ -14974,7 +15215,7 @@ func (client *WebAppsClient) NewListMetricsSlotPager(resourceGroupName string, n
 			if err != nil {
 				return WebAppsClientListMetricsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListMetricsSlotResponse{}, err
 			}
@@ -15005,7 +15246,7 @@ func (client *WebAppsClient) listMetricsSlotCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15035,18 +15276,19 @@ func (client *WebAppsClient) listMetricsSlotHandleResponse(resp *http.Response) 
 
 // ListNetworkFeatures - Gets all network features used by the app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// view - The type of view. This can either be "summary" or "detailed".
-// options - WebAppsClientListNetworkFeaturesOptions contains the optional parameters for the WebAppsClient.ListNetworkFeatures
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - view - The type of view. This can either be "summary" or "detailed".
+//   - options - WebAppsClientListNetworkFeaturesOptions contains the optional parameters for the WebAppsClient.ListNetworkFeatures
+//     method.
 func (client *WebAppsClient) ListNetworkFeatures(ctx context.Context, resourceGroupName string, name string, view string, options *WebAppsClientListNetworkFeaturesOptions) (WebAppsClientListNetworkFeaturesResponse, error) {
 	req, err := client.listNetworkFeaturesCreateRequest(ctx, resourceGroupName, name, view, options)
 	if err != nil {
 		return WebAppsClientListNetworkFeaturesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListNetworkFeaturesResponse{}, err
 	}
@@ -15075,7 +15317,7 @@ func (client *WebAppsClient) listNetworkFeaturesCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15097,19 +15339,20 @@ func (client *WebAppsClient) listNetworkFeaturesHandleResponse(resp *http.Respon
 
 // ListNetworkFeaturesSlot - Gets all network features used by the app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// view - The type of view. This can either be "summary" or "detailed".
-// slot - Name of the deployment slot. If a slot is not specified, the API will get network features for the production slot.
-// options - WebAppsClientListNetworkFeaturesSlotOptions contains the optional parameters for the WebAppsClient.ListNetworkFeaturesSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - view - The type of view. This can either be "summary" or "detailed".
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get network features for the production slot.
+//   - options - WebAppsClientListNetworkFeaturesSlotOptions contains the optional parameters for the WebAppsClient.ListNetworkFeaturesSlot
+//     method.
 func (client *WebAppsClient) ListNetworkFeaturesSlot(ctx context.Context, resourceGroupName string, name string, view string, slot string, options *WebAppsClientListNetworkFeaturesSlotOptions) (WebAppsClientListNetworkFeaturesSlotResponse, error) {
 	req, err := client.listNetworkFeaturesSlotCreateRequest(ctx, resourceGroupName, name, view, slot, options)
 	if err != nil {
 		return WebAppsClientListNetworkFeaturesSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListNetworkFeaturesSlotResponse{}, err
 	}
@@ -15142,7 +15385,7 @@ func (client *WebAppsClient) listNetworkFeaturesSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15163,11 +15406,12 @@ func (client *WebAppsClient) listNetworkFeaturesSlotHandleResponse(resp *http.Re
 }
 
 // NewListPerfMonCountersPager - Gets perfmon counters for web app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientListPerfMonCountersOptions contains the optional parameters for the WebAppsClient.ListPerfMonCounters
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientListPerfMonCountersOptions contains the optional parameters for the WebAppsClient.NewListPerfMonCountersPager
+//     method.
 func (client *WebAppsClient) NewListPerfMonCountersPager(resourceGroupName string, name string, options *WebAppsClientListPerfMonCountersOptions) *runtime.Pager[WebAppsClientListPerfMonCountersResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListPerfMonCountersResponse]{
 		More: func(page WebAppsClientListPerfMonCountersResponse) bool {
@@ -15184,7 +15428,7 @@ func (client *WebAppsClient) NewListPerfMonCountersPager(resourceGroupName strin
 			if err != nil {
 				return WebAppsClientListPerfMonCountersResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListPerfMonCountersResponse{}, err
 			}
@@ -15211,7 +15455,7 @@ func (client *WebAppsClient) listPerfMonCountersCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15237,12 +15481,13 @@ func (client *WebAppsClient) listPerfMonCountersHandleResponse(resp *http.Respon
 }
 
 // NewListPerfMonCountersSlotPager - Gets perfmon counters for web app.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientListPerfMonCountersSlotOptions contains the optional parameters for the WebAppsClient.ListPerfMonCountersSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientListPerfMonCountersSlotOptions contains the optional parameters for the WebAppsClient.NewListPerfMonCountersSlotPager
+//     method.
 func (client *WebAppsClient) NewListPerfMonCountersSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListPerfMonCountersSlotOptions) *runtime.Pager[WebAppsClientListPerfMonCountersSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListPerfMonCountersSlotResponse]{
 		More: func(page WebAppsClientListPerfMonCountersSlotResponse) bool {
@@ -15259,7 +15504,7 @@ func (client *WebAppsClient) NewListPerfMonCountersSlotPager(resourceGroupName s
 			if err != nil {
 				return WebAppsClientListPerfMonCountersSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListPerfMonCountersSlotResponse{}, err
 			}
@@ -15290,7 +15535,7 @@ func (client *WebAppsClient) listPerfMonCountersSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15317,17 +15562,18 @@ func (client *WebAppsClient) listPerfMonCountersSlotHandleResponse(resp *http.Re
 
 // ListPremierAddOns - Gets the premier add-ons of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListPremierAddOnsOptions contains the optional parameters for the WebAppsClient.ListPremierAddOns
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListPremierAddOnsOptions contains the optional parameters for the WebAppsClient.ListPremierAddOns
+//     method.
 func (client *WebAppsClient) ListPremierAddOns(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListPremierAddOnsOptions) (WebAppsClientListPremierAddOnsResponse, error) {
 	req, err := client.listPremierAddOnsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListPremierAddOnsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListPremierAddOnsResponse{}, err
 	}
@@ -15352,7 +15598,7 @@ func (client *WebAppsClient) listPremierAddOnsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15374,19 +15620,20 @@ func (client *WebAppsClient) listPremierAddOnsHandleResponse(resp *http.Response
 
 // ListPremierAddOnsSlot - Gets the premier add-ons of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the production
-// slot.
-// options - WebAppsClientListPremierAddOnsSlotOptions contains the optional parameters for the WebAppsClient.ListPremierAddOnsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the production
+//     slot.
+//   - options - WebAppsClientListPremierAddOnsSlotOptions contains the optional parameters for the WebAppsClient.ListPremierAddOnsSlot
+//     method.
 func (client *WebAppsClient) ListPremierAddOnsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListPremierAddOnsSlotOptions) (WebAppsClientListPremierAddOnsSlotResponse, error) {
 	req, err := client.listPremierAddOnsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListPremierAddOnsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListPremierAddOnsSlotResponse{}, err
 	}
@@ -15415,7 +15662,7 @@ func (client *WebAppsClient) listPremierAddOnsSlotCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15437,12 +15684,13 @@ func (client *WebAppsClient) listPremierAddOnsSlotHandleResponse(resp *http.Resp
 
 // NewListProcessModulesPager - List module information for a process by its ID for a specific scaled-out instance in a web
 // site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// options - WebAppsClientListProcessModulesOptions contains the optional parameters for the WebAppsClient.ListProcessModules
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - options - WebAppsClientListProcessModulesOptions contains the optional parameters for the WebAppsClient.NewListProcessModulesPager
+//     method.
 func (client *WebAppsClient) NewListProcessModulesPager(resourceGroupName string, name string, processID string, options *WebAppsClientListProcessModulesOptions) *runtime.Pager[WebAppsClientListProcessModulesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListProcessModulesResponse]{
 		More: func(page WebAppsClientListProcessModulesResponse) bool {
@@ -15459,7 +15707,7 @@ func (client *WebAppsClient) NewListProcessModulesPager(resourceGroupName string
 			if err != nil {
 				return WebAppsClientListProcessModulesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListProcessModulesResponse{}, err
 			}
@@ -15490,7 +15738,7 @@ func (client *WebAppsClient) listProcessModulesCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15512,13 +15760,14 @@ func (client *WebAppsClient) listProcessModulesHandleResponse(resp *http.Respons
 
 // NewListProcessModulesSlotPager - List module information for a process by its ID for a specific scaled-out instance in
 // a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientListProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessModulesSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientListProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessModulesSlotPager
+//     method.
 func (client *WebAppsClient) NewListProcessModulesSlotPager(resourceGroupName string, name string, processID string, slot string, options *WebAppsClientListProcessModulesSlotOptions) *runtime.Pager[WebAppsClientListProcessModulesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListProcessModulesSlotResponse]{
 		More: func(page WebAppsClientListProcessModulesSlotResponse) bool {
@@ -15535,7 +15784,7 @@ func (client *WebAppsClient) NewListProcessModulesSlotPager(resourceGroupName st
 			if err != nil {
 				return WebAppsClientListProcessModulesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListProcessModulesSlotResponse{}, err
 			}
@@ -15570,7 +15819,7 @@ func (client *WebAppsClient) listProcessModulesSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15591,12 +15840,13 @@ func (client *WebAppsClient) listProcessModulesSlotHandleResponse(resp *http.Res
 }
 
 // NewListProcessThreadsPager - List the threads in a process by its ID for a specific scaled-out instance in a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// options - WebAppsClientListProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListProcessThreads
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - options - WebAppsClientListProcessThreadsOptions contains the optional parameters for the WebAppsClient.NewListProcessThreadsPager
+//     method.
 func (client *WebAppsClient) NewListProcessThreadsPager(resourceGroupName string, name string, processID string, options *WebAppsClientListProcessThreadsOptions) *runtime.Pager[WebAppsClientListProcessThreadsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListProcessThreadsResponse]{
 		More: func(page WebAppsClientListProcessThreadsResponse) bool {
@@ -15613,7 +15863,7 @@ func (client *WebAppsClient) NewListProcessThreadsPager(resourceGroupName string
 			if err != nil {
 				return WebAppsClientListProcessThreadsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListProcessThreadsResponse{}, err
 			}
@@ -15644,7 +15894,7 @@ func (client *WebAppsClient) listProcessThreadsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15665,13 +15915,14 @@ func (client *WebAppsClient) listProcessThreadsHandleResponse(resp *http.Respons
 }
 
 // NewListProcessThreadsSlotPager - List the threads in a process by its ID for a specific scaled-out instance in a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// processID - PID.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientListProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListProcessThreadsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - processID - PID.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientListProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessThreadsSlotPager
+//     method.
 func (client *WebAppsClient) NewListProcessThreadsSlotPager(resourceGroupName string, name string, processID string, slot string, options *WebAppsClientListProcessThreadsSlotOptions) *runtime.Pager[WebAppsClientListProcessThreadsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListProcessThreadsSlotResponse]{
 		More: func(page WebAppsClientListProcessThreadsSlotResponse) bool {
@@ -15688,7 +15939,7 @@ func (client *WebAppsClient) NewListProcessThreadsSlotPager(resourceGroupName st
 			if err != nil {
 				return WebAppsClientListProcessThreadsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListProcessThreadsSlotResponse{}, err
 			}
@@ -15723,7 +15974,7 @@ func (client *WebAppsClient) listProcessThreadsSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15745,10 +15996,12 @@ func (client *WebAppsClient) listProcessThreadsSlotHandleResponse(resp *http.Res
 
 // NewListProcessesPager - Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
 // in a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// options - WebAppsClientListProcessesOptions contains the optional parameters for the WebAppsClient.ListProcesses method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - options - WebAppsClientListProcessesOptions contains the optional parameters for the WebAppsClient.NewListProcessesPager
+//     method.
 func (client *WebAppsClient) NewListProcessesPager(resourceGroupName string, name string, options *WebAppsClientListProcessesOptions) *runtime.Pager[WebAppsClientListProcessesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListProcessesResponse]{
 		More: func(page WebAppsClientListProcessesResponse) bool {
@@ -15765,7 +16018,7 @@ func (client *WebAppsClient) NewListProcessesPager(resourceGroupName string, nam
 			if err != nil {
 				return WebAppsClientListProcessesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListProcessesResponse{}, err
 			}
@@ -15792,7 +16045,7 @@ func (client *WebAppsClient) listProcessesCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15814,12 +16067,13 @@ func (client *WebAppsClient) listProcessesHandleResponse(resp *http.Response) (W
 
 // NewListProcessesSlotPager - Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
 // in a web site.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientListProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessesSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientListProcessesSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessesSlotPager
+//     method.
 func (client *WebAppsClient) NewListProcessesSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListProcessesSlotOptions) *runtime.Pager[WebAppsClientListProcessesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListProcessesSlotResponse]{
 		More: func(page WebAppsClientListProcessesSlotResponse) bool {
@@ -15836,7 +16090,7 @@ func (client *WebAppsClient) NewListProcessesSlotPager(resourceGroupName string,
 			if err != nil {
 				return WebAppsClientListProcessesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListProcessesSlotResponse{}, err
 			}
@@ -15867,7 +16121,7 @@ func (client *WebAppsClient) listProcessesSlotCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15888,11 +16142,12 @@ func (client *WebAppsClient) listProcessesSlotHandleResponse(resp *http.Response
 }
 
 // NewListPublicCertificatesPager - Get public certificates for an app or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListPublicCertificatesOptions contains the optional parameters for the WebAppsClient.ListPublicCertificates
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListPublicCertificatesOptions contains the optional parameters for the WebAppsClient.NewListPublicCertificatesPager
+//     method.
 func (client *WebAppsClient) NewListPublicCertificatesPager(resourceGroupName string, name string, options *WebAppsClientListPublicCertificatesOptions) *runtime.Pager[WebAppsClientListPublicCertificatesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListPublicCertificatesResponse]{
 		More: func(page WebAppsClientListPublicCertificatesResponse) bool {
@@ -15909,7 +16164,7 @@ func (client *WebAppsClient) NewListPublicCertificatesPager(resourceGroupName st
 			if err != nil {
 				return WebAppsClientListPublicCertificatesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListPublicCertificatesResponse{}, err
 			}
@@ -15936,7 +16191,7 @@ func (client *WebAppsClient) listPublicCertificatesCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -15957,12 +16212,13 @@ func (client *WebAppsClient) listPublicCertificatesHandleResponse(resp *http.Res
 }
 
 // NewListPublicCertificatesSlotPager - Get public certificates for an app or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
-// options - WebAppsClientListPublicCertificatesSlotOptions contains the optional parameters for the WebAppsClient.ListPublicCertificatesSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the production slot.
+//   - options - WebAppsClientListPublicCertificatesSlotOptions contains the optional parameters for the WebAppsClient.NewListPublicCertificatesSlotPager
+//     method.
 func (client *WebAppsClient) NewListPublicCertificatesSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListPublicCertificatesSlotOptions) *runtime.Pager[WebAppsClientListPublicCertificatesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListPublicCertificatesSlotResponse]{
 		More: func(page WebAppsClientListPublicCertificatesSlotResponse) bool {
@@ -15979,7 +16235,7 @@ func (client *WebAppsClient) NewListPublicCertificatesSlotPager(resourceGroupNam
 			if err != nil {
 				return WebAppsClientListPublicCertificatesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListPublicCertificatesSlotResponse{}, err
 			}
@@ -16010,7 +16266,7 @@ func (client *WebAppsClient) listPublicCertificatesSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16032,32 +16288,34 @@ func (client *WebAppsClient) listPublicCertificatesSlotHandleResponse(resp *http
 
 // BeginListPublishingCredentials - Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientBeginListPublishingCredentialsOptions contains the optional parameters for the WebAppsClient.BeginListPublishingCredentials
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientBeginListPublishingCredentialsOptions contains the optional parameters for the WebAppsClient.BeginListPublishingCredentials
+//     method.
 func (client *WebAppsClient) BeginListPublishingCredentials(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginListPublishingCredentialsOptions) (*runtime.Poller[WebAppsClientListPublishingCredentialsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.listPublishingCredentials(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientListPublishingCredentialsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientListPublishingCredentialsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientListPublishingCredentialsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientListPublishingCredentialsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // ListPublishingCredentials - Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) listPublishingCredentials(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginListPublishingCredentialsOptions) (*http.Response, error) {
 	req, err := client.listPublishingCredentialsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -16082,7 +16340,7 @@ func (client *WebAppsClient) listPublishingCredentialsCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16095,34 +16353,36 @@ func (client *WebAppsClient) listPublishingCredentialsCreateRequest(ctx context.
 
 // BeginListPublishingCredentialsSlot - Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production
-// slot.
-// options - WebAppsClientBeginListPublishingCredentialsSlotOptions contains the optional parameters for the WebAppsClient.BeginListPublishingCredentialsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials for the production
+//     slot.
+//   - options - WebAppsClientBeginListPublishingCredentialsSlotOptions contains the optional parameters for the WebAppsClient.BeginListPublishingCredentialsSlot
+//     method.
 func (client *WebAppsClient) BeginListPublishingCredentialsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginListPublishingCredentialsSlotOptions) (*runtime.Poller[WebAppsClientListPublishingCredentialsSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.listPublishingCredentialsSlot(ctx, resourceGroupName, name, slot, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientListPublishingCredentialsSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientListPublishingCredentialsSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientListPublishingCredentialsSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientListPublishingCredentialsSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // ListPublishingCredentialsSlot - Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) listPublishingCredentialsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginListPublishingCredentialsSlotOptions) (*http.Response, error) {
 	req, err := client.listPublishingCredentialsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -16151,7 +16411,7 @@ func (client *WebAppsClient) listPublishingCredentialsSlotCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16164,19 +16424,20 @@ func (client *WebAppsClient) listPublishingCredentialsSlotCreateRequest(ctx cont
 
 // ListPublishingProfileXMLWithSecrets - Gets the publishing profile for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// publishingProfileOptions - Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"}
-// to get a FileZilla publishing profile.
-// options - WebAppsClientListPublishingProfileXMLWithSecretsOptions contains the optional parameters for the WebAppsClient.ListPublishingProfileXMLWithSecrets
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - publishingProfileOptions - Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"}
+//     to get a FileZilla publishing profile.
+//   - options - WebAppsClientListPublishingProfileXMLWithSecretsOptions contains the optional parameters for the WebAppsClient.ListPublishingProfileXMLWithSecrets
+//     method.
 func (client *WebAppsClient) ListPublishingProfileXMLWithSecrets(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions CsmPublishingProfileOptions, options *WebAppsClientListPublishingProfileXMLWithSecretsOptions) (WebAppsClientListPublishingProfileXMLWithSecretsResponse, error) {
 	req, err := client.listPublishingProfileXMLWithSecretsCreateRequest(ctx, resourceGroupName, name, publishingProfileOptions, options)
 	if err != nil {
 		return WebAppsClientListPublishingProfileXMLWithSecretsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListPublishingProfileXMLWithSecretsResponse{}, err
 	}
@@ -16201,7 +16462,7 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16215,21 +16476,22 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsCreateRequest(ct
 
 // ListPublishingProfileXMLWithSecretsSlot - Gets the publishing profile for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production
-// slot.
-// publishingProfileOptions - Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"}
-// to get a FileZilla publishing profile.
-// options - WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListPublishingProfileXMLWithSecretsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for the production
+//     slot.
+//   - publishingProfileOptions - Specifies publishingProfileOptions for publishing profile. For example, use {"format": "FileZilla3"}
+//     to get a FileZilla publishing profile.
+//   - options - WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions contains the optional parameters for the WebAppsClient.ListPublishingProfileXMLWithSecretsSlot
+//     method.
 func (client *WebAppsClient) ListPublishingProfileXMLWithSecretsSlot(ctx context.Context, resourceGroupName string, name string, slot string, publishingProfileOptions CsmPublishingProfileOptions, options *WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions) (WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse, error) {
 	req, err := client.listPublishingProfileXMLWithSecretsSlotCreateRequest(ctx, resourceGroupName, name, slot, publishingProfileOptions, options)
 	if err != nil {
 		return WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{}, err
 	}
@@ -16258,7 +16520,7 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16272,17 +16534,18 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotCreateReques
 
 // ListRelayServiceConnections - Gets hybrid connections configured for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListRelayServiceConnectionsOptions contains the optional parameters for the WebAppsClient.ListRelayServiceConnections
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListRelayServiceConnectionsOptions contains the optional parameters for the WebAppsClient.ListRelayServiceConnections
+//     method.
 func (client *WebAppsClient) ListRelayServiceConnections(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListRelayServiceConnectionsOptions) (WebAppsClientListRelayServiceConnectionsResponse, error) {
 	req, err := client.listRelayServiceConnectionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListRelayServiceConnectionsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListRelayServiceConnectionsResponse{}, err
 	}
@@ -16307,7 +16570,7 @@ func (client *WebAppsClient) listRelayServiceConnectionsCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16329,19 +16592,20 @@ func (client *WebAppsClient) listRelayServiceConnectionsHandleResponse(resp *htt
 
 // ListRelayServiceConnectionsSlot - Gets hybrid connections configured for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the production
-// slot.
-// options - WebAppsClientListRelayServiceConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListRelayServiceConnectionsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the production
+//     slot.
+//   - options - WebAppsClientListRelayServiceConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListRelayServiceConnectionsSlot
+//     method.
 func (client *WebAppsClient) ListRelayServiceConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListRelayServiceConnectionsSlotOptions) (WebAppsClientListRelayServiceConnectionsSlotResponse, error) {
 	req, err := client.listRelayServiceConnectionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListRelayServiceConnectionsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListRelayServiceConnectionsSlotResponse{}, err
 	}
@@ -16370,7 +16634,7 @@ func (client *WebAppsClient) listRelayServiceConnectionsSlotCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16391,11 +16655,12 @@ func (client *WebAppsClient) listRelayServiceConnectionsSlotHandleResponse(resp 
 }
 
 // NewListSiteExtensionsPager - Get list of siteextensions for a web site, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// options - WebAppsClientListSiteExtensionsOptions contains the optional parameters for the WebAppsClient.ListSiteExtensions
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - options - WebAppsClientListSiteExtensionsOptions contains the optional parameters for the WebAppsClient.NewListSiteExtensionsPager
+//     method.
 func (client *WebAppsClient) NewListSiteExtensionsPager(resourceGroupName string, name string, options *WebAppsClientListSiteExtensionsOptions) *runtime.Pager[WebAppsClientListSiteExtensionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListSiteExtensionsResponse]{
 		More: func(page WebAppsClientListSiteExtensionsResponse) bool {
@@ -16412,7 +16677,7 @@ func (client *WebAppsClient) NewListSiteExtensionsPager(resourceGroupName string
 			if err != nil {
 				return WebAppsClientListSiteExtensionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListSiteExtensionsResponse{}, err
 			}
@@ -16439,7 +16704,7 @@ func (client *WebAppsClient) listSiteExtensionsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16460,12 +16725,13 @@ func (client *WebAppsClient) listSiteExtensionsHandleResponse(resp *http.Respons
 }
 
 // NewListSiteExtensionsSlotPager - Get list of siteextensions for a web site, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientListSiteExtensionsSlotOptions contains the optional parameters for the WebAppsClient.ListSiteExtensionsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientListSiteExtensionsSlotOptions contains the optional parameters for the WebAppsClient.NewListSiteExtensionsSlotPager
+//     method.
 func (client *WebAppsClient) NewListSiteExtensionsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListSiteExtensionsSlotOptions) *runtime.Pager[WebAppsClientListSiteExtensionsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListSiteExtensionsSlotResponse]{
 		More: func(page WebAppsClientListSiteExtensionsSlotResponse) bool {
@@ -16482,7 +16748,7 @@ func (client *WebAppsClient) NewListSiteExtensionsSlotPager(resourceGroupName st
 			if err != nil {
 				return WebAppsClientListSiteExtensionsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListSiteExtensionsSlotResponse{}, err
 			}
@@ -16513,7 +16779,7 @@ func (client *WebAppsClient) listSiteExtensionsSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16535,17 +16801,18 @@ func (client *WebAppsClient) listSiteExtensionsSlotHandleResponse(resp *http.Res
 
 // ListSitePushSettings - Gets the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientListSitePushSettingsOptions contains the optional parameters for the WebAppsClient.ListSitePushSettings
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientListSitePushSettingsOptions contains the optional parameters for the WebAppsClient.ListSitePushSettings
+//     method.
 func (client *WebAppsClient) ListSitePushSettings(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListSitePushSettingsOptions) (WebAppsClientListSitePushSettingsResponse, error) {
 	req, err := client.listSitePushSettingsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListSitePushSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListSitePushSettingsResponse{}, err
 	}
@@ -16570,7 +16837,7 @@ func (client *WebAppsClient) listSitePushSettingsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16592,18 +16859,19 @@ func (client *WebAppsClient) listSitePushSettingsHandleResponse(resp *http.Respo
 
 // ListSitePushSettingsSlot - Gets the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientListSitePushSettingsSlotOptions contains the optional parameters for the WebAppsClient.ListSitePushSettingsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientListSitePushSettingsSlotOptions contains the optional parameters for the WebAppsClient.ListSitePushSettingsSlot
+//     method.
 func (client *WebAppsClient) ListSitePushSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListSitePushSettingsSlotOptions) (WebAppsClientListSitePushSettingsSlotResponse, error) {
 	req, err := client.listSitePushSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListSitePushSettingsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListSitePushSettingsSlotResponse{}, err
 	}
@@ -16632,7 +16900,7 @@ func (client *WebAppsClient) listSitePushSettingsSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16654,17 +16922,18 @@ func (client *WebAppsClient) listSitePushSettingsSlotHandleResponse(resp *http.R
 
 // ListSlotConfigurationNames - Gets the names of app settings and connection strings that stick to the slot (not swapped).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListSlotConfigurationNamesOptions contains the optional parameters for the WebAppsClient.ListSlotConfigurationNames
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListSlotConfigurationNamesOptions contains the optional parameters for the WebAppsClient.ListSlotConfigurationNames
+//     method.
 func (client *WebAppsClient) ListSlotConfigurationNames(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListSlotConfigurationNamesOptions) (WebAppsClientListSlotConfigurationNamesResponse, error) {
 	req, err := client.listSlotConfigurationNamesCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListSlotConfigurationNamesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListSlotConfigurationNamesResponse{}, err
 	}
@@ -16689,7 +16958,7 @@ func (client *WebAppsClient) listSlotConfigurationNamesCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16710,12 +16979,13 @@ func (client *WebAppsClient) listSlotConfigurationNamesHandleResponse(resp *http
 }
 
 // NewListSlotDifferencesFromProductionPager - Get the difference in configuration settings between two web app slots.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slotSwapEntity - JSON object that contains the target slot name. See example.
-// options - WebAppsClientListSlotDifferencesFromProductionOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesFromProduction
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slotSwapEntity - JSON object that contains the target slot name. See example.
+//   - options - WebAppsClientListSlotDifferencesFromProductionOptions contains the optional parameters for the WebAppsClient.NewListSlotDifferencesFromProductionPager
+//     method.
 func (client *WebAppsClient) NewListSlotDifferencesFromProductionPager(resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsClientListSlotDifferencesFromProductionOptions) *runtime.Pager[WebAppsClientListSlotDifferencesFromProductionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListSlotDifferencesFromProductionResponse]{
 		More: func(page WebAppsClientListSlotDifferencesFromProductionResponse) bool {
@@ -16732,7 +17002,7 @@ func (client *WebAppsClient) NewListSlotDifferencesFromProductionPager(resourceG
 			if err != nil {
 				return WebAppsClientListSlotDifferencesFromProductionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListSlotDifferencesFromProductionResponse{}, err
 			}
@@ -16759,7 +17029,7 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16780,13 +17050,14 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionHandleResponse(res
 }
 
 // NewListSlotDifferencesSlotPager - Get the difference in configuration settings between two web app slots.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
-// slotSwapEntity - JSON object that contains the target slot name. See example.
-// options - WebAppsClientListSlotDifferencesSlotOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+//   - slotSwapEntity - JSON object that contains the target slot name. See example.
+//   - options - WebAppsClientListSlotDifferencesSlotOptions contains the optional parameters for the WebAppsClient.NewListSlotDifferencesSlotPager
+//     method.
 func (client *WebAppsClient) NewListSlotDifferencesSlotPager(resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsClientListSlotDifferencesSlotOptions) *runtime.Pager[WebAppsClientListSlotDifferencesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListSlotDifferencesSlotResponse]{
 		More: func(page WebAppsClientListSlotDifferencesSlotResponse) bool {
@@ -16803,7 +17074,7 @@ func (client *WebAppsClient) NewListSlotDifferencesSlotPager(resourceGroupName s
 			if err != nil {
 				return WebAppsClientListSlotDifferencesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListSlotDifferencesSlotResponse{}, err
 			}
@@ -16834,7 +17105,7 @@ func (client *WebAppsClient) listSlotDifferencesSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16855,10 +17126,11 @@ func (client *WebAppsClient) listSlotDifferencesSlotHandleResponse(resp *http.Re
 }
 
 // NewListSlotsPager - Gets an app's deployment slots.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListSlotsOptions contains the optional parameters for the WebAppsClient.ListSlots method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListSlotsOptions contains the optional parameters for the WebAppsClient.NewListSlotsPager method.
 func (client *WebAppsClient) NewListSlotsPager(resourceGroupName string, name string, options *WebAppsClientListSlotsOptions) *runtime.Pager[WebAppsClientListSlotsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListSlotsResponse]{
 		More: func(page WebAppsClientListSlotsResponse) bool {
@@ -16875,7 +17147,7 @@ func (client *WebAppsClient) NewListSlotsPager(resourceGroupName string, name st
 			if err != nil {
 				return WebAppsClientListSlotsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListSlotsResponse{}, err
 			}
@@ -16902,7 +17174,7 @@ func (client *WebAppsClient) listSlotsCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16923,10 +17195,12 @@ func (client *WebAppsClient) listSlotsHandleResponse(resp *http.Response) (WebAp
 }
 
 // NewListSnapshotsPager - Returns all Snapshots to the user.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Website Name.
-// options - WebAppsClientListSnapshotsOptions contains the optional parameters for the WebAppsClient.ListSnapshots method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Website Name.
+//   - options - WebAppsClientListSnapshotsOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsPager
+//     method.
 func (client *WebAppsClient) NewListSnapshotsPager(resourceGroupName string, name string, options *WebAppsClientListSnapshotsOptions) *runtime.Pager[WebAppsClientListSnapshotsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListSnapshotsResponse]{
 		More: func(page WebAppsClientListSnapshotsResponse) bool {
@@ -16943,7 +17217,7 @@ func (client *WebAppsClient) NewListSnapshotsPager(resourceGroupName string, nam
 			if err != nil {
 				return WebAppsClientListSnapshotsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListSnapshotsResponse{}, err
 			}
@@ -16970,7 +17244,7 @@ func (client *WebAppsClient) listSnapshotsCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -16991,11 +17265,12 @@ func (client *WebAppsClient) listSnapshotsHandleResponse(resp *http.Response) (W
 }
 
 // NewListSnapshotsFromDRSecondaryPager - Returns all Snapshots to the user from DRSecondary endpoint.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Website Name.
-// options - WebAppsClientListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondary
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Website Name.
+//   - options - WebAppsClientListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsFromDRSecondaryPager
+//     method.
 func (client *WebAppsClient) NewListSnapshotsFromDRSecondaryPager(resourceGroupName string, name string, options *WebAppsClientListSnapshotsFromDRSecondaryOptions) *runtime.Pager[WebAppsClientListSnapshotsFromDRSecondaryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListSnapshotsFromDRSecondaryResponse]{
 		More: func(page WebAppsClientListSnapshotsFromDRSecondaryResponse) bool {
@@ -17012,7 +17287,7 @@ func (client *WebAppsClient) NewListSnapshotsFromDRSecondaryPager(resourceGroupN
 			if err != nil {
 				return WebAppsClientListSnapshotsFromDRSecondaryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListSnapshotsFromDRSecondaryResponse{}, err
 			}
@@ -17039,7 +17314,7 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondaryCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17060,12 +17335,13 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondaryHandleResponse(resp *ht
 }
 
 // NewListSnapshotsFromDRSecondarySlotPager - Returns all Snapshots to the user from DRSecondary endpoint.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Website Name.
-// slot - Website Slot.
-// options - WebAppsClientListSnapshotsFromDRSecondarySlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondarySlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Website Name.
+//   - slot - Website Slot.
+//   - options - WebAppsClientListSnapshotsFromDRSecondarySlotOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsFromDRSecondarySlotPager
+//     method.
 func (client *WebAppsClient) NewListSnapshotsFromDRSecondarySlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListSnapshotsFromDRSecondarySlotOptions) *runtime.Pager[WebAppsClientListSnapshotsFromDRSecondarySlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListSnapshotsFromDRSecondarySlotResponse]{
 		More: func(page WebAppsClientListSnapshotsFromDRSecondarySlotResponse) bool {
@@ -17082,7 +17358,7 @@ func (client *WebAppsClient) NewListSnapshotsFromDRSecondarySlotPager(resourceGr
 			if err != nil {
 				return WebAppsClientListSnapshotsFromDRSecondarySlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListSnapshotsFromDRSecondarySlotResponse{}, err
 			}
@@ -17113,7 +17389,7 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17134,12 +17410,13 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotHandleResponse(resp
 }
 
 // NewListSnapshotsSlotPager - Returns all Snapshots to the user.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Website Name.
-// slot - Website Slot.
-// options - WebAppsClientListSnapshotsSlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Website Name.
+//   - slot - Website Slot.
+//   - options - WebAppsClientListSnapshotsSlotOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsSlotPager
+//     method.
 func (client *WebAppsClient) NewListSnapshotsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListSnapshotsSlotOptions) *runtime.Pager[WebAppsClientListSnapshotsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListSnapshotsSlotResponse]{
 		More: func(page WebAppsClientListSnapshotsSlotResponse) bool {
@@ -17156,7 +17433,7 @@ func (client *WebAppsClient) NewListSnapshotsSlotPager(resourceGroupName string,
 			if err != nil {
 				return WebAppsClientListSnapshotsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListSnapshotsSlotResponse{}, err
 			}
@@ -17187,7 +17464,7 @@ func (client *WebAppsClient) listSnapshotsSlotCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17209,17 +17486,18 @@ func (client *WebAppsClient) listSnapshotsSlotHandleResponse(resp *http.Response
 
 // ListSyncFunctionTriggers - This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListSyncFunctionTriggersOptions contains the optional parameters for the WebAppsClient.ListSyncFunctionTriggers
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListSyncFunctionTriggersOptions contains the optional parameters for the WebAppsClient.ListSyncFunctionTriggers
+//     method.
 func (client *WebAppsClient) ListSyncFunctionTriggers(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListSyncFunctionTriggersOptions) (WebAppsClientListSyncFunctionTriggersResponse, error) {
 	req, err := client.listSyncFunctionTriggersCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListSyncFunctionTriggersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListSyncFunctionTriggersResponse{}, err
 	}
@@ -17244,7 +17522,7 @@ func (client *WebAppsClient) listSyncFunctionTriggersCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17266,18 +17544,19 @@ func (client *WebAppsClient) listSyncFunctionTriggersHandleResponse(resp *http.R
 
 // ListSyncFunctionTriggersSlot - This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot.
-// options - WebAppsClientListSyncFunctionTriggersSlotOptions contains the optional parameters for the WebAppsClient.ListSyncFunctionTriggersSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientListSyncFunctionTriggersSlotOptions contains the optional parameters for the WebAppsClient.ListSyncFunctionTriggersSlot
+//     method.
 func (client *WebAppsClient) ListSyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListSyncFunctionTriggersSlotOptions) (WebAppsClientListSyncFunctionTriggersSlotResponse, error) {
 	req, err := client.listSyncFunctionTriggersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListSyncFunctionTriggersSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListSyncFunctionTriggersSlotResponse{}, err
 	}
@@ -17306,7 +17585,7 @@ func (client *WebAppsClient) listSyncFunctionTriggersSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17328,16 +17607,17 @@ func (client *WebAppsClient) listSyncFunctionTriggersSlotHandleResponse(resp *ht
 
 // ListSyncStatus - This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListSyncStatusOptions contains the optional parameters for the WebAppsClient.ListSyncStatus method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListSyncStatusOptions contains the optional parameters for the WebAppsClient.ListSyncStatus method.
 func (client *WebAppsClient) ListSyncStatus(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListSyncStatusOptions) (WebAppsClientListSyncStatusResponse, error) {
 	req, err := client.listSyncStatusCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListSyncStatusResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListSyncStatusResponse{}, err
 	}
@@ -17362,7 +17642,7 @@ func (client *WebAppsClient) listSyncStatusCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17375,18 +17655,19 @@ func (client *WebAppsClient) listSyncStatusCreateRequest(ctx context.Context, re
 
 // ListSyncStatusSlot - This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot.
-// options - WebAppsClientListSyncStatusSlotOptions contains the optional parameters for the WebAppsClient.ListSyncStatusSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientListSyncStatusSlotOptions contains the optional parameters for the WebAppsClient.ListSyncStatusSlot
+//     method.
 func (client *WebAppsClient) ListSyncStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListSyncStatusSlotOptions) (WebAppsClientListSyncStatusSlotResponse, error) {
 	req, err := client.listSyncStatusSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListSyncStatusSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListSyncStatusSlotResponse{}, err
 	}
@@ -17415,7 +17696,7 @@ func (client *WebAppsClient) listSyncStatusSlotCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17427,12 +17708,13 @@ func (client *WebAppsClient) listSyncStatusSlotCreateRequest(ctx context.Context
 }
 
 // NewListTriggeredWebJobHistoryPager - List a triggered web job's history for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// options - WebAppsClientListTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistory
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - options - WebAppsClientListTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobHistoryPager
+//     method.
 func (client *WebAppsClient) NewListTriggeredWebJobHistoryPager(resourceGroupName string, name string, webJobName string, options *WebAppsClientListTriggeredWebJobHistoryOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobHistoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListTriggeredWebJobHistoryResponse]{
 		More: func(page WebAppsClientListTriggeredWebJobHistoryResponse) bool {
@@ -17449,7 +17731,7 @@ func (client *WebAppsClient) NewListTriggeredWebJobHistoryPager(resourceGroupNam
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobHistoryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobHistoryResponse{}, err
 			}
@@ -17480,7 +17762,7 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17501,13 +17783,14 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryHandleResponse(resp *http
 }
 
 // NewListTriggeredWebJobHistorySlotPager - List a triggered web job's history for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistorySlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobHistorySlotPager
+//     method.
 func (client *WebAppsClient) NewListTriggeredWebJobHistorySlotPager(resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientListTriggeredWebJobHistorySlotOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobHistorySlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListTriggeredWebJobHistorySlotResponse]{
 		More: func(page WebAppsClientListTriggeredWebJobHistorySlotResponse) bool {
@@ -17524,7 +17807,7 @@ func (client *WebAppsClient) NewListTriggeredWebJobHistorySlotPager(resourceGrou
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobHistorySlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobHistorySlotResponse{}, err
 			}
@@ -17559,7 +17842,7 @@ func (client *WebAppsClient) listTriggeredWebJobHistorySlotCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17580,11 +17863,12 @@ func (client *WebAppsClient) listTriggeredWebJobHistorySlotHandleResponse(resp *
 }
 
 // NewListTriggeredWebJobsPager - List triggered web jobs for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// options - WebAppsClientListTriggeredWebJobsOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobs
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - options - WebAppsClientListTriggeredWebJobsOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobsPager
+//     method.
 func (client *WebAppsClient) NewListTriggeredWebJobsPager(resourceGroupName string, name string, options *WebAppsClientListTriggeredWebJobsOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListTriggeredWebJobsResponse]{
 		More: func(page WebAppsClientListTriggeredWebJobsResponse) bool {
@@ -17601,7 +17885,7 @@ func (client *WebAppsClient) NewListTriggeredWebJobsPager(resourceGroupName stri
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobsResponse{}, err
 			}
@@ -17628,7 +17912,7 @@ func (client *WebAppsClient) listTriggeredWebJobsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17649,12 +17933,13 @@ func (client *WebAppsClient) listTriggeredWebJobsHandleResponse(resp *http.Respo
 }
 
 // NewListTriggeredWebJobsSlotPager - List triggered web jobs for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientListTriggeredWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientListTriggeredWebJobsSlotOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobsSlotPager
+//     method.
 func (client *WebAppsClient) NewListTriggeredWebJobsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListTriggeredWebJobsSlotOptions) *runtime.Pager[WebAppsClientListTriggeredWebJobsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListTriggeredWebJobsSlotResponse]{
 		More: func(page WebAppsClientListTriggeredWebJobsSlotResponse) bool {
@@ -17671,7 +17956,7 @@ func (client *WebAppsClient) NewListTriggeredWebJobsSlotPager(resourceGroupName 
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobsSlotResponse{}, err
 			}
@@ -17702,7 +17987,7 @@ func (client *WebAppsClient) listTriggeredWebJobsSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17723,10 +18008,11 @@ func (client *WebAppsClient) listTriggeredWebJobsSlotHandleResponse(resp *http.R
 }
 
 // NewListUsagesPager - Gets the quota usage information of an app (or deployment slot, if specified).
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListUsagesOptions contains the optional parameters for the WebAppsClient.ListUsages method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListUsagesOptions contains the optional parameters for the WebAppsClient.NewListUsagesPager method.
 func (client *WebAppsClient) NewListUsagesPager(resourceGroupName string, name string, options *WebAppsClientListUsagesOptions) *runtime.Pager[WebAppsClientListUsagesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListUsagesResponse]{
 		More: func(page WebAppsClientListUsagesResponse) bool {
@@ -17743,7 +18029,7 @@ func (client *WebAppsClient) NewListUsagesPager(resourceGroupName string, name s
 			if err != nil {
 				return WebAppsClientListUsagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListUsagesResponse{}, err
 			}
@@ -17770,7 +18056,7 @@ func (client *WebAppsClient) listUsagesCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17796,11 +18082,13 @@ func (client *WebAppsClient) listUsagesHandleResponse(resp *http.Response) (WebA
 }
 
 // NewListUsagesSlotPager - Gets the quota usage information of an app (or deployment slot, if specified).
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
-// options - WebAppsClientListUsagesSlotOptions contains the optional parameters for the WebAppsClient.ListUsagesSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get quota information of the production slot.
+//   - options - WebAppsClientListUsagesSlotOptions contains the optional parameters for the WebAppsClient.NewListUsagesSlotPager
+//     method.
 func (client *WebAppsClient) NewListUsagesSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListUsagesSlotOptions) *runtime.Pager[WebAppsClientListUsagesSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListUsagesSlotResponse]{
 		More: func(page WebAppsClientListUsagesSlotResponse) bool {
@@ -17817,7 +18105,7 @@ func (client *WebAppsClient) NewListUsagesSlotPager(resourceGroupName string, na
 			if err != nil {
 				return WebAppsClientListUsagesSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListUsagesSlotResponse{}, err
 			}
@@ -17848,7 +18136,7 @@ func (client *WebAppsClient) listUsagesSlotCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17875,17 +18163,18 @@ func (client *WebAppsClient) listUsagesSlotHandleResponse(resp *http.Response) (
 
 // ListVnetConnections - Gets the virtual networks the app (or deployment slot) is connected to.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientListVnetConnectionsOptions contains the optional parameters for the WebAppsClient.ListVnetConnections
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientListVnetConnectionsOptions contains the optional parameters for the WebAppsClient.ListVnetConnections
+//     method.
 func (client *WebAppsClient) ListVnetConnections(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListVnetConnectionsOptions) (WebAppsClientListVnetConnectionsResponse, error) {
 	req, err := client.listVnetConnectionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientListVnetConnectionsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListVnetConnectionsResponse{}, err
 	}
@@ -17910,7 +18199,7 @@ func (client *WebAppsClient) listVnetConnectionsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17932,19 +18221,20 @@ func (client *WebAppsClient) listVnetConnectionsHandleResponse(resp *http.Respon
 
 // ListVnetConnectionsSlot - Gets the virtual networks the app (or deployment slot) is connected to.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will get virtual network connections for the production
-// slot.
-// options - WebAppsClientListVnetConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListVnetConnectionsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will get virtual network connections for the production
+//     slot.
+//   - options - WebAppsClientListVnetConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListVnetConnectionsSlot
+//     method.
 func (client *WebAppsClient) ListVnetConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListVnetConnectionsSlotOptions) (WebAppsClientListVnetConnectionsSlotResponse, error) {
 	req, err := client.listVnetConnectionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientListVnetConnectionsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientListVnetConnectionsSlotResponse{}, err
 	}
@@ -17973,7 +18263,7 @@ func (client *WebAppsClient) listVnetConnectionsSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -17994,10 +18284,11 @@ func (client *WebAppsClient) listVnetConnectionsSlotHandleResponse(resp *http.Re
 }
 
 // NewListWebJobsPager - List webjobs for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// options - WebAppsClientListWebJobsOptions contains the optional parameters for the WebAppsClient.ListWebJobs method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - options - WebAppsClientListWebJobsOptions contains the optional parameters for the WebAppsClient.NewListWebJobsPager method.
 func (client *WebAppsClient) NewListWebJobsPager(resourceGroupName string, name string, options *WebAppsClientListWebJobsOptions) *runtime.Pager[WebAppsClientListWebJobsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListWebJobsResponse]{
 		More: func(page WebAppsClientListWebJobsResponse) bool {
@@ -18014,7 +18305,7 @@ func (client *WebAppsClient) NewListWebJobsPager(resourceGroupName string, name 
 			if err != nil {
 				return WebAppsClientListWebJobsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListWebJobsResponse{}, err
 			}
@@ -18041,7 +18332,7 @@ func (client *WebAppsClient) listWebJobsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18062,11 +18353,13 @@ func (client *WebAppsClient) listWebJobsHandleResponse(resp *http.Response) (Web
 }
 
 // NewListWebJobsSlotPager - List webjobs for an app, or a deployment slot.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
-// options - WebAppsClientListWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListWebJobsSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API returns deployments for the production slot.
+//   - options - WebAppsClientListWebJobsSlotOptions contains the optional parameters for the WebAppsClient.NewListWebJobsSlotPager
+//     method.
 func (client *WebAppsClient) NewListWebJobsSlotPager(resourceGroupName string, name string, slot string, options *WebAppsClientListWebJobsSlotOptions) *runtime.Pager[WebAppsClientListWebJobsSlotResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebAppsClientListWebJobsSlotResponse]{
 		More: func(page WebAppsClientListWebJobsSlotResponse) bool {
@@ -18083,7 +18376,7 @@ func (client *WebAppsClient) NewListWebJobsSlotPager(resourceGroupName string, n
 			if err != nil {
 				return WebAppsClientListWebJobsSlotResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebAppsClientListWebJobsSlotResponse{}, err
 			}
@@ -18114,7 +18407,7 @@ func (client *WebAppsClient) listWebJobsSlotCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18136,33 +18429,35 @@ func (client *WebAppsClient) listWebJobsSlotHandleResponse(resp *http.Response) 
 
 // BeginMigrateMySQL - Migrates a local (in-app) MySql database to a remote MySql database.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// migrationRequestEnvelope - MySql migration options.
-// options - WebAppsClientBeginMigrateMySQLOptions contains the optional parameters for the WebAppsClient.BeginMigrateMySQL
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - migrationRequestEnvelope - MySql migration options.
+//   - options - WebAppsClientBeginMigrateMySQLOptions contains the optional parameters for the WebAppsClient.BeginMigrateMySQL
+//     method.
 func (client *WebAppsClient) BeginMigrateMySQL(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope MigrateMySQLRequest, options *WebAppsClientBeginMigrateMySQLOptions) (*runtime.Poller[WebAppsClientMigrateMySQLResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.migrateMySQL(ctx, resourceGroupName, name, migrationRequestEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientMigrateMySQLResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientMigrateMySQLResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientMigrateMySQLResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientMigrateMySQLResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // MigrateMySQL - Migrates a local (in-app) MySql database to a remote MySql database.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) migrateMySQL(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope MigrateMySQLRequest, options *WebAppsClientBeginMigrateMySQLOptions) (*http.Response, error) {
 	req, err := client.migrateMySQLCreateRequest(ctx, resourceGroupName, name, migrationRequestEnvelope, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -18187,7 +18482,7 @@ func (client *WebAppsClient) migrateMySQLCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18200,34 +18495,36 @@ func (client *WebAppsClient) migrateMySQLCreateRequest(ctx context.Context, reso
 
 // BeginMigrateStorage - Restores a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// subscriptionName - Azure subscription.
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// migrationOptions - Migration migrationOptions.
-// options - WebAppsClientBeginMigrateStorageOptions contains the optional parameters for the WebAppsClient.BeginMigrateStorage
-// method.
+//   - subscriptionName - Azure subscription.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - migrationOptions - Migration migrationOptions.
+//   - options - WebAppsClientBeginMigrateStorageOptions contains the optional parameters for the WebAppsClient.BeginMigrateStorage
+//     method.
 func (client *WebAppsClient) BeginMigrateStorage(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions StorageMigrationOptions, options *WebAppsClientBeginMigrateStorageOptions) (*runtime.Poller[WebAppsClientMigrateStorageResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.migrateStorage(ctx, subscriptionName, resourceGroupName, name, migrationOptions, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientMigrateStorageResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientMigrateStorageResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientMigrateStorageResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientMigrateStorageResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // MigrateStorage - Restores a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) migrateStorage(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions StorageMigrationOptions, options *WebAppsClientBeginMigrateStorageOptions) (*http.Response, error) {
 	req, err := client.migrateStorageCreateRequest(ctx, subscriptionName, resourceGroupName, name, migrationOptions, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -18252,7 +18549,7 @@ func (client *WebAppsClient) migrateStorageCreateRequest(ctx context.Context, su
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18267,18 +18564,19 @@ func (client *WebAppsClient) migrateStorageCreateRequest(ctx context.Context, su
 // PutPrivateAccessVnet - Sets data around private site access enablement and authorized Virtual Networks that can access
 // the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// access - The information for the private access
-// options - WebAppsClientPutPrivateAccessVnetOptions contains the optional parameters for the WebAppsClient.PutPrivateAccessVnet
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - access - The information for the private access
+//   - options - WebAppsClientPutPrivateAccessVnetOptions contains the optional parameters for the WebAppsClient.PutPrivateAccessVnet
+//     method.
 func (client *WebAppsClient) PutPrivateAccessVnet(ctx context.Context, resourceGroupName string, name string, access PrivateAccess, options *WebAppsClientPutPrivateAccessVnetOptions) (WebAppsClientPutPrivateAccessVnetResponse, error) {
 	req, err := client.putPrivateAccessVnetCreateRequest(ctx, resourceGroupName, name, access, options)
 	if err != nil {
 		return WebAppsClientPutPrivateAccessVnetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientPutPrivateAccessVnetResponse{}, err
 	}
@@ -18303,7 +18601,7 @@ func (client *WebAppsClient) putPrivateAccessVnetCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18326,19 +18624,20 @@ func (client *WebAppsClient) putPrivateAccessVnetHandleResponse(resp *http.Respo
 // PutPrivateAccessVnetSlot - Sets data around private site access enablement and authorized Virtual Networks that can access
 // the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// slot - The name of the slot for the web app.
-// access - The information for the private access
-// options - WebAppsClientPutPrivateAccessVnetSlotOptions contains the optional parameters for the WebAppsClient.PutPrivateAccessVnetSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - slot - The name of the slot for the web app.
+//   - access - The information for the private access
+//   - options - WebAppsClientPutPrivateAccessVnetSlotOptions contains the optional parameters for the WebAppsClient.PutPrivateAccessVnetSlot
+//     method.
 func (client *WebAppsClient) PutPrivateAccessVnetSlot(ctx context.Context, resourceGroupName string, name string, slot string, access PrivateAccess, options *WebAppsClientPutPrivateAccessVnetSlotOptions) (WebAppsClientPutPrivateAccessVnetSlotResponse, error) {
 	req, err := client.putPrivateAccessVnetSlotCreateRequest(ctx, resourceGroupName, name, slot, access, options)
 	if err != nil {
 		return WebAppsClientPutPrivateAccessVnetSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientPutPrivateAccessVnetSlotResponse{}, err
 	}
@@ -18367,7 +18666,7 @@ func (client *WebAppsClient) putPrivateAccessVnetSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18389,18 +18688,19 @@ func (client *WebAppsClient) putPrivateAccessVnetSlotHandleResponse(resp *http.R
 
 // RecoverSiteConfigurationSnapshot - Reverts the configuration of an app to a previous snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// snapshotID - The ID of the snapshot to read.
-// options - WebAppsClientRecoverSiteConfigurationSnapshotOptions contains the optional parameters for the WebAppsClient.RecoverSiteConfigurationSnapshot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - snapshotID - The ID of the snapshot to read.
+//   - options - WebAppsClientRecoverSiteConfigurationSnapshotOptions contains the optional parameters for the WebAppsClient.RecoverSiteConfigurationSnapshot
+//     method.
 func (client *WebAppsClient) RecoverSiteConfigurationSnapshot(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *WebAppsClientRecoverSiteConfigurationSnapshotOptions) (WebAppsClientRecoverSiteConfigurationSnapshotResponse, error) {
 	req, err := client.recoverSiteConfigurationSnapshotCreateRequest(ctx, resourceGroupName, name, snapshotID, options)
 	if err != nil {
 		return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, err
 	}
@@ -18429,7 +18729,7 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18441,19 +18741,20 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotCreateRequest(ctx c
 
 // RecoverSiteConfigurationSnapshotSlot - Reverts the configuration of an app to a previous snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// snapshotID - The ID of the snapshot to read.
-// slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
-// options - WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions contains the optional parameters for the WebAppsClient.RecoverSiteConfigurationSnapshotSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - snapshotID - The ID of the snapshot to read.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
+//   - options - WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions contains the optional parameters for the WebAppsClient.RecoverSiteConfigurationSnapshotSlot
+//     method.
 func (client *WebAppsClient) RecoverSiteConfigurationSnapshotSlot(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions) (WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse, error) {
 	req, err := client.recoverSiteConfigurationSnapshotSlotCreateRequest(ctx, resourceGroupName, name, snapshotID, slot, options)
 	if err != nil {
 		return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, err
 	}
@@ -18486,7 +18787,7 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotSlotCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18499,17 +18800,18 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotSlotCreateRequest(c
 // ResetProductionSlotConfig - Resets the configuration settings of the current slot if they were previously modified by calling
 // the API with POST.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientResetProductionSlotConfigOptions contains the optional parameters for the WebAppsClient.ResetProductionSlotConfig
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientResetProductionSlotConfigOptions contains the optional parameters for the WebAppsClient.ResetProductionSlotConfig
+//     method.
 func (client *WebAppsClient) ResetProductionSlotConfig(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientResetProductionSlotConfigOptions) (WebAppsClientResetProductionSlotConfigResponse, error) {
 	req, err := client.resetProductionSlotConfigCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientResetProductionSlotConfigResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientResetProductionSlotConfigResponse{}, err
 	}
@@ -18534,7 +18836,7 @@ func (client *WebAppsClient) resetProductionSlotConfigCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18547,19 +18849,20 @@ func (client *WebAppsClient) resetProductionSlotConfigCreateRequest(ctx context.
 // ResetSlotConfigurationSlot - Resets the configuration settings of the current slot if they were previously modified by
 // calling the API with POST.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API resets configuration settings for the production
-// slot.
-// options - WebAppsClientResetSlotConfigurationSlotOptions contains the optional parameters for the WebAppsClient.ResetSlotConfigurationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API resets configuration settings for the production
+//     slot.
+//   - options - WebAppsClientResetSlotConfigurationSlotOptions contains the optional parameters for the WebAppsClient.ResetSlotConfigurationSlot
+//     method.
 func (client *WebAppsClient) ResetSlotConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientResetSlotConfigurationSlotOptions) (WebAppsClientResetSlotConfigurationSlotResponse, error) {
 	req, err := client.resetSlotConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientResetSlotConfigurationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientResetSlotConfigurationSlotResponse{}, err
 	}
@@ -18588,7 +18891,7 @@ func (client *WebAppsClient) resetSlotConfigurationSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18600,16 +18903,17 @@ func (client *WebAppsClient) resetSlotConfigurationSlotCreateRequest(ctx context
 
 // Restart - Restarts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientRestartOptions contains the optional parameters for the WebAppsClient.Restart method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientRestartOptions contains the optional parameters for the WebAppsClient.Restart method.
 func (client *WebAppsClient) Restart(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientRestartOptions) (WebAppsClientRestartResponse, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientRestartResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientRestartResponse{}, err
 	}
@@ -18634,7 +18938,7 @@ func (client *WebAppsClient) restartCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18652,17 +18956,18 @@ func (client *WebAppsClient) restartCreateRequest(ctx context.Context, resourceG
 
 // RestartSlot - Restarts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
-// options - WebAppsClientRestartSlotOptions contains the optional parameters for the WebAppsClient.RestartSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
+//   - options - WebAppsClientRestartSlotOptions contains the optional parameters for the WebAppsClient.RestartSlot method.
 func (client *WebAppsClient) RestartSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientRestartSlotOptions) (WebAppsClientRestartSlotResponse, error) {
 	req, err := client.restartSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientRestartSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientRestartSlotResponse{}, err
 	}
@@ -18691,7 +18996,7 @@ func (client *WebAppsClient) restartSlotCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18709,33 +19014,35 @@ func (client *WebAppsClient) restartSlotCreateRequest(ctx context.Context, resou
 
 // BeginRestore - Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// backupID - ID of the backup.
-// request - Information on restore request .
-// options - WebAppsClientBeginRestoreOptions contains the optional parameters for the WebAppsClient.BeginRestore method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - backupID - ID of the backup.
+//   - request - Information on restore request .
+//   - options - WebAppsClientBeginRestoreOptions contains the optional parameters for the WebAppsClient.BeginRestore method.
 func (client *WebAppsClient) BeginRestore(ctx context.Context, resourceGroupName string, name string, backupID string, request RestoreRequest, options *WebAppsClientBeginRestoreOptions) (*runtime.Poller[WebAppsClientRestoreResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restore(ctx, resourceGroupName, name, backupID, request, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientRestoreResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientRestoreResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Restore - Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) restore(ctx context.Context, resourceGroupName string, name string, backupID string, request RestoreRequest, options *WebAppsClientBeginRestoreOptions) (*http.Response, error) {
 	req, err := client.restoreCreateRequest(ctx, resourceGroupName, name, backupID, request, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -18764,7 +19071,7 @@ func (client *WebAppsClient) restoreCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18776,33 +19083,35 @@ func (client *WebAppsClient) restoreCreateRequest(ctx context.Context, resourceG
 
 // BeginRestoreFromBackupBlob - Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// request - Information on restore request .
-// options - WebAppsClientBeginRestoreFromBackupBlobOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromBackupBlob
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - request - Information on restore request .
+//   - options - WebAppsClientBeginRestoreFromBackupBlobOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromBackupBlob
+//     method.
 func (client *WebAppsClient) BeginRestoreFromBackupBlob(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, options *WebAppsClientBeginRestoreFromBackupBlobOptions) (*runtime.Poller[WebAppsClientRestoreFromBackupBlobResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restoreFromBackupBlob(ctx, resourceGroupName, name, request, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientRestoreFromBackupBlobResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientRestoreFromBackupBlobResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreFromBackupBlobResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreFromBackupBlobResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RestoreFromBackupBlob - Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) restoreFromBackupBlob(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, options *WebAppsClientBeginRestoreFromBackupBlobOptions) (*http.Response, error) {
 	req, err := client.restoreFromBackupBlobCreateRequest(ctx, resourceGroupName, name, request, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -18827,7 +19136,7 @@ func (client *WebAppsClient) restoreFromBackupBlobCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18839,34 +19148,36 @@ func (client *WebAppsClient) restoreFromBackupBlobCreateRequest(ctx context.Cont
 
 // BeginRestoreFromBackupBlobSlot - Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
-// request - Information on restore request .
-// options - WebAppsClientBeginRestoreFromBackupBlobSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromBackupBlobSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+//   - request - Information on restore request .
+//   - options - WebAppsClientBeginRestoreFromBackupBlobSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromBackupBlobSlot
+//     method.
 func (client *WebAppsClient) BeginRestoreFromBackupBlobSlot(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, options *WebAppsClientBeginRestoreFromBackupBlobSlotOptions) (*runtime.Poller[WebAppsClientRestoreFromBackupBlobSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restoreFromBackupBlobSlot(ctx, resourceGroupName, name, slot, request, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientRestoreFromBackupBlobSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientRestoreFromBackupBlobSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreFromBackupBlobSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreFromBackupBlobSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RestoreFromBackupBlobSlot - Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) restoreFromBackupBlobSlot(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, options *WebAppsClientBeginRestoreFromBackupBlobSlotOptions) (*http.Response, error) {
 	req, err := client.restoreFromBackupBlobSlotCreateRequest(ctx, resourceGroupName, name, slot, request, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -18895,7 +19206,7 @@ func (client *WebAppsClient) restoreFromBackupBlobSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18907,33 +19218,35 @@ func (client *WebAppsClient) restoreFromBackupBlobSlotCreateRequest(ctx context.
 
 // BeginRestoreFromDeletedApp - Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// restoreRequest - Deleted web app restore information.
-// options - WebAppsClientBeginRestoreFromDeletedAppOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromDeletedApp
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - restoreRequest - Deleted web app restore information.
+//   - options - WebAppsClientBeginRestoreFromDeletedAppOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromDeletedApp
+//     method.
 func (client *WebAppsClient) BeginRestoreFromDeletedApp(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest, options *WebAppsClientBeginRestoreFromDeletedAppOptions) (*runtime.Poller[WebAppsClientRestoreFromDeletedAppResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restoreFromDeletedApp(ctx, resourceGroupName, name, restoreRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientRestoreFromDeletedAppResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientRestoreFromDeletedAppResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreFromDeletedAppResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreFromDeletedAppResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RestoreFromDeletedApp - Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) restoreFromDeletedApp(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest, options *WebAppsClientBeginRestoreFromDeletedAppOptions) (*http.Response, error) {
 	req, err := client.restoreFromDeletedAppCreateRequest(ctx, resourceGroupName, name, restoreRequest, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -18958,7 +19271,7 @@ func (client *WebAppsClient) restoreFromDeletedAppCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -18970,34 +19283,36 @@ func (client *WebAppsClient) restoreFromDeletedAppCreateRequest(ctx context.Cont
 
 // BeginRestoreFromDeletedAppSlot - Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// restoreRequest - Deleted web app restore information.
-// options - WebAppsClientBeginRestoreFromDeletedAppSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromDeletedAppSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - restoreRequest - Deleted web app restore information.
+//   - options - WebAppsClientBeginRestoreFromDeletedAppSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreFromDeletedAppSlot
+//     method.
 func (client *WebAppsClient) BeginRestoreFromDeletedAppSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest DeletedAppRestoreRequest, options *WebAppsClientBeginRestoreFromDeletedAppSlotOptions) (*runtime.Poller[WebAppsClientRestoreFromDeletedAppSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restoreFromDeletedAppSlot(ctx, resourceGroupName, name, slot, restoreRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientRestoreFromDeletedAppSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientRestoreFromDeletedAppSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreFromDeletedAppSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreFromDeletedAppSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RestoreFromDeletedAppSlot - Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) restoreFromDeletedAppSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest DeletedAppRestoreRequest, options *WebAppsClientBeginRestoreFromDeletedAppSlotOptions) (*http.Response, error) {
 	req, err := client.restoreFromDeletedAppSlotCreateRequest(ctx, resourceGroupName, name, slot, restoreRequest, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -19026,7 +19341,7 @@ func (client *WebAppsClient) restoreFromDeletedAppSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19038,35 +19353,37 @@ func (client *WebAppsClient) restoreFromDeletedAppSlotCreateRequest(ctx context.
 
 // BeginRestoreSlot - Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// backupID - ID of the backup.
-// slot - Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
-// request - Information on restore request .
-// options - WebAppsClientBeginRestoreSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - backupID - ID of the backup.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+//   - request - Information on restore request .
+//   - options - WebAppsClientBeginRestoreSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSlot
+//     method.
 func (client *WebAppsClient) BeginRestoreSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request RestoreRequest, options *WebAppsClientBeginRestoreSlotOptions) (*runtime.Poller[WebAppsClientRestoreSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restoreSlot(ctx, resourceGroupName, name, backupID, slot, request, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientRestoreSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientRestoreSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RestoreSlot - Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) restoreSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request RestoreRequest, options *WebAppsClientBeginRestoreSlotOptions) (*http.Response, error) {
 	req, err := client.restoreSlotCreateRequest(ctx, resourceGroupName, name, backupID, slot, request, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -19099,7 +19416,7 @@ func (client *WebAppsClient) restoreSlotCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19111,34 +19428,36 @@ func (client *WebAppsClient) restoreSlotCreateRequest(ctx context.Context, resou
 
 // BeginRestoreSnapshot - Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// restoreRequest - Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots
-// API.
-// options - WebAppsClientBeginRestoreSnapshotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSnapshot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - restoreRequest - Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots
+//     API.
+//   - options - WebAppsClientBeginRestoreSnapshotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSnapshot
+//     method.
 func (client *WebAppsClient) BeginRestoreSnapshot(ctx context.Context, resourceGroupName string, name string, restoreRequest SnapshotRestoreRequest, options *WebAppsClientBeginRestoreSnapshotOptions) (*runtime.Poller[WebAppsClientRestoreSnapshotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restoreSnapshot(ctx, resourceGroupName, name, restoreRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientRestoreSnapshotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientRestoreSnapshotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreSnapshotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreSnapshotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RestoreSnapshot - Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) restoreSnapshot(ctx context.Context, resourceGroupName string, name string, restoreRequest SnapshotRestoreRequest, options *WebAppsClientBeginRestoreSnapshotOptions) (*http.Response, error) {
 	req, err := client.restoreSnapshotCreateRequest(ctx, resourceGroupName, name, restoreRequest, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -19163,7 +19482,7 @@ func (client *WebAppsClient) restoreSnapshotCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19175,35 +19494,37 @@ func (client *WebAppsClient) restoreSnapshotCreateRequest(ctx context.Context, r
 
 // BeginRestoreSnapshotSlot - Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// restoreRequest - Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots
-// API.
-// options - WebAppsClientBeginRestoreSnapshotSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSnapshotSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - restoreRequest - Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots
+//     API.
+//   - options - WebAppsClientBeginRestoreSnapshotSlotOptions contains the optional parameters for the WebAppsClient.BeginRestoreSnapshotSlot
+//     method.
 func (client *WebAppsClient) BeginRestoreSnapshotSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest SnapshotRestoreRequest, options *WebAppsClientBeginRestoreSnapshotSlotOptions) (*runtime.Poller[WebAppsClientRestoreSnapshotSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restoreSnapshotSlot(ctx, resourceGroupName, name, slot, restoreRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientRestoreSnapshotSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientRestoreSnapshotSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreSnapshotSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientRestoreSnapshotSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RestoreSnapshotSlot - Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) restoreSnapshotSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest SnapshotRestoreRequest, options *WebAppsClientBeginRestoreSnapshotSlotOptions) (*http.Response, error) {
 	req, err := client.restoreSnapshotSlotCreateRequest(ctx, resourceGroupName, name, slot, restoreRequest, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -19232,7 +19553,7 @@ func (client *WebAppsClient) restoreSnapshotSlotCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19244,18 +19565,19 @@ func (client *WebAppsClient) restoreSnapshotSlotCreateRequest(ctx context.Contex
 
 // RunTriggeredWebJob - Run a triggered web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// options - WebAppsClientRunTriggeredWebJobOptions contains the optional parameters for the WebAppsClient.RunTriggeredWebJob
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - options - WebAppsClientRunTriggeredWebJobOptions contains the optional parameters for the WebAppsClient.RunTriggeredWebJob
+//     method.
 func (client *WebAppsClient) RunTriggeredWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsClientRunTriggeredWebJobOptions) (WebAppsClientRunTriggeredWebJobResponse, error) {
 	req, err := client.runTriggeredWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
 		return WebAppsClientRunTriggeredWebJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientRunTriggeredWebJobResponse{}, err
 	}
@@ -19284,7 +19606,7 @@ func (client *WebAppsClient) runTriggeredWebJobCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19296,19 +19618,20 @@ func (client *WebAppsClient) runTriggeredWebJobCreateRequest(ctx context.Context
 
 // RunTriggeredWebJobSlot - Run a triggered web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientRunTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.RunTriggeredWebJobSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientRunTriggeredWebJobSlotOptions contains the optional parameters for the WebAppsClient.RunTriggeredWebJobSlot
+//     method.
 func (client *WebAppsClient) RunTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientRunTriggeredWebJobSlotOptions) (WebAppsClientRunTriggeredWebJobSlotResponse, error) {
 	req, err := client.runTriggeredWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
 		return WebAppsClientRunTriggeredWebJobSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientRunTriggeredWebJobSlotResponse{}, err
 	}
@@ -19341,7 +19664,7 @@ func (client *WebAppsClient) runTriggeredWebJobSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19353,16 +19676,17 @@ func (client *WebAppsClient) runTriggeredWebJobSlotCreateRequest(ctx context.Con
 
 // Start - Starts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientStartOptions contains the optional parameters for the WebAppsClient.Start method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientStartOptions contains the optional parameters for the WebAppsClient.Start method.
 func (client *WebAppsClient) Start(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientStartOptions) (WebAppsClientStartResponse, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientStartResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStartResponse{}, err
 	}
@@ -19387,7 +19711,7 @@ func (client *WebAppsClient) startCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19399,18 +19723,19 @@ func (client *WebAppsClient) startCreateRequest(ctx context.Context, resourceGro
 
 // StartContinuousWebJob - Start a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// options - WebAppsClientStartContinuousWebJobOptions contains the optional parameters for the WebAppsClient.StartContinuousWebJob
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - options - WebAppsClientStartContinuousWebJobOptions contains the optional parameters for the WebAppsClient.StartContinuousWebJob
+//     method.
 func (client *WebAppsClient) StartContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsClientStartContinuousWebJobOptions) (WebAppsClientStartContinuousWebJobResponse, error) {
 	req, err := client.startContinuousWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
 		return WebAppsClientStartContinuousWebJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStartContinuousWebJobResponse{}, err
 	}
@@ -19439,7 +19764,7 @@ func (client *WebAppsClient) startContinuousWebJobCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19451,19 +19776,20 @@ func (client *WebAppsClient) startContinuousWebJobCreateRequest(ctx context.Cont
 
 // StartContinuousWebJobSlot - Start a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientStartContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.StartContinuousWebJobSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientStartContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.StartContinuousWebJobSlot
+//     method.
 func (client *WebAppsClient) StartContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientStartContinuousWebJobSlotOptions) (WebAppsClientStartContinuousWebJobSlotResponse, error) {
 	req, err := client.startContinuousWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
 		return WebAppsClientStartContinuousWebJobSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStartContinuousWebJobSlotResponse{}, err
 	}
@@ -19496,7 +19822,7 @@ func (client *WebAppsClient) startContinuousWebJobSlotCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19508,32 +19834,34 @@ func (client *WebAppsClient) startContinuousWebJobSlotCreateRequest(ctx context.
 
 // BeginStartNetworkTrace - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// options - WebAppsClientBeginStartNetworkTraceOptions contains the optional parameters for the WebAppsClient.BeginStartNetworkTrace
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - options - WebAppsClientBeginStartNetworkTraceOptions contains the optional parameters for the WebAppsClient.BeginStartNetworkTrace
+//     method.
 func (client *WebAppsClient) BeginStartNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartNetworkTraceOptions) (*runtime.Poller[WebAppsClientStartNetworkTraceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.startNetworkTrace(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientStartNetworkTraceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientStartNetworkTraceResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientStartNetworkTraceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientStartNetworkTraceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // StartNetworkTrace - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) startNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartNetworkTraceOptions) (*http.Response, error) {
 	req, err := client.startNetworkTraceCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -19558,7 +19886,7 @@ func (client *WebAppsClient) startNetworkTraceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19580,33 +19908,35 @@ func (client *WebAppsClient) startNetworkTraceCreateRequest(ctx context.Context,
 
 // BeginStartNetworkTraceSlot - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// slot - The name of the slot for this web app.
-// options - WebAppsClientBeginStartNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.BeginStartNetworkTraceSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - slot - The name of the slot for this web app.
+//   - options - WebAppsClientBeginStartNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.BeginStartNetworkTraceSlot
+//     method.
 func (client *WebAppsClient) BeginStartNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartNetworkTraceSlotOptions) (*runtime.Poller[WebAppsClientStartNetworkTraceSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.startNetworkTraceSlot(ctx, resourceGroupName, name, slot, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientStartNetworkTraceSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientStartNetworkTraceSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientStartNetworkTraceSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientStartNetworkTraceSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // StartNetworkTraceSlot - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) startNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartNetworkTraceSlotOptions) (*http.Response, error) {
 	req, err := client.startNetworkTraceSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -19635,7 +19965,7 @@ func (client *WebAppsClient) startNetworkTraceSlotCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19657,17 +19987,18 @@ func (client *WebAppsClient) startNetworkTraceSlotCreateRequest(ctx context.Cont
 
 // StartSlot - Starts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will start the production slot.
-// options - WebAppsClientStartSlotOptions contains the optional parameters for the WebAppsClient.StartSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will start the production slot.
+//   - options - WebAppsClientStartSlotOptions contains the optional parameters for the WebAppsClient.StartSlot method.
 func (client *WebAppsClient) StartSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientStartSlotOptions) (WebAppsClientStartSlotResponse, error) {
 	req, err := client.startSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientStartSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStartSlotResponse{}, err
 	}
@@ -19696,7 +20027,7 @@ func (client *WebAppsClient) startSlotCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19708,17 +20039,18 @@ func (client *WebAppsClient) startSlotCreateRequest(ctx context.Context, resourc
 
 // StartWebSiteNetworkTrace - Start capturing network packets for the site (To be deprecated).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// options - WebAppsClientStartWebSiteNetworkTraceOptions contains the optional parameters for the WebAppsClient.StartWebSiteNetworkTrace
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - options - WebAppsClientStartWebSiteNetworkTraceOptions contains the optional parameters for the WebAppsClient.StartWebSiteNetworkTrace
+//     method.
 func (client *WebAppsClient) StartWebSiteNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientStartWebSiteNetworkTraceOptions) (WebAppsClientStartWebSiteNetworkTraceResponse, error) {
 	req, err := client.startWebSiteNetworkTraceCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceResponse{}, err
 	}
@@ -19743,7 +20075,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19774,32 +20106,34 @@ func (client *WebAppsClient) startWebSiteNetworkTraceHandleResponse(resp *http.R
 
 // BeginStartWebSiteNetworkTraceOperation - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// options - WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions contains the optional parameters for the WebAppsClient.BeginStartWebSiteNetworkTraceOperation
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - options - WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions contains the optional parameters for the WebAppsClient.BeginStartWebSiteNetworkTraceOperation
+//     method.
 func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions) (*runtime.Poller[WebAppsClientStartWebSiteNetworkTraceOperationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.startWebSiteNetworkTraceOperation(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientStartWebSiteNetworkTraceOperationResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientStartWebSiteNetworkTraceOperationResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientStartWebSiteNetworkTraceOperationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientStartWebSiteNetworkTraceOperationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // StartWebSiteNetworkTraceOperation - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) startWebSiteNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions) (*http.Response, error) {
 	req, err := client.startWebSiteNetworkTraceOperationCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -19824,7 +20158,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19846,33 +20180,35 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationCreateRequest(ctx 
 
 // BeginStartWebSiteNetworkTraceOperationSlot - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// slot - The name of the slot for this web app.
-// options - WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions contains the optional parameters for the WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - slot - The name of the slot for this web app.
+//   - options - WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions contains the optional parameters for the WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot
+//     method.
 func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions) (*runtime.Poller[WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.startWebSiteNetworkTraceOperationSlot(ctx, resourceGroupName, name, slot, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // StartWebSiteNetworkTraceOperationSlot - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions) (*http.Response, error) {
 	req, err := client.startWebSiteNetworkTraceOperationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -19901,7 +20237,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlotCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19923,18 +20259,19 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlotCreateRequest(
 
 // StartWebSiteNetworkTraceSlot - Start capturing network packets for the site (To be deprecated).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// slot - The name of the slot for this web app.
-// options - WebAppsClientStartWebSiteNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.StartWebSiteNetworkTraceSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - slot - The name of the slot for this web app.
+//   - options - WebAppsClientStartWebSiteNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.StartWebSiteNetworkTraceSlot
+//     method.
 func (client *WebAppsClient) StartWebSiteNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientStartWebSiteNetworkTraceSlotOptions) (WebAppsClientStartWebSiteNetworkTraceSlotResponse, error) {
 	req, err := client.startWebSiteNetworkTraceSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceSlotResponse{}, err
 	}
@@ -19963,7 +20300,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceSlotCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -19994,16 +20331,17 @@ func (client *WebAppsClient) startWebSiteNetworkTraceSlotHandleResponse(resp *ht
 
 // Stop - Stops an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientStopOptions contains the optional parameters for the WebAppsClient.Stop method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientStopOptions contains the optional parameters for the WebAppsClient.Stop method.
 func (client *WebAppsClient) Stop(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientStopOptions) (WebAppsClientStopResponse, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientStopResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStopResponse{}, err
 	}
@@ -20028,7 +20366,7 @@ func (client *WebAppsClient) stopCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20040,18 +20378,19 @@ func (client *WebAppsClient) stopCreateRequest(ctx context.Context, resourceGrou
 
 // StopContinuousWebJob - Stop a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// options - WebAppsClientStopContinuousWebJobOptions contains the optional parameters for the WebAppsClient.StopContinuousWebJob
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - options - WebAppsClientStopContinuousWebJobOptions contains the optional parameters for the WebAppsClient.StopContinuousWebJob
+//     method.
 func (client *WebAppsClient) StopContinuousWebJob(ctx context.Context, resourceGroupName string, name string, webJobName string, options *WebAppsClientStopContinuousWebJobOptions) (WebAppsClientStopContinuousWebJobResponse, error) {
 	req, err := client.stopContinuousWebJobCreateRequest(ctx, resourceGroupName, name, webJobName, options)
 	if err != nil {
 		return WebAppsClientStopContinuousWebJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStopContinuousWebJobResponse{}, err
 	}
@@ -20080,7 +20419,7 @@ func (client *WebAppsClient) stopContinuousWebJobCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20092,19 +20431,20 @@ func (client *WebAppsClient) stopContinuousWebJobCreateRequest(ctx context.Conte
 
 // StopContinuousWebJobSlot - Stop a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// webJobName - Name of Web Job.
-// slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
-// options - WebAppsClientStopContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.StopContinuousWebJobSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - webJobName - Name of Web Job.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+//   - options - WebAppsClientStopContinuousWebJobSlotOptions contains the optional parameters for the WebAppsClient.StopContinuousWebJobSlot
+//     method.
 func (client *WebAppsClient) StopContinuousWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *WebAppsClientStopContinuousWebJobSlotOptions) (WebAppsClientStopContinuousWebJobSlotResponse, error) {
 	req, err := client.stopContinuousWebJobSlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
 	if err != nil {
 		return WebAppsClientStopContinuousWebJobSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStopContinuousWebJobSlotResponse{}, err
 	}
@@ -20137,7 +20477,7 @@ func (client *WebAppsClient) stopContinuousWebJobSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20149,17 +20489,18 @@ func (client *WebAppsClient) stopContinuousWebJobSlotCreateRequest(ctx context.C
 
 // StopNetworkTrace - Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// options - WebAppsClientStopNetworkTraceOptions contains the optional parameters for the WebAppsClient.StopNetworkTrace
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - options - WebAppsClientStopNetworkTraceOptions contains the optional parameters for the WebAppsClient.StopNetworkTrace
+//     method.
 func (client *WebAppsClient) StopNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientStopNetworkTraceOptions) (WebAppsClientStopNetworkTraceResponse, error) {
 	req, err := client.stopNetworkTraceCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientStopNetworkTraceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStopNetworkTraceResponse{}, err
 	}
@@ -20184,7 +20525,7 @@ func (client *WebAppsClient) stopNetworkTraceCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20196,18 +20537,19 @@ func (client *WebAppsClient) stopNetworkTraceCreateRequest(ctx context.Context, 
 
 // StopNetworkTraceSlot - Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// slot - The name of the slot for this web app.
-// options - WebAppsClientStopNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.StopNetworkTraceSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - slot - The name of the slot for this web app.
+//   - options - WebAppsClientStopNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.StopNetworkTraceSlot
+//     method.
 func (client *WebAppsClient) StopNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientStopNetworkTraceSlotOptions) (WebAppsClientStopNetworkTraceSlotResponse, error) {
 	req, err := client.stopNetworkTraceSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientStopNetworkTraceSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStopNetworkTraceSlotResponse{}, err
 	}
@@ -20236,7 +20578,7 @@ func (client *WebAppsClient) stopNetworkTraceSlotCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20248,17 +20590,18 @@ func (client *WebAppsClient) stopNetworkTraceSlotCreateRequest(ctx context.Conte
 
 // StopSlot - Stops an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
-// options - WebAppsClientStopSlotOptions contains the optional parameters for the WebAppsClient.StopSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
+//   - options - WebAppsClientStopSlotOptions contains the optional parameters for the WebAppsClient.StopSlot method.
 func (client *WebAppsClient) StopSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientStopSlotOptions) (WebAppsClientStopSlotResponse, error) {
 	req, err := client.stopSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientStopSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStopSlotResponse{}, err
 	}
@@ -20287,7 +20630,7 @@ func (client *WebAppsClient) stopSlotCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20299,17 +20642,18 @@ func (client *WebAppsClient) stopSlotCreateRequest(ctx context.Context, resource
 
 // StopWebSiteNetworkTrace - Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// options - WebAppsClientStopWebSiteNetworkTraceOptions contains the optional parameters for the WebAppsClient.StopWebSiteNetworkTrace
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - options - WebAppsClientStopWebSiteNetworkTraceOptions contains the optional parameters for the WebAppsClient.StopWebSiteNetworkTrace
+//     method.
 func (client *WebAppsClient) StopWebSiteNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientStopWebSiteNetworkTraceOptions) (WebAppsClientStopWebSiteNetworkTraceResponse, error) {
 	req, err := client.stopWebSiteNetworkTraceCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientStopWebSiteNetworkTraceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStopWebSiteNetworkTraceResponse{}, err
 	}
@@ -20334,7 +20678,7 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20346,18 +20690,19 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceCreateRequest(ctx context.Co
 
 // StopWebSiteNetworkTraceSlot - Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// slot - The name of the slot for this web app.
-// options - WebAppsClientStopWebSiteNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.StopWebSiteNetworkTraceSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - slot - The name of the slot for this web app.
+//   - options - WebAppsClientStopWebSiteNetworkTraceSlotOptions contains the optional parameters for the WebAppsClient.StopWebSiteNetworkTraceSlot
+//     method.
 func (client *WebAppsClient) StopWebSiteNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientStopWebSiteNetworkTraceSlotOptions) (WebAppsClientStopWebSiteNetworkTraceSlotResponse, error) {
 	req, err := client.stopWebSiteNetworkTraceSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, err
 	}
@@ -20386,7 +20731,7 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20398,33 +20743,35 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceSlotCreateRequest(ctx contex
 
 // BeginSwapSlot - Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
-// slotSwapEntity - JSON object that contains the target slot name. See example.
-// options - WebAppsClientBeginSwapSlotOptions contains the optional parameters for the WebAppsClient.BeginSwapSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+//   - slotSwapEntity - JSON object that contains the target slot name. See example.
+//   - options - WebAppsClientBeginSwapSlotOptions contains the optional parameters for the WebAppsClient.BeginSwapSlot method.
 func (client *WebAppsClient) BeginSwapSlot(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsClientBeginSwapSlotOptions) (*runtime.Poller[WebAppsClientSwapSlotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.swapSlot(ctx, resourceGroupName, name, slot, slotSwapEntity, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientSwapSlotResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientSwapSlotResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientSwapSlotResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientSwapSlotResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // SwapSlot - Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) swapSlot(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsClientBeginSwapSlotOptions) (*http.Response, error) {
 	req, err := client.swapSlotCreateRequest(ctx, resourceGroupName, name, slot, slotSwapEntity, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -20453,7 +20800,7 @@ func (client *WebAppsClient) swapSlotCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20465,33 +20812,35 @@ func (client *WebAppsClient) swapSlotCreateRequest(ctx context.Context, resource
 
 // BeginSwapSlotWithProduction - Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slotSwapEntity - JSON object that contains the target slot name. See example.
-// options - WebAppsClientBeginSwapSlotWithProductionOptions contains the optional parameters for the WebAppsClient.BeginSwapSlotWithProduction
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slotSwapEntity - JSON object that contains the target slot name. See example.
+//   - options - WebAppsClientBeginSwapSlotWithProductionOptions contains the optional parameters for the WebAppsClient.BeginSwapSlotWithProduction
+//     method.
 func (client *WebAppsClient) BeginSwapSlotWithProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsClientBeginSwapSlotWithProductionOptions) (*runtime.Poller[WebAppsClientSwapSlotWithProductionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.swapSlotWithProduction(ctx, resourceGroupName, name, slotSwapEntity, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebAppsClientSwapSlotWithProductionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebAppsClientSwapSlotWithProductionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebAppsClientSwapSlotWithProductionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebAppsClientSwapSlotWithProductionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // SwapSlotWithProduction - Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
 func (client *WebAppsClient) swapSlotWithProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsClientBeginSwapSlotWithProductionOptions) (*http.Response, error) {
 	req, err := client.swapSlotWithProductionCreateRequest(ctx, resourceGroupName, name, slotSwapEntity, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -20516,7 +20865,7 @@ func (client *WebAppsClient) swapSlotWithProductionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20528,17 +20877,18 @@ func (client *WebAppsClient) swapSlotWithProductionCreateRequest(ctx context.Con
 
 // SyncFunctionTriggers - Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientSyncFunctionTriggersOptions contains the optional parameters for the WebAppsClient.SyncFunctionTriggers
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientSyncFunctionTriggersOptions contains the optional parameters for the WebAppsClient.SyncFunctionTriggers
+//     method.
 func (client *WebAppsClient) SyncFunctionTriggers(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientSyncFunctionTriggersOptions) (WebAppsClientSyncFunctionTriggersResponse, error) {
 	req, err := client.syncFunctionTriggersCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientSyncFunctionTriggersResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientSyncFunctionTriggersResponse{}, err
 	}
@@ -20563,7 +20913,7 @@ func (client *WebAppsClient) syncFunctionTriggersCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20575,18 +20925,19 @@ func (client *WebAppsClient) syncFunctionTriggersCreateRequest(ctx context.Conte
 
 // SyncFunctionTriggersSlot - Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot.
-// options - WebAppsClientSyncFunctionTriggersSlotOptions contains the optional parameters for the WebAppsClient.SyncFunctionTriggersSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientSyncFunctionTriggersSlotOptions contains the optional parameters for the WebAppsClient.SyncFunctionTriggersSlot
+//     method.
 func (client *WebAppsClient) SyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientSyncFunctionTriggersSlotOptions) (WebAppsClientSyncFunctionTriggersSlotResponse, error) {
 	req, err := client.syncFunctionTriggersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientSyncFunctionTriggersSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientSyncFunctionTriggersSlotResponse{}, err
 	}
@@ -20615,7 +20966,7 @@ func (client *WebAppsClient) syncFunctionTriggersSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20627,16 +20978,17 @@ func (client *WebAppsClient) syncFunctionTriggersSlotCreateRequest(ctx context.C
 
 // SyncFunctions - Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// options - WebAppsClientSyncFunctionsOptions contains the optional parameters for the WebAppsClient.SyncFunctions method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - options - WebAppsClientSyncFunctionsOptions contains the optional parameters for the WebAppsClient.SyncFunctions method.
 func (client *WebAppsClient) SyncFunctions(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientSyncFunctionsOptions) (WebAppsClientSyncFunctionsResponse, error) {
 	req, err := client.syncFunctionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientSyncFunctionsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientSyncFunctionsResponse{}, err
 	}
@@ -20661,7 +21013,7 @@ func (client *WebAppsClient) syncFunctionsCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20673,18 +21025,19 @@ func (client *WebAppsClient) syncFunctionsCreateRequest(ctx context.Context, res
 
 // SyncFunctionsSlot - Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot.
-// options - WebAppsClientSyncFunctionsSlotOptions contains the optional parameters for the WebAppsClient.SyncFunctionsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot.
+//   - options - WebAppsClientSyncFunctionsSlotOptions contains the optional parameters for the WebAppsClient.SyncFunctionsSlot
+//     method.
 func (client *WebAppsClient) SyncFunctionsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientSyncFunctionsSlotOptions) (WebAppsClientSyncFunctionsSlotResponse, error) {
 	req, err := client.syncFunctionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientSyncFunctionsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientSyncFunctionsSlotResponse{}, err
 	}
@@ -20713,7 +21066,7 @@ func (client *WebAppsClient) syncFunctionsSlotCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20726,16 +21079,17 @@ func (client *WebAppsClient) syncFunctionsSlotCreateRequest(ctx context.Context,
 
 // SyncRepository - Sync web app repository.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// options - WebAppsClientSyncRepositoryOptions contains the optional parameters for the WebAppsClient.SyncRepository method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - options - WebAppsClientSyncRepositoryOptions contains the optional parameters for the WebAppsClient.SyncRepository method.
 func (client *WebAppsClient) SyncRepository(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientSyncRepositoryOptions) (WebAppsClientSyncRepositoryResponse, error) {
 	req, err := client.syncRepositoryCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return WebAppsClientSyncRepositoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientSyncRepositoryResponse{}, err
 	}
@@ -20760,7 +21114,7 @@ func (client *WebAppsClient) syncRepositoryCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20772,18 +21126,19 @@ func (client *WebAppsClient) syncRepositoryCreateRequest(ctx context.Context, re
 
 // SyncRepositorySlot - Sync web app repository.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// options - WebAppsClientSyncRepositorySlotOptions contains the optional parameters for the WebAppsClient.SyncRepositorySlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - options - WebAppsClientSyncRepositorySlotOptions contains the optional parameters for the WebAppsClient.SyncRepositorySlot
+//     method.
 func (client *WebAppsClient) SyncRepositorySlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientSyncRepositorySlotOptions) (WebAppsClientSyncRepositorySlotResponse, error) {
 	req, err := client.syncRepositorySlotCreateRequest(ctx, resourceGroupName, name, slot, options)
 	if err != nil {
 		return WebAppsClientSyncRepositorySlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientSyncRepositorySlotResponse{}, err
 	}
@@ -20812,7 +21167,7 @@ func (client *WebAppsClient) syncRepositorySlotCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20824,17 +21179,18 @@ func (client *WebAppsClient) syncRepositorySlotCreateRequest(ctx context.Context
 
 // Update - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
-// siteEnvelope - A JSON representation of the app properties. See example.
-// options - WebAppsClientUpdateOptions contains the optional parameters for the WebAppsClient.Update method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+//   - siteEnvelope - A JSON representation of the app properties. See example.
+//   - options - WebAppsClientUpdateOptions contains the optional parameters for the WebAppsClient.Update method.
 func (client *WebAppsClient) Update(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource, options *WebAppsClientUpdateOptions) (WebAppsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, siteEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateResponse{}, err
 	}
@@ -20859,7 +21215,7 @@ func (client *WebAppsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20881,18 +21237,19 @@ func (client *WebAppsClient) updateHandleResponse(resp *http.Response) (WebAppsC
 
 // UpdateApplicationSettings - Replaces the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// appSettings - Application settings of the app.
-// options - WebAppsClientUpdateApplicationSettingsOptions contains the optional parameters for the WebAppsClient.UpdateApplicationSettings
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - appSettings - Application settings of the app.
+//   - options - WebAppsClientUpdateApplicationSettingsOptions contains the optional parameters for the WebAppsClient.UpdateApplicationSettings
+//     method.
 func (client *WebAppsClient) UpdateApplicationSettings(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, options *WebAppsClientUpdateApplicationSettingsOptions) (WebAppsClientUpdateApplicationSettingsResponse, error) {
 	req, err := client.updateApplicationSettingsCreateRequest(ctx, resourceGroupName, name, appSettings, options)
 	if err != nil {
 		return WebAppsClientUpdateApplicationSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateApplicationSettingsResponse{}, err
 	}
@@ -20917,7 +21274,7 @@ func (client *WebAppsClient) updateApplicationSettingsCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -20939,20 +21296,21 @@ func (client *WebAppsClient) updateApplicationSettingsHandleResponse(resp *http.
 
 // UpdateApplicationSettingsSlot - Replaces the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the application settings for the production
-// slot.
-// appSettings - Application settings of the app.
-// options - WebAppsClientUpdateApplicationSettingsSlotOptions contains the optional parameters for the WebAppsClient.UpdateApplicationSettingsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the application settings for the production
+//     slot.
+//   - appSettings - Application settings of the app.
+//   - options - WebAppsClientUpdateApplicationSettingsSlotOptions contains the optional parameters for the WebAppsClient.UpdateApplicationSettingsSlot
+//     method.
 func (client *WebAppsClient) UpdateApplicationSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, appSettings StringDictionary, options *WebAppsClientUpdateApplicationSettingsSlotOptions) (WebAppsClientUpdateApplicationSettingsSlotResponse, error) {
 	req, err := client.updateApplicationSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, appSettings, options)
 	if err != nil {
 		return WebAppsClientUpdateApplicationSettingsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateApplicationSettingsSlotResponse{}, err
 	}
@@ -20981,7 +21339,7 @@ func (client *WebAppsClient) updateApplicationSettingsSlotCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21003,18 +21361,19 @@ func (client *WebAppsClient) updateApplicationSettingsSlotHandleResponse(resp *h
 
 // UpdateAuthSettings - Updates the Authentication / Authorization settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// siteAuthSettings - Auth settings associated with web app.
-// options - WebAppsClientUpdateAuthSettingsOptions contains the optional parameters for the WebAppsClient.UpdateAuthSettings
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - siteAuthSettings - Auth settings associated with web app.
+//   - options - WebAppsClientUpdateAuthSettingsOptions contains the optional parameters for the WebAppsClient.UpdateAuthSettings
+//     method.
 func (client *WebAppsClient) UpdateAuthSettings(ctx context.Context, resourceGroupName string, name string, siteAuthSettings SiteAuthSettings, options *WebAppsClientUpdateAuthSettingsOptions) (WebAppsClientUpdateAuthSettingsResponse, error) {
 	req, err := client.updateAuthSettingsCreateRequest(ctx, resourceGroupName, name, siteAuthSettings, options)
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsResponse{}, err
 	}
@@ -21039,7 +21398,7 @@ func (client *WebAppsClient) updateAuthSettingsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21061,19 +21420,20 @@ func (client *WebAppsClient) updateAuthSettingsHandleResponse(resp *http.Respons
 
 // UpdateAuthSettingsSlot - Updates the Authentication / Authorization settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// siteAuthSettings - Auth settings associated with web app.
-// options - WebAppsClientUpdateAuthSettingsSlotOptions contains the optional parameters for the WebAppsClient.UpdateAuthSettingsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - siteAuthSettings - Auth settings associated with web app.
+//   - options - WebAppsClientUpdateAuthSettingsSlotOptions contains the optional parameters for the WebAppsClient.UpdateAuthSettingsSlot
+//     method.
 func (client *WebAppsClient) UpdateAuthSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettings SiteAuthSettings, options *WebAppsClientUpdateAuthSettingsSlotOptions) (WebAppsClientUpdateAuthSettingsSlotResponse, error) {
 	req, err := client.updateAuthSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, siteAuthSettings, options)
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsSlotResponse{}, err
 	}
@@ -21102,7 +21462,7 @@ func (client *WebAppsClient) updateAuthSettingsSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21124,18 +21484,19 @@ func (client *WebAppsClient) updateAuthSettingsSlotHandleResponse(resp *http.Res
 
 // UpdateAzureStorageAccounts - Updates the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// azureStorageAccounts - Azure storage accounts of the app.
-// options - WebAppsClientUpdateAzureStorageAccountsOptions contains the optional parameters for the WebAppsClient.UpdateAzureStorageAccounts
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - azureStorageAccounts - Azure storage accounts of the app.
+//   - options - WebAppsClientUpdateAzureStorageAccountsOptions contains the optional parameters for the WebAppsClient.UpdateAzureStorageAccounts
+//     method.
 func (client *WebAppsClient) UpdateAzureStorageAccounts(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts AzureStoragePropertyDictionaryResource, options *WebAppsClientUpdateAzureStorageAccountsOptions) (WebAppsClientUpdateAzureStorageAccountsResponse, error) {
 	req, err := client.updateAzureStorageAccountsCreateRequest(ctx, resourceGroupName, name, azureStorageAccounts, options)
 	if err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsResponse{}, err
 	}
@@ -21160,7 +21521,7 @@ func (client *WebAppsClient) updateAzureStorageAccountsCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21182,20 +21543,21 @@ func (client *WebAppsClient) updateAzureStorageAccountsHandleResponse(resp *http
 
 // UpdateAzureStorageAccountsSlot - Updates the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations
-// for the production slot.
-// azureStorageAccounts - Azure storage accounts of the app.
-// options - WebAppsClientUpdateAzureStorageAccountsSlotOptions contains the optional parameters for the WebAppsClient.UpdateAzureStorageAccountsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the Azure storage account configurations
+//     for the production slot.
+//   - azureStorageAccounts - Azure storage accounts of the app.
+//   - options - WebAppsClientUpdateAzureStorageAccountsSlotOptions contains the optional parameters for the WebAppsClient.UpdateAzureStorageAccountsSlot
+//     method.
 func (client *WebAppsClient) UpdateAzureStorageAccountsSlot(ctx context.Context, resourceGroupName string, name string, slot string, azureStorageAccounts AzureStoragePropertyDictionaryResource, options *WebAppsClientUpdateAzureStorageAccountsSlotOptions) (WebAppsClientUpdateAzureStorageAccountsSlotResponse, error) {
 	req, err := client.updateAzureStorageAccountsSlotCreateRequest(ctx, resourceGroupName, name, slot, azureStorageAccounts, options)
 	if err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsSlotResponse{}, err
 	}
@@ -21224,7 +21586,7 @@ func (client *WebAppsClient) updateAzureStorageAccountsSlotCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21246,18 +21608,19 @@ func (client *WebAppsClient) updateAzureStorageAccountsSlotHandleResponse(resp *
 
 // UpdateBackupConfiguration - Updates the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// request - Edited backup configuration.
-// options - WebAppsClientUpdateBackupConfigurationOptions contains the optional parameters for the WebAppsClient.UpdateBackupConfiguration
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - request - Edited backup configuration.
+//   - options - WebAppsClientUpdateBackupConfigurationOptions contains the optional parameters for the WebAppsClient.UpdateBackupConfiguration
+//     method.
 func (client *WebAppsClient) UpdateBackupConfiguration(ctx context.Context, resourceGroupName string, name string, request BackupRequest, options *WebAppsClientUpdateBackupConfigurationOptions) (WebAppsClientUpdateBackupConfigurationResponse, error) {
 	req, err := client.updateBackupConfigurationCreateRequest(ctx, resourceGroupName, name, request, options)
 	if err != nil {
 		return WebAppsClientUpdateBackupConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateBackupConfigurationResponse{}, err
 	}
@@ -21282,7 +21645,7 @@ func (client *WebAppsClient) updateBackupConfigurationCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21304,20 +21667,21 @@ func (client *WebAppsClient) updateBackupConfigurationHandleResponse(resp *http.
 
 // UpdateBackupConfigurationSlot - Updates the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the backup configuration for the production
-// slot.
-// request - Edited backup configuration.
-// options - WebAppsClientUpdateBackupConfigurationSlotOptions contains the optional parameters for the WebAppsClient.UpdateBackupConfigurationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the backup configuration for the production
+//     slot.
+//   - request - Edited backup configuration.
+//   - options - WebAppsClientUpdateBackupConfigurationSlotOptions contains the optional parameters for the WebAppsClient.UpdateBackupConfigurationSlot
+//     method.
 func (client *WebAppsClient) UpdateBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, request BackupRequest, options *WebAppsClientUpdateBackupConfigurationSlotOptions) (WebAppsClientUpdateBackupConfigurationSlotResponse, error) {
 	req, err := client.updateBackupConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, request, options)
 	if err != nil {
 		return WebAppsClientUpdateBackupConfigurationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateBackupConfigurationSlotResponse{}, err
 	}
@@ -21346,7 +21710,7 @@ func (client *WebAppsClient) updateBackupConfigurationSlotCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21368,18 +21732,19 @@ func (client *WebAppsClient) updateBackupConfigurationSlotHandleResponse(resp *h
 
 // UpdateConfiguration - Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// siteConfig - JSON representation of a SiteConfig object. See example.
-// options - WebAppsClientUpdateConfigurationOptions contains the optional parameters for the WebAppsClient.UpdateConfiguration
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - siteConfig - JSON representation of a SiteConfig object. See example.
+//   - options - WebAppsClientUpdateConfigurationOptions contains the optional parameters for the WebAppsClient.UpdateConfiguration
+//     method.
 func (client *WebAppsClient) UpdateConfiguration(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfigResource, options *WebAppsClientUpdateConfigurationOptions) (WebAppsClientUpdateConfigurationResponse, error) {
 	req, err := client.updateConfigurationCreateRequest(ctx, resourceGroupName, name, siteConfig, options)
 	if err != nil {
 		return WebAppsClientUpdateConfigurationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateConfigurationResponse{}, err
 	}
@@ -21404,7 +21769,7 @@ func (client *WebAppsClient) updateConfigurationCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21426,19 +21791,20 @@ func (client *WebAppsClient) updateConfigurationHandleResponse(resp *http.Respon
 
 // UpdateConfigurationSlot - Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
-// siteConfig - JSON representation of a SiteConfig object. See example.
-// options - WebAppsClientUpdateConfigurationSlotOptions contains the optional parameters for the WebAppsClient.UpdateConfigurationSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update configuration for the production slot.
+//   - siteConfig - JSON representation of a SiteConfig object. See example.
+//   - options - WebAppsClientUpdateConfigurationSlotOptions contains the optional parameters for the WebAppsClient.UpdateConfigurationSlot
+//     method.
 func (client *WebAppsClient) UpdateConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig SiteConfigResource, options *WebAppsClientUpdateConfigurationSlotOptions) (WebAppsClientUpdateConfigurationSlotResponse, error) {
 	req, err := client.updateConfigurationSlotCreateRequest(ctx, resourceGroupName, name, slot, siteConfig, options)
 	if err != nil {
 		return WebAppsClientUpdateConfigurationSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateConfigurationSlotResponse{}, err
 	}
@@ -21467,7 +21833,7 @@ func (client *WebAppsClient) updateConfigurationSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21489,18 +21855,19 @@ func (client *WebAppsClient) updateConfigurationSlotHandleResponse(resp *http.Re
 
 // UpdateConnectionStrings - Replaces the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// connectionStrings - Connection strings of the app or deployment slot. See example.
-// options - WebAppsClientUpdateConnectionStringsOptions contains the optional parameters for the WebAppsClient.UpdateConnectionStrings
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - connectionStrings - Connection strings of the app or deployment slot. See example.
+//   - options - WebAppsClientUpdateConnectionStringsOptions contains the optional parameters for the WebAppsClient.UpdateConnectionStrings
+//     method.
 func (client *WebAppsClient) UpdateConnectionStrings(ctx context.Context, resourceGroupName string, name string, connectionStrings ConnectionStringDictionary, options *WebAppsClientUpdateConnectionStringsOptions) (WebAppsClientUpdateConnectionStringsResponse, error) {
 	req, err := client.updateConnectionStringsCreateRequest(ctx, resourceGroupName, name, connectionStrings, options)
 	if err != nil {
 		return WebAppsClientUpdateConnectionStringsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateConnectionStringsResponse{}, err
 	}
@@ -21525,7 +21892,7 @@ func (client *WebAppsClient) updateConnectionStringsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21547,20 +21914,21 @@ func (client *WebAppsClient) updateConnectionStringsHandleResponse(resp *http.Re
 
 // UpdateConnectionStringsSlot - Replaces the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the connection settings for the production
-// slot.
-// connectionStrings - Connection strings of the app or deployment slot. See example.
-// options - WebAppsClientUpdateConnectionStringsSlotOptions contains the optional parameters for the WebAppsClient.UpdateConnectionStringsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the connection settings for the production
+//     slot.
+//   - connectionStrings - Connection strings of the app or deployment slot. See example.
+//   - options - WebAppsClientUpdateConnectionStringsSlotOptions contains the optional parameters for the WebAppsClient.UpdateConnectionStringsSlot
+//     method.
 func (client *WebAppsClient) UpdateConnectionStringsSlot(ctx context.Context, resourceGroupName string, name string, slot string, connectionStrings ConnectionStringDictionary, options *WebAppsClientUpdateConnectionStringsSlotOptions) (WebAppsClientUpdateConnectionStringsSlotResponse, error) {
 	req, err := client.updateConnectionStringsSlotCreateRequest(ctx, resourceGroupName, name, slot, connectionStrings, options)
 	if err != nil {
 		return WebAppsClientUpdateConnectionStringsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateConnectionStringsSlotResponse{}, err
 	}
@@ -21589,7 +21957,7 @@ func (client *WebAppsClient) updateConnectionStringsSlotCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21611,18 +21979,19 @@ func (client *WebAppsClient) updateConnectionStringsSlotHandleResponse(resp *htt
 
 // UpdateDiagnosticLogsConfig - Updates the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// siteLogsConfig - A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
-// options - WebAppsClientUpdateDiagnosticLogsConfigOptions contains the optional parameters for the WebAppsClient.UpdateDiagnosticLogsConfig
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - siteLogsConfig - A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
+//   - options - WebAppsClientUpdateDiagnosticLogsConfigOptions contains the optional parameters for the WebAppsClient.UpdateDiagnosticLogsConfig
+//     method.
 func (client *WebAppsClient) UpdateDiagnosticLogsConfig(ctx context.Context, resourceGroupName string, name string, siteLogsConfig SiteLogsConfig, options *WebAppsClientUpdateDiagnosticLogsConfigOptions) (WebAppsClientUpdateDiagnosticLogsConfigResponse, error) {
 	req, err := client.updateDiagnosticLogsConfigCreateRequest(ctx, resourceGroupName, name, siteLogsConfig, options)
 	if err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigResponse{}, err
 	}
@@ -21647,7 +22016,7 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21669,20 +22038,21 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigHandleResponse(resp *http
 
 // UpdateDiagnosticLogsConfigSlot - Updates the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the logging configuration for the production
-// slot.
-// siteLogsConfig - A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
-// options - WebAppsClientUpdateDiagnosticLogsConfigSlotOptions contains the optional parameters for the WebAppsClient.UpdateDiagnosticLogsConfigSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the logging configuration for the production
+//     slot.
+//   - siteLogsConfig - A SiteLogsConfig JSON object that contains the logging configuration to change in the "properties" property.
+//   - options - WebAppsClientUpdateDiagnosticLogsConfigSlotOptions contains the optional parameters for the WebAppsClient.UpdateDiagnosticLogsConfigSlot
+//     method.
 func (client *WebAppsClient) UpdateDiagnosticLogsConfigSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteLogsConfig SiteLogsConfig, options *WebAppsClientUpdateDiagnosticLogsConfigSlotOptions) (WebAppsClientUpdateDiagnosticLogsConfigSlotResponse, error) {
 	req, err := client.updateDiagnosticLogsConfigSlotCreateRequest(ctx, resourceGroupName, name, slot, siteLogsConfig, options)
 	if err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigSlotResponse{}, err
 	}
@@ -21711,7 +22081,7 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigSlotCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21733,19 +22103,20 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigSlotHandleResponse(resp *
 
 // UpdateDomainOwnershipIdentifier - Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// domainOwnershipIdentifierName - Name of domain ownership identifier.
-// domainOwnershipIdentifier - A JSON representation of the domain ownership properties.
-// options - WebAppsClientUpdateDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.UpdateDomainOwnershipIdentifier
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - domainOwnershipIdentifierName - Name of domain ownership identifier.
+//   - domainOwnershipIdentifier - A JSON representation of the domain ownership properties.
+//   - options - WebAppsClientUpdateDomainOwnershipIdentifierOptions contains the optional parameters for the WebAppsClient.UpdateDomainOwnershipIdentifier
+//     method.
 func (client *WebAppsClient) UpdateDomainOwnershipIdentifier(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier Identifier, options *WebAppsClientUpdateDomainOwnershipIdentifierOptions) (WebAppsClientUpdateDomainOwnershipIdentifierResponse, error) {
 	req, err := client.updateDomainOwnershipIdentifierCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, domainOwnershipIdentifier, options)
 	if err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierResponse{}, err
 	}
@@ -21774,7 +22145,7 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21797,20 +22168,21 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierHandleResponse(resp 
 // UpdateDomainOwnershipIdentifierSlot - Creates a domain ownership identifier for web app, or updates an existing ownership
 // identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// domainOwnershipIdentifierName - Name of domain ownership identifier.
-// slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
-// domainOwnershipIdentifier - A JSON representation of the domain ownership properties.
-// options - WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.UpdateDomainOwnershipIdentifierSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - domainOwnershipIdentifierName - Name of domain ownership identifier.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will delete the binding for the production slot.
+//   - domainOwnershipIdentifier - A JSON representation of the domain ownership properties.
+//   - options - WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions contains the optional parameters for the WebAppsClient.UpdateDomainOwnershipIdentifierSlot
+//     method.
 func (client *WebAppsClient) UpdateDomainOwnershipIdentifierSlot(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier Identifier, options *WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions) (WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse, error) {
 	req, err := client.updateDomainOwnershipIdentifierSlotCreateRequest(ctx, resourceGroupName, name, domainOwnershipIdentifierName, slot, domainOwnershipIdentifier, options)
 	if err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
@@ -21843,7 +22215,7 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21865,20 +22237,21 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotHandleResponse(r
 
 // UpdateHybridConnection - Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// connectionEnvelope - The details of the hybrid connection.
-// options - WebAppsClientUpdateHybridConnectionOptions contains the optional parameters for the WebAppsClient.UpdateHybridConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - connectionEnvelope - The details of the hybrid connection.
+//   - options - WebAppsClientUpdateHybridConnectionOptions contains the optional parameters for the WebAppsClient.UpdateHybridConnection
+//     method.
 func (client *WebAppsClient) UpdateHybridConnection(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope HybridConnection, options *WebAppsClientUpdateHybridConnectionOptions) (WebAppsClientUpdateHybridConnectionResponse, error) {
 	req, err := client.updateHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateHybridConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateHybridConnectionResponse{}, err
 	}
@@ -21911,7 +22284,7 @@ func (client *WebAppsClient) updateHybridConnectionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -21933,21 +22306,22 @@ func (client *WebAppsClient) updateHybridConnectionHandleResponse(resp *http.Res
 
 // UpdateHybridConnectionSlot - Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - The name of the web app.
-// namespaceName - The namespace for this hybrid connection.
-// relayName - The relay name for this hybrid connection.
-// slot - The name of the slot for the web app.
-// connectionEnvelope - The details of the hybrid connection.
-// options - WebAppsClientUpdateHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateHybridConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - The name of the web app.
+//   - namespaceName - The namespace for this hybrid connection.
+//   - relayName - The relay name for this hybrid connection.
+//   - slot - The name of the slot for the web app.
+//   - connectionEnvelope - The details of the hybrid connection.
+//   - options - WebAppsClientUpdateHybridConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateHybridConnectionSlot
+//     method.
 func (client *WebAppsClient) UpdateHybridConnectionSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope HybridConnection, options *WebAppsClientUpdateHybridConnectionSlotOptions) (WebAppsClientUpdateHybridConnectionSlotResponse, error) {
 	req, err := client.updateHybridConnectionSlotCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateHybridConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateHybridConnectionSlotResponse{}, err
 	}
@@ -21984,7 +22358,7 @@ func (client *WebAppsClient) updateHybridConnectionSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22006,17 +22380,18 @@ func (client *WebAppsClient) updateHybridConnectionSlotHandleResponse(resp *http
 
 // UpdateMetadata - Replaces the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// metadata - Edited metadata of the app or deployment slot. See example.
-// options - WebAppsClientUpdateMetadataOptions contains the optional parameters for the WebAppsClient.UpdateMetadata method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - metadata - Edited metadata of the app or deployment slot. See example.
+//   - options - WebAppsClientUpdateMetadataOptions contains the optional parameters for the WebAppsClient.UpdateMetadata method.
 func (client *WebAppsClient) UpdateMetadata(ctx context.Context, resourceGroupName string, name string, metadata StringDictionary, options *WebAppsClientUpdateMetadataOptions) (WebAppsClientUpdateMetadataResponse, error) {
 	req, err := client.updateMetadataCreateRequest(ctx, resourceGroupName, name, metadata, options)
 	if err != nil {
 		return WebAppsClientUpdateMetadataResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateMetadataResponse{}, err
 	}
@@ -22041,7 +22416,7 @@ func (client *WebAppsClient) updateMetadataCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22063,19 +22438,20 @@ func (client *WebAppsClient) updateMetadataHandleResponse(resp *http.Response) (
 
 // UpdateMetadataSlot - Replaces the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the metadata for the production slot.
-// metadata - Edited metadata of the app or deployment slot. See example.
-// options - WebAppsClientUpdateMetadataSlotOptions contains the optional parameters for the WebAppsClient.UpdateMetadataSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the metadata for the production slot.
+//   - metadata - Edited metadata of the app or deployment slot. See example.
+//   - options - WebAppsClientUpdateMetadataSlotOptions contains the optional parameters for the WebAppsClient.UpdateMetadataSlot
+//     method.
 func (client *WebAppsClient) UpdateMetadataSlot(ctx context.Context, resourceGroupName string, name string, slot string, metadata StringDictionary, options *WebAppsClientUpdateMetadataSlotOptions) (WebAppsClientUpdateMetadataSlotResponse, error) {
 	req, err := client.updateMetadataSlotCreateRequest(ctx, resourceGroupName, name, slot, metadata, options)
 	if err != nil {
 		return WebAppsClientUpdateMetadataSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateMetadataSlotResponse{}, err
 	}
@@ -22104,7 +22480,7 @@ func (client *WebAppsClient) updateMetadataSlotCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22126,19 +22502,20 @@ func (client *WebAppsClient) updateMetadataSlotHandleResponse(resp *http.Respons
 
 // UpdatePremierAddOn - Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// premierAddOnName - Add-on name.
-// premierAddOn - A JSON representation of the edited premier add-on.
-// options - WebAppsClientUpdatePremierAddOnOptions contains the optional parameters for the WebAppsClient.UpdatePremierAddOn
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - premierAddOnName - Add-on name.
+//   - premierAddOn - A JSON representation of the edited premier add-on.
+//   - options - WebAppsClientUpdatePremierAddOnOptions contains the optional parameters for the WebAppsClient.UpdatePremierAddOn
+//     method.
 func (client *WebAppsClient) UpdatePremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnPatchResource, options *WebAppsClientUpdatePremierAddOnOptions) (WebAppsClientUpdatePremierAddOnResponse, error) {
 	req, err := client.updatePremierAddOnCreateRequest(ctx, resourceGroupName, name, premierAddOnName, premierAddOn, options)
 	if err != nil {
 		return WebAppsClientUpdatePremierAddOnResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdatePremierAddOnResponse{}, err
 	}
@@ -22167,7 +22544,7 @@ func (client *WebAppsClient) updatePremierAddOnCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22189,21 +22566,22 @@ func (client *WebAppsClient) updatePremierAddOnHandleResponse(resp *http.Respons
 
 // UpdatePremierAddOnSlot - Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// premierAddOnName - Add-on name.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production
-// slot.
-// premierAddOn - A JSON representation of the edited premier add-on.
-// options - WebAppsClientUpdatePremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.UpdatePremierAddOnSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - premierAddOnName - Add-on name.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the named add-on for the production
+//     slot.
+//   - premierAddOn - A JSON representation of the edited premier add-on.
+//   - options - WebAppsClientUpdatePremierAddOnSlotOptions contains the optional parameters for the WebAppsClient.UpdatePremierAddOnSlot
+//     method.
 func (client *WebAppsClient) UpdatePremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn PremierAddOnPatchResource, options *WebAppsClientUpdatePremierAddOnSlotOptions) (WebAppsClientUpdatePremierAddOnSlotResponse, error) {
 	req, err := client.updatePremierAddOnSlotCreateRequest(ctx, resourceGroupName, name, premierAddOnName, slot, premierAddOn, options)
 	if err != nil {
 		return WebAppsClientUpdatePremierAddOnSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdatePremierAddOnSlotResponse{}, err
 	}
@@ -22236,7 +22614,7 @@ func (client *WebAppsClient) updatePremierAddOnSlotCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22258,19 +22636,20 @@ func (client *WebAppsClient) updatePremierAddOnSlotHandleResponse(resp *http.Res
 
 // UpdateRelayServiceConnection - Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// entityName - Name of the hybrid connection configuration.
-// connectionEnvelope - Details of the hybrid connection configuration.
-// options - WebAppsClientUpdateRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.UpdateRelayServiceConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - entityName - Name of the hybrid connection configuration.
+//   - connectionEnvelope - Details of the hybrid connection configuration.
+//   - options - WebAppsClientUpdateRelayServiceConnectionOptions contains the optional parameters for the WebAppsClient.UpdateRelayServiceConnection
+//     method.
 func (client *WebAppsClient) UpdateRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsClientUpdateRelayServiceConnectionOptions) (WebAppsClientUpdateRelayServiceConnectionResponse, error) {
 	req, err := client.updateRelayServiceConnectionCreateRequest(ctx, resourceGroupName, name, entityName, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionResponse{}, err
 	}
@@ -22299,7 +22678,7 @@ func (client *WebAppsClient) updateRelayServiceConnectionCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22321,21 +22700,22 @@ func (client *WebAppsClient) updateRelayServiceConnectionHandleResponse(resp *ht
 
 // UpdateRelayServiceConnectionSlot - Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// entityName - Name of the hybrid connection configuration.
-// slot - Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the
-// production slot.
-// connectionEnvelope - Details of the hybrid connection configuration.
-// options - WebAppsClientUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateRelayServiceConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - entityName - Name of the hybrid connection configuration.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will create or update a hybrid connection for the
+//     production slot.
+//   - connectionEnvelope - Details of the hybrid connection configuration.
+//   - options - WebAppsClientUpdateRelayServiceConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateRelayServiceConnectionSlot
+//     method.
 func (client *WebAppsClient) UpdateRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope RelayServiceConnectionEntity, options *WebAppsClientUpdateRelayServiceConnectionSlotOptions) (WebAppsClientUpdateRelayServiceConnectionSlotResponse, error) {
 	req, err := client.updateRelayServiceConnectionSlotCreateRequest(ctx, resourceGroupName, name, entityName, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionSlotResponse{}, err
 	}
@@ -22368,7 +22748,7 @@ func (client *WebAppsClient) updateRelayServiceConnectionSlotCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22390,18 +22770,19 @@ func (client *WebAppsClient) updateRelayServiceConnectionSlotHandleResponse(resp
 
 // UpdateSitePushSettings - Updates the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// pushSettings - Push settings associated with web app.
-// options - WebAppsClientUpdateSitePushSettingsOptions contains the optional parameters for the WebAppsClient.UpdateSitePushSettings
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - pushSettings - Push settings associated with web app.
+//   - options - WebAppsClientUpdateSitePushSettingsOptions contains the optional parameters for the WebAppsClient.UpdateSitePushSettings
+//     method.
 func (client *WebAppsClient) UpdateSitePushSettings(ctx context.Context, resourceGroupName string, name string, pushSettings PushSettings, options *WebAppsClientUpdateSitePushSettingsOptions) (WebAppsClientUpdateSitePushSettingsResponse, error) {
 	req, err := client.updateSitePushSettingsCreateRequest(ctx, resourceGroupName, name, pushSettings, options)
 	if err != nil {
 		return WebAppsClientUpdateSitePushSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateSitePushSettingsResponse{}, err
 	}
@@ -22426,7 +22807,7 @@ func (client *WebAppsClient) updateSitePushSettingsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22448,19 +22829,20 @@ func (client *WebAppsClient) updateSitePushSettingsHandleResponse(resp *http.Res
 
 // UpdateSitePushSettingsSlot - Updates the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of web app.
-// slot - Name of web app slot. If not specified then will default to production slot.
-// pushSettings - Push settings associated with web app.
-// options - WebAppsClientUpdateSitePushSettingsSlotOptions contains the optional parameters for the WebAppsClient.UpdateSitePushSettingsSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of web app.
+//   - slot - Name of web app slot. If not specified then will default to production slot.
+//   - pushSettings - Push settings associated with web app.
+//   - options - WebAppsClientUpdateSitePushSettingsSlotOptions contains the optional parameters for the WebAppsClient.UpdateSitePushSettingsSlot
+//     method.
 func (client *WebAppsClient) UpdateSitePushSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string, pushSettings PushSettings, options *WebAppsClientUpdateSitePushSettingsSlotOptions) (WebAppsClientUpdateSitePushSettingsSlotResponse, error) {
 	req, err := client.updateSitePushSettingsSlotCreateRequest(ctx, resourceGroupName, name, slot, pushSettings, options)
 	if err != nil {
 		return WebAppsClientUpdateSitePushSettingsSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateSitePushSettingsSlotResponse{}, err
 	}
@@ -22489,7 +22871,7 @@ func (client *WebAppsClient) updateSitePushSettingsSlotCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22511,19 +22893,20 @@ func (client *WebAppsClient) updateSitePushSettingsSlotHandleResponse(resp *http
 
 // UpdateSlot - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
-// slot - Name of the deployment slot to create or update. By default, this API attempts to create or modify the production
-// slot.
-// siteEnvelope - A JSON representation of the app properties. See example.
-// options - WebAppsClientUpdateSlotOptions contains the optional parameters for the WebAppsClient.UpdateSlot method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+//   - slot - Name of the deployment slot to create or update. By default, this API attempts to create or modify the production
+//     slot.
+//   - siteEnvelope - A JSON representation of the app properties. See example.
+//   - options - WebAppsClientUpdateSlotOptions contains the optional parameters for the WebAppsClient.UpdateSlot method.
 func (client *WebAppsClient) UpdateSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope SitePatchResource, options *WebAppsClientUpdateSlotOptions) (WebAppsClientUpdateSlotResponse, error) {
 	req, err := client.updateSlotCreateRequest(ctx, resourceGroupName, name, slot, siteEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateSlotResponse{}, err
 	}
@@ -22552,7 +22935,7 @@ func (client *WebAppsClient) updateSlotCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22575,18 +22958,19 @@ func (client *WebAppsClient) updateSlotHandleResponse(resp *http.Response) (WebA
 // UpdateSlotConfigurationNames - Updates the names of application settings and connection string that remain with the slot
 // during swap operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slotConfigNames - Names of application settings and connection strings. See example.
-// options - WebAppsClientUpdateSlotConfigurationNamesOptions contains the optional parameters for the WebAppsClient.UpdateSlotConfigurationNames
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slotConfigNames - Names of application settings and connection strings. See example.
+//   - options - WebAppsClientUpdateSlotConfigurationNamesOptions contains the optional parameters for the WebAppsClient.UpdateSlotConfigurationNames
+//     method.
 func (client *WebAppsClient) UpdateSlotConfigurationNames(ctx context.Context, resourceGroupName string, name string, slotConfigNames SlotConfigNamesResource, options *WebAppsClientUpdateSlotConfigurationNamesOptions) (WebAppsClientUpdateSlotConfigurationNamesResponse, error) {
 	req, err := client.updateSlotConfigurationNamesCreateRequest(ctx, resourceGroupName, name, slotConfigNames, options)
 	if err != nil {
 		return WebAppsClientUpdateSlotConfigurationNamesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateSlotConfigurationNamesResponse{}, err
 	}
@@ -22611,7 +22995,7 @@ func (client *WebAppsClient) updateSlotConfigurationNamesCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22633,18 +23017,19 @@ func (client *WebAppsClient) updateSlotConfigurationNamesHandleResponse(resp *ht
 
 // UpdateSourceControl - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// siteSourceControl - JSON representation of a SiteSourceControl object. See example.
-// options - WebAppsClientUpdateSourceControlOptions contains the optional parameters for the WebAppsClient.UpdateSourceControl
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - siteSourceControl - JSON representation of a SiteSourceControl object. See example.
+//   - options - WebAppsClientUpdateSourceControlOptions contains the optional parameters for the WebAppsClient.UpdateSourceControl
+//     method.
 func (client *WebAppsClient) UpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, options *WebAppsClientUpdateSourceControlOptions) (WebAppsClientUpdateSourceControlResponse, error) {
 	req, err := client.updateSourceControlCreateRequest(ctx, resourceGroupName, name, siteSourceControl, options)
 	if err != nil {
 		return WebAppsClientUpdateSourceControlResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateSourceControlResponse{}, err
 	}
@@ -22669,7 +23054,7 @@ func (client *WebAppsClient) updateSourceControlCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22691,20 +23076,21 @@ func (client *WebAppsClient) updateSourceControlHandleResponse(resp *http.Respon
 
 // UpdateSourceControlSlot - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for
-// the production slot.
-// siteSourceControl - JSON representation of a SiteSourceControl object. See example.
-// options - WebAppsClientUpdateSourceControlSlotOptions contains the optional parameters for the WebAppsClient.UpdateSourceControlSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will update the source control configuration for
+//     the production slot.
+//   - siteSourceControl - JSON representation of a SiteSourceControl object. See example.
+//   - options - WebAppsClientUpdateSourceControlSlotOptions contains the optional parameters for the WebAppsClient.UpdateSourceControlSlot
+//     method.
 func (client *WebAppsClient) UpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, options *WebAppsClientUpdateSourceControlSlotOptions) (WebAppsClientUpdateSourceControlSlotResponse, error) {
 	req, err := client.updateSourceControlSlotCreateRequest(ctx, resourceGroupName, name, slot, siteSourceControl, options)
 	if err != nil {
 		return WebAppsClientUpdateSourceControlSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateSourceControlSlotResponse{}, err
 	}
@@ -22733,7 +23119,7 @@ func (client *WebAppsClient) updateSourceControlSlotCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22757,18 +23143,19 @@ func (client *WebAppsClient) updateSourceControlSlotHandleResponse(resp *http.Re
 // is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is
 // not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// connectionEnvelope - Properties of the Virtual Network connection. See example.
-// options - WebAppsClientUpdateSwiftVirtualNetworkConnectionOptions contains the optional parameters for the WebAppsClient.UpdateSwiftVirtualNetworkConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - connectionEnvelope - Properties of the Virtual Network connection. See example.
+//   - options - WebAppsClientUpdateSwiftVirtualNetworkConnectionOptions contains the optional parameters for the WebAppsClient.UpdateSwiftVirtualNetworkConnection
+//     method.
 func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnection(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsClientUpdateSwiftVirtualNetworkConnectionOptions) (WebAppsClientUpdateSwiftVirtualNetworkConnectionResponse, error) {
 	req, err := client.updateSwiftVirtualNetworkConnectionCreateRequest(ctx, resourceGroupName, name, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionResponse{}, err
 	}
@@ -22793,7 +23180,7 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22817,20 +23204,21 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionHandleResponse(r
 // is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is
 // not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// slot - Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production
-// slot.
-// connectionEnvelope - Properties of the Virtual Network connection. See example.
-// options - WebAppsClientUpdateSwiftVirtualNetworkConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateSwiftVirtualNetworkConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production
+//     slot.
+//   - connectionEnvelope - Properties of the Virtual Network connection. See example.
+//   - options - WebAppsClientUpdateSwiftVirtualNetworkConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateSwiftVirtualNetworkConnectionSlot
+//     method.
 func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionSlot(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope SwiftVirtualNetwork, options *WebAppsClientUpdateSwiftVirtualNetworkConnectionSlotOptions) (WebAppsClientUpdateSwiftVirtualNetworkConnectionSlotResponse, error) {
 	req, err := client.updateSwiftVirtualNetworkConnectionSlotCreateRequest(ctx, resourceGroupName, name, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
@@ -22859,7 +23247,7 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionSlotCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22881,19 +23269,20 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionSlotHandleRespon
 
 // UpdateVnetConnection - Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of an existing Virtual Network.
-// connectionEnvelope - Properties of the Virtual Network connection. See example.
-// options - WebAppsClientUpdateVnetConnectionOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnection
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of an existing Virtual Network.
+//   - connectionEnvelope - Properties of the Virtual Network connection. See example.
+//   - options - WebAppsClientUpdateVnetConnectionOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnection
+//     method.
 func (client *WebAppsClient) UpdateVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo, options *WebAppsClientUpdateVnetConnectionOptions) (WebAppsClientUpdateVnetConnectionResponse, error) {
 	req, err := client.updateVnetConnectionCreateRequest(ctx, resourceGroupName, name, vnetName, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionResponse{}, err
 	}
@@ -22922,7 +23311,7 @@ func (client *WebAppsClient) updateVnetConnectionCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -22944,20 +23333,21 @@ func (client *WebAppsClient) updateVnetConnectionHandleResponse(resp *http.Respo
 
 // UpdateVnetConnectionGateway - Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the Virtual Network.
-// gatewayName - Name of the gateway. Currently, the only supported string is "primary".
-// connectionEnvelope - The properties to update this gateway with.
-// options - WebAppsClientUpdateVnetConnectionGatewayOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionGateway
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the Virtual Network.
+//   - gatewayName - Name of the gateway. Currently, the only supported string is "primary".
+//   - connectionEnvelope - The properties to update this gateway with.
+//   - options - WebAppsClientUpdateVnetConnectionGatewayOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionGateway
+//     method.
 func (client *WebAppsClient) UpdateVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *WebAppsClientUpdateVnetConnectionGatewayOptions) (WebAppsClientUpdateVnetConnectionGatewayResponse, error) {
 	req, err := client.updateVnetConnectionGatewayCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewayResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewayResponse{}, err
 	}
@@ -22990,7 +23380,7 @@ func (client *WebAppsClient) updateVnetConnectionGatewayCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -23012,22 +23402,23 @@ func (client *WebAppsClient) updateVnetConnectionGatewayHandleResponse(resp *htt
 
 // UpdateVnetConnectionGatewaySlot - Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of the Virtual Network.
-// gatewayName - Name of the gateway. Currently, the only supported string is "primary".
-// slot - Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production
-// slot's Virtual Network.
-// connectionEnvelope - The properties to update this gateway with.
-// options - WebAppsClientUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionGatewaySlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of the Virtual Network.
+//   - gatewayName - Name of the gateway. Currently, the only supported string is "primary".
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production
+//     slot's Virtual Network.
+//   - connectionEnvelope - The properties to update this gateway with.
+//   - options - WebAppsClientUpdateVnetConnectionGatewaySlotOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionGatewaySlot
+//     method.
 func (client *WebAppsClient) UpdateVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope VnetGateway, options *WebAppsClientUpdateVnetConnectionGatewaySlotOptions) (WebAppsClientUpdateVnetConnectionGatewaySlotResponse, error) {
 	req, err := client.updateVnetConnectionGatewaySlotCreateRequest(ctx, resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
@@ -23064,7 +23455,7 @@ func (client *WebAppsClient) updateVnetConnectionGatewaySlotCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -23087,21 +23478,22 @@ func (client *WebAppsClient) updateVnetConnectionGatewaySlotHandleResponse(resp 
 // UpdateVnetConnectionSlot - Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
 // (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-02-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the app.
-// vnetName - Name of an existing Virtual Network.
-// slot - Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production
-// slot.
-// connectionEnvelope - Properties of the Virtual Network connection. See example.
-// options - WebAppsClientUpdateVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionSlot
-// method.
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the app.
+//   - vnetName - Name of an existing Virtual Network.
+//   - slot - Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production
+//     slot.
+//   - connectionEnvelope - Properties of the Virtual Network connection. See example.
+//   - options - WebAppsClientUpdateVnetConnectionSlotOptions contains the optional parameters for the WebAppsClient.UpdateVnetConnectionSlot
+//     method.
 func (client *WebAppsClient) UpdateVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope VnetInfo, options *WebAppsClientUpdateVnetConnectionSlotOptions) (WebAppsClientUpdateVnetConnectionSlotResponse, error) {
 	req, err := client.updateVnetConnectionSlotCreateRequest(ctx, resourceGroupName, name, vnetName, slot, connectionEnvelope, options)
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionSlotResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionSlotResponse{}, err
 	}
@@ -23134,7 +23526,7 @@ func (client *WebAppsClient) updateVnetConnectionSlotCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,17 +14,17 @@ type AlertsClientGetResponse struct {
 	Alert
 }
 
-// AlertsClientListByDataBoxEdgeDeviceResponse contains the response from method AlertsClient.ListByDataBoxEdgeDevice.
+// AlertsClientListByDataBoxEdgeDeviceResponse contains the response from method AlertsClient.NewListByDataBoxEdgeDevicePager.
 type AlertsClientListByDataBoxEdgeDeviceResponse struct {
 	AlertList
 }
 
-// BandwidthSchedulesClientCreateOrUpdateResponse contains the response from method BandwidthSchedulesClient.CreateOrUpdate.
+// BandwidthSchedulesClientCreateOrUpdateResponse contains the response from method BandwidthSchedulesClient.BeginCreateOrUpdate.
 type BandwidthSchedulesClientCreateOrUpdateResponse struct {
 	BandwidthSchedule
 }
 
-// BandwidthSchedulesClientDeleteResponse contains the response from method BandwidthSchedulesClient.Delete.
+// BandwidthSchedulesClientDeleteResponse contains the response from method BandwidthSchedulesClient.BeginDelete.
 type BandwidthSchedulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -34,17 +34,17 @@ type BandwidthSchedulesClientGetResponse struct {
 	BandwidthSchedule
 }
 
-// BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse contains the response from method BandwidthSchedulesClient.ListByDataBoxEdgeDevice.
+// BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse contains the response from method BandwidthSchedulesClient.NewListByDataBoxEdgeDevicePager.
 type BandwidthSchedulesClientListByDataBoxEdgeDeviceResponse struct {
 	BandwidthSchedulesList
 }
 
-// ContainersClientCreateOrUpdateResponse contains the response from method ContainersClient.CreateOrUpdate.
+// ContainersClientCreateOrUpdateResponse contains the response from method ContainersClient.BeginCreateOrUpdate.
 type ContainersClientCreateOrUpdateResponse struct {
 	Container
 }
 
-// ContainersClientDeleteResponse contains the response from method ContainersClient.Delete.
+// ContainersClientDeleteResponse contains the response from method ContainersClient.BeginDelete.
 type ContainersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -54,32 +54,32 @@ type ContainersClientGetResponse struct {
 	Container
 }
 
-// ContainersClientListByStorageAccountResponse contains the response from method ContainersClient.ListByStorageAccount.
+// ContainersClientListByStorageAccountResponse contains the response from method ContainersClient.NewListByStorageAccountPager.
 type ContainersClientListByStorageAccountResponse struct {
 	ContainerList
 }
 
-// ContainersClientRefreshResponse contains the response from method ContainersClient.Refresh.
+// ContainersClientRefreshResponse contains the response from method ContainersClient.BeginRefresh.
 type ContainersClientRefreshResponse struct {
 	// placeholder for future response values
 }
 
-// DevicesClientCreateOrUpdateResponse contains the response from method DevicesClient.CreateOrUpdate.
+// DevicesClientCreateOrUpdateResponse contains the response from method DevicesClient.BeginCreateOrUpdate.
 type DevicesClientCreateOrUpdateResponse struct {
 	Device
 }
 
-// DevicesClientCreateOrUpdateSecuritySettingsResponse contains the response from method DevicesClient.CreateOrUpdateSecuritySettings.
+// DevicesClientCreateOrUpdateSecuritySettingsResponse contains the response from method DevicesClient.BeginCreateOrUpdateSecuritySettings.
 type DevicesClientCreateOrUpdateSecuritySettingsResponse struct {
 	// placeholder for future response values
 }
 
-// DevicesClientDeleteResponse contains the response from method DevicesClient.Delete.
+// DevicesClientDeleteResponse contains the response from method DevicesClient.BeginDelete.
 type DevicesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// DevicesClientDownloadUpdatesResponse contains the response from method DevicesClient.DownloadUpdates.
+// DevicesClientDownloadUpdatesResponse contains the response from method DevicesClient.BeginDownloadUpdates.
 type DevicesClientDownloadUpdatesResponse struct {
 	// placeholder for future response values
 }
@@ -104,22 +104,22 @@ type DevicesClientGetUpdateSummaryResponse struct {
 	UpdateSummary
 }
 
-// DevicesClientInstallUpdatesResponse contains the response from method DevicesClient.InstallUpdates.
+// DevicesClientInstallUpdatesResponse contains the response from method DevicesClient.BeginInstallUpdates.
 type DevicesClientInstallUpdatesResponse struct {
 	// placeholder for future response values
 }
 
-// DevicesClientListByResourceGroupResponse contains the response from method DevicesClient.ListByResourceGroup.
+// DevicesClientListByResourceGroupResponse contains the response from method DevicesClient.NewListByResourceGroupPager.
 type DevicesClientListByResourceGroupResponse struct {
 	DeviceList
 }
 
-// DevicesClientListBySubscriptionResponse contains the response from method DevicesClient.ListBySubscription.
+// DevicesClientListBySubscriptionResponse contains the response from method DevicesClient.NewListBySubscriptionPager.
 type DevicesClientListBySubscriptionResponse struct {
 	DeviceList
 }
 
-// DevicesClientScanForUpdatesResponse contains the response from method DevicesClient.ScanForUpdates.
+// DevicesClientScanForUpdatesResponse contains the response from method DevicesClient.BeginScanForUpdates.
 type DevicesClientScanForUpdatesResponse struct {
 	// placeholder for future response values
 }
@@ -139,12 +139,12 @@ type JobsClientGetResponse struct {
 	Job
 }
 
-// NodesClientListByDataBoxEdgeDeviceResponse contains the response from method NodesClient.ListByDataBoxEdgeDevice.
+// NodesClientListByDataBoxEdgeDeviceResponse contains the response from method NodesClient.NewListByDataBoxEdgeDevicePager.
 type NodesClientListByDataBoxEdgeDeviceResponse struct {
 	NodeList
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationsList
 }
@@ -154,12 +154,12 @@ type OperationsStatusClientGetResponse struct {
 	Job
 }
 
-// OrdersClientCreateOrUpdateResponse contains the response from method OrdersClient.CreateOrUpdate.
+// OrdersClientCreateOrUpdateResponse contains the response from method OrdersClient.BeginCreateOrUpdate.
 type OrdersClientCreateOrUpdateResponse struct {
 	Order
 }
 
-// OrdersClientDeleteResponse contains the response from method OrdersClient.Delete.
+// OrdersClientDeleteResponse contains the response from method OrdersClient.BeginDelete.
 type OrdersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -169,12 +169,12 @@ type OrdersClientGetResponse struct {
 	Order
 }
 
-// OrdersClientListByDataBoxEdgeDeviceResponse contains the response from method OrdersClient.ListByDataBoxEdgeDevice.
+// OrdersClientListByDataBoxEdgeDeviceResponse contains the response from method OrdersClient.NewListByDataBoxEdgeDevicePager.
 type OrdersClientListByDataBoxEdgeDeviceResponse struct {
 	OrderList
 }
 
-// RolesClientCreateOrUpdateResponse contains the response from method RolesClient.CreateOrUpdate.
+// RolesClientCreateOrUpdateResponse contains the response from method RolesClient.BeginCreateOrUpdate.
 type RolesClientCreateOrUpdateResponse struct {
 	RoleClassification
 }
@@ -189,7 +189,7 @@ func (r *RolesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// RolesClientDeleteResponse contains the response from method RolesClient.Delete.
+// RolesClientDeleteResponse contains the response from method RolesClient.BeginDelete.
 type RolesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -209,22 +209,22 @@ func (r *RolesClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// RolesClientListByDataBoxEdgeDeviceResponse contains the response from method RolesClient.ListByDataBoxEdgeDevice.
+// RolesClientListByDataBoxEdgeDeviceResponse contains the response from method RolesClient.NewListByDataBoxEdgeDevicePager.
 type RolesClientListByDataBoxEdgeDeviceResponse struct {
 	RoleList
 }
 
-// SKUsClientListResponse contains the response from method SKUsClient.List.
+// SKUsClientListResponse contains the response from method SKUsClient.NewListPager.
 type SKUsClientListResponse struct {
 	SKUInformationList
 }
 
-// SharesClientCreateOrUpdateResponse contains the response from method SharesClient.CreateOrUpdate.
+// SharesClientCreateOrUpdateResponse contains the response from method SharesClient.BeginCreateOrUpdate.
 type SharesClientCreateOrUpdateResponse struct {
 	Share
 }
 
-// SharesClientDeleteResponse contains the response from method SharesClient.Delete.
+// SharesClientDeleteResponse contains the response from method SharesClient.BeginDelete.
 type SharesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -234,22 +234,22 @@ type SharesClientGetResponse struct {
 	Share
 }
 
-// SharesClientListByDataBoxEdgeDeviceResponse contains the response from method SharesClient.ListByDataBoxEdgeDevice.
+// SharesClientListByDataBoxEdgeDeviceResponse contains the response from method SharesClient.NewListByDataBoxEdgeDevicePager.
 type SharesClientListByDataBoxEdgeDeviceResponse struct {
 	ShareList
 }
 
-// SharesClientRefreshResponse contains the response from method SharesClient.Refresh.
+// SharesClientRefreshResponse contains the response from method SharesClient.BeginRefresh.
 type SharesClientRefreshResponse struct {
 	// placeholder for future response values
 }
 
-// StorageAccountCredentialsClientCreateOrUpdateResponse contains the response from method StorageAccountCredentialsClient.CreateOrUpdate.
+// StorageAccountCredentialsClientCreateOrUpdateResponse contains the response from method StorageAccountCredentialsClient.BeginCreateOrUpdate.
 type StorageAccountCredentialsClientCreateOrUpdateResponse struct {
 	StorageAccountCredential
 }
 
-// StorageAccountCredentialsClientDeleteResponse contains the response from method StorageAccountCredentialsClient.Delete.
+// StorageAccountCredentialsClientDeleteResponse contains the response from method StorageAccountCredentialsClient.BeginDelete.
 type StorageAccountCredentialsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -259,17 +259,17 @@ type StorageAccountCredentialsClientGetResponse struct {
 	StorageAccountCredential
 }
 
-// StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse contains the response from method StorageAccountCredentialsClient.ListByDataBoxEdgeDevice.
+// StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse contains the response from method StorageAccountCredentialsClient.NewListByDataBoxEdgeDevicePager.
 type StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse struct {
 	StorageAccountCredentialList
 }
 
-// StorageAccountsClientCreateOrUpdateResponse contains the response from method StorageAccountsClient.CreateOrUpdate.
+// StorageAccountsClientCreateOrUpdateResponse contains the response from method StorageAccountsClient.BeginCreateOrUpdate.
 type StorageAccountsClientCreateOrUpdateResponse struct {
 	StorageAccount
 }
 
-// StorageAccountsClientDeleteResponse contains the response from method StorageAccountsClient.Delete.
+// StorageAccountsClientDeleteResponse contains the response from method StorageAccountsClient.BeginDelete.
 type StorageAccountsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -279,12 +279,12 @@ type StorageAccountsClientGetResponse struct {
 	StorageAccount
 }
 
-// StorageAccountsClientListByDataBoxEdgeDeviceResponse contains the response from method StorageAccountsClient.ListByDataBoxEdgeDevice.
+// StorageAccountsClientListByDataBoxEdgeDeviceResponse contains the response from method StorageAccountsClient.NewListByDataBoxEdgeDevicePager.
 type StorageAccountsClientListByDataBoxEdgeDeviceResponse struct {
 	StorageAccountList
 }
 
-// TriggersClientCreateOrUpdateResponse contains the response from method TriggersClient.CreateOrUpdate.
+// TriggersClientCreateOrUpdateResponse contains the response from method TriggersClient.BeginCreateOrUpdate.
 type TriggersClientCreateOrUpdateResponse struct {
 	TriggerClassification
 }
@@ -299,7 +299,7 @@ func (t *TriggersClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
-// TriggersClientDeleteResponse contains the response from method TriggersClient.Delete.
+// TriggersClientDeleteResponse contains the response from method TriggersClient.BeginDelete.
 type TriggersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -319,17 +319,17 @@ func (t *TriggersClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// TriggersClientListByDataBoxEdgeDeviceResponse contains the response from method TriggersClient.ListByDataBoxEdgeDevice.
+// TriggersClientListByDataBoxEdgeDeviceResponse contains the response from method TriggersClient.NewListByDataBoxEdgeDevicePager.
 type TriggersClientListByDataBoxEdgeDeviceResponse struct {
 	TriggerList
 }
 
-// UsersClientCreateOrUpdateResponse contains the response from method UsersClient.CreateOrUpdate.
+// UsersClientCreateOrUpdateResponse contains the response from method UsersClient.BeginCreateOrUpdate.
 type UsersClientCreateOrUpdateResponse struct {
 	User
 }
 
-// UsersClientDeleteResponse contains the response from method UsersClient.Delete.
+// UsersClientDeleteResponse contains the response from method UsersClient.BeginDelete.
 type UsersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -339,7 +339,7 @@ type UsersClientGetResponse struct {
 	User
 }
 
-// UsersClientListByDataBoxEdgeDeviceResponse contains the response from method UsersClient.ListByDataBoxEdgeDevice.
+// UsersClientListByDataBoxEdgeDeviceResponse contains the response from method UsersClient.NewListByDataBoxEdgeDevicePager.
 type UsersClientListByDataBoxEdgeDeviceResponse struct {
 	UserList
 }

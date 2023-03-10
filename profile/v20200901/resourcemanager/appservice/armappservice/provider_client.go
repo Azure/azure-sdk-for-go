@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,39 +25,31 @@ import (
 // ProviderClient contains the methods for the Provider group.
 // Don't use this type directly, use NewProviderClient() instead.
 type ProviderClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewProviderClient creates a new instance of ProviderClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".ProviderClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProviderClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewGetAvailableStacksPager - Get available application frameworks and their versions
+//
 // Generated from API version 2018-02-01
-// options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.GetAvailableStacks
-// method.
+//   - options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksPager
+//     method.
 func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClientGetAvailableStacksOptions) *runtime.Pager[ProviderClientGetAvailableStacksResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetAvailableStacksResponse]{
 		More: func(page ProviderClientGetAvailableStacksResponse) bool {
@@ -76,7 +66,7 @@ func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClient
 			if err != nil {
 				return ProviderClientGetAvailableStacksResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientGetAvailableStacksResponse{}, err
 			}
@@ -91,7 +81,7 @@ func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClient
 // getAvailableStacksCreateRequest creates the GetAvailableStacks request.
 func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Context, options *ProviderClientGetAvailableStacksOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/availableStacks"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,9 +105,10 @@ func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Respon
 }
 
 // NewGetAvailableStacksOnPremPager - Get available application frameworks and their versions
+//
 // Generated from API version 2018-02-01
-// options - ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.GetAvailableStacksOnPrem
-// method.
+//   - options - ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksOnPremPager
+//     method.
 func (client *ProviderClient) NewGetAvailableStacksOnPremPager(options *ProviderClientGetAvailableStacksOnPremOptions) *runtime.Pager[ProviderClientGetAvailableStacksOnPremResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetAvailableStacksOnPremResponse]{
 		More: func(page ProviderClientGetAvailableStacksOnPremResponse) bool {
@@ -134,7 +125,7 @@ func (client *ProviderClient) NewGetAvailableStacksOnPremPager(options *Provider
 			if err != nil {
 				return ProviderClientGetAvailableStacksOnPremResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientGetAvailableStacksOnPremResponse{}, err
 			}
@@ -153,7 +144,7 @@ func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -178,8 +169,10 @@ func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.
 
 // NewListOperationsPager - Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric
 // definitions
+//
 // Generated from API version 2018-02-01
-// options - ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.ListOperations method.
+//   - options - ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.NewListOperationsPager
+//     method.
 func (client *ProviderClient) NewListOperationsPager(options *ProviderClientListOperationsOptions) *runtime.Pager[ProviderClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientListOperationsResponse]{
 		More: func(page ProviderClientListOperationsResponse) bool {
@@ -196,7 +189,7 @@ func (client *ProviderClient) NewListOperationsPager(options *ProviderClientList
 			if err != nil {
 				return ProviderClientListOperationsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientListOperationsResponse{}, err
 			}
@@ -211,7 +204,7 @@ func (client *ProviderClient) NewListOperationsPager(options *ProviderClientList
 // listOperationsCreateRequest creates the ListOperations request.
 func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, options *ProviderClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

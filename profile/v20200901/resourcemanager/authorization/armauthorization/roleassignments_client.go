@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,52 +25,44 @@ import (
 // RoleAssignmentsClient contains the methods for the RoleAssignments group.
 // Don't use this type directly, use NewRoleAssignmentsClient() instead.
 type RoleAssignmentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRoleAssignmentsClient creates a new instance of RoleAssignmentsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRoleAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleAssignmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".RoleAssignmentsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RoleAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Creates a role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-07-01
-// scope - The scope of the role assignment to create. The scope can be any REST resource instance. For example, use '/subscriptions/{subscription-id}/'
-// for a subscription,
-// '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-// '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-// for a resource.
-// roleAssignmentName - A GUID for the role assignment to create. The name must be unique and different for each role assignment.
-// parameters - Parameters for the role assignment.
-// options - RoleAssignmentsClientCreateOptions contains the optional parameters for the RoleAssignmentsClient.Create method.
+//   - scope - The scope of the role assignment to create. The scope can be any REST resource instance. For example, use '/subscriptions/{subscription-id}/'
+//     for a subscription,
+//     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+//     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+//     for a resource.
+//   - roleAssignmentName - A GUID for the role assignment to create. The name must be unique and different for each role assignment.
+//   - parameters - Parameters for the role assignment.
+//   - options - RoleAssignmentsClientCreateOptions contains the optional parameters for the RoleAssignmentsClient.Create method.
 func (client *RoleAssignmentsClient) Create(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateOptions) (RoleAssignmentsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, scope, roleAssignmentName, parameters, options)
 	if err != nil {
 		return RoleAssignmentsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentsClientCreateResponse{}, err
 	}
@@ -90,7 +80,7 @@ func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, sc
 		return nil, errors.New("parameter roleAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", url.PathEscape(roleAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -112,19 +102,20 @@ func (client *RoleAssignmentsClient) createHandleResponse(resp *http.Response) (
 
 // CreateByID - Creates a role assignment by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-07-01
-// roleAssignmentID - The fully qualified ID of the role assignment, including the scope, resource name and resource type.
-// Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-// Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-// parameters - Parameters for the role assignment.
-// options - RoleAssignmentsClientCreateByIDOptions contains the optional parameters for the RoleAssignmentsClient.CreateByID
-// method.
+//   - roleAssignmentID - The fully qualified ID of the role assignment, including the scope, resource name and resource type.
+//     Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+//     Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+//   - parameters - Parameters for the role assignment.
+//   - options - RoleAssignmentsClientCreateByIDOptions contains the optional parameters for the RoleAssignmentsClient.CreateByID
+//     method.
 func (client *RoleAssignmentsClient) CreateByID(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateByIDOptions) (RoleAssignmentsClientCreateByIDResponse, error) {
 	req, err := client.createByIDCreateRequest(ctx, roleAssignmentID, parameters, options)
 	if err != nil {
 		return RoleAssignmentsClientCreateByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentsClientCreateByIDResponse{}, err
 	}
@@ -138,7 +129,7 @@ func (client *RoleAssignmentsClient) CreateByID(ctx context.Context, roleAssignm
 func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -160,16 +151,17 @@ func (client *RoleAssignmentsClient) createByIDHandleResponse(resp *http.Respons
 
 // Delete - Deletes a role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-07-01
-// scope - The scope of the role assignment to delete.
-// roleAssignmentName - The name of the role assignment to delete.
-// options - RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
+//   - scope - The scope of the role assignment to delete.
+//   - roleAssignmentName - The name of the role assignment to delete.
+//   - options - RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
 func (client *RoleAssignmentsClient) Delete(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsClientDeleteOptions) (RoleAssignmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, roleAssignmentName, options)
 	if err != nil {
 		return RoleAssignmentsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentsClientDeleteResponse{}, err
 	}
@@ -187,7 +179,7 @@ func (client *RoleAssignmentsClient) deleteCreateRequest(ctx context.Context, sc
 		return nil, errors.New("parameter roleAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", url.PathEscape(roleAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -209,18 +201,19 @@ func (client *RoleAssignmentsClient) deleteHandleResponse(resp *http.Response) (
 
 // DeleteByID - Deletes a role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-07-01
-// roleAssignmentID - The fully qualified ID of the role assignment, including the scope, resource name and resource type.
-// Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-// Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-// options - RoleAssignmentsClientDeleteByIDOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByID
-// method.
+//   - roleAssignmentID - The fully qualified ID of the role assignment, including the scope, resource name and resource type.
+//     Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+//     Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+//   - options - RoleAssignmentsClientDeleteByIDOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByID
+//     method.
 func (client *RoleAssignmentsClient) DeleteByID(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsClientDeleteByIDOptions) (RoleAssignmentsClientDeleteByIDResponse, error) {
 	req, err := client.deleteByIDCreateRequest(ctx, roleAssignmentID, options)
 	if err != nil {
 		return RoleAssignmentsClientDeleteByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentsClientDeleteByIDResponse{}, err
 	}
@@ -234,7 +227,7 @@ func (client *RoleAssignmentsClient) DeleteByID(ctx context.Context, roleAssignm
 func (client *RoleAssignmentsClient) deleteByIDCreateRequest(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,16 +249,17 @@ func (client *RoleAssignmentsClient) deleteByIDHandleResponse(resp *http.Respons
 
 // Get - Get the specified role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-07-01
-// scope - The scope of the role assignment.
-// roleAssignmentName - The name of the role assignment to get.
-// options - RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
+//   - scope - The scope of the role assignment.
+//   - roleAssignmentName - The name of the role assignment to get.
+//   - options - RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
 func (client *RoleAssignmentsClient) Get(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsClientGetOptions) (RoleAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleAssignmentName, options)
 	if err != nil {
 		return RoleAssignmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentsClientGetResponse{}, err
 	}
@@ -283,7 +277,7 @@ func (client *RoleAssignmentsClient) getCreateRequest(ctx context.Context, scope
 		return nil, errors.New("parameter roleAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", url.PathEscape(roleAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -305,17 +299,18 @@ func (client *RoleAssignmentsClient) getHandleResponse(resp *http.Response) (Rol
 
 // GetByID - Gets a role assignment by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-07-01
-// roleAssignmentID - The fully qualified ID of the role assignment, including the scope, resource name and resource type.
-// Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-// Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-// options - RoleAssignmentsClientGetByIDOptions contains the optional parameters for the RoleAssignmentsClient.GetByID method.
+//   - roleAssignmentID - The fully qualified ID of the role assignment, including the scope, resource name and resource type.
+//     Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+//     Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+//   - options - RoleAssignmentsClientGetByIDOptions contains the optional parameters for the RoleAssignmentsClient.GetByID method.
 func (client *RoleAssignmentsClient) GetByID(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsClientGetByIDOptions) (RoleAssignmentsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, roleAssignmentID, options)
 	if err != nil {
 		return RoleAssignmentsClientGetByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentsClientGetByIDResponse{}, err
 	}
@@ -329,7 +324,7 @@ func (client *RoleAssignmentsClient) GetByID(ctx context.Context, roleAssignment
 func (client *RoleAssignmentsClient) getByIDCreateRequest(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,8 +345,10 @@ func (client *RoleAssignmentsClient) getByIDHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Gets all role assignments for the subscription.
+//
 // Generated from API version 2015-07-01
-// options - RoleAssignmentsClientListOptions contains the optional parameters for the RoleAssignmentsClient.List method.
+//   - options - RoleAssignmentsClientListOptions contains the optional parameters for the RoleAssignmentsClient.NewListPager
+//     method.
 func (client *RoleAssignmentsClient) NewListPager(options *RoleAssignmentsClientListOptions) *runtime.Pager[RoleAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListResponse]{
 		More: func(page RoleAssignmentsClientListResponse) bool {
@@ -368,7 +365,7 @@ func (client *RoleAssignmentsClient) NewListPager(options *RoleAssignmentsClient
 			if err != nil {
 				return RoleAssignmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RoleAssignmentsClientListResponse{}, err
 			}
@@ -387,7 +384,7 @@ func (client *RoleAssignmentsClient) listCreateRequest(ctx context.Context, opti
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -411,14 +408,15 @@ func (client *RoleAssignmentsClient) listHandleResponse(resp *http.Response) (Ro
 }
 
 // NewListForResourcePager - Gets role assignments for a resource.
+//
 // Generated from API version 2015-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceProviderNamespace - The namespace of the resource provider.
-// parentResourcePath - The parent resource identity.
-// resourceType - The resource type of the resource.
-// resourceName - The name of the resource to get role assignments for.
-// options - RoleAssignmentsClientListForResourceOptions contains the optional parameters for the RoleAssignmentsClient.ListForResource
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceProviderNamespace - The namespace of the resource provider.
+//   - parentResourcePath - The parent resource identity.
+//   - resourceType - The resource type of the resource.
+//   - resourceName - The name of the resource to get role assignments for.
+//   - options - RoleAssignmentsClientListForResourceOptions contains the optional parameters for the RoleAssignmentsClient.NewListForResourcePager
+//     method.
 func (client *RoleAssignmentsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *RoleAssignmentsClientListForResourceOptions) *runtime.Pager[RoleAssignmentsClientListForResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListForResourceResponse]{
 		More: func(page RoleAssignmentsClientListForResourceResponse) bool {
@@ -435,7 +433,7 @@ func (client *RoleAssignmentsClient) NewListForResourcePager(resourceGroupName s
 			if err != nil {
 				return RoleAssignmentsClientListForResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RoleAssignmentsClientListForResourceResponse{}, err
 			}
@@ -468,7 +466,7 @@ func (client *RoleAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -492,10 +490,11 @@ func (client *RoleAssignmentsClient) listForResourceHandleResponse(resp *http.Re
 }
 
 // NewListForResourceGroupPager - Gets role assignments for a resource group.
+//
 // Generated from API version 2015-07-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.ListForResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.NewListForResourceGroupPager
+//     method.
 func (client *RoleAssignmentsClient) NewListForResourceGroupPager(resourceGroupName string, options *RoleAssignmentsClientListForResourceGroupOptions) *runtime.Pager[RoleAssignmentsClientListForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListForResourceGroupResponse]{
 		More: func(page RoleAssignmentsClientListForResourceGroupResponse) bool {
@@ -512,7 +511,7 @@ func (client *RoleAssignmentsClient) NewListForResourceGroupPager(resourceGroupN
 			if err != nil {
 				return RoleAssignmentsClientListForResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RoleAssignmentsClientListForResourceGroupResponse{}, err
 			}
@@ -535,7 +534,7 @@ func (client *RoleAssignmentsClient) listForResourceGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -559,10 +558,11 @@ func (client *RoleAssignmentsClient) listForResourceGroupHandleResponse(resp *ht
 }
 
 // NewListForScopePager - Gets role assignments for a scope.
+//
 // Generated from API version 2015-07-01
-// scope - The scope of the role assignments.
-// options - RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope
-// method.
+//   - scope - The scope of the role assignments.
+//   - options - RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.NewListForScopePager
+//     method.
 func (client *RoleAssignmentsClient) NewListForScopePager(scope string, options *RoleAssignmentsClientListForScopeOptions) *runtime.Pager[RoleAssignmentsClientListForScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListForScopeResponse]{
 		More: func(page RoleAssignmentsClientListForScopeResponse) bool {
@@ -579,7 +579,7 @@ func (client *RoleAssignmentsClient) NewListForScopePager(scope string, options 
 			if err != nil {
 				return RoleAssignmentsClientListForScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RoleAssignmentsClientListForScopeResponse{}, err
 			}
@@ -595,7 +595,7 @@ func (client *RoleAssignmentsClient) NewListForScopePager(scope string, options 
 func (client *RoleAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

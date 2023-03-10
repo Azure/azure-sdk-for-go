@@ -131,7 +131,7 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.List method.
+// EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.NewListPager method.
 type EventCategoriesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -259,7 +259,7 @@ type MetricDefinitionCollection struct {
 	Value []*MetricDefinition `json:"value,omitempty"`
 }
 
-// MetricDefinitionsClientListOptions contains the optional parameters for the MetricDefinitionsClient.List method.
+// MetricDefinitionsClientListOptions contains the optional parameters for the MetricDefinitionsClient.NewListPager method.
 type MetricDefinitionsClientListOptions struct {
 	// Metric namespace to query metric definitions for.
 	Metricnamespace *string

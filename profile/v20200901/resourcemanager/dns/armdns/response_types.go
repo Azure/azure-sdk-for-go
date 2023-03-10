@@ -24,12 +24,12 @@ type RecordSetsClientGetResponse struct {
 	RecordSet
 }
 
-// RecordSetsClientListByDNSZoneResponse contains the response from method RecordSetsClient.ListByDNSZone.
+// RecordSetsClientListByDNSZoneResponse contains the response from method RecordSetsClient.NewListByDNSZonePager.
 type RecordSetsClientListByDNSZoneResponse struct {
 	RecordSetListResult
 }
 
-// RecordSetsClientListByTypeResponse contains the response from method RecordSetsClient.ListByType.
+// RecordSetsClientListByTypeResponse contains the response from method RecordSetsClient.NewListByTypePager.
 type RecordSetsClientListByTypeResponse struct {
 	RecordSetListResult
 }
@@ -44,7 +44,7 @@ type ZonesClientCreateOrUpdateResponse struct {
 	Zone
 }
 
-// ZonesClientDeleteResponse contains the response from method ZonesClient.Delete.
+// ZonesClientDeleteResponse contains the response from method ZonesClient.BeginDelete.
 type ZonesClientDeleteResponse struct {
 	ZoneDeleteResult
 }
@@ -54,12 +54,12 @@ type ZonesClientGetResponse struct {
 	Zone
 }
 
-// ZonesClientListByResourceGroupResponse contains the response from method ZonesClient.ListByResourceGroup.
+// ZonesClientListByResourceGroupResponse contains the response from method ZonesClient.NewListByResourceGroupPager.
 type ZonesClientListByResourceGroupResponse struct {
 	ZoneListResult
 }
 
-// ZonesClientListResponse contains the response from method ZonesClient.List.
+// ZonesClientListResponse contains the response from method ZonesClient.NewListPager.
 type ZonesClientListResponse struct {
 	ZoneListResult
 }

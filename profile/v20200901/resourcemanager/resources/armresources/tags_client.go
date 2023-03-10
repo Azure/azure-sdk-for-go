@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,31 +25,22 @@ import (
 // TagsClient contains the methods for the Tags group.
 // Don't use this type directly, use NewTagsClient() instead.
 type TagsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTagsClient creates a new instance of TagsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TagsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".TagsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TagsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -60,15 +49,16 @@ func NewTagsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // tag name can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the
 // following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// tagName - The name of the tag to create.
-// options - TagsClientCreateOrUpdateOptions contains the optional parameters for the TagsClient.CreateOrUpdate method.
+//   - tagName - The name of the tag to create.
+//   - options - TagsClientCreateOrUpdateOptions contains the optional parameters for the TagsClient.CreateOrUpdate method.
 func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, options *TagsClientCreateOrUpdateOptions) (TagsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, tagName, options)
 	if err != nil {
 		return TagsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagsClientCreateOrUpdateResponse{}, err
 	}
@@ -89,7 +79,7 @@ func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagNa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -112,16 +102,17 @@ func (client *TagsClient) createOrUpdateHandleResponse(resp *http.Response) (Tag
 // CreateOrUpdateAtScope - This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
 // The specified entity can have a maximum of 50 tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// scope - The resource scope.
-// options - TagsClientCreateOrUpdateAtScopeOptions contains the optional parameters for the TagsClient.CreateOrUpdateAtScope
-// method.
+//   - scope - The resource scope.
+//   - options - TagsClientCreateOrUpdateAtScopeOptions contains the optional parameters for the TagsClient.CreateOrUpdateAtScope
+//     method.
 func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope string, parameters TagsResource, options *TagsClientCreateOrUpdateAtScopeOptions) (TagsClientCreateOrUpdateAtScopeResponse, error) {
 	req, err := client.createOrUpdateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
 		return TagsClientCreateOrUpdateAtScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagsClientCreateOrUpdateAtScopeResponse{}, err
 	}
@@ -135,7 +126,7 @@ func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope strin
 func (client *TagsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsResource, options *TagsClientCreateOrUpdateAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -158,17 +149,18 @@ func (client *TagsClient) createOrUpdateAtScopeHandleResponse(resp *http.Respons
 // CreateOrUpdateValue - This operation allows adding a value to the list of predefined values for an existing predefined
 // tag name. A tag value can have a maximum of 256 characters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// tagName - The name of the tag.
-// tagValue - The value of the tag to create.
-// options - TagsClientCreateOrUpdateValueOptions contains the optional parameters for the TagsClient.CreateOrUpdateValue
-// method.
+//   - tagName - The name of the tag.
+//   - tagValue - The value of the tag to create.
+//   - options - TagsClientCreateOrUpdateValueOptions contains the optional parameters for the TagsClient.CreateOrUpdateValue
+//     method.
 func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsClientCreateOrUpdateValueOptions) (TagsClientCreateOrUpdateValueResponse, error) {
 	req, err := client.createOrUpdateValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
 		return TagsClientCreateOrUpdateValueResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagsClientCreateOrUpdateValueResponse{}, err
 	}
@@ -193,7 +185,7 @@ func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -217,15 +209,16 @@ func (client *TagsClient) createOrUpdateValueHandleResponse(resp *http.Response)
 // being deleted must not be in use as a tag name for any resource. All predefined values
 // for the given name must have already been deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// tagName - The name of the tag.
-// options - TagsClientDeleteOptions contains the optional parameters for the TagsClient.Delete method.
+//   - tagName - The name of the tag.
+//   - options - TagsClientDeleteOptions contains the optional parameters for the TagsClient.Delete method.
 func (client *TagsClient) Delete(ctx context.Context, tagName string, options *TagsClientDeleteOptions) (TagsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, tagName, options)
 	if err != nil {
 		return TagsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagsClientDeleteResponse{}, err
 	}
@@ -246,7 +239,7 @@ func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName strin
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -259,15 +252,16 @@ func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName strin
 
 // DeleteAtScope - Deletes the entire set of tags on a resource or subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// scope - The resource scope.
-// options - TagsClientDeleteAtScopeOptions contains the optional parameters for the TagsClient.DeleteAtScope method.
+//   - scope - The resource scope.
+//   - options - TagsClientDeleteAtScopeOptions contains the optional parameters for the TagsClient.DeleteAtScope method.
 func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, options *TagsClientDeleteAtScopeOptions) (TagsClientDeleteAtScopeResponse, error) {
 	req, err := client.deleteAtScopeCreateRequest(ctx, scope, options)
 	if err != nil {
 		return TagsClientDeleteAtScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagsClientDeleteAtScopeResponse{}, err
 	}
@@ -281,7 +275,7 @@ func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, optio
 func (client *TagsClient) deleteAtScopeCreateRequest(ctx context.Context, scope string, options *TagsClientDeleteAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -296,16 +290,17 @@ func (client *TagsClient) deleteAtScopeCreateRequest(ctx context.Context, scope 
 // name. The value being deleted must not be in use as a tag value for the given tag name for any
 // resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// tagName - The name of the tag.
-// tagValue - The value of the tag to delete.
-// options - TagsClientDeleteValueOptions contains the optional parameters for the TagsClient.DeleteValue method.
+//   - tagName - The name of the tag.
+//   - tagValue - The value of the tag to delete.
+//   - options - TagsClientDeleteValueOptions contains the optional parameters for the TagsClient.DeleteValue method.
 func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagValue string, options *TagsClientDeleteValueOptions) (TagsClientDeleteValueResponse, error) {
 	req, err := client.deleteValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
 		return TagsClientDeleteValueResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagsClientDeleteValueResponse{}, err
 	}
@@ -330,7 +325,7 @@ func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -343,15 +338,16 @@ func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName 
 
 // GetAtScope - Gets the entire set of tags on a resource or subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// scope - The resource scope.
-// options - TagsClientGetAtScopeOptions contains the optional parameters for the TagsClient.GetAtScope method.
+//   - scope - The resource scope.
+//   - options - TagsClientGetAtScopeOptions contains the optional parameters for the TagsClient.GetAtScope method.
 func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options *TagsClientGetAtScopeOptions) (TagsClientGetAtScopeResponse, error) {
 	req, err := client.getAtScopeCreateRequest(ctx, scope, options)
 	if err != nil {
 		return TagsClientGetAtScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagsClientGetAtScopeResponse{}, err
 	}
@@ -365,7 +361,7 @@ func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options 
 func (client *TagsClient) getAtScopeCreateRequest(ctx context.Context, scope string, options *TagsClientGetAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -388,8 +384,9 @@ func (client *TagsClient) getAtScopeHandleResponse(resp *http.Response) (TagsCli
 // NewListPager - This operation performs a union of predefined tags, resource tags, resource group tags and subscription
 // tags, and returns a summary of usage for each tag name and value under the given subscription.
 // In case of a large number of tags, this operation may return a previously cached result.
+//
 // Generated from API version 2019-10-01
-// options - TagsClientListOptions contains the optional parameters for the TagsClient.List method.
+//   - options - TagsClientListOptions contains the optional parameters for the TagsClient.NewListPager method.
 func (client *TagsClient) NewListPager(options *TagsClientListOptions) *runtime.Pager[TagsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TagsClientListResponse]{
 		More: func(page TagsClientListResponse) bool {
@@ -406,7 +403,7 @@ func (client *TagsClient) NewListPager(options *TagsClientListOptions) *runtime.
 			if err != nil {
 				return TagsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TagsClientListResponse{}, err
 			}
@@ -425,7 +422,7 @@ func (client *TagsClient) listCreateRequest(ctx context.Context, options *TagsCl
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -451,15 +448,16 @@ func (client *TagsClient) listHandleResponse(resp *http.Response) (TagsClientLis
 // names and updating the values of tags with existing names. The 'delete' option
 // allows selectively deleting tags based on given names or name/value pairs.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// scope - The resource scope.
-// options - TagsClientUpdateAtScopeOptions contains the optional parameters for the TagsClient.UpdateAtScope method.
+//   - scope - The resource scope.
+//   - options - TagsClientUpdateAtScopeOptions contains the optional parameters for the TagsClient.UpdateAtScope method.
 func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsClientUpdateAtScopeOptions) (TagsClientUpdateAtScopeResponse, error) {
 	req, err := client.updateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
 		return TagsClientUpdateAtScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TagsClientUpdateAtScopeResponse{}, err
 	}
@@ -473,7 +471,7 @@ func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, param
 func (client *TagsClient) updateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsClientUpdateAtScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

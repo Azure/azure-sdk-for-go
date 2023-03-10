@@ -39,17 +39,17 @@ type AssignmentsClientGetResponse struct {
 	Assignment
 }
 
-// AssignmentsClientListForResourceGroupResponse contains the response from method AssignmentsClient.ListForResourceGroup.
+// AssignmentsClientListForResourceGroupResponse contains the response from method AssignmentsClient.NewListForResourceGroupPager.
 type AssignmentsClientListForResourceGroupResponse struct {
 	AssignmentListResult
 }
 
-// AssignmentsClientListForResourceResponse contains the response from method AssignmentsClient.ListForResource.
+// AssignmentsClientListForResourceResponse contains the response from method AssignmentsClient.NewListForResourcePager.
 type AssignmentsClientListForResourceResponse struct {
 	AssignmentListResult
 }
 
-// AssignmentsClientListResponse contains the response from method AssignmentsClient.List.
+// AssignmentsClientListResponse contains the response from method AssignmentsClient.NewListPager.
 type AssignmentsClientListResponse struct {
 	AssignmentListResult
 }
@@ -89,17 +89,17 @@ type DefinitionsClientGetResponse struct {
 	Definition
 }
 
-// DefinitionsClientListBuiltInResponse contains the response from method DefinitionsClient.ListBuiltIn.
+// DefinitionsClientListBuiltInResponse contains the response from method DefinitionsClient.NewListBuiltInPager.
 type DefinitionsClientListBuiltInResponse struct {
 	DefinitionListResult
 }
 
-// DefinitionsClientListByManagementGroupResponse contains the response from method DefinitionsClient.ListByManagementGroup.
+// DefinitionsClientListByManagementGroupResponse contains the response from method DefinitionsClient.NewListByManagementGroupPager.
 type DefinitionsClientListByManagementGroupResponse struct {
 	DefinitionListResult
 }
 
-// DefinitionsClientListResponse contains the response from method DefinitionsClient.List.
+// DefinitionsClientListResponse contains the response from method DefinitionsClient.NewListPager.
 type DefinitionsClientListResponse struct {
 	DefinitionListResult
 }

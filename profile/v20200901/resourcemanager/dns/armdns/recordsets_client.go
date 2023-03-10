@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,52 +26,44 @@ import (
 // RecordSetsClient contains the methods for the RecordSets group.
 // Don't use this type directly, use NewRecordSetsClient() instead.
 type RecordSetsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRecordSetsClient creates a new instance of RecordSetsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRecordSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecordSetsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".RecordSetsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RecordSetsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a record set within a DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-04-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// zoneName - The name of the DNS zone (without a terminating dot).
-// relativeRecordSetName - The name of the record set, relative to the name of the zone.
-// recordType - The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are
-// created when the DNS zone is created).
-// parameters - Parameters supplied to the CreateOrUpdate operation.
-// options - RecordSetsClientCreateOrUpdateOptions contains the optional parameters for the RecordSetsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - zoneName - The name of the DNS zone (without a terminating dot).
+//   - relativeRecordSetName - The name of the record set, relative to the name of the zone.
+//   - recordType - The type of DNS record in this record set. Record sets of type SOA can be updated but not created (they are
+//     created when the DNS zone is created).
+//   - parameters - Parameters supplied to the CreateOrUpdate operation.
+//   - options - RecordSetsClientCreateOrUpdateOptions contains the optional parameters for the RecordSetsClient.CreateOrUpdate
+//     method.
 func (client *RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, options *RecordSetsClientCreateOrUpdateOptions) (RecordSetsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, options)
 	if err != nil {
 		return RecordSetsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecordSetsClientCreateOrUpdateResponse{}, err
 	}
@@ -103,7 +93,7 @@ func (client *RecordSetsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,19 +121,20 @@ func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes a record set from a DNS zone. This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-04-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// zoneName - The name of the DNS zone (without a terminating dot).
-// relativeRecordSetName - The name of the record set, relative to the name of the zone.
-// recordType - The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when
-// the DNS zone is deleted).
-// options - RecordSetsClientDeleteOptions contains the optional parameters for the RecordSetsClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - zoneName - The name of the DNS zone (without a terminating dot).
+//   - relativeRecordSetName - The name of the record set, relative to the name of the zone.
+//   - recordType - The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are deleted when
+//     the DNS zone is deleted).
+//   - options - RecordSetsClientDeleteOptions contains the optional parameters for the RecordSetsClient.Delete method.
 func (client *RecordSetsClient) Delete(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, options *RecordSetsClientDeleteOptions) (RecordSetsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, zoneName, relativeRecordSetName, recordType, options)
 	if err != nil {
 		return RecordSetsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecordSetsClientDeleteResponse{}, err
 	}
@@ -173,7 +164,7 @@ func (client *RecordSetsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,18 +180,19 @@ func (client *RecordSetsClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets a record set.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-04-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// zoneName - The name of the DNS zone (without a terminating dot).
-// relativeRecordSetName - The name of the record set, relative to the name of the zone.
-// recordType - The type of DNS record in this record set.
-// options - RecordSetsClientGetOptions contains the optional parameters for the RecordSetsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - zoneName - The name of the DNS zone (without a terminating dot).
+//   - relativeRecordSetName - The name of the record set, relative to the name of the zone.
+//   - recordType - The type of DNS record in this record set.
+//   - options - RecordSetsClientGetOptions contains the optional parameters for the RecordSetsClient.Get method.
 func (client *RecordSetsClient) Get(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, options *RecordSetsClientGetOptions) (RecordSetsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, zoneName, relativeRecordSetName, recordType, options)
 	if err != nil {
 		return RecordSetsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecordSetsClientGetResponse{}, err
 	}
@@ -230,7 +222,7 @@ func (client *RecordSetsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,11 +243,12 @@ func (client *RecordSetsClient) getHandleResponse(resp *http.Response) (RecordSe
 }
 
 // NewListByDNSZonePager - Lists all record sets in a DNS zone.
+//
 // Generated from API version 2016-04-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// zoneName - The name of the DNS zone (without a terminating dot).
-// options - RecordSetsClientListByDNSZoneOptions contains the optional parameters for the RecordSetsClient.ListByDNSZone
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - zoneName - The name of the DNS zone (without a terminating dot).
+//   - options - RecordSetsClientListByDNSZoneOptions contains the optional parameters for the RecordSetsClient.NewListByDNSZonePager
+//     method.
 func (client *RecordSetsClient) NewListByDNSZonePager(resourceGroupName string, zoneName string, options *RecordSetsClientListByDNSZoneOptions) *runtime.Pager[RecordSetsClientListByDNSZoneResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecordSetsClientListByDNSZoneResponse]{
 		More: func(page RecordSetsClientListByDNSZoneResponse) bool {
@@ -272,7 +265,7 @@ func (client *RecordSetsClient) NewListByDNSZonePager(resourceGroupName string, 
 			if err != nil {
 				return RecordSetsClientListByDNSZoneResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecordSetsClientListByDNSZoneResponse{}, err
 			}
@@ -299,7 +292,7 @@ func (client *RecordSetsClient) listByDNSZoneCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -326,11 +319,13 @@ func (client *RecordSetsClient) listByDNSZoneHandleResponse(resp *http.Response)
 }
 
 // NewListByTypePager - Lists the record sets of a specified type in a DNS zone.
+//
 // Generated from API version 2016-04-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// zoneName - The name of the DNS zone (without a terminating dot).
-// recordType - The type of record sets to enumerate.
-// options - RecordSetsClientListByTypeOptions contains the optional parameters for the RecordSetsClient.ListByType method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - zoneName - The name of the DNS zone (without a terminating dot).
+//   - recordType - The type of record sets to enumerate.
+//   - options - RecordSetsClientListByTypeOptions contains the optional parameters for the RecordSetsClient.NewListByTypePager
+//     method.
 func (client *RecordSetsClient) NewListByTypePager(resourceGroupName string, zoneName string, recordType RecordType, options *RecordSetsClientListByTypeOptions) *runtime.Pager[RecordSetsClientListByTypeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecordSetsClientListByTypeResponse]{
 		More: func(page RecordSetsClientListByTypeResponse) bool {
@@ -347,7 +342,7 @@ func (client *RecordSetsClient) NewListByTypePager(resourceGroupName string, zon
 			if err != nil {
 				return RecordSetsClientListByTypeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecordSetsClientListByTypeResponse{}, err
 			}
@@ -378,7 +373,7 @@ func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -406,19 +401,20 @@ func (client *RecordSetsClient) listByTypeHandleResponse(resp *http.Response) (R
 
 // Update - Updates a record set within a DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-04-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// zoneName - The name of the DNS zone (without a terminating dot).
-// relativeRecordSetName - The name of the record set, relative to the name of the zone.
-// recordType - The type of DNS record in this record set.
-// parameters - Parameters supplied to the Update operation.
-// options - RecordSetsClientUpdateOptions contains the optional parameters for the RecordSetsClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - zoneName - The name of the DNS zone (without a terminating dot).
+//   - relativeRecordSetName - The name of the record set, relative to the name of the zone.
+//   - recordType - The type of DNS record in this record set.
+//   - parameters - Parameters supplied to the Update operation.
+//   - options - RecordSetsClientUpdateOptions contains the optional parameters for the RecordSetsClient.Update method.
 func (client *RecordSetsClient) Update(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, options *RecordSetsClientUpdateOptions) (RecordSetsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, options)
 	if err != nil {
 		return RecordSetsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecordSetsClientUpdateResponse{}, err
 	}
@@ -448,7 +444,7 @@ func (client *RecordSetsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

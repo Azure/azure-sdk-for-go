@@ -62,12 +62,12 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListLocationsOptions contains the optional parameters for the Client.ListLocations method.
+// ClientListLocationsOptions contains the optional parameters for the Client.NewListLocationsPager method.
 type ClientListLocationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListOptions contains the optional parameters for the Client.List method.
+// ClientListOptions contains the optional parameters for the Client.NewListPager method.
 type ClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -75,7 +75,7 @@ type ClientListOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -182,7 +182,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -275,7 +275,7 @@ type TenantListResult struct {
 	Value []*TenantIDDescription `json:"value,omitempty"`
 }
 
-// TenantsClientListOptions contains the optional parameters for the TenantsClient.List method.
+// TenantsClientListOptions contains the optional parameters for the TenantsClient.NewListPager method.
 type TenantsClientListOptions struct {
 	// placeholder for future optional parameters
 }

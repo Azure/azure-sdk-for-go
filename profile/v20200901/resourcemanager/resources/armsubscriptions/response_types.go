@@ -19,17 +19,17 @@ type ClientGetResponse struct {
 	Subscription
 }
 
-// ClientListLocationsResponse contains the response from method Client.ListLocations.
+// ClientListLocationsResponse contains the response from method Client.NewListLocationsPager.
 type ClientListLocationsResponse struct {
 	LocationListResult
 }
 
-// ClientListResponse contains the response from method Client.List.
+// ClientListResponse contains the response from method Client.NewListPager.
 type ClientListResponse struct {
 	SubscriptionListResult
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -39,7 +39,7 @@ type SubscriptionClientCheckResourceNameResponse struct {
 	CheckResourceNameResult
 }
 
-// TenantsClientListResponse contains the response from method TenantsClient.List.
+// TenantsClientListResponse contains the response from method TenantsClient.NewListPager.
 type TenantsClientListResponse struct {
 	TenantListResult
 }

@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,51 +25,43 @@ import (
 // DisasterRecoveryConfigsClient contains the methods for the DisasterRecoveryConfigs group.
 // Don't use this type directly, use NewDisasterRecoveryConfigsClient() instead.
 type DisasterRecoveryConfigsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDisasterRecoveryConfigsClient creates a new instance of DisasterRecoveryConfigsClient with the specified values.
-// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDisasterRecoveryConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DisasterRecoveryConfigsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".DisasterRecoveryConfigsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DisasterRecoveryConfigsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // GetAuthorizationRule - Gets an AuthorizationRule for a Namespace by rule name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// alias - The Disaster Recovery configuration name
-// authorizationRuleName - The authorization rule name.
-// options - DisasterRecoveryConfigsClientGetAuthorizationRuleOptions contains the optional parameters for the DisasterRecoveryConfigsClient.GetAuthorizationRule
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - alias - The Disaster Recovery configuration name
+//   - authorizationRuleName - The authorization rule name.
+//   - options - DisasterRecoveryConfigsClientGetAuthorizationRuleOptions contains the optional parameters for the DisasterRecoveryConfigsClient.GetAuthorizationRule
+//     method.
 func (client *DisasterRecoveryConfigsClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsClientGetAuthorizationRuleOptions) (DisasterRecoveryConfigsClientGetAuthorizationRuleResponse, error) {
 	req, err := client.getAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, alias, authorizationRuleName, options)
 	if err != nil {
 		return DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DisasterRecoveryConfigsClientGetAuthorizationRuleResponse{}, err
 	}
@@ -104,7 +94,7 @@ func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -125,12 +115,13 @@ func (client *DisasterRecoveryConfigsClient) getAuthorizationRuleHandleResponse(
 }
 
 // NewListAuthorizationRulesPager - Gets a list of authorization rules for a Namespace.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// alias - The Disaster Recovery configuration name
-// options - DisasterRecoveryConfigsClientListAuthorizationRulesOptions contains the optional parameters for the DisasterRecoveryConfigsClient.ListAuthorizationRules
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - alias - The Disaster Recovery configuration name
+//   - options - DisasterRecoveryConfigsClientListAuthorizationRulesOptions contains the optional parameters for the DisasterRecoveryConfigsClient.NewListAuthorizationRulesPager
+//     method.
 func (client *DisasterRecoveryConfigsClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsClientListAuthorizationRulesOptions) *runtime.Pager[DisasterRecoveryConfigsClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DisasterRecoveryConfigsClientListAuthorizationRulesResponse]{
 		More: func(page DisasterRecoveryConfigsClientListAuthorizationRulesResponse) bool {
@@ -147,7 +138,7 @@ func (client *DisasterRecoveryConfigsClient) NewListAuthorizationRulesPager(reso
 			if err != nil {
 				return DisasterRecoveryConfigsClientListAuthorizationRulesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DisasterRecoveryConfigsClientListAuthorizationRulesResponse{}, err
 			}
@@ -178,7 +169,7 @@ func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -200,19 +191,20 @@ func (client *DisasterRecoveryConfigsClient) listAuthorizationRulesHandleRespons
 
 // ListKeys - Gets the primary and secondary connection strings for the Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2017-04-01
-// resourceGroupName - Name of the resource group within the azure subscription.
-// namespaceName - The Namespace name
-// alias - The Disaster Recovery configuration name
-// authorizationRuleName - The authorization rule name.
-// options - DisasterRecoveryConfigsClientListKeysOptions contains the optional parameters for the DisasterRecoveryConfigsClient.ListKeys
-// method.
+//   - resourceGroupName - Name of the resource group within the azure subscription.
+//   - namespaceName - The Namespace name
+//   - alias - The Disaster Recovery configuration name
+//   - authorizationRuleName - The authorization rule name.
+//   - options - DisasterRecoveryConfigsClientListKeysOptions contains the optional parameters for the DisasterRecoveryConfigsClient.ListKeys
+//     method.
 func (client *DisasterRecoveryConfigsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsClientListKeysOptions) (DisasterRecoveryConfigsClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, alias, authorizationRuleName, options)
 	if err != nil {
 		return DisasterRecoveryConfigsClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DisasterRecoveryConfigsClientListKeysResponse{}, err
 	}
@@ -245,7 +237,7 @@ func (client *DisasterRecoveryConfigsClient) listKeysCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

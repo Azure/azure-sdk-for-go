@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,64 +25,57 @@ import (
 // WebhooksClient contains the methods for the Webhooks group.
 // Don't use this type directly, use NewWebhooksClient() instead.
 type WebhooksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWebhooksClient creates a new instance of WebhooksClient with the specified values.
-// subscriptionID - The Microsoft Azure subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Microsoft Azure subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWebhooksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebhooksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".WebhooksClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WebhooksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Creates a webhook for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// webhookName - The name of the webhook.
-// webhookCreateParameters - The parameters for creating a webhook.
-// options - WebhooksClientBeginCreateOptions contains the optional parameters for the WebhooksClient.BeginCreate method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - webhookName - The name of the webhook.
+//   - webhookCreateParameters - The parameters for creating a webhook.
+//   - options - WebhooksClientBeginCreateOptions contains the optional parameters for the WebhooksClient.BeginCreate method.
 func (client *WebhooksClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksClientBeginCreateOptions) (*runtime.Poller[WebhooksClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, registryName, webhookName, webhookCreateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebhooksClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebhooksClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebhooksClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebhooksClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Creates a webhook for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
 func (client *WebhooksClient) create(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, webhookName, webhookCreateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +104,7 @@ func (client *WebhooksClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,32 +117,34 @@ func (client *WebhooksClient) createCreateRequest(ctx context.Context, resourceG
 
 // BeginDelete - Deletes a webhook from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// webhookName - The name of the webhook.
-// options - WebhooksClientBeginDeleteOptions contains the optional parameters for the WebhooksClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - webhookName - The name of the webhook.
+//   - options - WebhooksClientBeginDeleteOptions contains the optional parameters for the WebhooksClient.BeginDelete method.
 func (client *WebhooksClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientBeginDeleteOptions) (*runtime.Poller[WebhooksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, webhookName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebhooksClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebhooksClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebhooksClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebhooksClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a webhook from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
 func (client *WebhooksClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +173,7 @@ func (client *WebhooksClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,17 +185,18 @@ func (client *WebhooksClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets the properties of the specified webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// webhookName - The name of the webhook.
-// options - WebhooksClientGetOptions contains the optional parameters for the WebhooksClient.Get method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - webhookName - The name of the webhook.
+//   - options - WebhooksClientGetOptions contains the optional parameters for the WebhooksClient.Get method.
 func (client *WebhooksClient) Get(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientGetOptions) (WebhooksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
 		return WebhooksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebhooksClientGetResponse{}, err
 	}
@@ -231,7 +225,7 @@ func (client *WebhooksClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -253,18 +247,19 @@ func (client *WebhooksClient) getHandleResponse(resp *http.Response) (WebhooksCl
 
 // GetCallbackConfig - Gets the configuration of service URI and custom headers for the webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// webhookName - The name of the webhook.
-// options - WebhooksClientGetCallbackConfigOptions contains the optional parameters for the WebhooksClient.GetCallbackConfig
-// method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - webhookName - The name of the webhook.
+//   - options - WebhooksClientGetCallbackConfigOptions contains the optional parameters for the WebhooksClient.GetCallbackConfig
+//     method.
 func (client *WebhooksClient) GetCallbackConfig(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientGetCallbackConfigOptions) (WebhooksClientGetCallbackConfigResponse, error) {
 	req, err := client.getCallbackConfigCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
 		return WebhooksClientGetCallbackConfigResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebhooksClientGetCallbackConfigResponse{}, err
 	}
@@ -293,7 +288,7 @@ func (client *WebhooksClient) getCallbackConfigCreateRequest(ctx context.Context
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -314,10 +309,11 @@ func (client *WebhooksClient) getCallbackConfigHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Lists all the webhooks for the specified container registry.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// options - WebhooksClientListOptions contains the optional parameters for the WebhooksClient.List method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - options - WebhooksClientListOptions contains the optional parameters for the WebhooksClient.NewListPager method.
 func (client *WebhooksClient) NewListPager(resourceGroupName string, registryName string, options *WebhooksClientListOptions) *runtime.Pager[WebhooksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebhooksClientListResponse]{
 		More: func(page WebhooksClientListResponse) bool {
@@ -334,7 +330,7 @@ func (client *WebhooksClient) NewListPager(resourceGroupName string, registryNam
 			if err != nil {
 				return WebhooksClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebhooksClientListResponse{}, err
 			}
@@ -361,7 +357,7 @@ func (client *WebhooksClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -382,11 +378,12 @@ func (client *WebhooksClient) listHandleResponse(resp *http.Response) (WebhooksC
 }
 
 // NewListEventsPager - Lists recent events for the specified webhook.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// webhookName - The name of the webhook.
-// options - WebhooksClientListEventsOptions contains the optional parameters for the WebhooksClient.ListEvents method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - webhookName - The name of the webhook.
+//   - options - WebhooksClientListEventsOptions contains the optional parameters for the WebhooksClient.NewListEventsPager method.
 func (client *WebhooksClient) NewListEventsPager(resourceGroupName string, registryName string, webhookName string, options *WebhooksClientListEventsOptions) *runtime.Pager[WebhooksClientListEventsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebhooksClientListEventsResponse]{
 		More: func(page WebhooksClientListEventsResponse) bool {
@@ -403,7 +400,7 @@ func (client *WebhooksClient) NewListEventsPager(resourceGroupName string, regis
 			if err != nil {
 				return WebhooksClientListEventsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebhooksClientListEventsResponse{}, err
 			}
@@ -434,7 +431,7 @@ func (client *WebhooksClient) listEventsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -456,17 +453,18 @@ func (client *WebhooksClient) listEventsHandleResponse(resp *http.Response) (Web
 
 // Ping - Triggers a ping event to be sent to the webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// webhookName - The name of the webhook.
-// options - WebhooksClientPingOptions contains the optional parameters for the WebhooksClient.Ping method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - webhookName - The name of the webhook.
+//   - options - WebhooksClientPingOptions contains the optional parameters for the WebhooksClient.Ping method.
 func (client *WebhooksClient) Ping(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientPingOptions) (WebhooksClientPingResponse, error) {
 	req, err := client.pingCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
 		return WebhooksClientPingResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebhooksClientPingResponse{}, err
 	}
@@ -495,7 +493,7 @@ func (client *WebhooksClient) pingCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -517,33 +515,35 @@ func (client *WebhooksClient) pingHandleResponse(resp *http.Response) (WebhooksC
 
 // BeginUpdate - Updates a webhook with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
-// resourceGroupName - The name of the resource group to which the container registry belongs.
-// registryName - The name of the container registry.
-// webhookName - The name of the webhook.
-// webhookUpdateParameters - The parameters for updating a webhook.
-// options - WebhooksClientBeginUpdateOptions contains the optional parameters for the WebhooksClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+//   - registryName - The name of the container registry.
+//   - webhookName - The name of the webhook.
+//   - webhookUpdateParameters - The parameters for updating a webhook.
+//   - options - WebhooksClientBeginUpdateOptions contains the optional parameters for the WebhooksClient.BeginUpdate method.
 func (client *WebhooksClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksClientBeginUpdateOptions) (*runtime.Poller[WebhooksClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, registryName, webhookName, webhookUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[WebhooksClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebhooksClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[WebhooksClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebhooksClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Updates a webhook with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-05-01
 func (client *WebhooksClient) update(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, webhookName, webhookUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -572,7 +572,7 @@ func (client *WebhooksClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter webhookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

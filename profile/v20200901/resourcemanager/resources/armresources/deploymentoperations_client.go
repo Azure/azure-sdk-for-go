@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,49 +26,41 @@ import (
 // DeploymentOperationsClient contains the methods for the DeploymentOperations group.
 // Don't use this type directly, use NewDeploymentOperationsClient() instead.
 type DeploymentOperationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDeploymentOperationsClient creates a new instance of DeploymentOperationsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDeploymentOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentOperationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".DeploymentOperationsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DeploymentOperationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets a deployments operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// deploymentName - The name of the deployment.
-// operationID - The ID of the operation to get.
-// options - DeploymentOperationsClientGetOptions contains the optional parameters for the DeploymentOperationsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - deploymentName - The name of the deployment.
+//   - operationID - The ID of the operation to get.
+//   - options - DeploymentOperationsClientGetOptions contains the optional parameters for the DeploymentOperationsClient.Get
+//     method.
 func (client *DeploymentOperationsClient) Get(ctx context.Context, resourceGroupName string, deploymentName string, operationID string, options *DeploymentOperationsClientGetOptions) (DeploymentOperationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, deploymentName, operationID, options)
 	if err != nil {
 		return DeploymentOperationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationsClientGetResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *DeploymentOperationsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,18 +111,19 @@ func (client *DeploymentOperationsClient) getHandleResponse(resp *http.Response)
 
 // GetAtManagementGroupScope - Gets a deployments operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// groupID - The management group ID.
-// deploymentName - The name of the deployment.
-// operationID - The ID of the operation to get.
-// options - DeploymentOperationsClientGetAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtManagementGroupScope
-// method.
+//   - groupID - The management group ID.
+//   - deploymentName - The name of the deployment.
+//   - operationID - The ID of the operation to get.
+//   - options - DeploymentOperationsClientGetAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtManagementGroupScope
+//     method.
 func (client *DeploymentOperationsClient) GetAtManagementGroupScope(ctx context.Context, groupID string, deploymentName string, operationID string, options *DeploymentOperationsClientGetAtManagementGroupScopeOptions) (DeploymentOperationsClientGetAtManagementGroupScopeResponse, error) {
 	req, err := client.getAtManagementGroupScopeCreateRequest(ctx, groupID, deploymentName, operationID, options)
 	if err != nil {
 		return DeploymentOperationsClientGetAtManagementGroupScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationsClientGetAtManagementGroupScopeResponse{}, err
 	}
@@ -157,7 +148,7 @@ func (client *DeploymentOperationsClient) getAtManagementGroupScopeCreateRequest
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,18 +170,19 @@ func (client *DeploymentOperationsClient) getAtManagementGroupScopeHandleRespons
 
 // GetAtScope - Gets a deployments operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// scope - The resource scope.
-// deploymentName - The name of the deployment.
-// operationID - The ID of the operation to get.
-// options - DeploymentOperationsClientGetAtScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtScope
-// method.
+//   - scope - The resource scope.
+//   - deploymentName - The name of the deployment.
+//   - operationID - The ID of the operation to get.
+//   - options - DeploymentOperationsClientGetAtScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtScope
+//     method.
 func (client *DeploymentOperationsClient) GetAtScope(ctx context.Context, scope string, deploymentName string, operationID string, options *DeploymentOperationsClientGetAtScopeOptions) (DeploymentOperationsClientGetAtScopeResponse, error) {
 	req, err := client.getAtScopeCreateRequest(ctx, scope, deploymentName, operationID, options)
 	if err != nil {
 		return DeploymentOperationsClientGetAtScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationsClientGetAtScopeResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *DeploymentOperationsClient) getAtScopeCreateRequest(ctx context.Co
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -234,17 +226,18 @@ func (client *DeploymentOperationsClient) getAtScopeHandleResponse(resp *http.Re
 
 // GetAtSubscriptionScope - Gets a deployments operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// deploymentName - The name of the deployment.
-// operationID - The ID of the operation to get.
-// options - DeploymentOperationsClientGetAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtSubscriptionScope
-// method.
+//   - deploymentName - The name of the deployment.
+//   - operationID - The ID of the operation to get.
+//   - options - DeploymentOperationsClientGetAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtSubscriptionScope
+//     method.
 func (client *DeploymentOperationsClient) GetAtSubscriptionScope(ctx context.Context, deploymentName string, operationID string, options *DeploymentOperationsClientGetAtSubscriptionScopeOptions) (DeploymentOperationsClientGetAtSubscriptionScopeResponse, error) {
 	req, err := client.getAtSubscriptionScopeCreateRequest(ctx, deploymentName, operationID, options)
 	if err != nil {
 		return DeploymentOperationsClientGetAtSubscriptionScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationsClientGetAtSubscriptionScopeResponse{}, err
 	}
@@ -269,7 +262,7 @@ func (client *DeploymentOperationsClient) getAtSubscriptionScopeCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -291,17 +284,18 @@ func (client *DeploymentOperationsClient) getAtSubscriptionScopeHandleResponse(r
 
 // GetAtTenantScope - Gets a deployments operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-10-01
-// deploymentName - The name of the deployment.
-// operationID - The ID of the operation to get.
-// options - DeploymentOperationsClientGetAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtTenantScope
-// method.
+//   - deploymentName - The name of the deployment.
+//   - operationID - The ID of the operation to get.
+//   - options - DeploymentOperationsClientGetAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtTenantScope
+//     method.
 func (client *DeploymentOperationsClient) GetAtTenantScope(ctx context.Context, deploymentName string, operationID string, options *DeploymentOperationsClientGetAtTenantScopeOptions) (DeploymentOperationsClientGetAtTenantScopeResponse, error) {
 	req, err := client.getAtTenantScopeCreateRequest(ctx, deploymentName, operationID, options)
 	if err != nil {
 		return DeploymentOperationsClientGetAtTenantScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentOperationsClientGetAtTenantScopeResponse{}, err
 	}
@@ -322,7 +316,7 @@ func (client *DeploymentOperationsClient) getAtTenantScopeCreateRequest(ctx cont
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -343,11 +337,12 @@ func (client *DeploymentOperationsClient) getAtTenantScopeHandleResponse(resp *h
 }
 
 // NewListPager - Gets all deployments operations for a deployment.
+//
 // Generated from API version 2019-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// deploymentName - The name of the deployment.
-// options - DeploymentOperationsClientListOptions contains the optional parameters for the DeploymentOperationsClient.List
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - deploymentName - The name of the deployment.
+//   - options - DeploymentOperationsClientListOptions contains the optional parameters for the DeploymentOperationsClient.NewListPager
+//     method.
 func (client *DeploymentOperationsClient) NewListPager(resourceGroupName string, deploymentName string, options *DeploymentOperationsClientListOptions) *runtime.Pager[DeploymentOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentOperationsClientListResponse]{
 		More: func(page DeploymentOperationsClientListResponse) bool {
@@ -364,7 +359,7 @@ func (client *DeploymentOperationsClient) NewListPager(resourceGroupName string,
 			if err != nil {
 				return DeploymentOperationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DeploymentOperationsClientListResponse{}, err
 			}
@@ -391,7 +386,7 @@ func (client *DeploymentOperationsClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -415,11 +410,12 @@ func (client *DeploymentOperationsClient) listHandleResponse(resp *http.Response
 }
 
 // NewListAtManagementGroupScopePager - Gets all deployments operations for a deployment.
+//
 // Generated from API version 2019-10-01
-// groupID - The management group ID.
-// deploymentName - The name of the deployment.
-// options - DeploymentOperationsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtManagementGroupScope
-// method.
+//   - groupID - The management group ID.
+//   - deploymentName - The name of the deployment.
+//   - options - DeploymentOperationsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.NewListAtManagementGroupScopePager
+//     method.
 func (client *DeploymentOperationsClient) NewListAtManagementGroupScopePager(groupID string, deploymentName string, options *DeploymentOperationsClientListAtManagementGroupScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtManagementGroupScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentOperationsClientListAtManagementGroupScopeResponse]{
 		More: func(page DeploymentOperationsClientListAtManagementGroupScopeResponse) bool {
@@ -436,7 +432,7 @@ func (client *DeploymentOperationsClient) NewListAtManagementGroupScopePager(gro
 			if err != nil {
 				return DeploymentOperationsClientListAtManagementGroupScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DeploymentOperationsClientListAtManagementGroupScopeResponse{}, err
 			}
@@ -459,7 +455,7 @@ func (client *DeploymentOperationsClient) listAtManagementGroupScopeCreateReques
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -483,11 +479,12 @@ func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleRespon
 }
 
 // NewListAtScopePager - Gets all deployments operations for a deployment.
+//
 // Generated from API version 2019-10-01
-// scope - The resource scope.
-// deploymentName - The name of the deployment.
-// options - DeploymentOperationsClientListAtScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtScope
-// method.
+//   - scope - The resource scope.
+//   - deploymentName - The name of the deployment.
+//   - options - DeploymentOperationsClientListAtScopeOptions contains the optional parameters for the DeploymentOperationsClient.NewListAtScopePager
+//     method.
 func (client *DeploymentOperationsClient) NewListAtScopePager(scope string, deploymentName string, options *DeploymentOperationsClientListAtScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentOperationsClientListAtScopeResponse]{
 		More: func(page DeploymentOperationsClientListAtScopeResponse) bool {
@@ -504,7 +501,7 @@ func (client *DeploymentOperationsClient) NewListAtScopePager(scope string, depl
 			if err != nil {
 				return DeploymentOperationsClientListAtScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DeploymentOperationsClientListAtScopeResponse{}, err
 			}
@@ -524,7 +521,7 @@ func (client *DeploymentOperationsClient) listAtScopeCreateRequest(ctx context.C
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -548,10 +545,11 @@ func (client *DeploymentOperationsClient) listAtScopeHandleResponse(resp *http.R
 }
 
 // NewListAtSubscriptionScopePager - Gets all deployments operations for a deployment.
+//
 // Generated from API version 2019-10-01
-// deploymentName - The name of the deployment.
-// options - DeploymentOperationsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtSubscriptionScope
-// method.
+//   - deploymentName - The name of the deployment.
+//   - options - DeploymentOperationsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.NewListAtSubscriptionScopePager
+//     method.
 func (client *DeploymentOperationsClient) NewListAtSubscriptionScopePager(deploymentName string, options *DeploymentOperationsClientListAtSubscriptionScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtSubscriptionScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentOperationsClientListAtSubscriptionScopeResponse]{
 		More: func(page DeploymentOperationsClientListAtSubscriptionScopeResponse) bool {
@@ -568,7 +566,7 @@ func (client *DeploymentOperationsClient) NewListAtSubscriptionScopePager(deploy
 			if err != nil {
 				return DeploymentOperationsClientListAtSubscriptionScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DeploymentOperationsClientListAtSubscriptionScopeResponse{}, err
 			}
@@ -591,7 +589,7 @@ func (client *DeploymentOperationsClient) listAtSubscriptionScopeCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -615,10 +613,11 @@ func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleResponse(
 }
 
 // NewListAtTenantScopePager - Gets all deployments operations for a deployment.
+//
 // Generated from API version 2019-10-01
-// deploymentName - The name of the deployment.
-// options - DeploymentOperationsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtTenantScope
-// method.
+//   - deploymentName - The name of the deployment.
+//   - options - DeploymentOperationsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.NewListAtTenantScopePager
+//     method.
 func (client *DeploymentOperationsClient) NewListAtTenantScopePager(deploymentName string, options *DeploymentOperationsClientListAtTenantScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtTenantScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentOperationsClientListAtTenantScopeResponse]{
 		More: func(page DeploymentOperationsClientListAtTenantScopeResponse) bool {
@@ -635,7 +634,7 @@ func (client *DeploymentOperationsClient) NewListAtTenantScopePager(deploymentNa
 			if err != nil {
 				return DeploymentOperationsClientListAtTenantScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DeploymentOperationsClientListAtTenantScopeResponse{}, err
 			}
@@ -654,7 +653,7 @@ func (client *DeploymentOperationsClient) listAtTenantScopeCreateRequest(ctx con
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

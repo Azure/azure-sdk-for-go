@@ -14,12 +14,12 @@ type GlobalAdministratorClientElevateAccessResponse struct {
 	// placeholder for future response values
 }
 
-// PermissionsClientListForResourceGroupResponse contains the response from method PermissionsClient.ListForResourceGroup.
+// PermissionsClientListForResourceGroupResponse contains the response from method PermissionsClient.NewListForResourceGroupPager.
 type PermissionsClientListForResourceGroupResponse struct {
 	PermissionGetResult
 }
 
-// PermissionsClientListForResourceResponse contains the response from method PermissionsClient.ListForResource.
+// PermissionsClientListForResourceResponse contains the response from method PermissionsClient.NewListForResourcePager.
 type PermissionsClientListForResourceResponse struct {
 	PermissionGetResult
 }
@@ -29,7 +29,7 @@ type ProviderOperationsMetadataClientGetResponse struct {
 	ProviderOperationsMetadata
 }
 
-// ProviderOperationsMetadataClientListResponse contains the response from method ProviderOperationsMetadataClient.List.
+// ProviderOperationsMetadataClientListResponse contains the response from method ProviderOperationsMetadataClient.NewListPager.
 type ProviderOperationsMetadataClientListResponse struct {
 	ProviderOperationsMetadataListResult
 }
@@ -64,22 +64,22 @@ type RoleAssignmentsClientGetResponse struct {
 	RoleAssignment
 }
 
-// RoleAssignmentsClientListForResourceGroupResponse contains the response from method RoleAssignmentsClient.ListForResourceGroup.
+// RoleAssignmentsClientListForResourceGroupResponse contains the response from method RoleAssignmentsClient.NewListForResourceGroupPager.
 type RoleAssignmentsClientListForResourceGroupResponse struct {
 	RoleAssignmentListResult
 }
 
-// RoleAssignmentsClientListForResourceResponse contains the response from method RoleAssignmentsClient.ListForResource.
+// RoleAssignmentsClientListForResourceResponse contains the response from method RoleAssignmentsClient.NewListForResourcePager.
 type RoleAssignmentsClientListForResourceResponse struct {
 	RoleAssignmentListResult
 }
 
-// RoleAssignmentsClientListForScopeResponse contains the response from method RoleAssignmentsClient.ListForScope.
+// RoleAssignmentsClientListForScopeResponse contains the response from method RoleAssignmentsClient.NewListForScopePager.
 type RoleAssignmentsClientListForScopeResponse struct {
 	RoleAssignmentListResult
 }
 
-// RoleAssignmentsClientListResponse contains the response from method RoleAssignmentsClient.List.
+// RoleAssignmentsClientListResponse contains the response from method RoleAssignmentsClient.NewListPager.
 type RoleAssignmentsClientListResponse struct {
 	RoleAssignmentListResult
 }
@@ -104,7 +104,7 @@ type RoleDefinitionsClientGetResponse struct {
 	RoleDefinition
 }
 
-// RoleDefinitionsClientListResponse contains the response from method RoleDefinitionsClient.List.
+// RoleDefinitionsClientListResponse contains the response from method RoleDefinitionsClient.NewListPager.
 type RoleDefinitionsClientListResponse struct {
 	RoleDefinitionListResult
 }

@@ -9,7 +9,7 @@
 
 package armlocks
 
-// AuthorizationOperationsClientListResponse contains the response from method AuthorizationOperationsClient.List.
+// AuthorizationOperationsClientListResponse contains the response from method AuthorizationOperationsClient.NewListPager.
 type AuthorizationOperationsClientListResponse struct {
 	OperationListResult
 }
@@ -74,22 +74,22 @@ type ManagementLocksClientGetByScopeResponse struct {
 	ManagementLockObject
 }
 
-// ManagementLocksClientListAtResourceGroupLevelResponse contains the response from method ManagementLocksClient.ListAtResourceGroupLevel.
+// ManagementLocksClientListAtResourceGroupLevelResponse contains the response from method ManagementLocksClient.NewListAtResourceGroupLevelPager.
 type ManagementLocksClientListAtResourceGroupLevelResponse struct {
 	ManagementLockListResult
 }
 
-// ManagementLocksClientListAtResourceLevelResponse contains the response from method ManagementLocksClient.ListAtResourceLevel.
+// ManagementLocksClientListAtResourceLevelResponse contains the response from method ManagementLocksClient.NewListAtResourceLevelPager.
 type ManagementLocksClientListAtResourceLevelResponse struct {
 	ManagementLockListResult
 }
 
-// ManagementLocksClientListAtSubscriptionLevelResponse contains the response from method ManagementLocksClient.ListAtSubscriptionLevel.
+// ManagementLocksClientListAtSubscriptionLevelResponse contains the response from method ManagementLocksClient.NewListAtSubscriptionLevelPager.
 type ManagementLocksClientListAtSubscriptionLevelResponse struct {
 	ManagementLockListResult
 }
 
-// ManagementLocksClientListByScopeResponse contains the response from method ManagementLocksClient.ListByScope.
+// ManagementLocksClientListByScopeResponse contains the response from method ManagementLocksClient.NewListByScopePager.
 type ManagementLocksClientListByScopeResponse struct {
 	ManagementLockListResult
 }

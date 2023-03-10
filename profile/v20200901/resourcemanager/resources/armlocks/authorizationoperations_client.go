@@ -14,8 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,36 +22,28 @@ import (
 // AuthorizationOperationsClient contains the methods for the AuthorizationOperations group.
 // Don't use this type directly, use NewAuthorizationOperationsClient() instead.
 type AuthorizationOperationsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewAuthorizationOperationsClient creates a new instance of AuthorizationOperationsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAuthorizationOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationOperationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".AuthorizationOperationsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AuthorizationOperationsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Lists all of the available Microsoft.Authorization REST API operations.
+//
 // Generated from API version 2016-09-01
-// options - AuthorizationOperationsClientListOptions contains the optional parameters for the AuthorizationOperationsClient.List
-// method.
+//   - options - AuthorizationOperationsClientListOptions contains the optional parameters for the AuthorizationOperationsClient.NewListPager
+//     method.
 func (client *AuthorizationOperationsClient) NewListPager(options *AuthorizationOperationsClientListOptions) *runtime.Pager[AuthorizationOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AuthorizationOperationsClientListResponse]{
 		More: func(page AuthorizationOperationsClientListResponse) bool {
@@ -70,7 +60,7 @@ func (client *AuthorizationOperationsClient) NewListPager(options *Authorization
 			if err != nil {
 				return AuthorizationOperationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AuthorizationOperationsClientListResponse{}, err
 			}
@@ -85,7 +75,7 @@ func (client *AuthorizationOperationsClient) NewListPager(options *Authorization
 // listCreateRequest creates the List request.
 func (client *AuthorizationOperationsClient) listCreateRequest(ctx context.Context, options *AuthorizationOperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

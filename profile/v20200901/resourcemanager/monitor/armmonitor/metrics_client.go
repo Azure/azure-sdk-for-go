@@ -14,8 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,43 +24,35 @@ import (
 // MetricsClient contains the methods for the Metrics group.
 // Don't use this type directly, use NewMetricsClient() instead.
 type MetricsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewMetricsClient creates a new instance of MetricsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMetricsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".MetricsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MetricsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // List - Lists the metric values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-01-01
-// resourceURI - The identifier of the resource.
-// options - MetricsClientListOptions contains the optional parameters for the MetricsClient.List method.
+//   - resourceURI - The identifier of the resource.
+//   - options - MetricsClientListOptions contains the optional parameters for the MetricsClient.List method.
 func (client *MetricsClient) List(ctx context.Context, resourceURI string, options *MetricsClientListOptions) (MetricsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return MetricsClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MetricsClientListResponse{}, err
 	}
@@ -76,7 +66,7 @@ func (client *MetricsClient) List(ctx context.Context, resourceURI string, optio
 func (client *MetricsClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metrics"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

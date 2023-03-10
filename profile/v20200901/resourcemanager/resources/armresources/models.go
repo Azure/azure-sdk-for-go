@@ -133,7 +133,7 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager method.
 type ClientListByResourceGroupOptions struct {
 	// Comma-separated list of additional properties to be included in the response. Valid values include createdTime, changedTime
 	// and provisioningState. For example, $expand=createdTime,changedTime.
@@ -156,7 +156,7 @@ type ClientListByResourceGroupOptions struct {
 	Top *int32
 }
 
-// ClientListOptions contains the optional parameters for the Client.List method.
+// ClientListOptions contains the optional parameters for the Client.NewListPager method.
 type ClientListOptions struct {
 	// Comma-separated list of additional properties to be included in the response. Valid values include createdTime, changedTime
 	// and provisioningState. For example, $expand=createdTime,changedTime.
@@ -219,7 +219,7 @@ type Deployment struct {
 // DeploymentExportResult - The deployment export result.
 type DeploymentExportResult struct {
 	// The template content.
-	Template interface{} `json:"template,omitempty"`
+	Template any `json:"template,omitempty"`
 }
 
 // DeploymentExtended - Deployment information.
@@ -294,7 +294,7 @@ type DeploymentOperationProperties struct {
 	StatusCode *string `json:"statusCode,omitempty" azure:"ro"`
 
 	// READ-ONLY; Operation status message.
-	StatusMessage interface{} `json:"statusMessage,omitempty" azure:"ro"`
+	StatusMessage any `json:"statusMessage,omitempty" azure:"ro"`
 
 	// READ-ONLY; The target resource.
 	TargetResource *TargetResource `json:"targetResource,omitempty" azure:"ro"`
@@ -332,35 +332,36 @@ type DeploymentOperationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentOperationsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtManagementGroupScope
+// DeploymentOperationsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.NewListAtManagementGroupScopePager
 // method.
 type DeploymentOperationsClientListAtManagementGroupScopeOptions struct {
 	// The number of results to return.
 	Top *int32
 }
 
-// DeploymentOperationsClientListAtScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtScope
+// DeploymentOperationsClientListAtScopeOptions contains the optional parameters for the DeploymentOperationsClient.NewListAtScopePager
 // method.
 type DeploymentOperationsClientListAtScopeOptions struct {
 	// The number of results to return.
 	Top *int32
 }
 
-// DeploymentOperationsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtSubscriptionScope
+// DeploymentOperationsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.NewListAtSubscriptionScopePager
 // method.
 type DeploymentOperationsClientListAtSubscriptionScopeOptions struct {
 	// The number of results to return.
 	Top *int32
 }
 
-// DeploymentOperationsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtTenantScope
+// DeploymentOperationsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.NewListAtTenantScopePager
 // method.
 type DeploymentOperationsClientListAtTenantScopeOptions struct {
 	// The number of results to return.
 	Top *int32
 }
 
-// DeploymentOperationsClientListOptions contains the optional parameters for the DeploymentOperationsClient.List method.
+// DeploymentOperationsClientListOptions contains the optional parameters for the DeploymentOperationsClient.NewListPager
+// method.
 type DeploymentOperationsClientListOptions struct {
 	// The number of results to return.
 	Top *int32
@@ -394,7 +395,7 @@ type DeploymentProperties struct {
 	// the parameter values directly in the request rather than link to an existing
 	// parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or
 	// a well formed JSON string.
-	Parameters interface{} `json:"parameters,omitempty"`
+	Parameters any `json:"parameters,omitempty"`
 
 	// The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink
 	// property or the parameters property, but not both.
@@ -403,7 +404,7 @@ type DeploymentProperties struct {
 	// The template content. You use this element when you want to pass the template syntax directly in the request rather than
 	// link to an existing template. It can be a JObject or well-formed JSON string.
 	// Use either the templateLink property or the template property, but not both.
-	Template interface{} `json:"template,omitempty"`
+	Template any `json:"template,omitempty"`
 
 	// The URI of the template. Use either the templateLink property or the template property, but not both.
 	TemplateLink *TemplateLink `json:"templateLink,omitempty"`
@@ -436,10 +437,10 @@ type DeploymentPropertiesExtended struct {
 	OutputResources []*ResourceReference `json:"outputResources,omitempty" azure:"ro"`
 
 	// READ-ONLY; Key/value pairs that represent deployment output.
-	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs any `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; Deployment parameters.
-	Parameters interface{} `json:"parameters,omitempty" azure:"ro"`
+	Parameters any `json:"parameters,omitempty" azure:"ro"`
 
 	// READ-ONLY; The URI referencing the parameters.
 	ParametersLink *ParametersLink `json:"parametersLink,omitempty" azure:"ro"`
@@ -500,7 +501,7 @@ type DeploymentWhatIfProperties struct {
 	// the parameter values directly in the request rather than link to an existing
 	// parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or
 	// a well formed JSON string.
-	Parameters interface{} `json:"parameters,omitempty"`
+	Parameters any `json:"parameters,omitempty"`
 
 	// The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink
 	// property or the parameters property, but not both.
@@ -509,7 +510,7 @@ type DeploymentWhatIfProperties struct {
 	// The template content. You use this element when you want to pass the template syntax directly in the request rather than
 	// link to an existing template. It can be a JObject or well-formed JSON string.
 	// Use either the templateLink property or the template property, but not both.
-	Template interface{} `json:"template,omitempty"`
+	Template any `json:"template,omitempty"`
 
 	// The URI of the template. Use either the templateLink property or the template property, but not both.
 	TemplateLink *TemplateLink `json:"templateLink,omitempty"`
@@ -773,7 +774,7 @@ type DeploymentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.ListAtManagementGroupScope
+// DeploymentsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.NewListAtManagementGroupScopePager
 // method.
 type DeploymentsClientListAtManagementGroupScopeOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
@@ -782,7 +783,7 @@ type DeploymentsClientListAtManagementGroupScopeOptions struct {
 	Top *int32
 }
 
-// DeploymentsClientListAtScopeOptions contains the optional parameters for the DeploymentsClient.ListAtScope method.
+// DeploymentsClientListAtScopeOptions contains the optional parameters for the DeploymentsClient.NewListAtScopePager method.
 type DeploymentsClientListAtScopeOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
 	Filter *string
@@ -790,7 +791,7 @@ type DeploymentsClientListAtScopeOptions struct {
 	Top *int32
 }
 
-// DeploymentsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.ListAtSubscriptionScope
+// DeploymentsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.NewListAtSubscriptionScopePager
 // method.
 type DeploymentsClientListAtSubscriptionScopeOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
@@ -799,7 +800,7 @@ type DeploymentsClientListAtSubscriptionScopeOptions struct {
 	Top *int32
 }
 
-// DeploymentsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.ListAtTenantScope
+// DeploymentsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.NewListAtTenantScopePager
 // method.
 type DeploymentsClientListAtTenantScopeOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
@@ -808,7 +809,7 @@ type DeploymentsClientListAtTenantScopeOptions struct {
 	Top *int32
 }
 
-// DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.ListByResourceGroup
+// DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.NewListByResourceGroupPager
 // method.
 type DeploymentsClientListByResourceGroupOptions struct {
 	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
@@ -820,7 +821,7 @@ type DeploymentsClientListByResourceGroupOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -874,7 +875,7 @@ type GenericResource struct {
 	Plan *Plan `json:"plan,omitempty"`
 
 	// The resource properties.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 
 	// The SKU of the resource.
 	SKU *SKU `json:"sku,omitempty"`
@@ -910,7 +911,7 @@ type GenericResourceExpanded struct {
 	Plan *Plan `json:"plan,omitempty"`
 
 	// The resource properties.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any `json:"properties,omitempty"`
 
 	// The SKU of the resource.
 	SKU *SKU `json:"sku,omitempty"`
@@ -952,7 +953,7 @@ type GenericResourceFilter struct {
 // HTTPMessage - HTTP message.
 type HTTPMessage struct {
 	// HTTP message content.
-	Content interface{} `json:"content,omitempty"`
+	Content any `json:"content,omitempty"`
 }
 
 // Identity for the resource.
@@ -1044,7 +1045,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1137,7 +1138,8 @@ type ProvidersClientGetOptions struct {
 	Expand *string
 }
 
-// ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.ListAtTenantScope method.
+// ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.NewListAtTenantScopePager
+// method.
 type ProvidersClientListAtTenantScopeOptions struct {
 	// The properties to include in the results. For example, use &$expand=metadata in the query string to retrieve resource provider
 	// metadata. To include property aliases in response, use
@@ -1147,7 +1149,7 @@ type ProvidersClientListAtTenantScopeOptions struct {
 	Top *int32
 }
 
-// ProvidersClientListOptions contains the optional parameters for the ProvidersClient.List method.
+// ProvidersClientListOptions contains the optional parameters for the ProvidersClient.NewListPager method.
 type ProvidersClientListOptions struct {
 	// The properties to include in the results. For example, use &$expand=metadata in the query string to retrieve resource provider
 	// metadata. To include property aliases in response, use
@@ -1216,7 +1218,7 @@ type ResourceGroupExportResult struct {
 	Error *ErrorResponse `json:"error,omitempty"`
 
 	// The template content.
-	Template interface{} `json:"template,omitempty"`
+	Template any `json:"template,omitempty"`
 }
 
 // ResourceGroupFilter - Resource group filter.
@@ -1288,7 +1290,7 @@ type ResourceGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceGroupsClientListOptions contains the optional parameters for the ResourceGroupsClient.List method.
+// ResourceGroupsClientListOptions contains the optional parameters for the ResourceGroupsClient.NewListPager method.
 type ResourceGroupsClientListOptions struct {
 	// The filter to apply on the operation.
 	// You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName eq 'tag1'
@@ -1462,7 +1464,7 @@ type TagsClientGetAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TagsClientListOptions contains the optional parameters for the TagsClient.List method.
+// TagsClientListOptions contains the optional parameters for the TagsClient.NewListPager method.
 type TagsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1545,10 +1547,10 @@ type WhatIfChange struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 
 	// The predicted snapshot of the resource after the deployment is executed.
-	After interface{} `json:"after,omitempty"`
+	After any `json:"after,omitempty"`
 
 	// The snapshot of the resource before the deployment is executed.
-	Before interface{} `json:"before,omitempty"`
+	Before any `json:"before,omitempty"`
 
 	// The predicted changes to resource properties.
 	Delta []*WhatIfPropertyChange `json:"delta,omitempty"`
@@ -1582,10 +1584,10 @@ type WhatIfPropertyChange struct {
 	PropertyChangeType *PropertyChangeType `json:"propertyChangeType,omitempty"`
 
 	// The value of the property after the deployment is executed.
-	After interface{} `json:"after,omitempty"`
+	After any `json:"after,omitempty"`
 
 	// The value of the property before the deployment is executed.
-	Before interface{} `json:"before,omitempty"`
+	Before any `json:"before,omitempty"`
 
 	// Nested property changes.
 	Children []*WhatIfPropertyChange `json:"children,omitempty"`

@@ -16,17 +16,17 @@ type DefaultSecurityRulesClientGetResponse struct {
 	SecurityRule
 }
 
-// DefaultSecurityRulesClientListResponse contains the response from method DefaultSecurityRulesClient.List.
+// DefaultSecurityRulesClientListResponse contains the response from method DefaultSecurityRulesClient.NewListPager.
 type DefaultSecurityRulesClientListResponse struct {
 	SecurityRuleListResult
 }
 
-// InboundNatRulesClientCreateOrUpdateResponse contains the response from method InboundNatRulesClient.CreateOrUpdate.
+// InboundNatRulesClientCreateOrUpdateResponse contains the response from method InboundNatRulesClient.BeginCreateOrUpdate.
 type InboundNatRulesClientCreateOrUpdateResponse struct {
 	InboundNatRule
 }
 
-// InboundNatRulesClientDeleteResponse contains the response from method InboundNatRulesClient.Delete.
+// InboundNatRulesClientDeleteResponse contains the response from method InboundNatRulesClient.BeginDelete.
 type InboundNatRulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -36,7 +36,7 @@ type InboundNatRulesClientGetResponse struct {
 	InboundNatRule
 }
 
-// InboundNatRulesClientListResponse contains the response from method InboundNatRulesClient.List.
+// InboundNatRulesClientListResponse contains the response from method InboundNatRulesClient.NewListPager.
 type InboundNatRulesClientListResponse struct {
 	InboundNatRuleListResult
 }
@@ -46,22 +46,22 @@ type InterfaceIPConfigurationsClientGetResponse struct {
 	InterfaceIPConfiguration
 }
 
-// InterfaceIPConfigurationsClientListResponse contains the response from method InterfaceIPConfigurationsClient.List.
+// InterfaceIPConfigurationsClientListResponse contains the response from method InterfaceIPConfigurationsClient.NewListPager.
 type InterfaceIPConfigurationsClientListResponse struct {
 	InterfaceIPConfigurationListResult
 }
 
-// InterfaceLoadBalancersClientListResponse contains the response from method InterfaceLoadBalancersClient.List.
+// InterfaceLoadBalancersClientListResponse contains the response from method InterfaceLoadBalancersClient.NewListPager.
 type InterfaceLoadBalancersClientListResponse struct {
 	InterfaceLoadBalancerListResult
 }
 
-// InterfaceTapConfigurationsClientCreateOrUpdateResponse contains the response from method InterfaceTapConfigurationsClient.CreateOrUpdate.
+// InterfaceTapConfigurationsClientCreateOrUpdateResponse contains the response from method InterfaceTapConfigurationsClient.BeginCreateOrUpdate.
 type InterfaceTapConfigurationsClientCreateOrUpdateResponse struct {
 	InterfaceTapConfiguration
 }
 
-// InterfaceTapConfigurationsClientDeleteResponse contains the response from method InterfaceTapConfigurationsClient.Delete.
+// InterfaceTapConfigurationsClientDeleteResponse contains the response from method InterfaceTapConfigurationsClient.BeginDelete.
 type InterfaceTapConfigurationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -71,22 +71,22 @@ type InterfaceTapConfigurationsClientGetResponse struct {
 	InterfaceTapConfiguration
 }
 
-// InterfaceTapConfigurationsClientListResponse contains the response from method InterfaceTapConfigurationsClient.List.
+// InterfaceTapConfigurationsClientListResponse contains the response from method InterfaceTapConfigurationsClient.NewListPager.
 type InterfaceTapConfigurationsClientListResponse struct {
 	InterfaceTapConfigurationListResult
 }
 
-// InterfacesClientCreateOrUpdateResponse contains the response from method InterfacesClient.CreateOrUpdate.
+// InterfacesClientCreateOrUpdateResponse contains the response from method InterfacesClient.BeginCreateOrUpdate.
 type InterfacesClientCreateOrUpdateResponse struct {
 	Interface
 }
 
-// InterfacesClientDeleteResponse contains the response from method InterfacesClient.Delete.
+// InterfacesClientDeleteResponse contains the response from method InterfacesClient.BeginDelete.
 type InterfacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// InterfacesClientGetEffectiveRouteTableResponse contains the response from method InterfacesClient.GetEffectiveRouteTable.
+// InterfacesClientGetEffectiveRouteTableResponse contains the response from method InterfacesClient.BeginGetEffectiveRouteTable.
 type InterfacesClientGetEffectiveRouteTableResponse struct {
 	EffectiveRouteListResult
 }
@@ -96,22 +96,22 @@ type InterfacesClientGetResponse struct {
 	Interface
 }
 
-// InterfacesClientListAllResponse contains the response from method InterfacesClient.ListAll.
+// InterfacesClientListAllResponse contains the response from method InterfacesClient.NewListAllPager.
 type InterfacesClientListAllResponse struct {
 	InterfaceListResult
 }
 
-// InterfacesClientListEffectiveNetworkSecurityGroupsResponse contains the response from method InterfacesClient.ListEffectiveNetworkSecurityGroups.
+// InterfacesClientListEffectiveNetworkSecurityGroupsResponse contains the response from method InterfacesClient.BeginListEffectiveNetworkSecurityGroups.
 type InterfacesClientListEffectiveNetworkSecurityGroupsResponse struct {
 	EffectiveNetworkSecurityGroupListResult
 }
 
-// InterfacesClientListResponse contains the response from method InterfacesClient.List.
+// InterfacesClientListResponse contains the response from method InterfacesClient.NewListPager.
 type InterfacesClientListResponse struct {
 	InterfaceListResult
 }
 
-// InterfacesClientUpdateTagsResponse contains the response from method InterfacesClient.UpdateTags.
+// InterfacesClientUpdateTagsResponse contains the response from method InterfacesClient.BeginUpdateTags.
 type InterfacesClientUpdateTagsResponse struct {
 	Interface
 }
@@ -121,7 +121,7 @@ type LoadBalancerBackendAddressPoolsClientGetResponse struct {
 	BackendAddressPool
 }
 
-// LoadBalancerBackendAddressPoolsClientListResponse contains the response from method LoadBalancerBackendAddressPoolsClient.List.
+// LoadBalancerBackendAddressPoolsClientListResponse contains the response from method LoadBalancerBackendAddressPoolsClient.NewListPager.
 type LoadBalancerBackendAddressPoolsClientListResponse struct {
 	LoadBalancerBackendAddressPoolListResult
 }
@@ -131,7 +131,7 @@ type LoadBalancerFrontendIPConfigurationsClientGetResponse struct {
 	FrontendIPConfiguration
 }
 
-// LoadBalancerFrontendIPConfigurationsClientListResponse contains the response from method LoadBalancerFrontendIPConfigurationsClient.List.
+// LoadBalancerFrontendIPConfigurationsClientListResponse contains the response from method LoadBalancerFrontendIPConfigurationsClient.NewListPager.
 type LoadBalancerFrontendIPConfigurationsClientListResponse struct {
 	LoadBalancerFrontendIPConfigurationListResult
 }
@@ -141,12 +141,12 @@ type LoadBalancerLoadBalancingRulesClientGetResponse struct {
 	LoadBalancingRule
 }
 
-// LoadBalancerLoadBalancingRulesClientListResponse contains the response from method LoadBalancerLoadBalancingRulesClient.List.
+// LoadBalancerLoadBalancingRulesClientListResponse contains the response from method LoadBalancerLoadBalancingRulesClient.NewListPager.
 type LoadBalancerLoadBalancingRulesClientListResponse struct {
 	LoadBalancerLoadBalancingRuleListResult
 }
 
-// LoadBalancerNetworkInterfacesClientListResponse contains the response from method LoadBalancerNetworkInterfacesClient.List.
+// LoadBalancerNetworkInterfacesClientListResponse contains the response from method LoadBalancerNetworkInterfacesClient.NewListPager.
 type LoadBalancerNetworkInterfacesClientListResponse struct {
 	InterfaceListResult
 }
@@ -156,7 +156,7 @@ type LoadBalancerOutboundRulesClientGetResponse struct {
 	OutboundRule
 }
 
-// LoadBalancerOutboundRulesClientListResponse contains the response from method LoadBalancerOutboundRulesClient.List.
+// LoadBalancerOutboundRulesClientListResponse contains the response from method LoadBalancerOutboundRulesClient.NewListPager.
 type LoadBalancerOutboundRulesClientListResponse struct {
 	LoadBalancerOutboundRuleListResult
 }
@@ -166,17 +166,17 @@ type LoadBalancerProbesClientGetResponse struct {
 	Probe
 }
 
-// LoadBalancerProbesClientListResponse contains the response from method LoadBalancerProbesClient.List.
+// LoadBalancerProbesClientListResponse contains the response from method LoadBalancerProbesClient.NewListPager.
 type LoadBalancerProbesClientListResponse struct {
 	LoadBalancerProbeListResult
 }
 
-// LoadBalancersClientCreateOrUpdateResponse contains the response from method LoadBalancersClient.CreateOrUpdate.
+// LoadBalancersClientCreateOrUpdateResponse contains the response from method LoadBalancersClient.BeginCreateOrUpdate.
 type LoadBalancersClientCreateOrUpdateResponse struct {
 	LoadBalancer
 }
 
-// LoadBalancersClientDeleteResponse contains the response from method LoadBalancersClient.Delete.
+// LoadBalancersClientDeleteResponse contains the response from method LoadBalancersClient.BeginDelete.
 type LoadBalancersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -186,27 +186,27 @@ type LoadBalancersClientGetResponse struct {
 	LoadBalancer
 }
 
-// LoadBalancersClientListAllResponse contains the response from method LoadBalancersClient.ListAll.
+// LoadBalancersClientListAllResponse contains the response from method LoadBalancersClient.NewListAllPager.
 type LoadBalancersClientListAllResponse struct {
 	LoadBalancerListResult
 }
 
-// LoadBalancersClientListResponse contains the response from method LoadBalancersClient.List.
+// LoadBalancersClientListResponse contains the response from method LoadBalancersClient.NewListPager.
 type LoadBalancersClientListResponse struct {
 	LoadBalancerListResult
 }
 
-// LoadBalancersClientUpdateTagsResponse contains the response from method LoadBalancersClient.UpdateTags.
+// LoadBalancersClientUpdateTagsResponse contains the response from method LoadBalancersClient.BeginUpdateTags.
 type LoadBalancersClientUpdateTagsResponse struct {
 	LoadBalancer
 }
 
-// LocalNetworkGatewaysClientCreateOrUpdateResponse contains the response from method LocalNetworkGatewaysClient.CreateOrUpdate.
+// LocalNetworkGatewaysClientCreateOrUpdateResponse contains the response from method LocalNetworkGatewaysClient.BeginCreateOrUpdate.
 type LocalNetworkGatewaysClientCreateOrUpdateResponse struct {
 	LocalNetworkGateway
 }
 
-// LocalNetworkGatewaysClientDeleteResponse contains the response from method LocalNetworkGatewaysClient.Delete.
+// LocalNetworkGatewaysClientDeleteResponse contains the response from method LocalNetworkGatewaysClient.BeginDelete.
 type LocalNetworkGatewaysClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -216,27 +216,27 @@ type LocalNetworkGatewaysClientGetResponse struct {
 	LocalNetworkGateway
 }
 
-// LocalNetworkGatewaysClientListResponse contains the response from method LocalNetworkGatewaysClient.List.
+// LocalNetworkGatewaysClientListResponse contains the response from method LocalNetworkGatewaysClient.NewListPager.
 type LocalNetworkGatewaysClientListResponse struct {
 	LocalNetworkGatewayListResult
 }
 
-// LocalNetworkGatewaysClientUpdateTagsResponse contains the response from method LocalNetworkGatewaysClient.UpdateTags.
+// LocalNetworkGatewaysClientUpdateTagsResponse contains the response from method LocalNetworkGatewaysClient.BeginUpdateTags.
 type LocalNetworkGatewaysClientUpdateTagsResponse struct {
 	LocalNetworkGateway
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PublicIPAddressesClientCreateOrUpdateResponse contains the response from method PublicIPAddressesClient.CreateOrUpdate.
+// PublicIPAddressesClientCreateOrUpdateResponse contains the response from method PublicIPAddressesClient.BeginCreateOrUpdate.
 type PublicIPAddressesClientCreateOrUpdateResponse struct {
 	PublicIPAddress
 }
 
-// PublicIPAddressesClientDeleteResponse contains the response from method PublicIPAddressesClient.Delete.
+// PublicIPAddressesClientDeleteResponse contains the response from method PublicIPAddressesClient.BeginDelete.
 type PublicIPAddressesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -246,27 +246,27 @@ type PublicIPAddressesClientGetResponse struct {
 	PublicIPAddress
 }
 
-// PublicIPAddressesClientListAllResponse contains the response from method PublicIPAddressesClient.ListAll.
+// PublicIPAddressesClientListAllResponse contains the response from method PublicIPAddressesClient.NewListAllPager.
 type PublicIPAddressesClientListAllResponse struct {
 	PublicIPAddressListResult
 }
 
-// PublicIPAddressesClientListResponse contains the response from method PublicIPAddressesClient.List.
+// PublicIPAddressesClientListResponse contains the response from method PublicIPAddressesClient.NewListPager.
 type PublicIPAddressesClientListResponse struct {
 	PublicIPAddressListResult
 }
 
-// PublicIPAddressesClientUpdateTagsResponse contains the response from method PublicIPAddressesClient.UpdateTags.
+// PublicIPAddressesClientUpdateTagsResponse contains the response from method PublicIPAddressesClient.BeginUpdateTags.
 type PublicIPAddressesClientUpdateTagsResponse struct {
 	PublicIPAddress
 }
 
-// RouteTablesClientCreateOrUpdateResponse contains the response from method RouteTablesClient.CreateOrUpdate.
+// RouteTablesClientCreateOrUpdateResponse contains the response from method RouteTablesClient.BeginCreateOrUpdate.
 type RouteTablesClientCreateOrUpdateResponse struct {
 	RouteTable
 }
 
-// RouteTablesClientDeleteResponse contains the response from method RouteTablesClient.Delete.
+// RouteTablesClientDeleteResponse contains the response from method RouteTablesClient.BeginDelete.
 type RouteTablesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -276,27 +276,27 @@ type RouteTablesClientGetResponse struct {
 	RouteTable
 }
 
-// RouteTablesClientListAllResponse contains the response from method RouteTablesClient.ListAll.
+// RouteTablesClientListAllResponse contains the response from method RouteTablesClient.NewListAllPager.
 type RouteTablesClientListAllResponse struct {
 	RouteTableListResult
 }
 
-// RouteTablesClientListResponse contains the response from method RouteTablesClient.List.
+// RouteTablesClientListResponse contains the response from method RouteTablesClient.NewListPager.
 type RouteTablesClientListResponse struct {
 	RouteTableListResult
 }
 
-// RouteTablesClientUpdateTagsResponse contains the response from method RouteTablesClient.UpdateTags.
+// RouteTablesClientUpdateTagsResponse contains the response from method RouteTablesClient.BeginUpdateTags.
 type RouteTablesClientUpdateTagsResponse struct {
 	RouteTable
 }
 
-// RoutesClientCreateOrUpdateResponse contains the response from method RoutesClient.CreateOrUpdate.
+// RoutesClientCreateOrUpdateResponse contains the response from method RoutesClient.BeginCreateOrUpdate.
 type RoutesClientCreateOrUpdateResponse struct {
 	Route
 }
 
-// RoutesClientDeleteResponse contains the response from method RoutesClient.Delete.
+// RoutesClientDeleteResponse contains the response from method RoutesClient.BeginDelete.
 type RoutesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -306,17 +306,17 @@ type RoutesClientGetResponse struct {
 	Route
 }
 
-// RoutesClientListResponse contains the response from method RoutesClient.List.
+// RoutesClientListResponse contains the response from method RoutesClient.NewListPager.
 type RoutesClientListResponse struct {
 	RouteListResult
 }
 
-// SecurityGroupsClientCreateOrUpdateResponse contains the response from method SecurityGroupsClient.CreateOrUpdate.
+// SecurityGroupsClientCreateOrUpdateResponse contains the response from method SecurityGroupsClient.BeginCreateOrUpdate.
 type SecurityGroupsClientCreateOrUpdateResponse struct {
 	SecurityGroup
 }
 
-// SecurityGroupsClientDeleteResponse contains the response from method SecurityGroupsClient.Delete.
+// SecurityGroupsClientDeleteResponse contains the response from method SecurityGroupsClient.BeginDelete.
 type SecurityGroupsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -326,27 +326,27 @@ type SecurityGroupsClientGetResponse struct {
 	SecurityGroup
 }
 
-// SecurityGroupsClientListAllResponse contains the response from method SecurityGroupsClient.ListAll.
+// SecurityGroupsClientListAllResponse contains the response from method SecurityGroupsClient.NewListAllPager.
 type SecurityGroupsClientListAllResponse struct {
 	SecurityGroupListResult
 }
 
-// SecurityGroupsClientListResponse contains the response from method SecurityGroupsClient.List.
+// SecurityGroupsClientListResponse contains the response from method SecurityGroupsClient.NewListPager.
 type SecurityGroupsClientListResponse struct {
 	SecurityGroupListResult
 }
 
-// SecurityGroupsClientUpdateTagsResponse contains the response from method SecurityGroupsClient.UpdateTags.
+// SecurityGroupsClientUpdateTagsResponse contains the response from method SecurityGroupsClient.BeginUpdateTags.
 type SecurityGroupsClientUpdateTagsResponse struct {
 	SecurityGroup
 }
 
-// SecurityRulesClientCreateOrUpdateResponse contains the response from method SecurityRulesClient.CreateOrUpdate.
+// SecurityRulesClientCreateOrUpdateResponse contains the response from method SecurityRulesClient.BeginCreateOrUpdate.
 type SecurityRulesClientCreateOrUpdateResponse struct {
 	SecurityRule
 }
 
-// SecurityRulesClientDeleteResponse contains the response from method SecurityRulesClient.Delete.
+// SecurityRulesClientDeleteResponse contains the response from method SecurityRulesClient.BeginDelete.
 type SecurityRulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -356,17 +356,17 @@ type SecurityRulesClientGetResponse struct {
 	SecurityRule
 }
 
-// SecurityRulesClientListResponse contains the response from method SecurityRulesClient.List.
+// SecurityRulesClientListResponse contains the response from method SecurityRulesClient.NewListPager.
 type SecurityRulesClientListResponse struct {
 	SecurityRuleListResult
 }
 
-// SubnetsClientCreateOrUpdateResponse contains the response from method SubnetsClient.CreateOrUpdate.
+// SubnetsClientCreateOrUpdateResponse contains the response from method SubnetsClient.BeginCreateOrUpdate.
 type SubnetsClientCreateOrUpdateResponse struct {
 	Subnet
 }
 
-// SubnetsClientDeleteResponse contains the response from method SubnetsClient.Delete.
+// SubnetsClientDeleteResponse contains the response from method SubnetsClient.BeginDelete.
 type SubnetsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -376,17 +376,17 @@ type SubnetsClientGetResponse struct {
 	Subnet
 }
 
-// SubnetsClientListResponse contains the response from method SubnetsClient.List.
+// SubnetsClientListResponse contains the response from method SubnetsClient.NewListPager.
 type SubnetsClientListResponse struct {
 	SubnetListResult
 }
 
-// VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse contains the response from method VirtualNetworkGatewayConnectionsClient.CreateOrUpdate.
+// VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse contains the response from method VirtualNetworkGatewayConnectionsClient.BeginCreateOrUpdate.
 type VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse struct {
 	VirtualNetworkGatewayConnection
 }
 
-// VirtualNetworkGatewayConnectionsClientDeleteResponse contains the response from method VirtualNetworkGatewayConnectionsClient.Delete.
+// VirtualNetworkGatewayConnectionsClientDeleteResponse contains the response from method VirtualNetworkGatewayConnectionsClient.BeginDelete.
 type VirtualNetworkGatewayConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -401,37 +401,37 @@ type VirtualNetworkGatewayConnectionsClientGetSharedKeyResponse struct {
 	ConnectionSharedKey
 }
 
-// VirtualNetworkGatewayConnectionsClientListResponse contains the response from method VirtualNetworkGatewayConnectionsClient.List.
+// VirtualNetworkGatewayConnectionsClientListResponse contains the response from method VirtualNetworkGatewayConnectionsClient.NewListPager.
 type VirtualNetworkGatewayConnectionsClientListResponse struct {
 	VirtualNetworkGatewayConnectionListResult
 }
 
-// VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse contains the response from method VirtualNetworkGatewayConnectionsClient.ResetSharedKey.
+// VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse contains the response from method VirtualNetworkGatewayConnectionsClient.BeginResetSharedKey.
 type VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse struct {
 	ConnectionResetSharedKey
 }
 
-// VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse contains the response from method VirtualNetworkGatewayConnectionsClient.SetSharedKey.
+// VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse contains the response from method VirtualNetworkGatewayConnectionsClient.BeginSetSharedKey.
 type VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse struct {
 	ConnectionSharedKey
 }
 
-// VirtualNetworkGatewayConnectionsClientUpdateTagsResponse contains the response from method VirtualNetworkGatewayConnectionsClient.UpdateTags.
+// VirtualNetworkGatewayConnectionsClientUpdateTagsResponse contains the response from method VirtualNetworkGatewayConnectionsClient.BeginUpdateTags.
 type VirtualNetworkGatewayConnectionsClientUpdateTagsResponse struct {
 	VirtualNetworkGatewayConnection
 }
 
-// VirtualNetworkGatewaysClientCreateOrUpdateResponse contains the response from method VirtualNetworkGatewaysClient.CreateOrUpdate.
+// VirtualNetworkGatewaysClientCreateOrUpdateResponse contains the response from method VirtualNetworkGatewaysClient.BeginCreateOrUpdate.
 type VirtualNetworkGatewaysClientCreateOrUpdateResponse struct {
 	VirtualNetworkGateway
 }
 
-// VirtualNetworkGatewaysClientDeleteResponse contains the response from method VirtualNetworkGatewaysClient.Delete.
+// VirtualNetworkGatewaysClientDeleteResponse contains the response from method VirtualNetworkGatewaysClient.BeginDelete.
 type VirtualNetworkGatewaysClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualNetworkGatewaysClientGenerateVPNProfileResponse contains the response from method VirtualNetworkGatewaysClient.GenerateVPNProfile.
+// VirtualNetworkGatewaysClientGenerateVPNProfileResponse contains the response from method VirtualNetworkGatewaysClient.BeginGenerateVPNProfile.
 type VirtualNetworkGatewaysClientGenerateVPNProfileResponse struct {
 	Value *string
 }
@@ -441,7 +441,7 @@ func (v *VirtualNetworkGatewaysClientGenerateVPNProfileResponse) UnmarshalJSON(d
 	return json.Unmarshal(data, &v.Value)
 }
 
-// VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse contains the response from method VirtualNetworkGatewaysClient.Generatevpnclientpackage.
+// VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse contains the response from method VirtualNetworkGatewaysClient.BeginGeneratevpnclientpackage.
 type VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse struct {
 	Value *string
 }
@@ -451,17 +451,17 @@ func (v *VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse) Unmarshal
 	return json.Unmarshal(data, &v.Value)
 }
 
-// VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse contains the response from method VirtualNetworkGatewaysClient.GetAdvertisedRoutes.
+// VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes.
 type VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse struct {
 	GatewayRouteListResult
 }
 
-// VirtualNetworkGatewaysClientGetBgpPeerStatusResponse contains the response from method VirtualNetworkGatewaysClient.GetBgpPeerStatus.
+// VirtualNetworkGatewaysClientGetBgpPeerStatusResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus.
 type VirtualNetworkGatewaysClientGetBgpPeerStatusResponse struct {
 	BgpPeerStatusListResult
 }
 
-// VirtualNetworkGatewaysClientGetLearnedRoutesResponse contains the response from method VirtualNetworkGatewaysClient.GetLearnedRoutes.
+// VirtualNetworkGatewaysClientGetLearnedRoutesResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetLearnedRoutes.
 type VirtualNetworkGatewaysClientGetLearnedRoutesResponse struct {
 	GatewayRouteListResult
 }
@@ -471,7 +471,7 @@ type VirtualNetworkGatewaysClientGetResponse struct {
 	VirtualNetworkGateway
 }
 
-// VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse contains the response from method VirtualNetworkGatewaysClient.GetVPNProfilePackageURL.
+// VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL.
 type VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse struct {
 	Value *string
 }
@@ -481,32 +481,32 @@ func (v *VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse) UnmarshalJ
 	return json.Unmarshal(data, &v.Value)
 }
 
-// VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse contains the response from method VirtualNetworkGatewaysClient.GetVpnclientIPSecParameters.
+// VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetVpnclientIPSecParameters.
 type VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse struct {
 	VPNClientIPsecParameters
 }
 
-// VirtualNetworkGatewaysClientListConnectionsResponse contains the response from method VirtualNetworkGatewaysClient.ListConnections.
+// VirtualNetworkGatewaysClientListConnectionsResponse contains the response from method VirtualNetworkGatewaysClient.NewListConnectionsPager.
 type VirtualNetworkGatewaysClientListConnectionsResponse struct {
 	VirtualNetworkGatewayListConnectionsResult
 }
 
-// VirtualNetworkGatewaysClientListResponse contains the response from method VirtualNetworkGatewaysClient.List.
+// VirtualNetworkGatewaysClientListResponse contains the response from method VirtualNetworkGatewaysClient.NewListPager.
 type VirtualNetworkGatewaysClientListResponse struct {
 	VirtualNetworkGatewayListResult
 }
 
-// VirtualNetworkGatewaysClientResetResponse contains the response from method VirtualNetworkGatewaysClient.Reset.
+// VirtualNetworkGatewaysClientResetResponse contains the response from method VirtualNetworkGatewaysClient.BeginReset.
 type VirtualNetworkGatewaysClientResetResponse struct {
 	VirtualNetworkGateway
 }
 
-// VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse contains the response from method VirtualNetworkGatewaysClient.ResetVPNClientSharedKey.
+// VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse contains the response from method VirtualNetworkGatewaysClient.BeginResetVPNClientSharedKey.
 type VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse contains the response from method VirtualNetworkGatewaysClient.SetVpnclientIPSecParameters.
+// VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse contains the response from method VirtualNetworkGatewaysClient.BeginSetVpnclientIPSecParameters.
 type VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse struct {
 	VPNClientIPsecParameters
 }
@@ -516,7 +516,7 @@ type VirtualNetworkGatewaysClientSupportedVPNDevicesResponse struct {
 	Value *string
 }
 
-// VirtualNetworkGatewaysClientUpdateTagsResponse contains the response from method VirtualNetworkGatewaysClient.UpdateTags.
+// VirtualNetworkGatewaysClientUpdateTagsResponse contains the response from method VirtualNetworkGatewaysClient.BeginUpdateTags.
 type VirtualNetworkGatewaysClientUpdateTagsResponse struct {
 	VirtualNetworkGateway
 }
@@ -526,12 +526,12 @@ type VirtualNetworkGatewaysClientVPNDeviceConfigurationScriptResponse struct {
 	Value *string
 }
 
-// VirtualNetworkPeeringsClientCreateOrUpdateResponse contains the response from method VirtualNetworkPeeringsClient.CreateOrUpdate.
+// VirtualNetworkPeeringsClientCreateOrUpdateResponse contains the response from method VirtualNetworkPeeringsClient.BeginCreateOrUpdate.
 type VirtualNetworkPeeringsClientCreateOrUpdateResponse struct {
 	VirtualNetworkPeering
 }
 
-// VirtualNetworkPeeringsClientDeleteResponse contains the response from method VirtualNetworkPeeringsClient.Delete.
+// VirtualNetworkPeeringsClientDeleteResponse contains the response from method VirtualNetworkPeeringsClient.BeginDelete.
 type VirtualNetworkPeeringsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -541,7 +541,7 @@ type VirtualNetworkPeeringsClientGetResponse struct {
 	VirtualNetworkPeering
 }
 
-// VirtualNetworkPeeringsClientListResponse contains the response from method VirtualNetworkPeeringsClient.List.
+// VirtualNetworkPeeringsClientListResponse contains the response from method VirtualNetworkPeeringsClient.NewListPager.
 type VirtualNetworkPeeringsClientListResponse struct {
 	VirtualNetworkPeeringListResult
 }
@@ -551,12 +551,12 @@ type VirtualNetworksClientCheckIPAddressAvailabilityResponse struct {
 	IPAddressAvailabilityResult
 }
 
-// VirtualNetworksClientCreateOrUpdateResponse contains the response from method VirtualNetworksClient.CreateOrUpdate.
+// VirtualNetworksClientCreateOrUpdateResponse contains the response from method VirtualNetworksClient.BeginCreateOrUpdate.
 type VirtualNetworksClientCreateOrUpdateResponse struct {
 	VirtualNetwork
 }
 
-// VirtualNetworksClientDeleteResponse contains the response from method VirtualNetworksClient.Delete.
+// VirtualNetworksClientDeleteResponse contains the response from method VirtualNetworksClient.BeginDelete.
 type VirtualNetworksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -566,22 +566,22 @@ type VirtualNetworksClientGetResponse struct {
 	VirtualNetwork
 }
 
-// VirtualNetworksClientListAllResponse contains the response from method VirtualNetworksClient.ListAll.
+// VirtualNetworksClientListAllResponse contains the response from method VirtualNetworksClient.NewListAllPager.
 type VirtualNetworksClientListAllResponse struct {
 	VirtualNetworkListResult
 }
 
-// VirtualNetworksClientListResponse contains the response from method VirtualNetworksClient.List.
+// VirtualNetworksClientListResponse contains the response from method VirtualNetworksClient.NewListPager.
 type VirtualNetworksClientListResponse struct {
 	VirtualNetworkListResult
 }
 
-// VirtualNetworksClientListUsageResponse contains the response from method VirtualNetworksClient.ListUsage.
+// VirtualNetworksClientListUsageResponse contains the response from method VirtualNetworksClient.NewListUsagePager.
 type VirtualNetworksClientListUsageResponse struct {
 	VirtualNetworkListUsageResult
 }
 
-// VirtualNetworksClientUpdateTagsResponse contains the response from method VirtualNetworksClient.UpdateTags.
+// VirtualNetworksClientUpdateTagsResponse contains the response from method VirtualNetworksClient.BeginUpdateTags.
 type VirtualNetworksClientUpdateTagsResponse struct {
 	VirtualNetwork
 }

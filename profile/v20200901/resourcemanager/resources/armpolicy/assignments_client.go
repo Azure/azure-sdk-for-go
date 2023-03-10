@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,31 +25,22 @@ import (
 // AssignmentsClient contains the methods for the PolicyAssignments group.
 // Don't use this type directly, use NewAssignmentsClient() instead.
 type AssignmentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAssignmentsClient creates a new instance of AssignmentsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".AssignmentsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -59,17 +48,18 @@ func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredenti
 // Create - Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
 // that policy is assigned to all resources in the group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// scope - The scope of the policy assignment.
-// policyAssignmentName - The name of the policy assignment.
-// parameters - Parameters for the policy assignment.
-// options - AssignmentsClientCreateOptions contains the optional parameters for the AssignmentsClient.Create method.
+//   - scope - The scope of the policy assignment.
+//   - policyAssignmentName - The name of the policy assignment.
+//   - parameters - Parameters for the policy assignment.
+//   - options - AssignmentsClientCreateOptions contains the optional parameters for the AssignmentsClient.Create method.
 func (client *AssignmentsClient) Create(ctx context.Context, scope string, policyAssignmentName string, parameters Assignment, options *AssignmentsClientCreateOptions) (AssignmentsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, scope, policyAssignmentName, parameters, options)
 	if err != nil {
 		return AssignmentsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssignmentsClientCreateResponse{}, err
 	}
@@ -87,7 +77,7 @@ func (client *AssignmentsClient) createCreateRequest(ctx context.Context, scope 
 		return nil, errors.New("parameter policyAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentName}", url.PathEscape(policyAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -114,16 +104,17 @@ func (client *AssignmentsClient) createHandleResponse(resp *http.Response) (Assi
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
 // for resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyAssignmentID - The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
-// parameters - Parameters for policy assignment.
-// options - AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
+//   - policyAssignmentID - The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+//   - parameters - Parameters for policy assignment.
+//   - options - AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
 func (client *AssignmentsClient) CreateByID(ctx context.Context, policyAssignmentID string, parameters Assignment, options *AssignmentsClientCreateByIDOptions) (AssignmentsClientCreateByIDResponse, error) {
 	req, err := client.createByIDCreateRequest(ctx, policyAssignmentID, parameters, options)
 	if err != nil {
 		return AssignmentsClientCreateByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssignmentsClientCreateByIDResponse{}, err
 	}
@@ -137,7 +128,7 @@ func (client *AssignmentsClient) CreateByID(ctx context.Context, policyAssignmen
 func (client *AssignmentsClient) createByIDCreateRequest(ctx context.Context, policyAssignmentID string, parameters Assignment, options *AssignmentsClientCreateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{policyAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentId}", policyAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,16 +150,17 @@ func (client *AssignmentsClient) createByIDHandleResponse(resp *http.Response) (
 
 // Delete - Deletes a policy assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// scope - The scope of the policy assignment.
-// policyAssignmentName - The name of the policy assignment to delete.
-// options - AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
+//   - scope - The scope of the policy assignment.
+//   - policyAssignmentName - The name of the policy assignment to delete.
+//   - options - AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
 func (client *AssignmentsClient) Delete(ctx context.Context, scope string, policyAssignmentName string, options *AssignmentsClientDeleteOptions) (AssignmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, policyAssignmentName, options)
 	if err != nil {
 		return AssignmentsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssignmentsClientDeleteResponse{}, err
 	}
@@ -186,7 +178,7 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, scope 
 		return nil, errors.New("parameter policyAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentName}", url.PathEscape(policyAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -211,15 +203,16 @@ func (client *AssignmentsClient) deleteHandleResponse(resp *http.Response) (Assi
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
 // for resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyAssignmentID - The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
-// options - AssignmentsClientDeleteByIDOptions contains the optional parameters for the AssignmentsClient.DeleteByID method.
+//   - policyAssignmentID - The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+//   - options - AssignmentsClientDeleteByIDOptions contains the optional parameters for the AssignmentsClient.DeleteByID method.
 func (client *AssignmentsClient) DeleteByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientDeleteByIDOptions) (AssignmentsClientDeleteByIDResponse, error) {
 	req, err := client.deleteByIDCreateRequest(ctx, policyAssignmentID, options)
 	if err != nil {
 		return AssignmentsClientDeleteByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssignmentsClientDeleteByIDResponse{}, err
 	}
@@ -233,7 +226,7 @@ func (client *AssignmentsClient) DeleteByID(ctx context.Context, policyAssignmen
 func (client *AssignmentsClient) deleteByIDCreateRequest(ctx context.Context, policyAssignmentID string, options *AssignmentsClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/{policyAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentId}", policyAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,16 +248,17 @@ func (client *AssignmentsClient) deleteByIDHandleResponse(resp *http.Response) (
 
 // Get - Gets a policy assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// scope - The scope of the policy assignment.
-// policyAssignmentName - The name of the policy assignment to get.
-// options - AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
+//   - scope - The scope of the policy assignment.
+//   - policyAssignmentName - The name of the policy assignment to get.
+//   - options - AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
 func (client *AssignmentsClient) Get(ctx context.Context, scope string, policyAssignmentName string, options *AssignmentsClientGetOptions) (AssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, policyAssignmentName, options)
 	if err != nil {
 		return AssignmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssignmentsClientGetResponse{}, err
 	}
@@ -282,7 +276,7 @@ func (client *AssignmentsClient) getCreateRequest(ctx context.Context, scope str
 		return nil, errors.New("parameter policyAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentName}", url.PathEscape(policyAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,15 +301,16 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
 // for resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-12-01
-// policyAssignmentID - The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
-// options - AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
+//   - policyAssignmentID - The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+//   - options - AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
 func (client *AssignmentsClient) GetByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientGetByIDOptions) (AssignmentsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, policyAssignmentID, options)
 	if err != nil {
 		return AssignmentsClientGetByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AssignmentsClientGetByIDResponse{}, err
 	}
@@ -329,7 +324,7 @@ func (client *AssignmentsClient) GetByID(ctx context.Context, policyAssignmentID
 func (client *AssignmentsClient) getByIDCreateRequest(ctx context.Context, policyAssignmentID string, options *AssignmentsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{policyAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentId}", policyAssignmentID)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -350,8 +345,9 @@ func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (Ass
 }
 
 // NewListPager - Gets all the policy assignments for a subscription.
+//
 // Generated from API version 2016-12-01
-// options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
+//   - options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.NewListPager method.
 func (client *AssignmentsClient) NewListPager(options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListResponse]{
 		More: func(page AssignmentsClientListResponse) bool {
@@ -368,7 +364,7 @@ func (client *AssignmentsClient) NewListPager(options *AssignmentsClientListOpti
 			if err != nil {
 				return AssignmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AssignmentsClientListResponse{}, err
 			}
@@ -387,7 +383,7 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, options 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -411,14 +407,15 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 }
 
 // NewListForResourcePager - Gets policy assignments for a resource.
+//
 // Generated from API version 2016-12-01
-// resourceGroupName - The name of the resource group containing the resource. The name is case insensitive.
-// resourceProviderNamespace - The namespace of the resource provider.
-// parentResourcePath - The parent resource path.
-// resourceType - The resource type.
-// resourceName - The name of the resource with policy assignments.
-// options - AssignmentsClientListForResourceOptions contains the optional parameters for the AssignmentsClient.ListForResource
-// method.
+//   - resourceGroupName - The name of the resource group containing the resource. The name is case insensitive.
+//   - resourceProviderNamespace - The namespace of the resource provider.
+//   - parentResourcePath - The parent resource path.
+//   - resourceType - The resource type.
+//   - resourceName - The name of the resource with policy assignments.
+//   - options - AssignmentsClientListForResourceOptions contains the optional parameters for the AssignmentsClient.NewListForResourcePager
+//     method.
 func (client *AssignmentsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *AssignmentsClientListForResourceOptions) *runtime.Pager[AssignmentsClientListForResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListForResourceResponse]{
 		More: func(page AssignmentsClientListForResourceResponse) bool {
@@ -435,7 +432,7 @@ func (client *AssignmentsClient) NewListForResourcePager(resourceGroupName strin
 			if err != nil {
 				return AssignmentsClientListForResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AssignmentsClientListForResourceResponse{}, err
 			}
@@ -468,7 +465,7 @@ func (client *AssignmentsClient) listForResourceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -492,10 +489,11 @@ func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Respon
 }
 
 // NewListForResourceGroupPager - Gets policy assignments for the resource group.
+//
 // Generated from API version 2016-12-01
-// resourceGroupName - The name of the resource group that contains policy assignments.
-// options - AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.ListForResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group that contains policy assignments.
+//   - options - AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.NewListForResourceGroupPager
+//     method.
 func (client *AssignmentsClient) NewListForResourceGroupPager(resourceGroupName string, options *AssignmentsClientListForResourceGroupOptions) *runtime.Pager[AssignmentsClientListForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListForResourceGroupResponse]{
 		More: func(page AssignmentsClientListForResourceGroupResponse) bool {
@@ -512,7 +510,7 @@ func (client *AssignmentsClient) NewListForResourceGroupPager(resourceGroupName 
 			if err != nil {
 				return AssignmentsClientListForResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AssignmentsClientListForResourceGroupResponse{}, err
 			}
@@ -535,7 +533,7 @@ func (client *AssignmentsClient) listForResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

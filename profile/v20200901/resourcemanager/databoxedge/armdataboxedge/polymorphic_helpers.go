@@ -15,7 +15,7 @@ func unmarshalRoleClassification(rawMsg json.RawMessage) (RoleClassification, er
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func unmarshalTriggerClassification(rawMsg json.RawMessage) (TriggerClassificati
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,28 +22,19 @@ import (
 // SubscriptionClient contains the methods for the SubscriptionClient group.
 // Don't use this type directly, use NewSubscriptionClient() instead.
 type SubscriptionClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewSubscriptionClient creates a new instance of SubscriptionClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSubscriptionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".SubscriptionClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SubscriptionClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -53,15 +42,16 @@ func NewSubscriptionClient(credential azcore.TokenCredential, options *arm.Clien
 // CheckResourceName - A resource name is valid if it is not a reserved word, does not contains a reserved word and does not
 // start with a reserved word
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-06-01
-// options - SubscriptionClientCheckResourceNameOptions contains the optional parameters for the SubscriptionClient.CheckResourceName
-// method.
+//   - options - SubscriptionClientCheckResourceNameOptions contains the optional parameters for the SubscriptionClient.CheckResourceName
+//     method.
 func (client *SubscriptionClient) CheckResourceName(ctx context.Context, options *SubscriptionClientCheckResourceNameOptions) (SubscriptionClientCheckResourceNameResponse, error) {
 	req, err := client.checkResourceNameCreateRequest(ctx, options)
 	if err != nil {
 		return SubscriptionClientCheckResourceNameResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SubscriptionClientCheckResourceNameResponse{}, err
 	}
@@ -74,7 +64,7 @@ func (client *SubscriptionClient) CheckResourceName(ctx context.Context, options
 // checkResourceNameCreateRequest creates the CheckResourceName request.
 func (client *SubscriptionClient) checkResourceNameCreateRequest(ctx context.Context, options *SubscriptionClientCheckResourceNameOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/checkResourceName"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

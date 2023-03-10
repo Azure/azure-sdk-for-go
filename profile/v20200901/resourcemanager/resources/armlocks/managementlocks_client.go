@@ -15,8 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profile/v20200901/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,31 +25,22 @@ import (
 // ManagementLocksClient contains the methods for the ManagementLocks group.
 // Don't use this type directly, use NewManagementLocksClient() instead.
 type ManagementLocksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewManagementLocksClient creates a new instance of ManagementLocksClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewManagementLocksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementLocksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(internal.ModuleName, internal.ModuleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(internal.ModuleName+".ManagementLocksClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ManagementLocksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -60,19 +49,20 @@ func NewManagementLocksClient(subscriptionID string, credential azcore.TokenCred
 // To create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// resourceGroupName - The name of the resource group to lock.
-// lockName - The lock name. The lock name can be a maximum of 260 characters. It cannot contain %, &, :, \, ?, /, or any
-// control characters.
-// parameters - The management lock parameters.
-// options - ManagementLocksClientCreateOrUpdateAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtResourceGroupLevel
-// method.
+//   - resourceGroupName - The name of the resource group to lock.
+//   - lockName - The lock name. The lock name can be a maximum of 260 characters. It cannot contain %, &, :, \, ?, /, or any
+//     control characters.
+//   - parameters - The management lock parameters.
+//   - options - ManagementLocksClientCreateOrUpdateAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtResourceGroupLevel
+//     method.
 func (client *ManagementLocksClient) CreateOrUpdateAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateAtResourceGroupLevelOptions) (ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse, error) {
 	req, err := client.createOrUpdateAtResourceGroupLevelCreateRequest(ctx, resourceGroupName, lockName, parameters, options)
 	if err != nil {
 		return ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientCreateOrUpdateAtResourceGroupLevelResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *ManagementLocksClient) createOrUpdateAtResourceGroupLevelCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,23 +111,24 @@ func (client *ManagementLocksClient) createOrUpdateAtResourceGroupLevelHandleRes
 // create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// resourceGroupName - The name of the resource group containing the resource to lock.
-// resourceProviderNamespace - The resource provider namespace of the resource to lock.
-// parentResourcePath - The parent resource identity.
-// resourceType - The resource type of the resource to lock.
-// resourceName - The name of the resource to lock.
-// lockName - The name of lock. The lock name can be a maximum of 260 characters. It cannot contain %, &, :, \, ?, /, or any
-// control characters.
-// parameters - Parameters for creating or updating a management lock.
-// options - ManagementLocksClientCreateOrUpdateAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtResourceLevel
-// method.
+//   - resourceGroupName - The name of the resource group containing the resource to lock.
+//   - resourceProviderNamespace - The resource provider namespace of the resource to lock.
+//   - parentResourcePath - The parent resource identity.
+//   - resourceType - The resource type of the resource to lock.
+//   - resourceName - The name of the resource to lock.
+//   - lockName - The name of lock. The lock name can be a maximum of 260 characters. It cannot contain %, &, :, \, ?, /, or any
+//     control characters.
+//   - parameters - Parameters for creating or updating a management lock.
+//   - options - ManagementLocksClientCreateOrUpdateAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtResourceLevel
+//     method.
 func (client *ManagementLocksClient) CreateOrUpdateAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateAtResourceLevelOptions) (ManagementLocksClientCreateOrUpdateAtResourceLevelResponse, error) {
 	req, err := client.createOrUpdateAtResourceLevelCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, parameters, options)
 	if err != nil {
 		return ManagementLocksClientCreateOrUpdateAtResourceLevelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientCreateOrUpdateAtResourceLevelResponse{}, err
 	}
@@ -172,7 +163,7 @@ func (client *ManagementLocksClient) createOrUpdateAtResourceLevelCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,18 +187,19 @@ func (client *ManagementLocksClient) createOrUpdateAtResourceLevelHandleResponse
 // To create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// lockName - The name of lock. The lock name can be a maximum of 260 characters. It cannot contain %, &, :, \, ?, /, or any
-// control characters.
-// parameters - The management lock parameters.
-// options - ManagementLocksClientCreateOrUpdateAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtSubscriptionLevel
-// method.
+//   - lockName - The name of lock. The lock name can be a maximum of 260 characters. It cannot contain %, &, :, \, ?, /, or any
+//     control characters.
+//   - parameters - The management lock parameters.
+//   - options - ManagementLocksClientCreateOrUpdateAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtSubscriptionLevel
+//     method.
 func (client *ManagementLocksClient) CreateOrUpdateAtSubscriptionLevel(ctx context.Context, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateAtSubscriptionLevelOptions) (ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse, error) {
 	req, err := client.createOrUpdateAtSubscriptionLevelCreateRequest(ctx, lockName, parameters, options)
 	if err != nil {
 		return ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientCreateOrUpdateAtSubscriptionLevelResponse{}, err
 	}
@@ -228,7 +220,7 @@ func (client *ManagementLocksClient) createOrUpdateAtSubscriptionLevelCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -250,22 +242,23 @@ func (client *ManagementLocksClient) createOrUpdateAtSubscriptionLevelHandleResp
 
 // CreateOrUpdateByScope - Create or update a management lock by scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// scope - The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions,
-// '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for
-// resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-// for
-// resources.
-// lockName - The name of lock.
-// parameters - Create or update management lock parameters.
-// options - ManagementLocksClientCreateOrUpdateByScopeOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateByScope
-// method.
+//   - scope - The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions,
+//     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for
+//     resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+//     for
+//     resources.
+//   - lockName - The name of lock.
+//   - parameters - Create or update management lock parameters.
+//   - options - ManagementLocksClientCreateOrUpdateByScopeOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateByScope
+//     method.
 func (client *ManagementLocksClient) CreateOrUpdateByScope(ctx context.Context, scope string, lockName string, parameters ManagementLockObject, options *ManagementLocksClientCreateOrUpdateByScopeOptions) (ManagementLocksClientCreateOrUpdateByScopeResponse, error) {
 	req, err := client.createOrUpdateByScopeCreateRequest(ctx, scope, lockName, parameters, options)
 	if err != nil {
 		return ManagementLocksClientCreateOrUpdateByScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientCreateOrUpdateByScopeResponse{}, err
 	}
@@ -286,7 +279,7 @@ func (client *ManagementLocksClient) createOrUpdateByScopeCreateRequest(ctx cont
 		return nil, errors.New("parameter lockName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{lockName}", url.PathEscape(lockName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,17 +303,18 @@ func (client *ManagementLocksClient) createOrUpdateByScopeHandleResponse(resp *h
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// resourceGroupName - The name of the resource group containing the lock.
-// lockName - The name of lock to delete.
-// options - ManagementLocksClientDeleteAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtResourceGroupLevel
-// method.
+//   - resourceGroupName - The name of the resource group containing the lock.
+//   - lockName - The name of lock to delete.
+//   - options - ManagementLocksClientDeleteAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtResourceGroupLevel
+//     method.
 func (client *ManagementLocksClient) DeleteAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksClientDeleteAtResourceGroupLevelOptions) (ManagementLocksClientDeleteAtResourceGroupLevelResponse, error) {
 	req, err := client.deleteAtResourceGroupLevelCreateRequest(ctx, resourceGroupName, lockName, options)
 	if err != nil {
 		return ManagementLocksClientDeleteAtResourceGroupLevelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientDeleteAtResourceGroupLevelResponse{}, err
 	}
@@ -345,7 +339,7 @@ func (client *ManagementLocksClient) deleteAtResourceGroupLevelCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -359,21 +353,22 @@ func (client *ManagementLocksClient) deleteAtResourceGroupLevelCreateRequest(ctx
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// resourceGroupName - The name of the resource group containing the resource with the lock to delete.
-// resourceProviderNamespace - The resource provider namespace of the resource with the lock to delete.
-// parentResourcePath - The parent resource identity.
-// resourceType - The resource type of the resource with the lock to delete.
-// resourceName - The name of the resource with the lock to delete.
-// lockName - The name of the lock to delete.
-// options - ManagementLocksClientDeleteAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtResourceLevel
-// method.
+//   - resourceGroupName - The name of the resource group containing the resource with the lock to delete.
+//   - resourceProviderNamespace - The resource provider namespace of the resource with the lock to delete.
+//   - parentResourcePath - The parent resource identity.
+//   - resourceType - The resource type of the resource with the lock to delete.
+//   - resourceName - The name of the resource with the lock to delete.
+//   - lockName - The name of the lock to delete.
+//   - options - ManagementLocksClientDeleteAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtResourceLevel
+//     method.
 func (client *ManagementLocksClient) DeleteAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksClientDeleteAtResourceLevelOptions) (ManagementLocksClientDeleteAtResourceLevelResponse, error) {
 	req, err := client.deleteAtResourceLevelCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, options)
 	if err != nil {
 		return ManagementLocksClientDeleteAtResourceLevelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientDeleteAtResourceLevelResponse{}, err
 	}
@@ -408,7 +403,7 @@ func (client *ManagementLocksClient) deleteAtResourceLevelCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -422,16 +417,17 @@ func (client *ManagementLocksClient) deleteAtResourceLevelCreateRequest(ctx cont
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// lockName - The name of lock to delete.
-// options - ManagementLocksClientDeleteAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtSubscriptionLevel
-// method.
+//   - lockName - The name of lock to delete.
+//   - options - ManagementLocksClientDeleteAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtSubscriptionLevel
+//     method.
 func (client *ManagementLocksClient) DeleteAtSubscriptionLevel(ctx context.Context, lockName string, options *ManagementLocksClientDeleteAtSubscriptionLevelOptions) (ManagementLocksClientDeleteAtSubscriptionLevelResponse, error) {
 	req, err := client.deleteAtSubscriptionLevelCreateRequest(ctx, lockName, options)
 	if err != nil {
 		return ManagementLocksClientDeleteAtSubscriptionLevelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientDeleteAtSubscriptionLevelResponse{}, err
 	}
@@ -452,7 +448,7 @@ func (client *ManagementLocksClient) deleteAtSubscriptionLevelCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -464,17 +460,18 @@ func (client *ManagementLocksClient) deleteAtSubscriptionLevelCreateRequest(ctx 
 
 // DeleteByScope - Delete a management lock by scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// scope - The scope for the lock.
-// lockName - The name of lock.
-// options - ManagementLocksClientDeleteByScopeOptions contains the optional parameters for the ManagementLocksClient.DeleteByScope
-// method.
+//   - scope - The scope for the lock.
+//   - lockName - The name of lock.
+//   - options - ManagementLocksClientDeleteByScopeOptions contains the optional parameters for the ManagementLocksClient.DeleteByScope
+//     method.
 func (client *ManagementLocksClient) DeleteByScope(ctx context.Context, scope string, lockName string, options *ManagementLocksClientDeleteByScopeOptions) (ManagementLocksClientDeleteByScopeResponse, error) {
 	req, err := client.deleteByScopeCreateRequest(ctx, scope, lockName, options)
 	if err != nil {
 		return ManagementLocksClientDeleteByScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientDeleteByScopeResponse{}, err
 	}
@@ -495,7 +492,7 @@ func (client *ManagementLocksClient) deleteByScopeCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter lockName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{lockName}", url.PathEscape(lockName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -507,17 +504,18 @@ func (client *ManagementLocksClient) deleteByScopeCreateRequest(ctx context.Cont
 
 // GetAtResourceGroupLevel - Gets a management lock at the resource group level.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// resourceGroupName - The name of the locked resource group.
-// lockName - The name of the lock to get.
-// options - ManagementLocksClientGetAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtResourceGroupLevel
-// method.
+//   - resourceGroupName - The name of the locked resource group.
+//   - lockName - The name of the lock to get.
+//   - options - ManagementLocksClientGetAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtResourceGroupLevel
+//     method.
 func (client *ManagementLocksClient) GetAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, options *ManagementLocksClientGetAtResourceGroupLevelOptions) (ManagementLocksClientGetAtResourceGroupLevelResponse, error) {
 	req, err := client.getAtResourceGroupLevelCreateRequest(ctx, resourceGroupName, lockName, options)
 	if err != nil {
 		return ManagementLocksClientGetAtResourceGroupLevelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientGetAtResourceGroupLevelResponse{}, err
 	}
@@ -542,7 +540,7 @@ func (client *ManagementLocksClient) getAtResourceGroupLevelCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -564,21 +562,22 @@ func (client *ManagementLocksClient) getAtResourceGroupLevelHandleResponse(resp 
 
 // GetAtResourceLevel - Get the management lock of a resource or any level below resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// resourceGroupName - The name of the resource group.
-// resourceProviderNamespace - The namespace of the resource provider.
-// parentResourcePath - An extra path parameter needed in some services, like SQL Databases.
-// resourceType - The type of the resource.
-// resourceName - The name of the resource.
-// lockName - The name of lock.
-// options - ManagementLocksClientGetAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtResourceLevel
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - resourceProviderNamespace - The namespace of the resource provider.
+//   - parentResourcePath - An extra path parameter needed in some services, like SQL Databases.
+//   - resourceType - The type of the resource.
+//   - resourceName - The name of the resource.
+//   - lockName - The name of lock.
+//   - options - ManagementLocksClientGetAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtResourceLevel
+//     method.
 func (client *ManagementLocksClient) GetAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, options *ManagementLocksClientGetAtResourceLevelOptions) (ManagementLocksClientGetAtResourceLevelResponse, error) {
 	req, err := client.getAtResourceLevelCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, options)
 	if err != nil {
 		return ManagementLocksClientGetAtResourceLevelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientGetAtResourceLevelResponse{}, err
 	}
@@ -613,7 +612,7 @@ func (client *ManagementLocksClient) getAtResourceLevelCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -635,16 +634,17 @@ func (client *ManagementLocksClient) getAtResourceLevelHandleResponse(resp *http
 
 // GetAtSubscriptionLevel - Gets a management lock at the subscription level.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// lockName - The name of the lock to get.
-// options - ManagementLocksClientGetAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtSubscriptionLevel
-// method.
+//   - lockName - The name of the lock to get.
+//   - options - ManagementLocksClientGetAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtSubscriptionLevel
+//     method.
 func (client *ManagementLocksClient) GetAtSubscriptionLevel(ctx context.Context, lockName string, options *ManagementLocksClientGetAtSubscriptionLevelOptions) (ManagementLocksClientGetAtSubscriptionLevelResponse, error) {
 	req, err := client.getAtSubscriptionLevelCreateRequest(ctx, lockName, options)
 	if err != nil {
 		return ManagementLocksClientGetAtSubscriptionLevelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientGetAtSubscriptionLevelResponse{}, err
 	}
@@ -665,7 +665,7 @@ func (client *ManagementLocksClient) getAtSubscriptionLevelCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -687,17 +687,18 @@ func (client *ManagementLocksClient) getAtSubscriptionLevelHandleResponse(resp *
 
 // GetByScope - Get a management lock by scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2016-09-01
-// scope - The scope for the lock.
-// lockName - The name of lock.
-// options - ManagementLocksClientGetByScopeOptions contains the optional parameters for the ManagementLocksClient.GetByScope
-// method.
+//   - scope - The scope for the lock.
+//   - lockName - The name of lock.
+//   - options - ManagementLocksClientGetByScopeOptions contains the optional parameters for the ManagementLocksClient.GetByScope
+//     method.
 func (client *ManagementLocksClient) GetByScope(ctx context.Context, scope string, lockName string, options *ManagementLocksClientGetByScopeOptions) (ManagementLocksClientGetByScopeResponse, error) {
 	req, err := client.getByScopeCreateRequest(ctx, scope, lockName, options)
 	if err != nil {
 		return ManagementLocksClientGetByScopeResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementLocksClientGetByScopeResponse{}, err
 	}
@@ -718,7 +719,7 @@ func (client *ManagementLocksClient) getByScopeCreateRequest(ctx context.Context
 		return nil, errors.New("parameter lockName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{lockName}", url.PathEscape(lockName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -739,10 +740,11 @@ func (client *ManagementLocksClient) getByScopeHandleResponse(resp *http.Respons
 }
 
 // NewListAtResourceGroupLevelPager - Gets all the management locks for a resource group.
+//
 // Generated from API version 2016-09-01
-// resourceGroupName - The name of the resource group containing the locks to get.
-// options - ManagementLocksClientListAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtResourceGroupLevel
-// method.
+//   - resourceGroupName - The name of the resource group containing the locks to get.
+//   - options - ManagementLocksClientListAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.NewListAtResourceGroupLevelPager
+//     method.
 func (client *ManagementLocksClient) NewListAtResourceGroupLevelPager(resourceGroupName string, options *ManagementLocksClientListAtResourceGroupLevelOptions) *runtime.Pager[ManagementLocksClientListAtResourceGroupLevelResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ManagementLocksClientListAtResourceGroupLevelResponse]{
 		More: func(page ManagementLocksClientListAtResourceGroupLevelResponse) bool {
@@ -759,7 +761,7 @@ func (client *ManagementLocksClient) NewListAtResourceGroupLevelPager(resourceGr
 			if err != nil {
 				return ManagementLocksClientListAtResourceGroupLevelResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ManagementLocksClientListAtResourceGroupLevelResponse{}, err
 			}
@@ -782,7 +784,7 @@ func (client *ManagementLocksClient) listAtResourceGroupLevelCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -806,14 +808,15 @@ func (client *ManagementLocksClient) listAtResourceGroupLevelHandleResponse(resp
 }
 
 // NewListAtResourceLevelPager - Gets all the management locks for a resource or any level below resource.
+//
 // Generated from API version 2016-09-01
-// resourceGroupName - The name of the resource group containing the locked resource. The name is case insensitive.
-// resourceProviderNamespace - The namespace of the resource provider.
-// parentResourcePath - The parent resource identity.
-// resourceType - The resource type of the locked resource.
-// resourceName - The name of the locked resource.
-// options - ManagementLocksClientListAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtResourceLevel
-// method.
+//   - resourceGroupName - The name of the resource group containing the locked resource. The name is case insensitive.
+//   - resourceProviderNamespace - The namespace of the resource provider.
+//   - parentResourcePath - The parent resource identity.
+//   - resourceType - The resource type of the locked resource.
+//   - resourceName - The name of the locked resource.
+//   - options - ManagementLocksClientListAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.NewListAtResourceLevelPager
+//     method.
 func (client *ManagementLocksClient) NewListAtResourceLevelPager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ManagementLocksClientListAtResourceLevelOptions) *runtime.Pager[ManagementLocksClientListAtResourceLevelResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ManagementLocksClientListAtResourceLevelResponse]{
 		More: func(page ManagementLocksClientListAtResourceLevelResponse) bool {
@@ -830,7 +833,7 @@ func (client *ManagementLocksClient) NewListAtResourceLevelPager(resourceGroupNa
 			if err != nil {
 				return ManagementLocksClientListAtResourceLevelResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ManagementLocksClientListAtResourceLevelResponse{}, err
 			}
@@ -863,7 +866,7 @@ func (client *ManagementLocksClient) listAtResourceLevelCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -887,9 +890,10 @@ func (client *ManagementLocksClient) listAtResourceLevelHandleResponse(resp *htt
 }
 
 // NewListAtSubscriptionLevelPager - Gets all the management locks for a subscription.
+//
 // Generated from API version 2016-09-01
-// options - ManagementLocksClientListAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtSubscriptionLevel
-// method.
+//   - options - ManagementLocksClientListAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.NewListAtSubscriptionLevelPager
+//     method.
 func (client *ManagementLocksClient) NewListAtSubscriptionLevelPager(options *ManagementLocksClientListAtSubscriptionLevelOptions) *runtime.Pager[ManagementLocksClientListAtSubscriptionLevelResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ManagementLocksClientListAtSubscriptionLevelResponse]{
 		More: func(page ManagementLocksClientListAtSubscriptionLevelResponse) bool {
@@ -906,7 +910,7 @@ func (client *ManagementLocksClient) NewListAtSubscriptionLevelPager(options *Ma
 			if err != nil {
 				return ManagementLocksClientListAtSubscriptionLevelResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ManagementLocksClientListAtSubscriptionLevelResponse{}, err
 			}
@@ -925,7 +929,7 @@ func (client *ManagementLocksClient) listAtSubscriptionLevelCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -949,14 +953,15 @@ func (client *ManagementLocksClient) listAtSubscriptionLevelHandleResponse(resp 
 }
 
 // NewListByScopePager - Gets all the management locks for a scope.
+//
 // Generated from API version 2016-09-01
-// scope - The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions,
-// '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for
-// resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-// for
-// resources.
-// options - ManagementLocksClientListByScopeOptions contains the optional parameters for the ManagementLocksClient.ListByScope
-// method.
+//   - scope - The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions,
+//     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for
+//     resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+//     for
+//     resources.
+//   - options - ManagementLocksClientListByScopeOptions contains the optional parameters for the ManagementLocksClient.NewListByScopePager
+//     method.
 func (client *ManagementLocksClient) NewListByScopePager(scope string, options *ManagementLocksClientListByScopeOptions) *runtime.Pager[ManagementLocksClientListByScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ManagementLocksClientListByScopeResponse]{
 		More: func(page ManagementLocksClientListByScopeResponse) bool {
@@ -973,7 +978,7 @@ func (client *ManagementLocksClient) NewListByScopePager(scope string, options *
 			if err != nil {
 				return ManagementLocksClientListByScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ManagementLocksClientListByScopeResponse{}, err
 			}
@@ -992,7 +997,7 @@ func (client *ManagementLocksClient) listByScopeCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

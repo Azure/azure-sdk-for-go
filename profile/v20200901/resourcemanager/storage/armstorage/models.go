@@ -415,7 +415,8 @@ type AccountsClientListAccountSASOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
+// method.
 type AccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -426,7 +427,7 @@ type AccountsClientListKeysOptions struct {
 	Expand *string
 }
 
-// AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
+// AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
 type AccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -498,7 +499,8 @@ type BlobInventoryPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BlobInventoryPoliciesClientListOptions contains the optional parameters for the BlobInventoryPoliciesClient.List method.
+// BlobInventoryPoliciesClientListOptions contains the optional parameters for the BlobInventoryPoliciesClient.NewListPager
+// method.
 type BlobInventoryPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -738,7 +740,7 @@ type EncryptionScopesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.List method.
+// EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.NewListPager method.
 type EncryptionScopesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1109,7 +1111,7 @@ type ObjectReplicationPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ObjectReplicationPoliciesClientListOptions contains the optional parameters for the ObjectReplicationPoliciesClient.List
+// ObjectReplicationPoliciesClientListOptions contains the optional parameters for the ObjectReplicationPoliciesClient.NewListPager
 // method.
 type ObjectReplicationPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1218,7 +1220,7 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1274,7 +1276,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1432,7 +1434,7 @@ type SKUListResult struct {
 	Value []*SKUInformation `json:"value,omitempty" azure:"ro"`
 }
 
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1586,7 +1588,7 @@ type UsageName struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
+// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager method.
 type UsagesClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }

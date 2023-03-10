@@ -87,13 +87,13 @@ func getCanonicalName(account string, queueName string) string {
 }
 
 // QueuePermissions type simplifies creating the permissions string for an Azure Storage Queue SAS.
-// Initialize an instance of this type and then call its String method to set QueueSASSignatureValues' Permissions field.
+// Initialize an instance of this type and then call its String method to set QueueSignatureValues' Permissions field.
 type QueuePermissions struct {
 	Read, Add, Update, Process bool
 }
 
 // String produces the SAS permissions string for an Azure Storage Queue.
-// Call this method to set QueueSASSignatureValues' Permissions field.
+// Call this method to set QueueSignatureValues' Permissions field.
 func (p *QueuePermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
@@ -111,7 +111,7 @@ func (p *QueuePermissions) String() string {
 	return b.String()
 }
 
-// Parse initializes the QueueSASPermissions' fields from a string.
+// Parse initializes the QueuePermissions' fields from a string.
 func parseQueuePermissions(s string) (QueuePermissions, error) {
 	p := QueuePermissions{}
 	for _, r := range s {

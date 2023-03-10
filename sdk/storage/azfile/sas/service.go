@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"strings"
 	"time"
 
@@ -40,10 +39,6 @@ type FileSignatureValues struct {
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
 func (v FileSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
-	if sharedKeyCredential == nil {
-		return QueryParameters{}, fileerror.MissingSharedKeyCredential
-	}
-
 	if v.ExpiryTime.IsZero() || v.Permissions == "" {
 		return QueryParameters{}, errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions")
 	}

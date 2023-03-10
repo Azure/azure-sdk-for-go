@@ -8,7 +8,6 @@ package backup_test
 
 import (
 	"context"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -32,7 +31,7 @@ func TestBackupRestore(t *testing.T) {
 	require.NoError(t, err)
 	require.Nil(t, backupResults.Error)
 	require.Equal(t, "Succeeded", *backupResults.Status)
-	require.Contains(t, *backupResults.AzureStorageBlobContainerURI, os.Getenv("BLOB_RESOURCE_URI"))
+	require.Contains(t, *backupResults.AzureStorageBlobContainerURI, blobURL)
 	testSerde(t, &backupResults)
 
 	// restore the backup
@@ -76,7 +75,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 	require.NoError(t, err)
 	require.Nil(t, backupResults.Error)
 	require.Equal(t, "Succeeded", *backupResults.Status)
-	require.Contains(t, *backupResults.AzureStorageBlobContainerURI, os.Getenv("BLOB_RESOURCE_URI"))
+	require.Contains(t, *backupResults.AzureStorageBlobContainerURI, blobURL)
 	testSerde(t, &backupResults)
 
 	// restore the backup

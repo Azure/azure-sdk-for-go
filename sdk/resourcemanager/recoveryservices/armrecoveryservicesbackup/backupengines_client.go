@@ -58,7 +58,7 @@ func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Returns backup management server registered to Recovery Services Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - backupEngineName - Name of the backup management server.
@@ -102,7 +102,7 @@ func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -125,7 +125,7 @@ func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (Backu
 
 // NewListPager - Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupEnginesClientListOptions contains the optional parameters for the BackupEnginesClient.NewListPager method.
@@ -177,7 +177,7 @@ func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

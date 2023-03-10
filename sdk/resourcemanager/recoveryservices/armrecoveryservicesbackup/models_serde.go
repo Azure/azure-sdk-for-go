@@ -6206,6 +6206,7 @@ func (b BMSRPQueryObject) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "endDate", b.EndDate)
 	populate(objectMap, "extendedInfo", b.ExtendedInfo)
+	populate(objectMap, "includeSoftDeletedRP", b.IncludeSoftDeletedRP)
 	populate(objectMap, "moveReadyRPOnly", b.MoveReadyRPOnly)
 	populate(objectMap, "restorePointQueryType", b.RestorePointQueryType)
 	populateTimeRFC3339(objectMap, "startDate", b.StartDate)
@@ -6226,6 +6227,9 @@ func (b *BMSRPQueryObject) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, "ExtendedInfo", &b.ExtendedInfo)
+			delete(rawMsg, key)
+		case "includeSoftDeletedRP":
+			err = unpopulate(val, "IncludeSoftDeletedRP", &b.IncludeSoftDeletedRP)
 			delete(rawMsg, key)
 		case "moveReadyRPOnly":
 			err = unpopulate(val, "MoveReadyRPOnly", &b.MoveReadyRPOnly)
@@ -8392,6 +8396,37 @@ func (e *ExportJobsOperationResultInfo) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ExtendedLocation.
+func (e ExtendedLocation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "name", e.Name)
+	populate(objectMap, "type", e.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExtendedLocation.
+func (e *ExtendedLocation) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, "Name", &e.Name)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &e.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ExtendedProperties.
 func (e ExtendedProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -9086,6 +9121,7 @@ func (i IaasVMRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "isInstantIlrSessionActive", i.IsInstantIlrSessionActive)
 	populate(objectMap, "isManagedVirtualMachine", i.IsManagedVirtualMachine)
+	populate(objectMap, "isPrivateAccessEnabledOnAnyDisk", i.IsPrivateAccessEnabledOnAnyDisk)
 	populate(objectMap, "isSourceVMEncrypted", i.IsSourceVMEncrypted)
 	populate(objectMap, "keyAndSecret", i.KeyAndSecret)
 	populate(objectMap, "osType", i.OSType)
@@ -9098,6 +9134,7 @@ func (i IaasVMRecoveryPoint) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryPointTierDetails", i.RecoveryPointTierDetails)
 	populateTimeRFC3339(objectMap, "recoveryPointTime", i.RecoveryPointTime)
 	populate(objectMap, "recoveryPointType", i.RecoveryPointType)
+	populate(objectMap, "securityType", i.SecurityType)
 	populate(objectMap, "sourceVMStorageType", i.SourceVMStorageType)
 	populate(objectMap, "virtualMachineSize", i.VirtualMachineSize)
 	populate(objectMap, "zones", i.Zones)
@@ -9118,6 +9155,9 @@ func (i *IaasVMRecoveryPoint) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "isManagedVirtualMachine":
 			err = unpopulate(val, "IsManagedVirtualMachine", &i.IsManagedVirtualMachine)
+			delete(rawMsg, key)
+		case "isPrivateAccessEnabledOnAnyDisk":
+			err = unpopulate(val, "IsPrivateAccessEnabledOnAnyDisk", &i.IsPrivateAccessEnabledOnAnyDisk)
 			delete(rawMsg, key)
 		case "isSourceVMEncrypted":
 			err = unpopulate(val, "IsSourceVMEncrypted", &i.IsSourceVMEncrypted)
@@ -9155,6 +9195,9 @@ func (i *IaasVMRecoveryPoint) UnmarshalJSON(data []byte) error {
 		case "recoveryPointType":
 			err = unpopulate(val, "RecoveryPointType", &i.RecoveryPointType)
 			delete(rawMsg, key)
+		case "securityType":
+			err = unpopulate(val, "SecurityType", &i.SecurityType)
+			delete(rawMsg, key)
 		case "sourceVMStorageType":
 			err = unpopulate(val, "SourceVMStorageType", &i.SourceVMStorageType)
 			delete(rawMsg, key)
@@ -9179,6 +9222,7 @@ func (i IaasVMRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "createNewCloudService", i.CreateNewCloudService)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "encryptionDetails", i.EncryptionDetails)
+	populate(objectMap, "extendedLocation", i.ExtendedLocation)
 	populate(objectMap, "identityBasedRestoreDetails", i.IdentityBasedRestoreDetails)
 	populate(objectMap, "identityInfo", i.IdentityInfo)
 	objectMap["objectType"] = "IaasVMRestoreRequest"
@@ -9188,9 +9232,11 @@ func (i IaasVMRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "region", i.Region)
 	populate(objectMap, "restoreDiskLunList", i.RestoreDiskLunList)
 	populate(objectMap, "restoreWithManagedDisks", i.RestoreWithManagedDisks)
+	populate(objectMap, "securedVMDetails", i.SecuredVMDetails)
 	populate(objectMap, "sourceResourceId", i.SourceResourceID)
 	populate(objectMap, "storageAccountId", i.StorageAccountID)
 	populate(objectMap, "subnetId", i.SubnetID)
+	populate(objectMap, "targetDiskNetworkAccessSettings", i.TargetDiskNetworkAccessSettings)
 	populate(objectMap, "targetDomainNameId", i.TargetDomainNameID)
 	populate(objectMap, "targetResourceGroupId", i.TargetResourceGroupID)
 	populate(objectMap, "targetVirtualMachineId", i.TargetVirtualMachineID)
@@ -9220,6 +9266,9 @@ func (i *IaasVMRestoreRequest) UnmarshalJSON(data []byte) error {
 		case "encryptionDetails":
 			err = unpopulate(val, "EncryptionDetails", &i.EncryptionDetails)
 			delete(rawMsg, key)
+		case "extendedLocation":
+			err = unpopulate(val, "ExtendedLocation", &i.ExtendedLocation)
+			delete(rawMsg, key)
 		case "identityBasedRestoreDetails":
 			err = unpopulate(val, "IdentityBasedRestoreDetails", &i.IdentityBasedRestoreDetails)
 			delete(rawMsg, key)
@@ -9247,6 +9296,9 @@ func (i *IaasVMRestoreRequest) UnmarshalJSON(data []byte) error {
 		case "restoreWithManagedDisks":
 			err = unpopulate(val, "RestoreWithManagedDisks", &i.RestoreWithManagedDisks)
 			delete(rawMsg, key)
+		case "securedVMDetails":
+			err = unpopulate(val, "SecuredVMDetails", &i.SecuredVMDetails)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &i.SourceResourceID)
 			delete(rawMsg, key)
@@ -9255,6 +9307,9 @@ func (i *IaasVMRestoreRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "subnetId":
 			err = unpopulate(val, "SubnetID", &i.SubnetID)
+			delete(rawMsg, key)
+		case "targetDiskNetworkAccessSettings":
+			err = unpopulate(val, "TargetDiskNetworkAccessSettings", &i.TargetDiskNetworkAccessSettings)
 			delete(rawMsg, key)
 		case "targetDomainNameId":
 			err = unpopulate(val, "TargetDomainNameID", &i.TargetDomainNameID)
@@ -9286,6 +9341,7 @@ func (i IaasVMRestoreWithRehydrationRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "createNewCloudService", i.CreateNewCloudService)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "encryptionDetails", i.EncryptionDetails)
+	populate(objectMap, "extendedLocation", i.ExtendedLocation)
 	populate(objectMap, "identityBasedRestoreDetails", i.IdentityBasedRestoreDetails)
 	populate(objectMap, "identityInfo", i.IdentityInfo)
 	objectMap["objectType"] = "IaasVMRestoreWithRehydrationRequest"
@@ -9296,9 +9352,11 @@ func (i IaasVMRestoreWithRehydrationRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "region", i.Region)
 	populate(objectMap, "restoreDiskLunList", i.RestoreDiskLunList)
 	populate(objectMap, "restoreWithManagedDisks", i.RestoreWithManagedDisks)
+	populate(objectMap, "securedVMDetails", i.SecuredVMDetails)
 	populate(objectMap, "sourceResourceId", i.SourceResourceID)
 	populate(objectMap, "storageAccountId", i.StorageAccountID)
 	populate(objectMap, "subnetId", i.SubnetID)
+	populate(objectMap, "targetDiskNetworkAccessSettings", i.TargetDiskNetworkAccessSettings)
 	populate(objectMap, "targetDomainNameId", i.TargetDomainNameID)
 	populate(objectMap, "targetResourceGroupId", i.TargetResourceGroupID)
 	populate(objectMap, "targetVirtualMachineId", i.TargetVirtualMachineID)
@@ -9327,6 +9385,9 @@ func (i *IaasVMRestoreWithRehydrationRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "encryptionDetails":
 			err = unpopulate(val, "EncryptionDetails", &i.EncryptionDetails)
+			delete(rawMsg, key)
+		case "extendedLocation":
+			err = unpopulate(val, "ExtendedLocation", &i.ExtendedLocation)
 			delete(rawMsg, key)
 		case "identityBasedRestoreDetails":
 			err = unpopulate(val, "IdentityBasedRestoreDetails", &i.IdentityBasedRestoreDetails)
@@ -9358,6 +9419,9 @@ func (i *IaasVMRestoreWithRehydrationRequest) UnmarshalJSON(data []byte) error {
 		case "restoreWithManagedDisks":
 			err = unpopulate(val, "RestoreWithManagedDisks", &i.RestoreWithManagedDisks)
 			delete(rawMsg, key)
+		case "securedVMDetails":
+			err = unpopulate(val, "SecuredVMDetails", &i.SecuredVMDetails)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &i.SourceResourceID)
 			delete(rawMsg, key)
@@ -9366,6 +9430,9 @@ func (i *IaasVMRestoreWithRehydrationRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "subnetId":
 			err = unpopulate(val, "SubnetID", &i.SubnetID)
+			delete(rawMsg, key)
+		case "targetDiskNetworkAccessSettings":
+			err = unpopulate(val, "TargetDiskNetworkAccessSettings", &i.TargetDiskNetworkAccessSettings)
 			delete(rawMsg, key)
 		case "targetDomainNameId":
 			err = unpopulate(val, "TargetDomainNameID", &i.TargetDomainNameID)
@@ -12384,6 +12451,7 @@ func (r *RecoveryPointMoveReadinessInfo) UnmarshalJSON(data []byte) error {
 func (r RecoveryPointProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "expiryTime", r.ExpiryTime)
+	populate(objectMap, "isSoftDeleted", r.IsSoftDeleted)
 	populate(objectMap, "ruleName", r.RuleName)
 	return json.Marshal(objectMap)
 }
@@ -12399,6 +12467,9 @@ func (r *RecoveryPointProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "expiryTime":
 			err = unpopulate(val, "ExpiryTime", &r.ExpiryTime)
+			delete(rawMsg, key)
+		case "isSoftDeleted":
+			err = unpopulate(val, "IsSoftDeleted", &r.IsSoftDeleted)
 			delete(rawMsg, key)
 		case "ruleName":
 			err = unpopulate(val, "RuleName", &r.RuleName)
@@ -13131,6 +13202,33 @@ func (s *SchedulePolicy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type SecuredVMDetails.
+func (s SecuredVMDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "securedVMOsDiskEncryptionSetId", s.SecuredVMOsDiskEncryptionSetID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecuredVMDetails.
+func (s *SecuredVMDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "securedVMOsDiskEncryptionSetId":
+			err = unpopulate(val, "SecuredVMOsDiskEncryptionSetID", &s.SecuredVMOsDiskEncryptionSetID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SecurityPinBase.
 func (s SecurityPinBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -13383,6 +13481,37 @@ func (t *TargetAFSRestoreInfo) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetResourceId":
 			err = unpopulate(val, "TargetResourceID", &t.TargetResourceID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TargetDiskNetworkAccessSettings.
+func (t TargetDiskNetworkAccessSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "targetDiskAccessId", t.TargetDiskAccessID)
+	populate(objectMap, "targetDiskNetworkAccessOption", t.TargetDiskNetworkAccessOption)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TargetDiskNetworkAccessSettings.
+func (t *TargetDiskNetworkAccessSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "targetDiskAccessId":
+			err = unpopulate(val, "TargetDiskAccessID", &t.TargetDiskAccessID)
+			delete(rawMsg, key)
+		case "targetDiskNetworkAccessOption":
+			err = unpopulate(val, "TargetDiskNetworkAccessOption", &t.TargetDiskNetworkAccessOption)
 			delete(rawMsg, key)
 		}
 		if err != nil {

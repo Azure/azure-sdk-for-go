@@ -58,7 +58,7 @@ func NewBackupProtectableItemsClient(subscriptionID string, credential azcore.To
 // NewListPager - Provides a pageable list of protectable objects within your subscription according to the query filter and
 // the pagination parameters.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - BackupProtectableItemsClientListOptions contains the optional parameters for the BackupProtectableItemsClient.NewListPager
@@ -111,7 +111,7 @@ func (client *BackupProtectableItemsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

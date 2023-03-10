@@ -58,7 +58,7 @@ func NewFeatureSupportClient(subscriptionID string, credential azcore.TokenCrede
 // Validate - It will validate if given feature with resource properties is supported in service
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - azureRegion - Azure region to hit Api
 //   - parameters - Feature support request object
 //   - options - FeatureSupportClientValidateOptions contains the optional parameters for the FeatureSupportClient.Validate method.
@@ -93,7 +93,7 @@ func (client *FeatureSupportClient) validateCreateRequest(ctx context.Context, a
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

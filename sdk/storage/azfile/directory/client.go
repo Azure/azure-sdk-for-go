@@ -108,32 +108,42 @@ func (d *Client) NewFileClient(fileName string) *file.Client {
 // Create operation creates a new directory under the specified share or parent directory.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-directory.
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
-	return CreateResponse{}, nil
+	fileAttributes, fileCreationTime, fileLastWriteTime, opts := options.format()
+	resp, err := d.generated().Create(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, opts)
+	return resp, err
 }
 
 // Delete operation removes the specified empty directory. Note that the directory must be empty before it can be deleted.
 // Deleting directories that aren't empty returns error 409 (Directory Not Empty).
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-directory.
 func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
-	return DeleteResponse{}, nil
+	opts := options.format()
+	resp, err := d.generated().Delete(ctx, opts)
+	return resp, err
 }
 
 // GetProperties operation returns all system properties for the specified directory, and it can also be used to check the existence of a directory.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-directory-properties.
 func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	return GetPropertiesResponse{}, nil
+	opts := options.format()
+	resp, err := d.generated().GetProperties(ctx, opts)
+	return resp, err
 }
 
 // SetProperties operation sets system properties for the specified directory.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
 func (d *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
-	return SetPropertiesResponse{}, nil
+	fileAttributes, fileCreationTime, fileLastWriteTime, opts := options.format()
+	resp, err := d.generated().SetProperties(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, opts)
+	return resp, err
 }
 
 // SetMetadata operation sets user-defined metadata for the specified directory.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata.
 func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	return SetMetadataResponse{}, nil
+	opts := options.format()
+	resp, err := d.generated().SetMetadata(ctx, opts)
+	return resp, err
 }
 
 // NewListFilesAndDirectoriesPager operation returns a pager for the files and directories starting from the specified Marker.

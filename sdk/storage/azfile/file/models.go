@@ -9,34 +9,20 @@ package file
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
-	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
 // SMBProperties contains the optional parameters regarding the SMB/NTFS properties for a file.
-type SMBProperties struct {
-	// NTFSFileAttributes for Files and Directories. Default value is ‘None’ for file and ‘Directory’
-	// for directory. ‘None’ can also be specified as default.
-	Attributes *NTFSFileAttributes
-	// The Coordinated Universal Time (UTC) creation time for the file/directory. Default value is 'now'.
-	CreationTime *time.Time
-	// The Coordinated Universal Time (UTC) last write time for the file/directory. Default value is 'now'.
-	LastWriteTime *time.Time
-}
+type SMBProperties = exported.SMBProperties
+
+// NTFSFileAttributes for Files and Directories.
+// The subset of attributes is listed at: https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties#file-system-attributes.
+type NTFSFileAttributes = exported.NTFSFileAttributes
 
 // Permissions contains the optional parameters for the permissions on the file.
-type Permissions struct {
-	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission
-	// size is <= 8KB, else x-ms-file-permission-key header shall be used. Default
-	// value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
-	// or x-ms-file-permission-key should be specified.
-	Permission *string
-	// Key of the permission to be set for the directory/file.
-	// Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
-	PermissionKey *string
-}
+type Permissions = exported.Permissions
 
 // HTTPHeaders contains optional parameters for the Client.Create method.
 type HTTPHeaders = generated.ShareFileHTTPHeaders

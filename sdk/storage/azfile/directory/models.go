@@ -7,9 +7,11 @@
 package directory
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -28,11 +30,35 @@ type CreateOptions struct {
 	Metadata map[string]*string
 }
 
+func (o *CreateOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, createOptions *generated.DirectoryClientCreateOptions) {
+	if o == nil {
+		return shared.FileAttributesDirectory, shared.DefaultCurrentTimeString, shared.DefaultCurrentTimeString, &generated.DirectoryClientCreateOptions{
+			FilePermission: to.Ptr(shared.DefaultFilePermissionString),
+		}
+	}
+
+	fileAttributes, fileCreationTime, fileLastWriteTime = o.FileSMBProperties.Format(shared.FileAttributesDirectory, shared.DefaultCurrentTimeString)
+
+	permission, permissionKey := o.FilePermissions.Format(shared.DefaultFilePermissionString)
+
+	createOptions = &generated.DirectoryClientCreateOptions{
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+		Metadata:          o.Metadata,
+	}
+
+	return
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
 	// placeholder for future options
+}
+
+func (o *DeleteOptions) format() *generated.DirectoryClientDeleteOptions {
+	return nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -41,6 +67,16 @@ type DeleteOptions struct {
 type GetPropertiesOptions struct {
 	// ShareSnapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query for the directory properties.
 	ShareSnapshot *string
+}
+
+func (o *GetPropertiesOptions) format() *generated.DirectoryClientGetPropertiesOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.DirectoryClientGetPropertiesOptions{
+		Sharesnapshot: o.ShareSnapshot,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -54,12 +90,40 @@ type SetPropertiesOptions struct {
 	FilePermissions *file.Permissions
 }
 
+func (o *SetPropertiesOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, setPropertiesOptions *generated.DirectoryClientSetPropertiesOptions) {
+	if o == nil {
+		return shared.DefaultPreserveString, shared.DefaultPreserveString, shared.DefaultPreserveString, &generated.DirectoryClientSetPropertiesOptions{
+			FilePermission: to.Ptr(shared.DefaultPreserveString),
+		}
+	}
+
+	fileAttributes, fileCreationTime, fileLastWriteTime = o.FileSMBProperties.Format(shared.DefaultPreserveString, shared.DefaultPreserveString)
+
+	permission, permissionKey := o.FilePermissions.Format(shared.DefaultPreserveString)
+
+	setPropertiesOptions = &generated.DirectoryClientSetPropertiesOptions{
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+	}
+	return
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // SetMetadataOptions contains the optional parameters for the Client.SetMetadata method.
 type SetMetadataOptions struct {
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]*string
+}
+
+func (o *SetMetadataOptions) format() *generated.DirectoryClientSetMetadataOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.DirectoryClientSetMetadataOptions{
+		Metadata: o.Metadata,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

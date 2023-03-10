@@ -8,40 +8,6 @@ package file
 
 import "github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 
-// NTFSFileAttributes for Files and Directories.
-// The subset of attributes is listed at: https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties#file-system-attributes.
-// Their respective values are listed at: https://learn.microsoft.com/en-us/windows/win32/fileio/file-attribute-constants.
-type NTFSFileAttributes uint32
-
-const (
-	Readonly          NTFSFileAttributes = 1
-	Hidden            NTFSFileAttributes = 2
-	System            NTFSFileAttributes = 4
-	Directory         NTFSFileAttributes = 16
-	Archive           NTFSFileAttributes = 32
-	None              NTFSFileAttributes = 128
-	Temporary         NTFSFileAttributes = 256
-	Offline           NTFSFileAttributes = 4096
-	NotContentIndexed NTFSFileAttributes = 8192
-	NoScrubData       NTFSFileAttributes = 131072
-)
-
-// PossibleNTFSFileAttributesValues returns the possible values for the NTFSFileAttributes const type.
-func PossibleNTFSFileAttributesValues() []NTFSFileAttributes {
-	return []NTFSFileAttributes{
-		Readonly,
-		Hidden,
-		System,
-		Directory,
-		Archive,
-		None,
-		Temporary,
-		Offline,
-		NotContentIndexed,
-		NoScrubData,
-	}
-}
-
 // CopyStatusType defines the states of the copy operation.
 type CopyStatusType = generated.CopyStatusType
 

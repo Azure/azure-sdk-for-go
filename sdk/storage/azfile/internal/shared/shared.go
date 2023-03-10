@@ -14,9 +14,10 @@ import (
 )
 
 const (
-	TokenScope              = "https://storage.azure.com/.default"
-	StorageAnalyticsVersion = "1.0"
+	TokenScope = "https://storage.azure.com/.default"
+)
 
+const (
 	HeaderAuthorization     = "Authorization"
 	HeaderXmsDate           = "x-ms-date"
 	HeaderContentLength     = "Content-Length"
@@ -29,6 +30,28 @@ const (
 	HeaderIfNoneMatch       = "If-None-Match"
 	HeaderIfUnmodifiedSince = "If-Unmodified-Since"
 	HeaderRange             = "Range"
+)
+
+const StorageAnalyticsVersion = "1.0"
+
+const (
+	// DefaultFilePermissionString is a constant for all intents and purposes.
+	// Inherit inherits permissions from the parent folder (default when creating files/folders)
+	DefaultFilePermissionString = "inherit"
+
+	// DefaultCurrentTimeString sets creation/last write times to now
+	DefaultCurrentTimeString = "now"
+
+	// DefaultPreserveString preserves old permissions on the file/folder (default when updating properties)
+	DefaultPreserveString = "preserve"
+
+	// FileAttributesNone is defaults for file attributes when creating file.
+	// This attribute is valid only when used alone.
+	FileAttributesNone = "None"
+
+	// FileAttributesDirectory is defaults for file attributes when creating directory.
+	// The attribute that identifies a directory
+	FileAttributesDirectory = "Directory"
 )
 
 func GetClientOptions[T any](o *T) *T {

@@ -9,6 +9,9 @@ package container_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"net/url"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -103,7 +106,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateInvalidName() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	_require.NotNil(err)
@@ -120,7 +123,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyName() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	_require.NotNil(err)
@@ -142,7 +145,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateNameCollision() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 
 	containerClient = svcClient.NewContainerClient(containerName)
@@ -163,7 +166,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateInvalidMetadata() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{"1 foo": "bar"},
+		Metadata: map[string]*string{"1 foo": to.Ptr("bar")},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 
@@ -182,7 +185,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateNilMetadata() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -205,7 +208,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateEmptyMetadata() {
 	access := container.PublicAccessTypeBlob
 	createContainerOptions := container.CreateOptions{
 		Access:   &access,
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.Create(context.Background(), &createContainerOptions)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -1082,7 +1085,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataEmpty() {
 	_require.Nil(err)
 
 	setMetadataContainerOptions := container.SetMetadataOptions{
-		Metadata: map[string]string{},
+		Metadata: map[string]*string{},
 	}
 	_, err = containerClient.SetMetadata(context.Background(), &setMetadataContainerOptions)
 	_require.Nil(err)
@@ -1127,7 +1130,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetMetadataInvalidField() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	setMetadataContainerOptions := container.SetMetadataOptions{
-		Metadata: map[string]string{"!nval!d Field!@#%": "value"},
+		Metadata: map[string]*string{"!nval!d Field!@#%": to.Ptr("value")},
 	}
 	_, err = containerClient.SetMetadata(context.Background(), &setMetadataContainerOptions)
 	_require.NotNil(err)
@@ -1348,7 +1351,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetEmptyAccessPolicy() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &container.SetAccessPolicyOptions{})
+	_, err = containerClient.SetAccessPolicy(context.Background(), &container.SetAccessPolicyOptions{})
 	_require.Nil(err)
 }
 
@@ -1377,8 +1380,8 @@ func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 		},
 		ID: &id,
 	})
-
-	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 }
 
@@ -1422,8 +1425,8 @@ func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 			Permission: &permission3,
 		},
 	})
-
-	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
 	// Make a Get to assert two access policies
@@ -1448,8 +1451,8 @@ func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
 	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
 		ID: &id,
 	})
-
-	_, err = containerClient.SetAccessPolicy(context.Background(), signedIdentifiers, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1491,8 +1494,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerGetSetPermissionsMultiplePoli
 			},
 		},
 	}
-
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, nil)
+	options := container.SetAccessPolicyOptions{ContainerACL: permissions}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
 
 	_require.Nil(err)
 
@@ -1539,7 +1542,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessNon
 	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
 
 	// Container is created with PublicAccessTypeBlob, so setting it to None will actually test that it is changed through this method
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, nil)
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 
 	bsu2, err := service.NewClientWithNoCredential(svcClient.URL(), nil)
@@ -1578,7 +1581,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessTyp
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1599,7 +1602,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessCon
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeContainer),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1697,7 +1700,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: &access,
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
@@ -1735,7 +1739,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModify
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: &access,
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1748,7 +1753,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModify
 	setAccessPolicyOptions1 := container.SetAccessPolicyOptions{
 		Access: &access,
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions1)
+	setAccessPolicyOptions1.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions1)
 	_require.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1788,7 +1794,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAllPolici
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1799,7 +1806,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAllPolici
 	setAccessPolicyOptions = container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), []*container.SignedIdentifier{}, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = []*container.SignedIdentifier{}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err = containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1839,7 +1847,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsInvalidPolicyTi
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 }
 
@@ -1853,7 +1862,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsNilPolicySlice(
 
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, nil)
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 }
 
@@ -1890,7 +1899,8 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsSignedIdentifie
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), permissions, &setAccessPolicyOptions)
+	setAccessPolicyOptions.ContainerACL = permissions
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
@@ -1916,7 +1926,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfModifiedSince
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -1945,7 +1955,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfModifiedSince
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -1972,7 +1982,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSin
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
@@ -2001,7 +2011,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSin
 			ModifiedAccessConditions: &container.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -2066,4 +2076,952 @@ func (s *ContainerRecordedTestsSuite) TestContainerUndelete() {
 		}
 	}
 	_require.Nil(err)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestSetAccessPoliciesInDifferentTimeFormats() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	id := "timeInEST"
+	permission := "rw"
+	loc, err := time.LoadLocation("EST")
+	_require.Nil(err)
+	start := time.Now().In(loc)
+	expiry := start.Add(10 * time.Hour)
+
+	signedIdentifiers := make([]*container.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id,
+		AccessPolicy: &container.AccessPolicy{
+			Start:      &start,
+			Expiry:     &expiry,
+			Permission: &permission,
+		},
+	})
+
+	id2 := "timeInIST"
+	permission2 := "r"
+	loc2, err := time.LoadLocation("Asia/Kolkata")
+	_require.Nil(err)
+	start2 := time.Now().In(loc2)
+	expiry2 := start2.Add(5 * time.Hour)
+
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id2,
+		AccessPolicy: &container.AccessPolicy{
+			Start:      &start2,
+			Expiry:     &expiry2,
+			Permission: &permission2,
+		},
+	})
+
+	id3 := "nilTime"
+	permission3 := "r"
+
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		ID: &id3,
+		AccessPolicy: &container.AccessPolicy{
+			Permission: &permission3,
+		},
+	})
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
+	_require.Nil(err)
+
+	// make a Get to assert three access policies
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, 3)
+	_require.EqualValues(resp.SignedIdentifiers, signedIdentifiers)
+}
+
+func (s *ContainerRecordedTestsSuite) TestSetAccessPolicyWithNullId() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	signedIdentifiers := make([]*container.SignedIdentifier, 0)
+	signedIdentifiers = append(signedIdentifiers, &container.SignedIdentifier{
+		AccessPolicy: &container.AccessPolicy{
+			Permission: to.Ptr("rw"),
+		},
+	})
+
+	options := container.SetAccessPolicyOptions{ContainerACL: signedIdentifiers}
+	_, err = containerClient.SetAccessPolicy(context.Background(), &options)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidXMLDocument)
+
+	resp, err := containerClient.GetAccessPolicy(context.Background(), nil)
+	_require.Nil(err)
+	_require.Len(resp.SignedIdentifiers, 0)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestBlobNameSpecialCharacters() {
+	_require := require.New(s.T())
+
+	const containerURL = testcommon.FakeStorageURL + "/fakecontainer"
+	client, err := container.NewClientWithNoCredential(containerURL, nil)
+	_require.NoError(err)
+	_require.NotNil(client)
+
+	blobNames := []string{"foo%5Cbar", "hello? sausage/Hello.txt", "世界.txt"}
+	for _, blobName := range blobNames {
+		expected := containerURL + "/" + url.PathEscape(blobName)
+
+		abc := client.NewAppendBlobClient(blobName)
+		_require.Equal(expected, abc.URL())
+
+		bbc := client.NewBlockBlobClient(blobName)
+		_require.Equal(expected, bbc.URL())
+
+		pbc := client.NewPageBlobClient(blobName)
+		_require.Equal(expected, pbc.URL())
+
+		bc := client.NewBlobClient(blobName)
+		_require.Equal(expected, bc.URL())
+	}
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.ContainerPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// ContainerSASURL is created with GetSASURL
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create container client with sasUrl
+	_, err = container.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteSuccessUsingSharedKey() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.Delete(bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 10)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	for _, subResp := range resp.Responses {
+		_require.NotNil(subResp.ContentID)
+		_require.NotNil(subResp.ContainerName)
+		_require.NotNil(subResp.BlobName)
+		_require.NotNil(subResp.RequestID)
+		_require.NotNil(subResp.Version)
+		_require.NoError(subResp.Error)
+	}
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFailureUsingSharedKey() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	// add 5 blobs to BatchBuilder which does not exist
+	for i := 0; i < 15; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		if i < 10 {
+			_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		}
+		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	var ctrHot, ctrCool = 0, 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 10)
+	_require.Equal(ctrCool, 0)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	var ctrSuccess, ctrFailure = 0, 0
+	for _, subResp := range resp.Responses {
+		_require.NotNil(subResp.ContentID)
+		_require.NotNil(subResp.ContainerName)
+		_require.NotNil(subResp.BlobName)
+		_require.NotNil(subResp.RequestID)
+		_require.NotNil(subResp.Version)
+		if subResp.Error == nil {
+			ctrSuccess++
+		} else {
+			ctrFailure++
+			_require.NotEmpty(subResp.Error.Error())
+			testcommon.ValidateBlobErrorCode(_require, subResp.Error, bloberror.BlobNotFound)
+		}
+	}
+	_require.Equal(ctrSuccess, 10)
+	_require.Equal(ctrFailure, 5)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctrHot = 0
+	ctrCool = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 0)
+	_require.Equal(ctrCool, 10)
+}
+
+/*
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingTokenCredential() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_TENANT_ID could not be found")
+	}
+	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_ID could not be found")
+	}
+	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
+	}
+
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient, err := container.NewClient("https://"+accountName+".blob.core.windows.net/"+containerName, cred, nil)
+	_require.NoError(err)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.Delete(bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 10)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingTokenCredential() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_TENANT_ID could not be found")
+	}
+	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_ID could not be found")
+	}
+	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
+	}
+
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient, err := container.NewClient("https://"+accountName+".blob.core.windows.net/"+containerName, cred, nil)
+	_require.NoError(err)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	var ctrHot, ctrCool = 0, 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 10)
+	_require.Equal(ctrCool, 0)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctrHot = 0
+	ctrCool = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 0)
+	_require.Equal(ctrCool, 10)
+}
+*/
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingAccountSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	accountSAS, err := testcommon.GetAccountSAS(sas.AccountPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true},
+		sas.AccountResourceTypes{Service: true, Container: true, Object: true})
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient, err := container.NewClientWithNoCredential("https://"+accountName+".blob.core.windows.net/"+containerName+"?"+accountSAS, nil)
+	_require.NoError(err)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.Delete(bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 10)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingAccountSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	accountSAS, err := testcommon.GetAccountSAS(sas.AccountPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true},
+		sas.AccountResourceTypes{Service: true, Container: true, Object: true})
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient, err := container.NewClientWithNoCredential("https://"+accountName+".blob.core.windows.net/"+containerName+"?"+accountSAS, nil)
+	_require.NoError(err)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	var ctrHot, ctrCool = 0, 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 10)
+	_require.Equal(ctrCool, 0)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctrHot = 0
+	ctrCool = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 0)
+	_require.Equal(ctrCool, 10)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingServiceSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClientSharedKey := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClientSharedKey)
+
+	serviceSAS, err := testcommon.GetServiceSAS(containerName, sas.BlobPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true})
+	_require.NoError(err)
+
+	cntClientSAS, err := container.NewClientWithNoCredential(cntClientSharedKey.URL()+"?"+serviceSAS, nil)
+	_require.NoError(err)
+
+	bb, err := cntClientSAS.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
+		err = bb.Delete(bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := cntClientSAS.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 10)
+
+	resp, err := cntClientSAS.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	pager = cntClientSAS.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingServiceSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClientSharedKey := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClientSharedKey)
+
+	serviceSAS, err := testcommon.GetServiceSAS(containerName, sas.BlobPermissions{Read: true, Create: true, Write: true, List: true})
+	_require.NoError(err)
+
+	cntClientSAS, err := container.NewClientWithNoCredential(cntClientSharedKey.URL()+"?"+serviceSAS, nil)
+	_require.NoError(err)
+
+	bb, err := cntClientSAS.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
+		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
+		_require.NoError(err)
+	}
+
+	pager := cntClientSAS.NewListBlobsFlatPager(nil)
+	var ctrHot, ctrCool = 0, 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 10)
+	_require.Equal(ctrCool, 0)
+
+	resp, err := cntClientSAS.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	pager = cntClientSAS.NewListBlobsFlatPager(nil)
+	ctrHot = 0
+	ctrCool = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 0)
+	_require.Equal(ctrCool, 10)
+}
+
+/*
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteUsingUserDelegationSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_TENANT_ID could not be found")
+	}
+	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_ID could not be found")
+	}
+	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
+	}
+
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClientTokenCred := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClientTokenCred)
+
+	udSAS, err := testcommon.GetUserDelegationSAS(svcClient, containerName, sas.BlobPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true})
+	_require.NoError(err)
+
+	cntClientSAS, err := container.NewClientWithNoCredential(cntClientTokenCred.URL()+"?"+udSAS, nil)
+	_require.NoError(err)
+
+	bb, err := cntClientSAS.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
+		err = bb.Delete(bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := cntClientSAS.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 10)
+
+	resp, err := cntClientSAS.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	pager = cntClientSAS.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingUserDelegationSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_TENANT_ID could not be found")
+	}
+	clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_ID could not be found")
+	}
+	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
+	if !ok {
+		panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
+	}
+
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClientTokenCred := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClientTokenCred)
+
+	udSAS, err := testcommon.GetUserDelegationSAS(svcClient, containerName, sas.BlobPermissions{Read: true, Create: true, Write: true, List: true})
+	_require.NoError(err)
+
+	cntClientSAS, err := container.NewClientWithNoCredential(cntClientTokenCred.URL()+"?"+udSAS, nil)
+	_require.NoError(err)
+
+	bb, err := cntClientSAS.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, cntClientSAS)
+		err = bb.SetTier(bbName, blob.AccessTierCool, nil)
+		_require.NoError(err)
+	}
+
+	pager := cntClientSAS.NewListBlobsFlatPager(nil)
+	var ctrHot, ctrCool = 0, 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 10)
+	_require.Equal(ctrCool, 0)
+
+	resp, err := cntClientSAS.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+
+	pager = cntClientSAS.NewListBlobsFlatPager(nil)
+	ctrHot = 0
+	ctrCool = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				ctrHot++
+			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				ctrCool++
+			}
+		}
+	}
+	_require.Equal(ctrHot, 0)
+	_require.Equal(ctrCool, 10)
+}
+*/
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteMoreThan256() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	for i := 0; i < 256; i++ {
+		bbName := fmt.Sprintf("blockblob%v", i)
+		_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+		err = bb.Delete(bbName, nil)
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 256)
+
+	resp, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp.RequestID)
+	for _, subResp := range resp.Responses {
+		_require.Nil(subResp.Error)
+	}
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+
+	// add more items to make batch size more than 256
+	for i := 0; i < 10; i++ {
+		bbName := fmt.Sprintf("fakeblob%v", i)
+		err = bb.Delete(bbName, nil)
+		_require.NoError(err)
+	}
+
+	resp2, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.Error(err)
+	_require.Nil(resp2.RequestID)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteForOneBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bb, err := containerClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	bbName := "blockblob1"
+	_ = testcommon.CreateNewBlockBlob(context.Background(), _require, bbName, containerClient)
+	err = bb.Delete(bbName, nil)
+	_require.NoError(err)
+
+	pager := containerClient.NewListBlobsFlatPager(nil)
+	ctr := 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 1)
+
+	resp1, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp1.RequestID)
+	_require.Equal(len(resp1.Responses), 1)
+	_require.NoError(resp1.Responses[0].Error)
+
+	pager = containerClient.NewListBlobsFlatPager(nil)
+	ctr = 0
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		handleError(err)
+		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+	}
+	_require.Equal(ctr, 0)
+
+	resp2, err := containerClient.SubmitBatch(context.Background(), bb, nil)
+	_require.NoError(err)
+	_require.NotNil(resp2.RequestID)
+	_require.Equal(len(resp2.Responses), 1)
+	_require.Error(resp2.Responses[0].Error)
+	testcommon.ValidateBlobErrorCode(_require, resp2.Responses[0].Error, bloberror.BlobNotFound)
+}
+
+func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchErrors() {
+	_require := require.New(s.T())
+
+	svcClient, err := service.NewClientWithNoCredential("https://fakestorageaccount.blob.core.windows.net/", nil)
+	_require.NoError(err)
+
+	cntClient := svcClient.NewContainerClient("fakecontainer")
+
+	bb1, err := cntClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	// adding multiple operations to BatchBuilder
+	err = bb1.Delete("blob1", nil)
+	_require.NoError(err)
+
+	err = bb1.SetTier("blob2", blob.AccessTierCool, nil)
+	_require.Error(err)
+
+	bb2, err := cntClient.NewBatchBuilder()
+	_require.NoError(err)
+
+	// submitting empty batch
+	_, err = cntClient.SubmitBatch(context.Background(), bb2, nil)
+	_require.Error(err)
+
+	// submitting nil BatchBuilder
+	_, err = cntClient.SubmitBatch(context.Background(), nil, nil)
+	_require.Error(err)
 }

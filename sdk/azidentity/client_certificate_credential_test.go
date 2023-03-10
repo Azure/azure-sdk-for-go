@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
 type certTest struct {
@@ -114,8 +115,8 @@ func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
 			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 			defer close()
 			srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-			srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
-			srv.AppendResponse(mock.WithPredicate(validateX5C(t, test.certs)), mock.WithBody([]byte(accessTokenRespSuccess)))
+			srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
+			srv.AppendResponse(mock.WithPredicate(validateX5C(t, test.certs)), mock.WithBody(accessTokenRespSuccess))
 			srv.AppendResponse()
 
 			options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}, SendCertificateChain: true}
@@ -167,7 +168,7 @@ func TestClientCertificateCredential_NoPrivateKey(t *testing.T) {
 	test := allCertTests[0]
 	srv, close := mock.NewTLSServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
 	options := ClientCertificateCredentialOptions{}
 	options.Cloud.ActiveDirectoryAuthorityHost = srv.URL()
 	options.Transport = srv
@@ -224,6 +225,52 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 			testGetTokenSuccess(t, cred)
 		})
 	}
+	t.Run("instance discovery disabled", func(t *testing.T) {
+		if liveSP.pemPath == "" {
+			t.Skip("no certificate file specified")
+		}
+		certData, err := os.ReadFile(liveSP.pemPath)
+		if err != nil {
+			t.Fatalf(`failed to read cert: %v`, err)
+		}
+		certs, key, err := ParseCertificates(certData, nil)
+		if err != nil {
+			t.Fatalf(`failed to parse cert: %v`, err)
+		}
+		o, stop := initRecording(t)
+		defer stop()
+		opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
+		cred, err := NewClientCertificateCredential(liveSP.tenantID, liveSP.clientID, certs, key, opts)
+		if err != nil {
+			t.Fatalf("failed to construct credential: %v", err)
+		}
+		testGetTokenSuccess(t, cred)
+	})
+}
+
+func TestClientCertificateCredentialADFS_Live(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		if adfsLiveSP.clientID == "" || adfsLiveSP.certPath == "" || adfsScope == "" {
+			t.Skip("set ADFS_SP_* to run this test live")
+		}
+	}
+	certData, err := os.ReadFile(adfsLiveSP.certPath)
+	if err != nil {
+		t.Fatalf(`failed to read cert: %v`, err)
+	}
+	certs, key, err := ParseCertificates(certData, nil)
+	if err != nil {
+		t.Fatalf(`failed to parse cert: %v`, err)
+	}
+	o, stop := initRecording(t)
+	defer stop()
+	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
+	opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
+	cred, err := NewClientCertificateCredential("adfs", adfsLiveSP.clientID, certs, key, opts)
+	if err != nil {
+		t.Fatalf("failed to construct credential: %v", err)
+	}
+	testGetTokenSuccess(t, cred, adfsScope)
 }
 
 func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {

@@ -97,10 +97,13 @@ func (r *rpRegistrationPolicy) Do(req *azpolicy.Request) (*http.Response, error)
 			return resp, err
 		}
 		if reqErr.ServiceError == nil {
-			return resp, errors.New("missing error information")
+			// missing service error info. just return the response
+			// to the caller so its error unmarshalling will kick in
+			return resp, err
 		}
 		if !strings.EqualFold(reqErr.ServiceError.Code, unregisteredRPCode) {
-			// not a 409 due to unregistered RP
+			// not a 409 due to unregistered RP. just return the response
+			// to the caller so its error unmarshalling will kick in
 			return resp, err
 		}
 		// RP needs to be registered.  start by getting the subscription ID from the original request

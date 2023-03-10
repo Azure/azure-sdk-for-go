@@ -5,10 +5,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"math/rand"
 	"os"
 	"sort"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh/stress/tests"
 )
@@ -42,8 +40,6 @@ func main() {
 
 	for _, test := range tests {
 		if test.name == testName {
-			rand.Seed(time.Now().UnixNano())
-
 			if err := test.fn(context.Background()); err != nil {
 				fmt.Printf("ERROR: %s\n", err)
 				os.Exit(1)

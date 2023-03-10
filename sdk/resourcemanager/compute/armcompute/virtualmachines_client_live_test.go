@@ -8,12 +8,13 @@ package armcompute_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 	"github.com/stretchr/testify/suite"
@@ -216,6 +217,7 @@ func (testsuite *VirtualMachinesClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal(*nicResp.Name, nicName)
 
 	// create virtual machine
+	fmt.Println("Call operation: VirtualMachines_CreateOrUpdate")
 	vmClient, err := armcompute.NewVirtualMachinesClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	vmName := "go-test-vm"
@@ -273,6 +275,7 @@ func (testsuite *VirtualMachinesClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal(*vmResp.Name, vmName)
 
 	// virtual machine update
+	fmt.Println("Call operation: VirtualMachines_Update")
 	updatePoller, err := vmClient.BeginUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -290,15 +293,18 @@ func (testsuite *VirtualMachinesClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal(*updateResp.Name, vmName)
 
 	// virtual machine get
+	fmt.Println("Call operation: VirtualMachines_Get")
 	resp, err := vmClient.Get(testsuite.ctx, testsuite.resourceGroupName, vmName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(*resp.Name, vmName)
 
 	// virtual machine list
+	fmt.Println("Call operation: VirtualMachines_List")
 	vmList := vmClient.NewListPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().Equal(vmList.More(), true)
 
 	// delete virtual machine
+	fmt.Println("Call operation: VirtualMachines_Delete")
 	delPoller, err := vmClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, vmName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, delPoller)

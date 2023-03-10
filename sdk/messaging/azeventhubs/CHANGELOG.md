@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.6.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,55 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.6.0 (2023-03-07)
+
+### Features Added
+
+- Added the `ConsumerClientOptions.InstanceID` field. This optional field can enhance error messages from 
+  Event Hubs. For example, error messages related to ownership changes for a partition will contain the 
+  name of the link that has taken ownership, which can help with traceability.
+
+### Breaking Changes
+
+- `ConsumerClient.ID()` renamed to `ConsumerClient.InstanceID()`.
+
+### Bugs Fixed
+
+- Recover the connection when the $cbs Receiver/Sender is not closed properly. This would cause
+  clients to return an error saying "$cbs node has already been opened." (PR#20334)
+
+## 0.5.0 (2023-02-07)
+
+### Features Added
+
+- Adds ProcessorOptions.Prefetch field, allowing configuration of Prefetch values for PartitionClients created using the Processor. (PR#19786)
+- Added new function to parse connection string into values using `ParseConnectionString` and `ConnectionStringProperties`. (PR#19855)
+
+### Breaking Changes
+
+- ProcessorOptions.OwnerLevel has been removed. The Processor uses 0 as the owner level.
+- Uses the public release of `github.com/Azure/azure-sdk-for-go/sdk/storage/azblob` package rather than using an internal copy. 
+  For an example, see [example_processor_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go).
+
+## 0.4.0 (2023-01-10)
+
+### Bugs Fixed
+
+- User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
+- Connection recovery has been improved, removing some unnecessasry retries as well as adding a bound around 
+  some operations (Close) that could potentially block recovery for a long time. (PR#19683)
+
+## 0.3.0 (2022-11-10)
+
+### Bugs Fixed
+
+- $cbs link is properly closed, even on cancellation (#19492)
+
+### Breaking Changes
+
+- ProducerClient.SendEventBatch renamed to ProducerClient.SendEventDataBatch, to align with
+  the name of the type.
 
 ## 0.2.0 (2022-10-17)
 

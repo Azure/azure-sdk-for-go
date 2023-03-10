@@ -36,7 +36,6 @@ package azblob_test
 //	_require.Nil(err)
 //	blobParts.VersionID = *versionId
 //	blobParts.SAS, err = service.SASSignatureValues{
-//		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
 //		Protocol:      service.SASProtocolHTTPS,
 //		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
 //		Permissions:   to.Ptr(service.SASPermissions{Delete: true, DeletePreviousVersion: true}).String(),
@@ -126,7 +125,7 @@ package azblob_test
 //	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, LeaseAccessConditions{}, nil, DefaultAccessTier, nil)
 //	_require.Nil(err)
 //	_assert(resp.Response().StatusCode, chk.Equals, 202)
-//	_assert(resp.XMsContentCRC64(), chk.Not(chk.Equals), "")
+//	_assert(resp.ContentCRC64(), chk.Not(chk.Equals), "")
 //	_assert(resp.Response().Header.Get("x-ms-version"), chk.Equals, ServiceVersion)
 //	_assert(resp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //}

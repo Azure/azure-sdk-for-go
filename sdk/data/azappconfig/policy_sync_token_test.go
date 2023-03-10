@@ -14,7 +14,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
 	"github.com/stretchr/testify/require"
 )
 
@@ -36,7 +35,7 @@ func TestSyncTokenPolicy(t *testing.T) {
 	stp := newSyncTokenPolicy()
 	require.NotNil(t, stp)
 
-	pl := runtime.NewPipeline("TestSyncTokenPolicy", generated.ModuleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{stp}}, &policy.ClientOptions{
+	pl := runtime.NewPipeline("TestSyncTokenPolicy", moduleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{stp}}, &policy.ClientOptions{
 		Transport: TransportFunc(func(req *http.Request) (*http.Response, error) {
 			return &http.Response{
 				StatusCode: http.StatusOK,
@@ -65,7 +64,7 @@ func TestSyncTokenPolicyError(t *testing.T) {
 	stp := newSyncTokenPolicy()
 	require.NotNil(t, stp)
 
-	pl := runtime.NewPipeline("TestSyncTokenPolicy", generated.ModuleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{stp}}, &policy.ClientOptions{
+	pl := runtime.NewPipeline("TestSyncTokenPolicy", moduleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{stp}}, &policy.ClientOptions{
 		Transport: TransportFunc(func(req *http.Request) (*http.Response, error) {
 			return nil, nonRetriableError{errors.New("failed")}
 		}),

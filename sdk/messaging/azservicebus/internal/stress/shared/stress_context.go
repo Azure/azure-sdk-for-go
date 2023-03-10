@@ -63,9 +63,11 @@ func MustCreateStressContext(testName string) *StressContext {
 		"TestRunId": testRunID,
 	}
 
+	log.Printf("Common properties\n:%#v", telemetryClient.Context().CommonProperties)
+
 	ctx, cancel := NewCtrlCContext()
 
-	azlog.SetEvents(azservicebus.EventSender, azservicebus.EventReceiver, azservicebus.EventConn, azservicebus.EventAuth)
+	azlog.SetEvents(azservicebus.EventSender, azservicebus.EventReceiver, azservicebus.EventConn)
 
 	logMessages := make(chan string, 10000)
 
@@ -158,11 +160,42 @@ func (tracker *StressContext) Failf(format string, args ...any) {
 	panic(err)
 }
 
+func (tracker *StressContext) NoError(err error) {
+	if err == nil {
+		return
+	}
+
+	tracker.LogIfFailed(err.Error(), err, nil)
+	panic(err)
+}
+
+func (tracker *StressContext) NoErrorf(err error, format string, args ...any) {
+	if err == nil {
+		return
+	}
+
+	msg := fmt.Sprintf(format, args...)
+	tracker.LogIfFailed(fmt.Sprintf("%s: %s", msg, err.Error()), err, nil)
+	panic(err)
+}
+
 func (tracker *StressContext) Assert(condition bool, message string) {
 	tracker.LogIfFailed(message, nil, nil)
 
 	if !condition {
 		panic(message)
+	}
+}
+
+func (tracker *StressContext) Equal(val1 any, val2 any) {
+	if val1 != val2 {
+		panic(fmt.Errorf("Expected %v, got %v", val1, val2))
+	}
+}
+
+func (tracker *StressContext) Nil(val1 any) {
+	if val1 == nil {
+		panic("value was not nil")
 	}
 }
 

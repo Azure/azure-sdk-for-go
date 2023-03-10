@@ -24,6 +24,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -236,38 +237,8 @@ func (r *Recording) UUID() uuid.UUID {
 // GenerateAlphaNumericID will generate a recorded random alpha numeric id
 // if the recording has a randomSeed already set, the value will be generated from that seed, else a new random seed will be used
 func (r *Recording) GenerateAlphaNumericID(prefix string, length int, lowercaseOnly bool) (string, error) {
-
-	if length <= len(prefix) {
-		return "", errors.New("length must be greater than prefix")
-	}
-
 	r.initRandomSource()
-
-	sb := strings.Builder{}
-	sb.Grow(length)
-	sb.WriteString(prefix)
-	i := length - len(prefix) - 1
-	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
-	for cache, remain := r.src.Int63(), letterIdxMax; i >= 0; {
-		if remain == 0 {
-			cache, remain = r.src.Int63(), letterIdxMax
-		}
-		if lowercaseOnly {
-			if idx := int(cache & letterIdxMask); idx < len(alphanumericLowercaseBytes) {
-				sb.WriteByte(alphanumericLowercaseBytes[idx])
-				i--
-			}
-		} else {
-			if idx := int(cache & letterIdxMask); idx < len(alphanumericBytes) {
-				sb.WriteByte(alphanumericBytes[idx])
-				i--
-			}
-		}
-		cache >>= letterIdxBits
-		remain--
-	}
-	str := sb.String()
-	return str, nil
+	return generateAlphaNumericID(prefix, length, lowercaseOnly, r.src)
 }
 
 // getRequiredEnv gets an environment variable by name and returns an error if it is not found
@@ -495,25 +466,55 @@ func init() {
 	}
 }
 
-var recordMode string
-var rootCAs *x509.CertPool
+var (
+	recordMode string
+	rootCAs    *x509.CertPool
+)
 
 const (
-	RecordingMode     = "record"
-	PlaybackMode      = "playback"
-	LiveMode          = "live"
-	IDHeader          = "x-recording-id"
-	ModeHeader        = "x-recording-mode"
-	UpstreamURIHeader = "x-recording-upstream-base-uri"
+	RecordingMode           = "record"
+	PlaybackMode            = "playback"
+	LiveMode                = "live"
+	IDHeader                = "x-recording-id"
+	ModeHeader              = "x-recording-mode"
+	UpstreamURIHeader       = "x-recording-upstream-base-uri"
+	recordingRandSeedVarKey = "randSeed"
 )
 
 type recordedTest struct {
-	recordingId string
-	liveOnly    bool
-	variables   map[string]interface{}
+	recordingId      string
+	liveOnly         bool
+	variables        map[string]interface{}
+	recordingSeed    int64
+	recordingRandSrc rand.Source
 }
 
-var testSuite = map[string]recordedTest{}
+// testMap maps test names to metadata
+type testMap struct {
+	m *sync.Map
+}
+
+// Load returns the named test's metadata, if it has been stored
+func (t *testMap) Load(name string) (recordedTest, bool) {
+	var rt recordedTest
+	v, ok := t.m.Load(name)
+	if ok {
+		rt = v.(recordedTest)
+	}
+	return rt, ok
+}
+
+// Store sets metadata for the named test
+func (t *testMap) Store(name string, data recordedTest) {
+	t.m.Store(name, data)
+}
+
+// Remove delete metadata for the named test
+func (t *testMap) Remove(name string) {
+	t.m.Delete(name)
+}
+
+var testSuite = testMap{&sync.Map{}}
 
 var client = http.Client{
 	Transport: &http.Transport{
@@ -675,7 +676,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		return nil
 	}
 
-	if testStruct, ok := testSuite[t.Name()]; ok {
+	if testStruct, ok := testSuite.Load(t.Name()); ok {
 		if testStruct.liveOnly {
 			// test should only be run live, don't want to generate recording
 			return nil
@@ -729,16 +730,16 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 		}
 	}
 
-	if val, ok := testSuite[t.Name()]; ok {
+	if val, ok := testSuite.Load(t.Name()); ok {
 		val.recordingId = recId
 		val.variables = m
-		testSuite[t.Name()] = val
+		testSuite.Store(t.Name(), val)
 	} else {
-		testSuite[t.Name()] = recordedTest{
+		testSuite.Store(t.Name(), recordedTest{
 			recordingId: recId,
 			liveOnly:    false,
 			variables:   m,
-		}
+		})
 	}
 	return nil
 }
@@ -752,10 +753,16 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 		return nil
 	}
 
-	if testStruct, ok := testSuite[t.Name()]; ok {
+	if testStruct, ok := testSuite.Load(t.Name()); ok {
 		if testStruct.liveOnly {
 			// test should only be run live, don't want to generate recording
 			return nil
+		}
+		if testStruct.recordingSeed != 0 {
+			if options.Variables == nil {
+				options.Variables = map[string]interface{}{}
+			}
+			options.Variables[recordingRandSeedVarKey] = strconv.FormatInt(testStruct.recordingSeed, 10)
 		}
 	}
 
@@ -776,10 +783,11 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 
 	var recTest recordedTest
 	var ok bool
-	if recTest, ok = testSuite[t.Name()]; !ok {
+	if recTest, ok = testSuite.Load(t.Name()); !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
 	req.Header.Set(IDHeader, recTest.recordingId)
+	testSuite.Remove(t.Name())
 	resp, err := client.Do(req)
 	if resp.StatusCode != 200 {
 		b, err := io.ReadAll(resp.Body)
@@ -793,7 +801,76 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	return err
 }
 
-// This looks up an environment variable and if it is not found, returns the recordedValue
+func getRandomSource(t *testing.T) rand.Source {
+	if testStruct, ok := testSuite.Load(t.Name()); ok {
+		if testStruct.recordingRandSrc != nil {
+			return testStruct.recordingRandSrc
+		}
+	}
+
+	var seed int64
+	var err error
+
+	variables := GetVariables(t)
+	seedString, ok := variables[recordingRandSeedVarKey]
+	if ok {
+		seed, err = strconv.ParseInt(seedString.(string), 10, 64)
+	}
+
+	// We did not have a random seed already stored; create a new one
+	if !ok || err != nil || GetRecordMode() == "live" {
+		seed = time.Now().Unix()
+	}
+
+	source := rand.NewSource(seed)
+	if testStruct, ok := testSuite.Load(t.Name()); ok {
+		testStruct.recordingSeed = seed
+		testStruct.recordingRandSrc = source
+		testSuite.Store(t.Name(), testStruct)
+	}
+
+	return source
+}
+
+// GenerateAlphaNumericID will generate a recorded random alpha numeric id.
+// When live mode or the recording has a randomSeed already set, the value will be generated from that seed, else a new random seed will be used.
+func GenerateAlphaNumericID(t *testing.T, prefix string, length int, lowercaseOnly bool) (string, error) {
+	return generateAlphaNumericID(prefix, length, lowercaseOnly, getRandomSource(t))
+}
+
+func generateAlphaNumericID(prefix string, length int, lowercaseOnly bool, randomSource rand.Source) (string, error) {
+	if length <= len(prefix) {
+		return "", errors.New("length must be greater than prefix")
+	}
+
+	sb := strings.Builder{}
+	sb.Grow(length)
+	sb.WriteString(prefix)
+	i := length - len(prefix) - 1
+	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
+	for cache, remain := randomSource.Int63(), letterIdxMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = randomSource.Int63(), letterIdxMax
+		}
+		if lowercaseOnly {
+			if idx := int(cache & letterIdxMask); idx < len(alphanumericLowercaseBytes) {
+				sb.WriteByte(alphanumericLowercaseBytes[idx])
+				i--
+			}
+		} else {
+			if idx := int(cache & letterIdxMask); idx < len(alphanumericBytes) {
+				sb.WriteByte(alphanumericBytes[idx])
+				i--
+			}
+		}
+		cache >>= letterIdxBits
+		remain--
+	}
+	str := sb.String()
+	return str, nil
+}
+
+// GetEnvVariable looks up an environment variable and if it is not found, returns the recordedValue
 func GetEnvVariable(varName string, recordedValue string) string {
 	val, ok := os.LookupEnv(varName)
 	if !ok || GetRecordMode() == PlaybackMode {
@@ -803,18 +880,18 @@ func GetEnvVariable(varName string, recordedValue string) string {
 }
 
 func LiveOnly(t *testing.T) {
-	if val, ok := testSuite[t.Name()]; ok {
+	if val, ok := testSuite.Load(t.Name()); ok {
 		val.liveOnly = true
-		testSuite[t.Name()] = val
+		testSuite.Store(t.Name(), val)
 	} else {
-		testSuite[t.Name()] = recordedTest{liveOnly: true}
+		testSuite.Store(t.Name(), recordedTest{liveOnly: true})
 	}
 	if GetRecordMode() == PlaybackMode {
 		t.Skip("Live Test Only")
 	}
 }
 
-// Function for sleeping during a test for `duration` seconds. This method will only execute when
+// Sleep during a test for `duration` seconds. This method will only execute when
 // AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
 func Sleep(duration time.Duration) {
 	if GetRecordMode() != PlaybackMode {
@@ -823,7 +900,7 @@ func Sleep(duration time.Duration) {
 }
 
 func GetRecordingId(t *testing.T) string {
-	if val, ok := testSuite[t.Name()]; ok {
+	if val, ok := testSuite.Load(t.Name()); ok {
 		return val.recordingId
 	} else {
 		return ""
@@ -890,7 +967,7 @@ func GetHTTPClient(t *testing.T) (*http.Client, error) {
 }
 
 func IsLiveOnly(t *testing.T) bool {
-	if s, ok := testSuite[t.Name()]; ok {
+	if s, ok := testSuite.Load(t.Name()); ok {
 		return s.liveOnly
 	}
 	return false
@@ -898,7 +975,7 @@ func IsLiveOnly(t *testing.T) bool {
 
 // GetVariables returns access to the variables stored by the test proxy for a specific test
 func GetVariables(t *testing.T) map[string]interface{} {
-	if s, ok := testSuite[t.Name()]; ok {
+	if s, ok := testSuite.Load(t.Name()); ok {
 		return s.variables
 	}
 	return nil

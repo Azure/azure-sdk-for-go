@@ -8,12 +8,13 @@ package armcompute_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 	"github.com/stretchr/testify/suite"
@@ -87,6 +88,7 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScale
 	testsuite.Require().Equal(vnName, *vnResp.Name)
 
 	// create virtual machine scale set
+	fmt.Println("Call operation: VirtualMachineScaleSets_CreateOrUpdate")
 	vmssClient, err := armcompute.NewVirtualMachineScaleSetsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	vmssName := "go-test-vmss"
@@ -156,6 +158,7 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScale
 	testsuite.Require().Equal(vmssName, *vmssResp.Name)
 
 	// update
+	fmt.Println("Call operation: VirtualMachineScaleSets_Update")
 	updatePollerResp, err := vmssClient.BeginUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -173,15 +176,18 @@ func (testsuite *VirtualMachineScaleSetsClientTestSuite) TestVirtualMachineScale
 	testsuite.Require().Equal("live", *updateResp.Tags["test"])
 
 	// get
+	fmt.Println("Call operation: VirtualMachineScaleSets_Get")
 	getResp, err := vmssClient.Get(testsuite.ctx, testsuite.resourceGroupName, vmssName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(vmssName, *getResp.Name)
 
 	// list
+	fmt.Println("Call operation: VirtualMachineScaleSets_List")
 	listResp := vmssClient.NewListPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listResp.More())
 
 	// delete
+	fmt.Println("Call operation: VirtualMachineScaleSets_Delete")
 	delPoller, err := vmssClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, vmssName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, delPoller)

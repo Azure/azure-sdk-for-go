@@ -4,14 +4,18 @@ package azeventhubs_test
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"github.com/stretchr/testify/require"
 )
 
@@ -85,7 +89,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		}, nil)
 		require.NoError(t, err)
 
-		err = producerClient.SendEventBatch(context.Background(), eventDataBatch, nil)
+		err = producerClient.SendEventDataBatch(context.Background(), eventDataBatch, nil)
 		require.NoError(t, err)
 
 		subscription, err := consumerClient.NewPartitionClient(firstPartition.PartitionID, &azeventhubs.PartitionClientOptions{
@@ -333,7 +337,7 @@ func TestConsumerClient_NoPrefetch(t *testing.T) {
 	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 3")}, nil))
 	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 4")}, nil))
 
-	require.NoError(t, producer.SendEventBatch(context.Background(), batch, nil))
+	require.NoError(t, producer.SendEventDataBatch(context.Background(), batch, nil))
 
 	partClient, cleanup := newPartitionClientForTest(t, partProps.PartitionID, azeventhubs.PartitionClientOptions{
 		StartPosition: getStartPosition(partProps),
@@ -383,7 +387,7 @@ func TestConsumerClient_ReceiveEvents(t *testing.T) {
 	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 3")}, nil))
 	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 4")}, nil))
 
-	require.NoError(t, producer.SendEventBatch(context.Background(), batch, nil))
+	require.NoError(t, producer.SendEventDataBatch(context.Background(), batch, nil))
 
 	testData := []struct {
 		Name     string
@@ -425,6 +429,77 @@ func TestConsumerClient_ReceiveEvents(t *testing.T) {
 			require.Equal(t, []string{"event 4"}, getSortedBodies(events))
 		})
 	}
+}
+
+func TestConsumerClient_Detaches(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	test.EnableStdoutLogging()
+
+	dac, err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	// create our event hub
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	defer producerClient.Close(context.Background())
+
+	enableOrDisableEventHub(t, testParams, dac, true)
+	t.Logf("Sending events, connection should be fine")
+	err = sendEvent(t, producerClient)
+	require.NoError(t, err)
+
+	enableOrDisableEventHub(t, testParams, dac, false)
+	t.Logf("Sending events, expected to fail since entity is disabled")
+	err = sendEvent(t, producerClient)
+	require.Error(t, err, "fails, entity has become disabled")
+
+	enableOrDisableEventHub(t, testParams, dac, true)
+	t.Logf("Sending events, should reconnect")
+	err = sendEvent(t, producerClient)
+	require.NoError(t, err, "reattach happens")
+}
+
+func sendEvent(t *testing.T, producerClient *azeventhubs.ProducerClient) error {
+	batch, err := producerClient.NewEventDataBatch(context.Background(), nil)
+	require.NoError(t, err)
+
+	err = batch.AddEventData(&azeventhubs.EventData{
+		Body: []byte("hello world"),
+	}, nil)
+	require.NoError(t, err)
+
+	return producerClient.SendEventDataBatch(context.Background(), batch, nil)
+}
+
+// enableOrDisableEventHub sets an eventhub to active if active is true, or disables it if active is false.
+//
+// This is useful when testing attach/detach type scenarios where you want the service to force links
+// to detach.
+func enableOrDisableEventHub(t *testing.T, testParams test.ConnectionParamsForTest, dac *azidentity.DefaultAzureCredential, active bool) {
+	client, err := armeventhub.NewEventHubsClient(testParams.SubscriptionID, dac, nil)
+	require.NoError(t, err)
+
+	ns := strings.Split(testParams.EventHubNamespace, ".")[0]
+
+	resp, err := client.Get(context.Background(), testParams.ResourceGroup, ns, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	if active {
+		resp.Properties.Status = to.Ptr(armeventhub.EntityStatusActive)
+	} else {
+		resp.Properties.Status = to.Ptr(armeventhub.EntityStatusDisabled)
+	}
+
+	t.Logf("Setting entity status to %s", *resp.Properties.Status)
+	_, err = client.CreateOrUpdate(context.Background(), testParams.ResourceGroup, ns, testParams.EventHubName, armeventhub.Eventhub{
+		Properties: resp.Properties,
+	}, nil)
+	require.NoError(t, err)
+
+	// give a little time for the change to take effect
+	time.Sleep(5 * time.Second)
 }
 
 func newPartitionClientForTest(t *testing.T, partitionID string, subscribeOptions azeventhubs.PartitionClientOptions) (*azeventhubs.PartitionClient, func()) {
@@ -482,7 +557,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 	// (this adds some peace of mind or the test below that uses the enqueued time for a filter)
 	time.Sleep(time.Second)
 
-	err = producerClient.SendEventBatch(context.Background(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
 	t.Run("offset", func(t *testing.T) {
@@ -626,7 +701,7 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 		Body: []byte("latest test: message 2"),
 	}, nil))
 
-	err = producerClient.SendEventBatch(context.Background(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
 	select {
@@ -635,6 +710,66 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 	case <-time.After(time.Minute):
 		require.Fail(t, "Timed out waiting for events to arrrive")
 	}
+}
+
+func TestConsumerClient_InstanceID(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	var instanceID string
+
+	// create a partition client with owner level 1 that's fully initialized.
+	{
+		producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, producerClient)
+
+		props := sendEventToPartition(t, producerClient, "0", []*azeventhubs.EventData{
+			{Body: []byte("hello")},
+		})
+
+		consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+			// We'll just let this one be auto-generated.
+			//InstanceID: "",
+		})
+		require.NoError(t, err)
+		defer test.RequireClose(t, consumerClient)
+
+		parsedUUID, err := uuid.Parse(consumerClient.InstanceID())
+		require.NotZero(t, parsedUUID)
+		require.NoError(t, err)
+
+		instanceID = consumerClient.InstanceID()
+
+		partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
+			OwnerLevel:    to.Ptr(int64(1)),
+			StartPosition: getStartPosition(props),
+		})
+		require.NoError(t, err)
+
+		// receive an event so we know the link is alive.
+		events, err := partitionClient.ReceiveEvents(context.Background(), 1, nil)
+		require.NotEmpty(t, events)
+		require.NoError(t, err)
+	}
+
+	failedConsumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, &azeventhubs.ConsumerClientOptions{
+		InstanceID: "LosesBecauseOfLowOwnerLevel",
+		RetryOptions: azeventhubs.RetryOptions{
+			MaxRetries: -1, // just fail immediately, don't retry.
+		},
+	})
+	require.NoError(t, err)
+	defer test.RequireClose(t, failedConsumerClient)
+
+	failedPartitionClient, err := failedConsumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
+		// the other partition client already has the partition open with owner level 1. So our attempt to connect will fail.
+		OwnerLevel: to.Ptr(int64(0)),
+	})
+	require.NoError(t, err)
+
+	_, err = failedPartitionClient.ReceiveEvents(context.Background(), 1, nil)
+
+	require.Contains(t, err.Error(), fmt.Sprintf("Description: Receiver '%s' with a higher epoch '1' already exists. Receiver 'LosesBecauseOfLowOwnerLevel' with epoch 0 cannot be created. Make sure you are creating receiver with increasing epoch value to ensure connectivity, or ensure all old epoch receivers are closed or disconnected", instanceID))
 }
 
 // mustSendEventsToAllPartitions sends the event given in evt to each partition in the
@@ -668,29 +803,8 @@ func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData
 		go func(partitionID string) {
 			defer wg.Done()
 
-			partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, nil)
-			require.NoError(t, err)
+			partProps := sendEventToPartition(t, producer, partitionID, events)
 			partitionsCh <- partProps
-
-			// send the message to the partition.
-			batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
-				PartitionID: &partitionID,
-			})
-			require.NoError(t, err)
-
-			for _, event := range events {
-				if event.Properties == nil {
-					event.Properties = map[string]any{}
-				}
-
-				event.Properties["DestPartitionID"] = partitionID
-
-				err = batch.AddEventData(event, nil)
-				require.NoError(t, err)
-			}
-
-			err = producer.SendEventBatch(context.Background(), batch, nil)
-			require.NoError(t, err)
 		}(partitionID)
 	}
 
@@ -728,4 +842,37 @@ func getSortedBodies(events []*azeventhubs.ReceivedEventData) []string {
 	}
 
 	return bodies
+}
+
+func sendEventToPartition(t *testing.T, producer *azeventhubs.ProducerClient, partitionID string, events []*azeventhubs.EventData) azeventhubs.PartitionProperties {
+	partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, nil)
+	require.NoError(t, err)
+
+	// send the message to the partition.
+	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionID: &partitionID,
+	})
+	require.NoError(t, err)
+
+	for _, event := range events {
+		eventToSend := *event
+
+		props := map[string]any{
+			"DestPartitionID": partitionID,
+		}
+
+		for k, v := range event.Properties {
+			props[k] = v
+		}
+
+		eventToSend.Properties = props
+
+		err = batch.AddEventData(event, nil)
+		require.NoError(t, err)
+	}
+
+	err = producer.SendEventDataBatch(context.Background(), batch, nil)
+	require.NoError(t, err)
+
+	return partProps
 }

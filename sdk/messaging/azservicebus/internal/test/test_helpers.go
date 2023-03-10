@@ -10,13 +10,15 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,11 +27,13 @@ var (
 )
 
 func init() {
-	rand.Seed(time.Now().Unix())
+	addSwappableLogger()
 }
 
 // RandomString generates a random string with prefix
 func RandomString(prefix string, length int) string {
+	rand := rand.New(rand.NewSource(time.Now().Unix()))
+
 	b := make([]rune, length)
 	for i := range b {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
@@ -78,8 +82,7 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 		qd = &atom.QueueDescription{}
 	}
 
-	deleteAfter := 5 * time.Minute
-	qd.AutoDeleteOnIdle = utils.DurationToStringPtr(&deleteAfter)
+	qd.AutoDeleteOnIdle = to.Ptr("PT5M")
 
 	env := atom.WrapWithQueueEnvelope(qd, em.TokenProvider())
 
@@ -92,6 +95,23 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 		_, err := em.Delete(context.Background(), queueName)
 		require.NoError(t, err)
 	}
+}
+
+var LoggingChannelValue atomic.Value
+
+func addSwappableLogger() {
+	azlog.SetListener(func(e azlog.Event, s string) {
+		ch, ok := LoggingChannelValue.Load().(*chan string)
+
+		if !ok || ch == nil {
+			return
+		}
+
+		select {
+		case *ch <- fmt.Sprintf("[%s] %s", e, s):
+		default:
+		}
+	})
 }
 
 // CaptureLogsForTest adds a logging listener which captures messages to an
@@ -107,14 +127,15 @@ func CreateExpiringQueue(t *testing.T, qd *atom.QueueDescription) (string, func(
 //	messages := endCapture()
 //	/* do inspection of log messages */
 func CaptureLogsForTest() func() []string {
-	messagesCh := make(chan string, 10000)
-	return CaptureLogsForTestWithChannel(messagesCh)
+	return CaptureLogsForTestWithChannel(nil)
 }
 
 func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
-	setAzLogListener(func(e azlog.Event, s string) {
-		messagesCh <- fmt.Sprintf("[%s] %s", e, s)
-	})
+	if messagesCh == nil {
+		messagesCh = make(chan string, 10000)
+	}
+
+	LoggingChannelValue.Store(&messagesCh)
 
 	return func() []string {
 		if messagesCh == nil {
@@ -122,31 +143,73 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 			return nil
 		}
 
-		setAzLogListener(nil)
-		close(messagesCh)
-
 		var messages []string
 
-		for msg := range messagesCh {
-			messages = append(messages, msg)
+	Loop:
+		for {
+			select {
+			case msg := <-messagesCh:
+				messages = append(messages, msg)
+			default:
+				break Loop
+			}
 		}
 
-		messagesCh = nil
 		return messages
 	}
 }
 
 // EnableStdoutLogging turns on logging to stdout for diagnostics.
-func EnableStdoutLogging() {
-	setAzLogListener(func(e azlog.Event, s string) {
-		log.Printf("%s %s", e, s)
+func EnableStdoutLogging(t *testing.T) {
+	ch := make(chan string, 10000)
+	cleanupLogs := CaptureLogsForTestWithChannel(ch)
+	ctx, cancel := context.WithCancel(context.Background())
+
+	t.Cleanup(func() {
+		cancel()
 	})
+
+	go func() {
+	Loop:
+		for {
+			select {
+			case <-ctx.Done():
+				_ = cleanupLogs()
+				break Loop
+			case msg := <-ch:
+				log.Printf("%s", msg)
+			}
+		}
+	}()
 }
 
-var logMu sync.Mutex
+func RequireClose(t *testing.T, closeable interface {
+	Close(ctx context.Context) error
+}) {
+	err := closeable.Close(context.Background())
+	require.NoError(t, err)
+}
 
-func setAzLogListener(listener func(e azlog.Event, s string)) {
-	logMu.Lock()
-	defer logMu.Unlock()
-	azlog.SetListener(listener)
+func RequireLinksClose(t *testing.T, closeable interface {
+	Close(ctx context.Context, permanent bool) error
+}) {
+	err := closeable.Close(context.Background(), true)
+	require.NoError(t, err)
+}
+
+func RequireNSClose(t *testing.T, closeable interface {
+	Close(permanent bool) error
+}) {
+	err := closeable.Close(true)
+	require.NoError(t, err)
+}
+
+func MustAMQPUUID() amqp.UUID {
+	id, err := uuid.New()
+
+	if err != nil {
+		panic(err)
+	}
+
+	return amqp.UUID(id)
 }

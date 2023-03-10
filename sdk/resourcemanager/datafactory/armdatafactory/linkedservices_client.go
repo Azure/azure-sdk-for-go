@@ -32,9 +32,9 @@ type LinkedServicesClient struct {
 }
 
 // NewLinkedServicesClient creates a new instance of LinkedServicesClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LinkedServicesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,13 +57,14 @@ func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Creates or updates a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// linkedServiceName - The linked service name.
-// linkedService - Linked service resource definition.
-// options - LinkedServicesClientCreateOrUpdateOptions contains the optional parameters for the LinkedServicesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - linkedServiceName - The linked service name.
+//   - linkedService - Linked service resource definition.
+//   - options - LinkedServicesClientCreateOrUpdateOptions contains the optional parameters for the LinkedServicesClient.CreateOrUpdate
+//     method.
 func (client *LinkedServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, linkedService LinkedServiceResource, options *LinkedServicesClientCreateOrUpdateOptions) (LinkedServicesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, linkedServiceName, linkedService, options)
 	if err != nil {
@@ -123,11 +124,12 @@ func (client *LinkedServicesClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// linkedServiceName - The linked service name.
-// options - LinkedServicesClientDeleteOptions contains the optional parameters for the LinkedServicesClient.Delete method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - linkedServiceName - The linked service name.
+//   - options - LinkedServicesClientDeleteOptions contains the optional parameters for the LinkedServicesClient.Delete method.
 func (client *LinkedServicesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesClientDeleteOptions) (LinkedServicesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, linkedServiceName, options)
 	if err != nil {
@@ -175,11 +177,12 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// linkedServiceName - The linked service name.
-// options - LinkedServicesClientGetOptions contains the optional parameters for the LinkedServicesClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - linkedServiceName - The linked service name.
+//   - options - LinkedServicesClientGetOptions contains the optional parameters for the LinkedServicesClient.Get method.
 func (client *LinkedServicesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesClientGetOptions) (LinkedServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, linkedServiceName, options)
 	if err != nil {
@@ -238,11 +241,12 @@ func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (Link
 }
 
 // NewListByFactoryPager - Lists linked services.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - LinkedServicesClientListByFactoryOptions contains the optional parameters for the LinkedServicesClient.ListByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - LinkedServicesClientListByFactoryOptions contains the optional parameters for the LinkedServicesClient.NewListByFactoryPager
+//     method.
 func (client *LinkedServicesClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *LinkedServicesClientListByFactoryOptions) *runtime.Pager[LinkedServicesClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LinkedServicesClientListByFactoryResponse]{
 		More: func(page LinkedServicesClientListByFactoryResponse) bool {

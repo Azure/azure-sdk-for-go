@@ -5,8 +5,8 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/669c27936542af9b2d308581d618e5a744125c21/specification/cognitiveservices/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/669c27936542af9b2d308581d618e5a744125c21/specification/cognitiveservices/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/cognitiveservices/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/cognitiveservices/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.1.0
+module-version: 1.3.0
 ```

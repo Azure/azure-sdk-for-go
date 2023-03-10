@@ -86,6 +86,16 @@ type AdditionalUnattendContent struct {
 	SettingName *SettingNames `json:"settingName,omitempty"`
 }
 
+// AlternativeOption - Describes the alternative option specified by the Publisher for this image when this image is deprecated.
+type AlternativeOption struct {
+	// Describes the type of the alternative option.
+	Type *AlternativeType `json:"type,omitempty"`
+
+	// Indicates the alternative option value specified by the Publisher. This is the Offer name when the type is Offer or the
+	// Plan name when the type is Plan.
+	Value *string `json:"value,omitempty"`
+}
+
 // ApplicationProfile - Contains the list of gallery applications that should be made available to the VM/VMSS
 type ApplicationProfile struct {
 	// Specifies the gallery applications that should be made available to the VM/VMSS
@@ -609,6 +619,10 @@ type CloudService struct {
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// List of logical availability zone of the resource. List should contain only 1 zone where cloud service should be provisioned.
+	// This field is optional.
+	Zones []*string `json:"zones,omitempty"`
 
 	// READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -3502,6 +3516,18 @@ type ImageDataDisk struct {
 	StorageAccountType *StorageAccountTypes `json:"storageAccountType,omitempty"`
 }
 
+// ImageDeprecationStatus - Describes image deprecation status properties on the image.
+type ImageDeprecationStatus struct {
+	// Describes the alternative option specified by the Publisher for this image when this image is deprecated.
+	AlternativeOption *AlternativeOption `json:"alternativeOption,omitempty"`
+
+	// Describes the state of the image.
+	ImageState *ImageState `json:"imageState,omitempty"`
+
+	// The time, in future, at which this image will be marked as deprecated. This scheduled time is chosen by the Publisher.
+	ScheduledDeprecationTime *time.Time `json:"scheduledDeprecationTime,omitempty"`
+}
+
 // ImageDisk - Describes a image disk.
 type ImageDisk struct {
 	// The Virtual Hard Disk.
@@ -3957,7 +3983,7 @@ type LoadBalancerConfiguration struct {
 type LoadBalancerConfigurationProperties struct {
 	// REQUIRED; Specifies the frontend IP to be used for the load balancer. Only IPv4 frontend IP address is supported. Each
 	// load balancer configuration must have exactly one frontend IP configuration.
-	FrontendIPConfigurations []*LoadBalancerFrontendIPConfiguration `json:"frontendIPConfigurations,omitempty"`
+	FrontendIPConfigurations []*LoadBalancerFrontendIPConfiguration `json:"frontendIpConfigurations,omitempty"`
 }
 
 // LoadBalancerFrontendIPConfiguration - Specifies the frontend IP to be used for the load balancer. Only IPv4 frontend IP
@@ -4240,6 +4266,16 @@ type OSFamilyProperties struct {
 	Versions []*OSVersionPropertiesBase `json:"versions,omitempty" azure:"ro"`
 }
 
+type OSImageNotificationProfile struct {
+	// Specifies whether the OS Image Scheduled event is enabled or disabled.
+	Enable *bool `json:"enable,omitempty"`
+
+	// Length of time a Virtual Machine being reimaged or having its OS upgraded will have to potentially approve the OS Image
+	// Scheduled Event before the event is auto approved (timed out). The configuration
+	// is specified in ISO 8601 format, with the value set to 15 minutes (PT15M)
+	NotBeforeTimeout *string `json:"notBeforeTimeout,omitempty"`
+}
+
 // OSProfile - Specifies the operating system settings for the virtual machine. Some of the settings cannot be changed once
 // VM is provisioned.
 type OSProfile struct {
@@ -4307,6 +4343,35 @@ type OSProfile struct {
 
 	// Specifies Windows operating system settings on the virtual machine.
 	WindowsConfiguration *WindowsConfiguration `json:"windowsConfiguration,omitempty"`
+}
+
+// OSProfileProvisioningData - Additional parameters for Reimaging Non-Ephemeral Virtual Machine.
+type OSProfileProvisioningData struct {
+	// Specifies the password of the administrator account.
+	// Minimum-length (Windows): 8 characters
+	// Minimum-length (Linux): 6 characters
+	// Max-length (Windows): 123 characters
+	// Max-length (Linux): 72 characters
+	// Complexity requirements: 3 out of 4 conditions below need to be fulfilled
+	// Has lower characters
+	// Has upper characters
+	// Has a digit
+	// Has a special character (Regex match [\W_])
+	// Disallowed values: "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1",
+	// "Password22", "iloveyou!"
+	// For resetting the password, see How to reset the Remote Desktop service or its login password in a Windows VM [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp]
+	// For resetting root password, see Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension
+	// [https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection]
+	AdminPassword *string `json:"adminPassword,omitempty"`
+
+	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved
+	// as a file on the Virtual Machine. The maximum length of the binary array is
+	// 65535 bytes.
+	// Note: Do not pass any secrets or passwords in customData property
+	// This property cannot be updated after the VM is created.
+	// customData is passed to the VM to be saved as a file, for more information see Custom Data on Azure VMs [https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/]
+	// For using cloud-init for your Linux VM, see Using cloud-init to customize a Linux VM during creation [https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init]
+	CustomData *string `json:"customData,omitempty"`
 }
 
 // OSVersion - Describes a cloud service OS version.
@@ -5287,6 +5352,9 @@ type RestorePointSourceMetadata struct {
 	// Gets the storage profile.
 	StorageProfile *RestorePointSourceVMStorageProfile `json:"storageProfile,omitempty"`
 
+	// UserData associated with the source VM for which restore point is captured, which is a base-64 encoded value.
+	UserData *string `json:"userData,omitempty"`
+
 	// Gets the virtual machine unique id.
 	VMID *string `json:"vmId,omitempty"`
 }
@@ -5468,6 +5536,11 @@ type RollingUpgradePolicy struct {
 	// is 20%.
 	MaxBatchInstancePercent *int32 `json:"maxBatchInstancePercent,omitempty"`
 
+	// Create new virtual machines to upgrade the scale set, rather than updating the existing virtual machines. Existing virtual
+	// machines will be deleted once the new virtual machines are created for each
+	// batch.
+	MaxSurge *bool `json:"maxSurge,omitempty"`
+
 	// The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either
 	// as a result of being upgraded, or by being found in an unhealthy state by
 	// the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting
@@ -5486,6 +5559,9 @@ type RollingUpgradePolicy struct {
 
 	// Upgrade all unhealthy instances in a scale set before any healthy instances.
 	PrioritizeUnhealthyInstances *bool `json:"prioritizeUnhealthyInstances,omitempty"`
+
+	// Rollback failed instances to previous model if the Rolling Upgrade policy is violated.
+	RollbackFailedInstancesOnPolicyBreach *bool `json:"rollbackFailedInstancesOnPolicyBreach,omitempty"`
 }
 
 // RollingUpgradeProgressInfo - Information about the number of virtual machine instances in each upgrade state.
@@ -5806,6 +5882,9 @@ type ScaleInPolicy struct {
 }
 
 type ScheduledEventsProfile struct {
+	// Specifies OS Image Scheduled Event related configurations.
+	OSImageNotificationProfile *OSImageNotificationProfile `json:"osImageNotificationProfile,omitempty"`
+
 	// Specifies Terminate Scheduled Event related configurations.
 	TerminateNotificationProfile *TerminateNotificationProfile `json:"terminateNotificationProfile,omitempty"`
 }
@@ -5825,6 +5904,14 @@ type SecurityProfile struct {
 	// Specifies the security settings like secure boot and vTPM used while creating the virtual machine.
 	// Minimum api-version: 2020-12-01
 	UefiSettings *UefiSettings `json:"uefiSettings,omitempty"`
+}
+
+// ServiceArtifactReference - Specifies the service artifact reference id used to set same image version for all virtual machines
+// in the scale set when using 'latest' image version. Minimum api-version: 2022-11-01
+type ServiceArtifactReference struct {
+	// The service artifact reference id in the form of
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+	ID *string `json:"id,omitempty"`
 }
 
 type ShareInfoElement struct {
@@ -7209,6 +7296,9 @@ type VirtualMachineImageProperties struct {
 	// Specifies the HyperVGeneration Type
 	HyperVGeneration *HyperVGenerationTypes `json:"hyperVGeneration,omitempty"`
 
+	// Describes image deprecation status properties on the image.
+	ImageDeprecationStatus *ImageDeprecationStatus `json:"imageDeprecationStatus,omitempty"`
+
 	// Contains the os disk image information.
 	OSDiskImage *OSDiskImage `json:"osDiskImage,omitempty"`
 
@@ -7702,6 +7792,13 @@ type VirtualMachinePublicIPAddressDNSSettingsConfiguration struct {
 // VirtualMachineReimageParameters - Parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk will always be
 // reimaged
 type VirtualMachineReimageParameters struct {
+	// Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk
+	// is reimaged to the existing version of OS Disk.
+	ExactVersion *string `json:"exactVersion,omitempty"`
+
+	// Specifies information required for reimaging the non-ephemeral OS disk.
+	OSProfile *OSProfileProvisioningData `json:"osProfile,omitempty"`
+
 	// Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported
 	// for VM/VMSS with Ephemeral OS disk.
 	TempDisk *bool `json:"tempDisk,omitempty"`
@@ -8410,6 +8507,9 @@ type VirtualMachineScaleSetOSProfile struct {
 	// For a list of supported Linux distributions, see Linux on Azure-Endorsed Distributions [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
 	LinuxConfiguration *LinuxConfiguration `json:"linuxConfiguration,omitempty"`
 
+	// Optional property which must either be set to True or omitted.
+	RequireGuestProvisionSignal *bool `json:"requireGuestProvisionSignal,omitempty"`
+
 	// Specifies set of certificates that should be installed onto the virtual machines in the scale set. To install certificates
 	// on a virtual machine it is recommended to use the Azure Key Vault virtual
 	// machine extension for Linux [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure
@@ -8430,6 +8530,9 @@ type VirtualMachineScaleSetProperties struct {
 
 	// Policy for automatic repairs.
 	AutomaticRepairsPolicy *AutomaticRepairsPolicy `json:"automaticRepairsPolicy,omitempty"`
+
+	// Optional property which must either be set to True or omitted.
+	ConstrainedMaximumCapacity *bool `json:"constrainedMaximumCapacity,omitempty"`
 
 	// When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This
 	// property will hence ensure that the extensions do not run on the extra
@@ -8535,9 +8638,16 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationProperties struct {
 
 // VirtualMachineScaleSetReimageParameters - Describes a Virtual Machine Scale Set VM Reimage Parameters.
 type VirtualMachineScaleSetReimageParameters struct {
+	// Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk
+	// is reimaged to the existing version of OS Disk.
+	ExactVersion *string `json:"exactVersion,omitempty"`
+
 	// The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation
 	// being performed on all virtual machines in the virtual machine scale set.
 	InstanceIDs []*string `json:"instanceIds,omitempty"`
+
+	// Specifies information required for reimaging the non-ephemeral OS disk.
+	OSProfile *OSProfileProvisioningData `json:"osProfile,omitempty"`
 
 	// Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported
 	// for VM/VMSS with Ephemeral OS disk.
@@ -9153,6 +9263,10 @@ type VirtualMachineScaleSetVMProfile struct {
 	// Specifies the Security related profile settings for the virtual machines in the scale set.
 	SecurityProfile *SecurityProfile `json:"securityProfile,omitempty"`
 
+	// Specifies the service artifact reference id used to set same image version for all virtual machines in the scale set when
+	// using 'latest' image version. Minimum api-version: 2022-11-01
+	ServiceArtifactReference *ServiceArtifactReference `json:"serviceArtifactReference,omitempty"`
+
 	// Specifies the storage settings for the virtual machine disks.
 	StorageProfile *VirtualMachineScaleSetStorageProfile `json:"storageProfile,omitempty"`
 
@@ -9247,6 +9361,13 @@ type VirtualMachineScaleSetVMProtectionPolicy struct {
 
 // VirtualMachineScaleSetVMReimageParameters - Describes a Virtual Machine Scale Set VM Reimage Parameters.
 type VirtualMachineScaleSetVMReimageParameters struct {
+	// Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk
+	// is reimaged to the existing version of OS Disk.
+	ExactVersion *string `json:"exactVersion,omitempty"`
+
+	// Specifies information required for reimaging the non-ephemeral OS disk.
+	OSProfile *OSProfileProvisioningData `json:"osProfile,omitempty"`
+
 	// Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported
 	// for VM/VMSS with Ephemeral OS disk.
 	TempDisk *bool `json:"tempDisk,omitempty"`

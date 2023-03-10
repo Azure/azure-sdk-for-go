@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -31,8 +32,8 @@ type AzureReservationAPIClient struct {
 }
 
 // NewAzureReservationAPIClient creates a new instance of AzureReservationAPIClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAzureReservationAPIClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureReservationAPIClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -55,10 +56,11 @@ func NewAzureReservationAPIClient(credential azcore.TokenCredential, options *ar
 // GetAppliedReservationList - Get applicable Reservations that are applied to this subscription or a resource group under
 // this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// subscriptionID - Id of the subscription
-// options - AzureReservationAPIClientGetAppliedReservationListOptions contains the optional parameters for the AzureReservationAPIClient.GetAppliedReservationList
-// method.
+//
+// Generated from API version 2022-11-01
+//   - subscriptionID - Id of the subscription
+//   - options - AzureReservationAPIClientGetAppliedReservationListOptions contains the optional parameters for the AzureReservationAPIClient.GetAppliedReservationList
+//     method.
 func (client *AzureReservationAPIClient) GetAppliedReservationList(ctx context.Context, subscriptionID string, options *AzureReservationAPIClientGetAppliedReservationListOptions) (AzureReservationAPIClientGetAppliedReservationListResponse, error) {
 	req, err := client.getAppliedReservationListCreateRequest(ctx, subscriptionID, options)
 	if err != nil {
@@ -86,7 +88,7 @@ func (client *AzureReservationAPIClient) getAppliedReservationListCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -101,25 +103,38 @@ func (client *AzureReservationAPIClient) getAppliedReservationListHandleResponse
 	return result, nil
 }
 
-// GetCatalog - Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// subscriptionID - Id of the subscription
-// options - AzureReservationAPIClientGetCatalogOptions contains the optional parameters for the AzureReservationAPIClient.GetCatalog
-// method.
-func (client *AzureReservationAPIClient) GetCatalog(ctx context.Context, subscriptionID string, options *AzureReservationAPIClientGetCatalogOptions) (AzureReservationAPIClientGetCatalogResponse, error) {
-	req, err := client.getCatalogCreateRequest(ctx, subscriptionID, options)
-	if err != nil {
-		return AzureReservationAPIClientGetCatalogResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AzureReservationAPIClientGetCatalogResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AzureReservationAPIClientGetCatalogResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.getCatalogHandleResponse(resp)
+// NewGetCatalogPager - Get the regions and skus that are available for RI purchase for the specified Azure subscription.
+//
+// Generated from API version 2022-11-01
+//   - subscriptionID - Id of the subscription
+//   - options - AzureReservationAPIClientGetCatalogOptions contains the optional parameters for the AzureReservationAPIClient.NewGetCatalogPager
+//     method.
+func (client *AzureReservationAPIClient) NewGetCatalogPager(subscriptionID string, options *AzureReservationAPIClientGetCatalogOptions) *runtime.Pager[AzureReservationAPIClientGetCatalogResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AzureReservationAPIClientGetCatalogResponse]{
+		More: func(page AzureReservationAPIClientGetCatalogResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AzureReservationAPIClientGetCatalogResponse) (AzureReservationAPIClientGetCatalogResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getCatalogCreateRequest(ctx, subscriptionID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AzureReservationAPIClientGetCatalogResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AzureReservationAPIClientGetCatalogResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureReservationAPIClientGetCatalogResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getCatalogHandleResponse(resp)
+		},
+	})
 }
 
 // getCatalogCreateRequest creates the GetCatalog request.
@@ -134,7 +149,7 @@ func (client *AzureReservationAPIClient) getCatalogCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	if options != nil && options.ReservedResourceType != nil {
 		reqQP.Set("reservedResourceType", *options.ReservedResourceType)
 	}
@@ -150,6 +165,15 @@ func (client *AzureReservationAPIClient) getCatalogCreateRequest(ctx context.Con
 	if options != nil && options.PlanID != nil {
 		reqQP.Set("planId", *options.PlanID)
 	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("$skip", strconv.FormatFloat(float64(*options.Skip), 'f', -1, 32))
+	}
+	if options != nil && options.Take != nil {
+		reqQP.Set("$take", strconv.FormatFloat(float64(*options.Take), 'f', -1, 32))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -158,7 +182,7 @@ func (client *AzureReservationAPIClient) getCatalogCreateRequest(ctx context.Con
 // getCatalogHandleResponse handles the GetCatalog response.
 func (client *AzureReservationAPIClient) getCatalogHandleResponse(resp *http.Response) (AzureReservationAPIClientGetCatalogResponse, error) {
 	result := AzureReservationAPIClientGetCatalogResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogArray); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogsResult); err != nil {
 		return AzureReservationAPIClientGetCatalogResponse{}, err
 	}
 	return result, nil

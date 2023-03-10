@@ -8,12 +8,13 @@ package armcompute_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -52,6 +53,7 @@ func TestAvailabilitySetsClient(t *testing.T) {
 
 func (testsuite *AvailabilitySetsClientTestSuite) TestAvailabilitySetsCRUD() {
 	// create availability sets
+	fmt.Println("Call operation: AvailabilitySets_CreateOrUpdate")
 	client, err := armcompute.NewAvailabilitySetsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	name := "go-test-availability"
@@ -75,23 +77,28 @@ func (testsuite *AvailabilitySetsClientTestSuite) TestAvailabilitySetsCRUD() {
 	testsuite.Require().Equal(*resp.Name, name)
 
 	// get
+	fmt.Println("Call operation: AvailabilitySets_Get")
 	getResp, err := client.Get(testsuite.ctx, testsuite.resourceGroupName, name, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(*getResp.Name, name)
 
 	// list
+	fmt.Println("Call operation: AvailabilitySets_List")
 	listPager := client.NewListPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// list available size
+	fmt.Println("Call operation: AvailabilitySets_ListAvailableSize")
 	listResp := client.NewListAvailableSizesPager(testsuite.resourceGroupName, name, nil)
 	testsuite.Require().True(listResp.More())
 
 	// list by subscription
+	fmt.Println("Call operation: AvailabilitySets_ListBySubscription")
 	listBySubscription := client.NewListBySubscriptionPager(nil)
 	testsuite.Require().True(listBySubscription.More())
 
 	// update
+	fmt.Println("Call operation: AvailabilitySets_Update")
 	updateResp, err := client.Update(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -107,6 +114,7 @@ func (testsuite *AvailabilitySetsClientTestSuite) TestAvailabilitySetsCRUD() {
 	testsuite.Require().Equal(name, *updateResp.Name)
 
 	// delete
+	fmt.Println("Call operation: AvailabilitySets_Delete")
 	_, err = client.Delete(testsuite.ctx, testsuite.resourceGroupName, name, nil)
 	testsuite.Require().NoError(err)
 }

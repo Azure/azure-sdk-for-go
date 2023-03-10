@@ -13,6 +13,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
@@ -156,6 +157,10 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
+	if errors.Is(err, errConnResetNeeded) {
+		return RecoveryKindConn
+	}
+
 	var netErr net.Error
 
 	// these are errors that can flow from the go-amqp connection to
@@ -259,7 +264,7 @@ type (
 	}
 
 	// ErrAMQP indicates that the server communicated an AMQP error with a particular
-	ErrAMQP RPCResponse
+	ErrAMQP amqpwrap.RPCResponse
 
 	// ErrNoMessages is returned when an operation returned no messages. It is not indicative that there will not be
 	// more messages in the future.
@@ -316,6 +321,13 @@ func (e ErrNotFound) Error() string {
 func IsErrNotFound(err error) bool {
 	_, ok := err.(ErrNotFound)
 	return ok
+}
+
+func IsNotAllowedError(err error) bool {
+	var e *amqp.Error
+
+	return errors.As(err, &e) &&
+		e.Condition == amqp.ErrorNotAllowed
 }
 
 func (e ErrConnectionClosed) Error() string {

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/FileServicesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileServicesList.json
 func ExampleFileServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,8 +36,8 @@ func ExampleFileServicesClient_List() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/FileServicesPut.json
-func ExampleFileServicesClient_SetServiceProperties_fileServicesPut() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileServicesPut.json
+func ExampleFileServicesClient_SetServiceProperties_putFileServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -106,8 +106,8 @@ func ExampleFileServicesClient_SetServiceProperties_fileServicesPut() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/FileServicesPut_EnableSMBMultichannel.json
-func ExampleFileServicesClient_SetServiceProperties_fileServicesPut_EnableSMBMultichannel() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileServicesPut_EnableSMBMultichannel.json
+func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSmbMultichannel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -135,8 +135,8 @@ func ExampleFileServicesClient_SetServiceProperties_fileServicesPut_EnableSMBMul
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/FileServicesPut_EnableSecureSmbFeatures.json
-func ExampleFileServicesClient_SetServiceProperties_fileServicesPut_EnableSecureSmbFeatures() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileServicesPut_EnableSecureSmbFeatures.json
+func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSecureSmbFeatures() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -165,7 +165,7 @@ func ExampleFileServicesClient_SetServiceProperties_fileServicesPut_EnableSecure
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/FileServicesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileServicesGet.json
 func ExampleFileServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -58,7 +58,7 @@ func NewBlobServicesClient(subscriptionID string, credential azcore.TokenCredent
 // GetServiceProperties - Gets the properties of a storage account’s Blob service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -100,7 +100,7 @@ func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,8 +116,7 @@ func (client *BlobServicesClient) getServicePropertiesHandleResponse(resp *http.
 }
 
 // NewListPager - List blob services of storage account. It returns a collection of one object named default.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -164,7 +163,7 @@ func (client *BlobServicesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,7 +181,7 @@ func (client *BlobServicesClient) listHandleResponse(resp *http.Response) (BlobS
 // SetServiceProperties - Sets the properties of a storage account’s Blob service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
+// Generated from API version 2022-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -226,7 +225,7 @@ func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

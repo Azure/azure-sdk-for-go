@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.2 (Unreleased)
+## 1.2.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,46 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.1 (2023-03-07)
+
+### Bugs Fixed
+
+- Prevent over-requesting credit (#19965) or requesting negative/zero credits (#19743), both of
+  which could cause issues with go-amqp. (PR#19992)
+- Recover the connection when the $cbs Receiver/Sender is not closed properly. This would cause
+  clients to return an error saying "$cbs node has already been opened." (PR#20334)
+
+## 1.2.0 (2023-02-07)
+
+### Bugs Fixed
+
+- Links could hang when closing, preventing recovery from completing and making a link appear stalled. (PR#19886)
+
+## 1.1.4 (2023-01-10)
+
+### Bugs Fixed
+
+- User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
+
+## 1.1.3 (2022-11-16)
+
+### Bugs Fixed
+
+- Removing changes for client-side idle timer and closing without timeout. Combined these are 
+  causing issues with links not properly recovering or closing. Investigating an alternative
+  for a future release.
+
+## 1.1.2 (2022-11-08)
+
+### Features Added
+
+- Added a client-side idle timer which will reset Receiver links, transparently, if the link is idle for 
+  5 minutes.
+
+### Bugs Fixed
+
+- $cbs link is properly closed, even on cancellation (#19492)
 
 ## 1.1.1 (2022-10-11)
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.7.1 (Unreleased)
+## 0.7.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Upgrade to `azcore` v1.3.0
+
+## 0.7.1 (2022-11-14)
+
+### Bugs Fixed
+* `KeyVaultChallengePolicy` uses incorrect authentication scope when challenge verification is disabled
 
 ## 0.7.0 (2022-09-20)
 

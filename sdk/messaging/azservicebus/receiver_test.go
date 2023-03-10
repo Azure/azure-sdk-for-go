@@ -51,12 +51,36 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
 	require.NoError(t, err)
 
-	messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
+	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
+
+	for i := 0; i < 5; i++ {
+		require.EqualValues(t,
+			fmt.Sprintf("[%d]: send five, receive five", i),
+			string(messages[i].Body))
+
+		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
+	}
+}
+
+func TestReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
+	serviceBusClient, cleanup, topicName, subscriptionName := setupLiveTestWithSubscription(t, &liveTestOptionsWithSubscription{})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(topicName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	for i := 0; i < 5; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte(fmt.Sprintf("[%d]: send five, receive five", i)),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	receiver, err := serviceBusClient.NewReceiverForSubscription(topicName, subscriptionName, nil)
 	require.NoError(t, err)
 
-	sort.Sort(receivedMessageSlice(messages))
-
-	require.EqualValues(t, 5, len(messages))
+	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 
 	for i := 0; i < 5; i++ {
 		require.EqualValues(t,
@@ -356,9 +380,8 @@ func TestReceiverPeek(t *testing.T) {
 
 func TestReceiverDetachWithPeekLock(t *testing.T) {
 	// NOTE: uncomment this to see some of the background reconnects
-	// azlog.SetListener(func(e azlog.Event, s string) {
-	// 	log.Printf("%s %s", e, s)
-	// })
+	// stopFn := test.EnableStdoutLogging()
+	// defer stopFn()
 
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()

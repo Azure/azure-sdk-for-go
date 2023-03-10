@@ -1,17 +1,63 @@
 # Release History
 
-## 1.2.0 (Unreleased)
+## 1.4.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+* Added non-conformant LRO terminal states `Cancelled` and `Completed`.
+
+### Other Changes
+
+## 1.4.0 (2023-03-02)
+> This release doesn't include features added in v1.4.0-beta.1. They will return in v1.5.0-beta.1.
+
+### Features Added
+* Add `Clone()` method for `arm/policy.ClientOptions`.
+
+### Bugs Fixed
+* ARM's RP registration policy will no longer swallow unrecognized errors.
+* Fixed an issue in `runtime.NewPollerFromResumeToken()` when resuming a `Poller` with a custom `PollingHandler`.
+* Fixed wrong policy copy in `arm/runtime.NewPipeline()`.
+
+## 1.4.0-beta.1 (2023-02-02)
+
+### Features Added
+* Added support for ARM cross-tenant authentication. Set the `AuxiliaryTenants` field of `arm.ClientOptions` to enable.
+* Added `Claims` and `TenantID` fields to `policy.TokenRequestOptions`.
+* ARM bearer token policy handles CAE challenges.
+
+## 1.3.1 (2023-02-02)
+
+### Other Changes
+* Update dependencies to latest versions.
+
+## 1.3.0 (2023-01-06)
+
+### Features Added
+* Added `BearerTokenOptions.AuthorizationHandler` to enable extending `runtime.BearerTokenPolicy`
+  with custom authorization logic
+* Added `Client` types and matching constructors to the `azcore` and `arm` packages.  These represent a basic client for HTTP and ARM respectively.
+
+### Other Changes
+* Updated `internal` module to latest version.
+* `policy/Request.SetBody()` allows replacing a request's body with an empty one
+
+## 1.2.0 (2022-11-04)
 
 ### Features Added
 * Added `ClientOptions.APIVersion` field, which overrides the default version a client
   requests of the service, if the client supports this (all ARM clients do).
-
-### Breaking Changes
+* Added package `tracing` that contains the building blocks for distributed tracing.
+* Added field `TracingProvider` to type `policy.ClientOptions` that will be used to set the per-client tracing implementation.
 
 ### Bugs Fixed
 * Fixed an issue in `runtime.SetMultipartFormData` to properly handle slices of `io.ReadSeekCloser`.
 * Fixed the MaxRetryDelay default to be 60s.
 * Failure to poll the state of an LRO will now return an `*azcore.ResponseError` for poller types that require this behavior.
+* Fixed a bug in `runtime.NewPipeline` that would cause pipeline-specified allowed headers and query parameters to be lost.
 
 ### Other Changes
 * Retain contents of read-only fields when sending requests.

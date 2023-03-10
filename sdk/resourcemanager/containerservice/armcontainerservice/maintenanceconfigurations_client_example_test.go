@@ -19,8 +19,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-03-preview/examples/MaintenanceConfigurationsList.json
-func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsList.json
+func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMaintenanceConfigurationsByManagedCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -43,8 +43,32 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-03-preview/examples/MaintenanceConfigurationsGet.json
-func ExampleMaintenanceConfigurationsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsList_MaintenanceWindow.json
+func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager_listMaintenanceConfigurationsConfiguredWithMaintenanceWindowByManagedCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewMaintenanceConfigurationsClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByManagedClusterPager("rg1", "clustername1", nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsGet.json
+func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,8 +86,27 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-03-preview/examples/MaintenanceConfigurationsCreate_Update.json
-func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsGet_MaintenanceWindow.json
+func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfiguredWithMaintenanceWindow() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewMaintenanceConfigurationsClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Get(ctx, "rg1", "clustername1", "aksManagedNodeOSUpgradeSchedule", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsCreate_Update.json
+func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -96,8 +139,52 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-03-preview/examples/MaintenanceConfigurationsDelete.json
-func ExampleMaintenanceConfigurationsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenanceConfigurationWithMaintenanceWindow() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewMaintenanceConfigurationsClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CreateOrUpdate(ctx, "rg1", "clustername1", "aksManagedAutoUpgradeSchedule", armcontainerservice.MaintenanceConfiguration{
+		Properties: &armcontainerservice.MaintenanceConfigurationProperties{
+			MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
+				DurationHours: to.Ptr[int32](10),
+				NotAllowedDates: []*armcontainerservice.DateSpan{
+					{
+						End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-02-25"); return t }()),
+						Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-02-18"); return t }()),
+					},
+					{
+						End:   to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-01-05"); return t }()),
+						Start: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-12-23"); return t }()),
+					}},
+				Schedule: &armcontainerservice.Schedule{
+					RelativeMonthly: &armcontainerservice.RelativeMonthlySchedule{
+						DayOfWeek:      to.Ptr(armcontainerservice.WeekDayMonday),
+						IntervalMonths: to.Ptr[int32](3),
+						WeekIndex:      to.Ptr(armcontainerservice.TypeFirst),
+					},
+				},
+				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2023-01-01"); return t }()),
+				StartTime: to.Ptr("08:30"),
+				UTCOffset: to.Ptr("+05:30"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsDelete.json
+func ExampleMaintenanceConfigurationsClient_Delete_deleteMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -108,6 +195,23 @@ func ExampleMaintenanceConfigurationsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx, "rg1", "clustername1", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-11-02-preview/examples/MaintenanceConfigurationsDelete_MaintenanceWindow.json
+func ExampleMaintenanceConfigurationsClient_Delete_deleteMaintenanceConfigurationForNodeOsUpgrade() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcontainerservice.NewMaintenanceConfigurationsClient("subid1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.Delete(ctx, "rg1", "clustername1", "aksManagedNodeOSUpgradeSchedule", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

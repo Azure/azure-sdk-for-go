@@ -32,9 +32,9 @@ type IntegrationRuntimeObjectMetadataClient struct {
 }
 
 // NewIntegrationRuntimeObjectMetadataClient creates a new instance of IntegrationRuntimeObjectMetadataClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationRuntimeObjectMetadataClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential
 
 // Get - Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimeObjectMetadataClientGetOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.Get
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimeObjectMetadataClientGetOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.Get
+//     method.
 func (client *IntegrationRuntimeObjectMetadataClient) Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientGetOptions) (IntegrationRuntimeObjectMetadataClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -122,12 +123,13 @@ func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *ht
 
 // BeginRefresh - Refresh a SSIS integration runtime object metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimeObjectMetadataClientBeginRefreshOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.BeginRefresh
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimeObjectMetadataClientBeginRefreshOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.BeginRefresh
+//     method.
 func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*runtime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.refresh(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
@@ -142,6 +144,7 @@ func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.C
 
 // Refresh - Refresh a SSIS integration runtime object metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*http.Response, error) {
 	req, err := client.refreshCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)

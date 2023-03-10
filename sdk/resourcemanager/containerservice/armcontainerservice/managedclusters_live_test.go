@@ -10,6 +10,7 @@ package armcontainerservice_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"time"
@@ -72,6 +73,7 @@ func TestManagedclustersTestSuite(t *testing.T) {
 func (testsuite *ManagedclustersTestSuite) Prepare() {
 	var err error
 	// From step ManagedClusters_CreateOrUpdate
+	fmt.Println("Call operation: ManagedClusters_CreateOrUpdate")
 	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	managedClustersClientCreateOrUpdateResponsePoller, err := managedClustersClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, armcontainerservice.ManagedCluster{
@@ -103,6 +105,7 @@ func (testsuite *ManagedclustersTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_CreateOrUpdate
+	fmt.Println("Call operation: AgentPools_CreateOrUpdate")
 	agentPoolsClient, err := armcontainerservice.NewAgentPoolsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	agentPoolsClientCreateOrUpdateResponsePoller, err := agentPoolsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.agentPoolName, armcontainerservice.AgentPool{
@@ -131,6 +134,7 @@ func (testsuite *ManagedclustersTestSuite) Prepare() {
 	testsuite.agentpoolId = *agentPoolsClientCreateOrUpdateResponse.ID
 
 	// From step Snapshots_CreateOrUpdate
+	fmt.Println("Call operation: Snapshots_CreateOrUpdate")
 	snapshotsClient, err := armcontainerservice.NewSnapshotsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = snapshotsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, armcontainerservice.Snapshot{
@@ -153,12 +157,14 @@ func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
 	var commandId string
 	var err error
 	// From step ManagedClusters_GetOSOptions
+	fmt.Println("Call operation: ManagedClusters_GetOSOptions")
 	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = managedClustersClient.GetOSOptions(testsuite.ctx, testsuite.location, &armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_List
+	fmt.Println("Call operation: ManagedClusters_List")
 	managedClustersClientNewListPager := managedClustersClient.NewListPager(nil)
 	for managedClustersClientNewListPager.More() {
 		_, err := managedClustersClientNewListPager.NextPage(testsuite.ctx)
@@ -167,6 +173,7 @@ func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
 	}
 
 	// From step ManagedClusters_ListByResourceGroup
+	fmt.Println("Call operation: ManagedClusters_ListByResourceGroup")
 	managedClustersClientNewListByResourceGroupPager := managedClustersClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for managedClustersClientNewListByResourceGroupPager.More() {
 		_, err := managedClustersClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -175,6 +182,7 @@ func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
 	}
 
 	// From step ManagedClusters_ListOutboundNetworkDependenciesEndpoints
+	fmt.Println("Call operation: ManagedClusters_ListOutboundNetworkDependenciesEndpoints")
 	managedClustersClientNewListOutboundNetworkDependenciesEndpointsPager := managedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager(testsuite.resourceGroupName, testsuite.resourceName, nil)
 	for managedClustersClientNewListOutboundNetworkDependenciesEndpointsPager.More() {
 		_, err := managedClustersClientNewListOutboundNetworkDependenciesEndpointsPager.NextPage(testsuite.ctx)
@@ -183,14 +191,17 @@ func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
 	}
 
 	// From step ManagedClusters_Get
+	fmt.Println("Call operation: ManagedClusters_Get")
 	_, err = managedClustersClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_GetUpgradeProfile
+	fmt.Println("Call operation: ManagedClusters_GetUpgradeProfile")
 	_, err = managedClustersClient.GetUpgradeProfile(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_UpdateTags
+	fmt.Println("Call operation: ManagedClusters_UpdateTags")
 	managedClustersClientUpdateTagsResponsePoller, err := managedClustersClient.BeginUpdateTags(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, armcontainerservice.TagsObject{
 		Tags: map[string]*string{
 			"archv3": to.Ptr(""),
@@ -202,24 +213,29 @@ func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_GetAccessProfile
+	fmt.Println("Call operation: ManagedClusters_GetAccessProfile")
 	_, err = managedClustersClient.GetAccessProfile(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, "clusterUser", nil)
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_ListClusterUserCredentials
+	fmt.Println("Call operation: ManagedClusters_ListClusterUserCredentials")
 	_, err = managedClustersClient.ListClusterUserCredentials(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, &armcontainerservice.ManagedClustersClientListClusterUserCredentialsOptions{ServerFqdn: nil,
 		Format: nil,
 	})
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_ListClusterAdminCredentials
+	fmt.Println("Call operation: ManagedClusters_ListClusterAdminCredentials")
 	_, err = managedClustersClient.ListClusterAdminCredentials(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, &armcontainerservice.ManagedClustersClientListClusterAdminCredentialsOptions{ServerFqdn: nil})
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_ListClusterMonitoringUserCredentials
+	fmt.Println("Call operation: ManagedClusters_ListClusterMonitoringUserCredentials")
 	_, err = managedClustersClient.ListClusterMonitoringUserCredentials(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, &armcontainerservice.ManagedClustersClientListClusterMonitoringUserCredentialsOptions{ServerFqdn: nil})
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_RunCommand
+	fmt.Println("Call operation: ManagedClusters_RunCommand")
 	managedClustersClientRunCommandResponsePoller, err := managedClustersClient.BeginRunCommand(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, armcontainerservice.RunCommandRequest{
 		ClusterToken: to.Ptr(""),
 		Command:      to.Ptr("kubectl version"),
@@ -232,10 +248,12 @@ func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
 	commandId = *managedClustersClientRunCommandResponse.ID
 
 	// From step ManagedClusters_GetCommandResult
+	fmt.Println("Call operation: ManagedClusters_GetCommandResult")
 	_, err = managedClustersClient.GetCommandResult(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, commandId, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_Start
+	fmt.Println("Call operation: ManagedClusters_Start")
 	managedClustersClientStartResponsePoller, err := managedClustersClient.BeginStart(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, managedClustersClientStartResponsePoller)
@@ -246,6 +264,7 @@ func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
 func (testsuite *ManagedclustersTestSuite) TestAgentpools() {
 	var err error
 	// From step AgentPools_List
+	fmt.Println("Call operation: AgentPools_List")
 	agentPoolsClient, err := armcontainerservice.NewAgentPoolsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	agentPoolsClientNewListPager := agentPoolsClient.NewListPager(testsuite.resourceGroupName, testsuite.resourceName, nil)
@@ -256,18 +275,22 @@ func (testsuite *ManagedclustersTestSuite) TestAgentpools() {
 	}
 
 	// From step AgentPools_GetUpgradeProfile
+	fmt.Println("Call operation: AgentPools_GetUpgradeProfile")
 	_, err = agentPoolsClient.GetUpgradeProfile(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.agentPoolName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_Get
+	fmt.Println("Call operation: AgentPools_Get")
 	_, err = agentPoolsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.agentPoolName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_GetAvailableAgentPoolVersions
+	fmt.Println("Call operation: AgentPools_GetAvailableAgentPoolVersions")
 	_, err = agentPoolsClient.GetAvailableAgentPoolVersions(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_UpgradeNodeImageVersion
+	fmt.Println("Call operation: AgentPools_UpgradeNodeImageVersion")
 	agentPoolsClientUpgradeNodeImageVersionResponsePoller, err := agentPoolsClient.BeginUpgradeNodeImageVersion(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.agentPoolName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientUpgradeNodeImageVersionResponsePoller)
@@ -278,6 +301,7 @@ func (testsuite *ManagedclustersTestSuite) TestAgentpools() {
 func (testsuite *ManagedclustersTestSuite) TestSnapshots() {
 	var err error
 	// From step Snapshots_List
+	fmt.Println("Call operation: Snapshots_List")
 	snapshotsClient, err := armcontainerservice.NewSnapshotsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	snapshotsClientNewListPager := snapshotsClient.NewListPager(nil)
@@ -288,6 +312,7 @@ func (testsuite *ManagedclustersTestSuite) TestSnapshots() {
 	}
 
 	// From step Snapshots_ListByResourceGroup
+	fmt.Println("Call operation: Snapshots_ListByResourceGroup")
 	snapshotsClientNewListByResourceGroupPager := snapshotsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	for snapshotsClientNewListByResourceGroupPager.More() {
 		_, err := snapshotsClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
@@ -296,6 +321,7 @@ func (testsuite *ManagedclustersTestSuite) TestSnapshots() {
 	}
 
 	// From step Snapshots_Get
+	fmt.Println("Call operation: Snapshots_Get")
 	_, err = snapshotsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
 }
@@ -304,6 +330,7 @@ func (testsuite *ManagedclustersTestSuite) TestSnapshots() {
 func (testsuite *ManagedclustersTestSuite) TestMaintenanceconfigurations() {
 	var err error
 	// From step MaintenanceConfigurations_CreateOrUpdate
+	fmt.Println("Call operation: MaintenanceConfigurations_CreateOrUpdate")
 	maintenanceConfigurationsClient, err := armcontainerservice.NewMaintenanceConfigurationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = maintenanceConfigurationsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.configName, armcontainerservice.MaintenanceConfiguration{
@@ -325,6 +352,7 @@ func (testsuite *ManagedclustersTestSuite) TestMaintenanceconfigurations() {
 	testsuite.Require().NoError(err)
 
 	// From step MaintenanceConfigurations_ListByManagedCluster
+	fmt.Println("Call operation: MaintenanceConfigurations_ListByManagedCluster")
 	maintenanceConfigurationsClientNewListByManagedClusterPager := maintenanceConfigurationsClient.NewListByManagedClusterPager(testsuite.resourceGroupName, testsuite.resourceName, nil)
 	for maintenanceConfigurationsClientNewListByManagedClusterPager.More() {
 		_, err := maintenanceConfigurationsClientNewListByManagedClusterPager.NextPage(testsuite.ctx)
@@ -333,10 +361,12 @@ func (testsuite *ManagedclustersTestSuite) TestMaintenanceconfigurations() {
 	}
 
 	// From step MaintenanceConfigurations_Get
+	fmt.Println("Call operation: MaintenanceConfigurations_Get")
 	_, err = maintenanceConfigurationsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.configName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step MaintenanceConfigurations_Delete
+	fmt.Println("Call operation: MaintenanceConfigurations_Delete")
 	_, err = maintenanceConfigurationsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.configName, nil)
 	testsuite.Require().NoError(err)
 }
@@ -344,12 +374,14 @@ func (testsuite *ManagedclustersTestSuite) TestMaintenanceconfigurations() {
 func (testsuite *ManagedclustersTestSuite) Cleanup() {
 	var err error
 	// From step Snapshots_Delete
+	fmt.Println("Call operation: Snapshots_Delete")
 	snapshotsClient, err := armcontainerservice.NewSnapshotsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = snapshotsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_Delete
+	fmt.Println("Call operation: AgentPools_Delete")
 	agentPoolsClient, err := armcontainerservice.NewAgentPoolsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	agentPoolsClientDeleteResponsePoller, err := agentPoolsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.agentPoolName, nil)
@@ -358,6 +390,7 @@ func (testsuite *ManagedclustersTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_Stop
+	fmt.Println("Call operation: ManagedClusters_Stop")
 	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	managedClustersClientStopResponsePoller, err := managedClustersClient.BeginStop(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
@@ -366,6 +399,7 @@ func (testsuite *ManagedclustersTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_Delete
+	fmt.Println("Call operation: ManagedClusters_Delete")
 	managedClustersClientDeleteResponsePoller, err := managedClustersClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, managedClustersClientDeleteResponsePoller)

@@ -8,6 +8,7 @@ package armstorage_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,6 +54,7 @@ func TestStorageAccountsClient(t *testing.T) {
 
 func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 	// create storage account
+	fmt.Println("Call operation: StorageAccounts_Create")
 	storageAccountsClient, err := armstorage.NewAccountsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	scName := "gotestaccount"
@@ -94,6 +96,7 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 	testsuite.Require().Equal(scName, *resp.Name)
 
 	// check name availability
+	fmt.Println("Call operation: StorageAccounts_CheckNameAvailability")
 	check, err := storageAccountsClient.CheckNameAvailability(
 		testsuite.ctx,
 		armstorage.AccountCheckNameAvailabilityParameters{
@@ -106,6 +109,7 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 	testsuite.Require().False(*check.NameAvailable)
 
 	// update
+	fmt.Println("Call operation: StorageAccounts_Update")
 	updateResp, err := storageAccountsClient.Update(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -136,28 +140,34 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 	testsuite.Require().Equal(scName, *updateResp.Name)
 
 	// get properties
+	fmt.Println("Call operation: StorageAccounts_Get")
 	getResp, err := storageAccountsClient.GetProperties(testsuite.ctx, testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Equal(scName, *getResp.Name)
 
 	// list
+	fmt.Println("Call operation: StorageAccounts_List")
 	listPager := storageAccountsClient.NewListPager(nil)
 	testsuite.Require().True(listPager.More())
 
 	// list by resource group
+	fmt.Println("Call operation: StorageAccounts_ListByResourceGroup")
 	listByResourceGroup := storageAccountsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listByResourceGroup.More())
 
 	// list keys
+	fmt.Println("Call operation: StorageAccounts_ListKeys")
 	keys, err := storageAccountsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().Greater(len(keys.Keys), 1)
 
 	// revoke user delegation keys
+	fmt.Println("Call operation: StorageAccounts_RevokeUserDelegationKeys")
 	_, err = storageAccountsClient.RevokeUserDelegationKeys(testsuite.ctx, testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().NoError(err)
 
 	// regenerate key
+	fmt.Println("Call operation: StorageAccounts_RegenerateKey")
 	regResp, err := storageAccountsClient.RegenerateKey(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
@@ -171,6 +181,7 @@ func (testsuite *StorageAccountsClientTestSuite) TestStorageAccountsCRUD() {
 	testsuite.Require().Less(1, len(regResp.Keys))
 
 	// delete
+	fmt.Println("Call operation: StorageAccounts_Delete")
 	_, err = storageAccountsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().NoError(err)
 }

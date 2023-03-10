@@ -1,5 +1,50 @@
 # Release History
 
+## 3.1.0 (2023-02-24)
+### Features Added
+
+- Type of `SynapseSparkJobActivityTypeProperties.NumExecutors` has been changed from `*int32` to `any`
+- New type alias `ConfigurationType` with values `ConfigurationTypeArtifact`, `ConfigurationTypeCustomized`, `ConfigurationTypeDefault`
+- New type alias `SparkConfigurationReferenceType` with values `SparkConfigurationReferenceTypeSparkConfigurationReference`
+- New function `*Credential.GetCredential() *Credential`
+- New function `NewCredentialOperationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CredentialOperationsClient, error)`
+- New function `*CredentialOperationsClient.CreateOrUpdate(context.Context, string, string, string, ManagedIdentityCredentialResource, *CredentialOperationsClientCreateOrUpdateOptions) (CredentialOperationsClientCreateOrUpdateResponse, error)`
+- New function `*CredentialOperationsClient.Delete(context.Context, string, string, string, *CredentialOperationsClientDeleteOptions) (CredentialOperationsClientDeleteResponse, error)`
+- New function `*CredentialOperationsClient.Get(context.Context, string, string, string, *CredentialOperationsClientGetOptions) (CredentialOperationsClientGetResponse, error)`
+- New function `*CredentialOperationsClient.NewListByFactoryPager(string, string, *CredentialOperationsClientListByFactoryOptions) *runtime.Pager[CredentialOperationsClientListByFactoryResponse]`
+- New function `*ManagedIdentityCredential.GetCredential() *Credential`
+- New function `*ServicePrincipalCredential.GetCredential() *Credential`
+- New struct `CredentialListResponse`
+- New struct `CredentialOperationsClient`
+- New struct `CredentialOperationsClientListByFactoryResponse`
+- New struct `ManagedIdentityCredential`
+- New struct `ManagedIdentityCredentialResource`
+- New struct `ManagedIdentityTypeProperties`
+- New struct `ServicePrincipalCredential`
+- New struct `ServicePrincipalCredentialTypeProperties`
+- New struct `SparkConfigurationParametrizationReference`
+- New field `ConfigurationType` in struct `SynapseSparkJobActivityTypeProperties`
+- New field `ScanFolder` in struct `SynapseSparkJobActivityTypeProperties`
+- New field `SparkConfig` in struct `SynapseSparkJobActivityTypeProperties`
+- New field `TargetSparkConfiguration` in struct `SynapseSparkJobActivityTypeProperties`
+
+
+## 3.0.0 (2022-10-27)
+### Breaking Changes
+
+- Type of `SynapseSparkJobReference.ReferenceName` has been changed from `*string` to `interface{}`
+
+### Features Added
+
+- New field `WorkspaceResourceID` in struct `AzureSynapseArtifactsLinkedServiceTypeProperties`
+- New field `DisablePublish` in struct `FactoryRepoConfiguration`
+- New field `DisablePublish` in struct `FactoryGitHubConfiguration`
+- New field `DisablePublish` in struct `FactoryVSTSConfiguration`
+- New field `ScriptBlockExecutionTimeout` in struct `ScriptActivityTypeProperties`
+- New field `PythonCodeReference` in struct `SynapseSparkJobActivityTypeProperties`
+- New field `FilesV2` in struct `SynapseSparkJobActivityTypeProperties`
+
+
 ## 2.0.0 (2022-10-10)
 ### Breaking Changes
 

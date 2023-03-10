@@ -52,6 +52,7 @@ func ParseTrack2(config *config.Config, specRoot string) (armServices map[string
 			for _, packageInfos := range service {
 				for i := range packageInfos {
 					packageInfos[i].RequestLink = request.RequestLink
+					packageInfos[i].ReleaseDate = request.TargetDate
 				}
 			}
 

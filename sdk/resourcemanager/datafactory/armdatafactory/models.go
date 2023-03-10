@@ -48,7 +48,7 @@ type Activity struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -72,16 +72,16 @@ type ActivityDependency struct {
 	DependencyConditions []*DependencyCondition `json:"dependencyConditions,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // ActivityPolicy - Execution policy for an activity.
 type ActivityPolicy struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum: 0.
-	Retry interface{} `json:"retry,omitempty"`
+	Retry any `json:"retry,omitempty"`
 
 	// Interval between each retry attempt (in seconds). The default is 30 sec.
 	RetryIntervalInSeconds *int32 `json:"retryIntervalInSeconds,omitempty"`
@@ -94,13 +94,13 @@ type ActivityPolicy struct {
 
 	// Specifies the timeout for the activity to run. The default timeout is 7 days. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	Timeout interface{} `json:"timeout,omitempty"`
+	Timeout any `json:"timeout,omitempty"`
 }
 
 // ActivityRun - Information about an activity run in a pipeline.
 type ActivityRun struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; The name of the activity.
 	ActivityName *string `json:"activityName,omitempty" azure:"ro"`
@@ -121,16 +121,16 @@ type ActivityRun struct {
 	DurationInMs *int32 `json:"durationInMs,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error if any from the activity run.
-	Error interface{} `json:"error,omitempty" azure:"ro"`
+	Error any `json:"error,omitempty" azure:"ro"`
 
 	// READ-ONLY; The input for the activity.
-	Input interface{} `json:"input,omitempty" azure:"ro"`
+	Input any `json:"input,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the compute linked service.
 	LinkedServiceName *string `json:"linkedServiceName,omitempty" azure:"ro"`
 
 	// READ-ONLY; The output for the activity.
-	Output interface{} `json:"output,omitempty" azure:"ro"`
+	Output any `json:"output,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the pipeline.
 	PipelineName *string `json:"pipelineName,omitempty" azure:"ro"`
@@ -172,10 +172,10 @@ type AmazonMWSLinkedService struct {
 	TypeProperties *AmazonMWSLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -202,21 +202,21 @@ func (a *AmazonMWSLinkedService) GetLinkedService() *LinkedService {
 // AmazonMWSLinkedServiceTypeProperties - Amazon Marketplace Web Service linked service properties.
 type AmazonMWSLinkedServiceTypeProperties struct {
 	// REQUIRED; The access key id used to access data.
-	AccessKeyID interface{} `json:"accessKeyId,omitempty"`
+	AccessKeyID any `json:"accessKeyId,omitempty"`
 
 	// REQUIRED; The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com)
-	Endpoint interface{} `json:"endpoint,omitempty"`
+	Endpoint any `json:"endpoint,omitempty"`
 
 	// REQUIRED; The Amazon Marketplace ID you want to retrieve data from. To retrieve data from multiple Marketplace IDs, separate
 	// them with a comma (,). (i.e. A2EUQ1WTGCTBG2)
-	MarketplaceID interface{} `json:"marketplaceID,omitempty"`
+	MarketplaceID any `json:"marketplaceID,omitempty"`
 
 	// REQUIRED; The Amazon seller ID.
-	SellerID interface{} `json:"sellerID,omitempty"`
+	SellerID any `json:"sellerID,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Amazon MWS authentication token.
 	MwsAuthToken SecretBaseClassification `json:"mwsAuthToken,omitempty"`
@@ -225,14 +225,14 @@ type AmazonMWSLinkedServiceTypeProperties struct {
 	SecretKey SecretBaseClassification `json:"secretKey,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // AmazonMWSObjectDataset - Amazon Marketplace Web Service dataset.
@@ -244,10 +244,10 @@ type AmazonMWSObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -260,10 +260,10 @@ type AmazonMWSObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -291,28 +291,28 @@ type AmazonMWSSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AmazonMWSSource.
@@ -344,11 +344,11 @@ func (a *AmazonMWSSource) GetTabularSource() *TabularSource {
 // AmazonRdsForLinkedServiceTypeProperties - AmazonRdsForOracle database linked service properties.
 type AmazonRdsForLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password SecretBaseClassification `json:"password,omitempty"`
@@ -363,10 +363,10 @@ type AmazonRdsForOracleLinkedService struct {
 	TypeProperties *AmazonRdsForLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -394,18 +394,18 @@ func (a *AmazonRdsForOracleLinkedService) GetLinkedService() *LinkedService {
 type AmazonRdsForOraclePartitionSettings struct {
 	// The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression
 	// with resultType string).
-	PartitionColumnName interface{} `json:"partitionColumnName,omitempty"`
+	PartitionColumnName any `json:"partitionColumnName,omitempty"`
 
 	// The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionLowerBound interface{} `json:"partitionLowerBound,omitempty"`
+	PartitionLowerBound any `json:"partitionLowerBound,omitempty"`
 
 	// Names of the physical partitions of AmazonRdsForOracle table.
-	PartitionNames interface{} `json:"partitionNames,omitempty"`
+	PartitionNames any `json:"partitionNames,omitempty"`
 
 	// The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionUpperBound interface{} `json:"partitionUpperBound,omitempty"`
+	PartitionUpperBound any `json:"partitionUpperBound,omitempty"`
 }
 
 // AmazonRdsForOracleSource - A copy activity AmazonRdsForOracle source.
@@ -415,35 +415,35 @@ type AmazonRdsForOracleSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// AmazonRdsForOracle reader query. Type: string (or Expression with resultType string).
-	OracleReaderQuery interface{} `json:"oracleReaderQuery,omitempty"`
+	OracleReaderQuery any `json:"oracleReaderQuery,omitempty"`
 
 	// The partition mechanism that will be used for AmazonRdsForOracle read in parallel. Type: string (or Expression with resultType
 	// string).
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for AmazonRdsForOracle source partitioning.
 	PartitionSettings *AmazonRdsForOraclePartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AmazonRdsForOracleSource.
@@ -467,10 +467,10 @@ type AmazonRdsForOracleTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -483,10 +483,10 @@ type AmazonRdsForOracleTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// AmazonRdsForOracle dataset properties.
 	TypeProperties *AmazonRdsForOracleTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -510,10 +510,10 @@ func (a *AmazonRdsForOracleTableDataset) GetDataset() *Dataset {
 // AmazonRdsForOracleTableDatasetTypeProperties - AmazonRdsForOracle dataset properties.
 type AmazonRdsForOracleTableDatasetTypeProperties struct {
 	// The schema name of the AmazonRdsForOracle database. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the AmazonRdsForOracle database. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 }
 
 // AmazonRdsForSQLServerLinkedService - Amazon RDS for SQL Server linked service.
@@ -525,10 +525,10 @@ type AmazonRdsForSQLServerLinkedService struct {
 	TypeProperties *AmazonRdsForSQLServerLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -555,20 +555,20 @@ func (a *AmazonRdsForSQLServerLinkedService) GetLinkedService() *LinkedService {
 // AmazonRdsForSQLServerLinkedServiceTypeProperties - Amazon Rds for SQL Server linked service properties.
 type AmazonRdsForSQLServerLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// Sql always encrypted properties.
 	AlwaysEncryptedSettings *SQLAlwaysEncryptedProperties `json:"alwaysEncryptedSettings,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The on-premises Windows authentication password.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // AmazonRdsForSQLServerSource - A copy activity Amazon RDS for SQL Server source.
@@ -578,45 +578,45 @@ type AmazonRdsForSQLServerSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable",
 	// "DynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for Sql source partitioning.
 	PartitionSettings *SQLPartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Which additional types to produce.
-	ProduceAdditionalTypes interface{} `json:"produceAdditionalTypes,omitempty"`
+	ProduceAdditionalTypes any `json:"produceAdditionalTypes,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// SQL reader query. Type: string (or Expression with resultType string).
-	SQLReaderQuery interface{} `json:"sqlReaderQuery,omitempty"`
+	SQLReaderQuery any `json:"sqlReaderQuery,omitempty"`
 
 	// Name of the stored procedure for a SQL Database source. This cannot be used at the same time as SqlReaderQuery. Type: string
 	// (or Expression with resultType string).
-	SQLReaderStoredProcedureName interface{} `json:"sqlReaderStoredProcedureName,omitempty"`
+	SQLReaderStoredProcedureName any `json:"sqlReaderStoredProcedureName,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AmazonRdsForSQLServerSource.
@@ -654,10 +654,10 @@ type AmazonRdsForSQLServerTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -670,10 +670,10 @@ type AmazonRdsForSQLServerTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// The Amazon RDS for SQL Server dataset properties.
 	TypeProperties *AmazonRdsForSQLServerTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -697,10 +697,10 @@ func (a *AmazonRdsForSQLServerTableDataset) GetDataset() *Dataset {
 // AmazonRdsForSQLServerTableDatasetTypeProperties - The Amazon RDS for SQL Server dataset properties.
 type AmazonRdsForSQLServerTableDatasetTypeProperties struct {
 	// The schema name of the SQL Server dataset. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the SQL Server dataset. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 }
 
 // AmazonRedshiftLinkedService - Linked service for Amazon Redshift.
@@ -712,10 +712,10 @@ type AmazonRedshiftLinkedService struct {
 	TypeProperties *AmazonRedshiftLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -742,24 +742,24 @@ func (a *AmazonRedshiftLinkedService) GetLinkedService() *LinkedService {
 // AmazonRedshiftLinkedServiceTypeProperties - Amazon Redshift linked service properties.
 type AmazonRedshiftLinkedServiceTypeProperties struct {
 	// REQUIRED; The database name of the Amazon Redshift source. Type: string (or Expression with resultType string).
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 
 	// REQUIRED; The name of the Amazon Redshift server. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password of the Amazon Redshift source.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The TCP port number that the Amazon Redshift server uses to listen for client connections. The default value is 5439. Type:
 	// integer (or Expression with resultType integer).
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// The username of the Amazon Redshift source. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // AmazonRedshiftSource - A copy activity source for Amazon Redshift Source.
@@ -769,22 +769,22 @@ type AmazonRedshiftSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// The Amazon S3 settings needed for the interim Amazon S3 when copying from Amazon Redshift with unload. With this, data
 	// from Amazon Redshift source will be unloaded into S3 first and then copied into
@@ -792,10 +792,10 @@ type AmazonRedshiftSource struct {
 	RedshiftUnloadSettings *RedshiftUnloadSettings `json:"redshiftUnloadSettings,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AmazonRedshiftSource.
@@ -833,10 +833,10 @@ type AmazonRedshiftTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -849,10 +849,10 @@ type AmazonRedshiftTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Amazon Redshift table dataset properties.
 	TypeProperties *AmazonRedshiftTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -876,13 +876,13 @@ func (a *AmazonRedshiftTableDataset) GetDataset() *Dataset {
 // AmazonRedshiftTableDatasetTypeProperties - Amazon Redshift table dataset properties.
 type AmazonRedshiftTableDatasetTypeProperties struct {
 	// The Amazon Redshift schema name. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The Amazon Redshift table name. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // AmazonS3CompatibleLinkedService - Linked service for Amazon S3 Compatible.
@@ -894,10 +894,10 @@ type AmazonS3CompatibleLinkedService struct {
 	TypeProperties *AmazonS3CompatibleLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -925,15 +925,15 @@ func (a *AmazonS3CompatibleLinkedService) GetLinkedService() *LinkedService {
 type AmazonS3CompatibleLinkedServiceTypeProperties struct {
 	// The access key identifier of the Amazon S3 Compatible Identity and Access Management (IAM) user. Type: string (or Expression
 	// with resultType string).
-	AccessKeyID interface{} `json:"accessKeyId,omitempty"`
+	AccessKeyID any `json:"accessKeyId,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// If true, use S3 path-style access instead of virtual hosted-style access. Default value is false. Type: boolean (or Expression
 	// with resultType boolean).
-	ForcePathStyle interface{} `json:"forcePathStyle,omitempty"`
+	ForcePathStyle any `json:"forcePathStyle,omitempty"`
 
 	// The secret access key of the Amazon S3 Compatible Identity and Access Management (IAM) user.
 	SecretAccessKey SecretBaseClassification `json:"secretAccessKey,omitempty"`
@@ -941,7 +941,7 @@ type AmazonS3CompatibleLinkedServiceTypeProperties struct {
 	// This value specifies the endpoint to access with the Amazon S3 Compatible Connector. This is an optional property; change
 	// it only if you want to try a different service endpoint or want to switch
 	// between https and http. Type: string (or Expression with resultType string).
-	ServiceURL interface{} `json:"serviceUrl,omitempty"`
+	ServiceURL any `json:"serviceUrl,omitempty"`
 }
 
 // AmazonS3CompatibleLocation - The location of Amazon S3 Compatible dataset.
@@ -950,19 +950,19 @@ type AmazonS3CompatibleLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the bucketName of Amazon S3 Compatible. Type: string (or Expression with resultType string)
-	BucketName interface{} `json:"bucketName,omitempty"`
+	BucketName any `json:"bucketName,omitempty"`
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// Specify the version of Amazon S3 Compatible. Type: string (or Expression with resultType string).
-	Version interface{} `json:"version,omitempty"`
+	Version any `json:"version,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type AmazonS3CompatibleLocation.
@@ -981,46 +981,46 @@ type AmazonS3CompatibleReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// The prefix filter for the S3 Compatible object name. Type: string (or Expression with resultType string).
-	Prefix interface{} `json:"prefix,omitempty"`
+	Prefix any `json:"prefix,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Amazon S3 Compatible wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// Amazon S3 Compatible wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AmazonS3CompatibleReadSettings.
@@ -1045,10 +1045,10 @@ type AmazonS3Dataset struct {
 	TypeProperties *AmazonS3DatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -1061,10 +1061,10 @@ type AmazonS3Dataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type AmazonS3Dataset.
@@ -1085,7 +1085,7 @@ func (a *AmazonS3Dataset) GetDataset() *Dataset {
 // AmazonS3DatasetTypeProperties - Amazon S3 dataset properties.
 type AmazonS3DatasetTypeProperties struct {
 	// REQUIRED; The name of the Amazon S3 bucket. Type: string (or Expression with resultType string).
-	BucketName interface{} `json:"bucketName,omitempty"`
+	BucketName any `json:"bucketName,omitempty"`
 
 	// The data compression method used for the Amazon S3 object.
 	Compression *DatasetCompression `json:"compression,omitempty"`
@@ -1094,19 +1094,19 @@ type AmazonS3DatasetTypeProperties struct {
 	Format DatasetStorageFormatClassification `json:"format,omitempty"`
 
 	// The key of the Amazon S3 object. Type: string (or Expression with resultType string).
-	Key interface{} `json:"key,omitempty"`
+	Key any `json:"key,omitempty"`
 
 	// The end of S3 object's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of S3 object's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// The prefix filter for the S3 object name. Type: string (or Expression with resultType string).
-	Prefix interface{} `json:"prefix,omitempty"`
+	Prefix any `json:"prefix,omitempty"`
 
 	// The version for the S3 object. Type: string (or Expression with resultType string).
-	Version interface{} `json:"version,omitempty"`
+	Version any `json:"version,omitempty"`
 }
 
 // AmazonS3LinkedService - Linked service for Amazon S3.
@@ -1118,10 +1118,10 @@ type AmazonS3LinkedService struct {
 	TypeProperties *AmazonS3LinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -1149,15 +1149,15 @@ func (a *AmazonS3LinkedService) GetLinkedService() *LinkedService {
 type AmazonS3LinkedServiceTypeProperties struct {
 	// The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression with
 	// resultType string).
-	AccessKeyID interface{} `json:"accessKeyId,omitempty"`
+	AccessKeyID any `json:"accessKeyId,omitempty"`
 
 	// The authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string (or Expression
 	// with resultType string).
-	AuthenticationType interface{} `json:"authenticationType,omitempty"`
+	AuthenticationType any `json:"authenticationType,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The secret access key of the Amazon S3 Identity and Access Management (IAM) user.
 	SecretAccessKey SecretBaseClassification `json:"secretAccessKey,omitempty"`
@@ -1165,7 +1165,7 @@ type AmazonS3LinkedServiceTypeProperties struct {
 	// This value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only if you
 	// want to try a different service endpoint or want to switch between https and
 	// http. Type: string (or Expression with resultType string).
-	ServiceURL interface{} `json:"serviceUrl,omitempty"`
+	ServiceURL any `json:"serviceUrl,omitempty"`
 
 	// The session token for the S3 temporary security credential.
 	SessionToken SecretBaseClassification `json:"sessionToken,omitempty"`
@@ -1177,19 +1177,19 @@ type AmazonS3Location struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the bucketName of amazon S3. Type: string (or Expression with resultType string)
-	BucketName interface{} `json:"bucketName,omitempty"`
+	BucketName any `json:"bucketName,omitempty"`
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// Specify the version of amazon S3. Type: string (or Expression with resultType string).
-	Version interface{} `json:"version,omitempty"`
+	Version any `json:"version,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type AmazonS3Location.
@@ -1208,46 +1208,46 @@ type AmazonS3ReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// The prefix filter for the S3 object name. Type: string (or Expression with resultType string).
-	Prefix interface{} `json:"prefix,omitempty"`
+	Prefix any `json:"prefix,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// AmazonS3 wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// AmazonS3 wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AmazonS3ReadSettings.
@@ -1269,10 +1269,10 @@ type AppFiguresLinkedService struct {
 	TypeProperties *AppFiguresLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -1305,7 +1305,7 @@ type AppFiguresLinkedServiceTypeProperties struct {
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// REQUIRED; The username of the Appfigures source.
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // AppendVariableActivity - Append value for a Variable of type Array.
@@ -1320,7 +1320,7 @@ type AppendVariableActivity struct {
 	TypeProperties *AppendVariableActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -1359,7 +1359,7 @@ func (a *AppendVariableActivity) GetControlActivity() *ControlActivity {
 // AppendVariableActivityTypeProperties - AppendVariable activity properties.
 type AppendVariableActivityTypeProperties struct {
 	// Value to be appended. Could be a static value or Expression
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 
 	// Name of the variable whose value needs to be appended to.
 	VariableName *string `json:"variableName,omitempty"`
@@ -1380,10 +1380,10 @@ type AsanaLinkedService struct {
 	TypeProperties *AsanaLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -1414,7 +1414,7 @@ type AsanaLinkedServiceTypeProperties struct {
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // AvroDataset - Avro dataset.
@@ -1426,10 +1426,10 @@ type AvroDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -1442,10 +1442,10 @@ type AvroDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Avro dataset properties.
 	TypeProperties *AvroDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -1472,8 +1472,8 @@ type AvroDatasetTypeProperties struct {
 	Location DatasetLocationClassification `json:"location,omitempty"`
 
 	// The data avroCompressionCodec. Type: string (or Expression with resultType string).
-	AvroCompressionCodec interface{} `json:"avroCompressionCodec,omitempty"`
-	AvroCompressionLevel *int32      `json:"avroCompressionLevel,omitempty"`
+	AvroCompressionCodec any    `json:"avroCompressionCodec,omitempty"`
+	AvroCompressionLevel *int32 `json:"avroCompressionLevel,omitempty"`
 }
 
 // AvroFormat - The data stored in Avro format.
@@ -1482,13 +1482,13 @@ type AvroFormat struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Deserializer. Type: string (or Expression with resultType string).
-	Deserializer interface{} `json:"deserializer,omitempty"`
+	Deserializer any `json:"deserializer,omitempty"`
 
 	// Serializer. Type: string (or Expression with resultType string).
-	Serializer interface{} `json:"serializer,omitempty"`
+	Serializer any `json:"serializer,omitempty"`
 }
 
 // GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type AvroFormat.
@@ -1507,31 +1507,31 @@ type AvroSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Avro format settings.
 	FormatSettings *AvroWriteSettings `json:"formatSettings,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Avro store settings.
 	StoreSettings StoreWriteSettingsClassification `json:"storeSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AvroSink.
@@ -1555,22 +1555,22 @@ type AvroSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Avro store settings.
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
@@ -1594,15 +1594,15 @@ type AvroWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies the file name pattern _. when copy from non-file based store without partitionOptions. Type: string (or Expression
 	// with resultType string).
-	FileNamePrefix interface{} `json:"fileNamePrefix,omitempty"`
+	FileNamePrefix any `json:"fileNamePrefix,omitempty"`
 
 	// Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with
 	// resultType integer).
-	MaxRowsPerFile interface{} `json:"maxRowsPerFile,omitempty"`
+	MaxRowsPerFile any `json:"maxRowsPerFile,omitempty"`
 
 	// Top level record name in write result, which is required in AVRO spec.
 	RecordName *string `json:"recordName,omitempty"`
@@ -1650,10 +1650,10 @@ type AzureBatchLinkedService struct {
 	TypeProperties *AzureBatchLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -1680,16 +1680,16 @@ func (a *AzureBatchLinkedService) GetLinkedService() *LinkedService {
 // AzureBatchLinkedServiceTypeProperties - Azure Batch linked service properties.
 type AzureBatchLinkedServiceTypeProperties struct {
 	// REQUIRED; The Azure Batch account name. Type: string (or Expression with resultType string).
-	AccountName interface{} `json:"accountName,omitempty"`
+	AccountName any `json:"accountName,omitempty"`
 
 	// REQUIRED; The Azure Batch URI. Type: string (or Expression with resultType string).
-	BatchURI interface{} `json:"batchUri,omitempty"`
+	BatchURI any `json:"batchUri,omitempty"`
 
 	// REQUIRED; The Azure Storage linked service reference.
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 
 	// REQUIRED; The Azure Batch pool name. Type: string (or Expression with resultType string).
-	PoolName interface{} `json:"poolName,omitempty"`
+	PoolName any `json:"poolName,omitempty"`
 
 	// The Azure Batch account access key.
 	AccessKey SecretBaseClassification `json:"accessKey,omitempty"`
@@ -1699,7 +1699,7 @@ type AzureBatchLinkedServiceTypeProperties struct {
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // AzureBlobDataset - The Azure Blob storage.
@@ -1711,10 +1711,10 @@ type AzureBlobDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -1727,10 +1727,10 @@ type AzureBlobDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Azure Blob dataset properties.
 	TypeProperties *AzureBlobDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -1757,22 +1757,22 @@ type AzureBlobDatasetTypeProperties struct {
 	Compression *DatasetCompression `json:"compression,omitempty"`
 
 	// The name of the Azure Blob. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// The path of the Azure Blob storage. Type: string (or Expression with resultType string).
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// The format of the Azure Blob storage.
 	Format DatasetStorageFormatClassification `json:"format,omitempty"`
 
 	// The end of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// The root of blob path. Type: string (or Expression with resultType string).
-	TableRootLocation interface{} `json:"tableRootLocation,omitempty"`
+	TableRootLocation any `json:"tableRootLocation,omitempty"`
 }
 
 // AzureBlobFSDataset - The Azure Data Lake Storage Gen2 storage.
@@ -1784,10 +1784,10 @@ type AzureBlobFSDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -1800,10 +1800,10 @@ type AzureBlobFSDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Azure Data Lake Storage Gen2 dataset properties.
 	TypeProperties *AzureBlobFSDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -1830,10 +1830,10 @@ type AzureBlobFSDatasetTypeProperties struct {
 	Compression *DatasetCompression `json:"compression,omitempty"`
 
 	// The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression with resultType string).
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// The format of the Azure Data Lake Storage Gen2 storage.
 	Format DatasetStorageFormatClassification `json:"format,omitempty"`
@@ -1848,10 +1848,10 @@ type AzureBlobFSLinkedService struct {
 	TypeProperties *AzureBlobFSLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -1878,22 +1878,22 @@ func (a *AzureBlobFSLinkedService) GetLinkedService() *LinkedService {
 // AzureBlobFSLinkedServiceTypeProperties - Azure Data Lake Storage Gen2 linked service properties.
 type AzureBlobFSLinkedServiceTypeProperties struct {
 	// REQUIRED; Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// Account key for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with resultType string).
-	AccountKey interface{} `json:"accountKey,omitempty"`
+	AccountKey any `json:"accountKey,omitempty"`
 
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
-	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
+	AzureCloudType any `json:"azureCloudType,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
 	// servicePrincipalCredential can be SecureString or
@@ -1904,17 +1904,17 @@ type AzureBlobFSLinkedServiceTypeProperties struct {
 	// The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
 	// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
 	// resultType string).
-	ServicePrincipalCredentialType interface{} `json:"servicePrincipalCredentialType,omitempty"`
+	ServicePrincipalCredentialType any `json:"servicePrincipalCredentialType,omitempty"`
 
 	// The ID of the application used to authenticate against the Azure Data Lake Storage Gen2 account. Type: string (or Expression
 	// with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The Key of the application used to authenticate against the Azure Data Lake Storage Gen2 account.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 }
 
 // AzureBlobFSLocation - The location of azure blobFS dataset.
@@ -1923,16 +1923,16 @@ type AzureBlobFSLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the fileSystem of azure blobFS. Type: string (or Expression with resultType string).
-	FileSystem interface{} `json:"fileSystem,omitempty"`
+	FileSystem any `json:"fileSystem,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type AzureBlobFSLocation.
@@ -1951,43 +1951,43 @@ type AzureBlobFSReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Azure blobFS wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// Azure blobFS wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AzureBlobFSReadSettings.
@@ -2006,31 +2006,31 @@ type AzureBlobFSSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType array of objects).
 	Metadata []*MetadataItem `json:"metadata,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AzureBlobFSSink.
@@ -2053,29 +2053,29 @@ type AzureBlobFSSource struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Number of header lines to skip from each blob. Type: integer (or Expression with resultType integer).
-	SkipHeaderLineCount interface{} `json:"skipHeaderLineCount,omitempty"`
+	SkipHeaderLineCount any `json:"skipHeaderLineCount,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Treat empty as null. Type: boolean (or Expression with resultType boolean).
-	TreatEmptyAsNull interface{} `json:"treatEmptyAsNull,omitempty"`
+	TreatEmptyAsNull any `json:"treatEmptyAsNull,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AzureBlobFSSource.
@@ -2096,19 +2096,19 @@ type AzureBlobFSWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates the block size(MB) when writing data to blob. Type: integer (or Expression with resultType integer).
-	BlockSizeInMB interface{} `json:"blockSizeInMB,omitempty"`
+	BlockSizeInMB any `json:"blockSizeInMB,omitempty"`
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 }
 
 // GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type AzureBlobFSWriteSettings.
@@ -2131,10 +2131,10 @@ type AzureBlobStorageLinkedService struct {
 	TypeProperties *AzureBlobStorageLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -2171,10 +2171,10 @@ type AzureBlobStorageLinkedServiceTypeProperties struct {
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
-	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
+	AzureCloudType any `json:"azureCloudType,omitempty"`
 
 	// The connection string. It is mutually exclusive with sasUri, serviceEndpoint property. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
@@ -2188,20 +2188,20 @@ type AzureBlobStorageLinkedServiceTypeProperties struct {
 
 	// SAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint property. Type:
 	// string, SecureString or AzureKeyVaultSecretReference.
-	SasURI interface{} `json:"sasUri,omitempty"`
+	SasURI any `json:"sasUri,omitempty"`
 
 	// Blob service endpoint of the Azure Blob Storage resource. It is mutually exclusive with connectionString, sasUri property.
 	ServiceEndpoint *string `json:"serviceEndpoint,omitempty"`
 
 	// The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or Expression with
 	// resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The key of the service principal used to authenticate against Azure SQL Data Warehouse.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 }
 
 // AzureBlobStorageLocation - The location of azure blob dataset.
@@ -2210,16 +2210,16 @@ type AzureBlobStorageLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the container of azure blob. Type: string (or Expression with resultType string).
-	Container interface{} `json:"container,omitempty"`
+	Container any `json:"container,omitempty"`
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type AzureBlobStorageLocation.
@@ -2238,46 +2238,46 @@ type AzureBlobStorageReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// The prefix filter for the Azure Blob name. Type: string (or Expression with resultType string).
-	Prefix interface{} `json:"prefix,omitempty"`
+	Prefix any `json:"prefix,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Azure blob wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// Azure blob wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AzureBlobStorageReadSettings.
@@ -2296,19 +2296,19 @@ type AzureBlobStorageWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates the block size(MB) when writing data to blob. Type: integer (or Expression with resultType integer).
-	BlockSizeInMB interface{} `json:"blockSizeInMB,omitempty"`
+	BlockSizeInMB any `json:"blockSizeInMB,omitempty"`
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 }
 
 // GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type AzureBlobStorageWriteSettings.
@@ -2334,7 +2334,7 @@ type AzureDataExplorerCommandActivity struct {
 	TypeProperties *AzureDataExplorerCommandActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -2382,16 +2382,16 @@ func (a *AzureDataExplorerCommandActivity) GetExecutionActivity() *ExecutionActi
 type AzureDataExplorerCommandActivityTypeProperties struct {
 	// REQUIRED; A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with resultType
 	// string).
-	Command interface{} `json:"command,omitempty"`
+	Command any `json:"command,omitempty"`
 
 	// Control command timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
-	CommandTimeout interface{} `json:"commandTimeout,omitempty"`
+	CommandTimeout any `json:"commandTimeout,omitempty"`
 }
 
 // AzureDataExplorerDatasetTypeProperties - Azure Data Explorer (Kusto) dataset properties.
 type AzureDataExplorerDatasetTypeProperties struct {
 	// The table name of the Azure Data Explorer database. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 }
 
 // AzureDataExplorerLinkedService - Azure Data Explorer (Kusto) linked service.
@@ -2403,10 +2403,10 @@ type AzureDataExplorerLinkedService struct {
 	TypeProperties *AzureDataExplorerLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -2433,24 +2433,24 @@ func (a *AzureDataExplorerLinkedService) GetLinkedService() *LinkedService {
 // AzureDataExplorerLinkedServiceTypeProperties - Azure Data Explorer (Kusto) linked service properties.
 type AzureDataExplorerLinkedServiceTypeProperties struct {
 	// REQUIRED; Database name for connection. Type: string (or Expression with resultType string).
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 
 	// REQUIRED; The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format https://..kusto.windows.net.
 	// Type: string (or Expression with resultType string)
-	Endpoint interface{} `json:"endpoint,omitempty"`
+	Endpoint any `json:"endpoint,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression with resultType
 	// string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The key of the service principal used to authenticate against Kusto.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 }
 
 // AzureDataExplorerSink - A copy activity Azure Data Explorer sink.
@@ -2459,34 +2459,34 @@ type AzureDataExplorerSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// If set to true, any aggregation will be skipped. Default is false. Type: boolean.
-	FlushImmediately interface{} `json:"flushImmediately,omitempty"`
+	FlushImmediately any `json:"flushImmediately,omitempty"`
 
 	// An explicit column mapping description provided in a json format. Type: string.
-	IngestionMappingAsJSON interface{} `json:"ingestionMappingAsJson,omitempty"`
+	IngestionMappingAsJSON any `json:"ingestionMappingAsJson,omitempty"`
 
 	// A name of a pre-created csv mapping that was defined on the target Kusto table. Type: string.
-	IngestionMappingName interface{} `json:"ingestionMappingName,omitempty"`
+	IngestionMappingName any `json:"ingestionMappingName,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AzureDataExplorerSink.
@@ -2506,36 +2506,36 @@ func (a *AzureDataExplorerSink) GetCopySink() *CopySink {
 // AzureDataExplorerSource - A copy activity Azure Data Explorer (Kusto) source.
 type AzureDataExplorerSource struct {
 	// REQUIRED; Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// REQUIRED; Copy source type.
 	Type *string `json:"type,omitempty"`
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The name of the Boolean option that controls whether truncation is applied to result-sets that go beyond a certain row-count
 	// limit.
-	NoTruncation interface{} `json:"noTruncation,omitempty"`
+	NoTruncation any `json:"noTruncation,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AzureDataExplorerSource.
@@ -2562,10 +2562,10 @@ type AzureDataExplorerTableDataset struct {
 	TypeProperties *AzureDataExplorerDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -2578,10 +2578,10 @@ type AzureDataExplorerTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type AzureDataExplorerTableDataset.
@@ -2608,10 +2608,10 @@ type AzureDataLakeAnalyticsLinkedService struct {
 	TypeProperties *AzureDataLakeAnalyticsLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -2638,33 +2638,33 @@ func (a *AzureDataLakeAnalyticsLinkedService) GetLinkedService() *LinkedService 
 // AzureDataLakeAnalyticsLinkedServiceTypeProperties - Azure Data Lake Analytics linked service properties.
 type AzureDataLakeAnalyticsLinkedServiceTypeProperties struct {
 	// REQUIRED; The Azure Data Lake Analytics account name. Type: string (or Expression with resultType string).
-	AccountName interface{} `json:"accountName,omitempty"`
+	AccountName any `json:"accountName,omitempty"`
 
 	// REQUIRED; The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
 	// string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 
 	// Azure Data Lake Analytics URI Type: string (or Expression with resultType string).
-	DataLakeAnalyticsURI interface{} `json:"dataLakeAnalyticsUri,omitempty"`
+	DataLakeAnalyticsURI any `json:"dataLakeAnalyticsUri,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Data Lake Analytics account resource group name (if different from Data Factory account). Type: string (or Expression with
 	// resultType string).
-	ResourceGroupName interface{} `json:"resourceGroupName,omitempty"`
+	ResourceGroupName any `json:"resourceGroupName,omitempty"`
 
 	// The ID of the application used to authenticate against the Azure Data Lake Analytics account. Type: string (or Expression
 	// with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The Key of the application used to authenticate against the Azure Data Lake Analytics account.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// Data Lake Analytics account subscription ID (if different from Data Factory account). Type: string (or Expression with
 	// resultType string).
-	SubscriptionID interface{} `json:"subscriptionId,omitempty"`
+	SubscriptionID any `json:"subscriptionId,omitempty"`
 }
 
 // AzureDataLakeStoreDataset - Azure Data Lake Store dataset.
@@ -2676,10 +2676,10 @@ type AzureDataLakeStoreDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -2692,10 +2692,10 @@ type AzureDataLakeStoreDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Azure Data Lake Store dataset properties.
 	TypeProperties *AzureDataLakeStoreDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -2722,10 +2722,10 @@ type AzureDataLakeStoreDatasetTypeProperties struct {
 	Compression *DatasetCompression `json:"compression,omitempty"`
 
 	// The name of the file in the Azure Data Lake Store. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Path to the folder in the Azure Data Lake Store. Type: string (or Expression with resultType string).
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// The format of the Data Lake Store.
 	Format DatasetStorageFormatClassification `json:"format,omitempty"`
@@ -2740,10 +2740,10 @@ type AzureDataLakeStoreLinkedService struct {
 	TypeProperties *AzureDataLakeStoreLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -2770,40 +2770,40 @@ func (a *AzureDataLakeStoreLinkedService) GetLinkedService() *LinkedService {
 // AzureDataLakeStoreLinkedServiceTypeProperties - Azure Data Lake Store linked service properties.
 type AzureDataLakeStoreLinkedServiceTypeProperties struct {
 	// REQUIRED; Data Lake Store service URI. Type: string (or Expression with resultType string).
-	DataLakeStoreURI interface{} `json:"dataLakeStoreUri,omitempty"`
+	DataLakeStoreURI any `json:"dataLakeStoreUri,omitempty"`
 
 	// Data Lake Store account name. Type: string (or Expression with resultType string).
-	AccountName interface{} `json:"accountName,omitempty"`
+	AccountName any `json:"accountName,omitempty"`
 
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
-	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
+	AzureCloudType any `json:"azureCloudType,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Data Lake Store account resource group name (if different from Data Factory account). Type: string (or Expression with
 	// resultType string).
-	ResourceGroupName interface{} `json:"resourceGroupName,omitempty"`
+	ResourceGroupName any `json:"resourceGroupName,omitempty"`
 
 	// The ID of the application used to authenticate against the Azure Data Lake Store account. Type: string (or Expression with
 	// resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The Key of the application used to authenticate against the Azure Data Lake Store account.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// Data Lake Store account subscription ID (if different from Data Factory account). Type: string (or Expression with resultType
 	// string).
-	SubscriptionID interface{} `json:"subscriptionId,omitempty"`
+	SubscriptionID any `json:"subscriptionId,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 }
 
 // AzureDataLakeStoreLocation - The location of azure data lake store dataset.
@@ -2812,13 +2812,13 @@ type AzureDataLakeStoreLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type AzureDataLakeStoreLocation.
@@ -2837,53 +2837,53 @@ type AzureDataLakeStoreReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// Lists files after the value (exclusive) based on file/folder names’ lexicographical order. Applies under the folderPath
 	// in data set, and filter files/sub-folders under the folderPath. Type: string (or
 	// Expression with resultType string).
-	ListAfter interface{} `json:"listAfter,omitempty"`
+	ListAfter any `json:"listAfter,omitempty"`
 
 	// Lists files before the value (inclusive) based on file/folder names’ lexicographical order. Applies under the folderPath
 	// in data set, and filter files/sub-folders under the folderPath. Type: string
 	// (or Expression with resultType string).
-	ListBefore interface{} `json:"listBefore,omitempty"`
+	ListBefore any `json:"listBefore,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// ADLS wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// ADLS wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AzureDataLakeStoreReadSettings.
@@ -2902,31 +2902,31 @@ type AzureDataLakeStoreSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Single File Parallel.
-	EnableAdlsSingleFileParallel interface{} `json:"enableAdlsSingleFileParallel,omitempty"`
+	EnableAdlsSingleFileParallel any `json:"enableAdlsSingleFileParallel,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AzureDataLakeStoreSink.
@@ -2949,23 +2949,23 @@ type AzureDataLakeStoreSource struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AzureDataLakeStoreSource.
@@ -2986,21 +2986,21 @@ type AzureDataLakeStoreWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Specifies the expiry time of the written files. The time is applied to the UTC time zone in the format of "2018-12-01T05:00:00Z".
 	// Default value is NULL. Type: integer (or Expression with resultType
 	// integer).
-	ExpiryDateTime interface{} `json:"expiryDateTime,omitempty"`
+	ExpiryDateTime any `json:"expiryDateTime,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 }
 
 // GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type AzureDataLakeStoreWriteSettings.
@@ -3023,10 +3023,10 @@ type AzureDatabricksDeltaLakeDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -3039,10 +3039,10 @@ type AzureDatabricksDeltaLakeDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *AzureDatabricksDeltaLakeDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -3066,10 +3066,10 @@ func (a *AzureDatabricksDeltaLakeDataset) GetDataset() *Dataset {
 // AzureDatabricksDeltaLakeDatasetTypeProperties - Azure Databricks Delta Lake Dataset Properties
 type AzureDatabricksDeltaLakeDatasetTypeProperties struct {
 	// The database name of delta table. Type: string (or Expression with resultType string).
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 
 	// The name of delta table. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 }
 
 // AzureDatabricksDeltaLakeExportCommand - Azure Databricks Delta Lake export command settings.
@@ -3078,14 +3078,14 @@ type AzureDatabricksDeltaLakeExportCommand struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the date format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType string).
-	DateFormat interface{} `json:"dateFormat,omitempty"`
+	DateFormat any `json:"dateFormat,omitempty"`
 
 	// Specify the timestamp format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType
 	// string).
-	TimestampFormat interface{} `json:"timestampFormat,omitempty"`
+	TimestampFormat any `json:"timestampFormat,omitempty"`
 }
 
 // GetExportSettings implements the ExportSettingsClassification interface for type AzureDatabricksDeltaLakeExportCommand.
@@ -3102,13 +3102,13 @@ type AzureDatabricksDeltaLakeImportCommand struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the date format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType string).
-	DateFormat interface{} `json:"dateFormat,omitempty"`
+	DateFormat any `json:"dateFormat,omitempty"`
 
 	// Specify the timestamp format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType string).
-	TimestampFormat interface{} `json:"timestampFormat,omitempty"`
+	TimestampFormat any `json:"timestampFormat,omitempty"`
 }
 
 // GetImportSettings implements the ImportSettingsClassification interface for type AzureDatabricksDeltaLakeImportCommand.
@@ -3128,10 +3128,10 @@ type AzureDatabricksDeltaLakeLinkedService struct {
 	TypeProperties *AzureDatabricksDetltaLakeLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -3161,31 +3161,31 @@ type AzureDatabricksDeltaLakeSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Azure Databricks Delta Lake import settings.
 	ImportSettings *AzureDatabricksDeltaLakeImportCommand `json:"importSettings,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// SQL pre-copy script. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AzureDatabricksDeltaLakeSink.
@@ -3208,25 +3208,25 @@ type AzureDatabricksDeltaLakeSource struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Azure Databricks Delta Lake export settings.
 	ExportSettings *AzureDatabricksDeltaLakeExportCommand `json:"exportSettings,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Azure Databricks Delta Lake Sql query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AzureDatabricksDeltaLakeSource.
@@ -3245,7 +3245,7 @@ func (a *AzureDatabricksDeltaLakeSource) GetCopySource() *CopySource {
 type AzureDatabricksDetltaLakeLinkedServiceTypeProperties struct {
 	// REQUIRED; .azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with resultType
 	// string).
-	Domain interface{} `json:"domain,omitempty"`
+	Domain any `json:"domain,omitempty"`
 
 	// Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html. Type: string,
 	// SecureString or AzureKeyVaultSecretReference.
@@ -3253,17 +3253,17 @@ type AzureDatabricksDetltaLakeLinkedServiceTypeProperties struct {
 
 	// The id of an existing interactive cluster that will be used for all runs of this job. Type: string (or Expression with
 	// resultType string).
-	ClusterID interface{} `json:"clusterId,omitempty"`
+	ClusterID any `json:"clusterId,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
-	WorkspaceResourceID interface{} `json:"workspaceResourceId,omitempty"`
+	WorkspaceResourceID any `json:"workspaceResourceId,omitempty"`
 }
 
 // AzureDatabricksLinkedService - Azure Databricks linked service.
@@ -3275,10 +3275,10 @@ type AzureDatabricksLinkedService struct {
 	TypeProperties *AzureDatabricksLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -3306,7 +3306,7 @@ func (a *AzureDatabricksLinkedService) GetLinkedService() *LinkedService {
 type AzureDatabricksLinkedServiceTypeProperties struct {
 	// REQUIRED; .azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with resultType
 	// string).
-	Domain interface{} `json:"domain,omitempty"`
+	Domain any `json:"domain,omitempty"`
 
 	// Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html. Type: string
 	// (or Expression with resultType string).
@@ -3314,71 +3314,71 @@ type AzureDatabricksLinkedServiceTypeProperties struct {
 
 	// Required to specify MSI, if using Workspace resource id for databricks REST API. Type: string (or Expression with resultType
 	// string).
-	Authentication interface{} `json:"authentication,omitempty"`
+	Authentication any `json:"authentication,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The id of an existing interactive cluster that will be used for all runs of this activity. Type: string (or Expression
 	// with resultType string).
-	ExistingClusterID interface{} `json:"existingClusterId,omitempty"`
+	ExistingClusterID any `json:"existingClusterId,omitempty"`
 
 	// The id of an existing instance pool that will be used for all runs of this activity. Type: string (or Expression with resultType
 	// string).
-	InstancePoolID interface{} `json:"instancePoolId,omitempty"`
+	InstancePoolID any `json:"instancePoolId,omitempty"`
 
 	// Additional tags for cluster resources. This property is ignored in instance pool configurations.
-	NewClusterCustomTags map[string]interface{} `json:"newClusterCustomTags,omitempty"`
+	NewClusterCustomTags map[string]any `json:"newClusterCustomTags,omitempty"`
 
 	// The driver node type for the new job cluster. This property is ignored in instance pool configurations. Type: string (or
 	// Expression with resultType string).
-	NewClusterDriverNodeType interface{} `json:"newClusterDriverNodeType,omitempty"`
+	NewClusterDriverNodeType any `json:"newClusterDriverNodeType,omitempty"`
 
 	// Enable the elastic disk on the new cluster. This property is now ignored, and takes the default elastic disk behavior in
 	// Databricks (elastic disks are always enabled). Type: boolean (or Expression
 	// with resultType boolean).
-	NewClusterEnableElasticDisk interface{} `json:"newClusterEnableElasticDisk,omitempty"`
+	NewClusterEnableElasticDisk any `json:"newClusterEnableElasticDisk,omitempty"`
 
 	// User-defined initialization scripts for the new cluster. Type: array of strings (or Expression with resultType array of
 	// strings).
-	NewClusterInitScripts interface{} `json:"newClusterInitScripts,omitempty"`
+	NewClusterInitScripts any `json:"newClusterInitScripts,omitempty"`
 
 	// Specify a location to deliver Spark driver, worker, and event logs. Type: string (or Expression with resultType string).
-	NewClusterLogDestination interface{} `json:"newClusterLogDestination,omitempty"`
+	NewClusterLogDestination any `json:"newClusterLogDestination,omitempty"`
 
 	// The node type of the new job cluster. This property is required if newClusterVersion is specified and instancePoolId is
 	// not specified. If instancePoolId is specified, this property is ignored. Type:
 	// string (or Expression with resultType string).
-	NewClusterNodeType interface{} `json:"newClusterNodeType,omitempty"`
+	NewClusterNodeType any `json:"newClusterNodeType,omitempty"`
 
 	// If not using an existing interactive cluster, this specifies the number of worker nodes to use for the new job cluster
 	// or instance pool. For new job clusters, this a string-formatted Int32, like '1'
 	// means numOfWorker is 1 or '1:10' means auto-scale from 1 (min) to 10 (max). For instance pools, this is a string-formatted
 	// Int32, and can only specify a fixed number of worker nodes, such as '2'.
 	// Required if newClusterVersion is specified. Type: string (or Expression with resultType string).
-	NewClusterNumOfWorker interface{} `json:"newClusterNumOfWorker,omitempty"`
+	NewClusterNumOfWorker any `json:"newClusterNumOfWorker,omitempty"`
 
 	// A set of optional, user-specified Spark configuration key-value pairs.
-	NewClusterSparkConf map[string]interface{} `json:"newClusterSparkConf,omitempty"`
+	NewClusterSparkConf map[string]any `json:"newClusterSparkConf,omitempty"`
 
 	// A set of optional, user-specified Spark environment variables key-value pairs.
-	NewClusterSparkEnvVars map[string]interface{} `json:"newClusterSparkEnvVars,omitempty"`
+	NewClusterSparkEnvVars map[string]any `json:"newClusterSparkEnvVars,omitempty"`
 
 	// If not using an existing interactive cluster, this specifies the Spark version of a new job cluster or instance pool nodes
 	// created for each run of this activity. Required if instancePoolId is
 	// specified. Type: string (or Expression with resultType string).
-	NewClusterVersion interface{} `json:"newClusterVersion,omitempty"`
+	NewClusterVersion any `json:"newClusterVersion,omitempty"`
 
 	// The policy id for limiting the ability to configure clusters based on a user defined set of rules. Type: string (or Expression
 	// with resultType string).
-	PolicyID interface{} `json:"policyId,omitempty"`
+	PolicyID any `json:"policyId,omitempty"`
 
 	// Workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
-	WorkspaceResourceID interface{} `json:"workspaceResourceId,omitempty"`
+	WorkspaceResourceID any `json:"workspaceResourceId,omitempty"`
 }
 
 // AzureFileStorageLinkedService - Azure File Storage linked service.
@@ -3390,10 +3390,10 @@ type AzureFileStorageLinkedService struct {
 	TypeProperties *AzureFileStorageLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -3423,18 +3423,18 @@ type AzureFileStorageLinkedServiceTypeProperties struct {
 	AccountKey *AzureKeyVaultSecretReference `json:"accountKey,omitempty"`
 
 	// The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with resultType
 	// string).
-	FileShare interface{} `json:"fileShare,omitempty"`
+	FileShare any `json:"fileShare,omitempty"`
 
 	// Host name of the server. Type: string (or Expression with resultType string).
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// Password to logon the server.
 	Password SecretBaseClassification `json:"password,omitempty"`
@@ -3444,13 +3444,13 @@ type AzureFileStorageLinkedServiceTypeProperties struct {
 
 	// SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string, SecureString
 	// or AzureKeyVaultSecretReference.
-	SasURI interface{} `json:"sasUri,omitempty"`
+	SasURI any `json:"sasUri,omitempty"`
 
 	// The azure file share snapshot version. Type: string (or Expression with resultType string).
-	Snapshot interface{} `json:"snapshot,omitempty"`
+	Snapshot any `json:"snapshot,omitempty"`
 
 	// User ID to logon the server. Type: string (or Expression with resultType string).
-	UserID interface{} `json:"userId,omitempty"`
+	UserID any `json:"userId,omitempty"`
 }
 
 // AzureFileStorageLocation - The location of file server dataset.
@@ -3459,13 +3459,13 @@ type AzureFileStorageLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type AzureFileStorageLocation.
@@ -3484,46 +3484,46 @@ type AzureFileStorageReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// The prefix filter for the Azure File name starting from root path. Type: string (or Expression with resultType string).
-	Prefix interface{} `json:"prefix,omitempty"`
+	Prefix any `json:"prefix,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Azure File Storage wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// Azure File Storage wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AzureFileStorageReadSettings.
@@ -3542,16 +3542,16 @@ type AzureFileStorageWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 }
 
 // GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type AzureFileStorageWriteSettings.
@@ -3577,7 +3577,7 @@ type AzureFunctionActivity struct {
 	TypeProperties *AzureFunctionActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -3625,19 +3625,19 @@ func (a *AzureFunctionActivity) GetExecutionActivity() *ExecutionActivity {
 type AzureFunctionActivityTypeProperties struct {
 	// REQUIRED; Name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType
 	// string)
-	FunctionName interface{} `json:"functionName,omitempty"`
+	FunctionName any `json:"functionName,omitempty"`
 
 	// REQUIRED; Rest API method for target endpoint.
 	Method *AzureFunctionActivityMethod `json:"method,omitempty"`
 
 	// Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET method Type:
 	// string (or Expression with resultType string).
-	Body interface{} `json:"body,omitempty"`
+	Body any `json:"body,omitempty"`
 
 	// Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers"
 	// : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type:
 	// string (or Expression with resultType string).
-	Headers interface{} `json:"headers,omitempty"`
+	Headers any `json:"headers,omitempty"`
 }
 
 // AzureFunctionLinkedService - Azure Function linked service.
@@ -3649,10 +3649,10 @@ type AzureFunctionLinkedService struct {
 	TypeProperties *AzureFunctionLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -3679,24 +3679,24 @@ func (a *AzureFunctionLinkedService) GetLinkedService() *LinkedService {
 // AzureFunctionLinkedServiceTypeProperties - Azure Function linked service properties.
 type AzureFunctionLinkedServiceTypeProperties struct {
 	// REQUIRED; The endpoint of the Azure Function App. URL will be in the format https://.azurewebsites.net.
-	FunctionAppURL interface{} `json:"functionAppUrl,omitempty"`
+	FunctionAppURL any `json:"functionAppUrl,omitempty"`
 
 	// Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression with resultType
 	// string).
-	Authentication interface{} `json:"authentication,omitempty"`
+	Authentication any `json:"authentication,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Function or Host key for Azure Function App.
 	FunctionKey SecretBaseClassification `json:"functionKey,omitempty"`
 
 	// Allowed token audiences for azure function.
-	ResourceID interface{} `json:"resourceId,omitempty"`
+	ResourceID any `json:"resourceId,omitempty"`
 }
 
 // AzureKeyVaultLinkedService - Azure Key Vault linked service.
@@ -3708,10 +3708,10 @@ type AzureKeyVaultLinkedService struct {
 	TypeProperties *AzureKeyVaultLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -3739,7 +3739,7 @@ func (a *AzureKeyVaultLinkedService) GetLinkedService() *LinkedService {
 type AzureKeyVaultLinkedServiceTypeProperties struct {
 	// REQUIRED; The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with resultType
 	// string).
-	BaseURL interface{} `json:"baseUrl,omitempty"`
+	BaseURL any `json:"baseUrl,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
@@ -3748,7 +3748,7 @@ type AzureKeyVaultLinkedServiceTypeProperties struct {
 // AzureKeyVaultSecretReference - Azure Key Vault secret reference.
 type AzureKeyVaultSecretReference struct {
 	// REQUIRED; The name of the secret in Azure Key Vault. Type: string (or Expression with resultType string).
-	SecretName interface{} `json:"secretName,omitempty"`
+	SecretName any `json:"secretName,omitempty"`
 
 	// REQUIRED; The Azure Key Vault linked service reference.
 	Store *LinkedServiceReference `json:"store,omitempty"`
@@ -3758,7 +3758,7 @@ type AzureKeyVaultSecretReference struct {
 
 	// The version of the secret in Azure Key Vault. The default value is the latest version of the secret. Type: string (or Expression
 	// with resultType string).
-	SecretVersion interface{} `json:"secretVersion,omitempty"`
+	SecretVersion any `json:"secretVersion,omitempty"`
 }
 
 // GetSecretBase implements the SecretBaseClassification interface for type AzureKeyVaultSecretReference.
@@ -3780,7 +3780,7 @@ type AzureMLBatchExecutionActivity struct {
 	TypeProperties *AzureMLBatchExecutionActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -3829,7 +3829,7 @@ type AzureMLBatchExecutionActivityTypeProperties struct {
 	// Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint. Keys must match the names of web service
 	// parameters defined in the published Azure ML web service. Values will be passed
 	// in the GlobalParameters property of the Azure ML batch execution request.
-	GlobalParameters map[string]interface{} `json:"globalParameters,omitempty"`
+	GlobalParameters map[string]any `json:"globalParameters,omitempty"`
 
 	// Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Inputs to AzureMLWebServiceFile objects specifying
 	// the input Blob locations.. This information will be passed in the
@@ -3854,7 +3854,7 @@ type AzureMLExecutePipelineActivity struct {
 	TypeProperties *AzureMLExecutePipelineActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -3903,37 +3903,37 @@ type AzureMLExecutePipelineActivityTypeProperties struct {
 	// Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed in the
 	// continueOnStepFailure property of the published pipeline execution request.
 	// Type: boolean (or Expression with resultType boolean).
-	ContinueOnStepFailure interface{} `json:"continueOnStepFailure,omitempty"`
+	ContinueOnStepFailure any `json:"continueOnStepFailure,omitempty"`
 
 	// Dictionary used for changing data path assignments without retraining. Values will be passed in the dataPathAssignments
 	// property of the published pipeline execution request. Type: object with key
 	// value pairs (or Expression with resultType object).
-	DataPathAssignments interface{} `json:"dataPathAssignments,omitempty"`
+	DataPathAssignments any `json:"dataPathAssignments,omitempty"`
 
 	// Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property of the
 	// published pipeline execution request. Type: string (or Expression with resultType
 	// string).
-	ExperimentName interface{} `json:"experimentName,omitempty"`
+	ExperimentName any `json:"experimentName,omitempty"`
 
 	// The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the published
 	// pipeline execution request. Type: string (or Expression with resultType
 	// string).
-	MlParentRunID interface{} `json:"mlParentRunId,omitempty"`
+	MlParentRunID any `json:"mlParentRunId,omitempty"`
 
 	// ID of the published Azure ML pipeline endpoint. Type: string (or Expression with resultType string).
-	MlPipelineEndpointID interface{} `json:"mlPipelineEndpointId,omitempty"`
+	MlPipelineEndpointID any `json:"mlPipelineEndpointId,omitempty"`
 
 	// ID of the published Azure ML pipeline. Type: string (or Expression with resultType string).
-	MlPipelineID interface{} `json:"mlPipelineId,omitempty"`
+	MlPipelineID any `json:"mlPipelineId,omitempty"`
 
 	// Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline parameters
 	// defined in the published pipeline. Values will be passed in the
 	// ParameterAssignments property of the published pipeline execution request. Type: object with key value pairs (or Expression
 	// with resultType object).
-	MlPipelineParameters interface{} `json:"mlPipelineParameters,omitempty"`
+	MlPipelineParameters any `json:"mlPipelineParameters,omitempty"`
 
 	// Version of the published Azure ML pipeline endpoint. Type: string (or Expression with resultType string).
-	Version interface{} `json:"version,omitempty"`
+	Version any `json:"version,omitempty"`
 }
 
 // AzureMLLinkedService - Azure ML Studio Web Service linked service.
@@ -3945,10 +3945,10 @@ type AzureMLLinkedService struct {
 	TypeProperties *AzureMLLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -3979,29 +3979,29 @@ type AzureMLLinkedServiceTypeProperties struct {
 
 	// REQUIRED; The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with resultType
 	// string).
-	MlEndpoint interface{} `json:"mlEndpoint,omitempty"`
+	MlEndpoint any `json:"mlEndpoint,omitempty"`
 
 	// Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with resultType
 	// string).
-	Authentication interface{} `json:"authentication,omitempty"`
+	Authentication any `json:"authentication,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The ID of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML Studio
 	// web service. Type: string (or Expression with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML Studio
 	// web service.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 
 	// The Update Resource REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with resultType string).
-	UpdateResourceEndpoint interface{} `json:"updateResourceEndpoint,omitempty"`
+	UpdateResourceEndpoint any `json:"updateResourceEndpoint,omitempty"`
 }
 
 // AzureMLServiceLinkedService - Azure ML Service linked service.
@@ -4013,10 +4013,10 @@ type AzureMLServiceLinkedService struct {
 	TypeProperties *AzureMLServiceLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -4043,27 +4043,27 @@ func (a *AzureMLServiceLinkedService) GetLinkedService() *LinkedService {
 // AzureMLServiceLinkedServiceTypeProperties - Azure ML Service linked service properties.
 type AzureMLServiceLinkedServiceTypeProperties struct {
 	// REQUIRED; Azure ML Service workspace name. Type: string (or Expression with resultType string).
-	MlWorkspaceName interface{} `json:"mlWorkspaceName,omitempty"`
+	MlWorkspaceName any `json:"mlWorkspaceName,omitempty"`
 
 	// REQUIRED; Azure ML Service workspace resource group name. Type: string (or Expression with resultType string).
-	ResourceGroupName interface{} `json:"resourceGroupName,omitempty"`
+	ResourceGroupName any `json:"resourceGroupName,omitempty"`
 
 	// REQUIRED; Azure ML Service workspace subscription ID. Type: string (or Expression with resultType string).
-	SubscriptionID interface{} `json:"subscriptionId,omitempty"`
+	SubscriptionID any `json:"subscriptionId,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The ID of the service principal used to authenticate against the endpoint of a published Azure ML Service pipeline. Type:
 	// string (or Expression with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The key of the service principal used to authenticate against the endpoint of a published Azure ML Service pipeline.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 }
 
 // AzureMLUpdateResourceActivity - Azure ML Update Resource management activity.
@@ -4078,7 +4078,7 @@ type AzureMLUpdateResourceActivity struct {
 	TypeProperties *AzureMLUpdateResourceActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -4126,21 +4126,21 @@ func (a *AzureMLUpdateResourceActivity) GetExecutionActivity() *ExecutionActivit
 type AzureMLUpdateResourceActivityTypeProperties struct {
 	// REQUIRED; The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by
 	// the update operation. Type: string (or Expression with resultType string).
-	TrainedModelFilePath interface{} `json:"trainedModelFilePath,omitempty"`
+	TrainedModelFilePath any `json:"trainedModelFilePath,omitempty"`
 
 	// REQUIRED; Name of Azure Storage linked service holding the .ilearner file that will be uploaded by the update operation.
 	TrainedModelLinkedServiceName *LinkedServiceReference `json:"trainedModelLinkedServiceName,omitempty"`
 
 	// REQUIRED; Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with
 	// resultType string).
-	TrainedModelName interface{} `json:"trainedModelName,omitempty"`
+	TrainedModelName any `json:"trainedModelName,omitempty"`
 }
 
 // AzureMLWebServiceFile - Azure ML WebService Input/Output file
 type AzureMLWebServiceFile struct {
 	// REQUIRED; The relative file path, including container name, in the Azure Blob Storage specified by the LinkedService. Type:
 	// string (or Expression with resultType string).
-	FilePath interface{} `json:"filePath,omitempty"`
+	FilePath any `json:"filePath,omitempty"`
 
 	// REQUIRED; Reference to an Azure Storage LinkedService, where Azure ML WebService Input/Output file located.
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
@@ -4155,10 +4155,10 @@ type AzureMariaDBLinkedService struct {
 	TypeProperties *AzureMariaDBLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -4185,11 +4185,11 @@ func (a *AzureMariaDBLinkedService) GetLinkedService() *LinkedService {
 // AzureMariaDBLinkedServiceTypeProperties - Azure Database for MariaDB linked service properties.
 type AzureMariaDBLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Pwd *AzureKeyVaultSecretReference `json:"pwd,omitempty"`
@@ -4202,28 +4202,28 @@ type AzureMariaDBSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AzureMariaDBSource.
@@ -4261,10 +4261,10 @@ type AzureMariaDBTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -4277,10 +4277,10 @@ type AzureMariaDBTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -4310,10 +4310,10 @@ type AzureMySQLLinkedService struct {
 	TypeProperties *AzureMySQLLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -4340,11 +4340,11 @@ func (a *AzureMySQLLinkedService) GetLinkedService() *LinkedService {
 // AzureMySQLLinkedServiceTypeProperties - Azure MySQL database linked service properties.
 type AzureMySQLLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference `json:"password,omitempty"`
@@ -4356,28 +4356,28 @@ type AzureMySQLSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to execute before starting the copy. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AzureMySQLSink.
@@ -4401,28 +4401,28 @@ type AzureMySQLSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AzureMySQLSource.
@@ -4463,10 +4463,10 @@ type AzureMySQLTableDataset struct {
 	TypeProperties *AzureMySQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -4479,10 +4479,10 @@ type AzureMySQLTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type AzureMySQLTableDataset.
@@ -4503,10 +4503,10 @@ func (a *AzureMySQLTableDataset) GetDataset() *Dataset {
 // AzureMySQLTableDatasetTypeProperties - Azure MySQL database dataset properties.
 type AzureMySQLTableDatasetTypeProperties struct {
 	// The name of Azure MySQL database table. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// The Azure MySQL database table name. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // AzurePostgreSQLLinkedService - Azure PostgreSQL linked service.
@@ -4518,10 +4518,10 @@ type AzurePostgreSQLLinkedService struct {
 	TypeProperties *AzurePostgreSQLLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -4548,11 +4548,11 @@ func (a *AzurePostgreSQLLinkedService) GetLinkedService() *LinkedService {
 // AzurePostgreSQLLinkedServiceTypeProperties - Azure PostgreSQL linked service properties.
 type AzurePostgreSQLLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference `json:"password,omitempty"`
@@ -4564,28 +4564,28 @@ type AzurePostgreSQLSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to execute before starting the copy. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AzurePostgreSQLSink.
@@ -4609,28 +4609,28 @@ type AzurePostgreSQLSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AzurePostgreSQLSource.
@@ -4668,10 +4668,10 @@ type AzurePostgreSQLTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -4684,10 +4684,10 @@ type AzurePostgreSQLTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *AzurePostgreSQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -4711,14 +4711,14 @@ func (a *AzurePostgreSQLTableDataset) GetDataset() *Dataset {
 // AzurePostgreSQLTableDatasetTypeProperties - Azure PostgreSQL dataset properties.
 type AzurePostgreSQLTableDatasetTypeProperties struct {
 	// The schema name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or Expression with
 	// resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // AzureQueueSink - A copy activity Azure Queue sink.
@@ -4727,25 +4727,25 @@ type AzureQueueSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AzureQueueSink.
@@ -4771,10 +4771,10 @@ type AzureSQLDWLinkedService struct {
 	TypeProperties *AzureSQLDWLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -4802,32 +4802,32 @@ func (a *AzureSQLDWLinkedService) GetLinkedService() *LinkedService {
 type AzureSQLDWLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString
 	// or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
-	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
+	AzureCloudType any `json:"azureCloudType,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference `json:"password,omitempty"`
 
 	// The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or Expression with
 	// resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The key of the service principal used to authenticate against Azure SQL Data Warehouse.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 }
 
 // AzureSQLDWTableDataset - The Azure SQL Data Warehouse dataset.
@@ -4839,10 +4839,10 @@ type AzureSQLDWTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -4855,10 +4855,10 @@ type AzureSQLDWTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Azure SQL Data Warehouse dataset properties.
 	TypeProperties *AzureSQLDWTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -4882,13 +4882,13 @@ func (a *AzureSQLDWTableDataset) GetDataset() *Dataset {
 // AzureSQLDWTableDatasetTypeProperties - Azure SQL Data Warehouse dataset properties.
 type AzureSQLDWTableDatasetTypeProperties struct {
 	// The schema name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // AzureSQLDatabaseLinkedService - Microsoft Azure SQL Database linked service.
@@ -4900,10 +4900,10 @@ type AzureSQLDatabaseLinkedService struct {
 	TypeProperties *AzureSQLDatabaseLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -4930,7 +4930,7 @@ func (a *AzureSQLDatabaseLinkedService) GetLinkedService() *LinkedService {
 // AzureSQLDatabaseLinkedServiceTypeProperties - Azure SQL Database linked service properties.
 type AzureSQLDatabaseLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// Sql always encrypted properties.
 	AlwaysEncryptedSettings *SQLAlwaysEncryptedProperties `json:"alwaysEncryptedSettings,omitempty"`
@@ -4938,27 +4938,27 @@ type AzureSQLDatabaseLinkedServiceTypeProperties struct {
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
-	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
+	AzureCloudType any `json:"azureCloudType,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference `json:"password,omitempty"`
 
 	// The ID of the service principal used to authenticate against Azure SQL Database. Type: string (or Expression with resultType
 	// string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The key of the service principal used to authenticate against Azure SQL Database.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 }
 
 // AzureSQLMILinkedService - Azure SQL Managed Instance linked service.
@@ -4970,10 +4970,10 @@ type AzureSQLMILinkedService struct {
 	TypeProperties *AzureSQLMILinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -5000,7 +5000,7 @@ func (a *AzureSQLMILinkedService) GetLinkedService() *LinkedService {
 // AzureSQLMILinkedServiceTypeProperties - Azure SQL Managed Instance linked service properties.
 type AzureSQLMILinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// Sql always encrypted properties.
 	AlwaysEncryptedSettings *SQLAlwaysEncryptedProperties `json:"alwaysEncryptedSettings,omitempty"`
@@ -5008,27 +5008,27 @@ type AzureSQLMILinkedServiceTypeProperties struct {
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
-	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
+	AzureCloudType any `json:"azureCloudType,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference `json:"password,omitempty"`
 
 	// The ID of the service principal used to authenticate against Azure SQL Managed Instance. Type: string (or Expression with
 	// resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The key of the service principal used to authenticate against Azure SQL Managed Instance.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 }
 
 // AzureSQLMITableDataset - The Azure SQL Managed Instance dataset.
@@ -5040,10 +5040,10 @@ type AzureSQLMITableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -5056,10 +5056,10 @@ type AzureSQLMITableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Azure SQL Managed Instance dataset properties.
 	TypeProperties *AzureSQLMITableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -5083,13 +5083,13 @@ func (a *AzureSQLMITableDataset) GetDataset() *Dataset {
 // AzureSQLMITableDatasetTypeProperties - Azure SQL Managed Instance dataset properties.
 type AzureSQLMITableDatasetTypeProperties struct {
 	// The schema name of the Azure SQL Managed Instance. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Azure SQL Managed Instance dataset. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // AzureSQLSink - A copy activity Azure SQL sink.
@@ -5098,53 +5098,53 @@ type AzureSQLSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// SQL pre-copy script. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// SQL writer stored procedure name. Type: string (or Expression with resultType string).
-	SQLWriterStoredProcedureName interface{} `json:"sqlWriterStoredProcedureName,omitempty"`
+	SQLWriterStoredProcedureName any `json:"sqlWriterStoredProcedureName,omitempty"`
 
 	// SQL writer table type. Type: string (or Expression with resultType string).
-	SQLWriterTableType interface{} `json:"sqlWriterTableType,omitempty"`
+	SQLWriterTableType any `json:"sqlWriterTableType,omitempty"`
 
 	// Whether to use table lock during bulk copy. Type: boolean (or Expression with resultType boolean).
-	SQLWriterUseTableLock interface{} `json:"sqlWriterUseTableLock,omitempty"`
+	SQLWriterUseTableLock any `json:"sqlWriterUseTableLock,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// SQL stored procedure parameters.
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 
 	// The stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
-	StoredProcedureTableTypeParameterName interface{} `json:"storedProcedureTableTypeParameterName,omitempty"`
+	StoredProcedureTableTypeParameterName any `json:"storedProcedureTableTypeParameterName,omitempty"`
 
 	// The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression
 	// with resultType string).
-	TableOption interface{} `json:"tableOption,omitempty"`
+	TableOption any `json:"tableOption,omitempty"`
 
 	// SQL upsert settings.
 	UpsertSettings *SQLUpsertSettings `json:"upsertSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Write behavior when copying data into Azure SQL. Type: SqlWriteBehaviorEnum (or Expression with resultType SqlWriteBehaviorEnum)
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AzureSQLSink.
@@ -5168,45 +5168,45 @@ type AzureSQLSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable",
 	// "DynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for Sql source partitioning.
 	PartitionSettings *SQLPartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Which additional types to produce.
-	ProduceAdditionalTypes interface{} `json:"produceAdditionalTypes,omitempty"`
+	ProduceAdditionalTypes any `json:"produceAdditionalTypes,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// SQL reader query. Type: string (or Expression with resultType string).
-	SQLReaderQuery interface{} `json:"sqlReaderQuery,omitempty"`
+	SQLReaderQuery any `json:"sqlReaderQuery,omitempty"`
 
 	// Name of the stored procedure for a SQL Database source. This cannot be used at the same time as SqlReaderQuery. Type: string
 	// (or Expression with resultType string).
-	SQLReaderStoredProcedureName interface{} `json:"sqlReaderStoredProcedureName,omitempty"`
+	SQLReaderStoredProcedureName any `json:"sqlReaderStoredProcedureName,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AzureSQLSource.
@@ -5244,10 +5244,10 @@ type AzureSQLTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -5260,10 +5260,10 @@ type AzureSQLTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Azure SQL dataset properties.
 	TypeProperties *AzureSQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -5287,13 +5287,13 @@ func (a *AzureSQLTableDataset) GetDataset() *Dataset {
 // AzureSQLTableDatasetTypeProperties - Azure SQL dataset properties.
 type AzureSQLTableDatasetTypeProperties struct {
 	// The schema name of the Azure SQL database. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Azure SQL database. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // AzureSearchIndexDataset - The Azure Search Index.
@@ -5308,10 +5308,10 @@ type AzureSearchIndexDataset struct {
 	TypeProperties *AzureSearchIndexDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -5324,10 +5324,10 @@ type AzureSearchIndexDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type AzureSearchIndexDataset.
@@ -5348,7 +5348,7 @@ func (a *AzureSearchIndexDataset) GetDataset() *Dataset {
 // AzureSearchIndexDatasetTypeProperties - Properties specific to this dataset type.
 type AzureSearchIndexDatasetTypeProperties struct {
 	// REQUIRED; The name of the Azure Search Index. Type: string (or Expression with resultType string).
-	IndexName interface{} `json:"indexName,omitempty"`
+	IndexName any `json:"indexName,omitempty"`
 }
 
 // AzureSearchIndexSink - A copy activity Azure Search Index sink.
@@ -5357,25 +5357,25 @@ type AzureSearchIndexSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Specify the write behavior when upserting documents into Azure Search Index.
 	WriteBehavior *AzureSearchIndexWriteBehaviorType `json:"writeBehavior,omitempty"`
@@ -5404,10 +5404,10 @@ type AzureSearchLinkedService struct {
 	TypeProperties *AzureSearchLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -5434,11 +5434,11 @@ func (a *AzureSearchLinkedService) GetLinkedService() *LinkedService {
 // AzureSearchLinkedServiceTypeProperties - Windows Azure Search Service linked service properties.
 type AzureSearchLinkedServiceTypeProperties struct {
 	// REQUIRED; URL for Azure Search service. Type: string (or Expression with resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Admin Key for Azure Search service
 	Key SecretBaseClassification `json:"key,omitempty"`
@@ -5453,10 +5453,10 @@ type AzureStorageLinkedService struct {
 	TypeProperties *AzureStorageLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -5486,7 +5486,7 @@ type AzureStorageLinkedServiceTypeProperties struct {
 	AccountKey *AzureKeyVaultSecretReference `json:"accountKey,omitempty"`
 
 	// The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
@@ -5497,7 +5497,7 @@ type AzureStorageLinkedServiceTypeProperties struct {
 
 	// SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string, SecureString
 	// or AzureKeyVaultSecretReference.
-	SasURI interface{} `json:"sasUri,omitempty"`
+	SasURI any `json:"sasUri,omitempty"`
 }
 
 // AzureSynapseArtifactsLinkedService - Azure Synapse Analytics (Artifacts) linked service.
@@ -5509,10 +5509,10 @@ type AzureSynapseArtifactsLinkedService struct {
 	TypeProperties *AzureSynapseArtifactsLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -5540,11 +5540,16 @@ func (a *AzureSynapseArtifactsLinkedService) GetLinkedService() *LinkedService {
 type AzureSynapseArtifactsLinkedServiceTypeProperties struct {
 	// REQUIRED; https://.dev.azuresynapse.net, Azure Synapse Analytics workspace URL. Type: string (or Expression with resultType
 	// string).
-	Endpoint interface{} `json:"endpoint,omitempty"`
+	Endpoint any `json:"endpoint,omitempty"`
 
 	// Required to specify MSI, if using system assigned managed identity as authentication method. Type: string (or Expression
 	// with resultType string).
-	Authentication interface{} `json:"authentication,omitempty"`
+	Authentication any `json:"authentication,omitempty"`
+
+	// The resource ID of the Synapse workspace. The format should be: /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
+	// Type: string (or
+	// Expression with resultType string).
+	WorkspaceResourceID any `json:"workspaceResourceId,omitempty"`
 }
 
 // AzureTableDataset - The Azure Table storage dataset.
@@ -5559,10 +5564,10 @@ type AzureTableDataset struct {
 	TypeProperties *AzureTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -5575,10 +5580,10 @@ type AzureTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type AzureTableDataset.
@@ -5599,7 +5604,7 @@ func (a *AzureTableDataset) GetDataset() *Dataset {
 // AzureTableDatasetTypeProperties - Azure Table dataset properties.
 type AzureTableDatasetTypeProperties struct {
 	// REQUIRED; The table name of the Azure Table storage. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // AzureTableSink - A copy activity Azure Table sink.
@@ -5608,37 +5613,37 @@ type AzureTableSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Azure Table default partition key value. Type: string (or Expression with resultType string).
-	AzureTableDefaultPartitionKeyValue interface{} `json:"azureTableDefaultPartitionKeyValue,omitempty"`
+	AzureTableDefaultPartitionKeyValue any `json:"azureTableDefaultPartitionKeyValue,omitempty"`
 
 	// Azure Table insert type. Type: string (or Expression with resultType string).
-	AzureTableInsertType interface{} `json:"azureTableInsertType,omitempty"`
+	AzureTableInsertType any `json:"azureTableInsertType,omitempty"`
 
 	// Azure Table partition key name. Type: string (or Expression with resultType string).
-	AzureTablePartitionKeyName interface{} `json:"azureTablePartitionKeyName,omitempty"`
+	AzureTablePartitionKeyName any `json:"azureTablePartitionKeyName,omitempty"`
 
 	// Azure Table row key name. Type: string (or Expression with resultType string).
-	AzureTableRowKeyName interface{} `json:"azureTableRowKeyName,omitempty"`
+	AzureTableRowKeyName any `json:"azureTableRowKeyName,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type AzureTableSink.
@@ -5662,31 +5667,31 @@ type AzureTableSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Azure Table source ignore table not found. Type: boolean (or Expression with resultType boolean).
-	AzureTableSourceIgnoreTableNotFound interface{} `json:"azureTableSourceIgnoreTableNotFound,omitempty"`
+	AzureTableSourceIgnoreTableNotFound any `json:"azureTableSourceIgnoreTableNotFound,omitempty"`
 
 	// Azure Table source query. Type: string (or Expression with resultType string).
-	AzureTableSourceQuery interface{} `json:"azureTableSourceQuery,omitempty"`
+	AzureTableSourceQuery any `json:"azureTableSourceQuery,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type AzureTableSource.
@@ -5724,10 +5729,10 @@ type AzureTableStorageLinkedService struct {
 	TypeProperties *AzureStorageLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -5754,7 +5759,7 @@ func (a *AzureTableStorageLinkedService) GetLinkedService() *LinkedService {
 // BigDataPoolParametrizationReference - Big data pool reference type.
 type BigDataPoolParametrizationReference struct {
 	// REQUIRED; Reference big data pool name. Type: string (or Expression with resultType string).
-	ReferenceName interface{} `json:"referenceName,omitempty"`
+	ReferenceName any `json:"referenceName,omitempty"`
 
 	// REQUIRED; Big data pool reference type.
 	Type *BigDataPoolReferenceType `json:"type,omitempty"`
@@ -5769,10 +5774,10 @@ type BinaryDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -5785,10 +5790,10 @@ type BinaryDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Binary dataset properties.
 	TypeProperties *BinaryDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -5824,7 +5829,7 @@ type BinaryReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Compression settings.
 	CompressionProperties CompressionReadSettingsClassification `json:"compressionProperties,omitempty"`
@@ -5844,28 +5849,28 @@ type BinarySink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Binary store settings.
 	StoreSettings StoreWriteSettingsClassification `json:"storeSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type BinarySink.
@@ -5888,22 +5893,22 @@ type BinarySource struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Binary format settings.
 	FormatSettings *BinaryReadSettings `json:"formatSettings,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Binary store settings.
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
@@ -5930,10 +5935,10 @@ type BlobEventsTrigger struct {
 	TypeProperties *BlobEventsTriggerTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the trigger.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Trigger description.
 	Description *string `json:"description,omitempty"`
@@ -5996,40 +6001,40 @@ type BlobSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Blob writer add header. Type: boolean (or Expression with resultType boolean).
-	BlobWriterAddHeader interface{} `json:"blobWriterAddHeader,omitempty"`
+	BlobWriterAddHeader any `json:"blobWriterAddHeader,omitempty"`
 
 	// Blob writer date time format. Type: string (or Expression with resultType string).
-	BlobWriterDateTimeFormat interface{} `json:"blobWriterDateTimeFormat,omitempty"`
+	BlobWriterDateTimeFormat any `json:"blobWriterDateTimeFormat,omitempty"`
 
 	// Blob writer overwrite files. Type: boolean (or Expression with resultType boolean).
-	BlobWriterOverwriteFiles interface{} `json:"blobWriterOverwriteFiles,omitempty"`
+	BlobWriterOverwriteFiles any `json:"blobWriterOverwriteFiles,omitempty"`
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType array of objects).
 	Metadata []*MetadataItem `json:"metadata,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type BlobSink.
@@ -6052,29 +6057,29 @@ type BlobSource struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Number of header lines to skip from each blob. Type: integer (or Expression with resultType integer).
-	SkipHeaderLineCount interface{} `json:"skipHeaderLineCount,omitempty"`
+	SkipHeaderLineCount any `json:"skipHeaderLineCount,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Treat empty as null. Type: boolean (or Expression with resultType boolean).
-	TreatEmptyAsNull interface{} `json:"treatEmptyAsNull,omitempty"`
+	TreatEmptyAsNull any `json:"treatEmptyAsNull,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type BlobSource.
@@ -6098,10 +6103,10 @@ type BlobTrigger struct {
 	TypeProperties *BlobTriggerTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the trigger.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Trigger description.
 	Description *string `json:"description,omitempty"`
@@ -6163,10 +6168,10 @@ type CassandraLinkedService struct {
 	TypeProperties *CassandraLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -6193,23 +6198,23 @@ func (c *CassandraLinkedService) GetLinkedService() *LinkedService {
 // CassandraLinkedServiceTypeProperties - Cassandra linked service properties.
 type CassandraLinkedServiceTypeProperties struct {
 	// REQUIRED; Host name for connection. Type: string (or Expression with resultType string).
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// AuthenticationType to be used for connection. Type: string (or Expression with resultType string).
-	AuthenticationType interface{} `json:"authenticationType,omitempty"`
+	AuthenticationType any `json:"authenticationType,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password for authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The port for the connection. Type: integer (or Expression with resultType integer).
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// Username for authentication. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // CassandraSource - A copy activity source for a Cassandra database.
@@ -6219,10 +6224,10 @@ type CassandraSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The consistency level specifies how many Cassandra servers must respond to a read request before returning data to the
 	// client application. Cassandra checks the specified number of Cassandra servers
@@ -6231,23 +6236,23 @@ type CassandraSource struct {
 	ConsistencyLevel *CassandraSourceReadConsistencyLevels `json:"consistencyLevel,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Should be a SQL-92 query expression or Cassandra Query Language (CQL) command. Type: string (or Expression
 	// with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type CassandraSource.
@@ -6285,10 +6290,10 @@ type CassandraTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -6301,10 +6306,10 @@ type CassandraTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Cassandra dataset properties.
 	TypeProperties *CassandraTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -6328,10 +6333,10 @@ func (c *CassandraTableDataset) GetDataset() *Dataset {
 // CassandraTableDatasetTypeProperties - Cassandra dataset properties.
 type CassandraTableDatasetTypeProperties struct {
 	// The keyspace of the Cassandra database. Type: string (or Expression with resultType string).
-	Keyspace interface{} `json:"keyspace,omitempty"`
+	Keyspace any `json:"keyspace,omitempty"`
 
 	// The table name of the Cassandra database. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // ChainingTrigger - Trigger that allows the referenced pipeline to depend on other pipeline runs based on runDimension Name/Value
@@ -6349,10 +6354,10 @@ type ChainingTrigger struct {
 	TypeProperties *ChainingTriggerTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the trigger.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Trigger description.
 	Description *string `json:"description,omitempty"`
@@ -6403,10 +6408,10 @@ type CmdkeySetupTypeProperties struct {
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// REQUIRED; The server name of data source access.
-	TargetName interface{} `json:"targetName,omitempty"`
+	TargetName any `json:"targetName,omitempty"`
 
 	// REQUIRED; The user name of data source access.
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // CommonDataServiceForAppsEntityDataset - The Common Data Service for Apps entity dataset.
@@ -6418,10 +6423,10 @@ type CommonDataServiceForAppsEntityDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -6434,10 +6439,10 @@ type CommonDataServiceForAppsEntityDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Common Data Service for Apps entity dataset properties.
 	TypeProperties *CommonDataServiceForAppsEntityDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -6461,7 +6466,7 @@ func (c *CommonDataServiceForAppsEntityDataset) GetDataset() *Dataset {
 // CommonDataServiceForAppsEntityDatasetTypeProperties - Common Data Service for Apps entity dataset properties.
 type CommonDataServiceForAppsEntityDatasetTypeProperties struct {
 	// The logical name of the entity. Type: string (or Expression with resultType string).
-	EntityName interface{} `json:"entityName,omitempty"`
+	EntityName any `json:"entityName,omitempty"`
 }
 
 // CommonDataServiceForAppsLinkedService - Common Data Service for Apps linked service.
@@ -6473,10 +6478,10 @@ type CommonDataServiceForAppsLinkedService struct {
 	TypeProperties *CommonDataServiceForAppsLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -6505,25 +6510,25 @@ type CommonDataServiceForAppsLinkedServiceTypeProperties struct {
 	// REQUIRED; The authentication type to connect to Common Data Service for Apps server. 'Office365' for online scenario, 'Ifd'
 	// for on-premises with Ifd scenario. 'AADServicePrincipal' for Server-To-Server
 	// authentication in online scenario. Type: string (or Expression with resultType string).
-	AuthenticationType interface{} `json:"authenticationType,omitempty"`
+	AuthenticationType any `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The deployment type of the Common Data Service for Apps instance. 'Online' for Common Data Service for Apps Online
 	// and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with Ifd. Type:
 	// string (or Expression with resultType string).
-	DeploymentType interface{} `json:"deploymentType,omitempty"`
+	DeploymentType any `json:"deploymentType,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The host name of the on-premises Common Data Service for Apps server. The property is required for on-prem and not allowed
 	// for online. Type: string (or Expression with resultType string).
-	HostName interface{} `json:"hostName,omitempty"`
+	HostName any `json:"hostName,omitempty"`
 
 	// The organization name of the Common Data Service for Apps instance. The property is required for on-prem and required for
 	// online when there are more than one Common Data Service for Apps instances
 	// associated with the user. Type: string (or Expression with resultType string).
-	OrganizationName interface{} `json:"organizationName,omitempty"`
+	OrganizationName any `json:"organizationName,omitempty"`
 
 	// Password to access the Common Data Service for Apps instance.
 	Password SecretBaseClassification `json:"password,omitempty"`
@@ -6531,7 +6536,7 @@ type CommonDataServiceForAppsLinkedServiceTypeProperties struct {
 	// The port of on-premises Common Data Service for Apps server. The property is required for on-prem and not allowed for online.
 	// Default is 443. Type: integer (or Expression with resultType integer),
 	// minimum: 0.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
 	// servicePrincipalCredential can be SecureString or
@@ -6542,18 +6547,18 @@ type CommonDataServiceForAppsLinkedServiceTypeProperties struct {
 	// The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
 	// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
 	// resultType string).
-	ServicePrincipalCredentialType interface{} `json:"servicePrincipalCredentialType,omitempty"`
+	ServicePrincipalCredentialType any `json:"servicePrincipalCredentialType,omitempty"`
 
 	// The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string (or Expression
 	// with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The URL to the Microsoft Common Data Service for Apps server. The property is required for on-line and not allowed for
 	// on-prem. Type: string (or Expression with resultType string).
-	ServiceURI interface{} `json:"serviceUri,omitempty"`
+	ServiceURI any `json:"serviceUri,omitempty"`
 
 	// User name to access the Common Data Service for Apps instance. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // CommonDataServiceForAppsSink - A copy activity Common Data Service for Apps sink.
@@ -6565,33 +6570,33 @@ type CommonDataServiceForAppsSink struct {
 	WriteBehavior *DynamicsSinkWriteBehavior `json:"writeBehavior,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with resultType
 	// string).
-	AlternateKeyName interface{} `json:"alternateKeyName,omitempty"`
+	AlternateKeyName any `json:"alternateKeyName,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The flag indicating whether to ignore null values from input dataset (except key fields) during write operation. Default
 	// is false. Type: boolean (or Expression with resultType boolean).
-	IgnoreNullValues interface{} `json:"ignoreNullValues,omitempty"`
+	IgnoreNullValues any `json:"ignoreNullValues,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type CommonDataServiceForAppsSink.
@@ -6615,26 +6620,26 @@ type CommonDataServiceForAppsSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// FetchXML is a proprietary query language that is used in Microsoft Common Data Service for Apps (online & on-premises).
 	// Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type CommonDataServiceForAppsSource.
@@ -6680,7 +6685,7 @@ type CompressionReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // GetCompressionReadSettings implements the CompressionReadSettingsClassification interface for type CompressionReadSettings.
@@ -6695,10 +6700,10 @@ type ConcurLinkedService struct {
 	TypeProperties *ConcurLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -6725,30 +6730,30 @@ func (c *ConcurLinkedService) GetLinkedService() *LinkedService {
 // ConcurLinkedServiceTypeProperties - Concur Service linked service properties.
 type ConcurLinkedServiceTypeProperties struct {
 	// REQUIRED; Application client_id supplied by Concur App Management.
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// REQUIRED; The user name that you use to access Concur Service.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 
 	// Properties used to connect to Concur. It is mutually exclusive with any other properties in the linked service. Type: object.
-	ConnectionProperties interface{} `json:"connectionProperties,omitempty"`
+	ConnectionProperties any `json:"connectionProperties,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password corresponding to the user name that you provided in the username field.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // ConcurObjectDataset - Concur Service dataset.
@@ -6760,10 +6765,10 @@ type ConcurObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -6776,10 +6781,10 @@ type ConcurObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -6807,28 +6812,28 @@ type ConcurSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type ConcurSource.
@@ -6889,7 +6894,7 @@ type ControlActivity struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -6928,7 +6933,7 @@ type CopyActivity struct {
 	TypeProperties *CopyActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -6981,10 +6986,10 @@ func (c *CopyActivity) GetExecutionActivity() *ExecutionActivity {
 // CopyActivityLogSettings - Settings for copy activity log.
 type CopyActivityLogSettings struct {
 	// Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
-	EnableReliableLogging interface{} `json:"enableReliableLogging,omitempty"`
+	EnableReliableLogging any `json:"enableReliableLogging,omitempty"`
 
 	// Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
-	LogLevel interface{} `json:"logLevel,omitempty"`
+	LogLevel any `json:"logLevel,omitempty"`
 }
 
 // CopyActivityTypeProperties - Copy activity properties.
@@ -6997,14 +7002,14 @@ type CopyActivityTypeProperties struct {
 
 	// Maximum number of data integration units that can be used to perform this data movement. Type: integer (or Expression with
 	// resultType integer), minimum: 0.
-	DataIntegrationUnits interface{} `json:"dataIntegrationUnits,omitempty"`
+	DataIntegrationUnits any `json:"dataIntegrationUnits,omitempty"`
 
 	// Whether to skip incompatible row. Default value is false. Type: boolean (or Expression with resultType boolean).
-	EnableSkipIncompatibleRow interface{} `json:"enableSkipIncompatibleRow,omitempty"`
+	EnableSkipIncompatibleRow any `json:"enableSkipIncompatibleRow,omitempty"`
 
 	// Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with resultType
 	// boolean).
-	EnableStaging interface{} `json:"enableStaging,omitempty"`
+	EnableStaging any `json:"enableStaging,omitempty"`
 
 	// Log settings customer needs provide when enabling log.
 	LogSettings *LogSettings `json:"logSettings,omitempty"`
@@ -7014,13 +7019,13 @@ type CopyActivityTypeProperties struct {
 
 	// Maximum number of concurrent sessions opened on the source or sink to avoid overloading the data store. Type: integer (or
 	// Expression with resultType integer), minimum: 0.
-	ParallelCopies interface{} `json:"parallelCopies,omitempty"`
+	ParallelCopies any `json:"parallelCopies,omitempty"`
 
 	// Preserve rules.
-	Preserve []interface{} `json:"preserve,omitempty"`
+	Preserve []any `json:"preserve,omitempty"`
 
 	// Preserve Rules.
-	PreserveRules []interface{} `json:"preserveRules,omitempty"`
+	PreserveRules []any `json:"preserveRules,omitempty"`
 
 	// Redirect incompatible row settings when EnableSkipIncompatibleRow is true.
 	RedirectIncompatibleRowSettings *RedirectIncompatibleRowSettings `json:"redirectIncompatibleRowSettings,omitempty"`
@@ -7032,10 +7037,10 @@ type CopyActivityTypeProperties struct {
 	StagingSettings *StagingSettings `json:"stagingSettings,omitempty"`
 
 	// Copy activity translator. If not specified, tabular translator is used.
-	Translator interface{} `json:"translator,omitempty"`
+	Translator any `json:"translator,omitempty"`
 
 	// Whether to enable Data Consistency validation. Type: boolean (or Expression with resultType boolean).
-	ValidateDataConsistency interface{} `json:"validateDataConsistency,omitempty"`
+	ValidateDataConsistency any `json:"validateDataConsistency,omitempty"`
 }
 
 // CopySinkClassification provides polymorphic access to related types.
@@ -7058,25 +7063,25 @@ type CopySink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type CopySink.
@@ -7110,19 +7115,19 @@ type CopySource struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type CopySource.
@@ -7137,10 +7142,10 @@ type CosmosDbLinkedService struct {
 	TypeProperties *CosmosDbLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -7167,7 +7172,7 @@ func (c *CosmosDbLinkedService) GetLinkedService() *LinkedService {
 // CosmosDbLinkedServiceTypeProperties - CosmosDB linked service properties.
 type CosmosDbLinkedServiceTypeProperties struct {
 	// The endpoint of the Azure CosmosDB account. Type: string (or Expression with resultType string)
-	AccountEndpoint interface{} `json:"accountEndpoint,omitempty"`
+	AccountEndpoint any `json:"accountEndpoint,omitempty"`
 
 	// The account key of the Azure CosmosDB account. Type: SecureString or AzureKeyVaultSecretReference.
 	AccountKey SecretBaseClassification `json:"accountKey,omitempty"`
@@ -7175,23 +7180,23 @@ type CosmosDbLinkedServiceTypeProperties struct {
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
-	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
+	AzureCloudType any `json:"azureCloudType,omitempty"`
 
 	// The connection mode used to access CosmosDB account. Type: string (or Expression with resultType string).
 	ConnectionMode *CosmosDbConnectionMode `json:"connectionMode,omitempty"`
 
 	// The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The name of the database. Type: string (or Expression with resultType string)
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
 	// servicePrincipalCredential can be SecureString or
@@ -7206,10 +7211,10 @@ type CosmosDbLinkedServiceTypeProperties struct {
 
 	// The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string (or Expression
 	// with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 }
 
 // CosmosDbMongoDbAPICollectionDataset - The CosmosDB (MongoDB API) database dataset.
@@ -7224,10 +7229,10 @@ type CosmosDbMongoDbAPICollectionDataset struct {
 	TypeProperties *CosmosDbMongoDbAPICollectionDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -7240,10 +7245,10 @@ type CosmosDbMongoDbAPICollectionDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type CosmosDbMongoDbAPICollectionDataset.
@@ -7264,7 +7269,7 @@ func (c *CosmosDbMongoDbAPICollectionDataset) GetDataset() *Dataset {
 // CosmosDbMongoDbAPICollectionDatasetTypeProperties - CosmosDB (MongoDB API) database dataset properties.
 type CosmosDbMongoDbAPICollectionDatasetTypeProperties struct {
 	// REQUIRED; The collection name of the CosmosDB (MongoDB API) database. Type: string (or Expression with resultType string).
-	Collection interface{} `json:"collection,omitempty"`
+	Collection any `json:"collection,omitempty"`
 }
 
 // CosmosDbMongoDbAPILinkedService - Linked service for CosmosDB (MongoDB API) data source.
@@ -7276,10 +7281,10 @@ type CosmosDbMongoDbAPILinkedService struct {
 	TypeProperties *CosmosDbMongoDbAPILinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -7307,15 +7312,15 @@ func (c *CosmosDbMongoDbAPILinkedService) GetLinkedService() *LinkedService {
 type CosmosDbMongoDbAPILinkedServiceTypeProperties struct {
 	// REQUIRED; The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type:
 	// string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// REQUIRED; The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with resultType
 	// string).
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 
 	// Whether the CosmosDB (MongoDB API) server version is higher than 3.2. The default value is false. Type: boolean (or Expression
 	// with resultType boolean).
-	IsServerVersionAbove32 interface{} `json:"isServerVersionAbove32,omitempty"`
+	IsServerVersionAbove32 any `json:"isServerVersionAbove32,omitempty"`
 }
 
 // CosmosDbMongoDbAPISink - A copy activity sink for a CosmosDB (MongoDB API) database.
@@ -7324,30 +7329,30 @@ type CosmosDbMongoDbAPISink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert). The default
 	// value is "insert". Type: string (or Expression with resultType string). Type:
 	// string (or Expression with resultType string).
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type CosmosDbMongoDbAPISink.
@@ -7371,37 +7376,37 @@ type CosmosDbMongoDbAPISource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases, modifying
 	// the batch size will not affect the user or the application. This property's
 	// main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
-	BatchSize interface{} `json:"batchSize,omitempty"`
+	BatchSize any `json:"batchSize,omitempty"`
 
 	// Cursor methods for Mongodb query.
 	CursorMethods *MongoDbCursorMethodsProperties `json:"cursorMethods,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or pass
 	// an empty document ({}). Type: string (or Expression with resultType string).
-	Filter interface{} `json:"filter,omitempty"`
+	Filter any `json:"filter,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type CosmosDbMongoDbAPISource.
@@ -7428,10 +7433,10 @@ type CosmosDbSQLAPICollectionDataset struct {
 	TypeProperties *CosmosDbSQLAPICollectionDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -7444,10 +7449,10 @@ type CosmosDbSQLAPICollectionDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type CosmosDbSQLAPICollectionDataset.
@@ -7468,7 +7473,7 @@ func (c *CosmosDbSQLAPICollectionDataset) GetDataset() *Dataset {
 // CosmosDbSQLAPICollectionDatasetTypeProperties - CosmosDB (SQL API) Collection dataset properties.
 type CosmosDbSQLAPICollectionDatasetTypeProperties struct {
 	// REQUIRED; CosmosDB (SQL API) collection name. Type: string (or Expression with resultType string).
-	CollectionName interface{} `json:"collectionName,omitempty"`
+	CollectionName any `json:"collectionName,omitempty"`
 }
 
 // CosmosDbSQLAPISink - A copy activity Azure CosmosDB (SQL API) Collection sink.
@@ -7477,29 +7482,29 @@ type CosmosDbSQLAPISink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed values: insert
 	// and upsert.
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type CosmosDbSQLAPISink.
@@ -7523,34 +7528,34 @@ type CosmosDbSQLAPISource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Whether detect primitive values as datetime values. Type: boolean (or Expression with resultType boolean).
-	DetectDatetime interface{} `json:"detectDatetime,omitempty"`
+	DetectDatetime any `json:"detectDatetime,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Page size of the result. Type: integer (or Expression with resultType integer).
-	PageSize interface{} `json:"pageSize,omitempty"`
+	PageSize any `json:"pageSize,omitempty"`
 
 	// Preferred regions. Type: array of strings (or Expression with resultType array of strings).
-	PreferredRegions interface{} `json:"preferredRegions,omitempty"`
+	PreferredRegions any `json:"preferredRegions,omitempty"`
 
 	// SQL API query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type CosmosDbSQLAPISource.
@@ -7574,10 +7579,10 @@ type CouchbaseLinkedService struct {
 	TypeProperties *CouchbaseLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -7604,14 +7609,14 @@ func (c *CouchbaseLinkedService) GetLinkedService() *LinkedService {
 // CouchbaseLinkedServiceTypeProperties - Couchbase server linked service properties.
 type CouchbaseLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The Azure key vault secret reference of credString in connection string.
 	CredString *AzureKeyVaultSecretReference `json:"credString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // CouchbaseSource - A copy activity Couchbase server source.
@@ -7621,28 +7626,28 @@ type CouchbaseSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type CouchbaseSource.
@@ -7680,10 +7685,10 @@ type CouchbaseTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -7696,10 +7701,10 @@ type CouchbaseTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -7765,6 +7770,69 @@ type CreateRunResponse struct {
 	RunID *string `json:"runId,omitempty"`
 }
 
+// CredentialClassification provides polymorphic access to related types.
+// Call the interface's GetCredential() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *Credential, *ManagedIdentityCredential, *ServicePrincipalCredential
+type CredentialClassification interface {
+	// GetCredential returns the Credential content of the underlying type.
+	GetCredential() *Credential
+}
+
+// Credential - The Azure Data Factory nested object which contains the information and credential which can be used to connect
+// with related store or compute resource.
+type Credential struct {
+	// REQUIRED; Type of credential.
+	Type *string `json:"type,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the Credential.
+	Annotations []any `json:"annotations,omitempty"`
+
+	// Credential description.
+	Description *string `json:"description,omitempty"`
+}
+
+// GetCredential implements the CredentialClassification interface for type Credential.
+func (c *Credential) GetCredential() *Credential { return c }
+
+// CredentialListResponse - A list of credential resources.
+type CredentialListResponse struct {
+	// REQUIRED; List of credentials.
+	Value []*ManagedIdentityCredentialResource `json:"value,omitempty"`
+
+	// The link to the next page of results, if any remaining results exist.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// CredentialOperationsClientCreateOrUpdateOptions contains the optional parameters for the CredentialOperationsClient.CreateOrUpdate
+// method.
+type CredentialOperationsClientCreateOrUpdateOptions struct {
+	// ETag of the credential entity. Should only be specified for update, for which it should match existing entity or can be
+	// * for unconditional update.
+	IfMatch *string
+}
+
+// CredentialOperationsClientDeleteOptions contains the optional parameters for the CredentialOperationsClient.Delete method.
+type CredentialOperationsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CredentialOperationsClientGetOptions contains the optional parameters for the CredentialOperationsClient.Get method.
+type CredentialOperationsClientGetOptions struct {
+	// ETag of the credential entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was
+	// provided, then no content will be returned.
+	IfNoneMatch *string
+}
+
+// CredentialOperationsClientListByFactoryOptions contains the optional parameters for the CredentialOperationsClient.NewListByFactoryPager
+// method.
+type CredentialOperationsClientListByFactoryOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CredentialReference - Credential reference type.
 type CredentialReference struct {
 	// REQUIRED; Reference credential name.
@@ -7774,7 +7842,7 @@ type CredentialReference struct {
 	Type *CredentialReferenceType `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // CustomActivity - Custom activity type.
@@ -7789,7 +7857,7 @@ type CustomActivity struct {
 	TypeProperties *CustomActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -7845,17 +7913,17 @@ type CustomActivityReferenceObject struct {
 // CustomActivityTypeProperties - Custom activity properties.
 type CustomActivityTypeProperties struct {
 	// REQUIRED; Command for custom activity Type: string (or Expression with resultType string).
-	Command interface{} `json:"command,omitempty"`
+	Command any `json:"command,omitempty"`
 
 	// Elevation level and scope for the user, default is nonadmin task. Type: string (or Expression with resultType double).
-	AutoUserSpecification interface{} `json:"autoUserSpecification,omitempty"`
+	AutoUserSpecification any `json:"autoUserSpecification,omitempty"`
 
 	// User defined property bag. There is no restriction on the keys or values that can be used. The user specified custom activity
 	// has the full responsibility to consume and interpret the content defined.
-	ExtendedProperties map[string]interface{} `json:"extendedProperties,omitempty"`
+	ExtendedProperties map[string]any `json:"extendedProperties,omitempty"`
 
 	// Folder path for resource files Type: string (or Expression with resultType string).
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// Reference objects
 	ReferenceObjects *CustomActivityReferenceObject `json:"referenceObjects,omitempty"`
@@ -7864,7 +7932,7 @@ type CustomActivityTypeProperties struct {
 	ResourceLinkedService *LinkedServiceReference `json:"resourceLinkedService,omitempty"`
 
 	// The retention time for the files submitted for custom activity. Type: double (or Expression with resultType double).
-	RetentionTimeInDays interface{} `json:"retentionTimeInDays,omitempty"`
+	RetentionTimeInDays any `json:"retentionTimeInDays,omitempty"`
 }
 
 // CustomDataSourceLinkedService - Custom linked service.
@@ -7873,13 +7941,13 @@ type CustomDataSourceLinkedService struct {
 	Type *string `json:"type,omitempty"`
 
 	// REQUIRED; Custom linked service properties.
-	TypeProperties interface{} `json:"typeProperties,omitempty"`
+	TypeProperties any `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -7912,10 +7980,10 @@ type CustomDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -7928,13 +7996,13 @@ type CustomDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Custom dataset properties.
-	TypeProperties interface{} `json:"typeProperties,omitempty"`
+	TypeProperties any `json:"typeProperties,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type CustomDataset.
@@ -7961,10 +8029,10 @@ type CustomEventsTrigger struct {
 	TypeProperties *CustomEventsTriggerTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the trigger.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Trigger description.
 	Description *string `json:"description,omitempty"`
@@ -8002,7 +8070,7 @@ func (c *CustomEventsTrigger) GetTrigger() *Trigger {
 // CustomEventsTriggerTypeProperties - Custom Events Trigger properties.
 type CustomEventsTriggerTypeProperties struct {
 	// REQUIRED; The list of event types that cause this trigger to fire.
-	Events []interface{} `json:"events,omitempty"`
+	Events []any `json:"events,omitempty"`
 
 	// REQUIRED; The ARM resource ID of the Azure Event Grid Topic.
 	Scope *string `json:"scope,omitempty"`
@@ -8037,10 +8105,10 @@ func (c *CustomSetupBase) GetCustomSetupBase() *CustomSetupBase { return c }
 // DWCopyCommandDefaultValue - Default value.
 type DWCopyCommandDefaultValue struct {
 	// Column name. Type: object (or Expression with resultType string).
-	ColumnName interface{} `json:"columnName,omitempty"`
+	ColumnName any `json:"columnName,omitempty"`
 
 	// The default value of the column. Type: object (or Expression with resultType string).
-	DefaultValue interface{} `json:"defaultValue,omitempty"`
+	DefaultValue any `json:"defaultValue,omitempty"`
 }
 
 // DWCopyCommandSettings - DW Copy Command settings.
@@ -8071,7 +8139,7 @@ type DataFlow struct {
 	Type *string `json:"type,omitempty"`
 
 	// List of tags that can be used for describing the data flow.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The description of the data flow.
 	Description *string `json:"description,omitempty"`
@@ -8122,7 +8190,7 @@ type DataFlowDebugCommandResponse struct {
 // DataFlowDebugPackage - Request body structure for starting data flow debug session.
 type DataFlowDebugPackage struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Data flow instance.
 	DataFlow *DataFlowDebugResource `json:"dataFlow,omitempty"`
@@ -8149,10 +8217,10 @@ type DataFlowDebugPackage struct {
 // DataFlowDebugPackageDebugSettings - Data flow debug settings.
 type DataFlowDebugPackageDebugSettings struct {
 	// Parameters for dataset.
-	DatasetParameters interface{} `json:"datasetParameters,omitempty"`
+	DatasetParameters any `json:"datasetParameters,omitempty"`
 
 	// Data flow parameters.
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters map[string]any `json:"parameters,omitempty"`
 
 	// Source setting for data flow debug.
 	SourceSettings []*DataFlowSourceSetting `json:"sourceSettings,omitempty"`
@@ -8192,7 +8260,7 @@ type DataFlowDebugSessionClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataFlowDebugSessionClientQueryByFactoryOptions contains the optional parameters for the DataFlowDebugSessionClient.QueryByFactory
+// DataFlowDebugSessionClientQueryByFactoryOptions contains the optional parameters for the DataFlowDebugSessionClient.NewQueryByFactoryPager
 // method.
 type DataFlowDebugSessionClientQueryByFactoryOptions struct {
 	// placeholder for future optional parameters
@@ -8201,7 +8269,7 @@ type DataFlowDebugSessionClientQueryByFactoryOptions struct {
 // DataFlowDebugSessionInfo - Data flow debug session info.
 type DataFlowDebugSessionInfo struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Compute type of the cluster.
 	ComputeType *string `json:"computeType,omitempty"`
@@ -8255,13 +8323,13 @@ type DataFlowReference struct {
 	Type *DataFlowReferenceType `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Reference data flow parameters from dataset.
-	DatasetParameters interface{} `json:"datasetParameters,omitempty"`
+	DatasetParameters any `json:"datasetParameters,omitempty"`
 
 	// Data flow parameters
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters map[string]any `json:"parameters,omitempty"`
 }
 
 // DataFlowResource - Data flow resource type.
@@ -8330,7 +8398,7 @@ type DataFlowSource struct {
 // DataFlowSourceSetting - Definition of data flow source setting for debug.
 type DataFlowSourceSetting struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Defines the row limit of data flow source in debug.
 	RowLimit *int32 `json:"rowLimit,omitempty"`
@@ -8342,7 +8410,7 @@ type DataFlowSourceSetting struct {
 // DataFlowStagingInfo - Staging info for execute data flow activity.
 type DataFlowStagingInfo struct {
 	// Folder path for staging blob. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// Staging linked service reference.
 	LinkedService *LinkedServiceReference `json:"linkedService,omitempty"`
@@ -8367,7 +8435,7 @@ type DataFlowsClientGetOptions struct {
 	IfNoneMatch *string
 }
 
-// DataFlowsClientListByFactoryOptions contains the optional parameters for the DataFlowsClient.ListByFactory method.
+// DataFlowsClientListByFactoryOptions contains the optional parameters for the DataFlowsClient.NewListByFactoryPager method.
 type DataFlowsClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
 }
@@ -8384,7 +8452,7 @@ type DataLakeAnalyticsUSQLActivity struct {
 	TypeProperties *DataLakeAnalyticsUSQLActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -8434,26 +8502,26 @@ type DataLakeAnalyticsUSQLActivityTypeProperties struct {
 	ScriptLinkedService *LinkedServiceReference `json:"scriptLinkedService,omitempty"`
 
 	// REQUIRED; Case-sensitive path to folder that contains the U-SQL script. Type: string (or Expression with resultType string).
-	ScriptPath interface{} `json:"scriptPath,omitempty"`
+	ScriptPath any `json:"scriptPath,omitempty"`
 
 	// Compilation mode of U-SQL. Must be one of these values : Semantic, Full and SingleBox. Type: string (or Expression with
 	// resultType string).
-	CompilationMode interface{} `json:"compilationMode,omitempty"`
+	CompilationMode any `json:"compilationMode,omitempty"`
 
 	// The maximum number of nodes simultaneously used to run the job. Default value is 1. Type: integer (or Expression with resultType
 	// integer), minimum: 1.
-	DegreeOfParallelism interface{} `json:"degreeOfParallelism,omitempty"`
+	DegreeOfParallelism any `json:"degreeOfParallelism,omitempty"`
 
 	// Parameters for U-SQL job request.
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters map[string]any `json:"parameters,omitempty"`
 
 	// Determines which jobs out of all that are queued should be selected to run first. The lower the number, the higher the
 	// priority. Default value is 1000. Type: integer (or Expression with resultType
 	// integer), minimum: 1.
-	Priority interface{} `json:"priority,omitempty"`
+	Priority any `json:"priority,omitempty"`
 
 	// Runtime version of the U-SQL engine to use. Type: string (or Expression with resultType string).
-	RuntimeVersion interface{} `json:"runtimeVersion,omitempty"`
+	RuntimeVersion any `json:"runtimeVersion,omitempty"`
 }
 
 // DatabricksNotebookActivity - DatabricksNotebook activity.
@@ -8468,7 +8536,7 @@ type DatabricksNotebookActivity struct {
 	TypeProperties *DatabricksNotebookActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -8516,14 +8584,14 @@ func (d *DatabricksNotebookActivity) GetExecutionActivity() *ExecutionActivity {
 type DatabricksNotebookActivityTypeProperties struct {
 	// REQUIRED; The absolute path of the notebook to be run in the Databricks Workspace. This path must begin with a slash. Type:
 	// string (or Expression with resultType string).
-	NotebookPath interface{} `json:"notebookPath,omitempty"`
+	NotebookPath any `json:"notebookPath,omitempty"`
 
 	// Base parameters to be used for each run of this job.If the notebook takes a parameter that is not specified, the default
 	// value from the notebook will be used.
-	BaseParameters map[string]interface{} `json:"baseParameters,omitempty"`
+	BaseParameters map[string]any `json:"baseParameters,omitempty"`
 
 	// A list of libraries to be installed on the cluster that will execute the job.
-	Libraries []map[string]interface{} `json:"libraries,omitempty"`
+	Libraries []map[string]any `json:"libraries,omitempty"`
 }
 
 // DatabricksSparkJarActivity - DatabricksSparkJar activity.
@@ -8538,7 +8606,7 @@ type DatabricksSparkJarActivity struct {
 	TypeProperties *DatabricksSparkJarActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -8586,13 +8654,13 @@ func (d *DatabricksSparkJarActivity) GetExecutionActivity() *ExecutionActivity {
 type DatabricksSparkJarActivityTypeProperties struct {
 	// REQUIRED; The full name of the class containing the main method to be executed. This class must be contained in a JAR provided
 	// as a library. Type: string (or Expression with resultType string).
-	MainClassName interface{} `json:"mainClassName,omitempty"`
+	MainClassName any `json:"mainClassName,omitempty"`
 
 	// A list of libraries to be installed on the cluster that will execute the job.
-	Libraries []map[string]interface{} `json:"libraries,omitempty"`
+	Libraries []map[string]any `json:"libraries,omitempty"`
 
 	// Parameters that will be passed to the main method.
-	Parameters []interface{} `json:"parameters,omitempty"`
+	Parameters []any `json:"parameters,omitempty"`
 }
 
 // DatabricksSparkPythonActivity - DatabricksSparkPython activity.
@@ -8607,7 +8675,7 @@ type DatabricksSparkPythonActivity struct {
 	TypeProperties *DatabricksSparkPythonActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -8655,13 +8723,13 @@ func (d *DatabricksSparkPythonActivity) GetExecutionActivity() *ExecutionActivit
 type DatabricksSparkPythonActivityTypeProperties struct {
 	// REQUIRED; The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType
 	// string).
-	PythonFile interface{} `json:"pythonFile,omitempty"`
+	PythonFile any `json:"pythonFile,omitempty"`
 
 	// A list of libraries to be installed on the cluster that will execute the job.
-	Libraries []map[string]interface{} `json:"libraries,omitempty"`
+	Libraries []map[string]any `json:"libraries,omitempty"`
 
 	// Command line parameters that will be passed to the Python file.
-	Parameters []interface{} `json:"parameters,omitempty"`
+	Parameters []any `json:"parameters,omitempty"`
 }
 
 // DatasetClassification provides polymorphic access to related types.
@@ -8701,10 +8769,10 @@ type Dataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -8717,10 +8785,10 @@ type Dataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type Dataset.
@@ -8729,13 +8797,13 @@ func (d *Dataset) GetDataset() *Dataset { return d }
 // DatasetCompression - The compression method used on a dataset.
 type DatasetCompression struct {
 	// REQUIRED; Type of dataset compression. Type: string (or Expression with resultType string).
-	Type interface{} `json:"type,omitempty"`
+	Type any `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The dataset compression level. Type: string (or Expression with resultType string).
-	Level interface{} `json:"level,omitempty"`
+	Level any `json:"level,omitempty"`
 }
 
 // DatasetDebugResource - Dataset debug resource.
@@ -8779,13 +8847,13 @@ type DatasetLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type DatasetLocation.
@@ -8800,7 +8868,7 @@ type DatasetReference struct {
 	Type *DatasetReferenceType `json:"type,omitempty"`
 
 	// Arguments for dataset.
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters map[string]any `json:"parameters,omitempty"`
 }
 
 // DatasetResource - Dataset resource type.
@@ -8836,13 +8904,13 @@ type DatasetStorageFormat struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Deserializer. Type: string (or Expression with resultType string).
-	Deserializer interface{} `json:"deserializer,omitempty"`
+	Deserializer any `json:"deserializer,omitempty"`
 
 	// Serializer. Type: string (or Expression with resultType string).
-	Serializer interface{} `json:"serializer,omitempty"`
+	Serializer any `json:"serializer,omitempty"`
 }
 
 // GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type DatasetStorageFormat.
@@ -8867,7 +8935,7 @@ type DatasetsClientGetOptions struct {
 	IfNoneMatch *string
 }
 
-// DatasetsClientListByFactoryOptions contains the optional parameters for the DatasetsClient.ListByFactory method.
+// DatasetsClientListByFactoryOptions contains the optional parameters for the DatasetsClient.NewListByFactoryPager method.
 type DatasetsClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
 }
@@ -8881,10 +8949,10 @@ type DataworldLinkedService struct {
 	TypeProperties *DataworldLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -8915,7 +8983,7 @@ type DataworldLinkedServiceTypeProperties struct {
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // Db2LinkedService - Linked service for DB2 data source.
@@ -8927,10 +8995,10 @@ type Db2LinkedService struct {
 	TypeProperties *Db2LinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -8961,36 +9029,36 @@ type Db2LinkedServiceTypeProperties struct {
 
 	// Certificate Common Name when TLS is enabled. It is mutually exclusive with connectionString property. Type: string (or
 	// Expression with resultType string).
-	CertificateCommonName interface{} `json:"certificateCommonName,omitempty"`
+	CertificateCommonName any `json:"certificateCommonName,omitempty"`
 
 	// The connection string. It is mutually exclusive with server, database, authenticationType, userName, packageCollection
 	// and certificateCommonName property. Type: string, SecureString or
 	// AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// Database name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression with
 	// resultType string).
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// It is mutually exclusive with connectionString property. Type: string (or
 	// Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Under where packages are created when querying database. It is mutually exclusive with connectionString property. Type:
 	// string (or Expression with resultType string).
-	PackageCollection interface{} `json:"packageCollection,omitempty"`
+	PackageCollection any `json:"packageCollection,omitempty"`
 
 	// Password for authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Server name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType
 	// string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// Username for authentication. It is mutually exclusive with connectionString property. Type: string (or Expression with
 	// resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // Db2Source - A copy activity source for Db2 databases.
@@ -9000,28 +9068,28 @@ type Db2Source struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type Db2Source.
@@ -9059,10 +9127,10 @@ type Db2TableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -9075,10 +9143,10 @@ type Db2TableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Db2 table dataset properties.
 	TypeProperties *Db2TableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -9102,13 +9170,13 @@ func (d *Db2TableDataset) GetDataset() *Dataset {
 // Db2TableDatasetTypeProperties - Db2 table dataset properties.
 type Db2TableDatasetTypeProperties struct {
 	// The Db2 schema name. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The Db2 table name. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // DeleteActivity - Delete activity.
@@ -9123,7 +9191,7 @@ type DeleteActivity struct {
 	TypeProperties *DeleteActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -9174,7 +9242,7 @@ type DeleteActivityTypeProperties struct {
 
 	// Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or Expression with
 	// resultType boolean).
-	EnableLogging interface{} `json:"enableLogging,omitempty"`
+	EnableLogging any `json:"enableLogging,omitempty"`
 
 	// Log storage settings customer need to provide when enableLogging is true.
 	LogStorageSettings *LogStorageSettings `json:"logStorageSettings,omitempty"`
@@ -9184,7 +9252,7 @@ type DeleteActivityTypeProperties struct {
 
 	// If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type: boolean (or
 	// Expression with resultType boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Delete activity store settings.
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
@@ -9205,10 +9273,10 @@ type DelimitedTextDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -9221,10 +9289,10 @@ type DelimitedTextDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Delimited text dataset properties.
 	TypeProperties *DelimitedTextDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -9251,36 +9319,36 @@ type DelimitedTextDatasetTypeProperties struct {
 	Location DatasetLocationClassification `json:"location,omitempty"`
 
 	// The column delimiter. Type: string (or Expression with resultType string).
-	ColumnDelimiter interface{} `json:"columnDelimiter,omitempty"`
+	ColumnDelimiter any `json:"columnDelimiter,omitempty"`
 
 	// The data compressionCodec. Type: string (or Expression with resultType string).
-	CompressionCodec interface{} `json:"compressionCodec,omitempty"`
+	CompressionCodec any `json:"compressionCodec,omitempty"`
 
 	// The data compression method used for DelimitedText.
-	CompressionLevel interface{} `json:"compressionLevel,omitempty"`
+	CompressionLevel any `json:"compressionLevel,omitempty"`
 
 	// The code page name of the preferred encoding. If miss, the default value is UTF-8, unless BOM denotes another Unicode encoding.
 	// Refer to the name column of the table in the following link to set
 	// supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
 	// string).
-	EncodingName interface{} `json:"encodingName,omitempty"`
+	EncodingName any `json:"encodingName,omitempty"`
 
 	// The escape character. Type: string (or Expression with resultType string).
-	EscapeChar interface{} `json:"escapeChar,omitempty"`
+	EscapeChar any `json:"escapeChar,omitempty"`
 
 	// When used as input, treat the first row of data as headers. When used as output,write the headers into the output as the
 	// first row of data. The default value is false. Type: boolean (or Expression
 	// with resultType boolean).
-	FirstRowAsHeader interface{} `json:"firstRowAsHeader,omitempty"`
+	FirstRowAsHeader any `json:"firstRowAsHeader,omitempty"`
 
 	// The null value string. Type: string (or Expression with resultType string).
-	NullValue interface{} `json:"nullValue,omitempty"`
+	NullValue any `json:"nullValue,omitempty"`
 
 	// The quote character. Type: string (or Expression with resultType string).
-	QuoteChar interface{} `json:"quoteChar,omitempty"`
+	QuoteChar any `json:"quoteChar,omitempty"`
 
 	// The row delimiter. Type: string (or Expression with resultType string).
-	RowDelimiter interface{} `json:"rowDelimiter,omitempty"`
+	RowDelimiter any `json:"rowDelimiter,omitempty"`
 }
 
 // DelimitedTextReadSettings - Delimited text read settings.
@@ -9289,14 +9357,14 @@ type DelimitedTextReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Compression settings.
 	CompressionProperties CompressionReadSettingsClassification `json:"compressionProperties,omitempty"`
 
 	// Indicates the number of non-empty rows to skip when reading data from input files. Type: integer (or Expression with resultType
 	// integer).
-	SkipLineCount interface{} `json:"skipLineCount,omitempty"`
+	SkipLineCount any `json:"skipLineCount,omitempty"`
 }
 
 // GetFormatReadSettings implements the FormatReadSettingsClassification interface for type DelimitedTextReadSettings.
@@ -9313,31 +9381,31 @@ type DelimitedTextSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// DelimitedText format settings.
 	FormatSettings *DelimitedTextWriteSettings `json:"formatSettings,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// DelimitedText store settings.
 	StoreSettings StoreWriteSettingsClassification `json:"storeSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type DelimitedTextSink.
@@ -9361,25 +9429,25 @@ type DelimitedTextSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// DelimitedText format settings.
 	FormatSettings *DelimitedTextReadSettings `json:"formatSettings,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// DelimitedText store settings.
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
@@ -9400,24 +9468,24 @@ func (d *DelimitedTextSource) GetCopySource() *CopySource {
 // DelimitedTextWriteSettings - Delimited text write settings.
 type DelimitedTextWriteSettings struct {
 	// REQUIRED; The file extension used to create the files. Type: string (or Expression with resultType string).
-	FileExtension interface{} `json:"fileExtension,omitempty"`
+	FileExtension any `json:"fileExtension,omitempty"`
 
 	// REQUIRED; The write setting type.
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies the file name pattern _. when copy from non-file based store without partitionOptions. Type: string (or Expression
 	// with resultType string).
-	FileNamePrefix interface{} `json:"fileNamePrefix,omitempty"`
+	FileNamePrefix any `json:"fileNamePrefix,omitempty"`
 
 	// Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with
 	// resultType integer).
-	MaxRowsPerFile interface{} `json:"maxRowsPerFile,omitempty"`
+	MaxRowsPerFile any `json:"maxRowsPerFile,omitempty"`
 
 	// Indicates whether string values should always be enclosed with quotes. Type: boolean (or Expression with resultType boolean).
-	QuoteAllText interface{} `json:"quoteAllText,omitempty"`
+	QuoteAllText any `json:"quoteAllText,omitempty"`
 }
 
 // GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type DelimitedTextWriteSettings.
@@ -9449,15 +9517,15 @@ func (d *DependencyReference) GetDependencyReference() *DependencyReference { re
 // DistcpSettings - Distcp settings.
 type DistcpSettings struct {
 	// REQUIRED; Specifies the Yarn ResourceManager endpoint. Type: string (or Expression with resultType string).
-	ResourceManagerEndpoint interface{} `json:"resourceManagerEndpoint,omitempty"`
+	ResourceManagerEndpoint any `json:"resourceManagerEndpoint,omitempty"`
 
 	// REQUIRED; Specifies an existing folder path which will be used to store temp Distcp command script. The script file is
 	// generated by ADF and will be removed after Copy job finished. Type: string (or Expression
 	// with resultType string).
-	TempScriptPath interface{} `json:"tempScriptPath,omitempty"`
+	TempScriptPath any `json:"tempScriptPath,omitempty"`
 
 	// Specifies the Distcp options. Type: string (or Expression with resultType string).
-	DistcpOptions interface{} `json:"distcpOptions,omitempty"`
+	DistcpOptions any `json:"distcpOptions,omitempty"`
 }
 
 // DocumentDbCollectionDataset - Microsoft Azure Document Database Collection dataset.
@@ -9472,10 +9540,10 @@ type DocumentDbCollectionDataset struct {
 	TypeProperties *DocumentDbCollectionDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -9488,10 +9556,10 @@ type DocumentDbCollectionDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type DocumentDbCollectionDataset.
@@ -9512,7 +9580,7 @@ func (d *DocumentDbCollectionDataset) GetDataset() *Dataset {
 // DocumentDbCollectionDatasetTypeProperties - DocumentDB Collection dataset properties.
 type DocumentDbCollectionDatasetTypeProperties struct {
 	// REQUIRED; Document Database collection name. Type: string (or Expression with resultType string).
-	CollectionName interface{} `json:"collectionName,omitempty"`
+	CollectionName any `json:"collectionName,omitempty"`
 }
 
 // DocumentDbCollectionSink - A copy activity Document Database Collection sink.
@@ -9521,32 +9589,32 @@ type DocumentDbCollectionSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Nested properties separator. Default is . (dot). Type: string (or Expression with resultType string).
-	NestingSeparator interface{} `json:"nestingSeparator,omitempty"`
+	NestingSeparator any `json:"nestingSeparator,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed values: insert
 	// and upsert.
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type DocumentDbCollectionSink.
@@ -9570,31 +9638,31 @@ type DocumentDbCollectionSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Nested properties separator. Type: string (or Expression with resultType string).
-	NestingSeparator interface{} `json:"nestingSeparator,omitempty"`
+	NestingSeparator any `json:"nestingSeparator,omitempty"`
 
 	// Documents query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type DocumentDbCollectionSource.
@@ -9612,13 +9680,13 @@ func (d *DocumentDbCollectionSource) GetCopySource() *CopySource {
 // DrillDatasetTypeProperties - Drill Dataset Properties
 type DrillDatasetTypeProperties struct {
 	// The schema name of the Drill. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Drill. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // DrillLinkedService - Drill server linked service.
@@ -9630,10 +9698,10 @@ type DrillLinkedService struct {
 	TypeProperties *DrillLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -9660,11 +9728,11 @@ func (d *DrillLinkedService) GetLinkedService() *LinkedService {
 // DrillLinkedServiceTypeProperties - Drill server linked service properties.
 type DrillLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Pwd *AzureKeyVaultSecretReference `json:"pwd,omitempty"`
@@ -9677,28 +9745,28 @@ type DrillSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type DrillSource.
@@ -9736,10 +9804,10 @@ type DrillTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -9752,10 +9820,10 @@ type DrillTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *DrillDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -9785,10 +9853,10 @@ type DynamicsAXLinkedService struct {
 	TypeProperties *DynamicsAXLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -9815,10 +9883,10 @@ func (d *DynamicsAXLinkedService) GetLinkedService() *LinkedService {
 // DynamicsAXLinkedServiceTypeProperties - Dynamics AX linked service properties.
 type DynamicsAXLinkedServiceTypeProperties struct {
 	// REQUIRED; Specify the resource you are requesting authorization. Type: string (or Expression with resultType string).
-	AADResourceID interface{} `json:"aadResourceId,omitempty"`
+	AADResourceID any `json:"aadResourceId,omitempty"`
 
 	// REQUIRED; Specify the application's client ID. Type: string (or Expression with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// REQUIRED; Specify the application's key. Mark this field as a SecureString to store it securely in Data Factory, or reference
 	// a secret stored in Azure Key Vault. Type: string (or Expression with resultType
@@ -9828,14 +9896,14 @@ type DynamicsAXLinkedServiceTypeProperties struct {
 	// REQUIRED; Specify the tenant information (domain name or tenant ID) under which your application resides. Retrieve it by
 	// hovering the mouse in the top-right corner of the Azure portal. Type: string (or
 	// Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 
 	// REQUIRED; The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // DynamicsAXResourceDataset - The path of the Dynamics AX OData entity.
@@ -9850,10 +9918,10 @@ type DynamicsAXResourceDataset struct {
 	TypeProperties *DynamicsAXResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -9866,10 +9934,10 @@ type DynamicsAXResourceDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type DynamicsAXResourceDataset.
@@ -9890,7 +9958,7 @@ func (d *DynamicsAXResourceDataset) GetDataset() *Dataset {
 // DynamicsAXResourceDatasetTypeProperties - Dynamics AX OData resource dataset properties.
 type DynamicsAXResourceDatasetTypeProperties struct {
 	// REQUIRED; The path of the Dynamics AX OData entity. Type: string (or Expression with resultType string).
-	Path interface{} `json:"path,omitempty"`
+	Path any `json:"path,omitempty"`
 }
 
 // DynamicsAXSource - A copy activity Dynamics AX source.
@@ -9900,33 +9968,33 @@ type DynamicsAXSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data.
 	// Default value: 00:05:00. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	HTTPRequestTimeout interface{} `json:"httpRequestTimeout,omitempty"`
+	HTTPRequestTimeout any `json:"httpRequestTimeout,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type DynamicsAXSource.
@@ -9964,10 +10032,10 @@ type DynamicsCrmEntityDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -9980,10 +10048,10 @@ type DynamicsCrmEntityDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Dynamics CRM entity dataset properties.
 	TypeProperties *DynamicsCrmEntityDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -10007,7 +10075,7 @@ func (d *DynamicsCrmEntityDataset) GetDataset() *Dataset {
 // DynamicsCrmEntityDatasetTypeProperties - Dynamics CRM entity dataset properties.
 type DynamicsCrmEntityDatasetTypeProperties struct {
 	// The logical name of the entity. Type: string (or Expression with resultType string).
-	EntityName interface{} `json:"entityName,omitempty"`
+	EntityName any `json:"entityName,omitempty"`
 }
 
 // DynamicsCrmLinkedService - Dynamics CRM linked service.
@@ -10019,10 +10087,10 @@ type DynamicsCrmLinkedService struct {
 	TypeProperties *DynamicsCrmLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -10051,31 +10119,31 @@ type DynamicsCrmLinkedServiceTypeProperties struct {
 	// REQUIRED; The authentication type to connect to Dynamics CRM server. 'Office365' for online scenario, 'Ifd' for on-premises
 	// with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online
 	// scenario. Type: string (or Expression with resultType string).
-	AuthenticationType interface{} `json:"authenticationType,omitempty"`
+	AuthenticationType any `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM Online and 'OnPremisesWithIfd' for
 	// Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType string).
-	DeploymentType interface{} `json:"deploymentType,omitempty"`
+	DeploymentType any `json:"deploymentType,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The host name of the on-premises Dynamics CRM server. The property is required for on-prem and not allowed for online.
 	// Type: string (or Expression with resultType string).
-	HostName interface{} `json:"hostName,omitempty"`
+	HostName any `json:"hostName,omitempty"`
 
 	// The organization name of the Dynamics CRM instance. The property is required for on-prem and required for online when there
 	// are more than one Dynamics CRM instances associated with the user. Type:
 	// string (or Expression with resultType string).
-	OrganizationName interface{} `json:"organizationName,omitempty"`
+	OrganizationName any `json:"organizationName,omitempty"`
 
 	// Password to access the Dynamics CRM instance.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The port of on-premises Dynamics CRM server. The property is required for on-prem and not allowed for online. Default is
 	// 443. Type: integer (or Expression with resultType integer), minimum: 0.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
 	// servicePrincipalCredential can be SecureString or
@@ -10086,18 +10154,18 @@ type DynamicsCrmLinkedServiceTypeProperties struct {
 	// The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
 	// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
 	// resultType string).
-	ServicePrincipalCredentialType interface{} `json:"servicePrincipalCredentialType,omitempty"`
+	ServicePrincipalCredentialType any `json:"servicePrincipalCredentialType,omitempty"`
 
 	// The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string (or Expression
 	// with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The URL to the Microsoft Dynamics CRM server. The property is required for on-line and not allowed for on-prem. Type: string
 	// (or Expression with resultType string).
-	ServiceURI interface{} `json:"serviceUri,omitempty"`
+	ServiceURI any `json:"serviceUri,omitempty"`
 
 	// User name to access the Dynamics CRM instance. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // DynamicsCrmSink - A copy activity Dynamics CRM sink.
@@ -10109,33 +10177,33 @@ type DynamicsCrmSink struct {
 	WriteBehavior *DynamicsSinkWriteBehavior `json:"writeBehavior,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with resultType
 	// string).
-	AlternateKeyName interface{} `json:"alternateKeyName,omitempty"`
+	AlternateKeyName any `json:"alternateKeyName,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The flag indicating whether to ignore null values from input dataset (except key fields) during write operation. Default
 	// is false. Type: boolean (or Expression with resultType boolean).
-	IgnoreNullValues interface{} `json:"ignoreNullValues,omitempty"`
+	IgnoreNullValues any `json:"ignoreNullValues,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type DynamicsCrmSink.
@@ -10159,26 +10227,26 @@ type DynamicsCrmSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// FetchXML is a proprietary query language that is used in Microsoft Dynamics CRM (online & on-premises). Type: string (or
 	// Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type DynamicsCrmSource.
@@ -10202,10 +10270,10 @@ type DynamicsEntityDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -10218,10 +10286,10 @@ type DynamicsEntityDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Dynamics entity dataset properties.
 	TypeProperties *DynamicsEntityDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -10245,7 +10313,7 @@ func (d *DynamicsEntityDataset) GetDataset() *Dataset {
 // DynamicsEntityDatasetTypeProperties - Dynamics entity dataset properties.
 type DynamicsEntityDatasetTypeProperties struct {
 	// The logical name of the entity. Type: string (or Expression with resultType string).
-	EntityName interface{} `json:"entityName,omitempty"`
+	EntityName any `json:"entityName,omitempty"`
 }
 
 // DynamicsLinkedService - Dynamics linked service.
@@ -10257,10 +10325,10 @@ type DynamicsLinkedService struct {
 	TypeProperties *DynamicsLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -10289,34 +10357,34 @@ type DynamicsLinkedServiceTypeProperties struct {
 	// REQUIRED; The authentication type to connect to Dynamics server. 'Office365' for online scenario, 'Ifd' for on-premises
 	// with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online
 	// scenario. Type: string (or Expression with resultType string).
-	AuthenticationType interface{} `json:"authenticationType,omitempty"`
+	AuthenticationType any `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The deployment type of the Dynamics instance. 'Online' for Dynamics Online and 'OnPremisesWithIfd' for Dynamics
 	// on-premises with Ifd. Type: string (or Expression with resultType string).
-	DeploymentType interface{} `json:"deploymentType,omitempty"`
+	DeploymentType any `json:"deploymentType,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The host name of the on-premises Dynamics server. The property is required for on-prem and not allowed for online. Type:
 	// string (or Expression with resultType string).
-	HostName interface{} `json:"hostName,omitempty"`
+	HostName any `json:"hostName,omitempty"`
 
 	// The organization name of the Dynamics instance. The property is required for on-prem and required for online when there
 	// are more than one Dynamics instances associated with the user. Type: string (or
 	// Expression with resultType string).
-	OrganizationName interface{} `json:"organizationName,omitempty"`
+	OrganizationName any `json:"organizationName,omitempty"`
 
 	// Password to access the Dynamics instance.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The port of on-premises Dynamics server. The property is required for on-prem and not allowed for online. Default is 443.
 	// Type: integer (or Expression with resultType integer), minimum: 0.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
 	// servicePrincipalCredential can be SecureString or
@@ -10327,18 +10395,18 @@ type DynamicsLinkedServiceTypeProperties struct {
 	// The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for key/secret,
 	// 'ServicePrincipalCert' for certificate. Type: string (or Expression with
 	// resultType string).
-	ServicePrincipalCredentialType interface{} `json:"servicePrincipalCredentialType,omitempty"`
+	ServicePrincipalCredentialType any `json:"servicePrincipalCredentialType,omitempty"`
 
 	// The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string (or Expression
 	// with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The URL to the Microsoft Dynamics server. The property is required for on-line and not allowed for on-prem. Type: string
 	// (or Expression with resultType string).
-	ServiceURI interface{} `json:"serviceUri,omitempty"`
+	ServiceURI any `json:"serviceUri,omitempty"`
 
 	// User name to access the Dynamics instance. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // DynamicsSink - A copy activity Dynamics sink.
@@ -10350,33 +10418,33 @@ type DynamicsSink struct {
 	WriteBehavior *DynamicsSinkWriteBehavior `json:"writeBehavior,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with resultType
 	// string).
-	AlternateKeyName interface{} `json:"alternateKeyName,omitempty"`
+	AlternateKeyName any `json:"alternateKeyName,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The flag indicating whether ignore null values from input dataset (except key fields) during write operation. Default is
 	// false. Type: boolean (or Expression with resultType boolean).
-	IgnoreNullValues interface{} `json:"ignoreNullValues,omitempty"`
+	IgnoreNullValues any `json:"ignoreNullValues,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type DynamicsSink.
@@ -10400,26 +10468,26 @@ type DynamicsSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// FetchXML is a proprietary query language that is used in Microsoft Dynamics (online & on-premises). Type: string (or Expression
 	// with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type DynamicsSource.
@@ -10443,10 +10511,10 @@ type EloquaLinkedService struct {
 	TypeProperties *EloquaLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -10473,27 +10541,27 @@ func (e *EloquaLinkedService) GetLinkedService() *LinkedService {
 // EloquaLinkedServiceTypeProperties - Eloqua server linked service properties.
 type EloquaLinkedServiceTypeProperties struct {
 	// REQUIRED; The endpoint of the Eloqua server. (i.e. eloqua.example.com)
-	Endpoint interface{} `json:"endpoint,omitempty"`
+	Endpoint any `json:"endpoint,omitempty"`
 
 	// REQUIRED; The site name and user name of your Eloqua account in the form: sitename/username. (i.e. Eloqua/Alice)
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password corresponding to the user name.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // EloquaObjectDataset - Eloqua server dataset.
@@ -10505,10 +10573,10 @@ type EloquaObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -10521,10 +10589,10 @@ type EloquaObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -10552,28 +10620,28 @@ type EloquaSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type EloquaSource.
@@ -10661,10 +10729,10 @@ type ExcelDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -10677,10 +10745,10 @@ type ExcelDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Excel dataset properties.
 	TypeProperties *ExcelDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -10712,19 +10780,19 @@ type ExcelDatasetTypeProperties struct {
 	// When used as input, treat the first row of data as headers. When used as output,write the headers into the output as the
 	// first row of data. The default value is false. Type: boolean (or Expression
 	// with resultType boolean).
-	FirstRowAsHeader interface{} `json:"firstRowAsHeader,omitempty"`
+	FirstRowAsHeader any `json:"firstRowAsHeader,omitempty"`
 
 	// The null value string. Type: string (or Expression with resultType string).
-	NullValue interface{} `json:"nullValue,omitempty"`
+	NullValue any `json:"nullValue,omitempty"`
 
 	// The partial data of one sheet. Type: string (or Expression with resultType string).
-	Range interface{} `json:"range,omitempty"`
+	Range any `json:"range,omitempty"`
 
 	// The sheet index of excel file and default value is 0. Type: integer (or Expression with resultType integer)
-	SheetIndex interface{} `json:"sheetIndex,omitempty"`
+	SheetIndex any `json:"sheetIndex,omitempty"`
 
 	// The sheet name of excel file. Type: string (or Expression with resultType string).
-	SheetName interface{} `json:"sheetName,omitempty"`
+	SheetName any `json:"sheetName,omitempty"`
 }
 
 // ExcelSource - A copy activity excel source.
@@ -10734,22 +10802,22 @@ type ExcelSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Excel store settings.
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
@@ -10779,7 +10847,7 @@ type ExecuteDataFlowActivity struct {
 	TypeProperties *ExecuteDataFlowActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -10833,35 +10901,35 @@ type ExecuteDataFlowActivityTypeProperties struct {
 
 	// Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or
 	// Expression with resultType boolean)
-	ContinueOnError interface{} `json:"continueOnError,omitempty"`
+	ContinueOnError any `json:"continueOnError,omitempty"`
 
 	// The integration runtime reference.
 	IntegrationRuntime *IntegrationRuntimeReference `json:"integrationRuntime,omitempty"`
 
 	// Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed concurrently.
 	// Type: boolean (or Expression with resultType boolean)
-	RunConcurrently interface{} `json:"runConcurrently,omitempty"`
+	RunConcurrently any `json:"runConcurrently,omitempty"`
 
 	// Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with resultType integer)
-	SourceStagingConcurrency interface{} `json:"sourceStagingConcurrency,omitempty"`
+	SourceStagingConcurrency any `json:"sourceStagingConcurrency,omitempty"`
 
 	// Staging info for execute data flow activity.
 	Staging *DataFlowStagingInfo `json:"staging,omitempty"`
 
 	// Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'. Type: string
 	// (or Expression with resultType string)
-	TraceLevel interface{} `json:"traceLevel,omitempty"`
+	TraceLevel any `json:"traceLevel,omitempty"`
 }
 
 // ExecuteDataFlowActivityTypePropertiesCompute - Compute properties for data flow activity.
 type ExecuteDataFlowActivityTypePropertiesCompute struct {
 	// Compute type of the cluster which will execute data flow job. Possible values include: 'General', 'MemoryOptimized', 'ComputeOptimized'.
 	// Type: string (or Expression with resultType string)
-	ComputeType interface{} `json:"computeType,omitempty"`
+	ComputeType any `json:"computeType,omitempty"`
 
 	// Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272. Type:
 	// integer (or Expression with resultType integer)
-	CoreCount interface{} `json:"coreCount,omitempty"`
+	CoreCount any `json:"coreCount,omitempty"`
 }
 
 // ExecutePipelineActivity - Execute pipeline activity.
@@ -10876,7 +10944,7 @@ type ExecutePipelineActivity struct {
 	TypeProperties *ExecutePipelineActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -10918,7 +10986,7 @@ func (e *ExecutePipelineActivity) GetControlActivity() *ControlActivity {
 // ExecutePipelineActivityPolicy - Execution policy for an execute pipeline activity.
 type ExecutePipelineActivityPolicy struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// When set to true, Input from activity is considered as secure and will not be logged to monitoring.
 	SecureInput *bool `json:"secureInput,omitempty"`
@@ -10930,7 +10998,7 @@ type ExecutePipelineActivityTypeProperties struct {
 	Pipeline *PipelineReference `json:"pipeline,omitempty"`
 
 	// Pipeline parameters.
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters map[string]any `json:"parameters,omitempty"`
 
 	// Defines whether activity execution will wait for the dependent pipeline execution to finish. Default is false.
 	WaitOnCompletion *bool `json:"waitOnCompletion,omitempty"`
@@ -10946,7 +11014,7 @@ type ExecutePowerQueryActivityTypeProperties struct {
 
 	// Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or
 	// Expression with resultType boolean)
-	ContinueOnError interface{} `json:"continueOnError,omitempty"`
+	ContinueOnError any `json:"continueOnError,omitempty"`
 
 	// The integration runtime reference.
 	IntegrationRuntime *IntegrationRuntimeReference `json:"integrationRuntime,omitempty"`
@@ -10956,20 +11024,20 @@ type ExecutePowerQueryActivityTypeProperties struct {
 
 	// Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed concurrently.
 	// Type: boolean (or Expression with resultType boolean)
-	RunConcurrently interface{} `json:"runConcurrently,omitempty"`
+	RunConcurrently any `json:"runConcurrently,omitempty"`
 
 	// (Deprecated. Please use Queries). List of Power Query activity sinks mapped to a queryName.
 	Sinks map[string]*PowerQuerySink `json:"sinks,omitempty"`
 
 	// Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with resultType integer)
-	SourceStagingConcurrency interface{} `json:"sourceStagingConcurrency,omitempty"`
+	SourceStagingConcurrency any `json:"sourceStagingConcurrency,omitempty"`
 
 	// Staging info for execute data flow activity.
 	Staging *DataFlowStagingInfo `json:"staging,omitempty"`
 
 	// Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'. Type: string
 	// (or Expression with resultType string)
-	TraceLevel interface{} `json:"traceLevel,omitempty"`
+	TraceLevel any `json:"traceLevel,omitempty"`
 }
 
 // ExecuteSSISPackageActivity - Execute SSIS package activity.
@@ -10984,7 +11052,7 @@ type ExecuteSSISPackageActivity struct {
 	TypeProperties *ExecuteSSISPackageActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -11037,7 +11105,7 @@ type ExecuteSSISPackageActivityTypeProperties struct {
 	PackageLocation *SSISPackageLocation `json:"packageLocation,omitempty"`
 
 	// The environment path to execute the SSIS package. Type: string (or Expression with resultType string).
-	EnvironmentPath interface{} `json:"environmentPath,omitempty"`
+	EnvironmentPath any `json:"environmentPath,omitempty"`
 
 	// The package execution credential.
 	ExecutionCredential *SSISExecutionCredential `json:"executionCredential,omitempty"`
@@ -11046,7 +11114,7 @@ type ExecuteSSISPackageActivityTypeProperties struct {
 	LogLocation *SSISLogLocation `json:"logLocation,omitempty"`
 
 	// The logging level of SSIS package execution. Type: string (or Expression with resultType string).
-	LoggingLevel interface{} `json:"loggingLevel,omitempty"`
+	LoggingLevel any `json:"loggingLevel,omitempty"`
 
 	// The package level connection managers to execute the SSIS package.
 	PackageConnectionManagers map[string]map[string]*SSISExecutionParameter `json:"packageConnectionManagers,omitempty"`
@@ -11065,7 +11133,7 @@ type ExecuteSSISPackageActivityTypeProperties struct {
 
 	// Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression with resultType
 	// string).
-	Runtime interface{} `json:"runtime,omitempty"`
+	Runtime any `json:"runtime,omitempty"`
 }
 
 // ExecuteWranglingDataflowActivity - Execute power query activity.
@@ -11080,7 +11148,7 @@ type ExecuteWranglingDataflowActivity struct {
 	TypeProperties *ExecutePowerQueryActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -11131,7 +11199,7 @@ type ExecutionActivity struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -11179,7 +11247,7 @@ type ExportSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // GetExportSettings implements the ExportSettingsClassification interface for type ExportSettings.
@@ -11278,13 +11346,13 @@ type FactoriesClientGetOptions struct {
 	IfNoneMatch *string
 }
 
-// FactoriesClientListByResourceGroupOptions contains the optional parameters for the FactoriesClient.ListByResourceGroup
+// FactoriesClientListByResourceGroupOptions contains the optional parameters for the FactoriesClient.NewListByResourceGroupPager
 // method.
 type FactoriesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FactoriesClientListOptions contains the optional parameters for the FactoriesClient.List method.
+// FactoriesClientListOptions contains the optional parameters for the FactoriesClient.NewListPager method.
 type FactoriesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -11297,7 +11365,7 @@ type FactoriesClientUpdateOptions struct {
 // Factory resource type.
 type Factory struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Managed service identity of the factory.
 	Identity *FactoryIdentity `json:"identity,omitempty"`
@@ -11347,6 +11415,9 @@ type FactoryGitHubConfiguration struct {
 	// GitHub bring your own app client secret information.
 	ClientSecret *GitHubClientSecret `json:"clientSecret,omitempty"`
 
+	// Disable manual publish operation in ADF studio to favor automated publish.
+	DisablePublish *bool `json:"disablePublish,omitempty"`
+
 	// GitHub Enterprise host name. For example: https://github.mydomain.com
 	HostName *string `json:"hostName,omitempty"`
 
@@ -11363,6 +11434,7 @@ func (f *FactoryGitHubConfiguration) GetFactoryRepoConfiguration() *FactoryRepoC
 		CollaborationBranch: f.CollaborationBranch,
 		RootFolder:          f.RootFolder,
 		LastCommitID:        f.LastCommitID,
+		DisablePublish:      f.DisablePublish,
 	}
 }
 
@@ -11372,7 +11444,7 @@ type FactoryIdentity struct {
 	Type *FactoryIdentityType `json:"type,omitempty"`
 
 	// List of user assigned identities for the factory.
-	UserAssignedIdentities map[string]interface{} `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]any `json:"userAssignedIdentities,omitempty"`
 
 	// READ-ONLY; The principal id of the identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
@@ -11443,6 +11515,9 @@ type FactoryRepoConfiguration struct {
 	// REQUIRED; Type of repo configuration.
 	Type *string `json:"type,omitempty"`
 
+	// Disable manual publish operation in ADF studio to favor automated publish.
+	DisablePublish *bool `json:"disablePublish,omitempty"`
+
 	// Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
 }
@@ -11497,6 +11572,9 @@ type FactoryVSTSConfiguration struct {
 	// REQUIRED; Type of repo configuration.
 	Type *string `json:"type,omitempty"`
 
+	// Disable manual publish operation in ADF studio to favor automated publish.
+	DisablePublish *bool `json:"disablePublish,omitempty"`
+
 	// Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
 
@@ -11513,6 +11591,7 @@ func (f *FactoryVSTSConfiguration) GetFactoryRepoConfiguration() *FactoryRepoCon
 		CollaborationBranch: f.CollaborationBranch,
 		RootFolder:          f.RootFolder,
 		LastCommitID:        f.LastCommitID,
+		DisablePublish:      f.DisablePublish,
 	}
 }
 
@@ -11531,7 +11610,7 @@ type FailActivity struct {
 	TypeProperties *FailActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -11572,11 +11651,11 @@ type FailActivityTypeProperties struct {
 	// REQUIRED; The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated
 	// to a non empty/blank string at runtime. Type: string (or Expression with resultType
 	// string).
-	ErrorCode interface{} `json:"errorCode,omitempty"`
+	ErrorCode any `json:"errorCode,omitempty"`
 
 	// REQUIRED; The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non empty/blank
 	// string at runtime. Type: string (or Expression with resultType string).
-	Message interface{} `json:"message,omitempty"`
+	Message any `json:"message,omitempty"`
 }
 
 // FileServerLinkedService - File system linked service.
@@ -11588,10 +11667,10 @@ type FileServerLinkedService struct {
 	TypeProperties *FileServerLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -11618,17 +11697,17 @@ func (f *FileServerLinkedService) GetLinkedService() *LinkedService {
 // FileServerLinkedServiceTypeProperties - File system linked service properties.
 type FileServerLinkedServiceTypeProperties struct {
 	// REQUIRED; Host name of the server. Type: string (or Expression with resultType string).
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password to logon the server.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// User ID to logon the server. Type: string (or Expression with resultType string).
-	UserID interface{} `json:"userId,omitempty"`
+	UserID any `json:"userId,omitempty"`
 }
 
 // FileServerLocation - The location of file server dataset.
@@ -11637,13 +11716,13 @@ type FileServerLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type FileServerLocation.
@@ -11662,47 +11741,47 @@ type FileServerReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or Expression
 	// with resultType string).
-	FileFilter interface{} `json:"fileFilter,omitempty"`
+	FileFilter any `json:"fileFilter,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// FileServer wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// FileServer wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type FileServerReadSettings.
@@ -11721,16 +11800,16 @@ type FileServerWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 }
 
 // GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type FileServerWriteSettings.
@@ -11753,10 +11832,10 @@ type FileShareDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -11769,10 +11848,10 @@ type FileShareDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// On-premises file system dataset properties.
 	TypeProperties *FileShareDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -11800,22 +11879,22 @@ type FileShareDatasetTypeProperties struct {
 
 	// Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or Expression
 	// with resultType string).
-	FileFilter interface{} `json:"fileFilter,omitempty"`
+	FileFilter any `json:"fileFilter,omitempty"`
 
 	// The name of the on-premises file system. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// The path of the on-premises file system. Type: string (or Expression with resultType string).
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// The format of the files.
 	Format DatasetStorageFormatClassification `json:"format,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 }
 
 // FileSystemSink - A copy activity file system sink.
@@ -11824,28 +11903,28 @@ type FileSystemSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type FileSystemSink.
@@ -11869,26 +11948,26 @@ type FileSystemSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type FileSystemSource.
@@ -11915,7 +11994,7 @@ type FilterActivity struct {
 	TypeProperties *FilterActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -11966,7 +12045,7 @@ type Flowlet struct {
 	Type *string `json:"type,omitempty"`
 
 	// List of tags that can be used for describing the data flow.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The description of the data flow.
 	Description *string `json:"description,omitempty"`
@@ -12018,7 +12097,7 @@ type ForEachActivity struct {
 	TypeProperties *ForEachActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -12084,7 +12163,7 @@ type FormatReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // GetFormatReadSettings implements the FormatReadSettingsClassification interface for type FormatReadSettings.
@@ -12105,7 +12184,7 @@ type FormatWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type FormatWriteSettings.
@@ -12117,43 +12196,43 @@ type FtpReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable parallel reading within each file. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableChunking interface{} `json:"disableChunking,omitempty"`
+	DisableChunking any `json:"disableChunking,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Specify whether to use binary transfer mode for FTP stores.
 	UseBinaryTransfer *bool `json:"useBinaryTransfer,omitempty"`
 
 	// Ftp wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// Ftp wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type FtpReadSettings.
@@ -12175,10 +12254,10 @@ type FtpServerLinkedService struct {
 	TypeProperties *FtpServerLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -12205,32 +12284,32 @@ func (f *FtpServerLinkedService) GetLinkedService() *LinkedService {
 // FtpServerLinkedServiceTypeProperties - Properties specific to this linked service type.
 type FtpServerLinkedServiceTypeProperties struct {
 	// REQUIRED; Host name of the FTP server. Type: string (or Expression with resultType string).
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// The authentication type to be used to connect to the FTP server.
 	AuthenticationType *FtpAuthenticationType `json:"authenticationType,omitempty"`
 
 	// If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType
 	// boolean).
-	EnableSSL interface{} `json:"enableSsl,omitempty"`
+	EnableSSL any `json:"enableSsl,omitempty"`
 
 	// If true, validate the FTP server SSL certificate when connect over SSL/TLS channel. Default value is true. Type: boolean
 	// (or Expression with resultType boolean).
-	EnableServerCertificateValidation interface{} `json:"enableServerCertificateValidation,omitempty"`
+	EnableServerCertificateValidation any `json:"enableServerCertificateValidation,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password to logon the FTP server.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The TCP port number that the FTP server uses to listen for client connections. Default value is 21. Type: integer (or Expression
 	// with resultType integer), minimum: 0.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// Username to logon the FTP server. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // FtpServerLocation - The location of ftp server dataset.
@@ -12239,13 +12318,13 @@ type FtpServerLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type FtpServerLocation.
@@ -12261,7 +12340,7 @@ func (f *FtpServerLocation) GetDatasetLocation() *DatasetLocation {
 // GenericDatasetTypeProperties - Properties specific to this dataset type.
 type GenericDatasetTypeProperties struct {
 	// The table name. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // GetMetadataActivity - Activity to get metadata of dataset
@@ -12276,7 +12355,7 @@ type GetMetadataActivity struct {
 	TypeProperties *GetMetadataActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -12326,7 +12405,7 @@ type GetMetadataActivityTypeProperties struct {
 	Dataset *DatasetReference `json:"dataset,omitempty"`
 
 	// Fields of metadata to get from dataset.
-	FieldList []interface{} `json:"fieldList,omitempty"`
+	FieldList []any `json:"fieldList,omitempty"`
 
 	// GetMetadata activity format settings.
 	FormatSettings FormatReadSettingsClassification `json:"formatSettings,omitempty"`
@@ -12404,7 +12483,7 @@ type GlobalParameterSpecification struct {
 	Type *GlobalParameterType `json:"type,omitempty"`
 
 	// REQUIRED; Value of parameter.
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 }
 
 // GlobalParametersClientCreateOrUpdateOptions contains the optional parameters for the GlobalParametersClient.CreateOrUpdate
@@ -12423,7 +12502,7 @@ type GlobalParametersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GlobalParametersClientListByFactoryOptions contains the optional parameters for the GlobalParametersClient.ListByFactory
+// GlobalParametersClientListByFactoryOptions contains the optional parameters for the GlobalParametersClient.NewListByFactoryPager
 // method.
 type GlobalParametersClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
@@ -12438,10 +12517,10 @@ type GoogleAdWordsLinkedService struct {
 	TypeProperties *GoogleAdWordsLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -12471,32 +12550,32 @@ type GoogleAdWordsLinkedServiceTypeProperties struct {
 	AuthenticationType *GoogleAdWordsAuthenticationType `json:"authenticationType,omitempty"`
 
 	// The Client customer ID of the AdWords account that you want to fetch report data for.
-	ClientCustomerID interface{} `json:"clientCustomerID,omitempty"`
+	ClientCustomerID any `json:"clientCustomerID,omitempty"`
 
 	// The client id of the google application used to acquire the refresh token. Type: string (or Expression with resultType
 	// string).
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The client secret of the google application used to acquire the refresh token.
 	ClientSecret SecretBaseClassification `json:"clientSecret,omitempty"`
 
 	// Properties used to connect to GoogleAds. It is mutually exclusive with any other properties in the linked service. Type:
 	// object.
-	ConnectionProperties interface{} `json:"connectionProperties,omitempty"`
+	ConnectionProperties any `json:"connectionProperties,omitempty"`
 
 	// The developer token associated with the manager account that you use to grant access to the AdWords API.
 	DeveloperToken SecretBaseClassification `json:"developerToken,omitempty"`
 
 	// The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR.
-	Email interface{} `json:"email,omitempty"`
+	Email any `json:"email,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The full path to the .p12 key file that is used to authenticate the service account email address and can only be used
 	// on self-hosted IR.
-	KeyFilePath interface{} `json:"keyFilePath,omitempty"`
+	KeyFilePath any `json:"keyFilePath,omitempty"`
 
 	// The refresh token obtained from Google for authorizing access to AdWords for UserAuthentication.
 	RefreshToken SecretBaseClassification `json:"refreshToken,omitempty"`
@@ -12504,11 +12583,11 @@ type GoogleAdWordsLinkedServiceTypeProperties struct {
 	// The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This
 	// property can only be set when using SSL on self-hosted IR. The default value
 	// is the cacerts.pem file installed with the IR.
-	TrustedCertPath interface{} `json:"trustedCertPath,omitempty"`
+	TrustedCertPath any `json:"trustedCertPath,omitempty"`
 
 	// Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is
 	// false.
-	UseSystemTrustStore interface{} `json:"useSystemTrustStore,omitempty"`
+	UseSystemTrustStore any `json:"useSystemTrustStore,omitempty"`
 }
 
 // GoogleAdWordsObjectDataset - Google AdWords service dataset.
@@ -12520,10 +12599,10 @@ type GoogleAdWordsObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -12536,10 +12615,10 @@ type GoogleAdWordsObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -12567,28 +12646,28 @@ type GoogleAdWordsSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type GoogleAdWordsSource.
@@ -12620,13 +12699,13 @@ func (g *GoogleAdWordsSource) GetTabularSource() *TabularSource {
 // GoogleBigQueryDatasetTypeProperties - Google BigQuery Dataset Properties
 type GoogleBigQueryDatasetTypeProperties struct {
 	// The database name of the Google BigQuery. Type: string (or Expression with resultType string).
-	Dataset interface{} `json:"dataset,omitempty"`
+	Dataset any `json:"dataset,omitempty"`
 
 	// The table name of the Google BigQuery. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using database + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // GoogleBigQueryLinkedService - Google BigQuery service linked service.
@@ -12638,10 +12717,10 @@ type GoogleBigQueryLinkedService struct {
 	TypeProperties *GoogleBigQueryLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -12672,44 +12751,44 @@ type GoogleBigQueryLinkedServiceTypeProperties struct {
 	AuthenticationType *GoogleBigQueryAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The default BigQuery project to query against.
-	Project interface{} `json:"project,omitempty"`
+	Project any `json:"project,omitempty"`
 
 	// A comma-separated list of public BigQuery projects to access.
-	AdditionalProjects interface{} `json:"additionalProjects,omitempty"`
+	AdditionalProjects any `json:"additionalProjects,omitempty"`
 
 	// The client id of the google application used to acquire the refresh token. Type: string (or Expression with resultType
 	// string).
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The client secret of the google application used to acquire the refresh token.
 	ClientSecret SecretBaseClassification `json:"clientSecret,omitempty"`
 
 	// The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR.
-	Email interface{} `json:"email,omitempty"`
+	Email any `json:"email,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The full path to the .p12 key file that is used to authenticate the service account email address and can only be used
 	// on self-hosted IR.
-	KeyFilePath interface{} `json:"keyFilePath,omitempty"`
+	KeyFilePath any `json:"keyFilePath,omitempty"`
 
 	// The refresh token obtained from Google for authorizing access to BigQuery for UserAuthentication.
 	RefreshToken SecretBaseClassification `json:"refreshToken,omitempty"`
 
 	// Whether to request access to Google Drive. Allowing Google Drive access enables support for federated tables that combine
 	// BigQuery data with data from Google Drive. The default value is false.
-	RequestGoogleDriveScope interface{} `json:"requestGoogleDriveScope,omitempty"`
+	RequestGoogleDriveScope any `json:"requestGoogleDriveScope,omitempty"`
 
 	// The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This
 	// property can only be set when using SSL on self-hosted IR. The default value
 	// is the cacerts.pem file installed with the IR.
-	TrustedCertPath interface{} `json:"trustedCertPath,omitempty"`
+	TrustedCertPath any `json:"trustedCertPath,omitempty"`
 
 	// Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is
 	// false.
-	UseSystemTrustStore interface{} `json:"useSystemTrustStore,omitempty"`
+	UseSystemTrustStore any `json:"useSystemTrustStore,omitempty"`
 }
 
 // GoogleBigQueryObjectDataset - Google BigQuery service dataset.
@@ -12721,10 +12800,10 @@ type GoogleBigQueryObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -12737,10 +12816,10 @@ type GoogleBigQueryObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GoogleBigQueryDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -12768,28 +12847,28 @@ type GoogleBigQuerySource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type GoogleBigQuerySource.
@@ -12827,10 +12906,10 @@ type GoogleCloudStorageLinkedService struct {
 	TypeProperties *GoogleCloudStorageLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -12858,11 +12937,11 @@ func (g *GoogleCloudStorageLinkedService) GetLinkedService() *LinkedService {
 type GoogleCloudStorageLinkedServiceTypeProperties struct {
 	// The access key identifier of the Google Cloud Storage Identity and Access Management (IAM) user. Type: string (or Expression
 	// with resultType string).
-	AccessKeyID interface{} `json:"accessKeyId,omitempty"`
+	AccessKeyID any `json:"accessKeyId,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The secret access key of the Google Cloud Storage Identity and Access Management (IAM) user.
 	SecretAccessKey SecretBaseClassification `json:"secretAccessKey,omitempty"`
@@ -12870,7 +12949,7 @@ type GoogleCloudStorageLinkedServiceTypeProperties struct {
 	// This value specifies the endpoint to access with the Google Cloud Storage Connector. This is an optional property; change
 	// it only if you want to try a different service endpoint or want to switch
 	// between https and http. Type: string (or Expression with resultType string).
-	ServiceURL interface{} `json:"serviceUrl,omitempty"`
+	ServiceURL any `json:"serviceUrl,omitempty"`
 }
 
 // GoogleCloudStorageLocation - The location of Google Cloud Storage dataset.
@@ -12879,19 +12958,19 @@ type GoogleCloudStorageLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the bucketName of Google Cloud Storage. Type: string (or Expression with resultType string)
-	BucketName interface{} `json:"bucketName,omitempty"`
+	BucketName any `json:"bucketName,omitempty"`
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// Specify the version of Google Cloud Storage. Type: string (or Expression with resultType string).
-	Version interface{} `json:"version,omitempty"`
+	Version any `json:"version,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type GoogleCloudStorageLocation.
@@ -12910,46 +12989,46 @@ type GoogleCloudStorageReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// The prefix filter for the Google Cloud Storage object name. Type: string (or Expression with resultType string).
-	Prefix interface{} `json:"prefix,omitempty"`
+	Prefix any `json:"prefix,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Google Cloud Storage wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// Google Cloud Storage wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type GoogleCloudStorageReadSettings.
@@ -12971,10 +13050,10 @@ type GoogleSheetsLinkedService struct {
 	TypeProperties *GoogleSheetsLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -13005,19 +13084,19 @@ type GoogleSheetsLinkedServiceTypeProperties struct {
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // GreenplumDatasetTypeProperties - Greenplum Dataset Properties
 type GreenplumDatasetTypeProperties struct {
 	// The schema name of Greenplum. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of Greenplum. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // GreenplumLinkedService - Greenplum Database linked service.
@@ -13029,10 +13108,10 @@ type GreenplumLinkedService struct {
 	TypeProperties *GreenplumLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -13059,11 +13138,11 @@ func (g *GreenplumLinkedService) GetLinkedService() *LinkedService {
 // GreenplumLinkedServiceTypeProperties - Greenplum Database linked service properties.
 type GreenplumLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Pwd *AzureKeyVaultSecretReference `json:"pwd,omitempty"`
@@ -13076,28 +13155,28 @@ type GreenplumSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type GreenplumSource.
@@ -13135,10 +13214,10 @@ type GreenplumTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -13151,10 +13230,10 @@ type GreenplumTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GreenplumDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -13184,10 +13263,10 @@ type HBaseLinkedService struct {
 	TypeProperties *HBaseLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -13217,38 +13296,38 @@ type HBaseLinkedServiceTypeProperties struct {
 	AuthenticationType *HBaseAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The IP address or host name of the HBase server. (i.e. 192.168.222.160)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over
 	// SSL. The default value is false.
-	AllowHostNameCNMismatch interface{} `json:"allowHostNameCNMismatch,omitempty"`
+	AllowHostNameCNMismatch any `json:"allowHostNameCNMismatch,omitempty"`
 
 	// Specifies whether to allow self-signed certificates from the server. The default value is false.
-	AllowSelfSignedServerCert interface{} `json:"allowSelfSignedServerCert,omitempty"`
+	AllowSelfSignedServerCert any `json:"allowSelfSignedServerCert,omitempty"`
 
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false.
-	EnableSSL interface{} `json:"enableSsl,omitempty"`
+	EnableSSL any `json:"enableSsl,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The partial URL corresponding to the HBase server. (i.e. /gateway/sandbox/hbase/version)
-	HTTPPath interface{} `json:"httpPath,omitempty"`
+	HTTPPath any `json:"httpPath,omitempty"`
 
 	// The password corresponding to the user name.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The TCP port that the HBase instance uses to listen for client connections. The default value is 9090.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This
 	// property can only be set when using SSL on self-hosted IR. The default value
 	// is the cacerts.pem file installed with the IR.
-	TrustedCertPath interface{} `json:"trustedCertPath,omitempty"`
+	TrustedCertPath any `json:"trustedCertPath,omitempty"`
 
 	// The user name used to connect to the HBase instance.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // HBaseObjectDataset - HBase server dataset.
@@ -13260,10 +13339,10 @@ type HBaseObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -13276,10 +13355,10 @@ type HBaseObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -13307,28 +13386,28 @@ type HBaseSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type HBaseSource.
@@ -13369,7 +13448,7 @@ type HDInsightHiveActivity struct {
 	TypeProperties *HDInsightHiveActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -13416,10 +13495,10 @@ func (h *HDInsightHiveActivity) GetExecutionActivity() *ExecutionActivity {
 // HDInsightHiveActivityTypeProperties - HDInsight Hive activity properties.
 type HDInsightHiveActivityTypeProperties struct {
 	// User specified arguments to HDInsightActivity.
-	Arguments []interface{} `json:"arguments,omitempty"`
+	Arguments []any `json:"arguments,omitempty"`
 
 	// Allows user to specify defines for Hive job request.
-	Defines map[string]interface{} `json:"defines,omitempty"`
+	Defines map[string]any `json:"defines,omitempty"`
 
 	// Debug info option.
 	GetDebugInfo *HDInsightActivityDebugInfoOption `json:"getDebugInfo,omitempty"`
@@ -13431,13 +13510,13 @@ type HDInsightHiveActivityTypeProperties struct {
 	ScriptLinkedService *LinkedServiceReference `json:"scriptLinkedService,omitempty"`
 
 	// Script path. Type: string (or Expression with resultType string).
-	ScriptPath interface{} `json:"scriptPath,omitempty"`
+	ScriptPath any `json:"scriptPath,omitempty"`
 
 	// Storage linked service references.
 	StorageLinkedServices []*LinkedServiceReference `json:"storageLinkedServices,omitempty"`
 
 	// User specified arguments under hivevar namespace.
-	Variables []interface{} `json:"variables,omitempty"`
+	Variables []any `json:"variables,omitempty"`
 }
 
 // HDInsightLinkedService - HDInsight linked service.
@@ -13449,10 +13528,10 @@ type HDInsightLinkedService struct {
 	TypeProperties *HDInsightLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -13479,21 +13558,21 @@ func (h *HDInsightLinkedService) GetLinkedService() *LinkedService {
 // HDInsightLinkedServiceTypeProperties - HDInsight linked service properties.
 type HDInsightLinkedServiceTypeProperties struct {
 	// REQUIRED; HDInsight cluster URI. Type: string (or Expression with resultType string).
-	ClusterURI interface{} `json:"clusterUri,omitempty"`
+	ClusterURI any `json:"clusterUri,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with resultType
 	// string).
-	FileSystem interface{} `json:"fileSystem,omitempty"`
+	FileSystem any `json:"fileSystem,omitempty"`
 
 	// A reference to the Azure SQL linked service that points to the HCatalog database.
 	HcatalogLinkedServiceName *LinkedServiceReference `json:"hcatalogLinkedServiceName,omitempty"`
 
 	// Specify if the HDInsight is created with ESP (Enterprise Security Package). Type: Boolean.
-	IsEspEnabled interface{} `json:"isEspEnabled,omitempty"`
+	IsEspEnabled any `json:"isEspEnabled,omitempty"`
 
 	// The Azure Storage linked service reference.
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
@@ -13502,7 +13581,7 @@ type HDInsightLinkedServiceTypeProperties struct {
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// HDInsight cluster user name. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // HDInsightMapReduceActivity - HDInsight MapReduce activity type.
@@ -13517,7 +13596,7 @@ type HDInsightMapReduceActivity struct {
 	TypeProperties *HDInsightMapReduceActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -13564,22 +13643,22 @@ func (h *HDInsightMapReduceActivity) GetExecutionActivity() *ExecutionActivity {
 // HDInsightMapReduceActivityTypeProperties - HDInsight MapReduce activity properties.
 type HDInsightMapReduceActivityTypeProperties struct {
 	// REQUIRED; Class name. Type: string (or Expression with resultType string).
-	ClassName interface{} `json:"className,omitempty"`
+	ClassName any `json:"className,omitempty"`
 
 	// REQUIRED; Jar path. Type: string (or Expression with resultType string).
-	JarFilePath interface{} `json:"jarFilePath,omitempty"`
+	JarFilePath any `json:"jarFilePath,omitempty"`
 
 	// User specified arguments to HDInsightActivity.
-	Arguments []interface{} `json:"arguments,omitempty"`
+	Arguments []any `json:"arguments,omitempty"`
 
 	// Allows user to specify defines for the MapReduce job request.
-	Defines map[string]interface{} `json:"defines,omitempty"`
+	Defines map[string]any `json:"defines,omitempty"`
 
 	// Debug info option.
 	GetDebugInfo *HDInsightActivityDebugInfoOption `json:"getDebugInfo,omitempty"`
 
 	// Jar libs.
-	JarLibs []interface{} `json:"jarLibs,omitempty"`
+	JarLibs []any `json:"jarLibs,omitempty"`
 
 	// Jar linked service reference.
 	JarLinkedService *LinkedServiceReference `json:"jarLinkedService,omitempty"`
@@ -13597,10 +13676,10 @@ type HDInsightOnDemandLinkedService struct {
 	TypeProperties *HDInsightOnDemandLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -13627,35 +13706,35 @@ func (h *HDInsightOnDemandLinkedService) GetLinkedService() *LinkedService {
 // HDInsightOnDemandLinkedServiceTypeProperties - HDInsight ondemand linked service properties.
 type HDInsightOnDemandLinkedServiceTypeProperties struct {
 	// REQUIRED; The resource group where the cluster belongs. Type: string (or Expression with resultType string).
-	ClusterResourceGroup interface{} `json:"clusterResourceGroup,omitempty"`
+	ClusterResourceGroup any `json:"clusterResourceGroup,omitempty"`
 
 	// REQUIRED; Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType
 	// string).
-	ClusterSize interface{} `json:"clusterSize,omitempty"`
+	ClusterSize any `json:"clusterSize,omitempty"`
 
 	// REQUIRED; The customer’s subscription to host the cluster. Type: string (or Expression with resultType string).
-	HostSubscriptionID interface{} `json:"hostSubscriptionId,omitempty"`
+	HostSubscriptionID any `json:"hostSubscriptionId,omitempty"`
 
 	// REQUIRED; Azure Storage linked service to be used by the on-demand cluster for storing and processing data.
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 
 	// REQUIRED; The Tenant id/name to which the service principal belongs. Type: string (or Expression with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 
 	// REQUIRED; The allowed idle time for the on-demand HDInsight cluster. Specifies how long the on-demand HDInsight cluster
 	// stays alive after completion of an activity run if there are no other active jobs in the
 	// cluster. The minimum value is 5 mins. Type: string (or Expression with resultType string).
-	TimeToLive interface{} `json:"timeToLive,omitempty"`
+	TimeToLive any `json:"timeToLive,omitempty"`
 
 	// REQUIRED; Version of the HDInsight cluster. Type: string (or Expression with resultType string).
-	Version interface{} `json:"version,omitempty"`
+	Version any `json:"version,omitempty"`
 
 	// Specifies additional storage accounts for the HDInsight linked service so that the Data Factory service can register them
 	// on your behalf.
 	AdditionalLinkedServiceNames []*LinkedServiceReference `json:"additionalLinkedServiceNames,omitempty"`
 
 	// The prefix of cluster name, postfix will be distinct with timestamp. Type: string (or Expression with resultType string).
-	ClusterNamePrefix interface{} `json:"clusterNamePrefix,omitempty"`
+	ClusterNamePrefix any `json:"clusterNamePrefix,omitempty"`
 
 	// The password to access the cluster.
 	ClusterPassword SecretBaseClassification `json:"clusterPassword,omitempty"`
@@ -13664,78 +13743,78 @@ type HDInsightOnDemandLinkedServiceTypeProperties struct {
 	ClusterSSHPassword SecretBaseClassification `json:"clusterSshPassword,omitempty"`
 
 	// The username to SSH remotely connect to cluster’s node (for Linux). Type: string (or Expression with resultType string).
-	ClusterSSHUserName interface{} `json:"clusterSshUserName,omitempty"`
+	ClusterSSHUserName any `json:"clusterSshUserName,omitempty"`
 
 	// The cluster type. Type: string (or Expression with resultType string).
-	ClusterType interface{} `json:"clusterType,omitempty"`
+	ClusterType any `json:"clusterType,omitempty"`
 
 	// The username to access the cluster. Type: string (or Expression with resultType string).
-	ClusterUserName interface{} `json:"clusterUserName,omitempty"`
+	ClusterUserName any `json:"clusterUserName,omitempty"`
 
 	// Specifies the core configuration parameters (as in core-site.xml) for the HDInsight cluster to be created.
-	CoreConfiguration interface{} `json:"coreConfiguration,omitempty"`
+	CoreConfiguration any `json:"coreConfiguration,omitempty"`
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
 	// Specifies the size of the data node for the HDInsight cluster.
-	DataNodeSize interface{} `json:"dataNodeSize,omitempty"`
+	DataNodeSize any `json:"dataNodeSize,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Specifies the HBase configuration parameters (hbase-site.xml) for the HDInsight cluster.
-	HBaseConfiguration interface{} `json:"hBaseConfiguration,omitempty"`
+	HBaseConfiguration any `json:"hBaseConfiguration,omitempty"`
 
 	// The name of Azure SQL linked service that point to the HCatalog database. The on-demand HDInsight cluster is created by
 	// using the Azure SQL database as the metastore.
 	HcatalogLinkedServiceName *LinkedServiceReference `json:"hcatalogLinkedServiceName,omitempty"`
 
 	// Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight cluster.
-	HdfsConfiguration interface{} `json:"hdfsConfiguration,omitempty"`
+	HdfsConfiguration any `json:"hdfsConfiguration,omitempty"`
 
 	// Specifies the size of the head node for the HDInsight cluster.
-	HeadNodeSize interface{} `json:"headNodeSize,omitempty"`
+	HeadNodeSize any `json:"headNodeSize,omitempty"`
 
 	// Specifies the hive configuration parameters (hive-site.xml) for the HDInsight cluster.
-	HiveConfiguration interface{} `json:"hiveConfiguration,omitempty"`
+	HiveConfiguration any `json:"hiveConfiguration,omitempty"`
 
 	// Specifies the MapReduce configuration parameters (mapred-site.xml) for the HDInsight cluster.
-	MapReduceConfiguration interface{} `json:"mapReduceConfiguration,omitempty"`
+	MapReduceConfiguration any `json:"mapReduceConfiguration,omitempty"`
 
 	// Specifies the Oozie configuration parameters (oozie-site.xml) for the HDInsight cluster.
-	OozieConfiguration interface{} `json:"oozieConfiguration,omitempty"`
+	OozieConfiguration any `json:"oozieConfiguration,omitempty"`
 
 	// Custom script actions to run on HDI ondemand cluster once it's up. Please refer to
 	// https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
 	ScriptActions []*ScriptAction `json:"scriptActions,omitempty"`
 
 	// The service principal id for the hostSubscriptionId. Type: string (or Expression with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The key for the service principal id.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The version of spark if the cluster type is 'spark'. Type: string (or Expression with resultType string).
-	SparkVersion interface{} `json:"sparkVersion,omitempty"`
+	SparkVersion any `json:"sparkVersion,omitempty"`
 
 	// Specifies the Storm configuration parameters (storm-site.xml) for the HDInsight cluster.
-	StormConfiguration interface{} `json:"stormConfiguration,omitempty"`
+	StormConfiguration any `json:"stormConfiguration,omitempty"`
 
 	// The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is required. Type:
 	// string (or Expression with resultType string).
-	SubnetName interface{} `json:"subnetName,omitempty"`
+	SubnetName any `json:"subnetName,omitempty"`
 
 	// The ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or Expression with
 	// resultType string).
-	VirtualNetworkID interface{} `json:"virtualNetworkId,omitempty"`
+	VirtualNetworkID any `json:"virtualNetworkId,omitempty"`
 
 	// Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight cluster.
-	YarnConfiguration interface{} `json:"yarnConfiguration,omitempty"`
+	YarnConfiguration any `json:"yarnConfiguration,omitempty"`
 
 	// Specifies the size of the Zoo Keeper node for the HDInsight cluster.
-	ZookeeperNodeSize interface{} `json:"zookeeperNodeSize,omitempty"`
+	ZookeeperNodeSize any `json:"zookeeperNodeSize,omitempty"`
 }
 
 // HDInsightPigActivity - HDInsight Pig activity type.
@@ -13750,7 +13829,7 @@ type HDInsightPigActivity struct {
 	TypeProperties *HDInsightPigActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -13797,10 +13876,10 @@ func (h *HDInsightPigActivity) GetExecutionActivity() *ExecutionActivity {
 // HDInsightPigActivityTypeProperties - HDInsight Pig activity properties.
 type HDInsightPigActivityTypeProperties struct {
 	// User specified arguments to HDInsightActivity. Type: array (or Expression with resultType array).
-	Arguments interface{} `json:"arguments,omitempty"`
+	Arguments any `json:"arguments,omitempty"`
 
 	// Allows user to specify defines for Pig job request.
-	Defines map[string]interface{} `json:"defines,omitempty"`
+	Defines map[string]any `json:"defines,omitempty"`
 
 	// Debug info option.
 	GetDebugInfo *HDInsightActivityDebugInfoOption `json:"getDebugInfo,omitempty"`
@@ -13809,7 +13888,7 @@ type HDInsightPigActivityTypeProperties struct {
 	ScriptLinkedService *LinkedServiceReference `json:"scriptLinkedService,omitempty"`
 
 	// Script path. Type: string (or Expression with resultType string).
-	ScriptPath interface{} `json:"scriptPath,omitempty"`
+	ScriptPath any `json:"scriptPath,omitempty"`
 
 	// Storage linked service references.
 	StorageLinkedServices []*LinkedServiceReference `json:"storageLinkedServices,omitempty"`
@@ -13827,7 +13906,7 @@ type HDInsightSparkActivity struct {
 	TypeProperties *HDInsightSparkActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -13875,14 +13954,14 @@ func (h *HDInsightSparkActivity) GetExecutionActivity() *ExecutionActivity {
 type HDInsightSparkActivityTypeProperties struct {
 	// REQUIRED; The relative path to the root folder of the code/package to be executed. Type: string (or Expression with resultType
 	// string).
-	EntryFilePath interface{} `json:"entryFilePath,omitempty"`
+	EntryFilePath any `json:"entryFilePath,omitempty"`
 
 	// REQUIRED; The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType
 	// string).
-	RootPath interface{} `json:"rootPath,omitempty"`
+	RootPath any `json:"rootPath,omitempty"`
 
 	// The user-specified arguments to HDInsightSparkActivity.
-	Arguments []interface{} `json:"arguments,omitempty"`
+	Arguments []any `json:"arguments,omitempty"`
 
 	// The application's Java/Spark main class.
 	ClassName *string `json:"className,omitempty"`
@@ -13891,10 +13970,10 @@ type HDInsightSparkActivityTypeProperties struct {
 	GetDebugInfo *HDInsightActivityDebugInfoOption `json:"getDebugInfo,omitempty"`
 
 	// The user to impersonate that will execute the job. Type: string (or Expression with resultType string).
-	ProxyUser interface{} `json:"proxyUser,omitempty"`
+	ProxyUser any `json:"proxyUser,omitempty"`
 
 	// Spark configuration property.
-	SparkConfig map[string]interface{} `json:"sparkConfig,omitempty"`
+	SparkConfig map[string]any `json:"sparkConfig,omitempty"`
 
 	// The storage linked service for uploading the entry file and dependencies, and for receiving logs.
 	SparkJobLinkedService *LinkedServiceReference `json:"sparkJobLinkedService,omitempty"`
@@ -13912,7 +13991,7 @@ type HDInsightStreamingActivity struct {
 	TypeProperties *HDInsightStreamingActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -13959,31 +14038,31 @@ func (h *HDInsightStreamingActivity) GetExecutionActivity() *ExecutionActivity {
 // HDInsightStreamingActivityTypeProperties - HDInsight streaming activity properties.
 type HDInsightStreamingActivityTypeProperties struct {
 	// REQUIRED; Paths to streaming job files. Can be directories.
-	FilePaths []interface{} `json:"filePaths,omitempty"`
+	FilePaths []any `json:"filePaths,omitempty"`
 
 	// REQUIRED; Input blob path. Type: string (or Expression with resultType string).
-	Input interface{} `json:"input,omitempty"`
+	Input any `json:"input,omitempty"`
 
 	// REQUIRED; Mapper executable name. Type: string (or Expression with resultType string).
-	Mapper interface{} `json:"mapper,omitempty"`
+	Mapper any `json:"mapper,omitempty"`
 
 	// REQUIRED; Output blob path. Type: string (or Expression with resultType string).
-	Output interface{} `json:"output,omitempty"`
+	Output any `json:"output,omitempty"`
 
 	// REQUIRED; Reducer executable name. Type: string (or Expression with resultType string).
-	Reducer interface{} `json:"reducer,omitempty"`
+	Reducer any `json:"reducer,omitempty"`
 
 	// User specified arguments to HDInsightActivity.
-	Arguments []interface{} `json:"arguments,omitempty"`
+	Arguments []any `json:"arguments,omitempty"`
 
 	// Combiner executable name. Type: string (or Expression with resultType string).
-	Combiner interface{} `json:"combiner,omitempty"`
+	Combiner any `json:"combiner,omitempty"`
 
 	// Command line environment values.
-	CommandEnvironment []interface{} `json:"commandEnvironment,omitempty"`
+	CommandEnvironment []any `json:"commandEnvironment,omitempty"`
 
 	// Allows user to specify defines for streaming job request.
-	Defines map[string]interface{} `json:"defines,omitempty"`
+	Defines map[string]any `json:"defines,omitempty"`
 
 	// Linked service reference where the files are located.
 	FileLinkedService *LinkedServiceReference `json:"fileLinkedService,omitempty"`
@@ -14004,10 +14083,10 @@ type HTTPDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -14020,10 +14099,10 @@ type HTTPDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *HTTPDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -14048,7 +14127,7 @@ func (h *HTTPDataset) GetDataset() *Dataset {
 type HTTPDatasetTypeProperties struct {
 	// The headers for the HTTP Request. e.g. request-header-name-1:request-header-value-1 … request-header-name-n:request-header-value-n
 	// Type: string (or Expression with resultType string).
-	AdditionalHeaders interface{} `json:"additionalHeaders,omitempty"`
+	AdditionalHeaders any `json:"additionalHeaders,omitempty"`
 
 	// The data compression method used on files.
 	Compression *DatasetCompression `json:"compression,omitempty"`
@@ -14058,13 +14137,13 @@ type HTTPDatasetTypeProperties struct {
 
 	// The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression with resultType
 	// string).
-	RelativeURL interface{} `json:"relativeUrl,omitempty"`
+	RelativeURL any `json:"relativeUrl,omitempty"`
 
 	// The body for the HTTP request. Type: string (or Expression with resultType string).
-	RequestBody interface{} `json:"requestBody,omitempty"`
+	RequestBody any `json:"requestBody,omitempty"`
 
 	// The HTTP method for the HTTP request. Type: string (or Expression with resultType string).
-	RequestMethod interface{} `json:"requestMethod,omitempty"`
+	RequestMethod any `json:"requestMethod,omitempty"`
 }
 
 // HTTPLinkedService - Linked service for an HTTP source.
@@ -14076,10 +14155,10 @@ type HTTPLinkedService struct {
 	TypeProperties *HTTPLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -14107,11 +14186,11 @@ func (h *HTTPLinkedService) GetLinkedService() *LinkedService {
 type HTTPLinkedServiceTypeProperties struct {
 	// REQUIRED; The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or Expression with resultType
 	// string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression with resultType
 	// object).
-	AuthHeaders interface{} `json:"authHeaders,omitempty"`
+	AuthHeaders any `json:"authHeaders,omitempty"`
 
 	// The authentication type to be used to connect to the HTTP server.
 	AuthenticationType *HTTPAuthenticationType `json:"authenticationType,omitempty"`
@@ -14119,26 +14198,26 @@ type HTTPLinkedServiceTypeProperties struct {
 	// Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises copy with
 	// ClientCertificate authentication, either CertThumbprint or
 	// EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
-	CertThumbprint interface{} `json:"certThumbprint,omitempty"`
+	CertThumbprint any `json:"certThumbprint,omitempty"`
 
 	// Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with ClientCertificate authentication,
 	// either CertThumbprint or EmbeddedCertData/Password should be
 	// specified. Type: string (or Expression with resultType string).
-	EmbeddedCertData interface{} `json:"embeddedCertData,omitempty"`
+	EmbeddedCertData any `json:"embeddedCertData,omitempty"`
 
 	// If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with resultType
 	// boolean).
-	EnableServerCertificateValidation interface{} `json:"enableServerCertificateValidation,omitempty"`
+	EnableServerCertificateValidation any `json:"enableServerCertificateValidation,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// User name for Basic, Digest, or Windows authentication. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // HTTPReadSettings - Sftp read settings.
@@ -14147,31 +14226,31 @@ type HTTPReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
-	AdditionalHeaders interface{} `json:"additionalHeaders,omitempty"`
+	AdditionalHeaders any `json:"additionalHeaders,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
-	RequestBody interface{} `json:"requestBody,omitempty"`
+	RequestBody any `json:"requestBody,omitempty"`
 
 	// The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
-	RequestMethod interface{} `json:"requestMethod,omitempty"`
+	RequestMethod any `json:"requestMethod,omitempty"`
 
 	// Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
-	RequestTimeout interface{} `json:"requestTimeout,omitempty"`
+	RequestTimeout any `json:"requestTimeout,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type HTTPReadSettings.
@@ -14190,16 +14269,16 @@ type HTTPServerLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// Specify the relativeUrl of http server. Type: string (or Expression with resultType string)
-	RelativeURL interface{} `json:"relativeUrl,omitempty"`
+	RelativeURL any `json:"relativeUrl,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type HTTPServerLocation.
@@ -14218,24 +14297,24 @@ type HTTPSource struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent to System.Net.HttpWebRequest.Timeout.
 	// Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	HTTPRequestTimeout interface{} `json:"httpRequestTimeout,omitempty"`
+	HTTPRequestTimeout any `json:"httpRequestTimeout,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type HTTPSource.
@@ -14259,10 +14338,10 @@ type HdfsLinkedService struct {
 	TypeProperties *HdfsLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -14290,21 +14369,21 @@ func (h *HdfsLinkedService) GetLinkedService() *LinkedService {
 type HdfsLinkedServiceTypeProperties struct {
 	// REQUIRED; The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
 	// resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or Expression
 	// with resultType string).
-	AuthenticationType interface{} `json:"authenticationType,omitempty"`
+	AuthenticationType any `json:"authenticationType,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password for Windows authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// User name for Windows authentication. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // HdfsLocation - The location of HDFS.
@@ -14313,13 +14392,13 @@ type HdfsLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type HdfsLocation.
@@ -14338,14 +14417,14 @@ type HdfsReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Specifies Distcp-related settings.
 	DistcpSettings *DistcpSettings `json:"distcpSettings,omitempty"`
@@ -14355,29 +14434,29 @@ type HdfsReadSettings struct {
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// HDFS wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// HDFS wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type HdfsReadSettings.
@@ -14396,26 +14475,26 @@ type HdfsSource struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Specifies Distcp-related settings.
 	DistcpSettings *DistcpSettings `json:"distcpSettings,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type HdfsSource.
@@ -14433,13 +14512,13 @@ func (h *HdfsSource) GetCopySource() *CopySource {
 // HiveDatasetTypeProperties - Hive Properties
 type HiveDatasetTypeProperties struct {
 	// The schema name of the Hive. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Hive. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // HiveLinkedService - Hive Server linked service.
@@ -14451,10 +14530,10 @@ type HiveLinkedService struct {
 	TypeProperties *HiveLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -14485,36 +14564,36 @@ type HiveLinkedServiceTypeProperties struct {
 
 	// REQUIRED; IP address or host name of the Hive server, separated by ';' for multiple hosts (only when serviceDiscoveryMode
 	// is enable).
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over
 	// SSL. The default value is false.
-	AllowHostNameCNMismatch interface{} `json:"allowHostNameCNMismatch,omitempty"`
+	AllowHostNameCNMismatch any `json:"allowHostNameCNMismatch,omitempty"`
 
 	// Specifies whether to allow self-signed certificates from the server. The default value is false.
-	AllowSelfSignedServerCert interface{} `json:"allowSelfSignedServerCert,omitempty"`
+	AllowSelfSignedServerCert any `json:"allowSelfSignedServerCert,omitempty"`
 
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false.
-	EnableSSL interface{} `json:"enableSsl,omitempty"`
+	EnableSSL any `json:"enableSsl,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The partial URL corresponding to the Hive server.
-	HTTPPath interface{} `json:"httpPath,omitempty"`
+	HTTPPath any `json:"httpPath,omitempty"`
 
 	// The password corresponding to the user name that you provided in the Username field
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The TCP port that the Hive server uses to listen for client connections.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// The type of Hive server.
 	ServerType *HiveServerType `json:"serverType,omitempty"`
 
 	// true to indicate using the ZooKeeper service, false not.
-	ServiceDiscoveryMode interface{} `json:"serviceDiscoveryMode,omitempty"`
+	ServiceDiscoveryMode any `json:"serviceDiscoveryMode,omitempty"`
 
 	// The transport protocol to use in the Thrift layer.
 	ThriftTransportProtocol *HiveThriftTransportProtocol `json:"thriftTransportProtocol,omitempty"`
@@ -14522,20 +14601,20 @@ type HiveLinkedServiceTypeProperties struct {
 	// The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This
 	// property can only be set when using SSL on self-hosted IR. The default value
 	// is the cacerts.pem file installed with the IR.
-	TrustedCertPath interface{} `json:"trustedCertPath,omitempty"`
+	TrustedCertPath any `json:"trustedCertPath,omitempty"`
 
 	// Specifies whether the driver uses native HiveQL queries,or converts them into an equivalent form in HiveQL.
-	UseNativeQuery interface{} `json:"useNativeQuery,omitempty"`
+	UseNativeQuery any `json:"useNativeQuery,omitempty"`
 
 	// Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is
 	// false.
-	UseSystemTrustStore interface{} `json:"useSystemTrustStore,omitempty"`
+	UseSystemTrustStore any `json:"useSystemTrustStore,omitempty"`
 
 	// The user name that you use to access Hive Server.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 
 	// The namespace on ZooKeeper under which Hive Server 2 nodes are added.
-	ZooKeeperNameSpace interface{} `json:"zooKeeperNameSpace,omitempty"`
+	ZooKeeperNameSpace any `json:"zooKeeperNameSpace,omitempty"`
 }
 
 // HiveObjectDataset - Hive Server dataset.
@@ -14547,10 +14626,10 @@ type HiveObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -14563,10 +14642,10 @@ type HiveObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *HiveDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -14594,28 +14673,28 @@ type HiveSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type HiveSource.
@@ -14653,10 +14732,10 @@ type HubspotLinkedService struct {
 	TypeProperties *HubspotLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -14683,7 +14762,7 @@ func (h *HubspotLinkedService) GetLinkedService() *LinkedService {
 // HubspotLinkedServiceTypeProperties - Hubspot Service linked service properties.
 type HubspotLinkedServiceTypeProperties struct {
 	// REQUIRED; The client ID associated with your Hubspot application.
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The access token obtained when initially authenticating your OAuth integration.
 	AccessToken SecretBaseClassification `json:"accessToken,omitempty"`
@@ -14693,20 +14772,20 @@ type HubspotLinkedServiceTypeProperties struct {
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The refresh token obtained when initially authenticating your OAuth integration.
 	RefreshToken SecretBaseClassification `json:"refreshToken,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // HubspotObjectDataset - Hubspot Service dataset.
@@ -14718,10 +14797,10 @@ type HubspotObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -14734,10 +14813,10 @@ type HubspotObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -14765,28 +14844,28 @@ type HubspotSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type HubspotSource.
@@ -14828,7 +14907,7 @@ type IfConditionActivity struct {
 	TypeProperties *IfConditionActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -14882,13 +14961,13 @@ type IfConditionActivityTypeProperties struct {
 // ImpalaDatasetTypeProperties - Impala Dataset Properties
 type ImpalaDatasetTypeProperties struct {
 	// The schema name of the Impala. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Impala. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // ImpalaLinkedService - Impala server linked service.
@@ -14900,10 +14979,10 @@ type ImpalaLinkedService struct {
 	TypeProperties *ImpalaLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -14933,39 +15012,39 @@ type ImpalaLinkedServiceTypeProperties struct {
 	AuthenticationType *ImpalaAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The IP address or host name of the Impala server. (i.e. 192.168.222.160)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over
 	// SSL. The default value is false.
-	AllowHostNameCNMismatch interface{} `json:"allowHostNameCNMismatch,omitempty"`
+	AllowHostNameCNMismatch any `json:"allowHostNameCNMismatch,omitempty"`
 
 	// Specifies whether to allow self-signed certificates from the server. The default value is false.
-	AllowSelfSignedServerCert interface{} `json:"allowSelfSignedServerCert,omitempty"`
+	AllowSelfSignedServerCert any `json:"allowSelfSignedServerCert,omitempty"`
 
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false.
-	EnableSSL interface{} `json:"enableSsl,omitempty"`
+	EnableSSL any `json:"enableSsl,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password corresponding to the user name when using UsernameAndPassword.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The TCP port that the Impala server uses to listen for client connections. The default value is 21050.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This
 	// property can only be set when using SSL on self-hosted IR. The default value
 	// is the cacerts.pem file installed with the IR.
-	TrustedCertPath interface{} `json:"trustedCertPath,omitempty"`
+	TrustedCertPath any `json:"trustedCertPath,omitempty"`
 
 	// Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is
 	// false.
-	UseSystemTrustStore interface{} `json:"useSystemTrustStore,omitempty"`
+	UseSystemTrustStore any `json:"useSystemTrustStore,omitempty"`
 
 	// The user name used to access the Impala server. The default value is anonymous when using SASLUsername.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // ImpalaObjectDataset - Impala server dataset.
@@ -14977,10 +15056,10 @@ type ImpalaObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -14993,10 +15072,10 @@ type ImpalaObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *ImpalaDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -15024,28 +15103,28 @@ type ImpalaSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type ImpalaSource.
@@ -15089,7 +15168,7 @@ type ImportSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // GetImportSettings implements the ImportSettingsClassification interface for type ImportSettings.
@@ -15104,10 +15183,10 @@ type InformixLinkedService struct {
 	TypeProperties *InformixLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -15135,24 +15214,24 @@ func (i *InformixLinkedService) GetLinkedService() *LinkedService {
 type InformixLinkedServiceTypeProperties struct {
 	// REQUIRED; The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
 	// string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// Type of authentication used to connect to the Informix as ODBC data store. Possible values are: Anonymous and Basic. Type:
 	// string (or Expression with resultType string).
-	AuthenticationType interface{} `json:"authenticationType,omitempty"`
+	AuthenticationType any `json:"authenticationType,omitempty"`
 
 	// The access credential portion of the connection string specified in driver-specific property-value format.
 	Credential SecretBaseClassification `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password for Basic authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// User name for Basic authentication. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // InformixSink - A copy activity Informix sink.
@@ -15161,28 +15240,28 @@ type InformixSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to execute before starting the copy. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type InformixSink.
@@ -15206,28 +15285,28 @@ type InformixSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type InformixSource.
@@ -15265,10 +15344,10 @@ type InformixTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -15281,10 +15360,10 @@ type InformixTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Informix table dataset properties.
 	TypeProperties *InformixTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -15308,7 +15387,7 @@ func (i *InformixTableDataset) GetDataset() *Dataset {
 // InformixTableDatasetTypeProperties - Informix table dataset properties.
 type InformixTableDatasetTypeProperties struct {
 	// The Informix table name. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // IntegrationRuntimeClassification provides polymorphic access to related types.
@@ -15326,7 +15405,7 @@ type IntegrationRuntime struct {
 	Type *IntegrationRuntimeType `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Integration runtime description.
 	Description *string `json:"description,omitempty"`
@@ -15347,7 +15426,7 @@ type IntegrationRuntimeAuthKeys struct {
 // IntegrationRuntimeComputeProperties - The compute resource properties for managed integration runtime.
 type IntegrationRuntimeComputeProperties struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Data flow properties for managed integration runtime.
 	DataFlowProperties *IntegrationRuntimeDataFlowProperties `json:"dataFlowProperties,omitempty"`
@@ -15371,7 +15450,7 @@ type IntegrationRuntimeComputeProperties struct {
 // IntegrationRuntimeConnectionInfo - Connection information for encrypting the on-premises data source credentials.
 type IntegrationRuntimeConnectionInfo struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; The on-premises integration runtime host URL.
 	HostServiceURI *string `json:"hostServiceUri,omitempty" azure:"ro"`
@@ -15411,7 +15490,7 @@ type IntegrationRuntimeCustomerVirtualNetwork struct {
 // IntegrationRuntimeDataFlowProperties - Data flow properties for managed integration runtime.
 type IntegrationRuntimeDataFlowProperties struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is reached if
 	// this is set as false. Default is true.
@@ -15475,7 +15554,7 @@ type IntegrationRuntimeNodeIPAddress struct {
 // IntegrationRuntimeNodeMonitoringData - Monitoring data for integration runtime node.
 type IntegrationRuntimeNodeMonitoringData struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; Available memory (MB) on the integration runtime node.
 	AvailableMemoryInMB *int32 `json:"availableMemoryInMB,omitempty" azure:"ro"`
@@ -15582,7 +15661,7 @@ type IntegrationRuntimeReference struct {
 	Type *IntegrationRuntimeReferenceType `json:"type,omitempty"`
 
 	// Arguments for integration runtime.
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters map[string]any `json:"parameters,omitempty"`
 }
 
 // IntegrationRuntimeRegenerateKeyParameters - Parameters to regenerate the authentication key.
@@ -15612,7 +15691,7 @@ type IntegrationRuntimeResource struct {
 // IntegrationRuntimeSsisCatalogInfo - Catalog information for managed dedicated integration runtime.
 type IntegrationRuntimeSsisCatalogInfo struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The password of the administrator user account of the catalog database.
 	CatalogAdminPassword *SecureString `json:"catalogAdminPassword,omitempty"`
@@ -15633,7 +15712,7 @@ type IntegrationRuntimeSsisCatalogInfo struct {
 // IntegrationRuntimeSsisProperties - SSIS properties for managed integration runtime.
 type IntegrationRuntimeSsisProperties struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Catalog information for managed dedicated integration runtime.
 	CatalogInfo *IntegrationRuntimeSsisCatalogInfo `json:"catalogInfo,omitempty"`
@@ -15675,7 +15754,7 @@ type IntegrationRuntimeStatus struct {
 	Type *IntegrationRuntimeType `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty" azure:"ro"`
@@ -15699,7 +15778,7 @@ type IntegrationRuntimeStatusResponse struct {
 // IntegrationRuntimeVNetProperties - VNet properties for managed integration runtime.
 type IntegrationRuntimeVNetProperties struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Resource IDs of the public IP addresses that this integration runtime will use.
 	PublicIPs []*string `json:"publicIPs,omitempty"`
@@ -15778,7 +15857,7 @@ type IntegrationRuntimesClientListAuthKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationRuntimesClientListByFactoryOptions contains the optional parameters for the IntegrationRuntimesClient.ListByFactory
+// IntegrationRuntimesClientListByFactoryOptions contains the optional parameters for the IntegrationRuntimesClient.NewListByFactoryPager
 // method.
 type IntegrationRuntimesClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
@@ -15827,10 +15906,10 @@ type JSONDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -15843,10 +15922,10 @@ type JSONDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Json dataset properties.
 	TypeProperties *JSONDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -15879,7 +15958,7 @@ type JSONDatasetTypeProperties struct {
 	// Unicode encoding. Refer to the name column of the table in the following link to
 	// set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
 	// string).
-	EncodingName interface{} `json:"encodingName,omitempty"`
+	EncodingName any `json:"encodingName,omitempty"`
 }
 
 // JSONFormat - The data stored in JSON format.
@@ -15888,37 +15967,37 @@ type JSONFormat struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Deserializer. Type: string (or Expression with resultType string).
-	Deserializer interface{} `json:"deserializer,omitempty"`
+	Deserializer any `json:"deserializer,omitempty"`
 
 	// The code page name of the preferred encoding. If not provided, the default value is 'utf-8', unless the byte order mark
 	// (BOM) denotes another Unicode encoding. The full list of supported values can be
 	// found in the 'Name' column of the table of encodings in the following reference: https://go.microsoft.com/fwlink/?linkid=861078.
 	// Type: string (or Expression with resultType string).
-	EncodingName interface{} `json:"encodingName,omitempty"`
+	EncodingName any `json:"encodingName,omitempty"`
 
 	// File pattern of JSON. To be more specific, the way of separating a collection of JSON objects. The default value is 'setOfObjects'.
 	// It is case-sensitive.
-	FilePattern interface{} `json:"filePattern,omitempty"`
+	FilePattern any `json:"filePattern,omitempty"`
 
 	// The JSONPath of the JSON array element to be flattened. Example: "$.ArrayPath". Type: string (or Expression with resultType
 	// string).
-	JSONNodeReference interface{} `json:"jsonNodeReference,omitempty"`
+	JSONNodeReference any `json:"jsonNodeReference,omitempty"`
 
 	// The JSONPath definition for each column mapping with a customized column name to extract data from JSON file. For fields
 	// under root object, start with "$"; for fields inside the array chosen by
 	// jsonNodeReference property, start from the array element. Example: {"Column1": "$.Column1Path", "Column2": "Column2PathInArray"}.
 	// Type: object (or Expression with resultType object).
-	JSONPathDefinition interface{} `json:"jsonPathDefinition,omitempty"`
+	JSONPathDefinition any `json:"jsonPathDefinition,omitempty"`
 
 	// The character used to separate nesting levels. Default value is '.' (dot). Type: string (or Expression with resultType
 	// string).
-	NestingSeparator interface{} `json:"nestingSeparator,omitempty"`
+	NestingSeparator any `json:"nestingSeparator,omitempty"`
 
 	// Serializer. Type: string (or Expression with resultType string).
-	Serializer interface{} `json:"serializer,omitempty"`
+	Serializer any `json:"serializer,omitempty"`
 }
 
 // GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type JSONFormat.
@@ -15937,7 +16016,7 @@ type JSONReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Compression settings.
 	CompressionProperties CompressionReadSettingsClassification `json:"compressionProperties,omitempty"`
@@ -15957,31 +16036,31 @@ type JSONSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Json format settings.
 	FormatSettings *JSONWriteSettings `json:"formatSettings,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Json store settings.
 	StoreSettings StoreWriteSettingsClassification `json:"storeSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type JSONSink.
@@ -16005,25 +16084,25 @@ type JSONSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Json format settings.
 	FormatSettings *JSONReadSettings `json:"formatSettings,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Json store settings.
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
@@ -16047,11 +16126,11 @@ type JSONWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// File pattern of JSON. This setting controls the way a collection of JSON objects will be treated. The default value is
 	// 'setOfObjects'. It is case-sensitive.
-	FilePattern interface{} `json:"filePattern,omitempty"`
+	FilePattern any `json:"filePattern,omitempty"`
 }
 
 // GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type JSONWriteSettings.
@@ -16071,10 +16150,10 @@ type JiraLinkedService struct {
 	TypeProperties *JiraLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -16101,31 +16180,31 @@ func (j *JiraLinkedService) GetLinkedService() *LinkedService {
 // JiraLinkedServiceTypeProperties - Jira Service linked service properties.
 type JiraLinkedServiceTypeProperties struct {
 	// REQUIRED; The IP address or host name of the Jira service. (e.g. jira.example.com)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// REQUIRED; The user name that you use to access Jira Service.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password corresponding to the user name that you provided in the username field.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The TCP port that the Jira server uses to listen for client connections. The default value is 443 if connecting through
 	// HTTPS, or 8080 if connecting through HTTP.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // JiraObjectDataset - Jira Service dataset.
@@ -16137,10 +16216,10 @@ type JiraObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -16153,10 +16232,10 @@ type JiraObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -16184,28 +16263,28 @@ type JiraSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type JiraSource.
@@ -16361,10 +16440,10 @@ type LinkedService struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -16406,7 +16485,7 @@ type LinkedServiceReference struct {
 	Type *LinkedServiceReferenceType `json:"type,omitempty"`
 
 	// Arguments for LinkedService.
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters map[string]any `json:"parameters,omitempty"`
 }
 
 // LinkedServiceResource - Linked service resource type.
@@ -16447,7 +16526,8 @@ type LinkedServicesClientGetOptions struct {
 	IfNoneMatch *string
 }
 
-// LinkedServicesClientListByFactoryOptions contains the optional parameters for the LinkedServicesClient.ListByFactory method.
+// LinkedServicesClientListByFactoryOptions contains the optional parameters for the LinkedServicesClient.NewListByFactoryPager
+// method.
 type LinkedServicesClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
 }
@@ -16458,7 +16538,7 @@ type LogLocationSettings struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 
 	// The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType string).
-	Path interface{} `json:"path,omitempty"`
+	Path any `json:"path,omitempty"`
 }
 
 // LogSettings - Log settings.
@@ -16470,7 +16550,7 @@ type LogSettings struct {
 	CopyActivityLogSettings *CopyActivityLogSettings `json:"copyActivityLogSettings,omitempty"`
 
 	// Specifies whether to enable copy activity log. Type: boolean (or Expression with resultType boolean).
-	EnableCopyActivityLog interface{} `json:"enableCopyActivityLog,omitempty"`
+	EnableCopyActivityLog any `json:"enableCopyActivityLog,omitempty"`
 }
 
 // LogStorageSettings - (Deprecated. Please use LogSettings) Log storage settings.
@@ -16479,16 +16559,16 @@ type LogStorageSettings struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
-	EnableReliableLogging interface{} `json:"enableReliableLogging,omitempty"`
+	EnableReliableLogging any `json:"enableReliableLogging,omitempty"`
 
 	// Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
-	LogLevel interface{} `json:"logLevel,omitempty"`
+	LogLevel any `json:"logLevel,omitempty"`
 
 	// The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType string).
-	Path interface{} `json:"path,omitempty"`
+	Path any `json:"path,omitempty"`
 }
 
 // LookupActivity - Lookup activity.
@@ -16503,7 +16583,7 @@ type LookupActivity struct {
 	TypeProperties *LookupActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -16556,7 +16636,7 @@ type LookupActivityTypeProperties struct {
 	Source CopySourceClassification `json:"source,omitempty"`
 
 	// Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType boolean).
-	FirstRowOnly interface{} `json:"firstRowOnly,omitempty"`
+	FirstRowOnly any `json:"firstRowOnly,omitempty"`
 }
 
 // MagentoLinkedService - Magento server linked service.
@@ -16568,10 +16648,10 @@ type MagentoLinkedService struct {
 	TypeProperties *MagentoLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -16598,24 +16678,24 @@ func (m *MagentoLinkedService) GetLinkedService() *LinkedService {
 // MagentoLinkedServiceTypeProperties - Magento server linked service properties.
 type MagentoLinkedServiceTypeProperties struct {
 	// REQUIRED; The URL of the Magento instance. (i.e. 192.168.222.110/magento3)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// The access token from Magento.
 	AccessToken SecretBaseClassification `json:"accessToken,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // MagentoObjectDataset - Magento server dataset.
@@ -16627,10 +16707,10 @@ type MagentoObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -16643,10 +16723,10 @@ type MagentoObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -16674,28 +16754,28 @@ type MagentoSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type MagentoSource.
@@ -16724,6 +16804,58 @@ func (m *MagentoSource) GetTabularSource() *TabularSource {
 	}
 }
 
+// ManagedIdentityCredential - Managed identity credential.
+type ManagedIdentityCredential struct {
+	// REQUIRED; Type of credential.
+	Type *string `json:"type,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the Credential.
+	Annotations []any `json:"annotations,omitempty"`
+
+	// Credential description.
+	Description *string `json:"description,omitempty"`
+
+	// Managed identity credential properties.
+	TypeProperties *ManagedIdentityTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetCredential implements the CredentialClassification interface for type ManagedIdentityCredential.
+func (m *ManagedIdentityCredential) GetCredential() *Credential {
+	return &Credential{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
+// ManagedIdentityCredentialResource - Credential resource type.
+type ManagedIdentityCredentialResource struct {
+	// REQUIRED; Managed Identity Credential properties.
+	Properties *ManagedIdentityCredential `json:"properties,omitempty"`
+
+	// READ-ONLY; Etag identifies change in the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ManagedIdentityTypeProperties - Managed identity type properties.
+type ManagedIdentityTypeProperties struct {
+	// The resource id of user assigned managed identity
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
 // ManagedIntegrationRuntime - Managed integration runtime, including managed elastic and managed dedicated integration runtimes.
 type ManagedIntegrationRuntime struct {
 	// REQUIRED; Type of integration runtime.
@@ -16733,7 +16865,7 @@ type ManagedIntegrationRuntime struct {
 	TypeProperties *ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Integration runtime description.
 	Description *string `json:"description,omitempty"`
@@ -16757,7 +16889,7 @@ func (m *ManagedIntegrationRuntime) GetIntegrationRuntime() *IntegrationRuntime 
 // ManagedIntegrationRuntimeError - Error definition for managed integration runtime.
 type ManagedIntegrationRuntimeError struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; Error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
@@ -16775,7 +16907,7 @@ type ManagedIntegrationRuntimeError struct {
 // ManagedIntegrationRuntimeNode - Properties of integration runtime node.
 type ManagedIntegrationRuntimeNode struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The errors that occurred on this integration runtime node.
 	Errors []*ManagedIntegrationRuntimeError `json:"errors,omitempty"`
@@ -16790,7 +16922,7 @@ type ManagedIntegrationRuntimeNode struct {
 // ManagedIntegrationRuntimeOperationResult - Properties of managed integration runtime operation result.
 type ManagedIntegrationRuntimeOperationResult struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; The activity id for the operation request.
 	ActivityID *string `json:"activityId,omitempty" azure:"ro"`
@@ -16820,7 +16952,7 @@ type ManagedIntegrationRuntimeStatus struct {
 	TypeProperties *ManagedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty" azure:"ro"`
@@ -16869,7 +17001,7 @@ type ManagedIntegrationRuntimeTypeProperties struct {
 // ManagedPrivateEndpoint - Properties of a managed private endpoint
 type ManagedPrivateEndpoint struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The managed private endpoint connection state
 	ConnectionState *ConnectionStateProperties `json:"connectionState,omitempty"`
@@ -16938,7 +17070,7 @@ type ManagedPrivateEndpointsClientGetOptions struct {
 	IfNoneMatch *string
 }
 
-// ManagedPrivateEndpointsClientListByFactoryOptions contains the optional parameters for the ManagedPrivateEndpointsClient.ListByFactory
+// ManagedPrivateEndpointsClientListByFactoryOptions contains the optional parameters for the ManagedPrivateEndpointsClient.NewListByFactoryPager
 // method.
 type ManagedPrivateEndpointsClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
@@ -16947,7 +17079,7 @@ type ManagedPrivateEndpointsClientListByFactoryOptions struct {
 // ManagedVirtualNetwork - A managed Virtual Network associated with the Azure Data Factory
 type ManagedVirtualNetwork struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; Managed Virtual Network alias.
 	Alias *string `json:"alias,omitempty" azure:"ro"`
@@ -17007,7 +17139,7 @@ type ManagedVirtualNetworksClientGetOptions struct {
 	IfNoneMatch *string
 }
 
-// ManagedVirtualNetworksClientListByFactoryOptions contains the optional parameters for the ManagedVirtualNetworksClient.ListByFactory
+// ManagedVirtualNetworksClientListByFactoryOptions contains the optional parameters for the ManagedVirtualNetworksClient.NewListByFactoryPager
 // method.
 type ManagedVirtualNetworksClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
@@ -17019,7 +17151,7 @@ type MappingDataFlow struct {
 	Type *string `json:"type,omitempty"`
 
 	// List of tags that can be used for describing the data flow.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The description of the data flow.
 	Description *string `json:"description,omitempty"`
@@ -17068,10 +17200,10 @@ type MariaDBLinkedService struct {
 	TypeProperties *MariaDBLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -17098,11 +17230,11 @@ func (m *MariaDBLinkedService) GetLinkedService() *LinkedService {
 // MariaDBLinkedServiceTypeProperties - MariaDB server linked service properties.
 type MariaDBLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Pwd *AzureKeyVaultSecretReference `json:"pwd,omitempty"`
@@ -17115,28 +17247,28 @@ type MariaDBSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type MariaDBSource.
@@ -17174,10 +17306,10 @@ type MariaDBTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -17190,10 +17322,10 @@ type MariaDBTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -17223,10 +17355,10 @@ type MarketoLinkedService struct {
 	TypeProperties *MarketoLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -17253,27 +17385,27 @@ func (m *MarketoLinkedService) GetLinkedService() *LinkedService {
 // MarketoLinkedServiceTypeProperties - Marketo server linked service properties.
 type MarketoLinkedServiceTypeProperties struct {
 	// REQUIRED; The client Id of your Marketo service.
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// REQUIRED; The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com)
-	Endpoint interface{} `json:"endpoint,omitempty"`
+	Endpoint any `json:"endpoint,omitempty"`
 
 	// The client secret of your Marketo service.
 	ClientSecret SecretBaseClassification `json:"clientSecret,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // MarketoObjectDataset - Marketo server dataset.
@@ -17285,10 +17417,10 @@ type MarketoObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -17301,10 +17433,10 @@ type MarketoObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -17332,28 +17464,28 @@ type MarketoSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type MarketoSource.
@@ -17385,10 +17517,10 @@ func (m *MarketoSource) GetTabularSource() *TabularSource {
 // MetadataItem - Specify the name and value of custom metadata item.
 type MetadataItem struct {
 	// Metadata item key name. Type: string (or Expression with resultType string).
-	Name interface{} `json:"name,omitempty"`
+	Name any `json:"name,omitempty"`
 
 	// Metadata item value. Type: string (or Expression with resultType string).
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 }
 
 // MicrosoftAccessLinkedService - Microsoft Access linked service.
@@ -17400,10 +17532,10 @@ type MicrosoftAccessLinkedService struct {
 	TypeProperties *MicrosoftAccessLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -17431,24 +17563,24 @@ func (m *MicrosoftAccessLinkedService) GetLinkedService() *LinkedService {
 type MicrosoftAccessLinkedServiceTypeProperties struct {
 	// REQUIRED; The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
 	// string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// Type of authentication used to connect to the Microsoft Access as ODBC data store. Possible values are: Anonymous and Basic.
 	// Type: string (or Expression with resultType string).
-	AuthenticationType interface{} `json:"authenticationType,omitempty"`
+	AuthenticationType any `json:"authenticationType,omitempty"`
 
 	// The access credential portion of the connection string specified in driver-specific property-value format.
 	Credential SecretBaseClassification `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password for Basic authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// User name for Basic authentication. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // MicrosoftAccessSink - A copy activity Microsoft Access sink.
@@ -17457,28 +17589,28 @@ type MicrosoftAccessSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to execute before starting the copy. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type MicrosoftAccessSink.
@@ -17502,25 +17634,25 @@ type MicrosoftAccessSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type MicrosoftAccessSource.
@@ -17544,10 +17676,10 @@ type MicrosoftAccessTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -17560,10 +17692,10 @@ type MicrosoftAccessTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Microsoft Access table dataset properties.
 	TypeProperties *MicrosoftAccessTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -17587,7 +17719,7 @@ func (m *MicrosoftAccessTableDataset) GetDataset() *Dataset {
 // MicrosoftAccessTableDatasetTypeProperties - Microsoft Access table dataset properties.
 type MicrosoftAccessTableDatasetTypeProperties struct {
 	// The Microsoft Access table name. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // MongoDbAtlasCollectionDataset - The MongoDB Atlas database dataset.
@@ -17602,10 +17734,10 @@ type MongoDbAtlasCollectionDataset struct {
 	TypeProperties *MongoDbAtlasCollectionDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -17618,10 +17750,10 @@ type MongoDbAtlasCollectionDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type MongoDbAtlasCollectionDataset.
@@ -17642,7 +17774,7 @@ func (m *MongoDbAtlasCollectionDataset) GetDataset() *Dataset {
 // MongoDbAtlasCollectionDatasetTypeProperties - MongoDB Atlas database dataset properties.
 type MongoDbAtlasCollectionDatasetTypeProperties struct {
 	// REQUIRED; The collection name of the MongoDB Atlas database. Type: string (or Expression with resultType string).
-	Collection interface{} `json:"collection,omitempty"`
+	Collection any `json:"collection,omitempty"`
 }
 
 // MongoDbAtlasLinkedService - Linked service for MongoDB Atlas data source.
@@ -17654,10 +17786,10 @@ type MongoDbAtlasLinkedService struct {
 	TypeProperties *MongoDbAtlasLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -17685,10 +17817,10 @@ func (m *MongoDbAtlasLinkedService) GetLinkedService() *LinkedService {
 type MongoDbAtlasLinkedServiceTypeProperties struct {
 	// REQUIRED; The MongoDB Atlas connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
 	// SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// REQUIRED; The name of the MongoDB Atlas database that you want to access. Type: string (or Expression with resultType string).
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 }
 
 // MongoDbAtlasSink - A copy activity MongoDB Atlas sink.
@@ -17697,30 +17829,30 @@ type MongoDbAtlasSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert). The default
 	// value is "insert". Type: string (or Expression with resultType string). Type:
 	// string (or Expression with resultType string).
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type MongoDbAtlasSink.
@@ -17744,37 +17876,37 @@ type MongoDbAtlasSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies the number of documents to return in each batch of the response from MongoDB Atlas instance. In most cases, modifying
 	// the batch size will not affect the user or the application. This
 	// property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
-	BatchSize interface{} `json:"batchSize,omitempty"`
+	BatchSize any `json:"batchSize,omitempty"`
 
 	// Cursor methods for Mongodb query
 	CursorMethods *MongoDbCursorMethodsProperties `json:"cursorMethods,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or pass
 	// an empty document ({}). Type: string (or Expression with resultType string).
-	Filter interface{} `json:"filter,omitempty"`
+	Filter any `json:"filter,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type MongoDbAtlasSource.
@@ -17801,10 +17933,10 @@ type MongoDbCollectionDataset struct {
 	TypeProperties *MongoDbCollectionDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -17817,10 +17949,10 @@ type MongoDbCollectionDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type MongoDbCollectionDataset.
@@ -17841,30 +17973,30 @@ func (m *MongoDbCollectionDataset) GetDataset() *Dataset {
 // MongoDbCollectionDatasetTypeProperties - MongoDB database dataset properties.
 type MongoDbCollectionDatasetTypeProperties struct {
 	// REQUIRED; The table name of the MongoDB database. Type: string (or Expression with resultType string).
-	CollectionName interface{} `json:"collectionName,omitempty"`
+	CollectionName any `json:"collectionName,omitempty"`
 }
 
 // MongoDbCursorMethodsProperties - Cursor methods for Mongodb query
 type MongoDbCursorMethodsProperties struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies the maximum number of documents the server returns. limit() is analogous to the LIMIT statement in a SQL database.
 	// Type: integer (or Expression with resultType integer).
-	Limit interface{} `json:"limit,omitempty"`
+	Limit any `json:"limit,omitempty"`
 
 	// Specifies the fields to return in the documents that match the query filter. To return all fields in the matching documents,
 	// omit this parameter. Type: string (or Expression with resultType string).
-	Project interface{} `json:"project,omitempty"`
+	Project any `json:"project,omitempty"`
 
 	// Specifies the how many documents skipped and where MongoDB begins returning results. This approach may be useful in implementing
 	// paginated results. Type: integer (or Expression with resultType
 	// integer).
-	Skip interface{} `json:"skip,omitempty"`
+	Skip any `json:"skip,omitempty"`
 
 	// Specifies the order in which the query returns matching documents. Type: string (or Expression with resultType string).
 	// Type: string (or Expression with resultType string).
-	Sort interface{} `json:"sort,omitempty"`
+	Sort any `json:"sort,omitempty"`
 }
 
 // MongoDbLinkedService - Linked service for MongoDb data source.
@@ -17876,10 +18008,10 @@ type MongoDbLinkedService struct {
 	TypeProperties *MongoDbLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -17906,38 +18038,38 @@ func (m *MongoDbLinkedService) GetLinkedService() *LinkedService {
 // MongoDbLinkedServiceTypeProperties - MongoDB linked service properties.
 type MongoDbLinkedServiceTypeProperties struct {
 	// REQUIRED; The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
-	DatabaseName interface{} `json:"databaseName,omitempty"`
+	DatabaseName any `json:"databaseName,omitempty"`
 
 	// REQUIRED; The IP address or server name of the MongoDB server. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// Specifies whether to allow self-signed certificates from the server. The default value is false. Type: boolean (or Expression
 	// with resultType boolean).
-	AllowSelfSignedServerCert interface{} `json:"allowSelfSignedServerCert,omitempty"`
+	AllowSelfSignedServerCert any `json:"allowSelfSignedServerCert,omitempty"`
 
 	// Database to verify the username and password. Type: string (or Expression with resultType string).
-	AuthSource interface{} `json:"authSource,omitempty"`
+	AuthSource any `json:"authSource,omitempty"`
 
 	// The authentication type to be used to connect to the MongoDB database.
 	AuthenticationType *MongoDbAuthenticationType `json:"authenticationType,omitempty"`
 
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false. Type: boolean (or
 	// Expression with resultType boolean).
-	EnableSSL interface{} `json:"enableSsl,omitempty"`
+	EnableSSL any `json:"enableSsl,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password for authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017. Type: integer
 	// (or Expression with resultType integer), minimum: 0.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// Username for authentication. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // MongoDbSource - A copy activity source for a MongoDB database.
@@ -17947,25 +18079,25 @@ type MongoDbSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Should be a SQL-92 query expression. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type MongoDbSource.
@@ -17992,10 +18124,10 @@ type MongoDbV2CollectionDataset struct {
 	TypeProperties *MongoDbV2CollectionDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -18008,10 +18140,10 @@ type MongoDbV2CollectionDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type MongoDbV2CollectionDataset.
@@ -18032,7 +18164,7 @@ func (m *MongoDbV2CollectionDataset) GetDataset() *Dataset {
 // MongoDbV2CollectionDatasetTypeProperties - MongoDB database dataset properties.
 type MongoDbV2CollectionDatasetTypeProperties struct {
 	// REQUIRED; The collection name of the MongoDB database. Type: string (or Expression with resultType string).
-	Collection interface{} `json:"collection,omitempty"`
+	Collection any `json:"collection,omitempty"`
 }
 
 // MongoDbV2LinkedService - Linked service for MongoDB data source.
@@ -18044,10 +18176,10 @@ type MongoDbV2LinkedService struct {
 	TypeProperties *MongoDbV2LinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -18075,10 +18207,10 @@ func (m *MongoDbV2LinkedService) GetLinkedService() *LinkedService {
 type MongoDbV2LinkedServiceTypeProperties struct {
 	// REQUIRED; The MongoDB connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString
 	// or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// REQUIRED; The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 }
 
 // MongoDbV2Sink - A copy activity MongoDB sink.
@@ -18087,30 +18219,30 @@ type MongoDbV2Sink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert). The default
 	// value is "insert". Type: string (or Expression with resultType string). Type:
 	// string (or Expression with resultType string).
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type MongoDbV2Sink.
@@ -18134,37 +18266,37 @@ type MongoDbV2Source struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases, modifying
 	// the batch size will not affect the user or the application. This property's
 	// main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
-	BatchSize interface{} `json:"batchSize,omitempty"`
+	BatchSize any `json:"batchSize,omitempty"`
 
 	// Cursor methods for Mongodb query
 	CursorMethods *MongoDbCursorMethodsProperties `json:"cursorMethods,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or pass
 	// an empty document ({}). Type: string (or Expression with resultType string).
-	Filter interface{} `json:"filter,omitempty"`
+	Filter any `json:"filter,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type MongoDbV2Source.
@@ -18195,10 +18327,10 @@ type MultiplePipelineTrigger struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the trigger.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Trigger description.
 	Description *string `json:"description,omitempty"`
@@ -18233,10 +18365,10 @@ type MySQLLinkedService struct {
 	TypeProperties *MySQLLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -18263,11 +18395,11 @@ func (m *MySQLLinkedService) GetLinkedService() *LinkedService {
 // MySQLLinkedServiceTypeProperties - MySQL linked service properties.
 type MySQLLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference `json:"password,omitempty"`
@@ -18280,28 +18412,28 @@ type MySQLSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type MySQLSource.
@@ -18339,10 +18471,10 @@ type MySQLTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -18355,10 +18487,10 @@ type MySQLTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// MySQL table dataset properties.
 	TypeProperties *MySQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -18382,7 +18514,7 @@ func (m *MySQLTableDataset) GetDataset() *Dataset {
 // MySQLTableDatasetTypeProperties - MySql table dataset properties.
 type MySQLTableDatasetTypeProperties struct {
 	// The MySQL table name. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // NetezzaLinkedService - Netezza linked service.
@@ -18394,10 +18526,10 @@ type NetezzaLinkedService struct {
 	TypeProperties *NetezzaLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -18424,11 +18556,11 @@ func (n *NetezzaLinkedService) GetLinkedService() *LinkedService {
 // NetezzaLinkedServiceTypeProperties - Netezza linked service properties.
 type NetezzaLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Pwd *AzureKeyVaultSecretReference `json:"pwd,omitempty"`
@@ -18438,15 +18570,15 @@ type NetezzaLinkedServiceTypeProperties struct {
 type NetezzaPartitionSettings struct {
 	// The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression
 	// with resultType string).
-	PartitionColumnName interface{} `json:"partitionColumnName,omitempty"`
+	PartitionColumnName any `json:"partitionColumnName,omitempty"`
 
 	// The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionLowerBound interface{} `json:"partitionLowerBound,omitempty"`
+	PartitionLowerBound any `json:"partitionLowerBound,omitempty"`
 
 	// The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionUpperBound interface{} `json:"partitionUpperBound,omitempty"`
+	PartitionUpperBound any `json:"partitionUpperBound,omitempty"`
 }
 
 // NetezzaSource - A copy activity Netezza source.
@@ -18456,34 +18588,34 @@ type NetezzaSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The partition mechanism that will be used for Netezza read in parallel. Possible values include: "None", "DataSlice", "DynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for Netezza source partitioning.
 	PartitionSettings *NetezzaPartitionSettings `json:"partitionSettings,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type NetezzaSource.
@@ -18521,10 +18653,10 @@ type NetezzaTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -18537,10 +18669,10 @@ type NetezzaTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *NetezzaTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -18564,13 +18696,13 @@ func (n *NetezzaTableDataset) GetDataset() *Dataset {
 // NetezzaTableDatasetTypeProperties - Netezza dataset properties.
 type NetezzaTableDatasetTypeProperties struct {
 	// The schema name of the Netezza. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Netezza. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // NotebookParameter - Notebook parameter.
@@ -18579,7 +18711,7 @@ type NotebookParameter struct {
 	Type *NotebookParameterType `json:"type,omitempty"`
 
 	// Notebook parameter value. Type: string (or Expression with resultType string).
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 }
 
 // ODataLinkedService - Open Data Protocol (OData) linked service.
@@ -18591,10 +18723,10 @@ type ODataLinkedService struct {
 	TypeProperties *ODataLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -18621,17 +18753,17 @@ func (o *ODataLinkedService) GetLinkedService() *LinkedService {
 // ODataLinkedServiceTypeProperties - OData linked service properties.
 type ODataLinkedServiceTypeProperties struct {
 	// REQUIRED; The URL of the OData service endpoint. Type: string (or Expression with resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// Specify the resource you are requesting authorization to use Directory. Type: string (or Expression with resultType string).
-	AADResourceID interface{} `json:"aadResourceId,omitempty"`
+	AADResourceID any `json:"aadResourceId,omitempty"`
 
 	// Specify the credential type (key or cert) is used for service principal.
 	AADServicePrincipalCredentialType *ODataAADServicePrincipalCredentialType `json:"aadServicePrincipalCredentialType,omitempty"`
 
 	// The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression with resultType
 	// object).
-	AuthHeaders interface{} `json:"authHeaders,omitempty"`
+	AuthHeaders any `json:"authHeaders,omitempty"`
 
 	// Type of authentication used to connect to the OData service.
 	AuthenticationType *ODataAuthenticationType `json:"authenticationType,omitempty"`
@@ -18639,11 +18771,11 @@ type ODataLinkedServiceTypeProperties struct {
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
-	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
+	AzureCloudType any `json:"azureCloudType,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password of the OData service.
 	Password SecretBaseClassification `json:"password,omitempty"`
@@ -18658,7 +18790,7 @@ type ODataLinkedServiceTypeProperties struct {
 
 	// Specify the application id of your application registered in Azure Active Directory. Type: string (or Expression with resultType
 	// string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// Specify the secret of your application registered in Azure Active Directory. Type: string (or Expression with resultType
 	// string).
@@ -18666,10 +18798,10 @@ type ODataLinkedServiceTypeProperties struct {
 
 	// Specify the tenant information (domain name or tenant ID) under which your application resides. Type: string (or Expression
 	// with resultType string).
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 
 	// User name of the OData service. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // ODataResourceDataset - The Open Data Protocol (OData) resource dataset.
@@ -18681,10 +18813,10 @@ type ODataResourceDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -18697,10 +18829,10 @@ type ODataResourceDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// OData dataset properties.
 	TypeProperties *ODataResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -18724,7 +18856,7 @@ func (o *ODataResourceDataset) GetDataset() *Dataset {
 // ODataResourceDatasetTypeProperties - OData dataset properties.
 type ODataResourceDatasetTypeProperties struct {
 	// The OData resource path. Type: string (or Expression with resultType string).
-	Path interface{} `json:"path,omitempty"`
+	Path any `json:"path,omitempty"`
 }
 
 // ODataSource - A copy activity source for OData source.
@@ -18734,30 +18866,30 @@ type ODataSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data.
 	// Default value: 00:05:00. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	HTTPRequestTimeout interface{} `json:"httpRequestTimeout,omitempty"`
+	HTTPRequestTimeout any `json:"httpRequestTimeout,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// OData query. For example, "$top=1". Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type ODataSource.
@@ -18781,10 +18913,10 @@ type OdbcLinkedService struct {
 	TypeProperties *OdbcLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -18812,24 +18944,24 @@ func (o *OdbcLinkedService) GetLinkedService() *LinkedService {
 type OdbcLinkedServiceTypeProperties struct {
 	// REQUIRED; The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
 	// string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// Type of authentication used to connect to the ODBC data store. Possible values are: Anonymous and Basic. Type: string (or
 	// Expression with resultType string).
-	AuthenticationType interface{} `json:"authenticationType,omitempty"`
+	AuthenticationType any `json:"authenticationType,omitempty"`
 
 	// The access credential portion of the connection string specified in driver-specific property-value format.
 	Credential SecretBaseClassification `json:"credential,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password for Basic authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// User name for Basic authentication. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // OdbcSink - A copy activity ODBC sink.
@@ -18838,28 +18970,28 @@ type OdbcSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to execute before starting the copy. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type OdbcSink.
@@ -18883,28 +19015,28 @@ type OdbcSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type OdbcSource.
@@ -18942,10 +19074,10 @@ type OdbcTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -18958,10 +19090,10 @@ type OdbcTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// ODBC table dataset properties.
 	TypeProperties *OdbcTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -18985,7 +19117,7 @@ func (o *OdbcTableDataset) GetDataset() *Dataset {
 // OdbcTableDatasetTypeProperties - ODBC table dataset properties.
 type OdbcTableDatasetTypeProperties struct {
 	// The ODBC table name. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // Office365Dataset - The Office365 account.
@@ -19000,10 +19132,10 @@ type Office365Dataset struct {
 	TypeProperties *Office365DatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -19016,10 +19148,10 @@ type Office365Dataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type Office365Dataset.
@@ -19040,11 +19172,11 @@ func (o *Office365Dataset) GetDataset() *Dataset {
 // Office365DatasetTypeProperties - Office365 dataset properties.
 type Office365DatasetTypeProperties struct {
 	// REQUIRED; Name of the dataset to extract from Office 365. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 
 	// A predicate expression that can be used to filter the specific rows to extract from Office 365. Type: string (or Expression
 	// with resultType string).
-	Predicate interface{} `json:"predicate,omitempty"`
+	Predicate any `json:"predicate,omitempty"`
 }
 
 // Office365LinkedService - Office365 linked service.
@@ -19056,10 +19188,10 @@ type Office365LinkedService struct {
 	TypeProperties *Office365LinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -19086,21 +19218,21 @@ func (o *Office365LinkedService) GetLinkedService() *LinkedService {
 // Office365LinkedServiceTypeProperties - Office365 linked service properties.
 type Office365LinkedServiceTypeProperties struct {
 	// REQUIRED; Azure tenant ID to which the Office 365 account belongs. Type: string (or Expression with resultType string).
-	Office365TenantID interface{} `json:"office365TenantId,omitempty"`
+	Office365TenantID any `json:"office365TenantId,omitempty"`
 
 	// REQUIRED; Specify the application's client ID. Type: string (or Expression with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// REQUIRED; Specify the application's key.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// REQUIRED; Specify the tenant information under which your Azure AD web application resides. Type: string (or Expression
 	// with resultType string).
-	ServicePrincipalTenantID interface{} `json:"servicePrincipalTenantId,omitempty"`
+	ServicePrincipalTenantID any `json:"servicePrincipalTenantId,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // Office365Source - A copy activity source for an Office 365 service.
@@ -19109,38 +19241,38 @@ type Office365Source struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The groups containing all the users. Type: array of strings (or Expression with resultType array of strings).
-	AllowedGroups interface{} `json:"allowedGroups,omitempty"`
+	AllowedGroups any `json:"allowedGroups,omitempty"`
 
 	// The Column to apply the and . Type: string (or Expression with resultType string).
-	DateFilterColumn interface{} `json:"dateFilterColumn,omitempty"`
+	DateFilterColumn any `json:"dateFilterColumn,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// End time of the requested range for this dataset. Type: string (or Expression with resultType string).
-	EndTime interface{} `json:"endTime,omitempty"`
+	EndTime any `json:"endTime,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType array of objects).
 	// Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
-	OutputColumns interface{} `json:"outputColumns,omitempty"`
+	OutputColumns any `json:"outputColumns,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Start time of the requested range for this dataset. Type: string (or Expression with resultType string).
-	StartTime interface{} `json:"startTime,omitempty"`
+	StartTime any `json:"startTime,omitempty"`
 
 	// The user scope uri. Type: string (or Expression with resultType string).
-	UserScopeFilterURI interface{} `json:"userScopeFilterUri,omitempty"`
+	UserScopeFilterURI any `json:"userScopeFilterUri,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type Office365Source.
@@ -19275,7 +19407,7 @@ type OperationServiceSpecification struct {
 	MetricSpecifications []*OperationMetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -19289,10 +19421,10 @@ type OracleCloudStorageLinkedService struct {
 	TypeProperties *OracleCloudStorageLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -19320,11 +19452,11 @@ func (o *OracleCloudStorageLinkedService) GetLinkedService() *LinkedService {
 type OracleCloudStorageLinkedServiceTypeProperties struct {
 	// The access key identifier of the Oracle Cloud Storage Identity and Access Management (IAM) user. Type: string (or Expression
 	// with resultType string).
-	AccessKeyID interface{} `json:"accessKeyId,omitempty"`
+	AccessKeyID any `json:"accessKeyId,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The secret access key of the Oracle Cloud Storage Identity and Access Management (IAM) user.
 	SecretAccessKey SecretBaseClassification `json:"secretAccessKey,omitempty"`
@@ -19332,7 +19464,7 @@ type OracleCloudStorageLinkedServiceTypeProperties struct {
 	// This value specifies the endpoint to access with the Oracle Cloud Storage Connector. This is an optional property; change
 	// it only if you want to try a different service endpoint or want to switch
 	// between https and http. Type: string (or Expression with resultType string).
-	ServiceURL interface{} `json:"serviceUrl,omitempty"`
+	ServiceURL any `json:"serviceUrl,omitempty"`
 }
 
 // OracleCloudStorageLocation - The location of Oracle Cloud Storage dataset.
@@ -19341,19 +19473,19 @@ type OracleCloudStorageLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the bucketName of Oracle Cloud Storage. Type: string (or Expression with resultType string)
-	BucketName interface{} `json:"bucketName,omitempty"`
+	BucketName any `json:"bucketName,omitempty"`
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 
 	// Specify the version of Oracle Cloud Storage. Type: string (or Expression with resultType string).
-	Version interface{} `json:"version,omitempty"`
+	Version any `json:"version,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type OracleCloudStorageLocation.
@@ -19372,46 +19504,46 @@ type OracleCloudStorageReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// The prefix filter for the Oracle Cloud Storage object name. Type: string (or Expression with resultType string).
-	Prefix interface{} `json:"prefix,omitempty"`
+	Prefix any `json:"prefix,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Oracle Cloud Storage wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// Oracle Cloud Storage wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type OracleCloudStorageReadSettings.
@@ -19433,10 +19565,10 @@ type OracleLinkedService struct {
 	TypeProperties *OracleLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -19463,11 +19595,11 @@ func (o *OracleLinkedService) GetLinkedService() *LinkedService {
 // OracleLinkedServiceTypeProperties - Oracle database linked service properties.
 type OracleLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference `json:"password,omitempty"`
@@ -19477,18 +19609,18 @@ type OracleLinkedServiceTypeProperties struct {
 type OraclePartitionSettings struct {
 	// The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression
 	// with resultType string).
-	PartitionColumnName interface{} `json:"partitionColumnName,omitempty"`
+	PartitionColumnName any `json:"partitionColumnName,omitempty"`
 
 	// The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionLowerBound interface{} `json:"partitionLowerBound,omitempty"`
+	PartitionLowerBound any `json:"partitionLowerBound,omitempty"`
 
 	// Names of the physical partitions of Oracle table.
-	PartitionNames interface{} `json:"partitionNames,omitempty"`
+	PartitionNames any `json:"partitionNames,omitempty"`
 
 	// The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionUpperBound interface{} `json:"partitionUpperBound,omitempty"`
+	PartitionUpperBound any `json:"partitionUpperBound,omitempty"`
 }
 
 // OracleServiceCloudLinkedService - Oracle Service Cloud linked service.
@@ -19500,10 +19632,10 @@ type OracleServiceCloudLinkedService struct {
 	TypeProperties *OracleServiceCloudLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -19530,30 +19662,30 @@ func (o *OracleServiceCloudLinkedService) GetLinkedService() *LinkedService {
 // OracleServiceCloudLinkedServiceTypeProperties - Oracle Service Cloud linked service properties.
 type OracleServiceCloudLinkedServiceTypeProperties struct {
 	// REQUIRED; The URL of the Oracle Service Cloud instance.
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// REQUIRED; The password corresponding to the user name that you provided in the username key.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// REQUIRED; The user name that you use to access Oracle Service Cloud server.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean (or Expression
 	// with resultType boolean).
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true. Type: boolean (or Expression with
 	// resultType boolean).
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true. Type: boolean
 	// (or Expression with resultType boolean).
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // OracleServiceCloudObjectDataset - Oracle Service Cloud dataset.
@@ -19565,10 +19697,10 @@ type OracleServiceCloudObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -19581,10 +19713,10 @@ type OracleServiceCloudObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -19612,28 +19744,28 @@ type OracleServiceCloudSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type OracleServiceCloudSource.
@@ -19668,28 +19800,28 @@ type OracleSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// SQL pre-copy script. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type OracleSink.
@@ -19713,35 +19845,35 @@ type OracleSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Oracle reader query. Type: string (or Expression with resultType string).
-	OracleReaderQuery interface{} `json:"oracleReaderQuery,omitempty"`
+	OracleReaderQuery any `json:"oracleReaderQuery,omitempty"`
 
 	// The partition mechanism that will be used for Oracle read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable",
 	// "DynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for Oracle source partitioning.
 	PartitionSettings *OraclePartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type OracleSource.
@@ -19765,10 +19897,10 @@ type OracleTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -19781,10 +19913,10 @@ type OracleTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// On-premises Oracle dataset properties.
 	TypeProperties *OracleTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -19808,13 +19940,13 @@ func (o *OracleTableDataset) GetDataset() *Dataset {
 // OracleTableDatasetTypeProperties - On-premises Oracle dataset properties.
 type OracleTableDatasetTypeProperties struct {
 	// The schema name of the on-premises Oracle database. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the on-premises Oracle database. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // OrcDataset - ORC dataset.
@@ -19826,10 +19958,10 @@ type OrcDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -19842,10 +19974,10 @@ type OrcDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// ORC dataset properties.
 	TypeProperties *OrcDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -19872,7 +20004,7 @@ type OrcDatasetTypeProperties struct {
 	Location DatasetLocationClassification `json:"location,omitempty"`
 
 	// The data orcCompressionCodec. Type: string (or Expression with resultType string).
-	OrcCompressionCodec interface{} `json:"orcCompressionCodec,omitempty"`
+	OrcCompressionCodec any `json:"orcCompressionCodec,omitempty"`
 }
 
 // OrcFormat - The data stored in Optimized Row Columnar (ORC) format.
@@ -19881,13 +20013,13 @@ type OrcFormat struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Deserializer. Type: string (or Expression with resultType string).
-	Deserializer interface{} `json:"deserializer,omitempty"`
+	Deserializer any `json:"deserializer,omitempty"`
 
 	// Serializer. Type: string (or Expression with resultType string).
-	Serializer interface{} `json:"serializer,omitempty"`
+	Serializer any `json:"serializer,omitempty"`
 }
 
 // GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type OrcFormat.
@@ -19906,31 +20038,31 @@ type OrcSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// ORC format settings.
 	FormatSettings *OrcWriteSettings `json:"formatSettings,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// ORC store settings.
 	StoreSettings StoreWriteSettingsClassification `json:"storeSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type OrcSink.
@@ -19954,22 +20086,22 @@ type OrcSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// ORC store settings.
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
@@ -19993,15 +20125,15 @@ type OrcWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies the file name pattern _. when copy from non-file based store without partitionOptions. Type: string (or Expression
 	// with resultType string).
-	FileNamePrefix interface{} `json:"fileNamePrefix,omitempty"`
+	FileNamePrefix any `json:"fileNamePrefix,omitempty"`
 
 	// Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with
 	// resultType integer).
-	MaxRowsPerFile interface{} `json:"maxRowsPerFile,omitempty"`
+	MaxRowsPerFile any `json:"maxRowsPerFile,omitempty"`
 }
 
 // GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type OrcWriteSettings.
@@ -20027,7 +20159,7 @@ type ParameterSpecification struct {
 	Type *ParameterType `json:"type,omitempty"`
 
 	// Default value of parameter.
-	DefaultValue interface{} `json:"defaultValue,omitempty"`
+	DefaultValue any `json:"defaultValue,omitempty"`
 }
 
 // ParquetDataset - Parquet dataset.
@@ -20039,10 +20171,10 @@ type ParquetDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -20055,10 +20187,10 @@ type ParquetDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Parquet dataset properties.
 	TypeProperties *ParquetDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -20085,7 +20217,7 @@ type ParquetDatasetTypeProperties struct {
 	Location DatasetLocationClassification `json:"location,omitempty"`
 
 	// The data compressionCodec. Type: string (or Expression with resultType string).
-	CompressionCodec interface{} `json:"compressionCodec,omitempty"`
+	CompressionCodec any `json:"compressionCodec,omitempty"`
 }
 
 // ParquetFormat - The data stored in Parquet format.
@@ -20094,13 +20226,13 @@ type ParquetFormat struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Deserializer. Type: string (or Expression with resultType string).
-	Deserializer interface{} `json:"deserializer,omitempty"`
+	Deserializer any `json:"deserializer,omitempty"`
 
 	// Serializer. Type: string (or Expression with resultType string).
-	Serializer interface{} `json:"serializer,omitempty"`
+	Serializer any `json:"serializer,omitempty"`
 }
 
 // GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type ParquetFormat.
@@ -20119,31 +20251,31 @@ type ParquetSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Parquet format settings.
 	FormatSettings *ParquetWriteSettings `json:"formatSettings,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Parquet store settings.
 	StoreSettings StoreWriteSettingsClassification `json:"storeSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type ParquetSink.
@@ -20167,22 +20299,22 @@ type ParquetSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Parquet store settings.
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
@@ -20206,15 +20338,15 @@ type ParquetWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies the file name pattern _. when copy from non-file based store without partitionOptions. Type: string (or Expression
 	// with resultType string).
-	FileNamePrefix interface{} `json:"fileNamePrefix,omitempty"`
+	FileNamePrefix any `json:"fileNamePrefix,omitempty"`
 
 	// Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with
 	// resultType integer).
-	MaxRowsPerFile interface{} `json:"maxRowsPerFile,omitempty"`
+	MaxRowsPerFile any `json:"maxRowsPerFile,omitempty"`
 }
 
 // GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type ParquetWriteSettings.
@@ -20234,10 +20366,10 @@ type PaypalLinkedService struct {
 	TypeProperties *PaypalLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -20264,27 +20396,27 @@ func (p *PaypalLinkedService) GetLinkedService() *LinkedService {
 // PaypalLinkedServiceTypeProperties - Paypal Service linked service properties.
 type PaypalLinkedServiceTypeProperties struct {
 	// REQUIRED; The client ID associated with your PayPal application.
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// REQUIRED; The URL of the PayPal instance. (i.e. api.sandbox.paypal.com)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// The client secret associated with your PayPal application.
 	ClientSecret SecretBaseClassification `json:"clientSecret,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // PaypalObjectDataset - Paypal Service dataset.
@@ -20296,10 +20428,10 @@ type PaypalObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -20312,10 +20444,10 @@ type PaypalObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -20343,28 +20475,28 @@ type PaypalSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type PaypalSource.
@@ -20396,13 +20528,13 @@ func (p *PaypalSource) GetTabularSource() *TabularSource {
 // PhoenixDatasetTypeProperties - Phoenix Dataset Properties
 type PhoenixDatasetTypeProperties struct {
 	// The schema name of the Phoenix. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Phoenix. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // PhoenixLinkedService - Phoenix server linked service.
@@ -20414,10 +20546,10 @@ type PhoenixLinkedService struct {
 	TypeProperties *PhoenixLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -20447,43 +20579,43 @@ type PhoenixLinkedServiceTypeProperties struct {
 	AuthenticationType *PhoenixAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The IP address or host name of the Phoenix server. (i.e. 192.168.222.160)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over
 	// SSL. The default value is false.
-	AllowHostNameCNMismatch interface{} `json:"allowHostNameCNMismatch,omitempty"`
+	AllowHostNameCNMismatch any `json:"allowHostNameCNMismatch,omitempty"`
 
 	// Specifies whether to allow self-signed certificates from the server. The default value is false.
-	AllowSelfSignedServerCert interface{} `json:"allowSelfSignedServerCert,omitempty"`
+	AllowSelfSignedServerCert any `json:"allowSelfSignedServerCert,omitempty"`
 
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false.
-	EnableSSL interface{} `json:"enableSsl,omitempty"`
+	EnableSSL any `json:"enableSsl,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The partial URL corresponding to the Phoenix server. (i.e. /gateway/sandbox/phoenix/version). The default value is hbasephoenix
 	// if using WindowsAzureHDInsightService.
-	HTTPPath interface{} `json:"httpPath,omitempty"`
+	HTTPPath any `json:"httpPath,omitempty"`
 
 	// The password corresponding to the user name.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The TCP port that the Phoenix server uses to listen for client connections. The default value is 8765.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This
 	// property can only be set when using SSL on self-hosted IR. The default value
 	// is the cacerts.pem file installed with the IR.
-	TrustedCertPath interface{} `json:"trustedCertPath,omitempty"`
+	TrustedCertPath any `json:"trustedCertPath,omitempty"`
 
 	// Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is
 	// false.
-	UseSystemTrustStore interface{} `json:"useSystemTrustStore,omitempty"`
+	UseSystemTrustStore any `json:"useSystemTrustStore,omitempty"`
 
 	// The user name used to connect to the Phoenix server.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // PhoenixObjectDataset - Phoenix server dataset.
@@ -20495,10 +20627,10 @@ type PhoenixObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -20511,10 +20643,10 @@ type PhoenixObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *PhoenixDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -20542,28 +20674,28 @@ type PhoenixSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type PhoenixSource.
@@ -20598,7 +20730,7 @@ type Pipeline struct {
 	Activities []ActivityClassification `json:"activities,omitempty"`
 
 	// List of tags that can be used for describing the Pipeline.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The max number of concurrent runs for the pipeline.
 	Concurrency *int32 `json:"concurrency,omitempty"`
@@ -20616,7 +20748,7 @@ type Pipeline struct {
 	Policy *PipelinePolicy `json:"policy,omitempty"`
 
 	// Dimensions emitted by Pipeline.
-	RunDimensions map[string]interface{} `json:"runDimensions,omitempty"`
+	RunDimensions map[string]any `json:"runDimensions,omitempty"`
 
 	// List of variables for pipeline.
 	Variables map[string]*VariableSpecification `json:"variables,omitempty"`
@@ -20625,7 +20757,7 @@ type Pipeline struct {
 // PipelineElapsedTimeMetricPolicy - Pipeline ElapsedTime Metric Policy.
 type PipelineElapsedTimeMetricPolicy struct {
 	// TimeSpan value, after which an Azure Monitoring Metric is fired.
-	Duration interface{} `json:"duration,omitempty"`
+	Duration any `json:"duration,omitempty"`
 }
 
 // PipelineFolder - The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
@@ -20667,7 +20799,7 @@ type PipelineResource struct {
 	Properties *Pipeline `json:"properties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
@@ -20685,7 +20817,7 @@ type PipelineResource struct {
 // PipelineRun - Information about a pipeline run.
 type PipelineRun struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; The duration of a pipeline run.
 	DurationInMs *int32 `json:"durationInMs,omitempty" azure:"ro"`
@@ -20783,7 +20915,7 @@ type PipelinesClientCreateRunOptions struct {
 	// under the same groupId.
 	IsRecovery *bool
 	// Parameters of the pipeline run. These parameters will be used only if the runId is not specified.
-	Parameters map[string]interface{}
+	Parameters map[string]any
 	// The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
 	ReferencePipelineRunID *string
 	// In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
@@ -20805,7 +20937,7 @@ type PipelinesClientGetOptions struct {
 	IfNoneMatch *string
 }
 
-// PipelinesClientListByFactoryOptions contains the optional parameters for the PipelinesClient.ListByFactory method.
+// PipelinesClientListByFactoryOptions contains the optional parameters for the PipelinesClient.NewListByFactoryPager method.
 type PipelinesClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
 }
@@ -20813,22 +20945,22 @@ type PipelinesClientListByFactoryOptions struct {
 // PolybaseSettings - PolyBase settings.
 type PolybaseSettings struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Determines the number of rows to attempt to retrieve before the PolyBase recalculates the percentage of rejected rows.
 	// Type: integer (or Expression with resultType integer), minimum: 0.
-	RejectSampleValue interface{} `json:"rejectSampleValue,omitempty"`
+	RejectSampleValue any `json:"rejectSampleValue,omitempty"`
 
 	// Reject type.
 	RejectType *PolybaseSettingsRejectType `json:"rejectType,omitempty"`
 
 	// Specifies the value or the percentage of rows that can be rejected before the query fails. Type: number (or Expression
 	// with resultType number), minimum: 0.
-	RejectValue interface{} `json:"rejectValue,omitempty"`
+	RejectValue any `json:"rejectValue,omitempty"`
 
 	// Specifies how to handle missing values in delimited text files when PolyBase retrieves data from the text file. Type: boolean
 	// (or Expression with resultType boolean).
-	UseTypeDefault interface{} `json:"useTypeDefault,omitempty"`
+	UseTypeDefault any `json:"useTypeDefault,omitempty"`
 }
 
 // PostgreSQLLinkedService - Linked service for PostgreSQL data source.
@@ -20840,10 +20972,10 @@ type PostgreSQLLinkedService struct {
 	TypeProperties *PostgreSQLLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -20870,11 +21002,11 @@ func (p *PostgreSQLLinkedService) GetLinkedService() *LinkedService {
 // PostgreSQLLinkedServiceTypeProperties - PostgreSQL linked service properties.
 type PostgreSQLLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference `json:"password,omitempty"`
@@ -20887,28 +21019,28 @@ type PostgreSQLSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type PostgreSQLSource.
@@ -20946,10 +21078,10 @@ type PostgreSQLTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -20962,10 +21094,10 @@ type PostgreSQLTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// PostgreSQL table dataset properties.
 	TypeProperties *PostgreSQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -20989,13 +21121,13 @@ func (p *PostgreSQLTableDataset) GetDataset() *Dataset {
 // PostgreSQLTableDatasetTypeProperties - PostgreSQL table dataset properties.
 type PostgreSQLTableDatasetTypeProperties struct {
 	// The PostgreSQL schema name. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The PostgreSQL table name. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // PowerQuerySink - Power query sink.
@@ -21073,13 +21205,13 @@ type PowerQueryTypeProperties struct {
 // PrestoDatasetTypeProperties - Presto Dataset Properties
 type PrestoDatasetTypeProperties struct {
 	// The schema name of the Presto. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Presto. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // PrestoLinkedService - Presto server linked service.
@@ -21091,10 +21223,10 @@ type PrestoLinkedService struct {
 	TypeProperties *PrestoLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -21124,49 +21256,49 @@ type PrestoLinkedServiceTypeProperties struct {
 	AuthenticationType *PrestoAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The catalog context for all request against the server.
-	Catalog interface{} `json:"catalog,omitempty"`
+	Catalog any `json:"catalog,omitempty"`
 
 	// REQUIRED; The IP address or host name of the Presto server. (i.e. 192.168.222.160)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// REQUIRED; The version of the Presto server. (i.e. 0.148-t)
-	ServerVersion interface{} `json:"serverVersion,omitempty"`
+	ServerVersion any `json:"serverVersion,omitempty"`
 
 	// Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over
 	// SSL. The default value is false.
-	AllowHostNameCNMismatch interface{} `json:"allowHostNameCNMismatch,omitempty"`
+	AllowHostNameCNMismatch any `json:"allowHostNameCNMismatch,omitempty"`
 
 	// Specifies whether to allow self-signed certificates from the server. The default value is false.
-	AllowSelfSignedServerCert interface{} `json:"allowSelfSignedServerCert,omitempty"`
+	AllowSelfSignedServerCert any `json:"allowSelfSignedServerCert,omitempty"`
 
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false.
-	EnableSSL interface{} `json:"enableSsl,omitempty"`
+	EnableSSL any `json:"enableSsl,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password corresponding to the user name.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The TCP port that the Presto server uses to listen for client connections. The default value is 8080.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// The local time zone used by the connection. Valid values for this option are specified in the IANA Time Zone Database.
 	// The default value is the system time zone.
-	TimeZoneID interface{} `json:"timeZoneID,omitempty"`
+	TimeZoneID any `json:"timeZoneID,omitempty"`
 
 	// The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This
 	// property can only be set when using SSL on self-hosted IR. The default value
 	// is the cacerts.pem file installed with the IR.
-	TrustedCertPath interface{} `json:"trustedCertPath,omitempty"`
+	TrustedCertPath any `json:"trustedCertPath,omitempty"`
 
 	// Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is
 	// false.
-	UseSystemTrustStore interface{} `json:"useSystemTrustStore,omitempty"`
+	UseSystemTrustStore any `json:"useSystemTrustStore,omitempty"`
 
 	// The user name used to connect to the Presto server.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // PrestoObjectDataset - Presto server dataset.
@@ -21178,10 +21310,10 @@ type PrestoObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -21194,10 +21326,10 @@ type PrestoObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *PrestoDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -21225,28 +21357,28 @@ type PrestoSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type PrestoSource.
@@ -21275,7 +21407,7 @@ func (p *PrestoSource) GetTabularSource() *TabularSource {
 	}
 }
 
-// PrivateEndPointConnectionsClientListByFactoryOptions contains the optional parameters for the PrivateEndPointConnectionsClient.ListByFactory
+// PrivateEndPointConnectionsClientListByFactoryOptions contains the optional parameters for the PrivateEndPointConnectionsClient.NewListByFactoryPager
 // method.
 type PrivateEndPointConnectionsClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
@@ -21440,10 +21572,10 @@ type QuickBooksLinkedService struct {
 	TypeProperties *QuickBooksLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -21476,27 +21608,27 @@ type QuickBooksLinkedServiceTypeProperties struct {
 	AccessTokenSecret SecretBaseClassification `json:"accessTokenSecret,omitempty"`
 
 	// The company ID of the QuickBooks company to authorize.
-	CompanyID interface{} `json:"companyId,omitempty"`
+	CompanyID any `json:"companyId,omitempty"`
 
 	// Properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked service. Type:
 	// object.
-	ConnectionProperties interface{} `json:"connectionProperties,omitempty"`
+	ConnectionProperties any `json:"connectionProperties,omitempty"`
 
 	// The consumer key for OAuth 1.0 authentication.
-	ConsumerKey interface{} `json:"consumerKey,omitempty"`
+	ConsumerKey any `json:"consumerKey,omitempty"`
 
 	// The consumer secret for OAuth 1.0 authentication.
 	ConsumerSecret SecretBaseClassification `json:"consumerSecret,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com)
-	Endpoint interface{} `json:"endpoint,omitempty"`
+	Endpoint any `json:"endpoint,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 }
 
 // QuickBooksObjectDataset - QuickBooks server dataset.
@@ -21508,10 +21640,10 @@ type QuickBooksObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -21524,10 +21656,10 @@ type QuickBooksObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -21555,28 +21687,28 @@ type QuickBooksSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type QuickBooksSource.
@@ -21614,10 +21746,10 @@ type QuickbaseLinkedService struct {
 	TypeProperties *QuickbaseLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -21644,20 +21776,20 @@ func (q *QuickbaseLinkedService) GetLinkedService() *LinkedService {
 // QuickbaseLinkedServiceTypeProperties - Quickbase linked service type properties.
 type QuickbaseLinkedServiceTypeProperties struct {
 	// REQUIRED; The url to connect Quickbase source. Type: string (or Expression with resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// REQUIRED; The user token for the Quickbase source.
 	UserToken SecretBaseClassification `json:"userToken,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // RecurrenceSchedule - The recurrence schedule.
 type RecurrenceSchedule struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The hours.
 	Hours []*int32 `json:"hours,omitempty"`
@@ -21678,7 +21810,7 @@ type RecurrenceSchedule struct {
 // RecurrenceScheduleOccurrence - The recurrence schedule occurrence.
 type RecurrenceScheduleOccurrence struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The day of the week.
 	Day *DayOfWeek `json:"day,omitempty"`
@@ -21692,13 +21824,13 @@ type RedirectIncompatibleRowSettings struct {
 	// REQUIRED; Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked service used for redirecting incompatible
 	// row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string
 	// (or Expression with resultType string).
-	LinkedServiceName interface{} `json:"linkedServiceName,omitempty"`
+	LinkedServiceName any `json:"linkedServiceName,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The path for storing the redirect incompatible row data. Type: string (or Expression with resultType string).
-	Path interface{} `json:"path,omitempty"`
+	Path any `json:"path,omitempty"`
 }
 
 // RedshiftUnloadSettings - The Amazon S3 settings needed for the interim Amazon S3 when copying from Amazon Redshift with
@@ -21708,7 +21840,7 @@ type RedshiftUnloadSettings struct {
 	// REQUIRED; The bucket of the interim Amazon S3 which will be used to store the unloaded data from Amazon Redshift source.
 	// The bucket must be in the same region as the Amazon Redshift source. Type: string (or
 	// Expression with resultType string).
-	BucketName interface{} `json:"bucketName,omitempty"`
+	BucketName any `json:"bucketName,omitempty"`
 
 	// REQUIRED; The name of the Amazon S3 linked service which will be used for the unload operation when copying from the Amazon
 	// Redshift source.
@@ -21722,25 +21854,25 @@ type RelationalSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type RelationalSource.
@@ -21764,10 +21896,10 @@ type RelationalTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -21780,10 +21912,10 @@ type RelationalTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Relational table dataset properties.
 	TypeProperties *RelationalTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -21807,7 +21939,7 @@ func (r *RelationalTableDataset) GetDataset() *Dataset {
 // RelationalTableDatasetTypeProperties - Relational table dataset properties.
 type RelationalTableDatasetTypeProperties struct {
 	// The relational table name. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // RemotePrivateEndpointConnection - A remote private endpoint connection
@@ -21832,10 +21964,10 @@ type RerunTumblingWindowTrigger struct {
 	TypeProperties *RerunTumblingWindowTriggerTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the trigger.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Trigger description.
 	Description *string `json:"description,omitempty"`
@@ -21858,7 +21990,7 @@ func (r *RerunTumblingWindowTrigger) GetTrigger() *Trigger {
 // RerunTumblingWindowTriggerTypeProperties - Rerun Trigger properties.
 type RerunTumblingWindowTriggerTypeProperties struct {
 	// REQUIRED; The parent trigger reference.
-	ParentTrigger interface{} `json:"parentTrigger,omitempty"`
+	ParentTrigger any `json:"parentTrigger,omitempty"`
 
 	// REQUIRED; The end time for the time period for which restatement is initiated. Only UTC time is currently supported.
 	RequestedEndTime *time.Time `json:"requestedEndTime,omitempty"`
@@ -21879,10 +22011,10 @@ type ResponsysLinkedService struct {
 	TypeProperties *ResponsysLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -21909,30 +22041,30 @@ func (r *ResponsysLinkedService) GetLinkedService() *LinkedService {
 // ResponsysLinkedServiceTypeProperties - Responsys linked service properties.
 type ResponsysLinkedServiceTypeProperties struct {
 	// REQUIRED; The client ID associated with the Responsys application. Type: string (or Expression with resultType string).
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// REQUIRED; The endpoint of the Responsys server.
-	Endpoint interface{} `json:"endpoint,omitempty"`
+	Endpoint any `json:"endpoint,omitempty"`
 
 	// The client secret associated with the Responsys application. Type: string (or Expression with resultType string).
 	ClientSecret SecretBaseClassification `json:"clientSecret,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean (or Expression
 	// with resultType boolean).
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true. Type: boolean (or Expression with
 	// resultType boolean).
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true. Type: boolean
 	// (or Expression with resultType boolean).
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // ResponsysObjectDataset - Responsys dataset.
@@ -21944,10 +22076,10 @@ type ResponsysObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -21960,10 +22092,10 @@ type ResponsysObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -21991,28 +22123,28 @@ type ResponsysSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type ResponsysSource.
@@ -22050,10 +22182,10 @@ type RestResourceDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -22066,10 +22198,10 @@ type RestResourceDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *RestResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -22093,19 +22225,19 @@ func (r *RestResourceDataset) GetDataset() *Dataset {
 // RestResourceDatasetTypeProperties - Properties specific to this dataset type.
 type RestResourceDatasetTypeProperties struct {
 	// The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
-	AdditionalHeaders interface{} `json:"additionalHeaders,omitempty"`
+	AdditionalHeaders any `json:"additionalHeaders,omitempty"`
 
 	// The pagination rules to compose next page requests. Type: string (or Expression with resultType string).
-	PaginationRules interface{} `json:"paginationRules,omitempty"`
+	PaginationRules any `json:"paginationRules,omitempty"`
 
 	// The relative URL to the resource that the RESTful API provides. Type: string (or Expression with resultType string).
-	RelativeURL interface{} `json:"relativeUrl,omitempty"`
+	RelativeURL any `json:"relativeUrl,omitempty"`
 
 	// The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
-	RequestBody interface{} `json:"requestBody,omitempty"`
+	RequestBody any `json:"requestBody,omitempty"`
 
 	// The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
-	RequestMethod interface{} `json:"requestMethod,omitempty"`
+	RequestMethod any `json:"requestMethod,omitempty"`
 }
 
 // RestServiceLinkedService - Rest Service linked service.
@@ -22117,10 +22249,10 @@ type RestServiceLinkedService struct {
 	TypeProperties *RestServiceLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -22150,22 +22282,22 @@ type RestServiceLinkedServiceTypeProperties struct {
 	AuthenticationType *RestServiceAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The base URL of the REST service.
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// The resource you are requesting authorization to use.
-	AADResourceID interface{} `json:"aadResourceId,omitempty"`
+	AADResourceID any `json:"aadResourceId,omitempty"`
 
 	// The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression with resultType
 	// object).
-	AuthHeaders interface{} `json:"authHeaders,omitempty"`
+	AuthHeaders any `json:"authHeaders,omitempty"`
 
 	// Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment,
 	// AzureGermany. Default value is the data factory regions’ cloud type. Type:
 	// string (or Expression with resultType string).
-	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
+	AzureCloudType any `json:"azureCloudType,omitempty"`
 
 	// The client ID associated with your application. Type: string (or Expression with resultType string).
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The client secret associated with your application.
 	ClientSecret SecretBaseClassification `json:"clientSecret,omitempty"`
@@ -22175,37 +22307,37 @@ type RestServiceLinkedServiceTypeProperties struct {
 
 	// Whether to validate server side SSL certificate when connecting to the endpoint.The default value is true. Type: boolean
 	// (or Expression with resultType boolean).
-	EnableServerCertificateValidation interface{} `json:"enableServerCertificateValidation,omitempty"`
+	EnableServerCertificateValidation any `json:"enableServerCertificateValidation,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password used in Basic authentication type.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The target service or resource to which the access will be requested. Type: string (or Expression with resultType string).
-	Resource interface{} `json:"resource,omitempty"`
+	Resource any `json:"resource,omitempty"`
 
 	// The scope of the access required. It describes what kind of access will be requested. Type: string (or Expression with
 	// resultType string).
-	Scope interface{} `json:"scope,omitempty"`
+	Scope any `json:"scope,omitempty"`
 
 	// The application's client ID used in AadServicePrincipal authentication type.
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The application's key used in AadServicePrincipal authentication type.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
 
 	// The tenant information (domain name or tenant ID) used in AadServicePrincipal authentication type under which your application
 	// resides.
-	Tenant interface{} `json:"tenant,omitempty"`
+	Tenant any `json:"tenant,omitempty"`
 
 	// The token endpoint of the authorization server to acquire access token. Type: string (or Expression with resultType string).
-	TokenEndpoint interface{} `json:"tokenEndpoint,omitempty"`
+	TokenEndpoint any `json:"tokenEndpoint,omitempty"`
 
 	// The user name used in Basic authentication type.
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // RestSink - A copy activity Rest service Sink.
@@ -22214,43 +22346,43 @@ type RestSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
-	AdditionalHeaders interface{} `json:"additionalHeaders,omitempty"`
+	AdditionalHeaders any `json:"additionalHeaders,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The Only Supported
 	// option is Gzip.
-	HTTPCompressionType interface{} `json:"httpCompressionType,omitempty"`
+	HTTPCompressionType any `json:"httpCompressionType,omitempty"`
 
 	// The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data.
 	// Default value: 00:01:40. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	HTTPRequestTimeout interface{} `json:"httpRequestTimeout,omitempty"`
+	HTTPRequestTimeout any `json:"httpRequestTimeout,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The time to await before sending next request, in milliseconds
-	RequestInterval interface{} `json:"requestInterval,omitempty"`
+	RequestInterval any `json:"requestInterval,omitempty"`
 
 	// The HTTP method used to call the RESTful API. The default is POST. Type: string (or Expression with resultType string).
-	RequestMethod interface{} `json:"requestMethod,omitempty"`
+	RequestMethod any `json:"requestMethod,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type RestSink.
@@ -22274,42 +22406,42 @@ type RestSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
-	AdditionalHeaders interface{} `json:"additionalHeaders,omitempty"`
+	AdditionalHeaders any `json:"additionalHeaders,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data.
 	// Default value: 00:01:40. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	HTTPRequestTimeout interface{} `json:"httpRequestTimeout,omitempty"`
+	HTTPRequestTimeout any `json:"httpRequestTimeout,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The pagination rules to compose next page requests. Type: string (or Expression with resultType string).
-	PaginationRules interface{} `json:"paginationRules,omitempty"`
+	PaginationRules any `json:"paginationRules,omitempty"`
 
 	// The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType string).
-	RequestBody interface{} `json:"requestBody,omitempty"`
+	RequestBody any `json:"requestBody,omitempty"`
 
 	// The time to await before sending next page request.
-	RequestInterval interface{} `json:"requestInterval,omitempty"`
+	RequestInterval any `json:"requestInterval,omitempty"`
 
 	// The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
-	RequestMethod interface{} `json:"requestMethod,omitempty"`
+	RequestMethod any `json:"requestMethod,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type RestSource.
@@ -22327,7 +22459,7 @@ func (r *RestSource) GetCopySource() *CopySource {
 // RetryPolicy - Execution policy for an activity.
 type RetryPolicy struct {
 	// Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum: 0.
-	Count interface{} `json:"count,omitempty"`
+	Count any `json:"count,omitempty"`
 
 	// Interval between retries in seconds. Default is 30.
 	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
@@ -22386,7 +22518,7 @@ type SQLAlwaysEncryptedProperties struct {
 
 	// The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string (or Expression
 	// with resultType string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// The key of the service principal used to authenticate against Azure Key Vault.
 	ServicePrincipalKey SecretBaseClassification `json:"servicePrincipalKey,omitempty"`
@@ -22398,54 +22530,54 @@ type SQLDWSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType boolean).
-	AllowCopyCommand interface{} `json:"allowCopyCommand,omitempty"`
+	AllowCopyCommand any `json:"allowCopyCommand,omitempty"`
 
 	// Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable. Type: boolean (or Expression with resultType
 	// boolean).
-	AllowPolyBase interface{} `json:"allowPolyBase,omitempty"`
+	AllowPolyBase any `json:"allowPolyBase,omitempty"`
 
 	// Specifies Copy Command related settings when allowCopyCommand is true.
 	CopyCommandSettings *DWCopyCommandSettings `json:"copyCommandSettings,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Specifies PolyBase-related settings when allowPolyBase is true.
 	PolyBaseSettings *PolybaseSettings `json:"polyBaseSettings,omitempty"`
 
 	// SQL pre-copy script. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// Whether to use table lock during bulk copy. Type: boolean (or Expression with resultType boolean).
-	SQLWriterUseTableLock interface{} `json:"sqlWriterUseTableLock,omitempty"`
+	SQLWriterUseTableLock any `json:"sqlWriterUseTableLock,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression
 	// with resultType string).
-	TableOption interface{} `json:"tableOption,omitempty"`
+	TableOption any `json:"tableOption,omitempty"`
 
 	// SQL DW upsert settings.
 	UpsertSettings *SQLDWUpsertSettings `json:"upsertSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Write behavior when copying data into azure SQL DW. Type: SqlDWWriteBehaviorEnum (or Expression with resultType SqlDWWriteBehaviorEnum)
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type SQLDWSink.
@@ -22469,43 +22601,43 @@ type SQLDWSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable",
 	// "DynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for Sql source partitioning.
 	PartitionSettings *SQLPartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// SQL Data Warehouse reader query. Type: string (or Expression with resultType string).
-	SQLReaderQuery interface{} `json:"sqlReaderQuery,omitempty"`
+	SQLReaderQuery any `json:"sqlReaderQuery,omitempty"`
 
 	// Name of the stored procedure for a SQL Data Warehouse source. This cannot be used at the same time as SqlReaderQuery. Type:
 	// string (or Expression with resultType string).
-	SQLReaderStoredProcedureName interface{} `json:"sqlReaderStoredProcedureName,omitempty"`
+	SQLReaderStoredProcedureName any `json:"sqlReaderStoredProcedureName,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}". Type: object
 	// (or Expression with resultType object), itemType: StoredProcedureParameter.
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SQLDWSource.
@@ -22537,10 +22669,10 @@ func (s *SQLDWSource) GetTabularSource() *TabularSource {
 // SQLDWUpsertSettings - Sql DW upsert option settings
 type SQLDWUpsertSettings struct {
 	// Schema name for interim table. Type: string (or Expression with resultType string).
-	InterimSchemaName interface{} `json:"interimSchemaName,omitempty"`
+	InterimSchemaName any `json:"interimSchemaName,omitempty"`
 
 	// Key column names for unique row identification. Type: array of strings (or Expression with resultType array of strings).
-	Keys interface{} `json:"keys,omitempty"`
+	Keys any `json:"keys,omitempty"`
 }
 
 // SQLMISink - A copy activity Azure SQL Managed Instance sink.
@@ -22549,53 +22681,53 @@ type SQLMISink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// SQL pre-copy script. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// SQL writer stored procedure name. Type: string (or Expression with resultType string).
-	SQLWriterStoredProcedureName interface{} `json:"sqlWriterStoredProcedureName,omitempty"`
+	SQLWriterStoredProcedureName any `json:"sqlWriterStoredProcedureName,omitempty"`
 
 	// SQL writer table type. Type: string (or Expression with resultType string).
-	SQLWriterTableType interface{} `json:"sqlWriterTableType,omitempty"`
+	SQLWriterTableType any `json:"sqlWriterTableType,omitempty"`
 
 	// Whether to use table lock during bulk copy. Type: boolean (or Expression with resultType boolean).
-	SQLWriterUseTableLock interface{} `json:"sqlWriterUseTableLock,omitempty"`
+	SQLWriterUseTableLock any `json:"sqlWriterUseTableLock,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// SQL stored procedure parameters.
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 
 	// The stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
-	StoredProcedureTableTypeParameterName interface{} `json:"storedProcedureTableTypeParameterName,omitempty"`
+	StoredProcedureTableTypeParameterName any `json:"storedProcedureTableTypeParameterName,omitempty"`
 
 	// The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression
 	// with resultType string).
-	TableOption interface{} `json:"tableOption,omitempty"`
+	TableOption any `json:"tableOption,omitempty"`
 
 	// SQL upsert settings.
 	UpsertSettings *SQLUpsertSettings `json:"upsertSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// White behavior when copying data into azure SQL MI. Type: SqlWriteBehaviorEnum (or Expression with resultType SqlWriteBehaviorEnum)
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type SQLMISink.
@@ -22619,45 +22751,45 @@ type SQLMISource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable",
 	// "DynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for Sql source partitioning.
 	PartitionSettings *SQLPartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Which additional types to produce.
-	ProduceAdditionalTypes interface{} `json:"produceAdditionalTypes,omitempty"`
+	ProduceAdditionalTypes any `json:"produceAdditionalTypes,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// SQL reader query. Type: string (or Expression with resultType string).
-	SQLReaderQuery interface{} `json:"sqlReaderQuery,omitempty"`
+	SQLReaderQuery any `json:"sqlReaderQuery,omitempty"`
 
 	// Name of the stored procedure for a Azure SQL Managed Instance source. This cannot be used at the same time as SqlReaderQuery.
 	// Type: string (or Expression with resultType string).
-	SQLReaderStoredProcedureName interface{} `json:"sqlReaderStoredProcedureName,omitempty"`
+	SQLReaderStoredProcedureName any `json:"sqlReaderStoredProcedureName,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SQLMISource.
@@ -22691,17 +22823,17 @@ type SQLPartitionSettings struct {
 	// The name of the column in integer or datetime type that will be used for proceeding partitioning. If not specified, the
 	// primary key of the table is auto-detected and used as the partition column.
 	// Type: string (or Expression with resultType string).
-	PartitionColumnName interface{} `json:"partitionColumnName,omitempty"`
+	PartitionColumnName any `json:"partitionColumnName,omitempty"`
 
 	// The minimum value of the partition column for partition range splitting. This value is used to decide the partition stride,
 	// not for filtering the rows in table. All rows in the table or query result
 	// will be partitioned and copied. Type: string (or Expression with resultType string).
-	PartitionLowerBound interface{} `json:"partitionLowerBound,omitempty"`
+	PartitionLowerBound any `json:"partitionLowerBound,omitempty"`
 
 	// The maximum value of the partition column for partition range splitting. This value is used to decide the partition stride,
 	// not for filtering the rows in table. All rows in the table or query result
 	// will be partitioned and copied. Type: string (or Expression with resultType string).
-	PartitionUpperBound interface{} `json:"partitionUpperBound,omitempty"`
+	PartitionUpperBound any `json:"partitionUpperBound,omitempty"`
 }
 
 // SQLServerLinkedService - SQL Server linked service.
@@ -22713,10 +22845,10 @@ type SQLServerLinkedService struct {
 	TypeProperties *SQLServerLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -22743,20 +22875,20 @@ func (s *SQLServerLinkedService) GetLinkedService() *LinkedService {
 // SQLServerLinkedServiceTypeProperties - SQL Server linked service properties.
 type SQLServerLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// Sql always encrypted properties.
 	AlwaysEncryptedSettings *SQLAlwaysEncryptedProperties `json:"alwaysEncryptedSettings,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The on-premises Windows authentication password.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // SQLServerSink - A copy activity SQL server sink.
@@ -22765,53 +22897,53 @@ type SQLServerSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// SQL pre-copy script. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// SQL writer stored procedure name. Type: string (or Expression with resultType string).
-	SQLWriterStoredProcedureName interface{} `json:"sqlWriterStoredProcedureName,omitempty"`
+	SQLWriterStoredProcedureName any `json:"sqlWriterStoredProcedureName,omitempty"`
 
 	// SQL writer table type. Type: string (or Expression with resultType string).
-	SQLWriterTableType interface{} `json:"sqlWriterTableType,omitempty"`
+	SQLWriterTableType any `json:"sqlWriterTableType,omitempty"`
 
 	// Whether to use table lock during bulk copy. Type: boolean (or Expression with resultType boolean).
-	SQLWriterUseTableLock interface{} `json:"sqlWriterUseTableLock,omitempty"`
+	SQLWriterUseTableLock any `json:"sqlWriterUseTableLock,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// SQL stored procedure parameters.
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 
 	// The stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
-	StoredProcedureTableTypeParameterName interface{} `json:"storedProcedureTableTypeParameterName,omitempty"`
+	StoredProcedureTableTypeParameterName any `json:"storedProcedureTableTypeParameterName,omitempty"`
 
 	// The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression
 	// with resultType string).
-	TableOption interface{} `json:"tableOption,omitempty"`
+	TableOption any `json:"tableOption,omitempty"`
 
 	// SQL upsert settings.
 	UpsertSettings *SQLUpsertSettings `json:"upsertSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Write behavior when copying data into sql server. Type: SqlWriteBehaviorEnum (or Expression with resultType SqlWriteBehaviorEnum)
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type SQLServerSink.
@@ -22835,45 +22967,45 @@ type SQLServerSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable",
 	// "DynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for Sql source partitioning.
 	PartitionSettings *SQLPartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Which additional types to produce.
-	ProduceAdditionalTypes interface{} `json:"produceAdditionalTypes,omitempty"`
+	ProduceAdditionalTypes any `json:"produceAdditionalTypes,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// SQL reader query. Type: string (or Expression with resultType string).
-	SQLReaderQuery interface{} `json:"sqlReaderQuery,omitempty"`
+	SQLReaderQuery any `json:"sqlReaderQuery,omitempty"`
 
 	// Name of the stored procedure for a SQL Database source. This cannot be used at the same time as SqlReaderQuery. Type: string
 	// (or Expression with resultType string).
-	SQLReaderStoredProcedureName interface{} `json:"sqlReaderStoredProcedureName,omitempty"`
+	SQLReaderStoredProcedureName any `json:"sqlReaderStoredProcedureName,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SQLServerSource.
@@ -22914,7 +23046,7 @@ type SQLServerStoredProcedureActivity struct {
 	TypeProperties *SQLServerStoredProcedureActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -22961,10 +23093,10 @@ func (s *SQLServerStoredProcedureActivity) GetExecutionActivity() *ExecutionActi
 // SQLServerStoredProcedureActivityTypeProperties - SQL stored procedure activity properties.
 type SQLServerStoredProcedureActivityTypeProperties struct {
 	// REQUIRED; Stored procedure name. Type: string (or Expression with resultType string).
-	StoredProcedureName interface{} `json:"storedProcedureName,omitempty"`
+	StoredProcedureName any `json:"storedProcedureName,omitempty"`
 
 	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 }
 
 // SQLServerTableDataset - The on-premises SQL Server dataset.
@@ -22976,10 +23108,10 @@ type SQLServerTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -22992,10 +23124,10 @@ type SQLServerTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// On-premises SQL Server dataset properties.
 	TypeProperties *SQLServerTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -23019,13 +23151,13 @@ func (s *SQLServerTableDataset) GetDataset() *Dataset {
 // SQLServerTableDatasetTypeProperties - On-premises SQL Server dataset properties.
 type SQLServerTableDatasetTypeProperties struct {
 	// The schema name of the SQL Server dataset. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the SQL Server dataset. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // SQLSink - A copy activity SQL sink.
@@ -23034,53 +23166,53 @@ type SQLSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// SQL pre-copy script. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// SQL writer stored procedure name. Type: string (or Expression with resultType string).
-	SQLWriterStoredProcedureName interface{} `json:"sqlWriterStoredProcedureName,omitempty"`
+	SQLWriterStoredProcedureName any `json:"sqlWriterStoredProcedureName,omitempty"`
 
 	// SQL writer table type. Type: string (or Expression with resultType string).
-	SQLWriterTableType interface{} `json:"sqlWriterTableType,omitempty"`
+	SQLWriterTableType any `json:"sqlWriterTableType,omitempty"`
 
 	// Whether to use table lock during bulk copy. Type: boolean (or Expression with resultType boolean).
-	SQLWriterUseTableLock interface{} `json:"sqlWriterUseTableLock,omitempty"`
+	SQLWriterUseTableLock any `json:"sqlWriterUseTableLock,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// SQL stored procedure parameters.
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 
 	// The stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
-	StoredProcedureTableTypeParameterName interface{} `json:"storedProcedureTableTypeParameterName,omitempty"`
+	StoredProcedureTableTypeParameterName any `json:"storedProcedureTableTypeParameterName,omitempty"`
 
 	// The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression
 	// with resultType string).
-	TableOption interface{} `json:"tableOption,omitempty"`
+	TableOption any `json:"tableOption,omitempty"`
 
 	// SQL upsert settings.
 	UpsertSettings *SQLUpsertSettings `json:"upsertSettings,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// Write behavior when copying data into sql. Type: SqlWriteBehaviorEnum (or Expression with resultType SqlWriteBehaviorEnum)
-	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
+	WriteBehavior any `json:"writeBehavior,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type SQLSink.
@@ -23104,47 +23236,47 @@ type SQLSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Specifies the transaction locking behavior for the SQL source. Allowed values: ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot.
 	// The default value is ReadCommitted. Type: string (or
 	// Expression with resultType string).
-	IsolationLevel interface{} `json:"isolationLevel,omitempty"`
+	IsolationLevel any `json:"isolationLevel,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable",
 	// "DynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for Sql source partitioning.
 	PartitionSettings *SQLPartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// SQL reader query. Type: string (or Expression with resultType string).
-	SQLReaderQuery interface{} `json:"sqlReaderQuery,omitempty"`
+	SQLReaderQuery any `json:"sqlReaderQuery,omitempty"`
 
 	// Name of the stored procedure for a SQL Database source. This cannot be used at the same time as SqlReaderQuery. Type: string
 	// (or Expression with resultType string).
-	SQLReaderStoredProcedureName interface{} `json:"sqlReaderStoredProcedureName,omitempty"`
+	SQLReaderStoredProcedureName any `json:"sqlReaderStoredProcedureName,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
-	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+	StoredProcedureParameters any `json:"storedProcedureParameters,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SQLSource.
@@ -23176,34 +23308,34 @@ func (s *SQLSource) GetTabularSource() *TabularSource {
 // SQLUpsertSettings - Sql upsert option settings
 type SQLUpsertSettings struct {
 	// Schema name for interim table. Type: string (or Expression with resultType string).
-	InterimSchemaName interface{} `json:"interimSchemaName,omitempty"`
+	InterimSchemaName any `json:"interimSchemaName,omitempty"`
 
 	// Key column names for unique row identification. Type: array of strings (or Expression with resultType array of strings).
-	Keys interface{} `json:"keys,omitempty"`
+	Keys any `json:"keys,omitempty"`
 
 	// Specifies whether to use temp db for upsert interim table. Type: boolean (or Expression with resultType boolean).
-	UseTempDB interface{} `json:"useTempDB,omitempty"`
+	UseTempDB any `json:"useTempDB,omitempty"`
 }
 
 // SSISAccessCredential - SSIS access credential.
 type SSISAccessCredential struct {
 	// REQUIRED; Domain for windows authentication.
-	Domain interface{} `json:"domain,omitempty"`
+	Domain any `json:"domain,omitempty"`
 
 	// REQUIRED; Password for windows authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// REQUIRED; UseName for windows authentication.
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // SSISChildPackage - SSIS embedded child package.
 type SSISChildPackage struct {
 	// REQUIRED; Content for embedded child package. Type: string (or Expression with resultType string).
-	PackageContent interface{} `json:"packageContent,omitempty"`
+	PackageContent any `json:"packageContent,omitempty"`
 
 	// REQUIRED; Path for embedded child package. Type: string (or Expression with resultType string).
-	PackagePath interface{} `json:"packagePath,omitempty"`
+	PackagePath any `json:"packagePath,omitempty"`
 
 	// Last modified date for embedded child package.
 	PackageLastModifiedDate *string `json:"packageLastModifiedDate,omitempty"`
@@ -23215,25 +23347,25 @@ type SSISChildPackage struct {
 // SSISExecutionCredential - SSIS package execution credential.
 type SSISExecutionCredential struct {
 	// REQUIRED; Domain for windows authentication.
-	Domain interface{} `json:"domain,omitempty"`
+	Domain any `json:"domain,omitempty"`
 
 	// REQUIRED; Password for windows authentication.
 	Password *SecureString `json:"password,omitempty"`
 
 	// REQUIRED; UseName for windows authentication.
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // SSISExecutionParameter - SSIS execution parameter.
 type SSISExecutionParameter struct {
 	// REQUIRED; SSIS package execution parameter value. Type: string (or Expression with resultType string).
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 }
 
 // SSISLogLocation - SSIS package execution log location
 type SSISLogLocation struct {
 	// REQUIRED; The SSIS package execution log path. Type: string (or Expression with resultType string).
-	LogPath interface{} `json:"logPath,omitempty"`
+	LogPath any `json:"logPath,omitempty"`
 
 	// REQUIRED; The type of SSIS log location.
 	Type *SsisLogLocationType `json:"type,omitempty"`
@@ -23249,13 +23381,13 @@ type SSISLogLocationTypeProperties struct {
 
 	// Specifies the interval to refresh log. The default interval is 5 minutes. Type: string (or Expression with resultType string),
 	// pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	LogRefreshInterval interface{} `json:"logRefreshInterval,omitempty"`
+	LogRefreshInterval any `json:"logRefreshInterval,omitempty"`
 }
 
 // SSISPackageLocation - SSIS package location.
 type SSISPackageLocation struct {
 	// The SSIS package path. Type: string (or Expression with resultType string).
-	PackagePath interface{} `json:"packagePath,omitempty"`
+	PackagePath any `json:"packagePath,omitempty"`
 
 	// The type of SSIS package location.
 	Type *SsisPackageLocationType `json:"type,omitempty"`
@@ -23276,10 +23408,10 @@ type SSISPackageLocationTypeProperties struct {
 	ConfigurationAccessCredential *SSISAccessCredential `json:"configurationAccessCredential,omitempty"`
 
 	// The configuration file of the package execution. Type: string (or Expression with resultType string).
-	ConfigurationPath interface{} `json:"configurationPath,omitempty"`
+	ConfigurationPath any `json:"configurationPath,omitempty"`
 
 	// The embedded package content. Type: string (or Expression with resultType string).
-	PackageContent interface{} `json:"packageContent,omitempty"`
+	PackageContent any `json:"packageContent,omitempty"`
 
 	// The embedded package last modified date.
 	PackageLastModifiedDate *string `json:"packageLastModifiedDate,omitempty"`
@@ -23294,7 +23426,7 @@ type SSISPackageLocationTypeProperties struct {
 // SSISPropertyOverride - SSIS property override.
 type SSISPropertyOverride struct {
 	// REQUIRED; SSIS package property override value. Type: string (or Expression with resultType string).
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 
 	// Whether SSIS package property override value is sensitive data. Value will be encrypted in SSISDB if it is true
 	IsSensitive *bool `json:"isSensitive,omitempty"`
@@ -23309,10 +23441,10 @@ type SalesforceLinkedService struct {
 	TypeProperties *SalesforceLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -23339,16 +23471,16 @@ func (s *SalesforceLinkedService) GetLinkedService() *LinkedService {
 // SalesforceLinkedServiceTypeProperties - Salesforce linked service properties.
 type SalesforceLinkedServiceTypeProperties struct {
 	// The Salesforce API version used in ADF. Type: string (or Expression with resultType string).
-	APIVersion interface{} `json:"apiVersion,omitempty"`
+	APIVersion any `json:"apiVersion,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The URL of Salesforce instance. Default is 'https://login.salesforce.com'. To copy data from sandbox, specify 'https://test.salesforce.com'.
 	// To copy data from custom domain, specify, for example,
 	// 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
-	EnvironmentURL interface{} `json:"environmentUrl,omitempty"`
+	EnvironmentURL any `json:"environmentUrl,omitempty"`
 
 	// The password for Basic authentication of the Salesforce instance.
 	Password SecretBaseClassification `json:"password,omitempty"`
@@ -23357,7 +23489,7 @@ type SalesforceLinkedServiceTypeProperties struct {
 	SecurityToken SecretBaseClassification `json:"securityToken,omitempty"`
 
 	// The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // SalesforceMarketingCloudLinkedService - Salesforce Marketing Cloud linked service.
@@ -23369,10 +23501,10 @@ type SalesforceMarketingCloudLinkedService struct {
 	TypeProperties *SalesforceMarketingCloudLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -23399,7 +23531,7 @@ func (s *SalesforceMarketingCloudLinkedService) GetLinkedService() *LinkedServic
 // SalesforceMarketingCloudLinkedServiceTypeProperties - Salesforce Marketing Cloud linked service properties.
 type SalesforceMarketingCloudLinkedServiceTypeProperties struct {
 	// The client ID associated with the Salesforce Marketing Cloud application. Type: string (or Expression with resultType string).
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The client secret associated with the Salesforce Marketing Cloud application. Type: string (or Expression with resultType
 	// string).
@@ -23407,24 +23539,24 @@ type SalesforceMarketingCloudLinkedServiceTypeProperties struct {
 
 	// Properties used to connect to Salesforce Marketing Cloud. It is mutually exclusive with any other properties in the linked
 	// service. Type: object.
-	ConnectionProperties interface{} `json:"connectionProperties,omitempty"`
+	ConnectionProperties any `json:"connectionProperties,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean (or Expression
 	// with resultType boolean).
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true. Type: boolean (or Expression with
 	// resultType boolean).
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true. Type: boolean
 	// (or Expression with resultType boolean).
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // SalesforceMarketingCloudObjectDataset - Salesforce Marketing Cloud dataset.
@@ -23436,10 +23568,10 @@ type SalesforceMarketingCloudObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -23452,10 +23584,10 @@ type SalesforceMarketingCloudObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -23483,28 +23615,28 @@ type SalesforceMarketingCloudSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SalesforceMarketingCloudSource.
@@ -23542,10 +23674,10 @@ type SalesforceObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -23558,10 +23690,10 @@ type SalesforceObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Salesforce object dataset properties.
 	TypeProperties *SalesforceObjectDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -23585,7 +23717,7 @@ func (s *SalesforceObjectDataset) GetDataset() *Dataset {
 // SalesforceObjectDatasetTypeProperties - Salesforce object dataset properties.
 type SalesforceObjectDatasetTypeProperties struct {
 	// The Salesforce object API name. Type: string (or Expression with resultType string).
-	ObjectAPIName interface{} `json:"objectApiName,omitempty"`
+	ObjectAPIName any `json:"objectApiName,omitempty"`
 }
 
 // SalesforceServiceCloudLinkedService - Linked service for Salesforce Service Cloud.
@@ -23597,10 +23729,10 @@ type SalesforceServiceCloudLinkedService struct {
 	TypeProperties *SalesforceServiceCloudLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -23627,19 +23759,19 @@ func (s *SalesforceServiceCloudLinkedService) GetLinkedService() *LinkedService 
 // SalesforceServiceCloudLinkedServiceTypeProperties - Salesforce Service Cloud linked service properties.
 type SalesforceServiceCloudLinkedServiceTypeProperties struct {
 	// The Salesforce API version used in ADF. Type: string (or Expression with resultType string).
-	APIVersion interface{} `json:"apiVersion,omitempty"`
+	APIVersion any `json:"apiVersion,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The URL of Salesforce Service Cloud instance. Default is 'https://login.salesforce.com'. To copy data from sandbox, specify
 	// 'https://test.salesforce.com'. To copy data from custom domain, specify, for
 	// example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
-	EnvironmentURL interface{} `json:"environmentUrl,omitempty"`
+	EnvironmentURL any `json:"environmentUrl,omitempty"`
 
 	// Extended properties appended to the connection string. Type: string (or Expression with resultType string).
-	ExtendedProperties interface{} `json:"extendedProperties,omitempty"`
+	ExtendedProperties any `json:"extendedProperties,omitempty"`
 
 	// The password for Basic authentication of the Salesforce instance.
 	Password SecretBaseClassification `json:"password,omitempty"`
@@ -23648,7 +23780,7 @@ type SalesforceServiceCloudLinkedServiceTypeProperties struct {
 	SecurityToken SecretBaseClassification `json:"securityToken,omitempty"`
 
 	// The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // SalesforceServiceCloudObjectDataset - The Salesforce Service Cloud object dataset.
@@ -23660,10 +23792,10 @@ type SalesforceServiceCloudObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -23676,10 +23808,10 @@ type SalesforceServiceCloudObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Salesforce Service Cloud object dataset properties.
 	TypeProperties *SalesforceServiceCloudObjectDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -23703,7 +23835,7 @@ func (s *SalesforceServiceCloudObjectDataset) GetDataset() *Dataset {
 // SalesforceServiceCloudObjectDatasetTypeProperties - Salesforce Service Cloud object dataset properties.
 type SalesforceServiceCloudObjectDatasetTypeProperties struct {
 	// The Salesforce Service Cloud object API name. Type: string (or Expression with resultType string).
-	ObjectAPIName interface{} `json:"objectApiName,omitempty"`
+	ObjectAPIName any `json:"objectApiName,omitempty"`
 }
 
 // SalesforceServiceCloudSink - A copy activity Salesforce Service Cloud sink.
@@ -23712,14 +23844,14 @@ type SalesforceServiceCloudSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or Expression with
 	// resultType string).
-	ExternalIDFieldName interface{} `json:"externalIdFieldName,omitempty"`
+	ExternalIDFieldName any `json:"externalIdFieldName,omitempty"`
 
 	// The flag indicating whether or not to ignore null values from input dataset (except key fields) during write operation.
 	// Default value is false. If set it to true, it means ADF will leave the data in
@@ -23727,22 +23859,22 @@ type SalesforceServiceCloudSink struct {
 	// operation, versus ADF will update the data in the destination object to NULL when
 	// doing upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with resultType
 	// boolean).
-	IgnoreNullValues interface{} `json:"ignoreNullValues,omitempty"`
+	IgnoreNullValues any `json:"ignoreNullValues,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// The write behavior for the operation. Default is Insert.
 	WriteBehavior *SalesforceSinkWriteBehavior `json:"writeBehavior,omitempty"`
@@ -23769,28 +23901,28 @@ type SalesforceServiceCloudSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// The read behavior for the operation. Default is Query.
 	ReadBehavior *SalesforceSourceReadBehavior `json:"readBehavior,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SalesforceServiceCloudSource.
@@ -23811,14 +23943,14 @@ type SalesforceSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or Expression with
 	// resultType string).
-	ExternalIDFieldName interface{} `json:"externalIdFieldName,omitempty"`
+	ExternalIDFieldName any `json:"externalIdFieldName,omitempty"`
 
 	// The flag indicating whether or not to ignore null values from input dataset (except key fields) during write operation.
 	// Default value is false. If set it to true, it means ADF will leave the data in
@@ -23826,22 +23958,22 @@ type SalesforceSink struct {
 	// operation, versus ADF will update the data in the destination object to NULL when
 	// doing upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with resultType
 	// boolean).
-	IgnoreNullValues interface{} `json:"ignoreNullValues,omitempty"`
+	IgnoreNullValues any `json:"ignoreNullValues,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// The write behavior for the operation. Default is Insert.
 	WriteBehavior *SalesforceSinkWriteBehavior `json:"writeBehavior,omitempty"`
@@ -23868,31 +24000,31 @@ type SalesforceSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// The read behavior for the operation. Default is Query.
 	ReadBehavior *SalesforceSourceReadBehavior `json:"readBehavior,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SalesforceSource.
@@ -23930,10 +24062,10 @@ type SapBWLinkedService struct {
 	TypeProperties *SapBWLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -23961,24 +24093,24 @@ func (s *SapBWLinkedService) GetLinkedService() *LinkedService {
 type SapBWLinkedServiceTypeProperties struct {
 	// REQUIRED; Client ID of the client on the BW system. (Usually a three-digit decimal number represented as a string) Type:
 	// string (or Expression with resultType string).
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// REQUIRED; Host name of the SAP BW instance. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// REQUIRED; System number of the BW system. (Usually a two-digit decimal number represented as a string.) Type: string (or
 	// Expression with resultType string).
-	SystemNumber interface{} `json:"systemNumber,omitempty"`
+	SystemNumber any `json:"systemNumber,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password to access the SAP BW server.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Username to access the SAP BW server. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // SapBwCubeDataset - The SAP BW cube dataset.
@@ -23990,10 +24122,10 @@ type SapBwCubeDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -24006,10 +24138,10 @@ type SapBwCubeDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type SapBwCubeDataset.
@@ -24034,28 +24166,28 @@ type SapBwSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// MDX query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SapBwSource.
@@ -24093,10 +24225,10 @@ type SapCloudForCustomerLinkedService struct {
 	TypeProperties *SapCloudForCustomerLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -24124,18 +24256,18 @@ func (s *SapCloudForCustomerLinkedService) GetLinkedService() *LinkedService {
 type SapCloudForCustomerLinkedServiceTypeProperties struct {
 	// REQUIRED; The URL of SAP Cloud for Customer OData API. For example, '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'.
 	// Type: string (or Expression with resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Either encryptedCredential or username/password must be provided. Type:
 	// string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password for Basic authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The username for Basic authentication. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // SapCloudForCustomerResourceDataset - The path of the SAP Cloud for Customer OData entity.
@@ -24150,10 +24282,10 @@ type SapCloudForCustomerResourceDataset struct {
 	TypeProperties *SapCloudForCustomerResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -24166,10 +24298,10 @@ type SapCloudForCustomerResourceDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type SapCloudForCustomerResourceDataset.
@@ -24190,7 +24322,7 @@ func (s *SapCloudForCustomerResourceDataset) GetDataset() *Dataset {
 // SapCloudForCustomerResourceDatasetTypeProperties - Sap Cloud For Customer OData resource dataset properties.
 type SapCloudForCustomerResourceDatasetTypeProperties struct {
 	// REQUIRED; The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with resultType string).
-	Path interface{} `json:"path,omitempty"`
+	Path any `json:"path,omitempty"`
 }
 
 // SapCloudForCustomerSink - A copy activity SAP Cloud for Customer sink.
@@ -24199,30 +24331,30 @@ type SapCloudForCustomerSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data.
 	// Default value: 00:05:00. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	HTTPRequestTimeout interface{} `json:"httpRequestTimeout,omitempty"`
+	HTTPRequestTimeout any `json:"httpRequestTimeout,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 
 	// The write behavior for the operation. Default is 'Insert'.
 	WriteBehavior *SapCloudForCustomerSinkWriteBehavior `json:"writeBehavior,omitempty"`
@@ -24249,33 +24381,33 @@ type SapCloudForCustomerSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data.
 	// Default value: 00:05:00. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	HTTPRequestTimeout interface{} `json:"httpRequestTimeout,omitempty"`
+	HTTPRequestTimeout any `json:"httpRequestTimeout,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// SAP Cloud for Customer OData query. For example, "$top=1". Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SapCloudForCustomerSource.
@@ -24313,10 +24445,10 @@ type SapEccLinkedService struct {
 	TypeProperties *SapEccLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -24370,10 +24502,10 @@ type SapEccResourceDataset struct {
 	TypeProperties *SapEccResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -24386,10 +24518,10 @@ type SapEccResourceDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type SapEccResourceDataset.
@@ -24410,7 +24542,7 @@ func (s *SapEccResourceDataset) GetDataset() *Dataset {
 // SapEccResourceDatasetTypeProperties - Sap ECC OData resource dataset properties.
 type SapEccResourceDatasetTypeProperties struct {
 	// REQUIRED; The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
-	Path interface{} `json:"path,omitempty"`
+	Path any `json:"path,omitempty"`
 }
 
 // SapEccSource - A copy activity source for SAP ECC source.
@@ -24420,33 +24552,33 @@ type SapEccSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data.
 	// Default value: 00:05:00. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	HTTPRequestTimeout interface{} `json:"httpRequestTimeout,omitempty"`
+	HTTPRequestTimeout any `json:"httpRequestTimeout,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// SAP ECC OData query. For example, "$top=1". Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SapEccSource.
@@ -24484,10 +24616,10 @@ type SapHanaLinkedService struct {
 	TypeProperties *SapHanaLinkedServiceProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -24517,27 +24649,27 @@ type SapHanaLinkedServiceProperties struct {
 	AuthenticationType *SapHanaAuthenticationType `json:"authenticationType,omitempty"`
 
 	// SAP HANA ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password to access the SAP HANA server.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Host name of the SAP HANA server. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// Username to access the SAP HANA server. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // SapHanaPartitionSettings - The settings that will be leveraged for SAP HANA source partitioning.
 type SapHanaPartitionSettings struct {
 	// The name of the column that will be used for proceeding range partitioning. Type: string (or Expression with resultType
 	// string).
-	PartitionColumnName interface{} `json:"partitionColumnName,omitempty"`
+	PartitionColumnName any `json:"partitionColumnName,omitempty"`
 }
 
 // SapHanaSource - A copy activity source for SAP HANA source.
@@ -24547,38 +24679,38 @@ type SapHanaSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The packet size of data read from SAP HANA. Type: integer(or Expression with resultType integer).
-	PacketSize interface{} `json:"packetSize,omitempty"`
+	PacketSize any `json:"packetSize,omitempty"`
 
 	// The partition mechanism that will be used for SAP HANA read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable",
 	// "SapHanaDynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for SAP HANA source partitioning.
 	PartitionSettings *SapHanaPartitionSettings `json:"partitionSettings,omitempty"`
 
 	// SAP HANA Sql query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SapHanaSource.
@@ -24616,10 +24748,10 @@ type SapHanaTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -24632,10 +24764,10 @@ type SapHanaTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// SAP HANA Table properties.
 	TypeProperties *SapHanaTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -24659,10 +24791,10 @@ func (s *SapHanaTableDataset) GetDataset() *Dataset {
 // SapHanaTableDatasetTypeProperties - SAP HANA Table properties.
 type SapHanaTableDatasetTypeProperties struct {
 	// The schema name of SAP HANA. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of SAP HANA. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 }
 
 // SapOdpLinkedService - SAP ODP Linked Service.
@@ -24674,10 +24806,10 @@ type SapOdpLinkedService struct {
 	TypeProperties *SapOdpLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -24705,64 +24837,64 @@ func (s *SapOdpLinkedService) GetLinkedService() *LinkedService {
 type SapOdpLinkedServiceTypeProperties struct {
 	// Client ID of the client on the SAP system where the table is located. (Usually a three-digit decimal number represented
 	// as a string) Type: string (or Expression with resultType string).
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Language of the SAP system where the table is located. The default value is EN. Type: string (or Expression with resultType
 	// string).
-	Language interface{} `json:"language,omitempty"`
+	Language any `json:"language,omitempty"`
 
 	// The Logon Group for the SAP System. Type: string (or Expression with resultType string).
-	LogonGroup interface{} `json:"logonGroup,omitempty"`
+	LogonGroup any `json:"logonGroup,omitempty"`
 
 	// The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
-	MessageServer interface{} `json:"messageServer,omitempty"`
+	MessageServer any `json:"messageServer,omitempty"`
 
 	// The service name or port number of the Message Server. Type: string (or Expression with resultType string).
-	MessageServerService interface{} `json:"messageServerService,omitempty"`
+	MessageServerService any `json:"messageServerService,omitempty"`
 
 	// Password to access the SAP server where the table is located.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Host name of the SAP instance where the table is located. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// External security product's library to access the SAP server where the table is located. Type: string (or Expression with
 	// resultType string).
-	SncLibraryPath interface{} `json:"sncLibraryPath,omitempty"`
+	SncLibraryPath any `json:"sncLibraryPath,omitempty"`
 
 	// SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on). Type: string
 	// (or Expression with resultType string).
-	SncMode interface{} `json:"sncMode,omitempty"`
+	SncMode any `json:"sncMode,omitempty"`
 
 	// Initiator's SNC name to access the SAP server where the table is located. Type: string (or Expression with resultType string).
-	SncMyName interface{} `json:"sncMyName,omitempty"`
+	SncMyName any `json:"sncMyName,omitempty"`
 
 	// Communication partner's SNC name to access the SAP server where the table is located. Type: string (or Expression with
 	// resultType string).
-	SncPartnerName interface{} `json:"sncPartnerName,omitempty"`
+	SncPartnerName any `json:"sncPartnerName,omitempty"`
 
 	// SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or Expression with resultType string).
-	SncQop interface{} `json:"sncQop,omitempty"`
+	SncQop any `json:"sncQop,omitempty"`
 
 	// The subscriber name. Type: string (or Expression with resultType string).
-	SubscriberName interface{} `json:"subscriberName,omitempty"`
+	SubscriberName any `json:"subscriberName,omitempty"`
 
 	// SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
-	SystemID interface{} `json:"systemId,omitempty"`
+	SystemID any `json:"systemId,omitempty"`
 
 	// System number of the SAP system where the table is located. (Usually a two-digit decimal number represented as a string.)
 	// Type: string (or Expression with resultType string).
-	SystemNumber interface{} `json:"systemNumber,omitempty"`
+	SystemNumber any `json:"systemNumber,omitempty"`
 
 	// Username to access the SAP server where the table is located. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 
 	// SNC X509 certificate file path. Type: string (or Expression with resultType string).
-	X509CertificatePath interface{} `json:"x509CertificatePath,omitempty"`
+	X509CertificatePath any `json:"x509CertificatePath,omitempty"`
 }
 
 // SapOdpResourceDataset - SAP ODP Resource properties.
@@ -24777,10 +24909,10 @@ type SapOdpResourceDataset struct {
 	TypeProperties *SapOdpResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -24793,10 +24925,10 @@ type SapOdpResourceDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type SapOdpResourceDataset.
@@ -24817,10 +24949,10 @@ func (s *SapOdpResourceDataset) GetDataset() *Dataset {
 // SapOdpResourceDatasetTypeProperties - SAP ODP Resource properties.
 type SapOdpResourceDatasetTypeProperties struct {
 	// REQUIRED; The context of the SAP ODP Object. Type: string (or Expression with resultType string).
-	Context interface{} `json:"context,omitempty"`
+	Context any `json:"context,omitempty"`
 
 	// REQUIRED; The name of the SAP ODP Object. Type: string (or Expression with resultType string).
-	ObjectName interface{} `json:"objectName,omitempty"`
+	ObjectName any `json:"objectName,omitempty"`
 }
 
 // SapOdpSource - A copy activity source for SAP ODP source.
@@ -24830,40 +24962,40 @@ type SapOdpSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The extraction mode. Allowed value include: Full, Delta and Recovery. The default value is Full. Type: string (or Expression
 	// with resultType string).
-	ExtractionMode interface{} `json:"extractionMode,omitempty"`
+	ExtractionMode any `json:"extractionMode,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Specifies the columns to be selected from source data. Type: array of objects(projection) (or Expression with resultType
 	// array of objects).
-	Projection interface{} `json:"projection,omitempty"`
+	Projection any `json:"projection,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Specifies the selection conditions from source data. Type: array of objects(selection) (or Expression with resultType array
 	// of objects).
-	Selection interface{} `json:"selection,omitempty"`
+	Selection any `json:"selection,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// The subscriber process to manage the delta process. Type: string (or Expression with resultType string).
-	SubscriberProcess interface{} `json:"subscriberProcess,omitempty"`
+	SubscriberProcess any `json:"subscriberProcess,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SapOdpSource.
@@ -24901,10 +25033,10 @@ type SapOpenHubLinkedService struct {
 	TypeProperties *SapOpenHubLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -24933,42 +25065,42 @@ func (s *SapOpenHubLinkedService) GetLinkedService() *LinkedService {
 type SapOpenHubLinkedServiceTypeProperties struct {
 	// Client ID of the client on the BW system where the open hub destination is located. (Usually a three-digit decimal number
 	// represented as a string) Type: string (or Expression with resultType string).
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Language of the BW system where the open hub destination is located. The default value is EN. Type: string (or Expression
 	// with resultType string).
-	Language interface{} `json:"language,omitempty"`
+	Language any `json:"language,omitempty"`
 
 	// The Logon Group for the SAP System. Type: string (or Expression with resultType string).
-	LogonGroup interface{} `json:"logonGroup,omitempty"`
+	LogonGroup any `json:"logonGroup,omitempty"`
 
 	// The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
-	MessageServer interface{} `json:"messageServer,omitempty"`
+	MessageServer any `json:"messageServer,omitempty"`
 
 	// The service name or port number of the Message Server. Type: string (or Expression with resultType string).
-	MessageServerService interface{} `json:"messageServerService,omitempty"`
+	MessageServerService any `json:"messageServerService,omitempty"`
 
 	// Password to access the SAP BW server where the open hub destination is located.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Host name of the SAP BW instance where the open hub destination is located. Type: string (or Expression with resultType
 	// string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
-	SystemID interface{} `json:"systemId,omitempty"`
+	SystemID any `json:"systemId,omitempty"`
 
 	// System number of the BW system where the open hub destination is located. (Usually a two-digit decimal number represented
 	// as a string.) Type: string (or Expression with resultType string).
-	SystemNumber interface{} `json:"systemNumber,omitempty"`
+	SystemNumber any `json:"systemNumber,omitempty"`
 
 	// Username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with resultType
 	// string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // SapOpenHubSource - A copy activity source for SAP Business Warehouse Open Hub Destination source.
@@ -24978,42 +25110,42 @@ type SapOpenHubSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this property will
 	// be retrieved. The default value is 0. Type: integer (or Expression with
 	// resultType integer ).
-	BaseRequestID interface{} `json:"baseRequestId,omitempty"`
+	BaseRequestID any `json:"baseRequestId,omitempty"`
 
 	// Specifies the custom RFC function module that will be used to read data from SAP Table. Type: string (or Expression with
 	// resultType string).
-	CustomRFCReadTableFunctionModule interface{} `json:"customRfcReadTableFunctionModule,omitempty"`
+	CustomRFCReadTableFunctionModule any `json:"customRfcReadTableFunctionModule,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with resultType
 	// boolean).
-	ExcludeLastRequest interface{} `json:"excludeLastRequest,omitempty"`
+	ExcludeLastRequest any `json:"excludeLastRequest,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// The single character that will be used as delimiter passed to SAP RFC as well as splitting the output data retrieved. Type:
 	// string (or Expression with resultType string).
-	SapDataColumnDelimiter interface{} `json:"sapDataColumnDelimiter,omitempty"`
+	SapDataColumnDelimiter any `json:"sapDataColumnDelimiter,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SapOpenHubSource.
@@ -25054,10 +25186,10 @@ type SapOpenHubTableDataset struct {
 	TypeProperties *SapOpenHubTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -25070,10 +25202,10 @@ type SapOpenHubTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type SapOpenHubTableDataset.
@@ -25095,16 +25227,16 @@ func (s *SapOpenHubTableDataset) GetDataset() *Dataset {
 type SapOpenHubTableDatasetTypeProperties struct {
 	// REQUIRED; The name of the Open Hub Destination with destination type as Database Table. Type: string (or Expression with
 	// resultType string).
-	OpenHubDestinationName interface{} `json:"openHubDestinationName,omitempty"`
+	OpenHubDestinationName any `json:"openHubDestinationName,omitempty"`
 
 	// The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this property will
 	// be retrieved. The default value is 0. Type: integer (or Expression with
 	// resultType integer ).
-	BaseRequestID interface{} `json:"baseRequestId,omitempty"`
+	BaseRequestID any `json:"baseRequestId,omitempty"`
 
 	// Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with resultType
 	// boolean).
-	ExcludeLastRequest interface{} `json:"excludeLastRequest,omitempty"`
+	ExcludeLastRequest any `json:"excludeLastRequest,omitempty"`
 }
 
 // SapTableLinkedService - SAP Table Linked Service.
@@ -25116,10 +25248,10 @@ type SapTableLinkedService struct {
 	TypeProperties *SapTableLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -25147,76 +25279,76 @@ func (s *SapTableLinkedService) GetLinkedService() *LinkedService {
 type SapTableLinkedServiceTypeProperties struct {
 	// Client ID of the client on the SAP system where the table is located. (Usually a three-digit decimal number represented
 	// as a string) Type: string (or Expression with resultType string).
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Language of the SAP system where the table is located. The default value is EN. Type: string (or Expression with resultType
 	// string).
-	Language interface{} `json:"language,omitempty"`
+	Language any `json:"language,omitempty"`
 
 	// The Logon Group for the SAP System. Type: string (or Expression with resultType string).
-	LogonGroup interface{} `json:"logonGroup,omitempty"`
+	LogonGroup any `json:"logonGroup,omitempty"`
 
 	// The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
-	MessageServer interface{} `json:"messageServer,omitempty"`
+	MessageServer any `json:"messageServer,omitempty"`
 
 	// The service name or port number of the Message Server. Type: string (or Expression with resultType string).
-	MessageServerService interface{} `json:"messageServerService,omitempty"`
+	MessageServerService any `json:"messageServerService,omitempty"`
 
 	// Password to access the SAP server where the table is located.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Host name of the SAP instance where the table is located. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// External security product's library to access the SAP server where the table is located. Type: string (or Expression with
 	// resultType string).
-	SncLibraryPath interface{} `json:"sncLibraryPath,omitempty"`
+	SncLibraryPath any `json:"sncLibraryPath,omitempty"`
 
 	// SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on). Type: string
 	// (or Expression with resultType string).
-	SncMode interface{} `json:"sncMode,omitempty"`
+	SncMode any `json:"sncMode,omitempty"`
 
 	// Initiator's SNC name to access the SAP server where the table is located. Type: string (or Expression with resultType string).
-	SncMyName interface{} `json:"sncMyName,omitempty"`
+	SncMyName any `json:"sncMyName,omitempty"`
 
 	// Communication partner's SNC name to access the SAP server where the table is located. Type: string (or Expression with
 	// resultType string).
-	SncPartnerName interface{} `json:"sncPartnerName,omitempty"`
+	SncPartnerName any `json:"sncPartnerName,omitempty"`
 
 	// SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or Expression with resultType string).
-	SncQop interface{} `json:"sncQop,omitempty"`
+	SncQop any `json:"sncQop,omitempty"`
 
 	// SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
-	SystemID interface{} `json:"systemId,omitempty"`
+	SystemID any `json:"systemId,omitempty"`
 
 	// System number of the SAP system where the table is located. (Usually a two-digit decimal number represented as a string.)
 	// Type: string (or Expression with resultType string).
-	SystemNumber interface{} `json:"systemNumber,omitempty"`
+	SystemNumber any `json:"systemNumber,omitempty"`
 
 	// Username to access the SAP server where the table is located. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // SapTablePartitionSettings - The settings that will be leveraged for SAP table source partitioning.
 type SapTablePartitionSettings struct {
 	// The maximum value of partitions the table will be split into. Type: integer (or Expression with resultType string).
-	MaxPartitionsNumber interface{} `json:"maxPartitionsNumber,omitempty"`
+	MaxPartitionsNumber any `json:"maxPartitionsNumber,omitempty"`
 
 	// The name of the column that will be used for proceeding range partitioning. Type: string (or Expression with resultType
 	// string).
-	PartitionColumnName interface{} `json:"partitionColumnName,omitempty"`
+	PartitionColumnName any `json:"partitionColumnName,omitempty"`
 
 	// The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionLowerBound interface{} `json:"partitionLowerBound,omitempty"`
+	PartitionLowerBound any `json:"partitionLowerBound,omitempty"`
 
 	// The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionUpperBound interface{} `json:"partitionUpperBound,omitempty"`
+	PartitionUpperBound any `json:"partitionUpperBound,omitempty"`
 }
 
 // SapTableResourceDataset - SAP Table Resource properties.
@@ -25231,10 +25363,10 @@ type SapTableResourceDataset struct {
 	TypeProperties *SapTableResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -25247,10 +25379,10 @@ type SapTableResourceDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type SapTableResourceDataset.
@@ -25271,7 +25403,7 @@ func (s *SapTableResourceDataset) GetDataset() *Dataset {
 // SapTableResourceDatasetTypeProperties - SAP Table Resource properties.
 type SapTableResourceDatasetTypeProperties struct {
 	// REQUIRED; The name of the SAP Table. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // SapTableSource - A copy activity source for SAP Table source.
@@ -25281,59 +25413,59 @@ type SapTableSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies the maximum number of rows that will be retrieved at a time when retrieving data from SAP Table. Type: integer
 	// (or Expression with resultType integer).
-	BatchSize interface{} `json:"batchSize,omitempty"`
+	BatchSize any `json:"batchSize,omitempty"`
 
 	// Specifies the custom RFC function module that will be used to read data from SAP Table. Type: string (or Expression with
 	// resultType string).
-	CustomRFCReadTableFunctionModule interface{} `json:"customRfcReadTableFunctionModule,omitempty"`
+	CustomRFCReadTableFunctionModule any `json:"customRfcReadTableFunctionModule,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The partition mechanism that will be used for SAP table read in parallel. Possible values include: "None", "PartitionOnInt",
 	// "PartitionOnCalendarYear", "PartitionOnCalendarMonth",
 	// "PartitionOnCalendarDate", "PartitionOnTime".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for SAP table source partitioning.
 	PartitionSettings *SapTablePartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// The fields of the SAP table that will be retrieved. For example, column0, column1. Type: string (or Expression with resultType
 	// string).
-	RFCTableFields interface{} `json:"rfcTableFields,omitempty"`
+	RFCTableFields any `json:"rfcTableFields,omitempty"`
 
 	// The options for the filtering of the SAP Table. For example, COLUMN0 EQ SOME VALUE. Type: string (or Expression with resultType
 	// string).
-	RFCTableOptions interface{} `json:"rfcTableOptions,omitempty"`
+	RFCTableOptions any `json:"rfcTableOptions,omitempty"`
 
 	// The number of rows to be retrieved. Type: integer(or Expression with resultType integer).
-	RowCount interface{} `json:"rowCount,omitempty"`
+	RowCount any `json:"rowCount,omitempty"`
 
 	// The number of rows that will be skipped. Type: integer (or Expression with resultType integer).
-	RowSkips interface{} `json:"rowSkips,omitempty"`
+	RowSkips any `json:"rowSkips,omitempty"`
 
 	// The single character that will be used as delimiter passed to SAP RFC as well as splitting the output data retrieved. Type:
 	// string (or Expression with resultType string).
-	SapDataColumnDelimiter interface{} `json:"sapDataColumnDelimiter,omitempty"`
+	SapDataColumnDelimiter any `json:"sapDataColumnDelimiter,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SapTableSource.
@@ -25371,10 +25503,10 @@ type ScheduleTrigger struct {
 	TypeProperties *ScheduleTriggerTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the trigger.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Trigger description.
 	Description *string `json:"description,omitempty"`
@@ -25412,7 +25544,7 @@ func (s *ScheduleTrigger) GetTrigger() *Trigger {
 // ScheduleTriggerRecurrence - The workflow trigger recurrence.
 type ScheduleTriggerRecurrence struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The end time.
 	EndTime *time.Time `json:"endTime,omitempty"`
@@ -25445,7 +25577,7 @@ type ScriptAction struct {
 	Name *string `json:"name,omitempty"`
 
 	// REQUIRED; The node types on which the script action should be executed.
-	Roles interface{} `json:"roles,omitempty"`
+	Roles any `json:"roles,omitempty"`
 
 	// REQUIRED; The URI for the script action.
 	URI *string `json:"uri,omitempty"`
@@ -25466,7 +25598,7 @@ type ScriptActivity struct {
 	TypeProperties *ScriptActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -25516,7 +25648,7 @@ type ScriptActivityParameter struct {
 	Direction *ScriptActivityParameterDirection `json:"direction,omitempty"`
 
 	// The name of the parameter. Type: string (or Expression with resultType string).
-	Name interface{} `json:"name,omitempty"`
+	Name any `json:"name,omitempty"`
 
 	// The size of the output direction parameter.
 	Size *int32 `json:"size,omitempty"`
@@ -25525,13 +25657,13 @@ type ScriptActivityParameter struct {
 	Type *ScriptActivityParameterType `json:"type,omitempty"`
 
 	// The value of the parameter.
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 }
 
 // ScriptActivityScriptBlock - Script block of scripts.
 type ScriptActivityScriptBlock struct {
 	// REQUIRED; The query text. Type: string (or Expression with resultType string).
-	Text interface{} `json:"text,omitempty"`
+	Text any `json:"text,omitempty"`
 
 	// REQUIRED; The type of the query. Type: string.
 	Type *ScriptType `json:"type,omitempty"`
@@ -25544,6 +25676,9 @@ type ScriptActivityScriptBlock struct {
 type ScriptActivityTypeProperties struct {
 	// Log settings of script activity.
 	LogSettings *ScriptActivityTypePropertiesLogSettings `json:"logSettings,omitempty"`
+
+	// ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	ScriptBlockExecutionTimeout any `json:"scriptBlockExecutionTimeout,omitempty"`
 
 	// Array of script blocks. Type: array.
 	Scripts []*ScriptActivityScriptBlock `json:"scripts,omitempty"`
@@ -25618,7 +25753,7 @@ type SelfHostedIntegrationRuntime struct {
 	Type *IntegrationRuntimeType `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Integration runtime description.
 	Description *string `json:"description,omitempty"`
@@ -25640,7 +25775,7 @@ func (s *SelfHostedIntegrationRuntime) GetIntegrationRuntime() *IntegrationRunti
 // SelfHostedIntegrationRuntimeNode - Properties of Self-hosted integration runtime node.
 type SelfHostedIntegrationRuntimeNode struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; The integration runtime capabilities dictionary
 	Capabilities map[string]*string `json:"capabilities,omitempty" azure:"ro"`
@@ -25706,7 +25841,7 @@ type SelfHostedIntegrationRuntimeStatus struct {
 	TypeProperties *SelfHostedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty" azure:"ro"`
@@ -25792,10 +25927,10 @@ type ServiceNowLinkedService struct {
 	TypeProperties *ServiceNowLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -25825,33 +25960,33 @@ type ServiceNowLinkedServiceTypeProperties struct {
 	AuthenticationType *ServiceNowAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The endpoint of the ServiceNow server. (i.e. .service-now.com)
-	Endpoint interface{} `json:"endpoint,omitempty"`
+	Endpoint any `json:"endpoint,omitempty"`
 
 	// The client id for OAuth2 authentication.
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The client secret for OAuth2 authentication.
 	ClientSecret SecretBaseClassification `json:"clientSecret,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password corresponding to the user name for Basic and OAuth2 authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 
 	// The user name used to connect to the ServiceNow server for Basic and OAuth2 authentication.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // ServiceNowObjectDataset - ServiceNow server dataset.
@@ -25863,10 +25998,10 @@ type ServiceNowObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -25879,10 +26014,10 @@ type ServiceNowObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -25910,28 +26045,28 @@ type ServiceNowSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type ServiceNowSource.
@@ -25960,6 +26095,46 @@ func (s *ServiceNowSource) GetTabularSource() *TabularSource {
 	}
 }
 
+// ServicePrincipalCredential - Service principal credential.
+type ServicePrincipalCredential struct {
+	// REQUIRED; Type of credential.
+	Type *string `json:"type,omitempty"`
+
+	// REQUIRED; Service Principal credential properties.
+	TypeProperties *ServicePrincipalCredentialTypeProperties `json:"typeProperties,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// List of tags that can be used for describing the Credential.
+	Annotations []any `json:"annotations,omitempty"`
+
+	// Credential description.
+	Description *string `json:"description,omitempty"`
+}
+
+// GetCredential implements the CredentialClassification interface for type ServicePrincipalCredential.
+func (s *ServicePrincipalCredential) GetCredential() *Credential {
+	return &Credential{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
+// ServicePrincipalCredentialTypeProperties - Service Principal credential type properties.
+type ServicePrincipalCredentialTypeProperties struct {
+	// The app ID of the service principal used to authenticate
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
+
+	// The key of the service principal used to authenticate.
+	ServicePrincipalKey *AzureKeyVaultSecretReference `json:"servicePrincipalKey,omitempty"`
+
+	// The ID of the tenant to which the service principal belongs
+	Tenant any `json:"tenant,omitempty"`
+}
+
 // SetVariableActivity - Set value for a Variable.
 type SetVariableActivity struct {
 	// REQUIRED; Activity name.
@@ -25972,7 +26147,7 @@ type SetVariableActivity struct {
 	TypeProperties *SetVariableActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -26011,7 +26186,7 @@ func (s *SetVariableActivity) GetControlActivity() *ControlActivity {
 // SetVariableActivityTypeProperties - SetVariable activity properties.
 type SetVariableActivityTypeProperties struct {
 	// Value to be set. Could be a static value or Expression
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 
 	// Name of the variable whose value needs to be set.
 	VariableName *string `json:"variableName,omitempty"`
@@ -26023,13 +26198,13 @@ type SftpLocation struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specify the file name of dataset. Type: string (or Expression with resultType string).
-	FileName interface{} `json:"fileName,omitempty"`
+	FileName any `json:"fileName,omitempty"`
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
-	FolderPath interface{} `json:"folderPath,omitempty"`
+	FolderPath any `json:"folderPath,omitempty"`
 }
 
 // GetDatasetLocation implements the DatasetLocationClassification interface for type SftpLocation.
@@ -26048,46 +26223,46 @@ type SftpReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression
 	// with resultType boolean).
-	DeleteFilesAfterCompletion interface{} `json:"deleteFilesAfterCompletion,omitempty"`
+	DeleteFilesAfterCompletion any `json:"deleteFilesAfterCompletion,omitempty"`
 
 	// If true, disable parallel reading within each file. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableChunking interface{} `json:"disableChunking,omitempty"`
+	DisableChunking any `json:"disableChunking,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Indicates whether to enable partition discovery.
 	EnablePartitionDiscovery *bool `json:"enablePartitionDiscovery,omitempty"`
 
 	// Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy.
 	// Type: string (or Expression with resultType string).
-	FileListPath interface{} `json:"fileListPath,omitempty"`
+	FileListPath any `json:"fileListPath,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The end of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeEnd interface{} `json:"modifiedDatetimeEnd,omitempty"`
+	ModifiedDatetimeEnd any `json:"modifiedDatetimeEnd,omitempty"`
 
 	// The start of file's modified datetime. Type: string (or Expression with resultType string).
-	ModifiedDatetimeStart interface{} `json:"modifiedDatetimeStart,omitempty"`
+	ModifiedDatetimeStart any `json:"modifiedDatetimeStart,omitempty"`
 
 	// Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
-	PartitionRootPath interface{} `json:"partitionRootPath,omitempty"`
+	PartitionRootPath any `json:"partitionRootPath,omitempty"`
 
 	// If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType
 	// boolean).
-	Recursive interface{} `json:"recursive,omitempty"`
+	Recursive any `json:"recursive,omitempty"`
 
 	// Sftp wildcardFileName. Type: string (or Expression with resultType string).
-	WildcardFileName interface{} `json:"wildcardFileName,omitempty"`
+	WildcardFileName any `json:"wildcardFileName,omitempty"`
 
 	// Sftp wildcardFolderPath. Type: string (or Expression with resultType string).
-	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
+	WildcardFolderPath any `json:"wildcardFolderPath,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type SftpReadSettings.
@@ -26109,10 +26284,10 @@ type SftpServerLinkedService struct {
 	TypeProperties *SftpServerLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -26139,18 +26314,18 @@ func (s *SftpServerLinkedService) GetLinkedService() *LinkedService {
 // SftpServerLinkedServiceTypeProperties - Properties specific to this linked service type.
 type SftpServerLinkedServiceTypeProperties struct {
 	// REQUIRED; The SFTP server host name. Type: string (or Expression with resultType string).
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// The authentication type to be used to connect to the FTP server.
 	AuthenticationType *SftpAuthenticationType `json:"authenticationType,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The host key finger-print of the SFTP server. When SkipHostKeyValidation is false, HostKeyFingerprint should be specified.
 	// Type: string (or Expression with resultType string).
-	HostKeyFingerprint interface{} `json:"hostKeyFingerprint,omitempty"`
+	HostKeyFingerprint any `json:"hostKeyFingerprint,omitempty"`
 
 	// The password to decrypt the SSH private key if the SSH private key is encrypted.
 	PassPhrase SecretBaseClassification `json:"passPhrase,omitempty"`
@@ -26160,7 +26335,7 @@ type SftpServerLinkedServiceTypeProperties struct {
 
 	// The TCP port number that the SFTP server uses to listen for client connections. Default value is 22. Type: integer (or
 	// Expression with resultType integer), minimum: 0.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// Base64 encoded SSH private key content for SshPublicKey authentication. For on-premises copy with SshPublicKey authentication,
 	// either PrivateKeyPath or PrivateKeyContent should be specified. SSH
@@ -26170,13 +26345,13 @@ type SftpServerLinkedServiceTypeProperties struct {
 	// The SSH private key file path for SshPublicKey authentication. Only valid for on-premises copy. For on-premises copy with
 	// SshPublicKey authentication, either PrivateKeyPath or PrivateKeyContent should
 	// be specified. SSH private key should be OpenSSH format. Type: string (or Expression with resultType string).
-	PrivateKeyPath interface{} `json:"privateKeyPath,omitempty"`
+	PrivateKeyPath any `json:"privateKeyPath,omitempty"`
 
 	// If true, skip the SSH host key validation. Default value is false. Type: boolean (or Expression with resultType boolean).
-	SkipHostKeyValidation interface{} `json:"skipHostKeyValidation,omitempty"`
+	SkipHostKeyValidation any `json:"skipHostKeyValidation,omitempty"`
 
 	// The username used to log on to the SFTP server. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // SftpWriteSettings - Sftp write settings.
@@ -26185,24 +26360,24 @@ type SftpWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Specifies the timeout for writing each chunk to SFTP server. Default value: 01:00:00 (one hour). Type: string (or Expression
 	// with resultType string).
-	OperationTimeout interface{} `json:"operationTimeout,omitempty"`
+	OperationTimeout any `json:"operationTimeout,omitempty"`
 
 	// Upload to temporary file(s) and rename. Disable this option if your SFTP server doesn't support rename operation. Type:
 	// boolean (or Expression with resultType boolean).
-	UseTempFileRename interface{} `json:"useTempFileRename,omitempty"`
+	UseTempFileRename any `json:"useTempFileRename,omitempty"`
 }
 
 // GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type SftpWriteSettings.
@@ -26219,7 +26394,7 @@ func (s *SftpWriteSettings) GetStoreWriteSettings() *StoreWriteSettings {
 // SharePointOnlineListDatasetTypeProperties - Sharepoint online list dataset properties.
 type SharePointOnlineListDatasetTypeProperties struct {
 	// The name of the SharePoint Online list. Type: string (or Expression with resultType string).
-	ListName interface{} `json:"listName,omitempty"`
+	ListName any `json:"listName,omitempty"`
 }
 
 // SharePointOnlineListLinkedService - SharePoint Online List linked service.
@@ -26231,10 +26406,10 @@ type SharePointOnlineListLinkedService struct {
 	TypeProperties *SharePointOnlineListLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -26263,7 +26438,7 @@ type SharePointOnlineListLinkedServiceTypeProperties struct {
 	// REQUIRED; The application (client) ID of your application registered in Azure Active Directory. Make sure to grant SharePoint
 	// site permission to this application. Type: string (or Expression with resultType
 	// string).
-	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
+	ServicePrincipalID any `json:"servicePrincipalId,omitempty"`
 
 	// REQUIRED; The client secret of your application registered in Azure Active Directory. Type: string (or Expression with
 	// resultType string).
@@ -26271,15 +26446,15 @@ type SharePointOnlineListLinkedServiceTypeProperties struct {
 
 	// REQUIRED; The URL of the SharePoint Online site. For example, https://contoso.sharepoint.com/sites/siteName. Type: string
 	// (or Expression with resultType string).
-	SiteURL interface{} `json:"siteUrl,omitempty"`
+	SiteURL any `json:"siteUrl,omitempty"`
 
 	// REQUIRED; The tenant ID under which your application resides. You can find it from Azure portal Active Directory overview
 	// page. Type: string (or Expression with resultType string).
-	TenantID interface{} `json:"tenantId,omitempty"`
+	TenantID any `json:"tenantId,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // SharePointOnlineListResourceDataset - The sharepoint online list resource dataset.
@@ -26291,10 +26466,10 @@ type SharePointOnlineListResourceDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -26307,10 +26482,10 @@ type SharePointOnlineListResourceDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Sharepoint online list dataset properties.
 	TypeProperties *SharePointOnlineListDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -26337,28 +26512,28 @@ type SharePointOnlineListSource struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The wait time to get a response from SharePoint Online. Default value is 5 minutes (00:05:00). Type: string (or Expression
 	// with resultType string), pattern:
 	// ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	HTTPRequestTimeout interface{} `json:"httpRequestTimeout,omitempty"`
+	HTTPRequestTimeout any `json:"httpRequestTimeout,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The OData query to filter the data in SharePoint Online list. For example, "$top=1". Type: string (or Expression with resultType
 	// string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SharePointOnlineListSource.
@@ -26382,10 +26557,10 @@ type ShopifyLinkedService struct {
 	TypeProperties *ShopifyLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -26412,24 +26587,24 @@ func (s *ShopifyLinkedService) GetLinkedService() *LinkedService {
 // ShopifyLinkedServiceTypeProperties - Shopify Service linked service properties.
 type ShopifyLinkedServiceTypeProperties struct {
 	// REQUIRED; The endpoint of the Shopify server. (i.e. mystore.myshopify.com)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// The API access token that can be used to access Shopify’s data. The token won't expire if it is offline mode.
 	AccessToken SecretBaseClassification `json:"accessToken,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // ShopifyObjectDataset - Shopify Service dataset.
@@ -26441,10 +26616,10 @@ type ShopifyObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -26457,10 +26632,10 @@ type ShopifyObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -26488,28 +26663,28 @@ type ShopifySource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type ShopifySource.
@@ -26542,10 +26717,10 @@ func (s *ShopifySource) GetTabularSource() *TabularSource {
 type SkipErrorFile struct {
 	// Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with resultType
 	// boolean).
-	DataInconsistency interface{} `json:"dataInconsistency,omitempty"`
+	DataInconsistency any `json:"dataInconsistency,omitempty"`
 
 	// Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with resultType boolean).
-	FileMissing interface{} `json:"fileMissing,omitempty"`
+	FileMissing any `json:"fileMissing,omitempty"`
 }
 
 // SmartsheetLinkedService - Linked service for Smartsheet.
@@ -26557,10 +26732,10 @@ type SmartsheetLinkedService struct {
 	TypeProperties *SmartsheetLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -26591,7 +26766,7 @@ type SmartsheetLinkedServiceTypeProperties struct {
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 }
 
 // SnowflakeDataset - The snowflake dataset.
@@ -26606,10 +26781,10 @@ type SnowflakeDataset struct {
 	TypeProperties *SnowflakeDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -26622,10 +26797,10 @@ type SnowflakeDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type SnowflakeDataset.
@@ -26646,10 +26821,10 @@ func (s *SnowflakeDataset) GetDataset() *Dataset {
 // SnowflakeDatasetTypeProperties - Snowflake dataset properties.
 type SnowflakeDatasetTypeProperties struct {
 	// The schema name of the Snowflake database. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Snowflake database. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 }
 
 // SnowflakeExportCopyCommand - Snowflake export command settings.
@@ -26660,15 +26835,15 @@ type SnowflakeExportCopyCommand struct {
 	// Additional copy options directly passed to snowflake Copy Command. Type: key value pairs (value should be string type)
 	// (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE
 	// FORMAT": "MM/DD/YYYY", "TIMEFORMAT": "'HH24:MI:SS.FF'" }
-	AdditionalCopyOptions map[string]interface{} `json:"additionalCopyOptions,omitempty"`
+	AdditionalCopyOptions map[string]any `json:"additionalCopyOptions,omitempty"`
 
 	// Additional format options directly passed to snowflake Copy Command. Type: key value pairs (value should be string type)
 	// (or Expression with resultType object). Example: "additionalFormatOptions": {
 	// "OVERWRITE": "TRUE", "MAXFILESIZE": "'FALSE'" }
-	AdditionalFormatOptions map[string]interface{} `json:"additionalFormatOptions,omitempty"`
+	AdditionalFormatOptions map[string]any `json:"additionalFormatOptions,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // GetExportSettings implements the ExportSettingsClassification interface for type SnowflakeExportCopyCommand.
@@ -26687,15 +26862,15 @@ type SnowflakeImportCopyCommand struct {
 	// Additional copy options directly passed to snowflake Copy Command. Type: key value pairs (value should be string type)
 	// (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE
 	// FORMAT": "MM/DD/YYYY", "TIMEFORMAT": "'HH24:MI:SS.FF'" }
-	AdditionalCopyOptions map[string]interface{} `json:"additionalCopyOptions,omitempty"`
+	AdditionalCopyOptions map[string]any `json:"additionalCopyOptions,omitempty"`
 
 	// Additional format options directly passed to snowflake Copy Command. Type: key value pairs (value should be string type)
 	// (or Expression with resultType object). Example: "additionalFormatOptions": {
 	// "FORCE": "TRUE", "LOADUNCERTAINFILES": "'FALSE'" }
-	AdditionalFormatOptions map[string]interface{} `json:"additionalFormatOptions,omitempty"`
+	AdditionalFormatOptions map[string]any `json:"additionalFormatOptions,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // GetImportSettings implements the ImportSettingsClassification interface for type SnowflakeImportCopyCommand.
@@ -26715,10 +26890,10 @@ type SnowflakeLinkedService struct {
 	TypeProperties *SnowflakeLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -26745,11 +26920,11 @@ func (s *SnowflakeLinkedService) GetLinkedService() *LinkedService {
 // SnowflakeLinkedServiceTypeProperties - Snowflake linked service properties.
 type SnowflakeLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string of snowflake. Type: string, SecureString.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Password *AzureKeyVaultSecretReference `json:"password,omitempty"`
@@ -26761,31 +26936,31 @@ type SnowflakeSink struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Snowflake import settings.
 	ImportSettings *SnowflakeImportCopyCommand `json:"importSettings,omitempty"`
 
 	// The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// SQL pre-copy script. Type: string (or Expression with resultType string).
-	PreCopyScript interface{} `json:"preCopyScript,omitempty"`
+	PreCopyScript any `json:"preCopyScript,omitempty"`
 
 	// Sink retry count. Type: integer (or Expression with resultType integer).
-	SinkRetryCount interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryCount any `json:"sinkRetryCount,omitempty"`
 
 	// Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SinkRetryWait interface{} `json:"sinkRetryWait,omitempty"`
+	SinkRetryWait any `json:"sinkRetryWait,omitempty"`
 
 	// Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
-	WriteBatchSize interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchSize any `json:"writeBatchSize,omitempty"`
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+	WriteBatchTimeout any `json:"writeBatchTimeout,omitempty"`
 }
 
 // GetCopySink implements the CopySinkClassification interface for type SnowflakeSink.
@@ -26804,29 +26979,29 @@ func (s *SnowflakeSink) GetCopySink() *CopySink {
 
 // SnowflakeSource - A copy activity snowflake source.
 type SnowflakeSource struct {
+	// REQUIRED; Snowflake export settings.
+	ExportSettings *SnowflakeExportCopyCommand `json:"exportSettings,omitempty"`
+
 	// REQUIRED; Copy source type.
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
-
-	// Snowflake export settings.
-	ExportSettings *SnowflakeExportCopyCommand `json:"exportSettings,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Snowflake Sql query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SnowflakeSource.
@@ -26841,16 +27016,25 @@ func (s *SnowflakeSource) GetCopySource() *CopySource {
 	}
 }
 
+// SparkConfigurationParametrizationReference - Spark configuration reference.
+type SparkConfigurationParametrizationReference struct {
+	// REQUIRED; Reference spark configuration name. Type: string (or Expression with resultType string).
+	ReferenceName any `json:"referenceName,omitempty"`
+
+	// REQUIRED; Spark configuration reference type.
+	Type *SparkConfigurationReferenceType `json:"type,omitempty"`
+}
+
 // SparkDatasetTypeProperties - Spark Properties
 type SparkDatasetTypeProperties struct {
 	// The schema name of the Spark. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Spark. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // SparkLinkedService - Spark Server linked service.
@@ -26862,10 +27046,10 @@ type SparkLinkedService struct {
 	TypeProperties *SparkLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -26895,27 +27079,27 @@ type SparkLinkedServiceTypeProperties struct {
 	AuthenticationType *SparkAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; IP address or host name of the Spark server
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// REQUIRED; The TCP port that the Spark server uses to listen for client connections.
-	Port interface{} `json:"port,omitempty"`
+	Port any `json:"port,omitempty"`
 
 	// Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when connecting over
 	// SSL. The default value is false.
-	AllowHostNameCNMismatch interface{} `json:"allowHostNameCNMismatch,omitempty"`
+	AllowHostNameCNMismatch any `json:"allowHostNameCNMismatch,omitempty"`
 
 	// Specifies whether to allow self-signed certificates from the server. The default value is false.
-	AllowSelfSignedServerCert interface{} `json:"allowSelfSignedServerCert,omitempty"`
+	AllowSelfSignedServerCert any `json:"allowSelfSignedServerCert,omitempty"`
 
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false.
-	EnableSSL interface{} `json:"enableSsl,omitempty"`
+	EnableSSL any `json:"enableSsl,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The partial URL corresponding to the Spark server.
-	HTTPPath interface{} `json:"httpPath,omitempty"`
+	HTTPPath any `json:"httpPath,omitempty"`
 
 	// The password corresponding to the user name that you provided in the Username field
 	Password SecretBaseClassification `json:"password,omitempty"`
@@ -26929,14 +27113,14 @@ type SparkLinkedServiceTypeProperties struct {
 	// The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This
 	// property can only be set when using SSL on self-hosted IR. The default value
 	// is the cacerts.pem file installed with the IR.
-	TrustedCertPath interface{} `json:"trustedCertPath,omitempty"`
+	TrustedCertPath any `json:"trustedCertPath,omitempty"`
 
 	// Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is
 	// false.
-	UseSystemTrustStore interface{} `json:"useSystemTrustStore,omitempty"`
+	UseSystemTrustStore any `json:"useSystemTrustStore,omitempty"`
 
 	// The user name that you use to access Spark Server.
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // SparkObjectDataset - Spark Server dataset.
@@ -26948,10 +27132,10 @@ type SparkObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -26964,10 +27148,10 @@ type SparkObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *SparkDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -26995,28 +27179,28 @@ type SparkSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SparkSource.
@@ -27054,10 +27238,10 @@ type SquareLinkedService struct {
 	TypeProperties *SquareLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -27084,33 +27268,33 @@ func (s *SquareLinkedService) GetLinkedService() *LinkedService {
 // SquareLinkedServiceTypeProperties - Square Service linked service properties.
 type SquareLinkedServiceTypeProperties struct {
 	// The client ID associated with your Square application.
-	ClientID interface{} `json:"clientId,omitempty"`
+	ClientID any `json:"clientId,omitempty"`
 
 	// The client secret associated with your Square application.
 	ClientSecret SecretBaseClassification `json:"clientSecret,omitempty"`
 
 	// Properties used to connect to Square. It is mutually exclusive with any other properties in the linked service. Type: object.
-	ConnectionProperties interface{} `json:"connectionProperties,omitempty"`
+	ConnectionProperties any `json:"connectionProperties,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The URL of the Square instance. (i.e. mystore.mysquare.com)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// The redirect URL assigned in the Square application dashboard. (i.e. http://localhost:2500)
-	RedirectURI interface{} `json:"redirectUri,omitempty"`
+	RedirectURI any `json:"redirectUri,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // SquareObjectDataset - Square Service dataset.
@@ -27122,10 +27306,10 @@ type SquareObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -27138,10 +27322,10 @@ type SquareObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -27169,28 +27353,28 @@ type SquareSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SquareSource.
@@ -27484,14 +27668,14 @@ type StagingSettings struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies whether to use compression when copying data via an interim staging. Default value is false. Type: boolean (or
 	// Expression with resultType boolean).
-	EnableCompression interface{} `json:"enableCompression,omitempty"`
+	EnableCompression any `json:"enableCompression,omitempty"`
 
 	// The path to storage for storing the interim data. Type: string (or Expression with resultType string).
-	Path interface{} `json:"path,omitempty"`
+	Path any `json:"path,omitempty"`
 }
 
 // StoreReadSettingsClassification provides polymorphic access to related types.
@@ -27511,13 +27695,13 @@ type StoreReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 }
 
 // GetStoreReadSettings implements the StoreReadSettingsClassification interface for type StoreReadSettings.
@@ -27539,16 +27723,16 @@ type StoreWriteSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The type of copy behavior for copy sink.
-	CopyBehavior interface{} `json:"copyBehavior,omitempty"`
+	CopyBehavior any `json:"copyBehavior,omitempty"`
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 }
 
 // GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type StoreWriteSettings.
@@ -27567,7 +27751,7 @@ type SwitchActivity struct {
 	TypeProperties *SwitchActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -27636,10 +27820,10 @@ type SybaseLinkedService struct {
 	TypeProperties *SybaseLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -27666,26 +27850,26 @@ func (s *SybaseLinkedService) GetLinkedService() *LinkedService {
 // SybaseLinkedServiceTypeProperties - Sybase linked service properties.
 type SybaseLinkedServiceTypeProperties struct {
 	// REQUIRED; Database name for connection. Type: string (or Expression with resultType string).
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 
 	// REQUIRED; Server name for connection. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// AuthenticationType to be used for connection.
 	AuthenticationType *SybaseAuthenticationType `json:"authenticationType,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password for authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Schema name for connection. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Username for authentication. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // SybaseSource - A copy activity source for Sybase databases.
@@ -27695,28 +27879,28 @@ type SybaseSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Database query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type SybaseSource.
@@ -27754,10 +27938,10 @@ type SybaseTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -27770,10 +27954,10 @@ type SybaseTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Sybase table dataset properties.
 	TypeProperties *SybaseTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -27797,7 +27981,7 @@ func (s *SybaseTableDataset) GetDataset() *Dataset {
 // SybaseTableDatasetTypeProperties - Sybase table dataset properties.
 type SybaseTableDatasetTypeProperties struct {
 	// The Sybase table name. Type: string (or Expression with resultType string).
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // SynapseNotebookActivity - Execute Synapse notebook activity.
@@ -27812,7 +27996,7 @@ type SynapseNotebookActivity struct {
 	TypeProperties *SynapseNotebookActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -27862,17 +28046,17 @@ type SynapseNotebookActivityTypeProperties struct {
 	Notebook *SynapseNotebookReference `json:"notebook,omitempty"`
 
 	// Spark configuration properties, which will override the 'conf' of the notebook you provide.
-	Conf interface{} `json:"conf,omitempty"`
+	Conf any `json:"conf,omitempty"`
 
 	// Number of core and memory to be used for driver allocated in the specified Spark pool for the session, which will be used
 	// for overriding 'driverCores' and 'driverMemory' of the notebook you provide.
 	// Type: string (or Expression with resultType string).
-	DriverSize interface{} `json:"driverSize,omitempty"`
+	DriverSize any `json:"driverSize,omitempty"`
 
 	// Number of core and memory to be used for executors allocated in the specified Spark pool for the session, which will be
 	// used for overriding 'executorCores' and 'executorMemory' of the notebook you
 	// provide. Type: string (or Expression with resultType string).
-	ExecutorSize interface{} `json:"executorSize,omitempty"`
+	ExecutorSize any `json:"executorSize,omitempty"`
 
 	// Number of executors to launch for this session, which will override the 'numExecutors' of the notebook you provide.
 	NumExecutors *int32 `json:"numExecutors,omitempty"`
@@ -27887,7 +28071,7 @@ type SynapseNotebookActivityTypeProperties struct {
 // SynapseNotebookReference - Synapse notebook reference type.
 type SynapseNotebookReference struct {
 	// REQUIRED; Reference notebook name. Type: string (or Expression with resultType string).
-	ReferenceName interface{} `json:"referenceName,omitempty"`
+	ReferenceName any `json:"referenceName,omitempty"`
 
 	// REQUIRED; Synapse notebook reference type.
 	Type *NotebookReferenceType `json:"type,omitempty"`
@@ -27899,40 +28083,63 @@ type SynapseSparkJobActivityTypeProperties struct {
 	SparkJob *SynapseSparkJobReference `json:"sparkJob,omitempty"`
 
 	// User specified arguments to SynapseSparkJobDefinitionActivity.
-	Arguments []interface{} `json:"args,omitempty"`
+	Arguments []any `json:"args,omitempty"`
 
 	// The fully-qualified identifier or the main class that is in the main definition file, which will override the 'className'
 	// of the spark job definition you provide. Type: string (or Expression with
 	// resultType string).
-	ClassName interface{} `json:"className,omitempty"`
+	ClassName any `json:"className,omitempty"`
 
 	// Spark configuration properties, which will override the 'conf' of the spark job definition you provide.
-	Conf interface{} `json:"conf,omitempty"`
+	Conf any `json:"conf,omitempty"`
+
+	// The type of the spark config.
+	ConfigurationType *ConfigurationType `json:"configurationType,omitempty"`
 
 	// Number of core and memory to be used for driver allocated in the specified Spark pool for the job, which will be used for
 	// overriding 'driverCores' and 'driverMemory' of the spark job definition you
 	// provide. Type: string (or Expression with resultType string).
-	DriverSize interface{} `json:"driverSize,omitempty"`
+	DriverSize any `json:"driverSize,omitempty"`
 
 	// Number of core and memory to be used for executors allocated in the specified Spark pool for the job, which will be used
 	// for overriding 'executorCores' and 'executorMemory' of the spark job definition
 	// you provide. Type: string (or Expression with resultType string).
-	ExecutorSize interface{} `json:"executorSize,omitempty"`
+	ExecutorSize any `json:"executorSize,omitempty"`
 
 	// The main file used for the job, which will override the 'file' of the spark job definition you provide. Type: string (or
 	// Expression with resultType string).
-	File interface{} `json:"file,omitempty"`
+	File any `json:"file,omitempty"`
 
-	// Additional files used for reference in the main definition file, which will override the 'files' of the spark job definition
-	// you provide.
-	Files []interface{} `json:"files,omitempty"`
+	// (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for reference in the main definition file,
+	// which will override the 'files' of the spark job definition you provide.
+	Files []any `json:"files,omitempty"`
+
+	// Additional files used for reference in the main definition file, which will override the 'jars' and 'files' of the spark
+	// job definition you provide.
+	FilesV2 []any `json:"filesV2,omitempty"`
 
 	// Number of executors to launch for this job, which will override the 'numExecutors' of the spark job definition you provide.
-	NumExecutors *int32 `json:"numExecutors,omitempty"`
+	// Type: integer (or Expression with resultType integer).
+	NumExecutors any `json:"numExecutors,omitempty"`
+
+	// Additional python code files used for reference in the main definition file, which will override the 'pyFiles' of the spark
+	// job definition you provide.
+	PythonCodeReference []any `json:"pythonCodeReference,omitempty"`
+
+	// Scanning subfolders from the root folder of the main definition file, these files will be added as reference files. The
+	// folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and the
+	// folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+	ScanFolder any `json:"scanFolder,omitempty"`
+
+	// Spark configuration property.
+	SparkConfig map[string]any `json:"sparkConfig,omitempty"`
 
 	// The name of the big data pool which will be used to execute the spark batch job, which will override the 'targetBigDataPool'
 	// of the spark job definition you provide.
 	TargetBigDataPool *BigDataPoolParametrizationReference `json:"targetBigDataPool,omitempty"`
+
+	// The spark configuration of the spark job.
+	TargetSparkConfiguration *SparkConfigurationParametrizationReference `json:"targetSparkConfiguration,omitempty"`
 }
 
 // SynapseSparkJobDefinitionActivity - Execute spark job activity.
@@ -27947,7 +28154,7 @@ type SynapseSparkJobDefinitionActivity struct {
 	TypeProperties *SynapseSparkJobActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -27993,8 +28200,8 @@ func (s *SynapseSparkJobDefinitionActivity) GetExecutionActivity() *ExecutionAct
 
 // SynapseSparkJobReference - Synapse spark job reference type.
 type SynapseSparkJobReference struct {
-	// REQUIRED; Reference spark job name.
-	ReferenceName *string `json:"referenceName,omitempty"`
+	// REQUIRED; Reference spark job name. Expression with resultType string.
+	ReferenceName any `json:"referenceName,omitempty"`
 
 	// REQUIRED; Synapse spark job reference type.
 	Type *SparkJobReferenceType `json:"type,omitempty"`
@@ -28025,25 +28232,25 @@ type TabularSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type TabularSource.
@@ -28067,10 +28274,10 @@ type TarGZipReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Preserve the compression file name as folder path. Type: boolean (or Expression with resultType boolean).
-	PreserveCompressionFileNameAsFolder interface{} `json:"preserveCompressionFileNameAsFolder,omitempty"`
+	PreserveCompressionFileNameAsFolder any `json:"preserveCompressionFileNameAsFolder,omitempty"`
 }
 
 // GetCompressionReadSettings implements the CompressionReadSettingsClassification interface for type TarGZipReadSettings.
@@ -28087,10 +28294,10 @@ type TarReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Preserve the compression file name as folder path. Type: boolean (or Expression with resultType boolean).
-	PreserveCompressionFileNameAsFolder interface{} `json:"preserveCompressionFileNameAsFolder,omitempty"`
+	PreserveCompressionFileNameAsFolder any `json:"preserveCompressionFileNameAsFolder,omitempty"`
 }
 
 // GetCompressionReadSettings implements the CompressionReadSettingsClassification interface for type TarReadSettings.
@@ -28110,10 +28317,10 @@ type TeamDeskLinkedService struct {
 	TypeProperties *TeamDeskLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -28143,20 +28350,20 @@ type TeamDeskLinkedServiceTypeProperties struct {
 	AuthenticationType *TeamDeskAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The url to connect TeamDesk source. Type: string (or Expression with resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// The api token for the TeamDesk source.
 	APIToken SecretBaseClassification `json:"apiToken,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password of the TeamDesk source.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The username of the TeamDesk source. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // TeradataLinkedService - Linked service for Teradata data source.
@@ -28168,10 +28375,10 @@ type TeradataLinkedService struct {
 	TypeProperties *TeradataLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -28201,35 +28408,35 @@ type TeradataLinkedServiceTypeProperties struct {
 	AuthenticationType *TeradataAuthenticationType `json:"authenticationType,omitempty"`
 
 	// Teradata ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// Password for authentication.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// Server name for connection. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
+	Server any `json:"server,omitempty"`
 
 	// Username for authentication. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // TeradataPartitionSettings - The settings that will be leveraged for teradata source partitioning.
 type TeradataPartitionSettings struct {
 	// The name of the column that will be used for proceeding range or hash partitioning. Type: string (or Expression with resultType
 	// string).
-	PartitionColumnName interface{} `json:"partitionColumnName,omitempty"`
+	PartitionColumnName any `json:"partitionColumnName,omitempty"`
 
 	// The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionLowerBound interface{} `json:"partitionLowerBound,omitempty"`
+	PartitionLowerBound any `json:"partitionLowerBound,omitempty"`
 
 	// The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type:
 	// string (or Expression with resultType string).
-	PartitionUpperBound interface{} `json:"partitionUpperBound,omitempty"`
+	PartitionUpperBound any `json:"partitionUpperBound,omitempty"`
 }
 
 // TeradataSource - A copy activity Teradata source.
@@ -28239,34 +28446,34 @@ type TeradataSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// The partition mechanism that will be used for teradata read in parallel. Possible values include: "None", "Hash", "DynamicRange".
-	PartitionOption interface{} `json:"partitionOption,omitempty"`
+	PartitionOption any `json:"partitionOption,omitempty"`
 
 	// The settings that will be leveraged for teradata source partitioning.
 	PartitionSettings *TeradataPartitionSettings `json:"partitionSettings,omitempty"`
 
 	// Teradata query. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type TeradataSource.
@@ -28304,10 +28511,10 @@ type TeradataTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -28320,10 +28527,10 @@ type TeradataTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Teradata dataset properties.
 	TypeProperties *TeradataTableDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -28347,10 +28554,10 @@ func (t *TeradataTableDataset) GetDataset() *Dataset {
 // TeradataTableDatasetTypeProperties - Teradata dataset properties.
 type TeradataTableDatasetTypeProperties struct {
 	// The database name of Teradata. Type: string (or Expression with resultType string).
-	Database interface{} `json:"database,omitempty"`
+	Database any `json:"database,omitempty"`
 
 	// The table name of Teradata. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 }
 
 // TextFormat - The data stored in text format.
@@ -28359,47 +28566,47 @@ type TextFormat struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The column delimiter. Type: string (or Expression with resultType string).
-	ColumnDelimiter interface{} `json:"columnDelimiter,omitempty"`
+	ColumnDelimiter any `json:"columnDelimiter,omitempty"`
 
 	// Deserializer. Type: string (or Expression with resultType string).
-	Deserializer interface{} `json:"deserializer,omitempty"`
+	Deserializer any `json:"deserializer,omitempty"`
 
 	// The code page name of the preferred encoding. If miss, the default value is ΓÇ£utf-8ΓÇ¥, unless BOM denotes another Unicode
 	// encoding. Refer to the ΓÇ£NameΓÇ¥ column of the table in the following link
 	// to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with
 	// resultType string).
-	EncodingName interface{} `json:"encodingName,omitempty"`
+	EncodingName any `json:"encodingName,omitempty"`
 
 	// The escape character. Type: string (or Expression with resultType string).
-	EscapeChar interface{} `json:"escapeChar,omitempty"`
+	EscapeChar any `json:"escapeChar,omitempty"`
 
 	// When used as input, treat the first row of data as headers. When used as output,write the headers into the output as the
 	// first row of data. The default value is false. Type: boolean (or Expression
 	// with resultType boolean).
-	FirstRowAsHeader interface{} `json:"firstRowAsHeader,omitempty"`
+	FirstRowAsHeader any `json:"firstRowAsHeader,omitempty"`
 
 	// The null value string. Type: string (or Expression with resultType string).
-	NullValue interface{} `json:"nullValue,omitempty"`
+	NullValue any `json:"nullValue,omitempty"`
 
 	// The quote character. Type: string (or Expression with resultType string).
-	QuoteChar interface{} `json:"quoteChar,omitempty"`
+	QuoteChar any `json:"quoteChar,omitempty"`
 
 	// The row delimiter. Type: string (or Expression with resultType string).
-	RowDelimiter interface{} `json:"rowDelimiter,omitempty"`
+	RowDelimiter any `json:"rowDelimiter,omitempty"`
 
 	// Serializer. Type: string (or Expression with resultType string).
-	Serializer interface{} `json:"serializer,omitempty"`
+	Serializer any `json:"serializer,omitempty"`
 
 	// The number of lines/rows to be skipped when parsing text files. The default value is 0. Type: integer (or Expression with
 	// resultType integer).
-	SkipLineCount interface{} `json:"skipLineCount,omitempty"`
+	SkipLineCount any `json:"skipLineCount,omitempty"`
 
 	// Treat empty column values in the text file as null. The default value is true. Type: boolean (or Expression with resultType
 	// boolean).
-	TreatEmptyAsNull interface{} `json:"treatEmptyAsNull,omitempty"`
+	TreatEmptyAsNull any `json:"treatEmptyAsNull,omitempty"`
 }
 
 // GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type TextFormat.
@@ -28446,10 +28653,10 @@ type Trigger struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the trigger.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Trigger description.
 	Description *string `json:"description,omitempty"`
@@ -28513,7 +28720,7 @@ type TriggerListResponse struct {
 // TriggerPipelineReference - Pipeline that needs to be triggered with the given parameters.
 type TriggerPipelineReference struct {
 	// Pipeline parameters.
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	Parameters map[string]any `json:"parameters,omitempty"`
 
 	// Pipeline reference.
 	PipelineReference *PipelineReference `json:"pipelineReference,omitempty"`
@@ -28558,10 +28765,10 @@ type TriggerResource struct {
 // TriggerRun - Trigger runs.
 type TriggerRun struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// READ-ONLY; Status of the upstream pipelines.
-	DependencyStatus map[string]interface{} `json:"dependencyStatus,omitempty" azure:"ro"`
+	DependencyStatus map[string]any `json:"dependencyStatus,omitempty" azure:"ro"`
 
 	// READ-ONLY; Trigger error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
@@ -28675,7 +28882,7 @@ type TriggersClientGetOptions struct {
 	IfNoneMatch *string
 }
 
-// TriggersClientListByFactoryOptions contains the optional parameters for the TriggersClient.ListByFactory method.
+// TriggersClientListByFactoryOptions contains the optional parameters for the TriggersClient.NewListByFactoryPager method.
 type TriggersClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
 }
@@ -28698,10 +28905,10 @@ type TumblingWindowTrigger struct {
 	TypeProperties *TumblingWindowTriggerTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the trigger.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Trigger description.
 	Description *string `json:"description,omitempty"`
@@ -28769,7 +28976,7 @@ type TumblingWindowTriggerTypeProperties struct {
 	// Specifies how long the trigger waits past due time before triggering new run. It doesn't alter window start and end time.
 	// The default is 0. Type: string (or Expression with resultType string),
 	// pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	Delay interface{} `json:"delay,omitempty"`
+	Delay any `json:"delay,omitempty"`
 
 	// Triggers that this trigger depends on. Only tumbling window triggers are supported.
 	DependsOn []DependencyReferenceClassification `json:"dependsOn,omitempty"`
@@ -28791,10 +28998,10 @@ type TwilioLinkedService struct {
 	TypeProperties *TwilioLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -28824,7 +29031,7 @@ type TwilioLinkedServiceTypeProperties struct {
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// REQUIRED; The Account SID of Twilio service.
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // UntilActivity - This activity executes inner activities until the specified boolean expression results to true or timeout
@@ -28840,7 +29047,7 @@ type UntilActivity struct {
 	TypeProperties *UntilActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -28888,7 +29095,7 @@ type UntilActivityTypeProperties struct {
 	// which is 1 week as default. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with resultType string),
 	// pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	Timeout interface{} `json:"timeout,omitempty"`
+	Timeout any `json:"timeout,omitempty"`
 }
 
 // UpdateIntegrationRuntimeNodeRequest - Update integration runtime node request.
@@ -28934,7 +29141,7 @@ type UserProperty struct {
 	Name *string `json:"name,omitempty"`
 
 	// REQUIRED; User property value. Type: string (or Expression with resultType string).
-	Value interface{} `json:"value,omitempty"`
+	Value any `json:"value,omitempty"`
 }
 
 // ValidationActivity - This activity verifies that an external resource exists.
@@ -28949,7 +29156,7 @@ type ValidationActivity struct {
 	TypeProperties *ValidationActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -28992,20 +29199,20 @@ type ValidationActivityTypeProperties struct {
 
 	// Can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to false, the
 	// folder must be empty. Type: boolean (or Expression with resultType boolean).
-	ChildItems interface{} `json:"childItems,omitempty"`
+	ChildItems any `json:"childItems,omitempty"`
 
 	// Can be used if dataset points to a file. The file must be greater than or equal in size to the value specified. Type: integer
 	// (or Expression with resultType integer).
-	MinimumSize interface{} `json:"minimumSize,omitempty"`
+	MinimumSize any `json:"minimumSize,omitempty"`
 
 	// A delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default. Type:
 	// integer (or Expression with resultType integer).
-	Sleep interface{} `json:"sleep,omitempty"`
+	Sleep any `json:"sleep,omitempty"`
 
 	// Specifies the timeout for the activity to run. If there is no value specified, it takes the value of TimeSpan.FromDays(7)
 	// which is 1 week as default. Type: string (or Expression with resultType
 	// string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	Timeout interface{} `json:"timeout,omitempty"`
+	Timeout any `json:"timeout,omitempty"`
 }
 
 // VariableSpecification - Definition of a single variable for a Pipeline.
@@ -29014,19 +29221,19 @@ type VariableSpecification struct {
 	Type *VariableType `json:"type,omitempty"`
 
 	// Default value of variable.
-	DefaultValue interface{} `json:"defaultValue,omitempty"`
+	DefaultValue any `json:"defaultValue,omitempty"`
 }
 
 // VerticaDatasetTypeProperties - Vertica Properties
 type VerticaDatasetTypeProperties struct {
 	// The schema name of the Vertica. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// The table name of the Vertica. Type: string (or Expression with resultType string).
-	Table interface{} `json:"table,omitempty"`
+	Table any `json:"table,omitempty"`
 
 	// This property will be retired. Please consider using schema + table properties instead.
-	TableName interface{} `json:"tableName,omitempty"`
+	TableName any `json:"tableName,omitempty"`
 }
 
 // VerticaLinkedService - Vertica linked service.
@@ -29038,10 +29245,10 @@ type VerticaLinkedService struct {
 	TypeProperties *VerticaLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -29068,11 +29275,11 @@ func (v *VerticaLinkedService) GetLinkedService() *LinkedService {
 // VerticaLinkedServiceTypeProperties - Vertica linked service properties.
 type VerticaLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
-	ConnectionString interface{} `json:"connectionString,omitempty"`
+	ConnectionString any `json:"connectionString,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The Azure key vault secret reference of password in connection string.
 	Pwd *AzureKeyVaultSecretReference `json:"pwd,omitempty"`
@@ -29085,28 +29292,28 @@ type VerticaSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type VerticaSource.
@@ -29144,10 +29351,10 @@ type VerticaTableDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -29160,10 +29367,10 @@ type VerticaTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *VerticaDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -29196,7 +29403,7 @@ type WaitActivity struct {
 	TypeProperties *WaitActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -29235,7 +29442,7 @@ func (w *WaitActivity) GetControlActivity() *ControlActivity {
 // WaitActivityTypeProperties - Wait activity properties.
 type WaitActivityTypeProperties struct {
 	// REQUIRED; Duration in seconds.
-	WaitTimeInSeconds interface{} `json:"waitTimeInSeconds,omitempty"`
+	WaitTimeInSeconds any `json:"waitTimeInSeconds,omitempty"`
 }
 
 // WebActivity - Web activity.
@@ -29250,7 +29457,7 @@ type WebActivity struct {
 	TypeProperties *WebActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -29307,18 +29514,18 @@ type WebActivityAuthentication struct {
 
 	// Resource for which Azure Auth token will be requested when using MSI Authentication. Type: string (or Expression with resultType
 	// string).
-	Resource interface{} `json:"resource,omitempty"`
+	Resource any `json:"resource,omitempty"`
 
 	// Web activity authentication (Basic/ClientCertificate/MSI/ServicePrincipal)
 	Type *string `json:"type,omitempty"`
 
 	// TenantId for which Azure Auth token will be requested when using ServicePrincipal Authentication. Type: string (or Expression
 	// with resultType string).
-	UserTenant interface{} `json:"userTenant,omitempty"`
+	UserTenant any `json:"userTenant,omitempty"`
 
 	// Web activity authentication user name for basic authentication or ClientID when used for ServicePrincipal. Type: string
 	// (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // WebActivityTypeProperties - Web activity type properties.
@@ -29327,14 +29534,14 @@ type WebActivityTypeProperties struct {
 	Method *WebActivityMethod `json:"method,omitempty"`
 
 	// REQUIRED; Web activity target endpoint and path. Type: string (or Expression with resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// Authentication method used for calling the endpoint.
 	Authentication *WebActivityAuthentication `json:"authentication,omitempty"`
 
 	// Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET method Type:
 	// string (or Expression with resultType string).
-	Body interface{} `json:"body,omitempty"`
+	Body any `json:"body,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -29348,7 +29555,7 @@ type WebActivityTypeProperties struct {
 	// Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers"
 	// : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type:
 	// string (or Expression with resultType string).
-	Headers interface{} `json:"headers,omitempty"`
+	Headers any `json:"headers,omitempty"`
 
 	// List of linked services passed to web endpoint.
 	LinkedServices []*LinkedServiceReference `json:"linkedServices,omitempty"`
@@ -29361,7 +29568,7 @@ type WebAnonymousAuthentication struct {
 
 	// REQUIRED; The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or Expression with resultType
 	// string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 }
 
 // GetWebLinkedServiceTypeProperties implements the WebLinkedServiceTypePropertiesClassification interface for type WebAnonymousAuthentication.
@@ -29382,10 +29589,10 @@ type WebBasicAuthentication struct {
 
 	// REQUIRED; The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or Expression with resultType
 	// string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// REQUIRED; User name for Basic authentication. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
+	Username any `json:"username,omitempty"`
 }
 
 // GetWebLinkedServiceTypeProperties implements the WebLinkedServiceTypePropertiesClassification interface for type WebBasicAuthentication.
@@ -29411,7 +29618,7 @@ type WebClientCertificateAuthentication struct {
 
 	// REQUIRED; The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or Expression with resultType
 	// string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 }
 
 // GetWebLinkedServiceTypeProperties implements the WebLinkedServiceTypePropertiesClassification interface for type WebClientCertificateAuthentication.
@@ -29434,7 +29641,7 @@ type WebHookActivity struct {
 	TypeProperties *WebHookActivityTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Activity depends on condition.
 	DependsOn []*ActivityDependency `json:"dependsOn,omitempty"`
@@ -29476,24 +29683,24 @@ type WebHookActivityTypeProperties struct {
 	Method *WebHookActivityMethod `json:"method,omitempty"`
 
 	// REQUIRED; WebHook activity target endpoint and path. Type: string (or Expression with resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// Authentication method used for calling the endpoint.
 	Authentication *WebActivityAuthentication `json:"authentication,omitempty"`
 
 	// Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET method Type:
 	// string (or Expression with resultType string).
-	Body interface{} `json:"body,omitempty"`
+	Body any `json:"body,omitempty"`
 
 	// Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers"
 	// : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type:
 	// string (or Expression with resultType string).
-	Headers interface{} `json:"headers,omitempty"`
+	Headers any `json:"headers,omitempty"`
 
 	// When set to true, statusCode, output and error in callback request body will be consumed by activity. The activity can
 	// be marked as failed by setting statusCode >= 400 in callback request. Default is
 	// false. Type: boolean (or Expression with resultType boolean).
-	ReportStatusOnCallBack interface{} `json:"reportStatusOnCallBack,omitempty"`
+	ReportStatusOnCallBack any `json:"reportStatusOnCallBack,omitempty"`
 
 	// The timeout within which the webhook should be called back. If there is no value specified, it defaults to 10 minutes.
 	// Type: string. Pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
@@ -29509,10 +29716,10 @@ type WebLinkedService struct {
 	TypeProperties WebLinkedServiceTypePropertiesClassification `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -29553,7 +29760,7 @@ type WebLinkedServiceTypeProperties struct {
 
 	// REQUIRED; The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or Expression with resultType
 	// string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 }
 
 // GetWebLinkedServiceTypeProperties implements the WebLinkedServiceTypePropertiesClassification interface for type WebLinkedServiceTypeProperties.
@@ -29568,22 +29775,22 @@ type WebSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type WebSource.
@@ -29610,10 +29817,10 @@ type WebTableDataset struct {
 	TypeProperties *WebTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -29626,10 +29833,10 @@ type WebTableDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 }
 
 // GetDataset implements the DatasetClassification interface for type WebTableDataset.
@@ -29651,10 +29858,10 @@ func (w *WebTableDataset) GetDataset() *Dataset {
 type WebTableDatasetTypeProperties struct {
 	// REQUIRED; The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer), minimum:
 	// 0.
-	Index interface{} `json:"index,omitempty"`
+	Index any `json:"index,omitempty"`
 
 	// The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType string).
-	Path interface{} `json:"path,omitempty"`
+	Path any `json:"path,omitempty"`
 }
 
 // WranglingDataFlow - Power Query data flow.
@@ -29663,7 +29870,7 @@ type WranglingDataFlow struct {
 	Type *string `json:"type,omitempty"`
 
 	// List of tags that can be used for describing the data flow.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The description of the data flow.
 	Description *string `json:"description,omitempty"`
@@ -29694,10 +29901,10 @@ type XMLDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -29710,10 +29917,10 @@ type XMLDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Xml dataset properties.
 	TypeProperties *XMLDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -29746,10 +29953,10 @@ type XMLDatasetTypeProperties struct {
 	// Unicode encoding. Refer to the name column of the table in the following link to
 	// set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
 	// string).
-	EncodingName interface{} `json:"encodingName,omitempty"`
+	EncodingName any `json:"encodingName,omitempty"`
 
 	// The null value string. Type: string (or Expression with resultType string).
-	NullValue interface{} `json:"nullValue,omitempty"`
+	NullValue any `json:"nullValue,omitempty"`
 }
 
 // XMLReadSettings - Xml read settings.
@@ -29758,26 +29965,26 @@ type XMLReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Compression settings.
 	CompressionProperties CompressionReadSettingsClassification `json:"compressionProperties,omitempty"`
 
 	// Indicates whether type detection is enabled when reading the xml files. Type: boolean (or Expression with resultType boolean).
-	DetectDataType interface{} `json:"detectDataType,omitempty"`
+	DetectDataType any `json:"detectDataType,omitempty"`
 
 	// Namespace uri to prefix mappings to override the prefixes in column names when namespace is enabled, if no prefix is defined
 	// for a namespace uri, the prefix of xml element/attribute name in the xml
 	// data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression with resultType
 	// object).
-	NamespacePrefixes interface{} `json:"namespacePrefixes,omitempty"`
+	NamespacePrefixes any `json:"namespacePrefixes,omitempty"`
 
 	// Indicates whether namespace is enabled when reading the xml files. Type: boolean (or Expression with resultType boolean).
-	Namespaces interface{} `json:"namespaces,omitempty"`
+	Namespaces any `json:"namespaces,omitempty"`
 
 	// Indicates what validation method is used when reading the xml files. Allowed values: 'none', 'xsd', or 'dtd'. Type: string
 	// (or Expression with resultType string).
-	ValidationMode interface{} `json:"validationMode,omitempty"`
+	ValidationMode any `json:"validationMode,omitempty"`
 }
 
 // GetFormatReadSettings implements the FormatReadSettingsClassification interface for type XMLReadSettings.
@@ -29795,25 +30002,25 @@ type XMLSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// Xml format settings.
 	FormatSettings *XMLReadSettings `json:"formatSettings,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 
 	// Xml store settings.
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
@@ -29840,10 +30047,10 @@ type XeroLinkedService struct {
 	TypeProperties *XeroLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -29870,31 +30077,31 @@ func (x *XeroLinkedService) GetLinkedService() *LinkedService {
 // XeroLinkedServiceTypeProperties - Xero Service linked service properties.
 type XeroLinkedServiceTypeProperties struct {
 	// Properties used to connect to Xero. It is mutually exclusive with any other properties in the linked service. Type: object.
-	ConnectionProperties interface{} `json:"connectionProperties,omitempty"`
+	ConnectionProperties any `json:"connectionProperties,omitempty"`
 
 	// The consumer key associated with the Xero application.
 	ConsumerKey SecretBaseClassification `json:"consumerKey,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The endpoint of the Xero server. (i.e. api.xero.com)
-	Host interface{} `json:"host,omitempty"`
+	Host any `json:"host,omitempty"`
 
 	// The private key from the .pem file that was generated for your Xero private application. You must include all the text
 	// from the .pem file, including the Unix line endings( ).
 	PrivateKey SecretBaseClassification `json:"privateKey,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // XeroObjectDataset - Xero Service dataset.
@@ -29906,10 +30113,10 @@ type XeroObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -29922,10 +30129,10 @@ type XeroObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -29953,28 +30160,28 @@ type XeroSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type XeroSource.
@@ -30012,10 +30219,10 @@ type ZendeskLinkedService struct {
 	TypeProperties *ZendeskLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -30045,20 +30252,20 @@ type ZendeskLinkedServiceTypeProperties struct {
 	AuthenticationType *ZendeskAuthenticationType `json:"authenticationType,omitempty"`
 
 	// REQUIRED; The url to connect Zendesk source. Type: string (or Expression with resultType string).
-	URL interface{} `json:"url,omitempty"`
+	URL any `json:"url,omitempty"`
 
 	// The api token for the Zendesk source.
 	APIToken SecretBaseClassification `json:"apiToken,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The password of the Zendesk source.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
 	// The username of the Zendesk source. Type: string (or Expression with resultType string).
-	UserName interface{} `json:"userName,omitempty"`
+	UserName any `json:"userName,omitempty"`
 }
 
 // ZipDeflateReadSettings - The ZipDeflate compression read settings.
@@ -30067,10 +30274,10 @@ type ZipDeflateReadSettings struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Preserve the zip file name as folder path. Type: boolean (or Expression with resultType boolean).
-	PreserveZipFileNameAsFolder interface{} `json:"preserveZipFileNameAsFolder,omitempty"`
+	PreserveZipFileNameAsFolder any `json:"preserveZipFileNameAsFolder,omitempty"`
 }
 
 // GetCompressionReadSettings implements the CompressionReadSettingsClassification interface for type ZipDeflateReadSettings.
@@ -30090,10 +30297,10 @@ type ZohoLinkedService struct {
 	TypeProperties *ZohoLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the linked service.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
@@ -30123,24 +30330,24 @@ type ZohoLinkedServiceTypeProperties struct {
 	AccessToken SecretBaseClassification `json:"accessToken,omitempty"`
 
 	// Properties used to connect to Zoho. It is mutually exclusive with any other properties in the linked service. Type: object.
-	ConnectionProperties interface{} `json:"connectionProperties,omitempty"`
+	ConnectionProperties any `json:"connectionProperties,omitempty"`
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential any `json:"encryptedCredential,omitempty"`
 
 	// The endpoint of the Zoho server. (i.e. crm.zoho.com/crm/private)
-	Endpoint interface{} `json:"endpoint,omitempty"`
+	Endpoint any `json:"endpoint,omitempty"`
 
 	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
-	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	UseEncryptedEndpoints any `json:"useEncryptedEndpoints,omitempty"`
 
 	// Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting
 	// over SSL. The default value is true.
-	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	UseHostVerification any `json:"useHostVerification,omitempty"`
 
 	// Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	UsePeerVerification any `json:"usePeerVerification,omitempty"`
 }
 
 // ZohoObjectDataset - Zoho server dataset.
@@ -30152,10 +30359,10 @@ type ZohoObjectDataset struct {
 	Type *string `json:"type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of tags that can be used for describing the Dataset.
-	Annotations []interface{} `json:"annotations,omitempty"`
+	Annotations []any `json:"annotations,omitempty"`
 
 	// Dataset description.
 	Description *string `json:"description,omitempty"`
@@ -30168,10 +30375,10 @@ type ZohoObjectDataset struct {
 
 	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
 	// DatasetSchemaDataElement.
-	Schema interface{} `json:"schema,omitempty"`
+	Schema any `json:"schema,omitempty"`
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
-	Structure interface{} `json:"structure,omitempty"`
+	Structure any `json:"structure,omitempty"`
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
@@ -30199,28 +30406,28 @@ type ZohoSource struct {
 
 	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
 	// resultType array of objects).
-	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+	AdditionalColumns any `json:"additionalColumns,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
-	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+	DisableMetricsCollection any `json:"disableMetricsCollection,omitempty"`
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
-	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+	MaxConcurrentConnections any `json:"maxConcurrentConnections,omitempty"`
 
 	// A query to retrieve data from source. Type: string (or Expression with resultType string).
-	Query interface{} `json:"query,omitempty"`
+	Query any `json:"query,omitempty"`
 
 	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+	QueryTimeout any `json:"queryTimeout,omitempty"`
 
 	// Source retry count. Type: integer (or Expression with resultType integer).
-	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryCount any `json:"sourceRetryCount,omitempty"`
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	SourceRetryWait any `json:"sourceRetryWait,omitempty"`
 }
 
 // GetCopySource implements the CopySourceClassification interface for type ZohoSource.

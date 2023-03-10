@@ -18,18 +18,23 @@ import (
 const credNameAssertion = "ClientAssertionCredential"
 
 // ClientAssertionCredential authenticates an application with assertions provided by a callback function.
-// This credential is for advanced scenarios. ClientCertificateCredential has a more convenient API for
+// This credential is for advanced scenarios. [ClientCertificateCredential] has a more convenient API for
 // the most common assertion scenario, authenticating a service principal with a certificate. See
 // [Azure AD documentation] for details of the assertion format.
 //
 // [Azure AD documentation]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials#assertion-format
 type ClientAssertionCredential struct {
 	client confidentialClient
+	// name enables replacing "ClientAssertionCredential" with "WorkloadIdentityCredential" in log messages
+	name string
 }
 
 // ClientAssertionCredentialOptions contains optional parameters for ClientAssertionCredential.
 type ClientAssertionCredentialOptions struct {
 	azcore.ClientOptions
+
+	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	DisableInstanceDiscovery bool
 }
 
 // NewClientAssertionCredential constructs a ClientAssertionCredential. The getAssertion function must be thread safe. Pass nil for options to accept defaults.
@@ -45,11 +50,11 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 			return getAssertion(ctx)
 		},
 	)
-	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions)
+	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions, confidential.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
 	if err != nil {
 		return nil, err
 	}
-	return &ClientAssertionCredential{client: c}, nil
+	return &ClientAssertionCredential{client: c, name: credNameAssertion}, nil
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
@@ -59,15 +64,15 @@ func (c *ClientAssertionCredential) GetToken(ctx context.Context, opts policy.To
 	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	if err == nil {
-		logGetTokenSuccess(c, opts)
+		logGetTokenSuccessImpl(c.name, opts)
 		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameAssertion, err)
+		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(c.name, err)
 	}
-	logGetTokenSuccess(c, opts)
+	logGetTokenSuccessImpl(c.name, opts)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

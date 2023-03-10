@@ -32,8 +32,8 @@ type QuotaRequestStatusClient struct {
 }
 
 // NewQuotaRequestStatusClient creates a new instance of QuotaRequestStatusClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewQuotaRequestStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaRequestStatusClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewQuotaRequestStatusClient(credential azcore.TokenCredential, options *arm
 // for the resources of the resource provider. The PUT request for the quota (service
 // limit) returns a response with the requestId parameter.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-25
-// subscriptionID - Azure subscription ID.
-// providerID - Azure resource provider ID.
-// location - Azure region.
-// id - Quota Request ID.
-// options - QuotaRequestStatusClientGetOptions contains the optional parameters for the QuotaRequestStatusClient.Get method.
+//   - subscriptionID - Azure subscription ID.
+//   - providerID - Azure resource provider ID.
+//   - location - Azure region.
+//   - id - Quota Request ID.
+//   - options - QuotaRequestStatusClientGetOptions contains the optional parameters for the QuotaRequestStatusClient.Get method.
 func (client *QuotaRequestStatusClient) Get(ctx context.Context, subscriptionID string, providerID string, location string, id string, options *QuotaRequestStatusClientGetOptions) (QuotaRequestStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, subscriptionID, providerID, location, id, options)
 	if err != nil {
@@ -119,11 +120,13 @@ func (client *QuotaRequestStatusClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - For the specified Azure region (location), subscription, and resource provider, get the history of the quota
 // requests for the past year. To select specific quota requests, use the oData filter.
+//
 // Generated from API version 2020-10-25
-// subscriptionID - Azure subscription ID.
-// providerID - Azure resource provider ID.
-// location - Azure region.
-// options - QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.List method.
+//   - subscriptionID - Azure subscription ID.
+//   - providerID - Azure resource provider ID.
+//   - location - Azure region.
+//   - options - QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.NewListPager
+//     method.
 func (client *QuotaRequestStatusClient) NewListPager(subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions) *runtime.Pager[QuotaRequestStatusClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[QuotaRequestStatusClientListResponse]{
 		More: func(page QuotaRequestStatusClientListResponse) bool {

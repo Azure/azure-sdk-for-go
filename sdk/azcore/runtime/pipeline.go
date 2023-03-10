@@ -7,8 +7,6 @@
 package runtime
 
 import (
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
@@ -16,8 +14,7 @@ import (
 // PipelineOptions contains Pipeline options for SDK developers
 type PipelineOptions struct {
 	AllowedHeaders, AllowedQueryParameters []string
-	APIVersionLocation                     APIVersionLocation
-	APIVersionName                         string
+	APIVersion                             APIVersionOptions
 	PerCall, PerRetry                      []policy.Policy
 }
 
@@ -34,22 +31,22 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 		cp = *options
 	}
 	if len(plOpts.AllowedHeaders) > 0 {
-		headers := make([]string, 0, len(plOpts.AllowedHeaders)+len(cp.Logging.AllowedHeaders))
+		headers := make([]string, len(plOpts.AllowedHeaders)+len(cp.Logging.AllowedHeaders))
 		copy(headers, plOpts.AllowedHeaders)
 		headers = append(headers, cp.Logging.AllowedHeaders...)
 		cp.Logging.AllowedHeaders = headers
 	}
 	if len(plOpts.AllowedQueryParameters) > 0 {
-		qp := make([]string, 0, len(plOpts.AllowedQueryParameters)+len(cp.Logging.AllowedQueryParams))
+		qp := make([]string, len(plOpts.AllowedQueryParameters)+len(cp.Logging.AllowedQueryParams))
 		copy(qp, plOpts.AllowedQueryParameters)
 		qp = append(qp, cp.Logging.AllowedQueryParams...)
 		cp.Logging.AllowedQueryParams = qp
 	}
 	// we put the includeResponsePolicy at the very beginning so that the raw response
 	// is populated with the final response (some policies might mutate the response)
-	policies := []policy.Policy{policyFunc(includeResponsePolicy)}
+	policies := []policy.Policy{exported.PolicyFunc(includeResponsePolicy)}
 	if cp.APIVersion != "" {
-		policies = append(policies, NewAPIVersionPolicy(plOpts.APIVersionLocation, plOpts.APIVersionName, cp.APIVersion))
+		policies = append(policies, newAPIVersionPolicy(cp.APIVersion, &plOpts.APIVersion))
 	}
 	if !cp.Telemetry.Disabled {
 		policies = append(policies, NewTelemetryPolicy(module, version, &cp.Telemetry))
@@ -60,19 +57,10 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 	policies = append(policies, plOpts.PerRetry...)
 	policies = append(policies, cp.PerRetryPolicies...)
 	policies = append(policies, NewLogPolicy(&cp.Logging))
-	policies = append(policies, policyFunc(httpHeaderPolicy), policyFunc(bodyDownloadPolicy))
+	policies = append(policies, exported.PolicyFunc(httpHeaderPolicy), exported.PolicyFunc(bodyDownloadPolicy))
 	transport := cp.Transport
 	if transport == nil {
 		transport = defaultHTTPClient
 	}
 	return exported.NewPipeline(transport, policies...)
-}
-
-// policyFunc is a type that implements the Policy interface.
-// Use this type when implementing a stateless policy as a first-class function.
-type policyFunc func(*policy.Request) (*http.Response, error)
-
-// Do implements the Policy interface on policyFunc.
-func (pf policyFunc) Do(req *policy.Request) (*http.Response, error) {
-	return pf(req)
 }

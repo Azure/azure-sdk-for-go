@@ -1,5 +1,32 @@
 # Release History
 
+## 4.1.0 (2023-01-27)
+### Features Added
+
+- New type alias `AlternativeType` with values `AlternativeTypeNone`, `AlternativeTypeOffer`, `AlternativeTypePlan`
+- New type alias `ImageState` with values `ImageStateActive`, `ImageStateDeprecated`, `ImageStateScheduledForDeprecation`
+- New struct `AlternativeOption`
+- New struct `ImageDeprecationStatus`
+- New struct `OSImageNotificationProfile`
+- New struct `OSProfileProvisioningData`
+- New struct `ServiceArtifactReference`
+- New field `Zones` in struct `CloudService`
+- New field `UserData` in struct `RestorePointSourceMetadata`
+- New field `MaxSurge` in struct `RollingUpgradePolicy`
+- New field `RollbackFailedInstancesOnPolicyBreach` in struct `RollingUpgradePolicy`
+- New field `OSImageNotificationProfile` in struct `ScheduledEventsProfile`
+- New field `ImageDeprecationStatus` in struct `VirtualMachineImageProperties`
+- New field `ExactVersion` in struct `VirtualMachineReimageParameters`
+- New field `OSProfile` in struct `VirtualMachineReimageParameters`
+- New field `RequireGuestProvisionSignal` in struct `VirtualMachineScaleSetOSProfile`
+- New field `ConstrainedMaximumCapacity` in struct `VirtualMachineScaleSetProperties`
+- New field `ExactVersion` in struct `VirtualMachineScaleSetReimageParameters`
+- New field `OSProfile` in struct `VirtualMachineScaleSetReimageParameters`
+- New field `ServiceArtifactReference` in struct `VirtualMachineScaleSetVMProfile`
+- New field `ExactVersion` in struct `VirtualMachineScaleSetVMReimageParameters`
+- New field `OSProfile` in struct `VirtualMachineScaleSetVMReimageParameters`
+
+
 ## 4.0.0 (2022-10-04)
 ### Breaking Changes
 

@@ -97,7 +97,7 @@ func TestRetryPolicyFailOnStatusCodeRespBodyPreserved(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusInternalServerError), mock.WithBody([]byte(respBody)))
 	// add a per-request policy that reads and restores the request body.
 	// this is to simulate how something like httputil.DumpRequest works.
-	pl := exported.NewPipeline(srv, policyFunc(func(r *policy.Request) (*http.Response, error) {
+	pl := exported.NewPipeline(srv, exported.PolicyFunc(func(r *policy.Request) (*http.Response, error) {
 		b, err := io.ReadAll(r.Raw().Body)
 		if err != nil {
 			t.Fatal(err)
@@ -296,7 +296,7 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	srv.AppendError(errors.New("bogus error"))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	pl := exported.NewPipeline(srv, policyFunc(includeResponsePolicy), NewRetryPolicy(testRetryOptions()))
+	pl := exported.NewPipeline(srv, exported.PolicyFunc(includeResponsePolicy), NewRetryPolicy(testRetryOptions()))
 	var respFromCtx *http.Response
 	ctxWithResp := WithCaptureResponse(context.Background(), &respFromCtx)
 	req, err := NewRequest(ctxWithResp, http.MethodGet, srv.URL())
@@ -652,7 +652,7 @@ func TestRetryPolicySuccessWithPerTryTimeoutNoRetryWithBodyDownload(t *testing.T
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody(largeBody))
 	opt := testRetryOptions()
 	opt.TryTimeout = 10 * time.Second
-	pl := exported.NewPipeline(srv, NewRetryPolicy(opt), policyFunc(bodyDownloadPolicy))
+	pl := exported.NewPipeline(srv, NewRetryPolicy(opt), exported.PolicyFunc(bodyDownloadPolicy))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -702,6 +702,70 @@ func TestPipelineRetryOn429(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.Equal(t, 3, perRetryPolicy.count)
+}
+
+type readSeekerTracker struct {
+	readCalled bool
+	seekCalled bool
+}
+
+func (r *readSeekerTracker) Read([]byte) (int, error) {
+	r.readCalled = true
+	return 0, nil
+}
+
+func (r *readSeekerTracker) Seek(int64, int) (int64, error) {
+	r.seekCalled = true
+	return 0, nil
+}
+
+func TestRetryableRequestBodyNoCloser(t *testing.T) {
+	tr := &readSeekerTracker{}
+	rr := &retryableRequestBody{tr}
+	_, err := rr.Read(nil)
+	require.NoError(t, err)
+	_, err = rr.Seek(0, 0)
+	require.NoError(t, err)
+	require.NoError(t, rr.Close())
+	require.NoError(t, rr.realClose())
+	require.True(t, tr.readCalled)
+	require.True(t, tr.seekCalled)
+}
+
+type readSeekCloseerTracker struct {
+	readCalled  bool
+	seekCalled  bool
+	closeCalled bool
+}
+
+func (r *readSeekCloseerTracker) Read([]byte) (int, error) {
+	r.readCalled = true
+	return 0, nil
+}
+
+func (r *readSeekCloseerTracker) Seek(int64, int) (int64, error) {
+	r.seekCalled = true
+	return 0, nil
+}
+
+func (r *readSeekCloseerTracker) Close() error {
+	r.closeCalled = true
+	return nil
+}
+
+func TestRetryableRequestBodyWithCloser(t *testing.T) {
+	tr := &readSeekCloseerTracker{}
+	rr := &retryableRequestBody{tr}
+	_, err := rr.Read(nil)
+	require.NoError(t, err)
+	_, err = rr.Seek(0, 0)
+	require.NoError(t, err)
+	require.NoError(t, rr.Close())
+	require.False(t, tr.closeCalled)
+	require.True(t, tr.readCalled)
+	require.True(t, tr.seekCalled)
+	require.NoError(t, rr.realClose())
+	require.True(t, tr.closeCalled)
 }
 
 func newRewindTrackingBody(s string) *rewindTrackingBody {

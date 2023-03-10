@@ -9,8 +9,12 @@
             "CoverageGoal": 0.30
         },
         {
+            "Name": "azcontainerregistry",
+            "CoverageGoal": 0.60
+        },
+        {
             "Name": "azcore",
-            "CoverageGoal": 0.85
+            "CoverageGoal": 0.92
         },
         {
             "Name": "azcosmos",
@@ -19,6 +23,10 @@
         {
             "Name": "azidentity",
             "CoverageGoal": 0.68
+        },
+        {
+            "Name": "azqueue",
+            "CoverageGoal": 0.60
         },
         {
             "Name": "aztemplate",

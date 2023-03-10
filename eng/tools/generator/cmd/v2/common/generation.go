@@ -131,6 +131,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			PackageConfig:  generateParam.NamespaceConfig,
 			GoVersion:      generateParam.GoVersion,
 			PackageVersion: version.String(),
+			ReleaseDate:    generateParam.ReleaseDate,
 		}); err != nil {
 			return nil, err
 		}
@@ -208,7 +209,9 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if err != nil {
 		return nil, err
 	}
-	FilterChangelog(changelog)
+
+	log.Printf("filter changelog...")
+	FilterChangelog(changelog, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter)
 
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")

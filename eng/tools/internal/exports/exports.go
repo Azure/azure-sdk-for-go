@@ -54,6 +54,9 @@ type Func struct {
 
 	// a comma-delimited list of the return types
 	Returns *string `json:"returns,omitempty"`
+
+	// func name that replace this func with breaking change
+	ReplacedBy *string `json:"replacedby,omitempty"`
 }
 
 // Interface contains the list of methods for an interface.

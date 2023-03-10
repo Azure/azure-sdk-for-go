@@ -42,8 +42,8 @@ producerClient, err := azeventhubs.NewProducerClient(/* arguments elided for exa
 defer producerClient.Close(context.TODO())
 
 // these calls will lazily create a set of AMQP links using the producerClient's TCP connection.
-producerClient.SendEventBatch(context.TODO(), eventDataBatchForPartition0, nil)
-producerClient.SendEventBatch(context.TODO(), eventDataBatchForPartition1, nil)
+producerClient.SendEventDataBatch(context.TODO(), eventDataBatchForPartition0, nil)
+producerClient.SendEventDataBatch(context.TODO(), eventDataBatchForPartition1, nil)
 ```
 
 ## Clients
@@ -101,3 +101,6 @@ producerClient.GetEventHubProperties(context.TODO(), nil)
 producerClient.GetPartitionProperties(context.TODO(), "partition-id", nil)
 ```
 
+## Migrating from a previous checkpoint store
+
+See here for an example: [link](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_checkpoint_migration_test.go)

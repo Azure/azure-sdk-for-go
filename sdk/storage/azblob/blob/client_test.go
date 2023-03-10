@@ -11,8 +11,11 @@ import (
 	"context"
 	"crypto/md5"
 	"errors"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"io"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -108,14 +111,13 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
 	sasQueryParams, err := sas.AccountSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    currentTime,
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -150,13 +152,12 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSASUsingCo
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_require.Nil(err)
 
-	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 	sasQueryParams, err := sas.AccountSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    currentTime,
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)
 	_require.Nil(err)
@@ -243,16 +244,15 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyMetadata() {
 	anotherBlobName := "copy" + blobName
 	copyBlobClient := testcommon.GetBlockBlobClient(anotherBlobName, containerClient)
 
-	var metadata = map[string]string{"Bla": "foo"}
 	resp, err := copyBlobClient.StartCopyFromURL(context.Background(), bbClient.URL(), &blob.StartCopyFromURLOptions{
-		Metadata: metadata,
+		Metadata: testcommon.BasicMetadata,
 	})
 	_require.Nil(err)
 	waitForCopy(_require, copyBlobClient, resp)
 
 	resp2, err := copyBlobClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
-	_require.EqualValues(resp2.Metadata, metadata)
+	_require.EqualValues(resp2.Metadata, testcommon.BasicMetadata)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyMetadataNil() {
@@ -305,7 +305,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyMetadataEmpty() {
 	_, err = copyBlobClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"))), nil)
 	_require.Nil(err)
 
-	metadata := make(map[string]string)
+	metadata := make(map[string]*string)
 	options := blob.StartCopyFromURLOptions{
 		Metadata: metadata,
 	}
@@ -335,8 +335,8 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyMetadataInvalidField() {
 	anotherBlobName := "copy" + testcommon.GenerateBlobName(testName)
 	copyBlobClient := testcommon.GetBlockBlobClient(anotherBlobName, containerClient)
 
-	metadata := make(map[string]string)
-	metadata["I nvalid."] = "foo"
+	metadata := make(map[string]*string)
+	metadata["I nvalid."] = to.Ptr("foo")
 	options := blob.StartCopyFromURLOptions{
 		Metadata: metadata,
 	}
@@ -382,7 +382,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, nil)
+	_, err = containerClient.SetAccessPolicy(context.Background(), nil)
 	_require.Nil(err)
 
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
@@ -418,7 +418,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 //	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 //
 //	// Create sas values for the source blob
-//	credential, err := testcommon.GetGenericCredential(nil, testcommon.TestAccountDefault)
+//	credential, err := testcommon.GetGenericSharedKeyCredential(nil, testcommon.TestAccountDefault)
 //	if err != nil {
 //		s.T().Fatal("Couldn't fetch credential because " + err.Error())
 //	}
@@ -488,7 +488,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASDest() {
 		_require.Nil(err)
 
 		containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+strconv.Itoa(i), svcClient)
-		_, err := containerClient.SetAccessPolicy(context.Background(), nil, nil)
+		_, err := containerClient.SetAccessPolicy(context.Background(), nil)
 		_require.Nil(err)
 
 		blobClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
@@ -924,8 +924,8 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfMatchFalse() {
 			},
 		},
 	}
-	metadata := make(map[string]string)
-	metadata["bla"] = "bla"
+	metadata := make(map[string]*string)
+	metadata["bla"] = to.Ptr("bla")
 	_, err = destBlobClient.SetMetadata(context.Background(), metadata, nil)
 	_require.Nil(err)
 
@@ -1023,7 +1023,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	setAccessPolicyOptions := container.SetAccessPolicyOptions{
 		Access: to.Ptr(container.PublicAccessTypeBlob),
 	}
-	_, err = containerClient.SetAccessPolicy(context.Background(), nil, &setAccessPolicyOptions) // So that we don't have to create a SAS
+	_, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions) // So that we don't have to create a SAS
 	_require.Nil(err)
 
 	// Must copy across accounts so it takes time to copy
@@ -1167,7 +1167,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSnapshotMetadataInvalid() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	createBlobSnapshotOptions := blob.CreateSnapshotOptions{
-		Metadata: map[string]string{"Invalid Field!": "value"},
+		Metadata: map[string]*string{"Invalid Field!": to.Ptr("value")},
 	}
 	_, err = bbClient.CreateSnapshot(context.Background(), &createBlobSnapshotOptions)
 	_require.NotNil(err)
@@ -2729,7 +2729,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataNil() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{"not": "nil"}, nil)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{"not": to.Ptr("nil")}, nil)
 	_require.Nil(err)
 
 	_, err = bbClient.SetMetadata(context.Background(), nil, nil)
@@ -2753,10 +2753,10 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataEmpty() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{"not": "nil"}, nil)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{"not": to.Ptr("nil")}, nil)
 	_require.Nil(err)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{}, nil)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{}, nil)
 	_require.Nil(err)
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
@@ -2777,7 +2777,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataInvalidField() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	_, err = bbClient.SetMetadata(context.Background(), map[string]string{"Invalid field!": "value"}, nil)
+	_, err = bbClient.SetMetadata(context.Background(), map[string]*string{"Invalid field!": to.Ptr("value")}, nil)
 	_require.NotNil(err)
 	_require.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring)
 	//_require.Equal(strings.Contains(err.Error(), testcommon.InvalidHeaderErrorSubstring), true)
@@ -3002,6 +3002,196 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
 
+func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.Nil(err)
+
+	// Create container and blob, upload blob to container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	parts, err := sas.ParseURL(bbClient.URL()) // Get parts for BlobURL
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	// Set Account SAS and set Permanent Delete to true
+	parts.SAS, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := bbClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
+	_require.Nil(err)
+	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
+
+	// Check that there are two items in the container: one snapshot, one blob
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Include: container.ListBlobsInclude{Snapshots: true}})
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Delete snapshot (snapshot will be soft deleted)
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = bbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+
+	// Check that only blob exists (snapshot is soft-deleted)
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+	// Check that soft-deleted snapshot exists by including deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Deleted: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: &perm,
+	}
+	// Execute Delete with DeleteTypePermanent
+	pdResp, err := snapshotURL.Delete(context.Background(), &deleteBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(pdResp)
+
+	// Check that only blob exists even after including snapshots and deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Deleted: true}})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+}
+
+func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+
+	// Create container and blob, upload blob to container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	parts, err := sas.ParseURL(bbClient.URL()) // Get parts for BlobURL
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	// Set Account SAS
+	parts.SAS, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := bbClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
+	_require.Nil(err)
+	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
+
+	// Check that there are two items in the container: one snapshot, one blob
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Include: container.ListBlobsInclude{Snapshots: true}})
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Delete snapshot
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = bbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+
+	// Check that only blob exists
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: &perm,
+	}
+	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set and snapshot is not soft-deleted
+	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)
+	_require.NotNil(err)
+}
+
 /*func testBlobServiceClientDeleteImpl(_ *require.Assertions, _ *service.Client) error {
 	//containerClient := testcommon.CreateNewContainer(context.Background(), _require, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -3206,7 +3396,212 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 //		injectedError:          err,
 //		NotifyFailedRead:       nil,
 //		TreatEarlyCloseAsError: false,
-//		CpkInfo:                nil,
-//		CpkScopeInfo:           nil,
+//		CPKInfo:                nil,
+//		CPKScopeInfo:           nil,
 //	}
 //}
+
+func (s *BlobRecordedTestsSuite) TestBlobSetExpiry() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+
+	_, err = bbClient.SetExpiry(context.Background(), blockblob.ExpiryTypeRelativeToNow(8*time.Second), nil)
+	_require.Nil(err)
+
+	resp, err = bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp.ExpiresOn)
+
+	time.Sleep(time.Second * 10)
+
+	_, err = bbClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
+}
+
+func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestSetLegalHold() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	_, err = bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.SetLegalHold(context.Background(), true, nil)
+	_require.Nil(err)
+
+	// should fail since time has not passed yet
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+}
+
+func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	// Creating service client with credentials
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, serviceClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Creating blob client with credentials
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+	blobClient, err := blob.NewClientWithSharedKeyCredential(bbClient.URL(), cred, nil)
+	_require.NoError(err)
+
+	// Adding SAS and options
+	permissions := sas.BlobPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(5 * time.Minute)
+
+	// BlobSASURL is created with GetSASURL
+	sasUrl, err := blobClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Get new blob client with sasUrl and attempt GetProperties
+	_, err = blob.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+}
+
+func (s *BlobUnrecordedTestsSuite) TestNoSharedKeyCredError() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	// Creating service client
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Creating blob client without credentials
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.BlobPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
+	opts := blob.GetSASURLOptions{StartTime: &start}
+
+	// GetSASURL fails (with MissingSharedKeyCredential) because blob client is created without credentials
+	_, err = bbClient.BlobClient().GetSASURL(permissions, expiry, &opts)
+	_require.Equal(err, bloberror.MissingSharedKeyCredential)
+}

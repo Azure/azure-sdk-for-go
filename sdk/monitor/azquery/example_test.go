@@ -9,13 +9,15 @@ package azquery_test
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 )
 
-var cred *azidentity.DefaultAzureCredential
+var logsClient azquery.LogsClient
+var metricsClient azquery.MetricsClient
 var kustoQuery1 string
 var kustoQuery2 string
 var kustoQuery3 string
@@ -33,7 +35,10 @@ func ExampleNewLogsClient() {
 		//TODO: handle error
 	}
 
-	client := azquery.NewLogsClient(cred, nil)
+	client, err := azquery.NewLogsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 	_ = client
 }
 
@@ -43,21 +48,30 @@ func ExampleNewMetricsClient() {
 		//TODO: handle error
 	}
 
-	client := azquery.NewMetricsClient(cred, nil)
+	client, err := azquery.NewMetricsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 	_ = client
 }
 
 func ExampleLogsClient_QueryWorkspace() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	client := azquery.NewLogsClient(cred, nil)
-	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
-	query := "AzureActivity | top 10 by TimeGenerated"     // Example Kusto query
-	timespan := "2022-08-30/2022-08-31"                    // ISO8601 Standard timespan
+	// QueryWorkspace allows users to query log data.
 
-	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
+	// A workspace ID is required to query logs. To find the workspace ID:
+	// 1. If not already made, create a Log Analytics workspace (https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace).
+	// 2. Navigate to your workspace's page in the Azure portal.
+	// 3. From the **Overview** blade, copy the value of the ***Workspace ID*** property.
+	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+
+	res, err := logsClient.QueryWorkspace(
+		context.TODO(),
+		workspaceID,
+		azquery.Body{
+			Query:    to.Ptr("AzureActivity | top 10 by TimeGenerated"), // example Kusto query
+			Timespan: to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
+		},
+		nil)
 	if err != nil {
 		//TODO: handle error
 	}
@@ -65,27 +79,44 @@ func ExampleLogsClient_QueryWorkspace() {
 		//TODO: handle partial error
 	}
 
-	// example use case of processing table results
-	// creates of slice of all tenantIDs resulting from the 'AzureActivity' query
-	tenantIDs := make([]string, len(res.Tables[0].Rows))
-	for index, row := range res.Tables[0].Rows {
-		tenantIDs[index] = row[0].(string)
+	// Print Rows
+	for _, table := range res.Tables {
+		for _, row := range table.Rows {
+			fmt.Println(row)
+		}
 	}
-
-	fmt.Println(tenantIDs)
 }
 
 func ExampleLogsClient_QueryWorkspace_second() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	client := azquery.NewLogsClient(cred, nil)
-	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65"                                                                                                                                                                                                                 // example Azure Log Analytics Workspace ID
-	query := "let dt = datatable (Bool:bool, Long:long, Double: double, String: string, Decimal: decimal)\n" + "[false, 1, 12345.6789, 'string value', decimal(0.10101)];" + "range x from 1 to 10 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long" // Example Kusto query
-	timespan := "2022-08-30/2022-08-31"                                                                                                                                                                                                                                    // ISO8601 Standard timespan
+	// `QueryWorkspace` also has more advanced options, including querying multiple workspaces
+	// and LogsQueryOptions (including statistics and visualization information and increasing default timeout).
 
-	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
+	// When multiple workspaces are included in the query, the logs in the result table are not grouped
+	// according to the workspace from which it was retrieved.
+	workspaceID1 := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+	workspaceID2 := "h4bc4471-2e8c-4b1c-8f47-12b9a4d5ac71"
+	additionalWorkspaces := []*string{to.Ptr(workspaceID2)}
+
+	// Advanced query options
+	// Setting Statistics to true returns stats information in Results.Statistics
+	// Setting Visualization to true returns visualization information in Results.Visualization
+	options := &azquery.LogsClientQueryWorkspaceOptions{
+		Options: &azquery.LogsQueryOptions{
+			Statistics:    to.Ptr(true),
+			Visualization: to.Ptr(true),
+			Wait:          to.Ptr(600),
+		},
+	}
+
+	res, err := logsClient.QueryWorkspace(
+		context.TODO(),
+		workspaceID1,
+		azquery.Body{
+			Query:                to.Ptr(query),
+			Timespan:             to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
+			AdditionalWorkspaces: additionalWorkspaces,
+		},
+		options)
 	if err != nil {
 		//TODO: handle error
 	}
@@ -93,72 +124,122 @@ func ExampleLogsClient_QueryWorkspace_second() {
 		//TODO: handle partial error
 	}
 
-	// Example of converting table data into a slice of structs
+	// Example of converting table data into a slice of structs.
+	// Query results are returned in Table Rows and are of type any.
+	// Type assertion is required to access the underlying value of each index in a Row.
 	var QueryResults []queryResult
 	for _, table := range res.Tables {
 		QueryResults = make([]queryResult, len(table.Rows))
-		indexBool := table.ColumnIndexLookup["Bool"]
-		indexLong := table.ColumnIndexLookup["Long"]
-		indexDouble := table.ColumnIndexLookup["Double"]
-		indexString := table.ColumnIndexLookup["String"]
-
 		for index, row := range table.Rows {
 			QueryResults[index] = queryResult{
-				Bool:   row[indexBool].(bool),
-				Long:   int64(row[indexLong].(float64)),
-				Double: float64(row[indexDouble].(float64)),
-				String: row[indexString].(string),
+				Bool:   row[0].(bool),
+				Long:   int64(row[1].(float64)),
+				Double: float64(row[2].(float64)),
+				String: row[3].(string),
 			}
 		}
 	}
 
 	fmt.Println(QueryResults)
+
+	// Print out Statistics
+	fmt.Printf("Statistics: %s", string(res.Statistics))
+
+	// Print out Visualization information
+	fmt.Printf("Visualization: %s", string(res.Visualization))
+
 }
 
-func ExampleLogsClient_Batch() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	client := azquery.NewLogsClient(cred, nil)
+func ExampleLogsClient_QueryBatch() {
+	// `QueryBatch` is an advanced method allowing users to execute multiple log queries in a single request.
+	// For help formatting a `BatchRequest`, please use the method `NewBatchQueryRequest`.
+
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
-	timespan := "2022-08-30/2022-08-31"                    // ISO8601 Standard Timespan
+	timespan := azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(kustoQuery2), Timespan: to.Ptr(timespan)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
-		{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("3"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, CorrelationID: to.Ptr("1"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery2), Timespan: to.Ptr(timespan)}, CorrelationID: to.Ptr("2"), WorkspaceID: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, CorrelationID: to.Ptr("3"), WorkspaceID: to.Ptr(workspaceID)},
 	}}
 
-	res, err := client.Batch(context.TODO(), batchRequest, nil)
+	res, err := logsClient.QueryBatch(context.TODO(), batchRequest, nil)
 	if err != nil {
 		//TODO: handle error
 	}
 
+	// `QueryBatch` can return results in any order, usually by time it takes each individual query to complete.
+	// Use the `CorrelationID` field to identify the correct response.
 	responses := res.BatchResponse.Responses
 	fmt.Println("ID's of successful responses:")
 	for _, response := range responses {
 		if response.Body.Error == nil {
-			fmt.Println(*response.ID)
+			fmt.Println(*response.CorrelationID)
 		}
 	}
 }
 
 func ExampleMetricsClient_QueryResource() {
-	client := azquery.NewMetricsClient(cred, nil)
-	res, err := client.QueryResource(context.Background(), resourceURI,
-		&azquery.MetricsClientQueryResourceOptions{Timespan: to.Ptr("2017-04-14T02:20:00Z/2017-04-14T04:20:00Z"),
+	// QueryResource is used to query metrics on an Azure resource.
+	// For each requested metric, a set of aggregated values is returned inside the `TimeSeries` collection.
+
+	// resource ID is required to query metrics. To find the resource ID:
+	// 1. Navigate to your resource's page in the Azure portal.
+	// 2. From the **Overview** blade, select the **JSON View** link.
+	// 3. In the resulting JSON, copy the value of the `id` property.
+	resourceURI := "subscriptions/182c901a-129a-4f5d-86e4-afdsb294590a2/resourceGroups/test-log/providers/microsoft.insights/components/f1-bill/providers/microsoft.insights/metricdefinitions"
+
+	res, err := metricsClient.QueryResource(context.TODO(), resourceURI,
+		&azquery.MetricsClientQueryResourceOptions{
+			Timespan:        to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
 			Interval:        to.Ptr("PT1M"),
-			Metricnames:     nil,
-			Aggregation:     to.Ptr("Average,count"),
+			MetricNames:     nil,
+			Aggregation:     to.SliceOfPtrs(azquery.AggregationTypeAverage, azquery.AggregationTypeCount),
 			Top:             to.Ptr[int32](3),
-			Orderby:         to.Ptr("Average asc"),
+			OrderBy:         to.Ptr("Average asc"),
 			Filter:          to.Ptr("BlobType eq '*'"),
 			ResultType:      nil,
-			Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+			MetricNamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 		})
 	if err != nil {
 		//TODO: handle error
 	}
-	_ = res
+
+	// Print out metric name and the time stamps of each metric data point
+	for _, metric := range res.Value {
+		fmt.Println(*metric.Name.Value)
+		for _, timeSeriesElement := range metric.TimeSeries {
+			for _, metricValue := range timeSeriesElement.Data {
+				fmt.Println(metricValue.TimeStamp)
+			}
+		}
+	}
+}
+
+func ExampleMetricsClient_NewListDefinitionsPager() {
+	pager := metricsClient.NewListDefinitionsPager(resourceURI, &azquery.MetricsClientListDefinitionsOptions{MetricNamespace: to.Ptr("microsoft.insights/components")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(context.TODO())
+		if err != nil {
+			//TODO: handle error
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+func ExampleMetricsClient_NewListNamespacesPager() {
+	pager := metricsClient.NewListNamespacesPager(resourceURI, &azquery.MetricsClientListNamespacesOptions{StartTime: to.Ptr("2020-08-31T15:53:00Z")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(context.TODO())
+		if err != nil {
+			//TODO: handle error
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
 }

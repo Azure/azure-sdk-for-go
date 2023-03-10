@@ -1,5 +1,39 @@
 # Release History
 
+## 1.2.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.2.0 (2023-03-02)
+
+### Features Added
+
+* Add random alphanumeric string generation support for test-proxy recording framework.
+
+### Bugs Fixed
+
+* Store RNG seed in recordings.
+
+## 1.1.2 (2022-12-12)
+
+### Features Added
+
+- Export user agent formatting code that used to be in azcore's policy_telemetry.go so it can be shared with non-HTTP clients (ie: azservicebus/azeventhubs). ([#19681](https://github.com/Azure/azure-sdk-for-go/pull/19681))
+
+### Other Changes
+* Prevented data races in `recording` ([#18763](https://github.com/Azure/azure-sdk-for-go/issues/18763))
+
+## 1.1.1 (2022-11-09)
+
+### Bugs Fixed
+* Fixed a race condition in `temporal.Resource[TResource, TState].Get`.
+
 ## 1.1.0 (2022-10-20)
 
 ### Features Added

@@ -17,14 +17,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_List.json
 func ExampleProjectEnvironmentTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewProjectEnvironmentTypesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewProjectEnvironmentTypesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -41,18 +41,18 @@ func ExampleProjectEnvironmentTypesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Get.json
 func ExampleProjectEnvironmentTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewProjectEnvironmentTypesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewProjectEnvironmentTypesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ContosoProj", "{environmentTypeName}", nil)
+	res, err := client.Get(ctx, "rg1", "ContosoProj", "DevTest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -60,18 +60,18 @@ func ExampleProjectEnvironmentTypesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Put.json
 func ExampleProjectEnvironmentTypesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewProjectEnvironmentTypesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewProjectEnvironmentTypesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "ContosoProj", "{environmentTypeName}", armdevcenter.ProjectEnvironmentType{
+	res, err := client.CreateOrUpdate(ctx, "rg1", "ContosoProj", "DevTest", armdevcenter.ProjectEnvironmentType{
 		Identity: &armdevcenter.ManagedServiceIdentity{
 			Type: to.Ptr(armdevcenter.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armdevcenter.UserAssignedIdentity{
@@ -105,18 +105,18 @@ func ExampleProjectEnvironmentTypesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Patch.json
 func ExampleProjectEnvironmentTypesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewProjectEnvironmentTypesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewProjectEnvironmentTypesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "rg1", "ContosoProj", "{environmentTypeName}", armdevcenter.ProjectEnvironmentTypeUpdate{
+	res, err := client.Update(ctx, "rg1", "ContosoProj", "DevTest", armdevcenter.ProjectEnvironmentTypeUpdate{
 		Identity: &armdevcenter.ManagedServiceIdentity{
 			Type: to.Ptr(armdevcenter.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armdevcenter.UserAssignedIdentity{
@@ -145,18 +145,18 @@ func ExampleProjectEnvironmentTypesClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Delete.json
 func ExampleProjectEnvironmentTypesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevcenter.NewProjectEnvironmentTypesClient("{subscriptionId}", cred, nil)
+	client, err := armdevcenter.NewProjectEnvironmentTypesClient("0ac520ee-14c0-480f-b6c9-0a90c58ffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "rg1", "ContosoProj", "{environmentTypeName}", nil)
+	_, err = client.Delete(ctx, "rg1", "ContosoProj", "DevTest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

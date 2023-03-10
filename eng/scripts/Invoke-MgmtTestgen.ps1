@@ -9,7 +9,6 @@ param(
     [switch]$cleanGenerated,
     [switch]$format,
     [switch]$tidy,
-    [switch]$alwaysSetBodyParamRequired,
     [string]$config,
     [string]$autorestVersion,
     [string]$goExtension,

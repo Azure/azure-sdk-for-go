@@ -17,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
 func ProcessorStressTester(ctx context.Context) error {
@@ -39,6 +40,9 @@ type processorStressTest struct {
 	eventsPerRound int
 	rounds         int64
 
+	prefetch     int32
+	sleepAfterFn func()
+
 	checkpointStore azeventhubs.CheckpointStore
 }
 
@@ -48,9 +52,11 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 	numProcessors := fs.Int("processors", 1, "Number of processors to run, concurrently")
 	eventsPerRound := fs.Int("send", 5000, "Number of events to send per round")
 	rounds := fs.Int64("rounds", 100, "Number of rounds. -1 means math.MaxInt64")
+	prefetch := fs.Int("prefetch", 0, "Number of events to set for the prefetch. Negative numbers disable prefetch altogether. 0 uses the default for the package.")
 	enableVerboseLogging := fs.Bool("verbose", false, "enable verbose azure sdk logging")
+	sleepAfterFn := addSleepAfterFlag(fs)
 
-	if err := fs.Parse(args); errors.Is(err, flag.ErrHelp) {
+	if err := fs.Parse(args); err != nil {
 		fs.PrintDefaults()
 		return nil, err
 	}
@@ -63,6 +69,7 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 		"Processors":     fmt.Sprintf("%d", numProcessors),
 		"EventsPerRound": fmt.Sprintf("%d", eventsPerRound),
 		"Rounds":         fmt.Sprintf("%d", rounds),
+		"Prefetch":       fmt.Sprintf("%d", *prefetch),
 	})
 
 	if err != nil {
@@ -71,7 +78,13 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 
 	containerName := testData.runID
 
-	blobStore, err := checkpoints.NewBlobStoreFromConnectionString(testData.StorageConnectionString, containerName, nil)
+	containerClient, err := container.NewClientFromConnectionString(testData.StorageConnectionString, containerName, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	blobStore, err := checkpoints.NewBlobStore(containerClient, nil)
 
 	if err != nil {
 		return nil, err
@@ -84,6 +97,8 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 		eventsPerRound:  *eventsPerRound,
 		rounds:          *rounds,
 		checkpointStore: blobStore,
+		prefetch:        int32(*prefetch),
+		sleepAfterFn:    sleepAfterFn,
 	}, nil
 }
 
@@ -92,6 +107,8 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 		inf.numProcessors,
 		inf.eventsPerRound,
 		inf.containerName)
+
+	defer inf.sleepAfterFn()
 
 	checkpoints, err := initCheckpointStore(ctx, inf.containerName, inf.stressTestData)
 
@@ -107,7 +124,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 			return err
 		}
 
-		shortConsumerID := string(cc.ID()[0:5])
+		shortConsumerID := string(cc.InstanceID()[0:5])
 
 		go func() {
 			for {
@@ -123,7 +140,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 				}
 
 				go func() {
-					if err := inf.receiveForever(ctx, partClient, logger); err != nil {
+					if err := inf.receiveForever(ctx, partClient, logger, inf.eventsPerRound); err != nil {
 						inf.TC.TrackException(err)
 						panic(err)
 					}
@@ -194,7 +211,8 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 		// start checking the checkpoint store to see how far along we are, and when
 		// we're at the end.
 		for {
-			header := fmt.Sprintf("round %d, elapsed %s", round, time.Since(start)/time.Second)
+			var elapsed = time.Since(start) / time.Second
+			header := fmt.Sprintf("round %d, elapsed %d seconds", round, elapsed)
 			output, done, err := inf.report(ctx, header, endPositions)
 
 			if err != nil {
@@ -219,7 +237,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 	return nil
 }
 
-func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *azeventhubs.ProcessorPartitionClient, logger logf) error {
+func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *azeventhubs.ProcessorPartitionClient, logger logf, eventsPerRound int) error {
 	defer func() {
 		logger("Closing")
 
@@ -233,9 +251,11 @@ func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *
 
 	logger("Starting receive loop")
 
+	batchSize := int(math.Min(float64(eventsPerRound), 100))
+
 	for {
 		receiveCtx, cancelReceive := context.WithCancel(ctx)
-		events, err := partClient.ReceiveEvents(receiveCtx, 100, nil)
+		events, err := partClient.ReceiveEvents(receiveCtx, batchSize, nil)
 		cancelReceive()
 
 		if errors.Is(err, context.DeadlineExceeded) && ctx.Err() == nil {
@@ -347,7 +367,13 @@ func sliceToMap[T any](values []T, key func(v T) string) map[string]T {
 }
 
 func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeventhubs.ConsumerClient, *azeventhubs.Processor, error) {
-	cps, err := checkpoints.NewBlobStoreFromConnectionString(inf.StorageConnectionString, inf.containerName, nil)
+	containerClient, err := container.NewClientFromConnectionString(inf.StorageConnectionString, inf.containerName, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	cps, err := checkpoints.NewBlobStore(containerClient, nil)
 
 	if err != nil {
 		return nil, nil, err
@@ -359,7 +385,9 @@ func (inf *processorStressTest) newProcessorForTest(ctx context.Context) (*azeve
 		return nil, nil, err
 	}
 
-	processor, err := azeventhubs.NewProcessor(cc, cps, nil)
+	processor, err := azeventhubs.NewProcessor(cc, cps, &azeventhubs.ProcessorOptions{
+		Prefetch: inf.prefetch,
+	})
 
 	if err != nil {
 		return nil, nil, err

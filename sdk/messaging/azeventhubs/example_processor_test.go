@@ -13,8 +13,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
+// Shows how to use the [Processor] type.
+//
+// The Processor type acts as a load balancer, ensuring that partitions are divided up amongst
+// active Processor instances. You provide it with a [ConsumerClient] as well as a [CheckpointStore].
+//
+// You will loop, continually calling [Processor.NextPartitionClient] and using the [ProcessorPartitionClient]'s
+// that are returned. This loop will run for the lifetime of your application, as ownership can change over
+// time as new Processor instances are started, or die.
+//
+// As you process a partition using [ProcessorPartitionClient.ReceiveEvents] you will periodically
+// call [ProcessorPartitionClient.UpdateCheckpoint], which stores your checkpoint information inside of
+// the [CheckpointStore]. In the common case, this means your checkpoint information will be stored
+// in Azure Blob storage.
+//
+// If you prefer to manually allocate partitions or to have more control over the process you can use
+// the [ConsumerClient] type. See [example_consuming_events_test.go] for an example.
+//
+// [example_consuming_events_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_events_test.go
 func Example_consumingEventsUsingProcessor() {
 	// The Processor makes it simpler to do distributed consumption of an Event Hub.
 	// It automatically coordinates with other Processor instances to ensure balanced
@@ -32,7 +51,13 @@ func Example_consumingEventsUsingProcessor() {
 	// Create the checkpoint store
 	//
 	// NOTE: the Blob container must exist before the checkpoint store can be used.
-	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(storageCS, containerName, nil)
+	azBlobContainerClient, err := container.NewClientFromConnectionString(storageCS, containerName, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	checkpointStore, err := checkpoints.NewBlobStore(azBlobContainerClient, nil)
 
 	if err != nil {
 		panic(err)
@@ -111,7 +136,7 @@ func processEvents(partitionClient *azeventhubs.ProcessorPartitionClient) error 
 	// In other models of the Processor we have broken up the partition
 	// lifecycle model.
 	//
-	// In Go, we model this as a function call with a loop, using this structure:
+	// In Go, we model this as a function call, with a loop, using this structure:
 	//
 	// 1. [BEGIN] Initialize any partition specific resources.
 	// 2. [CONTINUOUS] Run a loop, calling ReceiveEvents() and UpdateCheckpoint().
@@ -129,7 +154,8 @@ func processEvents(partitionClient *azeventhubs.ProcessorPartitionClient) error 
 	// [CONTINUOUS] loop until you lose ownership or your own criteria, checkpointing
 	// as needed using UpdateCheckpoint.
 	for {
-		// Wait for a minute (controlled by the receiveCtx) or for 100 events to arrive.
+		// Using a context with a timeout will allow ReceiveEvents() to return with events it
+		// collected in a minute, or earlier if it actually gets all 100 events we requested.
 		receiveCtx, receiveCtxCancel := context.WithTimeout(context.TODO(), time.Minute)
 		events, err := partitionClient.ReceiveEvents(receiveCtx, 100, nil)
 		receiveCtxCancel()

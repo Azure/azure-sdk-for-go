@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -378,6 +379,15 @@ func (s *recordingTests) TearDownSuite() {
 	}
 }
 
+func TestGetEnvVariable(t *testing.T) {
+	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
+	temp := recordMode
+	recordMode = RecordingMode
+	t.Setenv("TEST_VARIABLE", "expected")
+	require.Equal(t, "expected", GetEnvVariable("TEST_VARIABLE", "unexpected"))
+	recordMode = temp
+}
+
 func TestRecordingOptions(t *testing.T) {
 	r := RecordingOptions{
 		UseHTTPS: true,
@@ -386,18 +396,6 @@ func TestRecordingOptions(t *testing.T) {
 
 	r.UseHTTPS = false
 	require.Equal(t, r.baseURL(), "http://localhost:5000")
-
-	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
-	temp := recordMode
-	recordMode = RecordingMode
-	require.NotEqual(t, GetEnvVariable("PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
-	recordMode = temp
-
-	r.UseHTTPS = false
-	require.Equal(t, r.baseURL(), "http://localhost:5000")
-
-	r.UseHTTPS = true
-	require.Equal(t, r.baseURL(), "https://localhost:5001")
 }
 
 var packagePath = "sdk/internal/recording/testdata"
@@ -676,4 +674,65 @@ func TestVariables(t *testing.T) {
 		err = os.Remove(jsonFile.Name())
 		require.NoError(t, err)
 	}()
+}
+
+func TestRace(t *testing.T) {
+	temp := recordMode
+	recordMode = LiveMode
+	t.Cleanup(func() { recordMode = temp })
+	for i := 0; i < 4; i++ {
+		t.Run("", func(t *testing.T) {
+			t.Parallel()
+			err := Start(t, "", nil)
+			require.NoError(t, err)
+			GetRecordingId(t)
+			GetVariables(t)
+			IsLiveOnly(t)
+			err = Stop(t, nil)
+			require.NoError(t, err)
+			LiveOnly(t)
+		})
+	}
+}
+
+func Test_generateAlphaNumericID(t *testing.T) {
+	seed1 := int64(1234567)
+	seed2 := int64(7654321)
+	randomSource1 := rand.NewSource(seed1)
+	randomSource2 := rand.NewSource(seed2)
+	randomSource3 := rand.NewSource(seed2)
+	rand1, err := generateAlphaNumericID("test", 10, false, randomSource1)
+	require.NoError(t, err)
+	require.Equal(t, 10, len(rand1))
+	require.Equal(t, "test", rand1[0:4])
+	rand2, err := generateAlphaNumericID("test", 10, false, randomSource2)
+	require.NoError(t, err)
+	rand3, err := generateAlphaNumericID("test", 10, false, randomSource3)
+	require.NoError(t, err)
+	require.Equal(t, rand2, rand3)
+	require.NotEqual(t, rand1, rand2)
+}
+
+func TestGenerateAlphaNumericID(t *testing.T) {
+	recordMode = RecordingMode
+	err := Start(t, packagePath, nil)
+	require.NoError(t, err)
+	rand1, err := GenerateAlphaNumericID(t, "test", 10, false)
+	require.NoError(t, err)
+	rand2, err := GenerateAlphaNumericID(t, "test", 10, false)
+	require.NoError(t, err)
+	require.NotEqual(t, rand1, rand2)
+	err = Stop(t, nil)
+	require.NoError(t, err)
+	recordMode = PlaybackMode
+	err = Start(t, packagePath, nil)
+	require.NoError(t, err)
+	rand3, err := GenerateAlphaNumericID(t, "test", 10, false)
+	require.NoError(t, err)
+	rand4, err := GenerateAlphaNumericID(t, "test", 10, false)
+	require.NoError(t, err)
+	require.Equal(t, rand1, rand3)
+	require.Equal(t, rand2, rand4)
+	err = Stop(t, nil)
+	require.NoError(t, err)
 }

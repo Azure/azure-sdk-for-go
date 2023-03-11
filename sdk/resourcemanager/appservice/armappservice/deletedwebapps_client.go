@@ -32,9 +32,9 @@ type DeletedWebAppsClient struct {
 }
 
 // NewDeletedWebAppsClient creates a new instance of DeletedWebAppsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDeletedWebAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedWebAppsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,10 +57,11 @@ func NewDeletedWebAppsClient(subscriptionID string, credential azcore.TokenCrede
 
 // GetDeletedWebAppByLocation - Description for Get deleted app for a subscription at location.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// deletedSiteID - The numeric ID of the deleted app, e.g. 12345
-// options - DeletedWebAppsClientGetDeletedWebAppByLocationOptions contains the optional parameters for the DeletedWebAppsClient.GetDeletedWebAppByLocation
-// method.
+//
+// Generated from API version 2022-09-01
+//   - deletedSiteID - The numeric ID of the deleted app, e.g. 12345
+//   - options - DeletedWebAppsClientGetDeletedWebAppByLocationOptions contains the optional parameters for the DeletedWebAppsClient.GetDeletedWebAppByLocation
+//     method.
 func (client *DeletedWebAppsClient) GetDeletedWebAppByLocation(ctx context.Context, location string, deletedSiteID string, options *DeletedWebAppsClientGetDeletedWebAppByLocationOptions) (DeletedWebAppsClientGetDeletedWebAppByLocationResponse, error) {
 	req, err := client.getDeletedWebAppByLocationCreateRequest(ctx, location, deletedSiteID, options)
 	if err != nil {
@@ -96,7 +97,7 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,9 +113,9 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationHandleResponse(res
 }
 
 // NewListPager - Description for Get all deleted apps for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - DeletedWebAppsClientListOptions contains the optional parameters for the DeletedWebAppsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - options - DeletedWebAppsClientListOptions contains the optional parameters for the DeletedWebAppsClient.NewListPager method.
 func (client *DeletedWebAppsClient) NewListPager(options *DeletedWebAppsClientListOptions) *runtime.Pager[DeletedWebAppsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeletedWebAppsClientListResponse]{
 		More: func(page DeletedWebAppsClientListResponse) bool {
@@ -155,7 +156,7 @@ func (client *DeletedWebAppsClient) listCreateRequest(ctx context.Context, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,10 +172,10 @@ func (client *DeletedWebAppsClient) listHandleResponse(resp *http.Response) (Del
 }
 
 // NewListByLocationPager - Description for Get all deleted apps for a subscription at location
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - DeletedWebAppsClientListByLocationOptions contains the optional parameters for the DeletedWebAppsClient.ListByLocation
-// method.
+//
+// Generated from API version 2022-09-01
+//   - options - DeletedWebAppsClientListByLocationOptions contains the optional parameters for the DeletedWebAppsClient.NewListByLocationPager
+//     method.
 func (client *DeletedWebAppsClient) NewListByLocationPager(location string, options *DeletedWebAppsClientListByLocationOptions) *runtime.Pager[DeletedWebAppsClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeletedWebAppsClientListByLocationResponse]{
 		More: func(page DeletedWebAppsClientListByLocationResponse) bool {
@@ -219,7 +220,7 @@ func (client *DeletedWebAppsClient) listByLocationCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

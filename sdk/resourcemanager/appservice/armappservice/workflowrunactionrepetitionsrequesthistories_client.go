@@ -32,9 +32,9 @@ type WorkflowRunActionRepetitionsRequestHistoriesClient struct {
 }
 
 // NewWorkflowRunActionRepetitionsRequestHistoriesClient creates a new instance of WorkflowRunActionRepetitionsRequestHistoriesClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowRunActionRepetitionsRequestHistoriesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,16 +57,17 @@ func NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID string
 
 // Get - Gets a workflow run repetition request history.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// runName - The workflow run name.
-// actionName - The workflow action name.
-// repetitionName - The workflow repetition.
-// requestHistoryName - The request history name.
-// options - WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - actionName - The workflow action name.
+//   - repetitionName - The workflow repetition.
+//   - requestHistoryName - The request history name.
+//   - options - WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.Get
+//     method.
 func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) Get(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, repetitionName string, requestHistoryName string, options *WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions) (WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, workflowName, runName, actionName, repetitionName, requestHistoryName, options)
 	if err != nil {
@@ -122,7 +123,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -138,16 +139,16 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getHandleRespo
 }
 
 // NewListPager - List a workflow run repetition request history.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// runName - The workflow run name.
-// actionName - The workflow action name.
-// repetitionName - The workflow repetition.
-// options - WorkflowRunActionRepetitionsRequestHistoriesClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - actionName - The workflow action name.
+//   - repetitionName - The workflow repetition.
+//   - options - WorkflowRunActionRepetitionsRequestHistoriesClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.NewListPager
+//     method.
 func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) NewListPager(resourceGroupName string, name string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsRequestHistoriesClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsRequestHistoriesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionRepetitionsRequestHistoriesClientListResponse]{
 		More: func(page WorkflowRunActionRepetitionsRequestHistoriesClientListResponse) bool {
@@ -212,7 +213,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -33,9 +33,9 @@ type CertificateOrdersDiagnosticsClient struct {
 }
 
 // NewCertificateOrdersDiagnosticsClient creates a new instance of CertificateOrdersDiagnosticsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCertificateOrdersDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificateOrdersDiagnosticsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -59,12 +59,13 @@ func NewCertificateOrdersDiagnosticsClient(subscriptionID string, credential azc
 // GetAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration call to get a detector
 // response from App Lens.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - The certificate order name for which the response is needed.
-// detectorName - The detector name which needs to be run.
-// options - CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions contains the optional
-// parameters for the CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - The certificate order name for which the response is needed.
+//   - detectorName - The detector name which needs to be run.
+//   - options - CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions contains the optional
+//     parameters for the CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse method.
 func (client *CertificateOrdersDiagnosticsClient) GetAppServiceCertificateOrderDetectorResponse(ctx context.Context, resourceGroupName string, certificateOrderName string, detectorName string, options *CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions) (CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse, error) {
 	req, err := client.getAppServiceCertificateOrderDetectorResponseCreateRequest(ctx, resourceGroupName, certificateOrderName, detectorName, options)
 	if err != nil {
@@ -113,7 +114,7 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -130,12 +131,12 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 
 // NewListAppServiceCertificateOrderDetectorResponsePager - Description for Microsoft.CertificateRegistration to get the list
 // of detectors for this RP.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - The certificate order name for which the response is needed.
-// options - CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions contains the optional
-// parameters for the CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - The certificate order name for which the response is needed.
+//   - options - CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions contains the optional
+//     parameters for the CertificateOrdersDiagnosticsClient.NewListAppServiceCertificateOrderDetectorResponsePager method.
 func (client *CertificateOrdersDiagnosticsClient) NewListAppServiceCertificateOrderDetectorResponsePager(resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions) *runtime.Pager[CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse]{
 		More: func(page CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse) bool {
@@ -184,7 +185,7 @@ func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrder
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

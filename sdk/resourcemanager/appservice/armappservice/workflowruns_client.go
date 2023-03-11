@@ -33,9 +33,9 @@ type WorkflowRunsClient struct {
 }
 
 // NewWorkflowRunsClient creates a new instance of WorkflowRunsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWorkflowRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowRunsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewWorkflowRunsClient(subscriptionID string, credential azcore.TokenCredent
 
 // Cancel - Cancels a workflow run.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// runName - The workflow run name.
-// options - WorkflowRunsClientCancelOptions contains the optional parameters for the WorkflowRunsClient.Cancel method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - options - WorkflowRunsClientCancelOptions contains the optional parameters for the WorkflowRunsClient.Cancel method.
 func (client *WorkflowRunsClient) Cancel(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, options *WorkflowRunsClientCancelOptions) (WorkflowRunsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, name, workflowName, runName, options)
 	if err != nil {
@@ -107,7 +108,7 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,12 +116,13 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 
 // Get - Gets a workflow run.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// runName - The workflow run name.
-// options - WorkflowRunsClientGetOptions contains the optional parameters for the WorkflowRunsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - options - WorkflowRunsClientGetOptions contains the optional parameters for the WorkflowRunsClient.Get method.
 func (client *WorkflowRunsClient) Get(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, options *WorkflowRunsClientGetOptions) (WorkflowRunsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, workflowName, runName, options)
 	if err != nil {
@@ -164,7 +166,7 @@ func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,12 +182,12 @@ func (client *WorkflowRunsClient) getHandleResponse(resp *http.Response) (Workfl
 }
 
 // NewListPager - Gets a list of workflow runs.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// options - WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - options - WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.NewListPager method.
 func (client *WorkflowRunsClient) NewListPager(resourceGroupName string, name string, workflowName string, options *WorkflowRunsClientListOptions) *runtime.Pager[WorkflowRunsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkflowRunsClientListResponse]{
 		More: func(page WorkflowRunsClientListResponse) bool {
@@ -238,7 +240,7 @@ func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

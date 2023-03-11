@@ -32,9 +32,9 @@ type CertificateOrdersClient struct {
 }
 
 // NewCertificateOrdersClient creates a new instance of CertificateOrdersClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCertificateOrdersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificateOrdersClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewCertificateOrdersClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - Description for Create or update a certificate purchase order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// certificateDistinguishedName - Distinguished name to use for the certificate order.
-// options - CertificateOrdersClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificateOrdersClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - certificateDistinguishedName - Distinguished name to use for the certificate order.
+//   - options - CertificateOrdersClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificateOrdersClient.BeginCreateOrUpdate
+//     method.
 func (client *CertificateOrdersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName CertificateOrder, options *CertificateOrdersClientBeginCreateOrUpdateOptions) (*runtime.Poller[CertificateOrdersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, certificateOrderName, certificateDistinguishedName, options)
@@ -77,7 +78,8 @@ func (client *CertificateOrdersClient) BeginCreateOrUpdate(ctx context.Context, 
 
 // CreateOrUpdate - Description for Create or update a certificate purchase order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+//
+// Generated from API version 2022-09-01
 func (client *CertificateOrdersClient) createOrUpdate(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName CertificateOrder, options *CertificateOrdersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, certificateOrderName, certificateDistinguishedName, options)
 	if err != nil {
@@ -113,7 +115,7 @@ func (client *CertificateOrdersClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificateDistinguishedName)
@@ -121,13 +123,14 @@ func (client *CertificateOrdersClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginCreateOrUpdateCertificate - Description for Creates or updates a certificate and associates with key vault secret.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// name - Name of the certificate.
-// keyVaultCertificate - Key vault certificate resource Id.
-// options - CertificateOrdersClientBeginCreateOrUpdateCertificateOptions contains the optional parameters for the CertificateOrdersClient.BeginCreateOrUpdateCertificate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - name - Name of the certificate.
+//   - keyVaultCertificate - Key vault certificate resource Id.
+//   - options - CertificateOrdersClientBeginCreateOrUpdateCertificateOptions contains the optional parameters for the CertificateOrdersClient.BeginCreateOrUpdateCertificate
+//     method.
 func (client *CertificateOrdersClient) BeginCreateOrUpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateResource, options *CertificateOrdersClientBeginCreateOrUpdateCertificateOptions) (*runtime.Poller[CertificateOrdersClientCreateOrUpdateCertificateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateCertificate(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate, options)
@@ -142,7 +145,8 @@ func (client *CertificateOrdersClient) BeginCreateOrUpdateCertificate(ctx contex
 
 // CreateOrUpdateCertificate - Description for Creates or updates a certificate and associates with key vault secret.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+//
+// Generated from API version 2022-09-01
 func (client *CertificateOrdersClient) createOrUpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateResource, options *CertificateOrdersClientBeginCreateOrUpdateCertificateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCertificateCreateRequest(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate, options)
 	if err != nil {
@@ -182,7 +186,7 @@ func (client *CertificateOrdersClient) createOrUpdateCertificateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, keyVaultCertificate)
@@ -190,11 +194,12 @@ func (client *CertificateOrdersClient) createOrUpdateCertificateCreateRequest(ct
 
 // Delete - Description for Delete an existing certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// options - CertificateOrdersClientDeleteOptions contains the optional parameters for the CertificateOrdersClient.Delete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - options - CertificateOrdersClientDeleteOptions contains the optional parameters for the CertificateOrdersClient.Delete
+//     method.
 func (client *CertificateOrdersClient) Delete(ctx context.Context, resourceGroupName string, certificateOrderName string, options *CertificateOrdersClientDeleteOptions) (CertificateOrdersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 	if err != nil {
@@ -230,7 +235,7 @@ func (client *CertificateOrdersClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,12 +243,13 @@ func (client *CertificateOrdersClient) deleteCreateRequest(ctx context.Context, 
 
 // DeleteCertificate - Description for Delete the certificate associated with a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// name - Name of the certificate.
-// options - CertificateOrdersClientDeleteCertificateOptions contains the optional parameters for the CertificateOrdersClient.DeleteCertificate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - name - Name of the certificate.
+//   - options - CertificateOrdersClientDeleteCertificateOptions contains the optional parameters for the CertificateOrdersClient.DeleteCertificate
+//     method.
 func (client *CertificateOrdersClient) DeleteCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, options *CertificateOrdersClientDeleteCertificateOptions) (CertificateOrdersClientDeleteCertificateResponse, error) {
 	req, err := client.deleteCertificateCreateRequest(ctx, resourceGroupName, certificateOrderName, name, options)
 	if err != nil {
@@ -283,7 +289,7 @@ func (client *CertificateOrdersClient) deleteCertificateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,10 +297,11 @@ func (client *CertificateOrdersClient) deleteCertificateCreateRequest(ctx contex
 
 // Get - Description for Get a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order..
-// options - CertificateOrdersClientGetOptions contains the optional parameters for the CertificateOrdersClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order..
+//   - options - CertificateOrdersClientGetOptions contains the optional parameters for the CertificateOrdersClient.Get method.
 func (client *CertificateOrdersClient) Get(ctx context.Context, resourceGroupName string, certificateOrderName string, options *CertificateOrdersClientGetOptions) (CertificateOrdersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 	if err != nil {
@@ -330,7 +337,7 @@ func (client *CertificateOrdersClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -347,12 +354,13 @@ func (client *CertificateOrdersClient) getHandleResponse(resp *http.Response) (C
 
 // GetCertificate - Description for Get the certificate associated with a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// name - Name of the certificate.
-// options - CertificateOrdersClientGetCertificateOptions contains the optional parameters for the CertificateOrdersClient.GetCertificate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - name - Name of the certificate.
+//   - options - CertificateOrdersClientGetCertificateOptions contains the optional parameters for the CertificateOrdersClient.GetCertificate
+//     method.
 func (client *CertificateOrdersClient) GetCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, options *CertificateOrdersClientGetCertificateOptions) (CertificateOrdersClientGetCertificateResponse, error) {
 	req, err := client.getCertificateCreateRequest(ctx, resourceGroupName, certificateOrderName, name, options)
 	if err != nil {
@@ -392,7 +400,7 @@ func (client *CertificateOrdersClient) getCertificateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -408,9 +416,10 @@ func (client *CertificateOrdersClient) getCertificateHandleResponse(resp *http.R
 }
 
 // NewListPager - Description for List all certificate orders in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - CertificateOrdersClientListOptions contains the optional parameters for the CertificateOrdersClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - options - CertificateOrdersClientListOptions contains the optional parameters for the CertificateOrdersClient.NewListPager
+//     method.
 func (client *CertificateOrdersClient) NewListPager(options *CertificateOrdersClientListOptions) *runtime.Pager[CertificateOrdersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CertificateOrdersClientListResponse]{
 		More: func(page CertificateOrdersClientListResponse) bool {
@@ -451,7 +460,7 @@ func (client *CertificateOrdersClient) listCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -467,11 +476,11 @@ func (client *CertificateOrdersClient) listHandleResponse(resp *http.Response) (
 }
 
 // NewListByResourceGroupPager - Description for Get certificate orders in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// options - CertificateOrdersClientListByResourceGroupOptions contains the optional parameters for the CertificateOrdersClient.ListByResourceGroup
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - options - CertificateOrdersClientListByResourceGroupOptions contains the optional parameters for the CertificateOrdersClient.NewListByResourceGroupPager
+//     method.
 func (client *CertificateOrdersClient) NewListByResourceGroupPager(resourceGroupName string, options *CertificateOrdersClientListByResourceGroupOptions) *runtime.Pager[CertificateOrdersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CertificateOrdersClientListByResourceGroupResponse]{
 		More: func(page CertificateOrdersClientListByResourceGroupResponse) bool {
@@ -516,7 +525,7 @@ func (client *CertificateOrdersClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -532,12 +541,12 @@ func (client *CertificateOrdersClient) listByResourceGroupHandleResponse(resp *h
 }
 
 // NewListCertificatesPager - Description for List all certificates associated with a certificate order.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// options - CertificateOrdersClientListCertificatesOptions contains the optional parameters for the CertificateOrdersClient.ListCertificates
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - options - CertificateOrdersClientListCertificatesOptions contains the optional parameters for the CertificateOrdersClient.NewListCertificatesPager
+//     method.
 func (client *CertificateOrdersClient) NewListCertificatesPager(resourceGroupName string, certificateOrderName string, options *CertificateOrdersClientListCertificatesOptions) *runtime.Pager[CertificateOrdersClientListCertificatesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CertificateOrdersClientListCertificatesResponse]{
 		More: func(page CertificateOrdersClientListCertificatesResponse) bool {
@@ -586,7 +595,7 @@ func (client *CertificateOrdersClient) listCertificatesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -603,12 +612,13 @@ func (client *CertificateOrdersClient) listCertificatesHandleResponse(resp *http
 
 // Reissue - Description for Reissue an existing certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// reissueCertificateOrderRequest - Parameters for the reissue.
-// options - CertificateOrdersClientReissueOptions contains the optional parameters for the CertificateOrdersClient.Reissue
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - reissueCertificateOrderRequest - Parameters for the reissue.
+//   - options - CertificateOrdersClientReissueOptions contains the optional parameters for the CertificateOrdersClient.Reissue
+//     method.
 func (client *CertificateOrdersClient) Reissue(ctx context.Context, resourceGroupName string, certificateOrderName string, reissueCertificateOrderRequest ReissueCertificateOrderRequest, options *CertificateOrdersClientReissueOptions) (CertificateOrdersClientReissueResponse, error) {
 	req, err := client.reissueCreateRequest(ctx, resourceGroupName, certificateOrderName, reissueCertificateOrderRequest, options)
 	if err != nil {
@@ -644,7 +654,7 @@ func (client *CertificateOrdersClient) reissueCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, reissueCertificateOrderRequest)
@@ -652,11 +662,12 @@ func (client *CertificateOrdersClient) reissueCreateRequest(ctx context.Context,
 
 // Renew - Description for Renew an existing certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// renewCertificateOrderRequest - Renew parameters
-// options - CertificateOrdersClientRenewOptions contains the optional parameters for the CertificateOrdersClient.Renew method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - renewCertificateOrderRequest - Renew parameters
+//   - options - CertificateOrdersClientRenewOptions contains the optional parameters for the CertificateOrdersClient.Renew method.
 func (client *CertificateOrdersClient) Renew(ctx context.Context, resourceGroupName string, certificateOrderName string, renewCertificateOrderRequest RenewCertificateOrderRequest, options *CertificateOrdersClientRenewOptions) (CertificateOrdersClientRenewResponse, error) {
 	req, err := client.renewCreateRequest(ctx, resourceGroupName, certificateOrderName, renewCertificateOrderRequest, options)
 	if err != nil {
@@ -692,7 +703,7 @@ func (client *CertificateOrdersClient) renewCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, renewCertificateOrderRequest)
@@ -700,11 +711,12 @@ func (client *CertificateOrdersClient) renewCreateRequest(ctx context.Context, r
 
 // ResendEmail - Description for Resend certificate email.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// options - CertificateOrdersClientResendEmailOptions contains the optional parameters for the CertificateOrdersClient.ResendEmail
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - options - CertificateOrdersClientResendEmailOptions contains the optional parameters for the CertificateOrdersClient.ResendEmail
+//     method.
 func (client *CertificateOrdersClient) ResendEmail(ctx context.Context, resourceGroupName string, certificateOrderName string, options *CertificateOrdersClientResendEmailOptions) (CertificateOrdersClientResendEmailResponse, error) {
 	req, err := client.resendEmailCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 	if err != nil {
@@ -740,7 +752,7 @@ func (client *CertificateOrdersClient) resendEmailCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -749,12 +761,13 @@ func (client *CertificateOrdersClient) resendEmailCreateRequest(ctx context.Cont
 // ResendRequestEmails - Resend domain verification ownership email containing steps on how to verify a domain for a given
 // certificate order
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// nameIdentifier - Email address
-// options - CertificateOrdersClientResendRequestEmailsOptions contains the optional parameters for the CertificateOrdersClient.ResendRequestEmails
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - nameIdentifier - Email address
+//   - options - CertificateOrdersClientResendRequestEmailsOptions contains the optional parameters for the CertificateOrdersClient.ResendRequestEmails
+//     method.
 func (client *CertificateOrdersClient) ResendRequestEmails(ctx context.Context, resourceGroupName string, certificateOrderName string, nameIdentifier NameIdentifier, options *CertificateOrdersClientResendRequestEmailsOptions) (CertificateOrdersClientResendRequestEmailsResponse, error) {
 	req, err := client.resendRequestEmailsCreateRequest(ctx, resourceGroupName, certificateOrderName, nameIdentifier, options)
 	if err != nil {
@@ -790,7 +803,7 @@ func (client *CertificateOrdersClient) resendRequestEmailsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, nameIdentifier)
@@ -798,11 +811,12 @@ func (client *CertificateOrdersClient) resendRequestEmailsCreateRequest(ctx cont
 
 // RetrieveCertificateActions - Description for Retrieve the list of certificate actions.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the certificate order.
-// options - CertificateOrdersClientRetrieveCertificateActionsOptions contains the optional parameters for the CertificateOrdersClient.RetrieveCertificateActions
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the certificate order.
+//   - options - CertificateOrdersClientRetrieveCertificateActionsOptions contains the optional parameters for the CertificateOrdersClient.RetrieveCertificateActions
+//     method.
 func (client *CertificateOrdersClient) RetrieveCertificateActions(ctx context.Context, resourceGroupName string, name string, options *CertificateOrdersClientRetrieveCertificateActionsOptions) (CertificateOrdersClientRetrieveCertificateActionsResponse, error) {
 	req, err := client.retrieveCertificateActionsCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -838,7 +852,7 @@ func (client *CertificateOrdersClient) retrieveCertificateActionsCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -855,11 +869,12 @@ func (client *CertificateOrdersClient) retrieveCertificateActionsHandleResponse(
 
 // RetrieveCertificateEmailHistory - Description for Retrieve email history.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Name of the certificate order.
-// options - CertificateOrdersClientRetrieveCertificateEmailHistoryOptions contains the optional parameters for the CertificateOrdersClient.RetrieveCertificateEmailHistory
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Name of the certificate order.
+//   - options - CertificateOrdersClientRetrieveCertificateEmailHistoryOptions contains the optional parameters for the CertificateOrdersClient.RetrieveCertificateEmailHistory
+//     method.
 func (client *CertificateOrdersClient) RetrieveCertificateEmailHistory(ctx context.Context, resourceGroupName string, name string, options *CertificateOrdersClientRetrieveCertificateEmailHistoryOptions) (CertificateOrdersClientRetrieveCertificateEmailHistoryResponse, error) {
 	req, err := client.retrieveCertificateEmailHistoryCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -895,7 +910,7 @@ func (client *CertificateOrdersClient) retrieveCertificateEmailHistoryCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -918,12 +933,13 @@ func (client *CertificateOrdersClient) retrieveCertificateEmailHistoryHandleResp
 // clicks on the site seal. The site seal images are expected to be static images
 // and hosted by the reseller, to minimize delays for customer page load times.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// siteSealRequest - Site seal request.
-// options - CertificateOrdersClientRetrieveSiteSealOptions contains the optional parameters for the CertificateOrdersClient.RetrieveSiteSeal
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - siteSealRequest - Site seal request.
+//   - options - CertificateOrdersClientRetrieveSiteSealOptions contains the optional parameters for the CertificateOrdersClient.RetrieveSiteSeal
+//     method.
 func (client *CertificateOrdersClient) RetrieveSiteSeal(ctx context.Context, resourceGroupName string, certificateOrderName string, siteSealRequest SiteSealRequest, options *CertificateOrdersClientRetrieveSiteSealOptions) (CertificateOrdersClientRetrieveSiteSealResponse, error) {
 	req, err := client.retrieveSiteSealCreateRequest(ctx, resourceGroupName, certificateOrderName, siteSealRequest, options)
 	if err != nil {
@@ -959,7 +975,7 @@ func (client *CertificateOrdersClient) retrieveSiteSealCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, siteSealRequest)
@@ -976,12 +992,13 @@ func (client *CertificateOrdersClient) retrieveSiteSealHandleResponse(resp *http
 
 // Update - Description for Create or update a certificate purchase order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// certificateDistinguishedName - Distinguished name to use for the certificate order.
-// options - CertificateOrdersClientUpdateOptions contains the optional parameters for the CertificateOrdersClient.Update
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - certificateDistinguishedName - Distinguished name to use for the certificate order.
+//   - options - CertificateOrdersClientUpdateOptions contains the optional parameters for the CertificateOrdersClient.Update
+//     method.
 func (client *CertificateOrdersClient) Update(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName CertificateOrderPatchResource, options *CertificateOrdersClientUpdateOptions) (CertificateOrdersClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, certificateOrderName, certificateDistinguishedName, options)
 	if err != nil {
@@ -1017,7 +1034,7 @@ func (client *CertificateOrdersClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificateDistinguishedName)
@@ -1034,13 +1051,14 @@ func (client *CertificateOrdersClient) updateHandleResponse(resp *http.Response)
 
 // UpdateCertificate - Description for Creates or updates a certificate and associates with key vault secret.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// name - Name of the certificate.
-// keyVaultCertificate - Key vault certificate resource Id.
-// options - CertificateOrdersClientUpdateCertificateOptions contains the optional parameters for the CertificateOrdersClient.UpdateCertificate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - name - Name of the certificate.
+//   - keyVaultCertificate - Key vault certificate resource Id.
+//   - options - CertificateOrdersClientUpdateCertificateOptions contains the optional parameters for the CertificateOrdersClient.UpdateCertificate
+//     method.
 func (client *CertificateOrdersClient) UpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificatePatchResource, options *CertificateOrdersClientUpdateCertificateOptions) (CertificateOrdersClientUpdateCertificateResponse, error) {
 	req, err := client.updateCertificateCreateRequest(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate, options)
 	if err != nil {
@@ -1080,7 +1098,7 @@ func (client *CertificateOrdersClient) updateCertificateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, keyVaultCertificate)
@@ -1097,10 +1115,11 @@ func (client *CertificateOrdersClient) updateCertificateHandleResponse(resp *htt
 
 // ValidatePurchaseInformation - Description for Validate information for a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// appServiceCertificateOrder - Information for a certificate order.
-// options - CertificateOrdersClientValidatePurchaseInformationOptions contains the optional parameters for the CertificateOrdersClient.ValidatePurchaseInformation
-// method.
+//
+// Generated from API version 2022-09-01
+//   - appServiceCertificateOrder - Information for a certificate order.
+//   - options - CertificateOrdersClientValidatePurchaseInformationOptions contains the optional parameters for the CertificateOrdersClient.ValidatePurchaseInformation
+//     method.
 func (client *CertificateOrdersClient) ValidatePurchaseInformation(ctx context.Context, appServiceCertificateOrder CertificateOrder, options *CertificateOrdersClientValidatePurchaseInformationOptions) (CertificateOrdersClientValidatePurchaseInformationResponse, error) {
 	req, err := client.validatePurchaseInformationCreateRequest(ctx, appServiceCertificateOrder, options)
 	if err != nil {
@@ -1128,7 +1147,7 @@ func (client *CertificateOrdersClient) validatePurchaseInformationCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, appServiceCertificateOrder)
@@ -1136,11 +1155,12 @@ func (client *CertificateOrdersClient) validatePurchaseInformationCreateRequest(
 
 // VerifyDomainOwnership - Description for Verify domain ownership for this certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// certificateOrderName - Name of the certificate order.
-// options - CertificateOrdersClientVerifyDomainOwnershipOptions contains the optional parameters for the CertificateOrdersClient.VerifyDomainOwnership
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - certificateOrderName - Name of the certificate order.
+//   - options - CertificateOrdersClientVerifyDomainOwnershipOptions contains the optional parameters for the CertificateOrdersClient.VerifyDomainOwnership
+//     method.
 func (client *CertificateOrdersClient) VerifyDomainOwnership(ctx context.Context, resourceGroupName string, certificateOrderName string, options *CertificateOrdersClientVerifyDomainOwnershipOptions) (CertificateOrdersClientVerifyDomainOwnershipResponse, error) {
 	req, err := client.verifyDomainOwnershipCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
 	if err != nil {
@@ -1176,7 +1196,7 @@ func (client *CertificateOrdersClient) verifyDomainOwnershipCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

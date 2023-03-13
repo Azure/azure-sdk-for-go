@@ -18,7 +18,7 @@ import (
 
 // MarshalJSON implements the json.Marshaller interface for type FullBackupOperation.
 func (f FullBackupOperation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "azureStorageBlobContainerUri", f.AzureStorageBlobContainerURI)
 	populateTimeUnix(objectMap, "endTime", f.EndTime)
 	populate(objectMap, "error", f.Error)
@@ -69,7 +69,7 @@ func (f *FullBackupOperation) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RestoreOperation.
 func (r RestoreOperation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeUnix(objectMap, "endTime", r.EndTime)
 	populate(objectMap, "error", r.Error)
 	populate(objectMap, "jobId", r.JobID)
@@ -116,7 +116,7 @@ func (r *RestoreOperation) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RestoreOperationParameters.
 func (r RestoreOperationParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "folderToRestore", r.FolderToRestore)
 	populate(objectMap, "sasTokenParameters", r.SasTokenParameters)
 	return json.Marshal(objectMap)
@@ -147,7 +147,7 @@ func (r *RestoreOperationParameters) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SASTokenParameter.
 func (s SASTokenParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "storageResourceUri", s.StorageResourceURI)
 	populate(objectMap, "token", s.Token)
 	return json.Marshal(objectMap)
@@ -178,7 +178,7 @@ func (s *SASTokenParameter) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SelectiveKeyRestoreOperation.
 func (s SelectiveKeyRestoreOperation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeUnix(objectMap, "endTime", s.EndTime)
 	populate(objectMap, "error", s.Error)
 	populate(objectMap, "jobId", s.JobID)
@@ -225,7 +225,7 @@ func (s *SelectiveKeyRestoreOperation) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SelectiveKeyRestoreOperationParameters.
 func (s SelectiveKeyRestoreOperationParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "folder", s.Folder)
 	populate(objectMap, "sasTokenParameters", s.SasTokenParameters)
 	return json.Marshal(objectMap)
@@ -254,7 +254,7 @@ func (s *SelectiveKeyRestoreOperationParameters) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
+func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
 	} else if azcore.IsNullValue(v) {
@@ -264,7 +264,7 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, fn string, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil {
 		return nil
 	}

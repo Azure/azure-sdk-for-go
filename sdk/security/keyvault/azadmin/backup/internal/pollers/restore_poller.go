@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package backup
+package pollers
 
 // this file contains handwritten additions to the generated code
 // custom poller handler for restore operations
@@ -88,9 +88,9 @@ type restorePoller[T any] struct {
 	CurState string `json:"state"`
 }
 
-// New creates a new Poller from the provided initial response and final-state type.
+// NewRestorePoller creates a new Poller from the provided initial response and final-state type.
 // Pass nil for response to create an empty Poller for rehydration.
-func newRestorePoller[T any](pl runtime.Pipeline, resp *http.Response, finalState runtime.FinalStateVia) (*restorePoller[T], error) {
+func NewRestorePoller[T any](pl runtime.Pipeline, resp *http.Response, finalState runtime.FinalStateVia) (*restorePoller[T], error) {
 	if resp == nil {
 		return &restorePoller[T]{pl: pl}, nil
 	}

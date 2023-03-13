@@ -12,6 +12,7 @@ package rbac
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -20,26 +21,27 @@ import (
 )
 
 // Client contains the methods for the Client group.
-// Don't use this type directly, use NewClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type Client struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
 }
 
 // CreateOrUpdateRoleDefinition - Creates or updates a custom role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.4
-// scope - The scope of the role definition to create or update. Managed HSM only supports '/'.
-// roleDefinitionName - The name of the role definition to create or update. It can be any valid GUID.
-// parameters - Parameters for the role definition.
-// options - CreateOrUpdateRoleDefinitionOptions contains the optional parameters for the Client.CreateOrUpdateRoleDefinition
-// method.
+//   - scope - The scope of the role definition to create or update. Managed HSM only supports '/'.
+//   - roleDefinitionName - The name of the role definition to create or update. It can be any valid GUID.
+//   - parameters - Parameters for the role definition.
+//   - options - CreateOrUpdateRoleDefinitionOptions contains the optional parameters for the Client.CreateOrUpdateRoleDefinition
+//     method.
 func (client *Client) CreateOrUpdateRoleDefinition(ctx context.Context, scope RoleScope, roleDefinitionName string, parameters RoleDefinitionCreateParameters, options *CreateOrUpdateRoleDefinitionOptions) (CreateOrUpdateRoleDefinitionResponse, error) {
 	req, err := client.createOrUpdateRoleDefinitionCreateRequest(ctx, scope, roleDefinitionName, parameters, options)
 	if err != nil {
 		return CreateOrUpdateRoleDefinitionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CreateOrUpdateRoleDefinitionResponse{}, err
 	}
@@ -79,17 +81,18 @@ func (client *Client) createOrUpdateRoleDefinitionHandleResponse(resp *http.Resp
 
 // CreateRoleAssignment - Creates a role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.4
-// scope - The scope of the role assignment to create.
-// roleAssignmentName - The name of the role assignment to create. It can be any valid GUID.
-// parameters - Parameters for the role assignment.
-// options - CreateRoleAssignmentOptions contains the optional parameters for the Client.CreateRoleAssignment method.
+//   - scope - The scope of the role assignment to create.
+//   - roleAssignmentName - The name of the role assignment to create. It can be any valid GUID.
+//   - parameters - Parameters for the role assignment.
+//   - options - CreateRoleAssignmentOptions contains the optional parameters for the Client.CreateRoleAssignment method.
 func (client *Client) CreateRoleAssignment(ctx context.Context, scope RoleScope, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *CreateRoleAssignmentOptions) (CreateRoleAssignmentResponse, error) {
 	req, err := client.createRoleAssignmentCreateRequest(ctx, scope, roleAssignmentName, parameters, options)
 	if err != nil {
 		return CreateRoleAssignmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CreateRoleAssignmentResponse{}, err
 	}
@@ -129,16 +132,17 @@ func (client *Client) createRoleAssignmentHandleResponse(resp *http.Response) (C
 
 // DeleteRoleAssignment - Deletes a role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.4
-// scope - The scope of the role assignment to delete.
-// roleAssignmentName - The name of the role assignment to delete.
-// options - DeleteRoleAssignmentOptions contains the optional parameters for the Client.DeleteRoleAssignment method.
+//   - scope - The scope of the role assignment to delete.
+//   - roleAssignmentName - The name of the role assignment to delete.
+//   - options - DeleteRoleAssignmentOptions contains the optional parameters for the Client.DeleteRoleAssignment method.
 func (client *Client) DeleteRoleAssignment(ctx context.Context, scope RoleScope, roleAssignmentName string, options *DeleteRoleAssignmentOptions) (DeleteRoleAssignmentResponse, error) {
 	req, err := client.deleteRoleAssignmentCreateRequest(ctx, scope, roleAssignmentName, options)
 	if err != nil {
 		return DeleteRoleAssignmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeleteRoleAssignmentResponse{}, err
 	}
@@ -178,16 +182,17 @@ func (client *Client) deleteRoleAssignmentHandleResponse(resp *http.Response) (D
 
 // DeleteRoleDefinition - Deletes a custom role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.4
-// scope - The scope of the role definition to delete. Managed HSM only supports '/'.
-// roleDefinitionName - The name (GUID) of the role definition to delete.
-// options - DeleteRoleDefinitionOptions contains the optional parameters for the Client.DeleteRoleDefinition method.
+//   - scope - The scope of the role definition to delete. Managed HSM only supports '/'.
+//   - roleDefinitionName - The name (GUID) of the role definition to delete.
+//   - options - DeleteRoleDefinitionOptions contains the optional parameters for the Client.DeleteRoleDefinition method.
 func (client *Client) DeleteRoleDefinition(ctx context.Context, scope RoleScope, roleDefinitionName string, options *DeleteRoleDefinitionOptions) (DeleteRoleDefinitionResponse, error) {
 	req, err := client.deleteRoleDefinitionCreateRequest(ctx, scope, roleDefinitionName, options)
 	if err != nil {
 		return DeleteRoleDefinitionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeleteRoleDefinitionResponse{}, err
 	}
@@ -227,16 +232,17 @@ func (client *Client) deleteRoleDefinitionHandleResponse(resp *http.Response) (D
 
 // GetRoleAssignment - Get the specified role assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.4
-// scope - The scope of the role assignment.
-// roleAssignmentName - The name of the role assignment to get.
-// options - GetRoleAssignmentOptions contains the optional parameters for the Client.GetRoleAssignment method.
+//   - scope - The scope of the role assignment.
+//   - roleAssignmentName - The name of the role assignment to get.
+//   - options - GetRoleAssignmentOptions contains the optional parameters for the Client.GetRoleAssignment method.
 func (client *Client) GetRoleAssignment(ctx context.Context, scope RoleScope, roleAssignmentName string, options *GetRoleAssignmentOptions) (GetRoleAssignmentResponse, error) {
 	req, err := client.getRoleAssignmentCreateRequest(ctx, scope, roleAssignmentName, options)
 	if err != nil {
 		return GetRoleAssignmentResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetRoleAssignmentResponse{}, err
 	}
@@ -276,16 +282,17 @@ func (client *Client) getRoleAssignmentHandleResponse(resp *http.Response) (GetR
 
 // GetRoleDefinition - Get the specified role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.4
-// scope - The scope of the role definition to get. Managed HSM only supports '/'.
-// roleDefinitionName - The name of the role definition to get.
-// options - GetRoleDefinitionOptions contains the optional parameters for the Client.GetRoleDefinition method.
+//   - scope - The scope of the role definition to get. Managed HSM only supports '/'.
+//   - roleDefinitionName - The name of the role definition to get.
+//   - options - GetRoleDefinitionOptions contains the optional parameters for the Client.GetRoleDefinition method.
 func (client *Client) GetRoleDefinition(ctx context.Context, scope RoleScope, roleDefinitionName string, options *GetRoleDefinitionOptions) (GetRoleDefinitionResponse, error) {
 	req, err := client.getRoleDefinitionCreateRequest(ctx, scope, roleDefinitionName, options)
 	if err != nil {
 		return GetRoleDefinitionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetRoleDefinitionResponse{}, err
 	}
@@ -324,9 +331,11 @@ func (client *Client) getRoleDefinitionHandleResponse(resp *http.Response) (GetR
 }
 
 // NewListRoleAssignmentsPager - Gets role assignments for a scope.
+//
 // Generated from API version 7.4
-// scope - The scope of the role assignments.
-// options - ListRoleAssignmentsOptions contains the optional parameters for the Client.ListRoleAssignments method.
+//   - scope - The scope of the role assignments.
+//   - options - ListRoleAssignmentsOptions contains the optional parameters for the Client.NewListRoleAssignmentsPager
+//     method.
 func (client *Client) NewListRoleAssignmentsPager(scope RoleScope, options *ListRoleAssignmentsOptions) *runtime.Pager[ListRoleAssignmentsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListRoleAssignmentsResponse]{
 		More: func(page ListRoleAssignmentsResponse) bool {
@@ -343,7 +352,7 @@ func (client *Client) NewListRoleAssignmentsPager(scope RoleScope, options *List
 			if err != nil {
 				return ListRoleAssignmentsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ListRoleAssignmentsResponse{}, err
 			}
@@ -383,9 +392,11 @@ func (client *Client) listRoleAssignmentsHandleResponse(resp *http.Response) (Li
 }
 
 // NewListRoleDefinitionsPager - Get all role definitions that are applicable at scope and above.
+//
 // Generated from API version 7.4
-// scope - The scope of the role definition.
-// options - ListRoleDefinitionsOptions contains the optional parameters for the Client.ListRoleDefinitions method.
+//   - scope - The scope of the role definition.
+//   - options - ListRoleDefinitionsOptions contains the optional parameters for the Client.NewListRoleDefinitionsPager
+//     method.
 func (client *Client) NewListRoleDefinitionsPager(scope RoleScope, options *ListRoleDefinitionsOptions) *runtime.Pager[ListRoleDefinitionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListRoleDefinitionsResponse]{
 		More: func(page ListRoleDefinitionsResponse) bool {
@@ -402,7 +413,7 @@ func (client *Client) NewListRoleDefinitionsPager(scope RoleScope, options *List
 			if err != nil {
 				return ListRoleDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ListRoleDefinitionsResponse{}, err
 			}

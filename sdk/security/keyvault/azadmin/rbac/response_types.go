@@ -39,12 +39,12 @@ type GetRoleDefinitionResponse struct {
 	RoleDefinition
 }
 
-// ListRoleAssignmentsResponse contains the response from method Client.ListRoleAssignments.
+// ListRoleAssignmentsResponse contains the response from method Client.NewListRoleAssignmentsPager.
 type ListRoleAssignmentsResponse struct {
 	RoleAssignmentListResult
 }
 
-// ListRoleDefinitionsResponse contains the response from method Client.ListRoleDefinitions.
+// ListRoleDefinitionsResponse contains the response from method Client.NewListRoleDefinitionsPager.
 type ListRoleDefinitionsResponse struct {
 	RoleDefinitionListResult
 }

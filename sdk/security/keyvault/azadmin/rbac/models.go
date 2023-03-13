@@ -40,7 +40,7 @@ type GetRoleDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListRoleAssignmentsOptions contains the optional parameters for the Client.ListRoleAssignments method.
+// ListRoleAssignmentsOptions contains the optional parameters for the Client.NewListRoleAssignmentsPager method.
 type ListRoleAssignmentsOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
 	// eq {id} to return all role assignments at, above or below the
@@ -48,7 +48,7 @@ type ListRoleAssignmentsOptions struct {
 	Filter *string
 }
 
-// ListRoleDefinitionsOptions contains the optional parameters for the Client.ListRoleDefinitions method.
+// ListRoleDefinitionsOptions contains the optional parameters for the Client.NewListRoleDefinitionsPager method.
 type ListRoleDefinitionsOptions struct {
 	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
 	Filter *string

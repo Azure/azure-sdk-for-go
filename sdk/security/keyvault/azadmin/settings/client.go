@@ -12,6 +12,7 @@ package settings
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -20,23 +21,24 @@ import (
 )
 
 // Client contains the methods for the Client group.
-// Don't use this type directly, use NewClient() instead.
+// Don't use this type directly, use a constructor function instead.
 type Client struct {
+	internal *azcore.Client
 	endpoint string
-	pl       runtime.Pipeline
 }
 
 // GetSetting - Retrieves the setting object of a specified setting name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.4
-// settingName - The name of the account setting. Must be a valid settings option.
-// options - GetSettingOptions contains the optional parameters for the Client.GetSetting method.
+//   - settingName - The name of the account setting. Must be a valid settings option.
+//   - options - GetSettingOptions contains the optional parameters for the Client.GetSetting method.
 func (client *Client) GetSetting(ctx context.Context, settingName string, options *GetSettingOptions) (GetSettingResponse, error) {
 	req, err := client.getSettingCreateRequest(ctx, settingName, options)
 	if err != nil {
 		return GetSettingResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetSettingResponse{}, err
 	}
@@ -75,14 +77,15 @@ func (client *Client) getSettingHandleResponse(resp *http.Response) (GetSettingR
 
 // GetSettings - Retrieves a list of all the available account settings that can be configured.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.4
-// options - GetSettingsOptions contains the optional parameters for the Client.GetSettings method.
+//   - options - GetSettingsOptions contains the optional parameters for the Client.GetSettings method.
 func (client *Client) GetSettings(ctx context.Context, options *GetSettingsOptions) (GetSettingsResponse, error) {
 	req, err := client.getSettingsCreateRequest(ctx, options)
 	if err != nil {
 		return GetSettingsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GetSettingsResponse{}, err
 	}
@@ -117,16 +120,17 @@ func (client *Client) getSettingsHandleResponse(resp *http.Response) (GetSetting
 
 // UpdateSetting - Description of the pool setting to be updated
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 7.4
-// settingName - The name of the account setting. Must be a valid settings option.
-// parameters - The parameters to update an account setting.
-// options - UpdateSettingOptions contains the optional parameters for the Client.UpdateSetting method.
+//   - settingName - The name of the account setting. Must be a valid settings option.
+//   - parameters - The parameters to update an account setting.
+//   - options - UpdateSettingOptions contains the optional parameters for the Client.UpdateSetting method.
 func (client *Client) UpdateSetting(ctx context.Context, settingName string, parameters UpdateSettingRequest, options *UpdateSettingOptions) (UpdateSettingResponse, error) {
 	req, err := client.updateSettingCreateRequest(ctx, settingName, parameters, options)
 	if err != nil {
 		return UpdateSettingResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return UpdateSettingResponse{}, err
 	}

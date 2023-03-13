@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup/internal/pollers"
 	ainternal "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 )
@@ -42,8 +43,11 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
 		},
 	)
-	pl := runtime.NewPipeline(ainternal.ModuleName, ainternal.Version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &Client{endpoint: vaultURL, pl: pl}, nil
+	azcoreClient, err := azcore.NewClient("settings.Client", ainternal.Version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	if err != nil {
+		return &Client{}, err
+	}
+	return &Client{endpoint: vaultURL, internal: azcoreClient}, nil
 }
 
 // ServerError - Internal error from Azure Key Vault server.
@@ -80,20 +84,20 @@ func (client *Client) beginFullRestore(ctx context.Context, restoreBlobDetails R
 		if err != nil {
 			return nil, err
 		}
-		handler, err := newRestorePoller[FullRestoreResponse](client.pl, resp, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FullRestoreResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FullRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
 		})
 	} else {
-		handler, err := newRestorePoller[FullRestoreResponse](client.pl, nil, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[FullRestoreResponse]{Handler: handler})
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FullRestoreResponse]{Handler: handler})
 	}
 }
 
@@ -105,19 +109,19 @@ func (client *Client) beginSelectiveKeyRestore(ctx context.Context, keyName stri
 		if err != nil {
 			return nil, err
 		}
-		handler, err := newRestorePoller[SelectiveKeyRestoreResponse](client.pl, resp, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SelectiveKeyRestoreResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SelectiveKeyRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
 		})
 	} else {
-		handler, err := newRestorePoller[SelectiveKeyRestoreResponse](client.pl, nil, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[SelectiveKeyRestoreResponse]{Handler: handler})
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SelectiveKeyRestoreResponse]{Handler: handler})
 	}
 }

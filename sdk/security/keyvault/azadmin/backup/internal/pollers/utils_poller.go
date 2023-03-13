@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package backup
+package pollers
 
 // this file contains handwritten additions to the generated code
 // code to support the custom poller handler

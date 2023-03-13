@@ -38,6 +38,9 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
 		},
 	)
-	pl := runtime.NewPipeline(ainternal.ModuleName, ainternal.Version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &Client{endpoint: vaultURL, pl: pl}, nil
+	azcoreClient, err := azcore.NewClient("settings.Client", ainternal.Version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	if err != nil {
+		return &Client{}, err
+	}
+	return &Client{endpoint: vaultURL, internal: azcoreClient}, nil
 }

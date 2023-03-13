@@ -9,17 +9,17 @@
 
 package backup
 
-// FullBackupResponse contains the response from method Client.FullBackup.
+// FullBackupResponse contains the response from method Client.BeginFullBackup.
 type FullBackupResponse struct {
 	FullBackupOperation
 }
 
-// FullRestoreResponse contains the response from method Client.FullRestore.
+// FullRestoreResponse contains the response from method Client.BeginFullRestore.
 type FullRestoreResponse struct {
 	RestoreOperation
 }
 
-// SelectiveKeyRestoreResponse contains the response from method Client.SelectiveKeyRestore.
+// SelectiveKeyRestoreResponse contains the response from method Client.BeginSelectiveKeyRestore.
 type SelectiveKeyRestoreResponse struct {
 	SelectiveKeyRestoreOperation
 }

@@ -277,7 +277,7 @@ func FuncFilter(changelog *model.Changelog) {
 	if changelog.Modified.HasBreakingChanges() {
 		funcOperation(changelog.Modified.BreakingChanges.Removed)
 
-		// function operation parameters from interface{} to any is not breaking
+		// function operation parameters from interface{} to any is not a breaking change
 		for f, v := range changelog.Modified.BreakingChanges.Funcs {
 			from := strings.Split(v.Params.From, ",")
 			to := strings.Split(v.Params.To, ",")

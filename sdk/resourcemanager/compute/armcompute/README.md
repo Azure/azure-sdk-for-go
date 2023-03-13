@@ -54,7 +54,7 @@ clientFactory, err := armcompute.NewClientFactory(<subscription ID>, cred, &opti
 
 ## Clients
 
-A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using client factory.
+A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
 client := clientFactory.NewLogAnalyticsClient()

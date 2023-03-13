@@ -160,7 +160,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 
 	// remove tag set
-	if generateParam.RemoveTagSet && generateParam.NamespaceConfig == "" {
+	if generateParam.RemoveTagSet {
 		log.Printf("Remove tag set for swagger config in `autorest.md`...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
 		if err := RemoveTagSet(autorestMdPath); err != nil {
@@ -169,7 +169,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 
 	// add package config
-	if !onBoard && generateParam.NamespaceConfig != "" {
+	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" {
 		log.Printf("Add package config in `autorest.md`...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
 		if err := AddPackageConfig(autorestMdPath, generateParam.NamespaceConfig); err != nil {

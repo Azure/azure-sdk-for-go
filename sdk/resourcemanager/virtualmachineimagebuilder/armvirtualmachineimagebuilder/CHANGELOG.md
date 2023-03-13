@@ -1,5 +1,49 @@
 # Release History
 
+## 2.0.0 (2023-03-13)
+### Breaking Changes
+
+- Type of `ImageTemplateIdentity.UserAssignedIdentities` has been changed from `map[string]*ComponentsVrq145SchemasImagetemplateidentityPropertiesUserassignedidentitiesAdditionalproperties` to `map[string]*UserAssignedIdentity`
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+- Struct `ComponentsVrq145SchemasImagetemplateidentityPropertiesUserassignedidentitiesAdditionalproperties` has been removed
+
+### Features Added
+
+- New value `ProvisioningStateCanceled` added to type alias `ProvisioningState`
+- New value `RunSubStateOptimizing` added to type alias `RunSubState`
+- New value `SharedImageStorageAccountTypePremiumLRS` added to type alias `SharedImageStorageAccountType`
+- New type alias `VMBootOptimizationState` with values `VMBootOptimizationStateDisabled`, `VMBootOptimizationStateEnabled`
+- New function `*DistributeVersioner.GetDistributeVersioner() *DistributeVersioner`
+- New function `*DistributeVersionerLatest.GetDistributeVersioner() *DistributeVersioner`
+- New function `*DistributeVersionerSource.GetDistributeVersioner() *DistributeVersioner`
+- New function `*ImageTemplateFileValidator.GetImageTemplateInVMValidator() *ImageTemplateInVMValidator`
+- New function `*SourceImageTriggerProperties.GetTriggerProperties() *TriggerProperties`
+- New function `*TriggerProperties.GetTriggerProperties() *TriggerProperties`
+- New function `NewTriggersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TriggersClient, error)`
+- New function `*TriggersClient.BeginCreateOrUpdate(context.Context, string, string, string, Trigger, *TriggersClientBeginCreateOrUpdateOptions) (*runtime.Poller[TriggersClientCreateOrUpdateResponse], error)`
+- New function `*TriggersClient.BeginDelete(context.Context, string, string, string, *TriggersClientBeginDeleteOptions) (*runtime.Poller[TriggersClientDeleteResponse], error)`
+- New function `*TriggersClient.Get(context.Context, string, string, string, *TriggersClientGetOptions) (TriggersClientGetResponse, error)`
+- New function `*TriggersClient.NewListByImageTemplatePager(string, string, *TriggersClientListByImageTemplateOptions) *runtime.Pager[TriggersClientListByImageTemplateResponse]`
+- New struct `DistributeVersionerLatest`
+- New struct `DistributeVersionerSource`
+- New struct `ImageTemplateFileValidator`
+- New struct `ImageTemplatePropertiesOptimize`
+- New struct `ImageTemplatePropertiesOptimizeVMBoot`
+- New struct `SourceImageTriggerProperties`
+- New struct `TargetRegion`
+- New struct `Trigger`
+- New struct `TriggerCollection`
+- New struct `TriggerStatus`
+- New struct `TriggersClient`
+- New struct `UserAssignedIdentity`
+- New field `Optimize` in struct `ImageTemplateProperties`
+- New field `TargetRegions` in struct `ImageTemplateSharedImageDistributor`
+- New field `Versioning` in struct `ImageTemplateSharedImageDistributor`
+- New field `ExactVersion` in struct `ImageTemplateSharedImageVersionSource`
+- New field `URI` in struct `ImageTemplateVhdDistributor`
+
+
 ## 1.1.0 (2022-05-30)
 ### Features Added
 

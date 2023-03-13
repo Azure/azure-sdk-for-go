@@ -40,7 +40,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 	)
 	azcoreClient, err := azcore.NewClient("settings.Client", ainternal.Version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
-		return &Client{}, err
+		return nil, err
 	}
 	return &Client{endpoint: vaultURL, internal: azcoreClient}, nil
 }

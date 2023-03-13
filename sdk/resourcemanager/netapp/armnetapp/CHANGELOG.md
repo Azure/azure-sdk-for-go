@@ -3,7 +3,6 @@
 ## 4.0.0 (2023-03-24)
 ### Breaking Changes
 
-- Function `*SnapshotsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, interface{}, *SnapshotsClientBeginUpdateOptions)` to `(context.Context, string, string, string, string, string, any, *SnapshotsClientBeginUpdateOptions)`
 - Type of `Account.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
 - Type alias `IdentityType` has been removed
 - Function `NewVaultsClient` has been removed

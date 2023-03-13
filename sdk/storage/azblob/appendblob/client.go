@@ -255,16 +255,6 @@ func (ab *Client) SetLegalHold(ctx context.Context, legalHold bool, options *blo
 	return ab.BlobClient().SetLegalHold(ctx, legalHold, options)
 }
 
-// SetTier operation sets the tier on a blob. The operation is allowed on a page
-// blob in a premium storage account and on a block blob in a blob storage account (locally
-// redundant storage only). A premium page blob's tier determines the allowed size, IOPS, and
-// bandwidth of the blob. A block blob's tier determines Hot/Cool/Archive storage type. This operation
-// does not update the blob's ETag.
-// For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
-func (ab *Client) SetTier(ctx context.Context, tier blob.AccessTier, o *blob.SetTierOptions) (blob.SetTierResponse, error) {
-	return ab.BlobClient().SetTier(ctx, tier, o)
-}
-
 // SetExpiry operation sets an expiry time on an existing blob. This operation is only allowed on Hierarchical Namespace enabled accounts.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-expiry
 func (ab *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
@@ -324,12 +314,6 @@ func (ab *Client) SetTags(ctx context.Context, tags map[string]string, o *blob.S
 // https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags
 func (ab *Client) GetTags(ctx context.Context, o *blob.GetTagsOptions) (blob.GetTagsResponse, error) {
 	return ab.BlobClient().GetTags(ctx, o)
-}
-
-// CopyFromURL synchronously copies the data at the source URL to a block blob, with sizes up to 256 MB.
-// For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
-func (ab *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.CopyFromURLOptions) (blob.CopyFromURLResponse, error) {
-	return ab.BlobClient().CopyFromURL(ctx, copySource, o)
 }
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------

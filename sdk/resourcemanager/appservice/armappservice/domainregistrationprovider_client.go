@@ -28,8 +28,8 @@ type DomainRegistrationProviderClient struct {
 }
 
 // NewDomainRegistrationProviderClient creates a new instance of DomainRegistrationProviderClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDomainRegistrationProviderClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainRegistrationProviderClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -51,10 +51,10 @@ func NewDomainRegistrationProviderClient(credential azcore.TokenCredential, opti
 
 // NewListOperationsPager - Description for Implements Csm operations Api to exposes the list of available Csm Apis under
 // the resource provider
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - DomainRegistrationProviderClientListOperationsOptions contains the optional parameters for the DomainRegistrationProviderClient.ListOperations
-// method.
+//
+// Generated from API version 2022-09-01
+//   - options - DomainRegistrationProviderClientListOperationsOptions contains the optional parameters for the DomainRegistrationProviderClient.NewListOperationsPager
+//     method.
 func (client *DomainRegistrationProviderClient) NewListOperationsPager(options *DomainRegistrationProviderClientListOperationsOptions) *runtime.Pager[DomainRegistrationProviderClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DomainRegistrationProviderClientListOperationsResponse]{
 		More: func(page DomainRegistrationProviderClientListOperationsResponse) bool {
@@ -91,7 +91,7 @@ func (client *DomainRegistrationProviderClient) listOperationsCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

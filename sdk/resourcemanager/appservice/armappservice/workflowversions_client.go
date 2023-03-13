@@ -33,9 +33,9 @@ type WorkflowVersionsClient struct {
 }
 
 // NewWorkflowVersionsClient creates a new instance of WorkflowVersionsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWorkflowVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowVersionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewWorkflowVersionsClient(subscriptionID string, credential azcore.TokenCre
 
 // Get - Gets a workflow version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// versionID - The workflow versionId.
-// options - WorkflowVersionsClientGetOptions contains the optional parameters for the WorkflowVersionsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - versionID - The workflow versionId.
+//   - options - WorkflowVersionsClientGetOptions contains the optional parameters for the WorkflowVersionsClient.Get method.
 func (client *WorkflowVersionsClient) Get(ctx context.Context, resourceGroupName string, name string, workflowName string, versionID string, options *WorkflowVersionsClientGetOptions) (WorkflowVersionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, workflowName, versionID, options)
 	if err != nil {
@@ -107,7 +108,7 @@ func (client *WorkflowVersionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -123,12 +124,13 @@ func (client *WorkflowVersionsClient) getHandleResponse(resp *http.Response) (Wo
 }
 
 // NewListPager - Gets a list of workflow versions.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// options - WorkflowVersionsClientListOptions contains the optional parameters for the WorkflowVersionsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - options - WorkflowVersionsClientListOptions contains the optional parameters for the WorkflowVersionsClient.NewListPager
+//     method.
 func (client *WorkflowVersionsClient) NewListPager(resourceGroupName string, name string, workflowName string, options *WorkflowVersionsClientListOptions) *runtime.Pager[WorkflowVersionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkflowVersionsClientListResponse]{
 		More: func(page WorkflowVersionsClientListResponse) bool {
@@ -181,7 +183,7 @@ func (client *WorkflowVersionsClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

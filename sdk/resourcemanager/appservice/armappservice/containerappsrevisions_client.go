@@ -32,9 +32,9 @@ type ContainerAppsRevisionsClient struct {
 }
 
 // NewContainerAppsRevisionsClient creates a new instance of ContainerAppsRevisionsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewContainerAppsRevisionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsRevisionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewContainerAppsRevisionsClient(subscriptionID string, credential azcore.To
 
 // ActivateRevision - Activates a revision for a Container App
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// containerAppName - Name of the Container App.
-// name - Name of the Container App Revision to activate
-// options - ContainerAppsRevisionsClientActivateRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.ActivateRevision
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - containerAppName - Name of the Container App.
+//   - name - Name of the Container App Revision to activate
+//   - options - ContainerAppsRevisionsClientActivateRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.ActivateRevision
+//     method.
 func (client *ContainerAppsRevisionsClient) ActivateRevision(ctx context.Context, resourceGroupName string, containerAppName string, name string, options *ContainerAppsRevisionsClientActivateRevisionOptions) (ContainerAppsRevisionsClientActivateRevisionResponse, error) {
 	req, err := client.activateRevisionCreateRequest(ctx, resourceGroupName, containerAppName, name, options)
 	if err != nil {
@@ -102,7 +103,7 @@ func (client *ContainerAppsRevisionsClient) activateRevisionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,12 +111,13 @@ func (client *ContainerAppsRevisionsClient) activateRevisionCreateRequest(ctx co
 
 // DeactivateRevision - Deactivates a revision for a Container App
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// containerAppName - Name of the Container App.
-// name - Name of the Container App Revision to deactivate
-// options - ContainerAppsRevisionsClientDeactivateRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.DeactivateRevision
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - containerAppName - Name of the Container App.
+//   - name - Name of the Container App Revision to deactivate
+//   - options - ContainerAppsRevisionsClientDeactivateRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.DeactivateRevision
+//     method.
 func (client *ContainerAppsRevisionsClient) DeactivateRevision(ctx context.Context, resourceGroupName string, containerAppName string, name string, options *ContainerAppsRevisionsClientDeactivateRevisionOptions) (ContainerAppsRevisionsClientDeactivateRevisionResponse, error) {
 	req, err := client.deactivateRevisionCreateRequest(ctx, resourceGroupName, containerAppName, name, options)
 	if err != nil {
@@ -155,7 +157,7 @@ func (client *ContainerAppsRevisionsClient) deactivateRevisionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -163,12 +165,13 @@ func (client *ContainerAppsRevisionsClient) deactivateRevisionCreateRequest(ctx 
 
 // GetRevision - Get a revision of a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// containerAppName - Name of the Container App.
-// name - Name of the Container App Revision.
-// options - ContainerAppsRevisionsClientGetRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.GetRevision
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - containerAppName - Name of the Container App.
+//   - name - Name of the Container App Revision.
+//   - options - ContainerAppsRevisionsClientGetRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.GetRevision
+//     method.
 func (client *ContainerAppsRevisionsClient) GetRevision(ctx context.Context, resourceGroupName string, containerAppName string, name string, options *ContainerAppsRevisionsClientGetRevisionOptions) (ContainerAppsRevisionsClientGetRevisionResponse, error) {
 	req, err := client.getRevisionCreateRequest(ctx, resourceGroupName, containerAppName, name, options)
 	if err != nil {
@@ -208,7 +211,7 @@ func (client *ContainerAppsRevisionsClient) getRevisionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -224,12 +227,12 @@ func (client *ContainerAppsRevisionsClient) getRevisionHandleResponse(resp *http
 }
 
 // NewListRevisionsPager - Get the Revisions for a given Container App.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// containerAppName - Name of the Container App for which Revisions are needed.
-// options - ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.ListRevisions
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - containerAppName - Name of the Container App for which Revisions are needed.
+//   - options - ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.NewListRevisionsPager
+//     method.
 func (client *ContainerAppsRevisionsClient) NewListRevisionsPager(resourceGroupName string, containerAppName string, options *ContainerAppsRevisionsClientListRevisionsOptions) *runtime.Pager[ContainerAppsRevisionsClientListRevisionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ContainerAppsRevisionsClientListRevisionsResponse]{
 		More: func(page ContainerAppsRevisionsClientListRevisionsResponse) bool {
@@ -278,7 +281,7 @@ func (client *ContainerAppsRevisionsClient) listRevisionsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -295,12 +298,13 @@ func (client *ContainerAppsRevisionsClient) listRevisionsHandleResponse(resp *ht
 
 // RestartRevision - Restarts a revision for a Container App
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// containerAppName - Name of the Container App.
-// name - Name of the Container App Revision to restart
-// options - ContainerAppsRevisionsClientRestartRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.RestartRevision
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - containerAppName - Name of the Container App.
+//   - name - Name of the Container App Revision to restart
+//   - options - ContainerAppsRevisionsClientRestartRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.RestartRevision
+//     method.
 func (client *ContainerAppsRevisionsClient) RestartRevision(ctx context.Context, resourceGroupName string, containerAppName string, name string, options *ContainerAppsRevisionsClientRestartRevisionOptions) (ContainerAppsRevisionsClientRestartRevisionResponse, error) {
 	req, err := client.restartRevisionCreateRequest(ctx, resourceGroupName, containerAppName, name, options)
 	if err != nil {
@@ -340,7 +344,7 @@ func (client *ContainerAppsRevisionsClient) restartRevisionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

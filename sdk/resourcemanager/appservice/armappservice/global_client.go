@@ -32,9 +32,9 @@ type GlobalClient struct {
 }
 
 // NewGlobalClient creates a new instance of GlobalClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGlobalClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GlobalClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,9 +57,10 @@ func NewGlobalClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // GetDeletedWebApp - Description for Get deleted app for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// deletedSiteID - The numeric ID of the deleted app, e.g. 12345
-// options - GlobalClientGetDeletedWebAppOptions contains the optional parameters for the GlobalClient.GetDeletedWebApp method.
+//
+// Generated from API version 2022-09-01
+//   - deletedSiteID - The numeric ID of the deleted app, e.g. 12345
+//   - options - GlobalClientGetDeletedWebAppOptions contains the optional parameters for the GlobalClient.GetDeletedWebApp method.
 func (client *GlobalClient) GetDeletedWebApp(ctx context.Context, deletedSiteID string, options *GlobalClientGetDeletedWebAppOptions) (GlobalClientGetDeletedWebAppResponse, error) {
 	req, err := client.getDeletedWebAppCreateRequest(ctx, deletedSiteID, options)
 	if err != nil {
@@ -91,7 +92,7 @@ func (client *GlobalClient) getDeletedWebAppCreateRequest(ctx context.Context, d
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -108,10 +109,11 @@ func (client *GlobalClient) getDeletedWebAppHandleResponse(resp *http.Response) 
 
 // GetDeletedWebAppSnapshots - Description for Get all deleted apps for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// deletedSiteID - The numeric ID of the deleted app, e.g. 12345
-// options - GlobalClientGetDeletedWebAppSnapshotsOptions contains the optional parameters for the GlobalClient.GetDeletedWebAppSnapshots
-// method.
+//
+// Generated from API version 2022-09-01
+//   - deletedSiteID - The numeric ID of the deleted app, e.g. 12345
+//   - options - GlobalClientGetDeletedWebAppSnapshotsOptions contains the optional parameters for the GlobalClient.GetDeletedWebAppSnapshots
+//     method.
 func (client *GlobalClient) GetDeletedWebAppSnapshots(ctx context.Context, deletedSiteID string, options *GlobalClientGetDeletedWebAppSnapshotsOptions) (GlobalClientGetDeletedWebAppSnapshotsResponse, error) {
 	req, err := client.getDeletedWebAppSnapshotsCreateRequest(ctx, deletedSiteID, options)
 	if err != nil {
@@ -143,7 +145,7 @@ func (client *GlobalClient) getDeletedWebAppSnapshotsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -160,11 +162,12 @@ func (client *GlobalClient) getDeletedWebAppSnapshotsHandleResponse(resp *http.R
 
 // GetSubscriptionOperationWithAsyncResponse - Description for Gets an operation in a subscription and given region
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// location - Location name
-// operationID - Operation Id
-// options - GlobalClientGetSubscriptionOperationWithAsyncResponseOptions contains the optional parameters for the GlobalClient.GetSubscriptionOperationWithAsyncResponse
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - Location name
+//   - operationID - Operation Id
+//   - options - GlobalClientGetSubscriptionOperationWithAsyncResponseOptions contains the optional parameters for the GlobalClient.GetSubscriptionOperationWithAsyncResponse
+//     method.
 func (client *GlobalClient) GetSubscriptionOperationWithAsyncResponse(ctx context.Context, location string, operationID string, options *GlobalClientGetSubscriptionOperationWithAsyncResponseOptions) (GlobalClientGetSubscriptionOperationWithAsyncResponseResponse, error) {
 	req, err := client.getSubscriptionOperationWithAsyncResponseCreateRequest(ctx, location, operationID, options)
 	if err != nil {
@@ -200,7 +203,7 @@ func (client *GlobalClient) getSubscriptionOperationWithAsyncResponseCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

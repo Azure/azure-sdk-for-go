@@ -142,3 +142,25 @@ func TestTypeToAny(t *testing.T) {
 	excepted := fmt.Sprint("### Breaking Changes\n\n- Type of `Client.M` has been changed from `map[string]string` to `map[string]any`\n\n### Features Added\n\n- Type of `Client.A` has been changed from `*int` to `any`\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
+
+func TestFuncParameterChange(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/parameter")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/parameter")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	common.FilterChangelog(changelog, common.FuncFilter)
+
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Function `*Client.AfterAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, string, any, Option)`\n- Function `*Client.BeforeAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, any, any, ClientOption)`\n")
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}

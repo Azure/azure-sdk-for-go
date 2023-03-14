@@ -9,12 +9,14 @@ package directory
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"net/http"
 	"net/url"
 	"strings"
 )
@@ -149,5 +151,40 @@ func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 // NewListFilesAndDirectoriesPager operation returns a pager for the files and directories starting from the specified Marker.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files.
 func (d *Client) NewListFilesAndDirectoriesPager(options *ListFilesAndDirectoriesOptions) *runtime.Pager[ListFilesAndDirectoriesResponse] {
-	return nil
+	listOptions := generated.DirectoryClientListFilesAndDirectoriesSegmentOptions{}
+	if options != nil {
+		listOptions.Include = options.Include.format()
+		listOptions.IncludeExtendedInfo = options.IncludeExtendedInfo
+		listOptions.Marker = options.Marker
+		listOptions.Maxresults = options.MaxResults
+		listOptions.Prefix = options.Prefix
+		listOptions.Sharesnapshot = options.ShareSnapshot
+	}
+
+	return runtime.NewPager(runtime.PagingHandler[ListFilesAndDirectoriesResponse]{
+		More: func(page ListFilesAndDirectoriesResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListFilesAndDirectoriesResponse) (ListFilesAndDirectoriesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = d.generated().ListFilesAndDirectoriesSegmentCreateRequest(ctx, &listOptions)
+			} else {
+				listOptions.Marker = page.NextMarker
+				req, err = d.generated().ListFilesAndDirectoriesSegmentCreateRequest(ctx, &listOptions)
+			}
+			if err != nil {
+				return ListFilesAndDirectoriesResponse{}, err
+			}
+			resp, err := d.generated().Pipeline().Do(req)
+			if err != nil {
+				return ListFilesAndDirectoriesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListFilesAndDirectoriesResponse{}, runtime.NewResponseError(resp)
+			}
+			return d.generated().ListFilesAndDirectoriesSegmentHandleResponse(resp)
+		},
+	})
 }

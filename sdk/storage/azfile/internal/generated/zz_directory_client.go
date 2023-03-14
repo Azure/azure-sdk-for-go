@@ -435,36 +435,9 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 // Generated from API version 2020-10-02
 //   - options - DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.NewListFilesAndDirectoriesSegmentPager
 //     method.
-func (client *DirectoryClient) NewListFilesAndDirectoriesSegmentPager(options *DirectoryClientListFilesAndDirectoriesSegmentOptions) *runtime.Pager[DirectoryClientListFilesAndDirectoriesSegmentResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DirectoryClientListFilesAndDirectoriesSegmentResponse]{
-		More: func(page DirectoryClientListFilesAndDirectoriesSegmentResponse) bool {
-			return page.NextMarker != nil && len(*page.NextMarker) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DirectoryClientListFilesAndDirectoriesSegmentResponse) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listFilesAndDirectoriesSegmentCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
-			}
-			if err != nil {
-				return DirectoryClientListFilesAndDirectoriesSegmentResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return DirectoryClientListFilesAndDirectoriesSegmentResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DirectoryClientListFilesAndDirectoriesSegmentResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listFilesAndDirectoriesSegmentHandleResponse(resp)
-		},
-	})
-}
-
+//
 // listFilesAndDirectoriesSegmentCreateRequest creates the ListFilesAndDirectoriesSegment request.
-func (client *DirectoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx context.Context, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) (*policy.Request, error) {
+func (client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(ctx context.Context, options *DirectoryClientListFilesAndDirectoriesSegmentOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -500,7 +473,7 @@ func (client *DirectoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx c
 }
 
 // listFilesAndDirectoriesSegmentHandleResponse handles the ListFilesAndDirectoriesSegment response.
-func (client *DirectoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
+func (client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
 	result := DirectoryClientListFilesAndDirectoriesSegmentResponse{}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val

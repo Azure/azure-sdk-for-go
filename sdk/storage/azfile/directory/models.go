@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"reflect"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -131,7 +132,7 @@ func (o *SetMetadataOptions) format() *generated.DirectoryClientSetMetadataOptio
 // ListFilesAndDirectoriesOptions contains the optional parameters for the Client.NewListFilesAndDirectoriesPager method.
 type ListFilesAndDirectoriesOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
-	Include []ListFilesIncludeType
+	Include ListFilesInclude
 	// Include extended information.
 	IncludeExtendedInfo *bool
 	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
@@ -146,6 +147,34 @@ type ListFilesAndDirectoriesOptions struct {
 	Prefix *string
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query for the list of files and directories.
 	ShareSnapshot *string
+}
+
+// ListFilesInclude specifies one or more datasets to include in the response.
+type ListFilesInclude struct {
+	Timestamps, ETag, Attributes, PermissionKey bool
+}
+
+func (l ListFilesInclude) format() []generated.ListFilesIncludeType {
+	if reflect.ValueOf(l).IsZero() {
+		return nil
+	}
+
+	include := []generated.ListFilesIncludeType{}
+
+	if l.Timestamps {
+		include = append(include, ListFilesIncludeTypeTimestamps)
+	}
+	if l.ETag {
+		include = append(include, ListFilesIncludeTypeETag)
+	}
+	if l.Attributes {
+		include = append(include, ListFilesIncludeTypeAttributes)
+	}
+	if l.PermissionKey {
+		include = append(include, ListFilesIncludeTypePermissionKey)
+	}
+
+	return include
 }
 
 // FilesAndDirectoriesListSegment - Abstract for entries that can be listed from directory.

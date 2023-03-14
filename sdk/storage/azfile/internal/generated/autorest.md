@@ -258,3 +258,16 @@ directive:
   transform: >
     $.format = "str";
 ```
+
+### Remove pager methods and export various generated methods in directory client
+
+``` yaml
+directive:
+  - from: zz_directory_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/func \(client \*DirectoryClient\) NewListFilesAndDirectoriesSegmentPager\(.+\/\/ listFilesAndDirectoriesSegmentCreateRequest creates the ListFilesAndDirectoriesSegment request/s, `//\n// listFilesAndDirectoriesSegmentCreateRequest creates the ListFilesAndDirectoriesSegment request`).
+        replace(/\(client \*DirectoryClient\) listFilesAndDirectoriesSegmentCreateRequest\(/, `(client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(`).
+        replace(/\(client \*DirectoryClient\) listFilesAndDirectoriesSegmentHandleResponse\(/, `(client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(`);
+```

@@ -13,7 +13,7 @@ type ListFilesIncludeType = generated.ListFilesIncludeType
 
 const (
 	ListFilesIncludeTypeTimestamps    ListFilesIncludeType = generated.ListFilesIncludeTypeTimestamps
-	ListFilesIncludeTypeEtag          ListFilesIncludeType = generated.ListFilesIncludeTypeEtag
+	ListFilesIncludeTypeETag          ListFilesIncludeType = generated.ListFilesIncludeTypeEtag
 	ListFilesIncludeTypeAttributes    ListFilesIncludeType = generated.ListFilesIncludeTypeAttributes
 	ListFilesIncludeTypePermissionKey ListFilesIncludeType = generated.ListFilesIncludeTypePermissionKey
 )

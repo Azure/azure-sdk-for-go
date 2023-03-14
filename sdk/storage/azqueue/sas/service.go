@@ -8,6 +8,7 @@ package sas
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -31,8 +32,8 @@ type QueueSignatureValues struct {
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
 func (v QueueSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
-	if sharedKeyCredential == nil {
-		return QueryParameters{}, fmt.Errorf("cannot sign SAS query without Shared Key Credential")
+	if v.ExpiryTime.IsZero() || v.Permissions == "" {
+		return QueryParameters{}, errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions")
 	}
 
 	//Make sure the permission characters are in the correct order

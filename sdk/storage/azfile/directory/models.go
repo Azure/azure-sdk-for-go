@@ -190,6 +190,8 @@ type File = generated.File
 // FileProperty - File properties.
 type FileProperty = generated.FileProperty
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
 type GetSASURLOptions struct {
 	StartTime *time.Time
@@ -207,4 +209,65 @@ func (o *GetSASURLOptions) format() time.Time {
 		st = time.Time{}
 	}
 	return st
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ListHandlesOptions contains the optional parameters for the Client.ListHandles method.
+type ListHandlesOptions struct {
+	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
+	// a marker value within the response body if the list returned was not complete.
+	// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
+	// to the client.
+	Marker *string
+	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater
+	// than 5,000, the server will return up to 5,000 items.
+	MaxResults *int32
+	// Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
+	Recursive *bool
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	ShareSnapshot *string
+}
+
+func (o *ListHandlesOptions) format() *generated.DirectoryClientListHandlesOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.DirectoryClientListHandlesOptions{
+		Marker:        o.Marker,
+		Maxresults:    o.MaxResults,
+		Recursive:     o.Recursive,
+		Sharesnapshot: o.ShareSnapshot,
+	}
+}
+
+// Handle - A listed Azure Storage handle item.
+type Handle = generated.Handle
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ForceCloseHandlesOptions contains the optional parameters for the Client.ForceCloseHandles method.
+type ForceCloseHandlesOptions struct {
+	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
+	// a marker value within the response body if the list returned was not complete.
+	// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
+	// to the client.
+	Marker *string
+	// Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
+	Recursive *bool
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	ShareSnapshot *string
+}
+
+func (o *ForceCloseHandlesOptions) format() *generated.DirectoryClientForceCloseHandlesOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.DirectoryClientForceCloseHandlesOptions{
+		Marker:        o.Marker,
+		Recursive:     o.Recursive,
+		Sharesnapshot: o.ShareSnapshot,
+	}
 }

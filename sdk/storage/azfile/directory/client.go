@@ -151,6 +151,23 @@ func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 	return resp, err
 }
 
+// ForceCloseHandles operation closes a handle or handles opened on a directory.
+//   - handleID - Specifies the handle ID to be closed. Use an asterisk (*) as a wildcard string to specify all handles.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/force-close-handles.
+func (d *Client) ForceCloseHandles(ctx context.Context, handleID string, options *ForceCloseHandlesOptions) (ForceCloseHandlesResponse, error) {
+	opts := options.format()
+	resp, err := d.generated().ForceCloseHandles(ctx, handleID, opts)
+	return resp, err
+}
+
+// ListHandles operation returns a list of open handles on a directory.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-handles.
+func (d *Client) ListHandles(ctx context.Context, options *ListHandlesOptions) (ListHandlesResponse, error) {
+	opts := options.format()
+	resp, err := d.generated().ListHandles(ctx, opts)
+	return resp, err
+}
+
 // NewListFilesAndDirectoriesPager operation returns a pager for the files and directories starting from the specified Marker.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files.
 func (d *Client) NewListFilesAndDirectoriesPager(options *ListFilesAndDirectoriesOptions) *runtime.Pager[ListFilesAndDirectoriesResponse] {

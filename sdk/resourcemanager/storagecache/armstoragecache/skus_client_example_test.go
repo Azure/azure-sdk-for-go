@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/402006d2796cdd3894d013d83e77b46a5c844005/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-01-01/examples/Skus_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Skus_List.json
 func ExampleSKUsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,6 +51,10 @@ func ExampleSKUsClient_NewListPager() {
 		// 				{
 		// 					Name: to.Ptr("cache sizes(GB)"),
 		// 					Value: to.Ptr("3072,6144,12288"),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("scalingFactor"),
+		// 					Value: to.Ptr("1.0"),
 		// 			}},
 		// 			LocationInfo: []*armstoragecache.ResourceSKULocationInfo{
 		// 				{
@@ -74,6 +78,10 @@ func ExampleSKUsClient_NewListPager() {
 		// 					{
 		// 						Name: to.Ptr("cache sizes(GB)"),
 		// 						Value: to.Ptr("6144,12288,24576"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("scalingFactor"),
+		// 						Value: to.Ptr("1.0"),
 		// 				}},
 		// 				LocationInfo: []*armstoragecache.ResourceSKULocationInfo{
 		// 					{
@@ -97,6 +105,10 @@ func ExampleSKUsClient_NewListPager() {
 		// 						{
 		// 							Name: to.Ptr("cache sizes(GB)"),
 		// 							Value: to.Ptr("12288,24576,49152"),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("scalingFactor"),
+		// 							Value: to.Ptr("1.0"),
 		// 					}},
 		// 					LocationInfo: []*armstoragecache.ResourceSKULocationInfo{
 		// 						{
@@ -109,7 +121,34 @@ func ExampleSKUsClient_NewListPager() {
 		// 						ResourceType: to.Ptr("caches"),
 		// 						Restrictions: []*armstoragecache.Restriction{
 		// 						},
-		// 				}},
-		// 			}
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("Standard_Scalable"),
+		// 						Capabilities: []*armstoragecache.ResourceSKUCapabilities{
+		// 							{
+		// 								Name: to.Ptr("throughput GB/s"),
+		// 								Value: to.Ptr("2"),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("cache sizes(GB)"),
+		// 								Value: to.Ptr("3072,6144,12288"),
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("scalingFactor"),
+		// 								Value: to.Ptr("1.0,1.33,2.0,4.0"),
+		// 						}},
+		// 						LocationInfo: []*armstoragecache.ResourceSKULocationInfo{
+		// 							{
+		// 								Location: to.Ptr("eastus"),
+		// 								Zones: []*string{
+		// 								},
+		// 						}},
+		// 						Locations: []*string{
+		// 							to.Ptr("eastus")},
+		// 							ResourceType: to.Ptr("caches"),
+		// 							Restrictions: []*armstoragecache.Restriction{
+		// 							},
+		// 					}},
+		// 				}
 	}
 }

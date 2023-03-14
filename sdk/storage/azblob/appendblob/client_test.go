@@ -1507,7 +1507,7 @@ func (s *AppendBlobRecordedTestsSuite) TestCopyUnsealedBlob() {
 	_require.Equal(*getResp.IsSealed, true)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestCreateAppendBlobWithTags() {
+func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	// _context := getTestContext(testName)

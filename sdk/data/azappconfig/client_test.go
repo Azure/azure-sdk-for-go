@@ -179,7 +179,7 @@ func TestClient(t *testing.T) {
 
 	settsPgr := client.NewListSettingsPager(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
 	require.NotEmpty(t, settsPgr)
-	hasMoreSetts := revPgr.More()
+	hasMoreSetts := settsPgr.More()
 	require.True(t, hasMoreSetts)
 	settsResp, err16 := settsPgr.NextPage(context.TODO())
 	require.NoError(t, err16)

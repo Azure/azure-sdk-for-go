@@ -44,7 +44,7 @@ type Client base.Client[generated.ContainerClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	authPolicy := shared.NewStorageChallengePolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
@@ -351,7 +351,7 @@ func (c *Client) NewBatchBuilder() (*BatchBuilder, error) {
 
 	switch cred := c.credential().(type) {
 	case *azcore.TokenCredential:
-		authPolicy = runtime.NewBearerTokenPolicy(*cred, []string{shared.TokenScope}, nil)
+		authPolicy = shared.NewStorageChallengePolicy(*cred)
 	case *SharedKeyCredential:
 		authPolicy = exported.NewSharedKeyCredPolicy(cred)
 	case nil:

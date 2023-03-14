@@ -34,7 +34,7 @@ type ContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainersClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ContainersClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armdataboxedge.ContainersClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

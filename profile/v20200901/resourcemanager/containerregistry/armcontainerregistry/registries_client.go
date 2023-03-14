@@ -34,7 +34,7 @@ type RegistriesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRegistriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistriesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".RegistriesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcontainerregistry.RegistriesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

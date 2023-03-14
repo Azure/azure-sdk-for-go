@@ -34,7 +34,7 @@ type RoleAssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRoleAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleAssignmentsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".RoleAssignmentsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armauthorization.RoleAssignmentsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

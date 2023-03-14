@@ -35,7 +35,7 @@ type LocalNetworkGatewaysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocalNetworkGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocalNetworkGatewaysClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".LocalNetworkGatewaysClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armnetwork.LocalNetworkGatewaysClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

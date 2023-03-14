@@ -31,7 +31,7 @@ type MetricsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMetricsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".MetricsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armmonitor.MetricsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

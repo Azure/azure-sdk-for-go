@@ -34,7 +34,7 @@ type AlertsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".AlertsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armdataboxedge.AlertsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

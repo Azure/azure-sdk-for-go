@@ -29,7 +29,7 @@ type GlobalAdministratorClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGlobalAdministratorClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GlobalAdministratorClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".GlobalAdministratorClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armauthorization.GlobalAdministratorClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

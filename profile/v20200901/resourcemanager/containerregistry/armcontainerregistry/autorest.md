@@ -46,5 +46,5 @@ directive:
       - "client.go"
       - "client_factory.go"
     where: $
-    transform: return $.replace(/moduleVersion/, "internal.ModuleVersion").replace(/moduleName/, "internal.ModuleName");
+    transform: return $.replace(/moduleVersion/, "internal.ModuleVersion").replace(/moduleName\+"/, "internal.ModuleName+\"/armcontainerregistry");
 ```

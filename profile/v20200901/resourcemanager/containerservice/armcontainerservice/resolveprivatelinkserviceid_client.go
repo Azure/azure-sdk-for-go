@@ -35,7 +35,7 @@ type ResolvePrivateLinkServiceIDClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResolvePrivateLinkServiceIDClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResolvePrivateLinkServiceIDClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ResolvePrivateLinkServiceIDClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcontainerservice.ResolvePrivateLinkServiceIDClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

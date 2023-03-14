@@ -34,7 +34,7 @@ type PermissionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PermissionsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".PermissionsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armauthorization.PermissionsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,7 @@ type SubnetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSubnetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubnetsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".SubnetsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armnetwork.SubnetsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

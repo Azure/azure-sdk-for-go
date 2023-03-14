@@ -34,7 +34,7 @@ type ManagementPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagementPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementPoliciesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ManagementPoliciesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armstorage.ManagementPoliciesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

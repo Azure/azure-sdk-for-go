@@ -34,7 +34,7 @@ type StorageAccountCredentialsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewStorageAccountCredentialsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageAccountCredentialsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".StorageAccountCredentialsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armdataboxedge.StorageAccountCredentialsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

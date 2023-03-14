@@ -37,7 +37,7 @@ type UsageAggregatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUsageAggregatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsageAggregatesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".UsageAggregatesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcommerce.UsageAggregatesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

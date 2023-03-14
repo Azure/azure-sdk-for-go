@@ -35,7 +35,7 @@ type VirtualMachineScaleSetExtensionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualMachineScaleSetExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineScaleSetExtensionsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".VirtualMachineScaleSetExtensionsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcompute.VirtualMachineScaleSetExtensionsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

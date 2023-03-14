@@ -32,7 +32,7 @@ type ProviderOperationsMetadataClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProviderOperationsMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderOperationsMetadataClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ProviderOperationsMetadataClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armauthorization.ProviderOperationsMetadataClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

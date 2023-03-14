@@ -35,7 +35,7 @@ type LoadBalancersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLoadBalancersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancersClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".LoadBalancersClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armnetwork.LoadBalancersClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

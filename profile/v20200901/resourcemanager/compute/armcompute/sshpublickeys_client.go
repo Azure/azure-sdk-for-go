@@ -35,7 +35,7 @@ type SSHPublicKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSSHPublicKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SSHPublicKeysClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".SSHPublicKeysClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcompute.SSHPublicKeysClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

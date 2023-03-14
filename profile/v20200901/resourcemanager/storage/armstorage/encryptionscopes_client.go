@@ -34,7 +34,7 @@ type EncryptionScopesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EncryptionScopesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".EncryptionScopesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armstorage.EncryptionScopesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -34,7 +34,7 @@ type AssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".AssignmentsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armpolicy.AssignmentsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

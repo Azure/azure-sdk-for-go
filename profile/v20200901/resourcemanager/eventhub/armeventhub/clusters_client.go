@@ -35,7 +35,7 @@ type ClustersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ClustersClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armeventhub.ClustersClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

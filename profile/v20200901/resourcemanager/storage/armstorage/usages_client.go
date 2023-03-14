@@ -34,7 +34,7 @@ type UsagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsagesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".UsagesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armstorage.UsagesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -34,7 +34,7 @@ type TagsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TagsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".TagsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armresources.TagsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -34,7 +34,7 @@ type WebhooksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWebhooksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebhooksClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".WebhooksClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcontainerregistry.WebhooksClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

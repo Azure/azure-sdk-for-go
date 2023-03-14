@@ -29,7 +29,7 @@ type SubscriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSubscriptionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".SubscriptionClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armsubscriptions.SubscriptionClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

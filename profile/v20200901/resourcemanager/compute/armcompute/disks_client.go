@@ -35,7 +35,7 @@ type DisksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDisksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DisksClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".DisksClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcompute.DisksClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

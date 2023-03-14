@@ -35,7 +35,7 @@ type DedicatedHostsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDedicatedHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DedicatedHostsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".DedicatedHostsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcompute.DedicatedHostsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

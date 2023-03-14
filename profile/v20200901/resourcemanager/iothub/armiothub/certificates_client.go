@@ -34,7 +34,7 @@ type CertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".CertificatesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armiothub.CertificatesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

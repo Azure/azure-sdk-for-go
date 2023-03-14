@@ -34,7 +34,7 @@ type SKUsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".SKUsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armstorage.SKUsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

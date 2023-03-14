@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(internal.ModuleName+".ClientFactory", internal.ModuleVersion, credential, options)
+	_, err := arm.NewClient(internal.ModuleName+"/armsubscriptions.ClientFactory", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,7 @@ type SecurityRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSecurityRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityRulesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".SecurityRulesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armnetwork.SecurityRulesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

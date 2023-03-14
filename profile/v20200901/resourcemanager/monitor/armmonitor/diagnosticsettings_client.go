@@ -32,7 +32,7 @@ type DiagnosticSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDiagnosticSettingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".DiagnosticSettingsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armmonitor.DiagnosticSettingsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -29,7 +29,7 @@ type TenantsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".TenantsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armsubscriptions.TenantsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

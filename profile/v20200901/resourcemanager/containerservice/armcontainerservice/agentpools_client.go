@@ -35,7 +35,7 @@ type AgentPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentPoolsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".AgentPoolsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcontainerservice.AgentPoolsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

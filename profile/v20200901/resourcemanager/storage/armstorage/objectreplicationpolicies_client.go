@@ -34,7 +34,7 @@ type ObjectReplicationPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewObjectReplicationPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ObjectReplicationPoliciesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ObjectReplicationPoliciesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armstorage.ObjectReplicationPoliciesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

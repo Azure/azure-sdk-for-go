@@ -36,7 +36,7 @@ type VaultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VaultsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".VaultsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armkeyvault.VaultsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

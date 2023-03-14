@@ -35,7 +35,7 @@ type ManagedClustersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedClustersClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ManagedClustersClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcontainerservice.ManagedClustersClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

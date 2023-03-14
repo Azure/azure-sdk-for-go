@@ -32,7 +32,7 @@ type RoleDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRoleDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleDefinitionsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".RoleDefinitionsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armauthorization.RoleDefinitionsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

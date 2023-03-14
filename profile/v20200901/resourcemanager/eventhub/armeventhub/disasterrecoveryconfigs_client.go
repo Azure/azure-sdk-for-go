@@ -35,7 +35,7 @@ type DisasterRecoveryConfigsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDisasterRecoveryConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DisasterRecoveryConfigsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".DisasterRecoveryConfigsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armeventhub.DisasterRecoveryConfigsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -36,7 +36,7 @@ type VirtualMachinesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachinesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".VirtualMachinesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armcompute.VirtualMachinesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,7 @@ type WebSiteManagementClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWebSiteManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebSiteManagementClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".WebSiteManagementClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armappservice.WebSiteManagementClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

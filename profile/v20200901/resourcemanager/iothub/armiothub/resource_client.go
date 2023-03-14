@@ -34,7 +34,7 @@ type ResourceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ResourceClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armiothub.ResourceClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

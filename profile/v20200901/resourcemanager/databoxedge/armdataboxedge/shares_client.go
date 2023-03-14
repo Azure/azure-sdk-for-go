@@ -34,7 +34,7 @@ type SharesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".SharesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armdataboxedge.SharesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

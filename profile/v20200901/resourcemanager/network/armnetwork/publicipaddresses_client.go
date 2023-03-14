@@ -35,7 +35,7 @@ type PublicIPAddressesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPublicIPAddressesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicIPAddressesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".PublicIPAddressesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armnetwork.PublicIPAddressesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

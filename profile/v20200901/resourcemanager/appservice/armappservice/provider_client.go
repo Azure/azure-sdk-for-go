@@ -34,7 +34,7 @@ type ProviderClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ProviderClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armappservice.ProviderClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

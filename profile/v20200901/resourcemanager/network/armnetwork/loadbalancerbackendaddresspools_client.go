@@ -35,7 +35,7 @@ type LoadBalancerBackendAddressPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLoadBalancerBackendAddressPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancerBackendAddressPoolsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".LoadBalancerBackendAddressPoolsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armnetwork.LoadBalancerBackendAddressPoolsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

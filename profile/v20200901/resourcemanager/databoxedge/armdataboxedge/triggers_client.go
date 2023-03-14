@@ -34,7 +34,7 @@ type TriggersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggersClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".TriggersClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armdataboxedge.TriggersClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,7 @@ type LoadBalancerOutboundRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLoadBalancerOutboundRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancerOutboundRulesClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".LoadBalancerOutboundRulesClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armnetwork.LoadBalancerOutboundRulesClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

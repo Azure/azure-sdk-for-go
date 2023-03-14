@@ -35,7 +35,7 @@ type DeploymentOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDeploymentOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentOperationsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".DeploymentOperationsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armresources.DeploymentOperationsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

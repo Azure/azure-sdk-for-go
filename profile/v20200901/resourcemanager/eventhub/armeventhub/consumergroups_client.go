@@ -36,7 +36,7 @@ type ConsumerGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConsumerGroupsClient, error) {
-	cl, err := arm.NewClient(internal.ModuleName+".ConsumerGroupsClient", internal.ModuleVersion, credential, options)
+	cl, err := arm.NewClient(internal.ModuleName+"/armeventhub.ConsumerGroupsClient", internal.ModuleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

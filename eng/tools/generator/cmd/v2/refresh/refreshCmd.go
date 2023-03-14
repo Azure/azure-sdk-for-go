@@ -55,6 +55,7 @@ type Flags struct {
 	SkipGenerateExample bool
 	GoVersion           string
 	RPs                 string
+	OriginalCommit      bool
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -66,6 +67,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.String("rps", "", "Specify RP list to refresh, seperated by ','")
+	flagSet.Bool("original-commit", false, "Whether to update the commit id, the default is false")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -78,6 +80,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
 		GoVersion:           flags.GetString(flagSet, "go-version"),
 		RPs:                 flags.GetString(flagSet, "rps"),
+		OriginalCommit:      flags.GetBool(flagSet, "original-commit"),
 	}
 }
 
@@ -101,6 +104,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 		SDKRepo:        &sdkRepo,
 		SpecCommitHash: specCommitHash,
 		SpecRepoURL:    c.flags.SwaggerRepo,
+		OriginalCommit: c.flags.OriginalCommit,
 	}
 
 	if !c.flags.SkipCreateBranch {

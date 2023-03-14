@@ -74,7 +74,7 @@ type Flags struct {
 	PackageConfig       string
 	GoVersion           string
 	Token               string
-	OriginalCommit      bool
+	UpdateSpecVersion   bool
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -89,7 +89,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("package-config", "", "Additional config for package")
 	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
-	flagSet.Bool("original-commit", false, "Whether to update the commit id, the default is false")
+	flagSet.Bool("update-spec-version", true, "Whether to update the commit id, the default is true")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -105,7 +105,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		PackageConfig:       flags.GetString(flagSet, "package-config"),
 		GoVersion:           flags.GetString(flagSet, "go-version"),
 		Token:               flags.GetString(flagSet, "token"),
-		OriginalCommit:      flags.GetBool(flagSet, "original-commit"),
+		UpdateSpecVersion:   flags.GetBool(flagSet, "update-spec-version"),
 	}
 }
 
@@ -140,7 +140,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 		SDKRepo:           &sdkRepo,
 		SpecCommitHash:    specCommitHash,
 		SpecRepoURL:       c.flags.SwaggerRepo,
-		UpdateSpecVersion: !c.flags.OriginalCommit,
+		UpdateSpecVersion: c.flags.UpdateSpecVersion,
 	}
 
 	if c.flags.SpecRPName == "" {

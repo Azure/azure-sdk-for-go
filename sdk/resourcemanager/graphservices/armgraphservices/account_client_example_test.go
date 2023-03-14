@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/graphservices/armgraphservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Get.json
 func ExampleAccountClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,13 +45,13 @@ func ExampleAccountClient_Get() {
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
 	// 	Properties: &armgraphservices.AccountResourceProperties{
-	// 		ApplicationID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
+	// 		AppID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
 	// 		ProvisioningState: to.Ptr(armgraphservices.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Create.json
 func ExampleAccountClient_BeginCreateAndUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleAccountClient_BeginCreateAndUpdate() {
 			"tag2": to.Ptr("value2"),
 		},
 		Properties: &armgraphservices.AccountResourceProperties{
-			ApplicationID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
+			AppID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
 		},
 	}, nil)
 	if err != nil {
@@ -90,14 +90,14 @@ func ExampleAccountClient_BeginCreateAndUpdate() {
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
 	// 	Properties: &armgraphservices.AccountResourceProperties{
-	// 		ApplicationID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
+	// 		AppID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
 	// 		BillingPlanID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
 	// 		ProvisioningState: to.Ptr(armgraphservices.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Update.json
 func ExampleAccountClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,14 +129,14 @@ func ExampleAccountClient_Update() {
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
 	// 	Properties: &armgraphservices.AccountResourceProperties{
-	// 		ApplicationID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
+	// 		AppID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
 	// 		BillingPlanID: to.Ptr("11111111-aaaa-1111-bbbb-111111111111"),
 	// 		ProvisioningState: to.Ptr(armgraphservices.ProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Delete.json
 func ExampleAccountClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

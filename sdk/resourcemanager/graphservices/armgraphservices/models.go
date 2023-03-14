@@ -56,7 +56,7 @@ type AccountResource struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *AccountResourceSystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -74,13 +74,28 @@ type AccountResourceList struct {
 // AccountResourceProperties - Property bag from billing account
 type AccountResourceProperties struct {
 	// REQUIRED; Customer owned application ID
-	ApplicationID *string `json:"applicationId,omitempty"`
+	AppID *string `json:"appId,omitempty"`
 
-	// READ-ONLY; Billing plan Id
+	// READ-ONLY; Billing Plan Id
 	BillingPlanID *string `json:"billingPlanId,omitempty" azure:"ro"`
 
 	// READ-ONLY; Provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// AccountResourceSystemData - Metadata pertaining to creation and last modification of the resource.
+type AccountResourceSystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
@@ -147,25 +162,4 @@ type OperationListResult struct {
 
 	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
-}
-
-// SystemData - Metadata pertaining to creation and last modification of the resource.
-type SystemData struct {
-	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-
-	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
-
-	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
-
-	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
-
-	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-
-	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }

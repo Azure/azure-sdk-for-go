@@ -1507,7 +1507,7 @@ func (s *AppendBlobRecordedTestsSuite) TestCopyUnsealedBlob() {
 	_require.Equal(*getResp.IsSealed, true)
 }
 
-func (s *AppendBlobUnrecordedTestsSuite) TestCreateAppendBlobWithTags() {
+func (s *AppendBlobRecordedTestsSuite) TestCreateAppendBlobWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	// _context := getTestContext(testName)
@@ -1597,7 +1597,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobGetPropertiesUsingVID() {
 	_require.Equal(*blobProp.IsCurrentVersion, true)
 }
 
-func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
+func (s *AppendBlobRecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -2348,7 +2348,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToCreation
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
 }
 
-func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
@@ -2890,6 +2890,8 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetBlobTags() {
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
 	_require.Nil(err)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
 
 	_, err = abClient.SetTags(context.Background(), testcommon.BasicBlobTagsMap, nil)
 	_require.Nil(err)
@@ -2918,10 +2920,8 @@ func (s *AppendBlobRecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	_, err = abClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
-	proposedLeaseIDs := []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
-
 	blobLeaseClient, err := lease.NewBlobClient(abClient, &lease.BlobClientOptions{
-		LeaseID: proposedLeaseIDs[0],
+		LeaseID: to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 	})
 	_require.NoError(err)
 	ctx := context.Background()

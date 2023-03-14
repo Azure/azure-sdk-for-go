@@ -136,11 +136,11 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash string) error {
 	log.Printf("Release generation for rp: %s, namespace: %s", c.rpName, c.namespaceName)
 	generateCtx := common.GenerateContext{
-		SDKPath:        sdkRepo.Root(),
-		SDKRepo:        &sdkRepo,
-		SpecCommitHash: specCommitHash,
-		SpecRepoURL:    c.flags.SwaggerRepo,
-		OriginalCommit: c.flags.OriginalCommit,
+		SDKPath:           sdkRepo.Root(),
+		SDKRepo:           &sdkRepo,
+		SpecCommitHash:    specCommitHash,
+		SpecRepoURL:       c.flags.SwaggerRepo,
+		UpdateSpecVersion: !c.flags.OriginalCommit,
 	}
 
 	if c.flags.SpecRPName == "" {

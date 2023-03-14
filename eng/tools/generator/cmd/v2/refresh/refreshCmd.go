@@ -100,11 +100,11 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	}
 
 	generateCtx := common.GenerateContext{
-		SDKPath:        sdkRepo.Root(),
-		SDKRepo:        &sdkRepo,
-		SpecCommitHash: specCommitHash,
-		SpecRepoURL:    c.flags.SwaggerRepo,
-		OriginalCommit: c.flags.OriginalCommit,
+		SDKPath:           sdkRepo.Root(),
+		SDKRepo:           &sdkRepo,
+		SpecCommitHash:    specCommitHash,
+		SpecRepoURL:       c.flags.SwaggerRepo,
+		UpdateSpecVersion: !c.flags.OriginalCommit,
 	}
 
 	if !c.flags.SkipCreateBranch {

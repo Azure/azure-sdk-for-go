@@ -20,14 +20,14 @@ import (
 )
 
 type GenerateContext struct {
-	SDKPath          string
-	SDKRepo          *repo.SDKRepository
-	SpecPath         string
-	SpecCommitHash   string
-	SpecReadmeFile   string
-	SpecReadmeGoFile string
-	SpecRepoURL      string
-	OriginalCommit   bool
+	SDKPath           string
+	SDKRepo           *repo.SDKRepository
+	SpecPath          string
+	SpecCommitHash    string
+	SpecReadmeFile    string
+	SpecReadmeGoFile  string
+	SpecRepoURL       string
+	UpdateSpecVersion bool
 }
 
 type GenerateResult struct {
@@ -155,7 +155,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	} else {
 		log.Printf("Change swagger config in `autorest.md` according to repo URL and commit ID...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if !ctx.OriginalCommit {
+		if ctx.UpdateSpecVersion {
 			if err := ChangeConfigWithCommitID(autorestMdPath, ctx.SpecRepoURL, ctx.SpecCommitHash, generateParam.SpecRPName); err != nil {
 				return nil, err
 			}

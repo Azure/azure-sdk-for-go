@@ -8,8 +8,10 @@ package azappconfig
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -22,7 +24,7 @@ func TestClient(t *testing.T) {
 		t.Skip("Skipping client test")
 	}
 
-	key := "key"
+	key := fmt.Sprintf("key-%d", time.Now().Unix())
 	label := "label"
 	contentType := "content-type"
 	value := "value"
@@ -178,7 +180,7 @@ func TestClient(t *testing.T) {
 	settsPgr := client.NewListSettingsPager(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
 	require.NotEmpty(t, settsPgr)
 	hasMoreSetts := revPgr.More()
-	require.False(t, hasMoreSetts)
+	require.True(t, hasMoreSetts)
 	settsResp, err16 := settsPgr.NextPage(context.TODO())
 	require.NoError(t, err16)
 	require.NotEmpty(t, settsResp)

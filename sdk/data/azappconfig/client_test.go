@@ -74,6 +74,10 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *setResp.Label)
 	require.Equal(t, contentType, *setResp.ContentType)
 	require.Equal(t, value, *setResp.Value)
+	require.NotNil(t, setResp.SyncToken)
+
+	// after changing the setting, update the sync token so we don't get cached, stale data
+	client.UpdateSyncToken(*setResp.SyncToken)
 
 	getResp3, err6 := client.GetSetting(context.TODO(), key, &GetSettingOptions{Label: &label, OnlyIfChanged: etag})
 	require.NoError(t, err6)
@@ -99,6 +103,10 @@ func TestClient(t *testing.T) {
 	require.Equal(t, key, *setResp2.Key)
 	require.Equal(t, label, *setResp2.Label)
 	require.Equal(t, value, *setResp2.Value)
+	require.NotNil(t, setResp.SyncToken)
+
+	// after changing the setting, update the sync token so we don't get cached, stale data
+	client.UpdateSyncToken(*setResp.SyncToken)
 
 	setResp3, err8 := client.SetSetting(context.TODO(), key, &value, &SetSettingOptions{Label: &label, OnlyIfUnchanged: etag})
 	require.Error(t, err8)
@@ -116,6 +124,10 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *roResp.Label)
 	require.Equal(t, value, *roResp.Value)
 	require.True(t, *roResp.IsReadOnly)
+	require.NotNil(t, setResp.SyncToken)
+
+	// after changing the setting, update the sync token so we don't get cached, stale data
+	client.UpdateSyncToken(*setResp.SyncToken)
 
 	roResp2, err10 := client.SetReadOnly(context.TODO(), key, false, &SetReadOnlyOptions{Label: &label})
 	require.NoError(t, err10)
@@ -129,6 +141,10 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *roResp2.Label)
 	require.Equal(t, value, *roResp2.Value)
 	require.False(t, *roResp2.IsReadOnly)
+	require.NotNil(t, setResp.SyncToken)
+
+	// after changing the setting, update the sync token so we don't get cached, stale data
+	client.UpdateSyncToken(*setResp.SyncToken)
 
 	roResp3, err11 := client.SetReadOnly(context.TODO(), key, true, &SetReadOnlyOptions{Label: &label, OnlyIfUnchanged: etag})
 	require.Error(t, err11)
@@ -147,6 +163,10 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *roResp4.Label)
 	require.Equal(t, value, *roResp4.Value)
 	require.True(t, *roResp4.IsReadOnly)
+	require.NotNil(t, setResp.SyncToken)
+
+	// after changing the setting, update the sync token so we don't get cached, stale data
+	client.UpdateSyncToken(*setResp.SyncToken)
 
 	roResp5, err13 := client.SetReadOnly(context.TODO(), key, false, &SetReadOnlyOptions{Label: &label, OnlyIfUnchanged: etag})
 	require.Error(t, err13)
@@ -165,6 +185,10 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *roResp6.Label)
 	require.Equal(t, value, *roResp6.Value)
 	require.False(t, *roResp6.IsReadOnly)
+	require.NotNil(t, setResp.SyncToken)
+
+	// after changing the setting, update the sync token so we don't get cached, stale data
+	client.UpdateSyncToken(*setResp.SyncToken)
 
 	any := "*"
 	revPgr := client.NewListRevisionsPager(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
@@ -199,6 +223,10 @@ func TestClient(t *testing.T) {
 	require.Equal(t, key, *delResp.Key)
 	require.Equal(t, label, *delResp.Label)
 	require.Equal(t, value, *delResp.Value)
+	require.NotNil(t, setResp.SyncToken)
+
+	// after changing the setting, update the sync token so we don't get cached, stale data
+	client.UpdateSyncToken(*setResp.SyncToken)
 
 	addResp2, err18 := client.AddSetting(context.TODO(), key, &value, &AddSettingOptions{Label: &label, ContentType: &contentType})
 	require.NoError(t, err18)

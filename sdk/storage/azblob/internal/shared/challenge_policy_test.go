@@ -37,8 +37,6 @@ func TestChallengePolicy(t *testing.T) {
 		expectedScope, format, resource string
 	}{
 		{format: challenge, resource: storageResource, expectedScope: storageScope},
-		{format: challenge, resource: storageResource, expectedScope: storageScope},
-		{format: challenge, resource: diskResource, expectedScope: diskScope},
 		{format: challenge, resource: diskResource, expectedScope: diskScope},
 	} {
 		t.Run("", func(t *testing.T) {

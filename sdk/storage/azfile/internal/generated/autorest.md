@@ -271,3 +271,16 @@ directive:
         replace(/\(client \*DirectoryClient\) listFilesAndDirectoriesSegmentCreateRequest\(/, `(client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(`).
         replace(/\(client \*DirectoryClient\) listFilesAndDirectoriesSegmentHandleResponse\(/, `(client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(`);
 ```
+
+### Fix time format for parsing the response headers: x-ms-file-creation-time, x-ms-file-last-write-time, x-ms-file-change-time
+
+``` yaml
+directive:
+  - from: zz_directory_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/fileCreationTime,\s+err\s+\:=\s+time\.Parse\(time\.RFC1123,\s+val\)/g, `fileCreationTime, err := time.Parse(ISO8601, val)`).
+        replace(/fileLastWriteTime,\s+err\s+\:=\s+time\.Parse\(time\.RFC1123,\s+val\)/g, `fileLastWriteTime, err := time.Parse(ISO8601, val)`).
+        replace(/fileChangeTime,\s+err\s+\:=\s+time\.Parse\(time\.RFC1123,\s+val\)/g, `fileChangeTime, err := time.Parse(ISO8601, val)`);
+```

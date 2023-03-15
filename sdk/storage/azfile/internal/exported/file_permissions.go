@@ -24,9 +24,6 @@ func (p *Permissions) Format(defaultFilePermissionStr string) (*string, *string)
 		return &defaultFilePermissionStr, nil
 	}
 
-	//if p.Permission != nil && p.PermissionKey != nil {
-	//	return nil, nil, fmt.Errorf("either permission string or permission key can be used")
-	//} else
 	if p.Permission == nil && p.PermissionKey == nil {
 		return &defaultFilePermissionStr, nil
 	} else {

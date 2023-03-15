@@ -7,14 +7,15 @@
 package exported
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"strings"
 	"time"
 )
 
 // SMBProperties contains the optional parameters regarding the SMB/NTFS properties for a file.
 type SMBProperties struct {
-	// NTFSFileAttributes for Files and Directories. Default value is ‘None’ for file and ‘Directory’
-	// for directory. ‘None’ can also be specified as default.
+	// NTFSFileAttributes for Files and Directories. Default value is 'None' for file and
+	// 'Directory' for directory. ‘None’ can also be specified as default.
 	Attributes *NTFSFileAttributes
 	// The Coordinated Universal Time (UTC) creation time for the file/directory. Default value is 'now'.
 	CreationTime *time.Time
@@ -23,7 +24,7 @@ type SMBProperties struct {
 }
 
 // Format returns file attributes, creation time and last write time.
-func (sp *SMBProperties) Format(defaultFileAttributes string, defaultCurrentTimeString string) (fileAttributes string, creationTime string, lastWriteTime string) {
+func (sp *SMBProperties) Format(isDir bool, defaultFileAttributes string, defaultCurrentTimeString string) (fileAttributes string, creationTime string, lastWriteTime string) {
 	if sp == nil {
 		return defaultFileAttributes, defaultCurrentTimeString, defaultCurrentTimeString
 	}
@@ -33,17 +34,20 @@ func (sp *SMBProperties) Format(defaultFileAttributes string, defaultCurrentTime
 		fileAttributes = sp.Attributes.String()
 		if fileAttributes == "" {
 			fileAttributes = defaultFileAttributes
+		} else if isDir && strings.ToLower(fileAttributes) != "none" {
+			// Directories need to have this attribute included, if setting any attributes.
+			fileAttributes += "|Directory"
 		}
 	}
 
 	creationTime = defaultCurrentTimeString
 	if sp.CreationTime != nil {
-		creationTime = sp.CreationTime.UTC().Format(time.RFC1123)
+		creationTime = sp.CreationTime.UTC().Format(generated.ISO8601)
 	}
 
 	lastWriteTime = defaultCurrentTimeString
 	if sp.LastWriteTime != nil {
-		lastWriteTime = sp.LastWriteTime.UTC().Format(time.RFC1123)
+		lastWriteTime = sp.LastWriteTime.UTC().Format(generated.ISO8601)
 	}
 
 	return

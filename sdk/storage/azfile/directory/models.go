@@ -39,7 +39,7 @@ func (o *CreateOptions) format() (fileAttributes string, fileCreationTime string
 		}
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime = o.FileSMBProperties.Format(shared.FileAttributesDirectory, shared.DefaultCurrentTimeString)
+	fileAttributes, fileCreationTime, fileLastWriteTime = o.FileSMBProperties.Format(true, shared.FileAttributesDirectory, shared.DefaultCurrentTimeString)
 
 	permission, permissionKey := o.FilePermissions.Format(shared.DefaultFilePermissionString)
 
@@ -99,7 +99,7 @@ func (o *SetPropertiesOptions) format() (fileAttributes string, fileCreationTime
 		}
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime = o.FileSMBProperties.Format(shared.DefaultPreserveString, shared.DefaultPreserveString)
+	fileAttributes, fileCreationTime, fileLastWriteTime = o.FileSMBProperties.Format(true, shared.DefaultPreserveString, shared.DefaultPreserveString)
 
 	permission, permissionKey := o.FilePermissions.Format(shared.DefaultPreserveString)
 

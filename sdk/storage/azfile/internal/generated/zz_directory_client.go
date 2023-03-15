@@ -137,21 +137,21 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
@@ -397,21 +397,21 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
@@ -736,21 +736,21 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
+		fileCreationTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
+		fileLastWriteTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
+		fileChangeTime, err := time.Parse(ISO8601, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}

@@ -21,6 +21,7 @@ import (
 const (
 	SharePrefix     = "gos"
 	DirectoryPrefix = "godir"
+	FilePrefix      = "gotestfile"
 )
 
 func GenerateShareName(testName string) string {
@@ -33,6 +34,10 @@ func GenerateEntityName(testName string) string {
 
 func GenerateDirectoryName(testName string) string {
 	return DirectoryPrefix + GenerateEntityName(testName)
+}
+
+func GenerateFileName(testName string) string {
+	return FilePrefix + GenerateEntityName(testName)
 }
 
 func ValidateFileErrorCode(_require *require.Assertions, err error, code fileerror.Code) {

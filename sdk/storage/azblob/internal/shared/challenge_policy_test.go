@@ -80,5 +80,5 @@ func TestParseTenant(t *testing.T) {
 	expected := "00000000-0000-0000-0000-000000000000"
 	sampleURL := "https://login.microsoftonline.com/" + expected
 	actual = parseTenant(sampleURL)
-	require.Equal(t, expected, actual, "tenant was not properly parsed, got %s, expected %s", actual, expected)
+	require.Equal(t, expected, actual, "tenant was not properly parsed")
 }

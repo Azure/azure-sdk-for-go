@@ -29,7 +29,7 @@ func TestChallengePolicy(t *testing.T) {
 	accessToken := "***"
 	storageResource := "https://storage.azure.com"
 	storageScope := "https://storage.azure.com/.default"
-	challenge := `Bearer authorization_id="https://login.microsoftonline.com/{tenant}", resource_id="{storageResource}"`
+	challenge := `Bearer authorization_uri="https://login.microsoftonline.com/{tenant}", resource_id="{storageResource}"`
 	diskResource := "https://disk.azure.com/"
 	diskScope := "https://disk.azure.com/.default"
 

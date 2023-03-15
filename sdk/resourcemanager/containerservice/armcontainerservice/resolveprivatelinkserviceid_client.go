@@ -32,9 +32,9 @@ type ResolvePrivateLinkServiceIDClient struct {
 }
 
 // NewResolvePrivateLinkServiceIDClient creates a new instance of ResolvePrivateLinkServiceIDClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewResolvePrivateLinkServiceIDClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResolvePrivateLinkServiceIDClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,12 +57,13 @@ func NewResolvePrivateLinkServiceIDClient(subscriptionID string, credential azco
 
 // POST - Gets the private link service ID for the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-02-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the managed cluster resource.
-// parameters - Parameters required in order to resolve a private link service ID.
-// options - ResolvePrivateLinkServiceIDClientPOSTOptions contains the optional parameters for the ResolvePrivateLinkServiceIDClient.POST
-// method.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - parameters - Parameters required in order to resolve a private link service ID.
+//   - options - ResolvePrivateLinkServiceIDClientPOSTOptions contains the optional parameters for the ResolvePrivateLinkServiceIDClient.POST
+//     method.
 func (client *ResolvePrivateLinkServiceIDClient) POST(ctx context.Context, resourceGroupName string, resourceName string, parameters PrivateLinkResource, options *ResolvePrivateLinkServiceIDClientPOSTOptions) (ResolvePrivateLinkServiceIDClientPOSTResponse, error) {
 	req, err := client.postCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
@@ -98,7 +99,7 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-02-preview")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

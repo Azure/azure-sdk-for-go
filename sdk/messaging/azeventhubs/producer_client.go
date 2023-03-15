@@ -57,7 +57,7 @@ type ProducerClient struct {
 const anyPartitionID = ""
 
 // NewProducerClient creates a ProducerClient which uses an azcore.TokenCredential for authentication. You
-// MUST call [azeventhubs.ProducerClient.Close] on this client to avoid leaking resources.
+// MUST call [ProducerClient.Close] on this client to avoid leaking resources.
 //
 // The fullyQualifiedNamespace is the Event Hubs namespace name (ex: myeventhub.servicebus.windows.net)
 // The credential is one of the credentials in the [azidentity] package.
@@ -72,7 +72,7 @@ func NewProducerClient(fullyQualifiedNamespace string, eventHub string, credenti
 }
 
 // NewProducerClientFromConnectionString creates a ProducerClient from a connection string. You
-// MUST call [azeventhubs.ProducerClient.Close] on this client to avoid leaking resources.
+// MUST call [ProducerClient.Close] on this client to avoid leaking resources.
 //
 // connectionString can be one of two formats - with or without an EntityPath key.
 //
@@ -97,7 +97,10 @@ func NewProducerClientFromConnectionString(connectionString string, eventHub str
 	}, options)
 }
 
-// EventDataBatchOptions contains optional parameters for the NewEventDataBatch function
+// EventDataBatchOptions contains optional parameters for the NewEventDataBatch function.
+//
+// If both PartitionKey and PartitionID are nil, Event Hubs will choose an arbitrary partition
+// for any events in this [EventDataBatch].
 type EventDataBatchOptions struct {
 	// MaxBytes overrides the max size (in bytes) for a batch.
 	// By default NewEventDataBatch will use the max message size provided by the service.
@@ -119,6 +122,9 @@ type EventDataBatchOptions struct {
 // EventDataBatch contains logic to make sure that the it doesn't exceed the maximum size
 // for the Event Hubs link, using it's [azeventhubs.EventDataBatch.AddEventData] function.
 // A lower size limit can also be configured through the options.
+//
+// NOTE: if options is nil or empty, Event Hubs will choose an arbitrary partition for any
+// events in this [EventDataBatch].
 //
 // If the operation fails it can return an azeventhubs.Error type if the failure is actionable.
 func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *EventDataBatchOptions) (*EventDataBatch, error) {

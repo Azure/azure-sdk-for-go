@@ -171,7 +171,14 @@ type delayPolicy struct {
 }
 
 func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	time.Sleep(p.delay)
+	if p.delay > 0 {
+		select {
+		case <-req.Raw().Context().Done():
+			return nil, req.Raw().Context().Err()
+		case <-time.After(p.delay):
+			// delay has elapsed, continue on
+		}
+	}
 	return req.Next()
 }
 
@@ -180,7 +187,7 @@ func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithBody(accessTokenRespSuccess))
 
-	timeout := 5 * time.Millisecond
+	timeout := 100 * time.Millisecond
 	dp := delayPolicy{2 * timeout}
 	mic, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
 		ClientOptions: policy.ClientOptions{

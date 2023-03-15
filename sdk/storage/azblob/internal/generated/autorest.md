@@ -385,3 +385,28 @@ directive:
       return $.
         replace(/xml:"CORS>CORSRule"/g, "xml:\"Cors>CorsRule\"");
 ```
+
+### Fix Content-Type header in submit batch request
+
+``` yaml
+directive:
+- from: 
+  - zz_container_client.go
+  - zz_service_client.go
+  where: $
+  transform: >-
+    return $.
+      replace (/req.SetBody\(body\,\s+\"application\/xml\"\)/g, `req.SetBody(body, multipartContentType)`);
+```
+
+### Fix response status code check in submit batch request
+
+``` yaml
+directive:
+- from: zz_service_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/if\s+!runtime\.HasStatusCode\(resp,\s+http\.StatusOK\)\s+\{\s*\n\t\treturn\s+ServiceClientSubmitBatchResponse\{\}\,\s+runtime\.NewResponseError\(resp\)\s*\n\t\}/g, 
+      `if !runtime.HasStatusCode(resp, http.StatusAccepted) {\n\t\treturn ServiceClientSubmitBatchResponse{}, runtime.NewResponseError(resp)\n\t}`);
+```

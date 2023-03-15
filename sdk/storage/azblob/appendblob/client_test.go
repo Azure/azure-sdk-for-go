@@ -2895,6 +2895,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetBlobTags() {
 
 	_, err = abClient.SetTags(context.Background(), testcommon.BasicBlobTagsMap, nil)
 	_require.Nil(err)
+	time.Sleep(10 * time.Second)
 
 	blobGetTagsResponse, err := abClient.GetTags(context.Background(), nil)
 	_require.Nil(err)
@@ -2932,6 +2933,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 
 	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, nil)
 	_require.NotNil(err)
+	time.Sleep(10 * time.Second)
 
 	// add lease conditions
 	_, err = abClient.SetTags(ctx, testcommon.BasicBlobTagsMap, &blob.SetTagsOptions{AccessConditions: &blob.AccessConditions{

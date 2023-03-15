@@ -5,9 +5,7 @@ The Azure Monitor Query client module is used to execute read-only queries again
 - [Logs][logs_overview] - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace][log_analytics_workspace]. The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language]. See the [Kusto to SQL cheat sheet][kusto_to_sql] for more information.
 - [Metrics][metrics_overview] - Collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
 
-Key links:
-
-[Source code][azquery_repo] | [API reference documentation][azquery_pkg_go_docs] | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | [Samples][go_samples]
+[Source code][azquery_repo] | [Package (pkg.go.dev)][azquery_pkg_go] | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | [Samples][azquery_pkg_go_samples]
 
 ## Getting started
 
@@ -143,7 +141,7 @@ comments.
 [logs_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs
 [metrics_overview]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
 [monitor_docs]: https://learn.microsoft.com/azure/azure-monitor/
-[monitor_rest_docs]: https://learn.microsoft.com/en-us/rest/api/monitor/
+[monitor_rest_docs]: https://learn.microsoft.com/rest/api/monitor/
 [multi-metrics]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics#multi-dimensional-metrics
 [service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api
 [troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/monitor/azquery/TROUBLESHOOTING.md

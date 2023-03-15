@@ -69,6 +69,7 @@ func TestChallengePolicy(t *testing.T) {
 			req, err := runtime.NewRequest(context.Background(), "GET", "https://localhost")
 			require.NoError(t, err)
 			_, err = pl.Do(req)
+			require.NoError(t, err)
 			require.True(t, authenticated, "policy should have authenticated")
 		})
 	}

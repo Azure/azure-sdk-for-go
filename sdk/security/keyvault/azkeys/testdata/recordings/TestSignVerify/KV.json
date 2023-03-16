@@ -1,0 +1,164 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakevault.local/keys/key3534672839/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azkeys/v0.8.0 (go1.19; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "97",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 02 Sep 2022 23:53:33 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "329061c9-b624-4b5f-b4ee-e4f2712f9cfb"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Unauthorized",
+          "message": "AKV10000: Request is missing a Bearer or PoP token."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault.local/keys/key3534672839/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "55",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.8.0 (go1.19; linux)"
+      },
+      "RequestBody": {
+        "crv": "P-256K",
+        "key_ops": [
+          "sign",
+          "verify"
+        ],
+        "kty": "EC"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "408",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 02 Sep 2022 23:53:33 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "d6a80cc9-34d8-4f9f-b0a1-e30cae7990bf"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://fakevault.local/keys/key3534672839/adc77336fe3a4b5a84474e48ac726856",
+          "kty": "EC",
+          "key_ops": [
+            "sign",
+            "verify"
+          ],
+          "crv": "P-256K",
+          "x": "Va1aWGxGujx5qm0O_aCIbYMS58JETP54lffqtiXOsno",
+          "y": "Kix_B24pkHAgmPmaDyCc6BGh75ehnmyfAbJwXH3vDCc"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1662162813,
+          "updated": 1662162813,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7,
+          "exportable": false
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault.local/keys/key3534672839/sign?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "70",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.8.0 (go1.19; linux)"
+      },
+      "RequestBody": {
+        "alg": "ES256K",
+        "value": "ltYuKr0-Qt5fUDMPuO_ExVmYNSeAd7IemqCzPB3wehw"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "182",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 02 Sep 2022 23:53:33 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "67378763-fda4-4159-b51b-ebbc7a979593"
+      },
+      "ResponseBody": {
+        "kid": "https://fakevault.local/keys/key3534672839/adc77336fe3a4b5a84474e48ac726856",
+        "value": "VWn0MR64dJv5SgsieK2z02X95EKqv93qH9F4fWn_QmkxdS3aytLtUpl69w4FjiQzvKLqZGoJcVyWgcaJEAPaTg"
+      }
+    },
+    {
+      "RequestUri": "https://fakevault.local/keys/key3534672839/verify?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "168",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.8.0 (go1.19; linux)"
+      },
+      "RequestBody": {
+        "alg": "ES256K",
+        "digest": "ltYuKr0-Qt5fUDMPuO_ExVmYNSeAd7IemqCzPB3wehw",
+        "value": "VWn0MR64dJv5SgsieK2z02X95EKqv93qH9F4fWn_QmkxdS3aytLtUpl69w4FjiQzvKLqZGoJcVyWgcaJEAPaTg"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "14",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 02 Sep 2022 23:53:34 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "6c06186c-18ca-4b0a-a9aa-14679bec4176"
+      },
+      "ResponseBody": {
+        "value": true
+      }
+    }
+  ],
+  "Variables": {}
+}

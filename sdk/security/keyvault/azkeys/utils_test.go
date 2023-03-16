@@ -23,8 +23,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -163,7 +163,7 @@ func startTest(t *testing.T, MHSMtest bool) *azkeys.Client {
 	if recording.GetRecordMode() != recording.PlaybackMode && MHSMtest && !enableHSM {
 		t.Skip("set AZURE_MANAGEDHSM_URL to run this test")
 	}
-	err := recording.Start(t, "sdk/keyvault/azkeys/testdata", nil)
+	err := recording.Start(t, "sdk/security/keyvault/azkeys/testdata", nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

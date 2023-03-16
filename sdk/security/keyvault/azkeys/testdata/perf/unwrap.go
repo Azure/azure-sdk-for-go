@@ -14,8 +14,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys/crypto"
 )
 
 type unwrapTestOptions struct{}

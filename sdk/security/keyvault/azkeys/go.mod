@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
+module github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
 
 go 1.18
 
@@ -6,8 +6,8 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0
-	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.7.1
-	github.com/stretchr/testify v1.7.0
+	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v0.8.0
+	github.com/stretchr/testify v1.8.2
 )
 
 require (
@@ -24,5 +24,5 @@ require (
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -1,10 +1,11 @@
 # Release History
 
-## 0.11.1 (Unreleased)
+## 0.12.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Moved from `sdk/keyvault/azsecrets` to `sdk/security/keyvault/azsecrets`
 
 ### Bugs Fixed
 

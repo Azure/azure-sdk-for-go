@@ -9,7 +9,7 @@ trigger:
       - release/*
   paths:
     include:
-    - sdk/keyvault/azsecrets
+    - sdk/security/keyvault/azsecrets
 
 pr:
   branches:
@@ -20,10 +20,10 @@ pr:
       - release/*
   paths:
     include:
-    - sdk/keyvault/azsecrets
+    - sdk/security/keyvault/azsecrets
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'keyvault/azsecrets'
+    ServiceDirectory: 'security/keyvault/azsecrets'
     RunLiveTests: true

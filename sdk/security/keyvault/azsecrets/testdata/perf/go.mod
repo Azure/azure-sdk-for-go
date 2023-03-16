@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/testdata/perf
+module github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets/testdata/perf
 
 go 1.18
 
@@ -6,11 +6,11 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.23.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.14.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v0.9.2
-	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets v0.7.0
+	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets v0.7.0
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.3.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v0.3.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.4.0 // indirect
 	github.com/golang-jwt/jwt v3.2.1+incompatible // indirect
 	github.com/google/uuid v1.1.1 // indirect

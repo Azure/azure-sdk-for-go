@@ -8,7 +8,7 @@ export-clients: true
 go: true
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/e2ef44b87405b412403ccb005bfb3975411adf60/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/secrets.json
 license-header: MICROSOFT_MIT_NO_VERSION
-module: github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
+module: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets
 openapi-type: "data-plane"
 output-folder: ../azsecrets
 override-client-name: Client

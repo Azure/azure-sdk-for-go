@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
 	"github.com/stretchr/testify/require"
 )
 
@@ -109,7 +109,7 @@ func TestMain(m *testing.M) {
 }
 
 func startTest(t *testing.T) *azsecrets.Client {
-	err := recording.Start(t, "sdk/keyvault/azsecrets/testdata", nil)
+	err := recording.Start(t, "sdk/security/keyvault/azsecrets/testdata", nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

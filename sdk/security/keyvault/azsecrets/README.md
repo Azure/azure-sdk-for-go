@@ -13,7 +13,7 @@ Azure Key Vault helps solve the following problems:
 
 Install `azsecrets` and `azidentity` with `go get`:
 ```
-go get github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
+go get github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 [azidentity][azure_identity] is used for Azure Active Directory authentication as demonstrated below.
@@ -38,7 +38,7 @@ Constructing the client also requires your vault's URL, which you can get from t
 ```golang
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
 )
 
 func main() {

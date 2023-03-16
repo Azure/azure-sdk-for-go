@@ -153,6 +153,7 @@ func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 
 // ForceCloseHandles operation closes a handle or handles opened on a directory.
 //   - handleID - Specifies the handle ID to be closed. Use an asterisk (*) as a wildcard string to specify all handles.
+//
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/force-close-handles.
 func (d *Client) ForceCloseHandles(ctx context.Context, handleID string, options *ForceCloseHandlesOptions) (ForceCloseHandlesResponse, error) {
 	opts := options.format()

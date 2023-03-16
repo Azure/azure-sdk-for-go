@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseSkusList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9565a97e3efbeb3691c9100d5473b0a884c1b786/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseSkusList.json
 func ExampleSKUsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleSKUsClient_NewListPager() {
 		// 			},
 		// 			ResourceType: to.Ptr("Microsoft.Cache/redisEnterprise"),
 		// 			SKUDetails: &armredisenterprise.SKUDetail{
-		// 				Name: to.Ptr(armredisenterprise.Name("Enterprise_E1")),
+		// 				Name: to.Ptr(armredisenterprise.SKUName("Enterprise_E1")),
 		// 			},
 		// 		},
 		// 		{
@@ -74,7 +74,7 @@ func ExampleSKUsClient_NewListPager() {
 		// 			},
 		// 			ResourceType: to.Ptr("Microsoft.Cache/redisEnterprise"),
 		// 			SKUDetails: &armredisenterprise.SKUDetail{
-		// 				Name: to.Ptr(armredisenterprise.NameEnterpriseE10),
+		// 				Name: to.Ptr(armredisenterprise.SKUNameEnterpriseE10),
 		// 			},
 		// 		},
 		// 		{
@@ -92,7 +92,7 @@ func ExampleSKUsClient_NewListPager() {
 		// 			},
 		// 			ResourceType: to.Ptr("Microsoft.Cache/redisEnterprise"),
 		// 			SKUDetails: &armredisenterprise.SKUDetail{
-		// 				Name: to.Ptr(armredisenterprise.NameEnterpriseE20),
+		// 				Name: to.Ptr(armredisenterprise.SKUNameEnterpriseE20),
 		// 			},
 		// 		},
 		// 		{
@@ -110,7 +110,7 @@ func ExampleSKUsClient_NewListPager() {
 		// 			},
 		// 			ResourceType: to.Ptr("Microsoft.Cache/redisEnterprise"),
 		// 			SKUDetails: &armredisenterprise.SKUDetail{
-		// 				Name: to.Ptr(armredisenterprise.NameEnterpriseE50),
+		// 				Name: to.Ptr(armredisenterprise.SKUNameEnterpriseE50),
 		// 			},
 		// 		},
 		// 		{
@@ -128,7 +128,7 @@ func ExampleSKUsClient_NewListPager() {
 		// 			},
 		// 			ResourceType: to.Ptr("Microsoft.Cache/redisEnterprise"),
 		// 			SKUDetails: &armredisenterprise.SKUDetail{
-		// 				Name: to.Ptr(armredisenterprise.NameEnterpriseE100),
+		// 				Name: to.Ptr(armredisenterprise.SKUNameEnterpriseE100),
 		// 			},
 		// 		},
 		// 		{
@@ -146,7 +146,7 @@ func ExampleSKUsClient_NewListPager() {
 		// 			},
 		// 			ResourceType: to.Ptr("Microsoft.Cache/redisEnterprise"),
 		// 			SKUDetails: &armredisenterprise.SKUDetail{
-		// 				Name: to.Ptr(armredisenterprise.NameEnterpriseFlashF300),
+		// 				Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
 		// 			},
 		// 		},
 		// 		{
@@ -164,7 +164,7 @@ func ExampleSKUsClient_NewListPager() {
 		// 			},
 		// 			ResourceType: to.Ptr("Microsoft.Cache/redisEnterprise"),
 		// 			SKUDetails: &armredisenterprise.SKUDetail{
-		// 				Name: to.Ptr(armredisenterprise.NameEnterpriseFlashF700),
+		// 				Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF700),
 		// 			},
 		// 		},
 		// 		{
@@ -182,7 +182,7 @@ func ExampleSKUsClient_NewListPager() {
 		// 			},
 		// 			ResourceType: to.Ptr("Microsoft.Cache/redisEnterprise"),
 		// 			SKUDetails: &armredisenterprise.SKUDetail{
-		// 				Name: to.Ptr(armredisenterprise.NameEnterpriseFlashF1500),
+		// 				Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF1500),
 		// 			},
 		// 	}},
 		// }

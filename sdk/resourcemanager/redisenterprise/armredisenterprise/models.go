@@ -699,7 +699,7 @@ type SKU struct {
 // SKUDetail - Information about Sku
 type SKUDetail struct {
 	// The type of RedisEnterprise cluster to deploy. Possible values: (EnterpriseE10, EnterpriseFlashF300 etc.)
-	Name *Name `json:"name,omitempty"`
+	Name *SKUName `json:"name,omitempty"`
 }
 
 // SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.

@@ -6,7 +6,7 @@ export-clients: true
 go: true
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/37cd8dfac3c570a24bb645b31c012d12efb760df/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/certificates.json
 license-header: MICROSOFT_MIT_NO_VERSION
-module: github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates
+module: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates
 openapi-type: "data-plane"
 output-folder: ../azcertificates
 override-client-name: Client

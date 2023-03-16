@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates"
 )
 
 var client *azcertificates.Client

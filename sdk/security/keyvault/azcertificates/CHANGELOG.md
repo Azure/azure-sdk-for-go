@@ -1,10 +1,11 @@
 # Release History
 
-## 0.8.1 (Unreleased)
+## 0.9.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Moved module from `sdk/keyvault/azadmin` to `sdk/security/keyvault/azadmin`
 
 ### Bugs Fixed
 

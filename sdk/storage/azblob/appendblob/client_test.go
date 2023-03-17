@@ -688,6 +688,8 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
+
 	abName := testcommon.GenerateBlobName(testName)
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
@@ -724,6 +726,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	abName := testcommon.GenerateBlobName(testName)
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
@@ -756,6 +759,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetLegalHold() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainerUsingManagementClient(_require, testcommon.TestAccountImmutable, containerName)
 
 	abName := testcommon.GenerateBlobName(testName)
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)

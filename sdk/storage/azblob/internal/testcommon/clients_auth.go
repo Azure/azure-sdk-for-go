@@ -11,6 +11,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"strings"
 	"testing"
@@ -365,4 +367,24 @@ func GetAccountSAS(permissions sas.AccountPermissions, resourceTypes sas.Account
 	}
 
 	return sasQueryParams.Encode(), nil
+}
+
+func DeleteContainerUsingManagementClient(_require *require.Assertions, accountType TestAccountType, containerName string) {
+	accountName, err := GetRequiredEnv(string(accountType) + AccountNameEnvVar)
+	_require.NoError(err)
+
+	subscriptionID, err := GetRequiredEnv(SubscriptionID)
+	_require.NoError(err)
+
+	resourceGroupName, err := GetRequiredEnv(ResourceGroupName)
+	_require.NoError(err)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	managementClient, err := armstorage.NewBlobContainersClient(subscriptionID, cred, nil)
+	_require.NoError(err)
+
+	_, err = managementClient.Delete(context.Background(), resourceGroupName, accountName, containerName, nil)
+	_require.NoError(err)
 }

@@ -12,6 +12,7 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"io"
 	"net/url"
@@ -3460,12 +3461,65 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 
 	_, err = bbClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobImmutableDueToPolicy)
 
 	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
 	_require.Nil(err)
 
 	_, err = bbClient.Delete(context.Background(), nil)
 	_require.Nil(err)
+
+	//accountName, err := testcommon.GetRequiredEnv(string(testcommon.TestAccountImmutable) + testcommon.AccountNameEnvVar)
+	//_require.NoError(err)
+	//
+	//subscriptionID, err := testcommon.GetRequiredEnv(testcommon.SubscriptionID)
+	//_require.NoError(err)
+	//
+	//resourceGroupName, err := testcommon.GetRequiredEnv(testcommon.SubscriptionID)
+	//_require.NoError(err)
+	//
+	//tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")
+	//if !ok {
+	//	panic("AZURE_STORAGE_TENANT_ID could not be found")
+	//}
+	//clientID, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_ID")
+	//if !ok {
+	//	panic("AZURE_STORAGE_CLIENT_ID could not be found")
+	//}
+	//clientSecret, ok := os.LookupEnv("AZURE_STORAGE_CLIENT_SECRET")
+	//if !ok {
+	//	panic("AZURE_STORAGE_CLIENT_SECRET could not be found")
+	//}
+	//
+	//cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	//_require.NoError(err)
+	//
+	//cl, err := armstorage.NewBlobContainersClient(subscriptionID, cred, nil)
+	//_require.NoError(err)
+	//
+	//_, err = cl.Delete(context.Background(), resourceGroupName, accountName, containerName, nil)
+	//_require.NoError(err)
+}
+
+func (s *BlobUnrecordedTestsSuite) TestTokenCredential() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	accountName, err := testcommon.GetRequiredEnv(testcommon.AccountNameEnvVar)
+	_require.NoError(err)
+
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	svcClient, err := service.NewClient(serviceURL, cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClient := svcClient.NewContainerClient(containerName)
+
+	_, err = cntClient.Create(context.Background(), nil)
+	_require.NoError(err)
 }
 
 func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {

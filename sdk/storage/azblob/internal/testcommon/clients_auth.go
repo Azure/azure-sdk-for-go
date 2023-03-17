@@ -370,6 +370,10 @@ func GetAccountSAS(permissions sas.AccountPermissions, resourceTypes sas.Account
 }
 
 func DeleteContainerUsingManagementClient(_require *require.Assertions, accountType TestAccountType, containerName string) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return
+	}
+
 	accountName, err := GetRequiredEnv(string(accountType) + AccountNameEnvVar)
 	_require.NoError(err)
 

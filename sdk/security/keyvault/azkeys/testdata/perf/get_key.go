@@ -7,7 +7,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -49,7 +48,7 @@ func newGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 		},
 	})
 
-	_, err = client.CreateRSAKey(ctx, d.keyName, &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))})
+	_, err = client.CreateKey(ctx, d.keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.JSONWebKeyTypeRSA), KeySize: to.Ptr(int32(2048))}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -59,12 +58,7 @@ func newGetKeyTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 }
 
 func (gct *getKeyTest) GlobalCleanup(ctx context.Context) error {
-	poller, err := gct.client.BeginDeleteKey(ctx, gct.keyName, nil)
-	if err != nil {
-		return err
-	}
-
-	_, err = poller.PollUntilDone(ctx, 500*time.Millisecond)
+	_, err := gct.client.DeleteKey(ctx, gct.keyName, nil)
 	if err != nil {
 		return err
 	}
@@ -87,7 +81,7 @@ func (gct *getKeyTest) NewPerfTest(ctx context.Context, options *perf.PerfTestOp
 }
 
 func (gcpt *getKeyPerfTest) Run(ctx context.Context) error {
-	_, err := gcpt.client.GetKey(ctx, gcpt.keyName, nil)
+	_, err := gcpt.client.GetKey(ctx, gcpt.keyName, "", nil)
 	return err
 }
 

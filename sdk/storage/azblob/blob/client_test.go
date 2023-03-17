@@ -3475,7 +3475,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 	//subscriptionID, err := testcommon.GetRequiredEnv(testcommon.SubscriptionID)
 	//_require.NoError(err)
 	//
-	//resourceGroupName, err := testcommon.GetRequiredEnv(testcommon.SubscriptionID)
+	//resourceGroupName, err := testcommon.GetRequiredEnv(testcommon.ResourceGroupName)
 	//_require.NoError(err)
 	//
 	//tenantID, ok := os.LookupEnv("AZURE_STORAGE_TENANT_ID")

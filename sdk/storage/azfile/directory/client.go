@@ -223,7 +223,7 @@ func (d *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 		return "", err
 	}
 
-	qps, err := sas.FileSignatureValues{
+	qps, err := sas.SignatureValues{
 		Version:             sas.Version,
 		Protocol:            sas.ProtocolHTTPS,
 		ShareName:           urlParts.ShareName,

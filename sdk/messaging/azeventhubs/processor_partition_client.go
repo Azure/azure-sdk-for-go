@@ -16,7 +16,7 @@ import "context"
 // NOTE: If you do NOT want to use dynamic load balancing, and would prefer to track state and ownership
 // manually, use the [ConsumerClient] instead.
 //
-// [example_consuming_with_checkpoints_test.go]: ./example_consuming_with_checkpoints_test.go
+// [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 type ProcessorPartitionClient struct {
 	partitionID           string
 	innerClient           *PartitionClient

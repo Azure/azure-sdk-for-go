@@ -97,7 +97,7 @@ func NewProducerClientFromConnectionString(connectionString string, eventHub str
 	}, options)
 }
 
-// EventDataBatchOptions contains optional parameters for the NewEventDataBatch function.
+// EventDataBatchOptions contains optional parameters for the [ProducerClient.NewEventDataBatch] function.
 //
 // If both PartitionKey and PartitionID are nil, Event Hubs will choose an arbitrary partition
 // for any events in this [EventDataBatch].

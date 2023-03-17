@@ -101,3 +101,6 @@ producerClient.GetEventHubProperties(context.TODO(), nil)
 producerClient.GetPartitionProperties(context.TODO(), "partition-id", nil)
 ```
 
+## Migrating from a previous checkpoint store
+
+See here for an example: [link](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_checkpoint_migration_test.go)

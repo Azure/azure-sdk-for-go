@@ -124,7 +124,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 			return err
 		}
 
-		shortConsumerID := string(cc.ID()[0:5])
+		shortConsumerID := string(cc.InstanceID()[0:5])
 
 		go func() {
 			for {

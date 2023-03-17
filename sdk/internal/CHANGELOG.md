@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.3 (Unreleased)
+## 1.2.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2023-03-02)
+
+### Features Added
+
+* Add random alphanumeric string generation support for test-proxy recording framework.
+
+### Bugs Fixed
+
+* Store RNG seed in recordings.
 
 ## 1.1.2 (2022-12-12)
 

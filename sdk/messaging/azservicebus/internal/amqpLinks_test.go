@@ -102,7 +102,7 @@ func TestAMQPLinksBasic(t *testing.T) {
 }
 
 func TestAMQPLinksLive(t *testing.T) {
-	// we're not going to use this client for tehse tests.
+	// we're not going to use this client for these tests.
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
 	defer cleanup()
 
@@ -172,6 +172,56 @@ func TestAMQPLinksLive(t *testing.T) {
 	require.NoError(t, err)
 
 	assertLinks(t, lwr)
+}
+
+// TestAMQPLinksCBSLinkStillOpen makes sure we can recover from an incompletely
+// closed $cbs link, which can happen if a user cancels and we can't properly close
+// the link as a result.
+func TestAMQPLinksCBSLinkStillOpen(t *testing.T) {
+	// we're not going to use this client for these tests.
+	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
+	defer cleanup()
+
+	cs := test.GetConnectionString(t)
+	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
+	require.NoError(t, err)
+
+	defer func() { _ = ns.Close(false) }()
+
+	session, oldConnID, err := ns.NewAMQPSession(context.Background())
+	require.NoError(t, err)
+
+	// opening a Sender to the $cbs endpoint. This endpoint can only be opened by a single
+	// sender/receiver pair in a connection.
+	_, err = session.NewSender(context.Background(), "$cbs", nil)
+	require.NoError(t, err)
+
+	links := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
+	})
+
+	var lwid *LinksWithID
+
+	err = links.Retry(context.Background(), exported.EventConn, "test", func(ctx context.Context, innerLwid *LinksWithID, args *utils.RetryFnArgs) error {
+		lwid = innerLwid
+		return nil
+	}, exported.RetryOptions{
+		RetryDelay:    -1,
+		MaxRetryDelay: time.Millisecond,
+	})
+
+	defer func() {
+		err := links.Close(context.Background(), true)
+		require.NoError(t, err)
+	}()
+
+	require.NoError(t, err)
+	require.Equal(t, oldConnID+1, lwid.ID.Conn, "Connection gets incremented since it had to be reset")
 }
 
 func TestAMQPLinksLiveRecoverLink(t *testing.T) {

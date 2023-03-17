@@ -8,9 +8,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
@@ -56,9 +56,12 @@ func newListSecretsTest(ctx context.Context, options perf.PerfTestOptions) (perf
 			Transport: options.Transporter,
 		},
 	})
+	if err != nil {
+		return nil, err
+	}
 
 	for i := 0; i < getListSecretsTestOpts.count; i++ {
-		_, err = client.SetSecret(ctx, fmt.Sprintf("%s%d", d.secretName, i), "secret-value", nil)
+		_, err = client.SetSecret(ctx, fmt.Sprintf("%s%d", d.secretName, i), azsecrets.SetSecretParameters{Value: to.Ptr("secret-value")}, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -70,12 +73,7 @@ func newListSecretsTest(ctx context.Context, options perf.PerfTestOptions) (perf
 
 func (gct *listSecretsTest) GlobalCleanup(ctx context.Context) error {
 	for i := 0; i < getListSecretsTestOpts.count; i++ {
-		poller, err := gct.client.BeginDeleteSecret(ctx, fmt.Sprintf("%s%d", gct.secretName, i), nil)
-		if err != nil {
-			return err
-		}
-
-		_, err = poller.PollUntilDone(ctx, 500*time.Millisecond)
+		_, err := gct.client.DeleteSecret(ctx, fmt.Sprintf("%s%d", gct.secretName, i), nil)
 		if err != nil {
 			return err
 		}
@@ -102,7 +100,7 @@ func (gct *listSecretsTest) NewPerfTest(ctx context.Context, options *perf.PerfT
 }
 
 func (gcpt *listSecretsPerfTest) Run(ctx context.Context) error {
-	pager := gcpt.client.ListPropertiesOfSecrets(nil)
+	pager := gcpt.client.NewListSecretsPager(nil)
 	for pager.More() {
 		_, err := pager.NextPage(ctx)
 		if err != nil {

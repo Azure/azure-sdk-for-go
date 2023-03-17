@@ -7,9 +7,9 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
@@ -47,8 +47,11 @@ func newGetSecretTest(ctx context.Context, options perf.PerfTestOptions) (perf.G
 			Transport: options.Transporter,
 		},
 	})
+	if err != nil {
+		return nil, err
+	}
 
-	_, err = client.SetSecret(ctx, d.secretName, "secret-value", nil)
+	_, err = client.SetSecret(ctx, d.secretName, azsecrets.SetSecretParameters{Value: to.Ptr("secret-value")}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -58,12 +61,7 @@ func newGetSecretTest(ctx context.Context, options perf.PerfTestOptions) (perf.G
 }
 
 func (gct *getSecretTest) GlobalCleanup(ctx context.Context) error {
-	poller, err := gct.client.BeginDeleteSecret(ctx, gct.secretName, nil)
-	if err != nil {
-		return err
-	}
-
-	_, err = poller.PollUntilDone(ctx, 500*time.Millisecond)
+	_, err := gct.client.DeleteSecret(ctx, gct.secretName, nil)
 	if err != nil {
 		return err
 	}
@@ -86,7 +84,7 @@ func (gct *getSecretTest) NewPerfTest(ctx context.Context, options *perf.PerfTes
 }
 
 func (gcpt *getSecretPerfTest) Run(ctx context.Context) error {
-	_, err := gcpt.client.GetSecret(ctx, gcpt.secretName, nil)
+	_, err := gcpt.client.GetSecret(ctx, gcpt.secretName, "", nil)
 	return err
 }
 

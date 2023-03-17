@@ -2,7 +2,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets/testdat
 
 go 1.18
 
-replace github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets v0.7.0 => ../../azsecrets
+replace github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets v0.7.0 => ../..
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.23.0

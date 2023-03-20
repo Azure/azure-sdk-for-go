@@ -276,6 +276,31 @@ func FuncFilter(changelog *model.Changelog) {
 
 	if changelog.Modified.HasBreakingChanges() {
 		funcOperation(changelog.Modified.BreakingChanges.Removed)
+
+		// function operation parameters from interface{} to any is not a breaking change
+		for f, v := range changelog.Modified.BreakingChanges.Funcs {
+			from := strings.Split(v.Params.From, ",")
+			to := strings.Split(v.Params.To, ",")
+			if len(from) != len(to) {
+				continue
+			}
+
+			flag := false
+			for i := range from {
+				if strings.TrimSpace(from[i]) != strings.TrimSpace(to[i]) {
+					if strings.TrimSpace(from[i]) == "interface{}" && strings.TrimSpace(to[i]) == "any" {
+						flag = true
+					} else {
+						flag = false
+						break
+					}
+				}
+			}
+
+			if flag {
+				delete(changelog.Modified.BreakingChanges.Funcs, f)
+			}
+		}
 	}
 }
 

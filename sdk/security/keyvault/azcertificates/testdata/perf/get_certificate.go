@@ -7,12 +7,11 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates"
 )
 
 type getCertificatesTestOptions struct{}
@@ -52,11 +51,7 @@ func newGetCertificateTest(ctx context.Context, options perf.PerfTestOptions) (p
 		return nil, err
 	}
 
-	poller, err := client.BeginCreateCertificate(ctx, d.certificateName, azcertificates.NewDefaultCertificatePolicy(), nil)
-	if err != nil {
-		return nil, err
-	}
-	_, err = poller.PollUntilDone(ctx, 500*time.Millisecond)
+	_, err = client.CreateCertificate(ctx, d.certificateName, azcertificates.CreateCertificateParameters{}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -66,12 +61,7 @@ func newGetCertificateTest(ctx context.Context, options perf.PerfTestOptions) (p
 }
 
 func (gct *getCertificateTest) GlobalCleanup(ctx context.Context) error {
-	poller, err := gct.client.BeginDeleteCertificate(ctx, gct.certificateName, nil)
-	if err != nil {
-		return err
-	}
-
-	_, err = poller.PollUntilDone(ctx, 500*time.Millisecond)
+	_, err := gct.client.DeleteCertificate(ctx, gct.certificateName, nil)
 	if err != nil {
 		return err
 	}
@@ -98,7 +88,7 @@ func (gct *getCertificateTest) NewPerfTest(ctx context.Context, options *perf.Pe
 }
 
 func (gcpt *getCertificatePerfTest) Run(ctx context.Context) error {
-	_, err := gcpt.client.GetCertificate(ctx, gcpt.certificateName, nil)
+	_, err := gcpt.client.GetCertificate(ctx, gcpt.certificateName, "", nil)
 	return err
 }
 

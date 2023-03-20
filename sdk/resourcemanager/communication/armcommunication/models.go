@@ -56,9 +56,6 @@ type DomainProperties struct {
 	// Describes whether user engagement tracking is enabled or disabled.
 	UserEngagementTracking *UserEngagementTracking `json:"userEngagementTracking,omitempty"`
 
-	// Collection of valid sender usernames. This is a key-value pair where key=username and value=display name.
-	ValidSenderUsernames map[string]*string `json:"validSenderUsernames,omitempty"`
-
 	// READ-ONLY; The location where the Domains resource data is stored at rest.
 	DataLocation *string `json:"dataLocation,omitempty" azure:"ro"`
 
@@ -125,7 +122,7 @@ type DomainResource struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
@@ -184,7 +181,7 @@ type DomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsClientListByEmailServiceResourceOptions contains the optional parameters for the DomainsClient.ListByEmailServiceResource
+// DomainsClientListByEmailServiceResourceOptions contains the optional parameters for the DomainsClient.NewListByEmailServiceResourcePager
 // method.
 type DomainsClientListByEmailServiceResourceOptions struct {
 	// placeholder for future optional parameters
@@ -210,7 +207,7 @@ type EmailServiceResource struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
@@ -262,13 +259,13 @@ type EmailServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EmailServicesClientListByResourceGroupOptions contains the optional parameters for the EmailServicesClient.ListByResourceGroup
+// EmailServicesClientListByResourceGroupOptions contains the optional parameters for the EmailServicesClient.NewListByResourceGroupPager
 // method.
 type EmailServicesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EmailServicesClientListBySubscriptionOptions contains the optional parameters for the EmailServicesClient.ListBySubscription
+// EmailServicesClientListBySubscriptionOptions contains the optional parameters for the EmailServicesClient.NewListBySubscriptionPager
 // method.
 type EmailServicesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -283,7 +280,7 @@ type EmailServicesClientListVerifiedExchangeOnlineDomainsOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -387,20 +384,15 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegenerateKeyParameters - Parameters describes the request to regenerate access keys
-type RegenerateKeyParameters struct {
-	// The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive).
-	KeyType *KeyType `json:"keyType,omitempty"`
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
@@ -411,6 +403,91 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RegenerateKeyParameters - Parameters describes the request to regenerate access keys
+type RegenerateKeyParameters struct {
+	// The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive).
+	KeyType *KeyType `json:"keyType,omitempty"`
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SenderUsernameProperties - A class that describes the properties of a SenderUsername resource.
+type SenderUsernameProperties struct {
+	// REQUIRED; A sender senderUsername to be used when sending emails.
+	Username *string `json:"username,omitempty"`
+
+	// The display name for the senderUsername.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// READ-ONLY; The location where the SenderUsername resource data is stored at rest.
+	DataLocation *string `json:"dataLocation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the resource. Unknown is the default state for Communication Services.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// SenderUsernameResource - A class representing a SenderUsername resource.
+type SenderUsernameResource struct {
+	// The properties of a SenderUsername resource.
+	Properties *SenderUsernameProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SenderUsernameResourceCollection - A class representing a Domains SenderUsernames collection.
+type SenderUsernameResourceCollection struct {
+	// The URL the client should use to fetch the next page (per server side paging).
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of SenderUsernames
+	Value []*SenderUsernameResource `json:"value,omitempty"`
+}
+
+// SenderUsernamesClientCreateOrUpdateOptions contains the optional parameters for the SenderUsernamesClient.CreateOrUpdate
+// method.
+type SenderUsernamesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SenderUsernamesClientDeleteOptions contains the optional parameters for the SenderUsernamesClient.Delete method.
+type SenderUsernamesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SenderUsernamesClientGetOptions contains the optional parameters for the SenderUsernamesClient.Get method.
+type SenderUsernamesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SenderUsernamesClientListByDomainsOptions contains the optional parameters for the SenderUsernamesClient.NewListByDomainsPager
+// method.
+type SenderUsernamesClientListByDomainsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ServiceKeys - A class representing the access keys of a CommunicationService.
@@ -463,7 +540,7 @@ type ServiceResource struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
@@ -512,18 +589,6 @@ type ServicesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// ServicesClientBeginRegenerateKeyOptions contains the optional parameters for the ServicesClient.BeginRegenerateKey method.
-type ServicesClientBeginRegenerateKeyOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
-type ServicesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
 // method.
 type ServicesClientCheckNameAvailabilityOptions struct {
@@ -541,18 +606,30 @@ type ServicesClientLinkNotificationHubOptions struct {
 	LinkNotificationHubParameters *LinkNotificationHubParameters
 }
 
-// ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup method.
+// ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.NewListByResourceGroupPager
+// method.
 type ServicesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription method.
+// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.NewListBySubscriptionPager
+// method.
 type ServicesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ServicesClientListKeysOptions contains the optional parameters for the ServicesClient.ListKeys method.
 type ServicesClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientRegenerateKeyOptions contains the optional parameters for the ServicesClient.RegenerateKey method.
+type ServicesClientRegenerateKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientUpdateOptions contains the optional parameters for the ServicesClient.Update method.
+type ServicesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -592,7 +669,7 @@ type TrackedResource struct {
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
@@ -609,9 +686,6 @@ type TrackedResource struct {
 type UpdateDomainProperties struct {
 	// Describes whether user engagement tracking is enabled or disabled.
 	UserEngagementTracking *UserEngagementTracking `json:"userEngagementTracking,omitempty"`
-
-	// Collection of valid sender usernames. This is a key-value pair where key=username and value=display name.
-	ValidSenderUsernames map[string]*string `json:"validSenderUsernames,omitempty"`
 }
 
 // UpdateDomainRequestParameters - A class that describes the PATCH request parameters of a Domains resource.

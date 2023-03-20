@@ -7,8 +7,11 @@
 package file
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -39,10 +42,7 @@ type CopyFileSMBInfo = generated.CopyFileSMBInfo
 // HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
 // ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
 // which has an offset but no zero value count indicates from the offset to the resource's end.
-type HTTPRange struct {
-	Offset int64
-	Count  int64
-}
+type HTTPRange = exported.HTTPRange
 
 // ShareFileRangeList - The list of file ranges.
 type ShareFileRangeList = generated.ShareFileRangeList
@@ -68,12 +68,43 @@ type CreateOptions struct {
 	Metadata map[string]*string
 }
 
+func (o *CreateOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
+	createOptions *generated.FileClientCreateOptions, fileHTTPHeaders *generated.ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
+	if o == nil {
+		return shared.FileAttributesNone, shared.DefaultCurrentTimeString, shared.DefaultCurrentTimeString, &generated.FileClientCreateOptions{
+			FilePermission: to.Ptr(shared.DefaultFilePermissionString),
+		}, nil, nil
+	}
+
+	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.Format(false, shared.FileAttributesNone, shared.DefaultCurrentTimeString)
+
+	permission, permissionKey := o.Permissions.Format(shared.DefaultFilePermissionString)
+
+	createOptions = &generated.FileClientCreateOptions{
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+		Metadata:          o.Metadata,
+	}
+
+	fileHTTPHeaders = o.HTTPHeaders
+	leaseAccessConditions = o.LeaseAccessConditions
+
+	return
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // DeleteOptions contains the optional parameters for the Client.Delete method.
 type DeleteOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *DeleteOptions) format() (*generated.FileClientDeleteOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+	return nil, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -84,6 +115,16 @@ type GetPropertiesOptions struct {
 	ShareSnapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *GetPropertiesOptions) format() (*generated.FileClientGetPropertiesOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return &generated.FileClientGetPropertiesOptions{
+		Sharesnapshot: o.ShareSnapshot,
+	}, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -103,6 +144,30 @@ type SetHTTPHeadersOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+func (o *SetHTTPHeadersOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
+	opts *generated.FileClientSetHTTPHeadersOptions, fileHTTPHeaders *generated.ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
+	if o == nil {
+		return shared.DefaultPreserveString, shared.DefaultPreserveString, shared.DefaultPreserveString, &generated.FileClientSetHTTPHeadersOptions{
+			FilePermission: to.Ptr(shared.DefaultPreserveString),
+		}, nil, nil
+	}
+
+	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.Format(false, shared.DefaultPreserveString, shared.DefaultPreserveString)
+
+	permission, permissionKey := o.Permissions.Format(shared.DefaultPreserveString)
+
+	opts = &generated.FileClientSetHTTPHeadersOptions{
+		FileContentLength: o.FileContentLength,
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+	}
+
+	fileHTTPHeaders = o.HTTPHeaders
+	leaseAccessConditions = o.LeaseAccessConditions
+
+	return
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // SetMetadataOptions contains the optional parameters for the Client.SetMetadata method.
@@ -111,6 +176,15 @@ type SetMetadataOptions struct {
 	Metadata map[string]*string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *SetMetadataOptions) format() (*generated.FileClientSetMetadataOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+	return &generated.FileClientSetMetadataOptions{
+		Metadata: o.Metadata,
+	}, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -127,6 +201,25 @@ type StartCopyFromURLOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+func (o *StartCopyFromURLOptions) format() (*generated.FileClientStartCopyOptions, *generated.CopyFileSMBInfo, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil, nil
+	}
+
+	var permission, permissionKey *string
+	if o.Permissions != nil {
+		permission = o.Permissions.Permission
+		permissionKey = o.Permissions.PermissionKey
+	}
+
+	opts := &generated.FileClientStartCopyOptions{
+		FilePermission:    permission,
+		FilePermissionKey: permissionKey,
+		Metadata:          o.Metadata,
+	}
+	return opts, o.CopyFileSMBInfo, o.LeaseAccessConditions
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // AbortCopyOptions contains the optional parameters for the Client.AbortCopy method.
@@ -134,6 +227,14 @@ type AbortCopyOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	// Required if the destination file has an active lease.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *AbortCopyOptions) format() (*generated.FileClientAbortCopyOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return nil, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -214,6 +315,26 @@ type ResizeOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+func (o *ResizeOptions) format(contentLength int64) (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
+	opts *generated.FileClientSetHTTPHeadersOptions, fileHTTPHeaders *generated.ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
+	fileAttributes, fileCreationTime, fileLastWriteTime = shared.DefaultPreserveString, shared.DefaultPreserveString, shared.DefaultPreserveString
+
+	opts = &generated.FileClientSetHTTPHeadersOptions{
+		FileContentLength: &contentLength,
+		FilePermission:    to.Ptr(shared.DefaultPreserveString),
+	}
+
+	// TODO: check if the below two statements can be removed, since default value of pointer is nil
+	fileHTTPHeaders = nil
+	leaseAccessConditions = nil
+
+	if o != nil {
+		leaseAccessConditions = o.LeaseAccessConditions
+	}
+
+	return
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // UploadRangeOptions contains the optional parameters for the Client.UploadRange method.
@@ -257,9 +378,42 @@ type GetRangeListOptions struct {
 	// The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
 	PrevShareSnapshot *string
 	// Specifies the range of bytes over which to list ranges, inclusively.
-	Range *HTTPRange
+	Range HTTPRange
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *GetRangeListOptions) format() (*generated.FileClientGetRangeListOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return &generated.FileClientGetRangeListOptions{
+		Prevsharesnapshot: o.PrevShareSnapshot,
+		Range:             exported.FormatHTTPRange(o.Range),
+		Sharesnapshot:     o.ShareSnapshot,
+	}, o.LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
+type GetSASURLOptions struct {
+	StartTime *time.Time
+}
+
+func (o *GetSASURLOptions) format() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+
+	var st time.Time
+	if o.StartTime != nil {
+		st = o.StartTime.UTC()
+	} else {
+		st = time.Time{}
+	}
+	return st
 }

@@ -26,9 +26,9 @@ type AccountSignatureValues struct {
 	Protocol      Protocol  `param:"spr"` // See the SASProtocol* constants
 	StartTime     time.Time `param:"st"`  // Not specified if IsZero
 	ExpiryTime    time.Time `param:"se"`  // Not specified if IsZero
-	Permissions   string    `param:"sp"`  // Create by initializing a AccountSASPermissions and then call String()
+	Permissions   string    `param:"sp"`  // Create by initializing AccountPermissions and then call String()
 	IPRange       IPRange   `param:"sip"`
-	ResourceTypes string    `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
+	ResourceTypes string    `param:"srt"` // Create by initializing AccountResourceTypes and then call String()
 }
 
 // SignWithSharedKey uses an account's shared key credential to sign this signature values to produce
@@ -93,7 +93,7 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 }
 
 // AccountPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignature value's Permissions field.
+// Initialize an instance of this type and then call its String method to set AccountSignatureValues' Permissions field.
 type AccountPermissions struct {
 	Read, Write, Delete, List, Create bool
 }
@@ -120,7 +120,7 @@ func (p *AccountPermissions) String() string {
 	return buffer.String()
 }
 
-// parseAccountPermissions initializes the AccountSASPermissions' fields from a string.
+// parseAccountPermissions initializes the AccountPermissions' fields from a string.
 func parseAccountPermissions(s string) (AccountPermissions, error) {
 	p := AccountPermissions{} // Clear out the flags
 	for _, r := range s {

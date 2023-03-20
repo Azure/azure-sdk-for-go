@@ -8,6 +8,7 @@ package sas
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -15,16 +16,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 )
 
-// FileSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage file or share.
+// SignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage file or share.
 // For more information on creating service sas, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 // User Delegation SAS not supported for files service
-type FileSignatureValues struct {
+type SignatureValues struct {
 	Version             string    `param:"sv"`  // If not specified, this defaults to Version
 	Protocol            Protocol  `param:"spr"` // See the Protocol* constants
 	StartTime           time.Time `param:"st"`  // Not specified if IsZero
 	ExpiryTime          time.Time `param:"se"`  // Not specified if IsZero
 	SnapshotTime        time.Time
-	Permissions         string  `param:"sp"` // Create by initializing a SharePermissions or FilePermissions and then call String()
+	Permissions         string  `param:"sp"` // Create by initializing SharePermissions or FilePermissions and then call String()
 	IPRange             IPRange `param:"sip"`
 	Identifier          string  `param:"si"`
 	ShareName           string
@@ -37,9 +38,9 @@ type FileSignatureValues struct {
 }
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
-func (v FileSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
-	if sharedKeyCredential == nil {
-		return QueryParameters{}, fmt.Errorf("cannot sign SAS query without Shared Key Credential")
+func (v SignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
+	if v.ExpiryTime.IsZero() || v.Permissions == "" {
+		return QueryParameters{}, errors.New("service SAS is missing at least one of these: ExpiryTime or Permissions")
 	}
 
 	resource := "s"
@@ -63,7 +64,7 @@ func (v FileSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 	if v.Version == "" {
 		v.Version = Version
 	}
-	startTime, expiryTime, snapshotTime := formatTimesForSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
+	startTime, expiryTime, _ := formatTimesForSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
 
 	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
 	stringToSign := strings.Join([]string{
@@ -75,8 +76,6 @@ func (v FileSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
-		resource,
-		snapshotTime,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
@@ -106,7 +105,7 @@ func (v FileSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		contentEncoding:    v.ContentEncoding,
 		contentLanguage:    v.ContentLanguage,
 		contentType:        v.ContentType,
-		snapshotTime:       v.SnapshotTime,
+		shareSnapshotTime:  v.SnapshotTime,
 		// Calculated SAS signature
 		signature: signature,
 	}
@@ -131,14 +130,14 @@ func getCanonicalName(account string, shareName string, filePath string) string 
 }
 
 // SharePermissions type simplifies creating the permissions string for an Azure Storage share SAS.
-// Initialize an instance of this type and then call its String method to set FileSignatureValues' Permissions field.
+// Initialize an instance of this type and then call its String method to set SignatureValues' Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-share
 type SharePermissions struct {
 	Read, Create, Write, Delete, List bool
 }
 
 // String produces the SAS permissions string for an Azure Storage share.
-// Call this method to set FileSignatureValues' FilePermissions field.
+// Call this method to set SignatureValues' Permissions field.
 func (p *SharePermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {
@@ -182,14 +181,14 @@ func parseSharePermissions(s string) (SharePermissions, error) {
 }
 
 // FilePermissions type simplifies creating the permissions string for an Azure Storage file SAS.
-// Initialize an instance of this type and then call its String method to set FileSignatureValues' Permissions field.
+// Initialize an instance of this type and then call its String method to set SignatureValues' Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-file
 type FilePermissions struct {
 	Read, Create, Write, Delete bool
 }
 
 // String produces the SAS permissions string for an Azure Storage file.
-// Call this method to set FileSASSignatureValues' FilePermissions field.
+// Call this method to set SignatureValues' Permissions field.
 func (p *FilePermissions) String() string {
 	var b bytes.Buffer
 	if p.Read {

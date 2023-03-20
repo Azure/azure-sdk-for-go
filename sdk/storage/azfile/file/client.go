@@ -9,10 +9,14 @@ package file
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"io"
 	"os"
+	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -27,16 +31,28 @@ type Client base.Client[generated.FileClient]
 // This is used to anonymously access a file or with a shared access signature (SAS) token.
 //   - fileURL - the URL of the file e.g. https://<account>.file.core.windows.net/share/directoryPath/file?<sas token>
 //   - options - client options; pass nil to accept the default values
+//
+// The directoryPath is optional in the fileURL. If omitted, it points to file within the specified share.
 func NewClientWithNoCredential(fileURL string, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	conOptions := shared.GetClientOptions(options)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewFileClient(fileURL, pl, nil)), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
 //   - fileURL - the URL of the file e.g. https://<account>.file.core.windows.net/share/directoryPath/file
 //   - cred - a SharedKeyCredential created with the matching file's storage account and access key
 //   - options - client options; pass nil to accept the default values
+//
+// The directoryPath is optional in the fileURL. If omitted, it points to file within the specified share.
 func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	authPolicy := exported.NewSharedKeyCredPolicy(cred)
+	conOptions := shared.GetClientOptions(options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+
+	return (*Client)(base.NewFileClient(fileURL, pl, cred)), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -45,7 +61,23 @@ func NewClientWithSharedKeyCredential(fileURL string, cred *SharedKeyCredential,
 //   - filePath - the path of the file within the share
 //   - options - client options; pass nil to accept the default values
 func NewClientFromConnectionString(connectionString string, shareName string, filePath string, options *ClientOptions) (*Client, error) {
-	return nil, nil
+	parsed, err := shared.ParseConnectionString(connectionString)
+	if err != nil {
+		return nil, err
+	}
+
+	filePath = strings.ReplaceAll(filePath, "\\", "/")
+	parsed.ServiceURL = runtime.JoinPaths(parsed.ServiceURL, shareName, filePath)
+
+	if parsed.AccountKey != "" && parsed.AccountName != "" {
+		credential, err := exported.NewSharedKeyCredential(parsed.AccountName, parsed.AccountKey)
+		if err != nil {
+			return nil, err
+		}
+		return NewClientWithSharedKeyCredential(parsed.ServiceURL, credential, options)
+	}
+
+	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
 func (f *Client) generated() *generated.FileClient {

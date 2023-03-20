@@ -25,7 +25,7 @@ stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     TimeoutInMinutes: 120
-    ServiceDirectory: 'keyvault/azkeys'
+    ServiceDirectory: 'security/keyvault/azkeys'
     RunLiveTests: true
     AdditionalMatrixConfigs:
       - Name: keyvault_test_matrix_addons

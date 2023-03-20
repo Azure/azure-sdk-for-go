@@ -101,7 +101,11 @@ type ConnectionParamsForTest struct {
 }
 
 func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
-	_ = godotenv.Load()
+	if _, err := os.Stat("../.env"); err == nil {
+		_ = godotenv.Load("../.env")
+	} else {
+		_ = godotenv.Load()
+	}
 
 	envVars := mustGetEnvironmentVars(t, []string{
 		"AZURE_SUBSCRIPTION_ID",
@@ -147,10 +151,10 @@ func mustGetEnvironmentVars(t *testing.T, names []string) map[string]string {
 	return envVars
 }
 
-func RequireClose(t *testing.T, closeable interface {
+func RequireClose[T interface {
 	Close(ctx context.Context) error
-}) {
-	require.NoError(t, closeable.Close(context.Background()))
+}](t *testing.T, closeable T) {
+	require.NoErrorf(t, closeable.Close(context.Background()), "%T closes cleanly", closeable)
 }
 
 // RequireContextHasDefaultTimeout checks that the context has a deadline set, and that it's

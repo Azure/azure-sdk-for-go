@@ -1,14 +1,31 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
+## 1.5.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* Added non-conformant LRO terminal states `Cancelled` and `Completed`.
 
 ### Other Changes
+
+## 1.5.0-beta.1 (2023-03-02)
+
+### Features Added
+* This release includes the features added in v1.4.0-beta.1
+
+## 1.4.0 (2023-03-02)
+> This release doesn't include features added in v1.4.0-beta.1. They will return in v1.5.0-beta.1.
+
+### Features Added
+* Add `Clone()` method for `arm/policy.ClientOptions`.
+
+### Bugs Fixed
+* ARM's RP registration policy will no longer swallow unrecognized errors.
+* Fixed an issue in `runtime.NewPollerFromResumeToken()` when resuming a `Poller` with a custom `PollingHandler`.
+* Fixed wrong policy copy in `arm/runtime.NewPipeline()`.
 
 ## 1.4.0-beta.1 (2023-02-02)
 

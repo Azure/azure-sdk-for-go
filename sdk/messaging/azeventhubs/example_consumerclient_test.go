@@ -5,6 +5,7 @@ package azeventhubs_test
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
@@ -55,7 +56,11 @@ func ExampleConsumerClient_NewPartitionClient_receiveEvents() {
 
 	defer partitionClient.Close(context.TODO())
 
-	events, err := partitionClient.ReceiveEvents(context.TODO(), 100, nil)
+	// Using a context with a timeout will allow ReceiveEvents() to return with events it
+	// collected in a minute, or earlier if it actually gets all 100 events we requested.
+	receiveCtx, cancel := context.WithTimeout(context.TODO(), time.Minute)
+	defer cancel()
+	events, err := partitionClient.ReceiveEvents(receiveCtx, 100, nil)
 
 	if err != nil {
 		panic(err)
@@ -94,7 +99,7 @@ func ExampleConsumerClient_NewPartitionClient_configuringPrefetch() {
 
 	// Prefetching configures the Event Hubs client to continually cache events, up to the configured size
 	// in PartitionClientOptions.Prefetch. PartitionClient.ReceiveEvents will read from the cache first,
-	// which can speed up throughput in situations where you might normally be forced to request and wait
+	// which can improve throughput in situations where you might normally be forced to request and wait
 	// for more events.
 
 	// By default, prefetch is enabled.
@@ -130,7 +135,11 @@ func ExampleConsumerClient_NewPartitionClient_configuringPrefetch() {
 
 	defer partitionClientWithPrefetchDisabled.Close(context.TODO())
 
-	events, err := partitionClient.ReceiveEvents(context.TODO(), 100, nil)
+	// Using a context with a timeout will allow ReceiveEvents() to return with events it
+	// collected in a minute, or earlier if it actually gets all 100 events we requested.
+	receiveCtx, cancel := context.WithTimeout(context.TODO(), time.Minute)
+	defer cancel()
+	events, err := partitionClient.ReceiveEvents(receiveCtx, 100, nil)
 
 	if err != nil {
 		panic(err)

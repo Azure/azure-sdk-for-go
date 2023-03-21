@@ -68,6 +68,26 @@ directive:
       from: MetricNamespaces_List
       to: Metrics_ListNamespaces
 
+  # rename some metrics fields
+  - from: swagger-document
+    where: $.definitions.Metric.properties.timeseries
+    transform: $["x-ms-client-name"] = "TimeSeries"
+  - from: swagger-document
+    where: $.definitions.TimeSeriesElement.properties.metadatavalues
+    transform: $["x-ms-client-name"] = "MetadataValues"
+  - from: swagger-document
+    where: $.definitions.Response.properties.resourceregion
+    transform: $["x-ms-client-name"] = "ResourceRegion"
+  - from: swagger-document
+    where: $.parameters.MetricNamespaceParameter
+    transform: $["x-ms-client-name"] = "MetricNamespace"
+  - from: swagger-document
+    where: $.parameters.MetricNamesParameter
+    transform: $["x-ms-client-name"] = "MetricNames"
+  - from: swagger-document
+    where: $.parameters.OrderByParameter
+    transform: $["x-ms-client-name"] = "OrderBy"
+
   # rename Body.Workspaces to Body.AdditionalWorkspaces
   - from: swagger-document
     where: $.definitions.queryBody.properties.workspaces
@@ -103,7 +123,7 @@ directive:
     transform: return $.replace(/Options \*string/g, "Options *LogsQueryOptions");
   - from: logs_client.go
     where: $
-    transform: return $.replace(/\*options\.Options/, "options.Options.String()");
+    transform: return $.replace(/\*options\.Options/, "options.Options.preferHeader()");
   
   # add default values for batch request path and method attributes
   - from: swagger-document
@@ -128,6 +148,18 @@ directive:
     transform: return $.replace(/type ResultType string/, "//ResultType - Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.\ntype ResultType string");
 
   # update doc comments
+  - from: swagger-document
+    where: $.paths["/workspaces/{workspaceId}/query"].post
+    transform: $["description"] = "Executes an Analytics query for data."
+  - from: swagger-document
+    where: $.paths["/$batch"].post
+    transform: $["description"] = "Executes a batch of Analytics queries for data."
+  - from: swagger-document
+    where: $.definitions.queryResults.properties.tables
+    transform: $["description"] = "The results of the query in tabular format."
+  - from: swagger-document
+    where: $.definitions.batchQueryResults.properties.tables
+    transform: $["description"] = "The results of the query in tabular format."
   - from: swagger-document
     where: $.definitions.queryBody.properties.workspaces
     transform: $["description"] = "A list of workspaces to query in addition to the primary workspace."
@@ -219,3 +251,14 @@ directive:
   - from: metrics_client.go
     where: $
     transform: return $.replace(/reqQP\.Set\(\"timespan\", \*options\.Timespan\)/g, "reqQP.Set(\"timespan\", string(*options.Timespan))");
+
+  # change type of MetricsClientQueryResourceOptions.Aggregation from *string to []*AggregationType
+  - from: models.go
+    where: $
+    transform: return $.replace(/Aggregation \*string/g, "Aggregation []*AggregationType");
+  - from: metrics_client.go
+    where: $
+    transform: return $.replace(/\*options.Aggregation/g, "aggregationTypeToString(options.Aggregation)");
+  - from: swagger-document
+    where: $.parameters.AggregationsParameter
+    transform: $["description"] = "The list of aggregation types to retrieve"

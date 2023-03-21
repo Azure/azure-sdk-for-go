@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"context"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -97,19 +98,23 @@ func TestNewClientWithWebsockets(t *testing.T) {
 	queue, cleanup := createQueue(t, connectionString, nil)
 	defer cleanup()
 
-	webSocketCreateCalled := false
-
 	client, err := NewClientFromConnectionString(connectionString, &ClientOptions{
 		NewWebSocketConn: func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error) {
-			webSocketCreateCalled = true
-			opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}}
+			transport := http.DefaultTransport.(*http.Transport).Clone()
+			transport.TLSClientConfig.KeyLogWriter = ioutil.Discard
+
+			opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}, HTTPClient: &http.Client{
+				Transport: transport,
+			}}
+
 			wssConn, _, err := websocket.Dial(ctx, args.Host, opts)
 
 			if err != nil {
 				return nil, err
 			}
 
-			return websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary), nil
+			conn := websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary)
+			return conn, nil
 		},
 	})
 	require.NoError(t, err)
@@ -122,18 +127,15 @@ func TestNewClientWithWebsockets(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	// we have to test this down here since the connection is lazy initialized.
-	require.True(t, webSocketCreateCalled)
-
-	receiver, err := client.NewReceiverForQueue(queue, &ReceiverOptions{
-		ReceiveMode: ReceiveModeReceiveAndDelete,
-	})
-	require.NoError(t, err)
-
-	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
-	require.NoError(t, err)
-
-	require.EqualValues(t, "hello world", string(messages[0].Body))
+	// NOTE: This error is coming from the `nhooyr.io/websocket` package. There's an
+	// open discussion here:
+	//   https://github.com/nhooyr/websocket/discussions/380
+	//
+	// The frame it's waiting for (at this point) is the other half of the websocket CLOSE handshake.
+	// I wireshark'd this and confirmed that the frame does arrive, it's just not read by the local
+	// package. In this context, since the connection has already shut down, this is harmless.
+	var expectedErr = "failed to close WebSocket: failed to read frame header: EOF"
+	require.EqualError(t, client.Close(context.Background()), expectedErr)
 }
 
 func TestNewClientUsingSharedAccessSignature(t *testing.T) {
@@ -393,52 +395,6 @@ func TestNewClientUnitTests(t *testing.T) {
 			fakeTokenCredential)(ns))
 
 		require.EqualValues(t, ns.FQDN, "mysb.windows.servicebus.net")
-	})
-
-	t.Run("CloseAndLinkTracking", func(t *testing.T) {
-		setupClient := func() (*Client, *internal.FakeNS) {
-			client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{}, nil)
-			require.NoError(t, err)
-
-			ns := &internal.FakeNS{
-				AMQPLinks: &internal.FakeAMQPLinks{
-					Receiver: &internal.FakeAMQPReceiver{},
-				},
-			}
-
-			client.namespace = ns
-			return client, ns
-		}
-
-		client, ns := setupClient()
-		_, err := client.NewSender("hello", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.True(t, ns.AMQPLinks.ClosedPermanently())
-
-		client, ns = setupClient()
-		_, err = client.NewReceiverForQueue("hello", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.True(t, ns.AMQPLinks.ClosedPermanently())
-
-		client, ns = setupClient()
-		_, err = client.NewReceiverForSubscription("hello", "world", nil)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(client.links))
-		require.NotNil(t, client.links[1])
-		require.NoError(t, client.Close(context.Background()))
-		require.Empty(t, client.links)
-		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 	})
 
 	t.Run("RetryOptionsArePropagated", func(t *testing.T) {

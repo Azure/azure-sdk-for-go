@@ -13,6 +13,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
@@ -99,6 +100,13 @@ func isMicrosoftTimeoutError(err error) bool {
 func IsDetachError(err error) bool {
 	var de *amqp.DetachError
 	return errors.As(err, &de)
+}
+
+func IsNotAllowedError(err error) bool {
+	var e *amqp.Error
+
+	return errors.As(err, &e) &&
+		e.Condition == amqp.ErrorNotAllowed
 }
 
 func IsCancelError(err error) bool {
@@ -269,7 +277,7 @@ type (
 	}
 
 	// ErrAMQP indicates that the server communicated an AMQP error with a particular
-	ErrAMQP RPCResponse
+	ErrAMQP amqpwrap.RPCResponse
 
 	// ErrNoMessages is returned when an operation returned no messages. It is not indicative that there will not be
 	// more messages in the future.
@@ -351,3 +359,5 @@ func isLockLostError(err error) bool {
 
 	return false
 }
+
+var errConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")

@@ -32,7 +32,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azr
 		AuxiliaryTenants: options.AuxiliaryTenants,
 		Scopes:           []string{conf.Audience + "/.default"},
 	})
-	perRetry := make([]azpolicy.Policy, 0, len(plOpts.PerRetry)+1)
+	perRetry := make([]azpolicy.Policy, len(plOpts.PerRetry), len(plOpts.PerRetry)+1)
 	copy(perRetry, plOpts.PerRetry)
 	plOpts.PerRetry = append(perRetry, authPolicy)
 	if !options.DisableRPRegistration {
@@ -41,7 +41,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azr
 		if err != nil {
 			return azruntime.Pipeline{}, err
 		}
-		perCall := make([]azpolicy.Policy, 0, len(plOpts.PerCall)+1)
+		perCall := make([]azpolicy.Policy, len(plOpts.PerCall), len(plOpts.PerCall)+1)
 		copy(perCall, plOpts.PerCall)
 		plOpts.PerCall = append(perCall, regPolicy)
 	}

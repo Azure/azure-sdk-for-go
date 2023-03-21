@@ -160,8 +160,9 @@ type LogsQueryOptions struct {
 	Wait *int
 }
 
-// String implements the fmt.Stringer interface for type LogsQueryOptions.
-func (l LogsQueryOptions) String() string {
+// preferHeader converts LogsQueryOptions from struct to properly formatted sting
+// to be used in the request Prefer Header
+func (l LogsQueryOptions) preferHeader() string {
 	var options []string
 	if l.Statistics != nil && *l.Statistics {
 		options = append(options, "include-statistics=true")
@@ -180,7 +181,7 @@ func NewBatchQueryRequest(workspaceID string, query string, timespan TimeInterva
 	var optionsMap map[string]*string
 	if options.Statistics != nil || options.Visualization != nil || options.Wait != nil {
 		optionsMap = make(map[string]*string)
-		optionsString := options.String()
+		optionsString := options.preferHeader()
 		optionsMap["prefer"] = &optionsString
 	}
 
@@ -190,4 +191,14 @@ func NewBatchQueryRequest(workspaceID string, query string, timespan TimeInterva
 		WorkspaceID:   &workspaceID,
 		Headers:       optionsMap,
 	}
+}
+
+// aggregationTypeToString converts []*AggregationType to string, so the values can be sent
+// in MetricsClient.QueryResource
+func aggregationTypeToString(aggregations []*AggregationType) string {
+	var s []string
+	for _, aggregation := range aggregations {
+		s = append(s, string(*aggregation))
+	}
+	return strings.Join(s, ",")
 }

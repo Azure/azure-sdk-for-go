@@ -32,9 +32,9 @@ type ManagedPrivateEndpointsClient struct {
 }
 
 // NewManagedPrivateEndpointsClient creates a new instance of ManagedPrivateEndpointsClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewManagedPrivateEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedPrivateEndpointsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -57,14 +57,15 @@ func NewManagedPrivateEndpointsClient(subscriptionID string, credential azcore.T
 
 // CreateOrUpdate - Creates or updates a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// managedVirtualNetworkName - Managed virtual network name
-// managedPrivateEndpointName - Managed private endpoint name
-// managedPrivateEndpoint - Managed private endpoint resource definition.
-// options - ManagedPrivateEndpointsClientCreateOrUpdateOptions contains the optional parameters for the ManagedPrivateEndpointsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - managedVirtualNetworkName - Managed virtual network name
+//   - managedPrivateEndpointName - Managed private endpoint name
+//   - managedPrivateEndpoint - Managed private endpoint resource definition.
+//   - options - ManagedPrivateEndpointsClientCreateOrUpdateOptions contains the optional parameters for the ManagedPrivateEndpointsClient.CreateOrUpdate
+//     method.
 func (client *ManagedPrivateEndpointsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedPrivateEndpointName string, managedPrivateEndpoint ManagedPrivateEndpointResource, options *ManagedPrivateEndpointsClientCreateOrUpdateOptions) (ManagedPrivateEndpointsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, managedPrivateEndpoint, options)
 	if err != nil {
@@ -128,13 +129,14 @@ func (client *ManagedPrivateEndpointsClient) createOrUpdateHandleResponse(resp *
 
 // Delete - Deletes a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// managedVirtualNetworkName - Managed virtual network name
-// managedPrivateEndpointName - Managed private endpoint name
-// options - ManagedPrivateEndpointsClientDeleteOptions contains the optional parameters for the ManagedPrivateEndpointsClient.Delete
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - managedVirtualNetworkName - Managed virtual network name
+//   - managedPrivateEndpointName - Managed private endpoint name
+//   - options - ManagedPrivateEndpointsClientDeleteOptions contains the optional parameters for the ManagedPrivateEndpointsClient.Delete
+//     method.
 func (client *ManagedPrivateEndpointsClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsClientDeleteOptions) (ManagedPrivateEndpointsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, options)
 	if err != nil {
@@ -186,13 +188,14 @@ func (client *ManagedPrivateEndpointsClient) deleteCreateRequest(ctx context.Con
 
 // Get - Gets a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// managedVirtualNetworkName - Managed virtual network name
-// managedPrivateEndpointName - Managed private endpoint name
-// options - ManagedPrivateEndpointsClientGetOptions contains the optional parameters for the ManagedPrivateEndpointsClient.Get
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - managedVirtualNetworkName - Managed virtual network name
+//   - managedPrivateEndpointName - Managed private endpoint name
+//   - options - ManagedPrivateEndpointsClientGetOptions contains the optional parameters for the ManagedPrivateEndpointsClient.Get
+//     method.
 func (client *ManagedPrivateEndpointsClient) Get(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsClientGetOptions) (ManagedPrivateEndpointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, options)
 	if err != nil {
@@ -255,12 +258,13 @@ func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByFactoryPager - Lists managed private endpoints.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// managedVirtualNetworkName - Managed virtual network name
-// options - ManagedPrivateEndpointsClientListByFactoryOptions contains the optional parameters for the ManagedPrivateEndpointsClient.ListByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - managedVirtualNetworkName - Managed virtual network name
+//   - options - ManagedPrivateEndpointsClientListByFactoryOptions contains the optional parameters for the ManagedPrivateEndpointsClient.NewListByFactoryPager
+//     method.
 func (client *ManagedPrivateEndpointsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, managedVirtualNetworkName string, options *ManagedPrivateEndpointsClientListByFactoryOptions) *runtime.Pager[ManagedPrivateEndpointsClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ManagedPrivateEndpointsClientListByFactoryResponse]{
 		More: func(page ManagedPrivateEndpointsClientListByFactoryResponse) bool {

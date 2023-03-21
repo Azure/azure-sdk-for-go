@@ -114,7 +114,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm.local/keys/key4206922229//decrypt?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key4206922229/decrypt?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",

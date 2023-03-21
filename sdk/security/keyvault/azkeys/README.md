@@ -136,11 +136,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [default_cred_ref]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[goget_azkeys]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
+[goget_azkeys]: https://aka.ms/azsdk/go/keyvault-keys/docs
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-keys/docs
 [client_docs]: https://aka.ms/azsdk/go/keyvault-keys/docs#Client
 [key_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/client.go
-[keys_samples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys#pkg-examples
+[keys_samples]: https://aka.ms/azsdk/go/keyvault-keys/docs#pkg-examples
 [managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fsecurity%2F%2Fkeyvault%2Fazkeys%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fsecurity%2Fkeyvault%2Fazkeys%2FREADME.png)

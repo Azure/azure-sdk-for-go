@@ -71,9 +71,13 @@ func parseTenant(url string) string {
 		return ""
 	}
 	parts := strings.Split(url, "/")
-	tenant := parts[3]
-	tenant = strings.ReplaceAll(tenant, ",", "")
-	return tenant
+	if len(parts) >= 3 {
+		tenant := parts[3]
+		tenant = strings.ReplaceAll(tenant, ",", "")
+		return tenant
+	} else {
+		return ""
+	}
 }
 
 func (s *storageAuthorizer) parseChallenge(resp *http.Response) error {

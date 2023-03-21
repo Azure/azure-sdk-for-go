@@ -82,3 +82,17 @@ func TestParseTenant(t *testing.T) {
 	actual = parseTenant(sampleURL)
 	require.Equal(t, expected, actual, "tenant was not properly parsed")
 }
+
+func TestParseTenantNegative(t *testing.T) {
+	actual := parseTenant("")
+	require.Empty(t, actual)
+
+	expected := ""
+	sampleURL := "https://login.microsoftonline.com/" + expected
+	actual = parseTenant(sampleURL)
+	require.Equal(t, expected, actual)
+
+	sampleURL = ""
+	actual = parseTenant(sampleURL)
+	require.Equal(t, expected, actual)
+}

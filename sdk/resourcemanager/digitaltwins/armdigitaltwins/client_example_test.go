@@ -25,11 +25,11 @@ func ExampleClient_Get_getADigitalTwinsInstanceResource() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resRg", "myDigitalTwinsService", nil)
+	res, err := clientFactory.NewClient().Get(ctx, "resRg", "myDigitalTwinsService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,11 +66,11 @@ func ExampleClient_Get_getADigitalTwinsInstanceResourceWithAPrivateEndpointConne
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resRg", "myDigitalTwinsService", nil)
+	res, err := clientFactory.NewClient().Get(ctx, "resRg", "myDigitalTwinsService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -123,11 +123,11 @@ func ExampleClient_Get_getADigitalTwinsInstanceResourceWithIdentity() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resRg", "myDigitalTwinsService", nil)
+	res, err := clientFactory.NewClient().Get(ctx, "resRg", "myDigitalTwinsService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -175,11 +175,11 @@ func ExampleClient_BeginCreateOrUpdate_putADigitalTwinsInstanceResource() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.Description{
+	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.Description{
 		Location: to.Ptr("WestUS2"),
 	}, nil)
 	if err != nil {
@@ -225,11 +225,11 @@ func ExampleClient_BeginCreateOrUpdate_putADigitalTwinsInstanceResourceWithIdent
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.Description{
+	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.Description{
 		Identity: &armdigitaltwins.Identity{
 			Type: to.Ptr(armdigitaltwins.DigitalTwinsIdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armdigitaltwins.UserAssignedIdentity{
@@ -292,11 +292,11 @@ func ExampleClient_BeginCreateOrUpdate_putADigitalTwinsInstanceResourceWithPubli
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.Description{
+	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.Description{
 		Location: to.Ptr("WestUS2"),
 		Properties: &armdigitaltwins.Properties{
 			PublicNetworkAccess: to.Ptr(armdigitaltwins.PublicNetworkAccessEnabled),
@@ -342,11 +342,11 @@ func ExampleClient_BeginUpdate_patchADigitalTwinsInstanceResource() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.PatchDescription{
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.PatchDescription{
 		Tags: map[string]*string{
 			"purpose": to.Ptr("dev"),
 		},
@@ -394,11 +394,11 @@ func ExampleClient_BeginUpdate_patchADigitalTwinsInstanceResourceWithIdentity() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.PatchDescription{
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.PatchDescription{
 		Identity: &armdigitaltwins.Identity{
 			Type: to.Ptr(armdigitaltwins.DigitalTwinsIdentityTypeNone),
 		},
@@ -446,11 +446,11 @@ func ExampleClient_BeginUpdate_patchADigitalTwinsInstanceResourceWithPublicNetwo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.PatchDescription{
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "resRg", "myDigitalTwinsService", armdigitaltwins.PatchDescription{
 		Properties: &armdigitaltwins.PatchProperties{
 			PublicNetworkAccess: to.Ptr(armdigitaltwins.PublicNetworkAccessDisabled),
 		},
@@ -498,11 +498,11 @@ func ExampleClient_BeginDelete_deleteADigitalTwinsInstanceResource() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resRg", "myDigitalTwinsService", nil)
+	poller, err := clientFactory.NewClient().BeginDelete(ctx, "resRg", "myDigitalTwinsService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -542,11 +542,11 @@ func ExampleClient_BeginDelete_deleteADigitalTwinsInstanceResourceWithIdentity()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resRg", "myDigitalTwinsService", nil)
+	poller, err := clientFactory.NewClient().BeginDelete(ctx, "resRg", "myDigitalTwinsService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -591,11 +591,11 @@ func ExampleClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -660,11 +660,11 @@ func ExampleClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("resRg", nil)
+	pager := clientFactory.NewClient().NewListByResourceGroupPager("resRg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -729,11 +729,11 @@ func ExampleClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "WestUS2", armdigitaltwins.CheckNameRequest{
+	res, err := clientFactory.NewClient().CheckNameAvailability(ctx, "WestUS2", armdigitaltwins.CheckNameRequest{
 		Name: to.Ptr("myadtinstance"),
 		Type: to.Ptr("Microsoft.DigitalTwins/digitalTwinsInstances"),
 	}, nil)

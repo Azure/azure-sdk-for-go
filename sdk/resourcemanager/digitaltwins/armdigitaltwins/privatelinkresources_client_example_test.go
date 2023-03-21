@@ -24,11 +24,11 @@ func ExamplePrivateLinkResourcesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewPrivateLinkResourcesClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "resRg", "myDigitalTwinsService", nil)
+	res, err := clientFactory.NewPrivateLinkResourcesClient().List(ctx, "resRg", "myDigitalTwinsService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -59,11 +59,11 @@ func ExamplePrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewPrivateLinkResourcesClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resRg", "myDigitalTwinsService", "subResource", nil)
+	res, err := clientFactory.NewPrivateLinkResourcesClient().Get(ctx, "resRg", "myDigitalTwinsService", "subResource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

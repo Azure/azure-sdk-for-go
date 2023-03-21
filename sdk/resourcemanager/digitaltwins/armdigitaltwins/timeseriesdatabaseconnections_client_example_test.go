@@ -25,11 +25,11 @@ func ExampleTimeSeriesDatabaseConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resRg", "myDigitalTwinsService", nil)
+	pager := clientFactory.NewTimeSeriesDatabaseConnectionsClient().NewListPager("resRg", "myDigitalTwinsService", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -69,11 +69,11 @@ func ExampleTimeSeriesDatabaseConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resRg", "myDigitalTwinsService", "myConnection", nil)
+	res, err := clientFactory.NewTimeSeriesDatabaseConnectionsClient().Get(ctx, "resRg", "myDigitalTwinsService", "myConnection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -106,11 +106,11 @@ func ExampleTimeSeriesDatabaseConnectionsClient_BeginCreateOrUpdate_createOrRepl
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", "myConnection", armdigitaltwins.TimeSeriesDatabaseConnection{
+	poller, err := clientFactory.NewTimeSeriesDatabaseConnectionsClient().BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", "myConnection", armdigitaltwins.TimeSeriesDatabaseConnection{
 		Properties: &armdigitaltwins.AzureDataExplorerConnectionProperties{
 			ConnectionType: to.Ptr(armdigitaltwins.ConnectionTypeAzureDataExplorer),
 			Identity: &armdigitaltwins.ManagedIdentityReference{
@@ -167,11 +167,11 @@ func ExampleTimeSeriesDatabaseConnectionsClient_BeginCreateOrUpdate_createOrRepl
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", "myConnection", armdigitaltwins.TimeSeriesDatabaseConnection{
+	poller, err := clientFactory.NewTimeSeriesDatabaseConnectionsClient().BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", "myConnection", armdigitaltwins.TimeSeriesDatabaseConnection{
 		Properties: &armdigitaltwins.AzureDataExplorerConnectionProperties{
 			ConnectionType:                          to.Ptr(armdigitaltwins.ConnectionTypeAzureDataExplorer),
 			AdxDatabaseName:                         to.Ptr("myDatabase"),
@@ -225,11 +225,11 @@ func ExampleTimeSeriesDatabaseConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewTimeSeriesDatabaseConnectionsClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resRg", "myDigitalTwinsService", "myConnection", &armdigitaltwins.TimeSeriesDatabaseConnectionsClientBeginDeleteOptions{CleanupConnectionArtifacts: nil})
+	poller, err := clientFactory.NewTimeSeriesDatabaseConnectionsClient().BeginDelete(ctx, "resRg", "myDigitalTwinsService", "myConnection", &armdigitaltwins.TimeSeriesDatabaseConnectionsClientBeginDeleteOptions{CleanupConnectionArtifacts: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

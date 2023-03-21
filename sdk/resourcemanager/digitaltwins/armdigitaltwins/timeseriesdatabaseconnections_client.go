@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // TimeSeriesDatabaseConnectionsClient contains the methods for the TimeSeriesDatabaseConnections group.
 // Don't use this type directly, use NewTimeSeriesDatabaseConnectionsClient() instead.
 type TimeSeriesDatabaseConnectionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTimeSeriesDatabaseConnectionsClient creates a new instance of TimeSeriesDatabaseConnectionsClient with the specified values.
@@ -36,21 +33,13 @@ type TimeSeriesDatabaseConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTimeSeriesDatabaseConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TimeSeriesDatabaseConnectionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TimeSeriesDatabaseConnectionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TimeSeriesDatabaseConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *TimeSeriesDatabaseConnectionsClient) BeginCreateOrUpdate(ctx conte
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[TimeSeriesDatabaseConnectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TimeSeriesDatabaseConnectionsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[TimeSeriesDatabaseConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TimeSeriesDatabaseConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *TimeSeriesDatabaseConnectionsClient) createOrUpdate(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *TimeSeriesDatabaseConnectionsClient) createOrUpdateCreateRequest(c
 		return nil, errors.New("parameter timeSeriesDatabaseConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{timeSeriesDatabaseConnectionName}", url.PathEscape(timeSeriesDatabaseConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -141,9 +130,9 @@ func (client *TimeSeriesDatabaseConnectionsClient) BeginDelete(ctx context.Conte
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[TimeSeriesDatabaseConnectionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TimeSeriesDatabaseConnectionsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[TimeSeriesDatabaseConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TimeSeriesDatabaseConnectionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -156,7 +145,7 @@ func (client *TimeSeriesDatabaseConnectionsClient) deleteOperation(ctx context.C
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +174,7 @@ func (client *TimeSeriesDatabaseConnectionsClient) deleteCreateRequest(ctx conte
 		return nil, errors.New("parameter timeSeriesDatabaseConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{timeSeriesDatabaseConnectionName}", url.PathEscape(timeSeriesDatabaseConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +202,7 @@ func (client *TimeSeriesDatabaseConnectionsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return TimeSeriesDatabaseConnectionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TimeSeriesDatabaseConnectionsClientGetResponse{}, err
 	}
@@ -242,7 +231,7 @@ func (client *TimeSeriesDatabaseConnectionsClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter timeSeriesDatabaseConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{timeSeriesDatabaseConnectionName}", url.PathEscape(timeSeriesDatabaseConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -285,7 +274,7 @@ func (client *TimeSeriesDatabaseConnectionsClient) NewListPager(resourceGroupNam
 			if err != nil {
 				return TimeSeriesDatabaseConnectionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TimeSeriesDatabaseConnectionsClientListResponse{}, err
 			}
@@ -312,7 +301,7 @@ func (client *TimeSeriesDatabaseConnectionsClient) listCreateRequest(ctx context
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

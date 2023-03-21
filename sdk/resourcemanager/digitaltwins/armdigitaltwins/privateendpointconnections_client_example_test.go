@@ -25,11 +25,11 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewPrivateEndpointConnectionsClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "resRg", "myDigitalTwinsService", nil)
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().List(ctx, "resRg", "myDigitalTwinsService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -63,11 +63,11 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewPrivateEndpointConnectionsClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resRg", "myDigitalTwinsService", "myPrivateConnection", nil)
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "resRg", "myDigitalTwinsService", "myPrivateConnection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -98,11 +98,11 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewPrivateEndpointConnectionsClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resRg", "myDigitalTwinsService", "myPrivateConnection", nil)
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "resRg", "myDigitalTwinsService", "myPrivateConnection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -119,11 +119,11 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewPrivateEndpointConnectionsClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
+	clientFactory, err := armdigitaltwins.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", "myPrivateConnection", armdigitaltwins.PrivateEndpointConnection{
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginCreateOrUpdate(ctx, "resRg", "myDigitalTwinsService", "myPrivateConnection", armdigitaltwins.PrivateEndpointConnection{
 		Properties: &armdigitaltwins.ConnectionProperties{
 			PrivateLinkServiceConnectionState: &armdigitaltwins.ConnectionPropertiesPrivateLinkServiceConnectionState{
 				Description: to.Ptr("Approved by johndoe@company.com."),

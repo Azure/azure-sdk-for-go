@@ -3,10 +3,11 @@
 ## 1.1.0 (2023-03-24)
 ### Features Added
 
-- New value `DigitalTwinsIdentityTypeSystemAssignedUserAssigned`, `DigitalTwinsIdentityTypeUserAssigned` added to type alias `DigitalTwinsIdentityType`
-- New type alias `CleanupConnectionArtifacts` with values `CleanupConnectionArtifactsFalse`, `CleanupConnectionArtifactsTrue`
-- New type alias `IdentityType` with values `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
-- New type alias `RecordPropertyAndItemRemovals` with values `RecordPropertyAndItemRemovalsFalse`, `RecordPropertyAndItemRemovalsTrue`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New value `DigitalTwinsIdentityTypeSystemAssignedUserAssigned`, `DigitalTwinsIdentityTypeUserAssigned` added to enum type `DigitalTwinsIdentityType`
+- New enum type `CleanupConnectionArtifacts` with values `CleanupConnectionArtifactsFalse`, `CleanupConnectionArtifactsTrue`
+- New enum type `IdentityType` with values `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
+- New enum type `RecordPropertyAndItemRemovals` with values `RecordPropertyAndItemRemovalsFalse`, `RecordPropertyAndItemRemovalsTrue`
 - New struct `ManagedIdentityReference`
 - New struct `UserAssignedIdentity`
 - New field `AdxRelationshipLifecycleEventsTableName` in struct `AzureDataExplorerConnectionProperties`

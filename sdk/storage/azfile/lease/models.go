@@ -60,12 +60,18 @@ func (o *FileReleaseOptions) format() *generated.FileClientReleaseLeaseOptions {
 
 // ShareAcquireOptions contains the optional parameters for the ShareClient.Acquire method.
 type ShareAcquireOptions struct {
-	// Proposed lease ID, in a GUID string format.
-	// The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format.
-	ProposedLeaseID *string
-	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
+}
+
+func (o *ShareAcquireOptions) format(proposedLeaseID *string) *generated.ShareClientAcquireLeaseOptions {
+	opts := &generated.ShareClientAcquireLeaseOptions{
+		ProposedLeaseID: proposedLeaseID,
+	}
+	if o != nil {
+		opts.Sharesnapshot = o.ShareSnapshot
+	}
+	return opts
 }
 
 // ShareBreakOptions contains the optional parameters for the ShareClient.Break method.
@@ -84,23 +90,59 @@ type ShareBreakOptions struct {
 	AccessConditions *AccessConditions
 }
 
+func (o *ShareBreakOptions) format() (*generated.ShareClientBreakLeaseOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return &generated.ShareClientBreakLeaseOptions{
+		BreakPeriod:   o.BreakPeriod,
+		Sharesnapshot: o.ShareSnapshot,
+	}, o.AccessConditions
+}
+
 // ShareChangeOptions contains the optional parameters for the ShareClient.Change method.
 type ShareChangeOptions struct {
-	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
+}
+
+func (o *ShareChangeOptions) format(proposedLeaseID *string) *generated.ShareClientChangeLeaseOptions {
+	opts := &generated.ShareClientChangeLeaseOptions{
+		ProposedLeaseID: proposedLeaseID,
+	}
+	if o != nil {
+		opts.Sharesnapshot = o.ShareSnapshot
+	}
+	return opts
 }
 
 // ShareReleaseOptions contains the optional parameters for the ShareClient.Release method.
 type ShareReleaseOptions struct {
-	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
 }
 
+func (o *ShareReleaseOptions) format() *generated.ShareClientReleaseLeaseOptions {
+	if o == nil {
+		return nil
+	}
+	return &generated.ShareClientReleaseLeaseOptions{
+		Sharesnapshot: o.ShareSnapshot,
+	}
+}
+
 // ShareRenewOptions contains the optional parameters for the ShareClient.Renew method.
 type ShareRenewOptions struct {
-	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
+}
+
+func (o *ShareRenewOptions) format() *generated.ShareClientRenewLeaseOptions {
+	if o == nil {
+		return nil
+	}
+	return &generated.ShareClientRenewLeaseOptions{
+		Sharesnapshot: o.ShareSnapshot,
+	}
 }

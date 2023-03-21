@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates/testdata/perf
+module github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates/testdata/perf
 
 go 1.18
 

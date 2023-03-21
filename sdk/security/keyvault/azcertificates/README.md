@@ -1,8 +1,8 @@
 # Azure Key Vault Certificates client module for Go
 
 * Certificate management (this module) - create, manage, and deploy public and private SSL/TLS certificates
-* Cryptographic key management ([azkeys](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys)) - create, store, and control access to the keys used to encrypt your data
-* Secrets management ([azsecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
+* Cryptographic key management ([azkeys](https://aka.ms/azsdk/go/keyvault-keys/docs)) - create, store, and control access to the keys used to encrypt your data
+* Secrets management ([azsecrets](https://aka.ms/azsdk/go/keyvault-secrets/docs)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
 
 [Source code][certificates_client_src] | [Package (pkg.go.dev)][reference_docs] |  [Product documentation][keyvault_docs] | [Samples][certificates_samples]
 
@@ -63,7 +63,7 @@ illustrated in the [examples](#examples) below.
 
 ## Examples
 
-Get started with our [examples](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates#pkg-examples).
+Get started with our [examples][certificates_samples].
 
 ## Troubleshooting
 
@@ -139,7 +139,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [client_docs]: https://aka.ms/azsdk/go/azcertificates
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-certificates/docs
 [certificates_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azcertificates
-[certificates_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azcertificates/example_test.go
+[certificates_samples]: https://aka.ms/azsdk/go/keyvault-certificates/docs#pkg-examples
 [managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fkeyvault%2Fazcertificates%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fsecurity%2Fkeyvault%2Fazcertificates%2FREADME.png)

@@ -113,19 +113,6 @@
 ### Features Added
 
 - New struct `ClientFactory` which is a client factory used to create any client in this module
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
-- New function `*ClientFactory.NewAgentPoolsClient() *AgentPoolsClient`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
-- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
-- New function `*ClientFactory.NewRegistriesClient() *RegistriesClient`
-- New function `*ClientFactory.NewReplicationsClient() *ReplicationsClient`
-- New function `*ClientFactory.NewRunsClient() *RunsClient`
-- New function `*ClientFactory.NewScopeMapsClient() *ScopeMapsClient`
-- New function `*ClientFactory.NewTaskRunsClient() *TaskRunsClient`
-- New function `*ClientFactory.NewTasksClient() *TasksClient`
-- New function `*ClientFactory.NewTokensClient() *TokensClient`
-- New function `*ClientFactory.NewWebhooksClient() *WebhooksClient`
-- New struct `ClientFactory`
 
 
 ## 0.7.0 (2023-02-24)

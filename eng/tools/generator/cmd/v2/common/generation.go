@@ -171,6 +171,15 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		}
 	}
 
+	// add package config
+	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" {
+		log.Printf("Add package config in `autorest.md`...")
+		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		if err := AddPackageConfig(autorestMdPath, generateParam.NamespaceConfig); err != nil {
+			return nil, err
+		}
+	}
+
 	log.Printf("Run `go generate` to regenerate the code...")
 	if err := ExecuteGoGenerate(packagePath); err != nil {
 		return nil, err

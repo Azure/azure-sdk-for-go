@@ -417,3 +417,41 @@ func GetAlwaysSetBodyParamRequiredFlag(path string) (string, error) {
 	}
 	return "", nil
 }
+
+// AddPackageConfig add config in file
+func AddPackageConfig(path, config string) error {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	lines := strings.Split(string(b), "\n")
+	for i, line := range lines {
+		if strings.Contains(line, "tag:") {
+			lines[i] = config
+			break
+		}
+
+		// end index
+		if i == len(lines)-1 {
+			for j := len(lines) - 1; j > 0; j-- {
+				if strings.Contains(lines[j], "```") {
+					if lines[j-1] == "" {
+						lines[j-1] = config
+						break
+					} else {
+						newLines := make([]string, len(lines))
+						copy(newLines, lines)
+
+						newLines = append(newLines[:j], config)
+						tailLines := lines[j:]
+						lines = append(newLines, tailLines...)
+						break
+					}
+				}
+			}
+		}
+	}
+
+	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+}

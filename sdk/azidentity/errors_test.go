@@ -31,7 +31,7 @@ func TestAuthenticationFailedErrorInterface(t *testing.T) {
 		Body:       io.NopCloser(bytes.NewBufferString(resBodyString)),
 		Request:    req,
 	}
-	err = newAuthenticationFailedError(credNameAzureCLI, "error message", res)
+	err = newAuthenticationFailedError(credNameAzureCLI, "error message", res, nil)
 	if e, ok := err.(*AuthenticationFailedError); ok {
 		if e.RawResponse == nil {
 			t.Fatal("expected a non-nil RawResponse")

@@ -108,6 +108,12 @@ type LogsClientQueryBatchOptions struct {
 	// placeholder for future optional parameters
 }
 
+// LogsClientQueryResourceOptions contains the optional parameters for the LogsClient.QueryResource method.
+type LogsClientQueryResourceOptions struct {
+	// Optional. The prefer header to set server timeout, query statistics and visualization information.
+	Options *LogsQueryOptions
+}
+
 // LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
 type LogsClientQueryWorkspaceOptions struct {
 	// Optional. The prefer header to set server timeout, query statistics and visualization information.

@@ -9,7 +9,7 @@ clear-output-folder: false
 export-clients: true
 go: true
 input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/preview/2021-05-19_Preview/OperationalInsights.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/f9877ef8032f249c168e04b8495e39f287988b91/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
     - https://github.com/Azure/azure-rest-api-specs/blob/dba6ed1f03bda88ac6884c0a883246446cc72495/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
@@ -23,16 +23,23 @@ use: "@autorest/go@4.0.0-preview.44"
 version: "^3.0.0"
 
 directive:
-  # delete metadata endpoint
+  # delete extra endpoints
   - from: swagger-document
     where: $["paths"]
     transform: >
         delete $["/workspaces/{workspaceId}/metadata"];
+  - from: swagger-document
+    where: $["x-ms-paths"]
+    transform: >
+        delete $["/{resourceId}/query?disambiguation_dummy"];
 
   # delete metadata operations
   - remove-operation: Metadata_Post
   - remove-operation: Metadata_Get
   - remove-operation: Query_Get
+  - remove-operation: Query_ResourceGet
+  - remove-operation: Query_ResourceExecuteXms
+  - remove-operation: Query_ResourceGetXms
 
   # delete metadata models
   - remove-model: metadataResults
@@ -54,6 +61,9 @@ directive:
   - rename-operation:
       from: Query_Batch
       to: Logs_QueryBatch
+  - rename-operation:
+      from: Query_ResourceExecute
+      to: Logs_QueryResource
 
   # rename metric list to QueryResource
   - rename-operation:
@@ -123,7 +133,7 @@ directive:
     transform: return $.replace(/Options \*string/g, "Options *LogsQueryOptions");
   - from: logs_client.go
     where: $
-    transform: return $.replace(/\*options\.Options/, "options.Options.preferHeader()");
+    transform: return $.replace(/\*options\.Options/g, "options.Options.preferHeader()");
   
   # add default values for batch request path and method attributes
   - from: swagger-document

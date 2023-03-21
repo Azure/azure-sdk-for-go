@@ -14,6 +14,11 @@ type LogsClientQueryBatchResponse struct {
 	BatchResponse
 }
 
+// LogsClientQueryResourceResponse contains the response from method LogsClient.QueryResource.
+type LogsClientQueryResourceResponse struct {
+	Results
+}
+
 // LogsClientQueryWorkspaceResponse contains the response from method LogsClient.QueryWorkspace.
 type LogsClientQueryWorkspaceResponse struct {
 	Results

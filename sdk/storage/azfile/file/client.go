@@ -218,6 +218,24 @@ func (f *Client) GetRangeList(ctx context.Context, options *GetRangeListOptions)
 	return resp, err
 }
 
+// ForceCloseHandles operation closes a handle or handles opened on a file.
+//   - handleID - Specifies the handle ID to be closed. Use an asterisk (*) as a wildcard string to specify all handles.
+//
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/force-close-handles.
+func (f *Client) ForceCloseHandles(ctx context.Context, handleID string, options *ForceCloseHandlesOptions) (ForceCloseHandlesResponse, error) {
+	opts := options.format()
+	resp, err := f.generated().ForceCloseHandles(ctx, handleID, opts)
+	return resp, err
+}
+
+// ListHandles operation returns a list of open handles on a file.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-handles.
+func (f *Client) ListHandles(ctx context.Context, options *ListHandlesOptions) (ListHandlesResponse, error) {
+	opts := options.format()
+	resp, err := f.generated().ListHandles(ctx, opts)
+	return resp, err
+}
+
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {

@@ -54,3 +54,12 @@ type UploadRangeFromURLResponse = generated.FileClientUploadRangeFromURLResponse
 
 // GetRangeListResponse contains the response from method Client.GetRangeList.
 type GetRangeListResponse = generated.FileClientGetRangeListResponse
+
+// ForceCloseHandlesResponse contains the response from method Client.ForceCloseHandles.
+type ForceCloseHandlesResponse = generated.FileClientForceCloseHandlesResponse
+
+// ListHandlesResponse contains the response from method Client.ListHandles.
+type ListHandlesResponse = generated.FileClientListHandlesResponse
+
+// ListHandlesSegmentResponse - An enumeration of handles.
+type ListHandlesSegmentResponse = generated.ListHandlesResponse

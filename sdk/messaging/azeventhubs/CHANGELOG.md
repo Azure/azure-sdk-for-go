@@ -1,6 +1,16 @@
 # Release History
 
-## 0.6.0 (Unreleased)
+## 0.6.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.6.0 (2023-03-07)
 
 ### Features Added
 
@@ -14,7 +24,8 @@
 
 ### Bugs Fixed
 
-### Other Changes
+- Recover the connection when the $cbs Receiver/Sender is not closed properly. This would cause
+  clients to return an error saying "$cbs node has already been opened." (PR#20334)
 
 ## 0.5.0 (2023-02-07)
 
@@ -27,7 +38,7 @@
 
 - ProcessorOptions.OwnerLevel has been removed. The Processor uses 0 as the owner level.
 - Uses the public release of `github.com/Azure/azure-sdk-for-go/sdk/storage/azblob` package rather than using an internal copy. 
-  For an example, see [example_processor_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go).
+  For an example, see [example_consuming_with_checkpoints_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go).
 
 ## 0.4.0 (2023-01-10)
 
@@ -77,7 +88,7 @@
 
 - Adding in the new Processor type, which can be used to do distributed (and load balanced) consumption of events, using a 
   CheckpointStore. The built-in checkpoints.BlobStore uses Azure Blob Storage for persistence. A full example is 
-  in [example_processor_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go).
+  in [example_consuming_with_checkpoints_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go).
 
 ### Breaking Changes
 

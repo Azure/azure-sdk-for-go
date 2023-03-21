@@ -32,10 +32,10 @@ type LoadBalancerProbesClient struct {
 }
 
 // NewLoadBalancerProbesClient creates a new instance of LoadBalancerProbesClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLoadBalancerProbesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancerProbesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,11 +58,12 @@ func NewLoadBalancerProbesClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Gets load balancer probe.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// loadBalancerName - The name of the load balancer.
-// probeName - The name of the probe.
-// options - LoadBalancerProbesClientGetOptions contains the optional parameters for the LoadBalancerProbesClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - loadBalancerName - The name of the load balancer.
+//   - probeName - The name of the probe.
+//   - options - LoadBalancerProbesClientGetOptions contains the optional parameters for the LoadBalancerProbesClient.Get method.
 func (client *LoadBalancerProbesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesClientGetOptions) (LoadBalancerProbesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, probeName, options)
 	if err != nil {
@@ -102,7 +103,7 @@ func (client *LoadBalancerProbesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,10 +119,12 @@ func (client *LoadBalancerProbesClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets all the load balancer probes.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// loadBalancerName - The name of the load balancer.
-// options - LoadBalancerProbesClientListOptions contains the optional parameters for the LoadBalancerProbesClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - loadBalancerName - The name of the load balancer.
+//   - options - LoadBalancerProbesClientListOptions contains the optional parameters for the LoadBalancerProbesClient.NewListPager
+//     method.
 func (client *LoadBalancerProbesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesClientListOptions) *runtime.Pager[LoadBalancerProbesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancerProbesClientListResponse]{
 		More: func(page LoadBalancerProbesClientListResponse) bool {
@@ -170,7 +173,7 @@ func (client *LoadBalancerProbesClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

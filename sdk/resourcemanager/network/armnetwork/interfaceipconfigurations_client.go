@@ -32,10 +32,10 @@ type InterfaceIPConfigurationsClient struct {
 }
 
 // NewInterfaceIPConfigurationsClient creates a new instance of InterfaceIPConfigurationsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewInterfaceIPConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InterfaceIPConfigurationsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewInterfaceIPConfigurationsClient(subscriptionID string, credential azcore
 
 // Get - Gets the specified network interface ip configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkInterfaceName - The name of the network interface.
-// ipConfigurationName - The name of the ip configuration name.
-// options - InterfaceIPConfigurationsClientGetOptions contains the optional parameters for the InterfaceIPConfigurationsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkInterfaceName - The name of the network interface.
+//   - ipConfigurationName - The name of the ip configuration name.
+//   - options - InterfaceIPConfigurationsClientGetOptions contains the optional parameters for the InterfaceIPConfigurationsClient.Get
+//     method.
 func (client *InterfaceIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string, options *InterfaceIPConfigurationsClientGetOptions) (InterfaceIPConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkInterfaceName, ipConfigurationName, options)
 	if err != nil {
@@ -103,7 +104,7 @@ func (client *InterfaceIPConfigurationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,11 +120,12 @@ func (client *InterfaceIPConfigurationsClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListPager - Get all ip configurations in a network interface.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkInterfaceName - The name of the network interface.
-// options - InterfaceIPConfigurationsClientListOptions contains the optional parameters for the InterfaceIPConfigurationsClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkInterfaceName - The name of the network interface.
+//   - options - InterfaceIPConfigurationsClientListOptions contains the optional parameters for the InterfaceIPConfigurationsClient.NewListPager
+//     method.
 func (client *InterfaceIPConfigurationsClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceIPConfigurationsClientListOptions) *runtime.Pager[InterfaceIPConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InterfaceIPConfigurationsClientListResponse]{
 		More: func(page InterfaceIPConfigurationsClientListResponse) bool {
@@ -172,7 +174,7 @@ func (client *InterfaceIPConfigurationsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

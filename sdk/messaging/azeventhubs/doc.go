@@ -6,10 +6,10 @@
 
 // Package azeventhubs provides clients for sending events and consuming events.
 //
-// For sending events, use the [azeventhubs.ProducerClient].
+// For sending events, use the [ProducerClient].
 //
 // There are two clients for consuming events:
-//   - [azeventhubs.Processor], which handles checkpointing and load balancing using durable storage.
-//   - [azeventhubs.ConsumerClient], which is fully manual, but provides full control.
+//   - [Processor], which handles checkpointing and load balancing using durable storage.
+//   - [ConsumerClient], which is fully manual, but provides full control.
 
 package azeventhubs

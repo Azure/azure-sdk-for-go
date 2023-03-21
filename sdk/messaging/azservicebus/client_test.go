@@ -139,7 +139,9 @@ func TestNewClientWithWebsockets(t *testing.T) {
 }
 
 func TestNewClientUsingSharedAccessSignature(t *testing.T) {
-	sasCS, err := sas.CreateConnectionStringWithSAS(test.GetConnectionString(t), time.Hour)
+	getLogsFn := test.CaptureLogsForTest()
+
+	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(test.GetConnectionString(t), time.Now().UTC().Add(time.Hour))
 	require.NoError(t, err)
 
 	// sanity check - we did actually generate a connection string with an embedded SharedAccessSignature
@@ -168,6 +170,9 @@ func TestNewClientUsingSharedAccessSignature(t *testing.T) {
 	require.NoError(t, err)
 
 	require.EqualValues(t, "hello world", string(messages[0].Body))
+
+	logs := getLogsFn()
+	require.Contains(t, logs, "[azsb.Auth] Token does not have an expiration date, no background renewal needed.")
 }
 
 const fastNotFoundDuration = 10 * time.Second
@@ -362,6 +367,115 @@ func TestClientPropagatesRetryOptionsForSessions(t *testing.T) {
 	require.NoError(t, sessionReceiver.Close(context.Background()))
 
 	require.Equal(t, expectedRetryOptions, sessionReceiver.inner.retryOptions)
+}
+
+func TestClientUnauthorizedCreds(t *testing.T) {
+	allPowerfulCS := test.GetConnectionString(t)
+	queueName := "testqueue"
+
+	t.Run("ListenOnly with Sender", func(t *testing.T) {
+		cs := test.GetConnectionStringListenOnly(t)
+
+		client, err := NewClientFromConnectionString(cs, nil)
+		require.NoError(t, err)
+
+		defer test.RequireClose(t, client)
+
+		sender, err := client.NewSender(queueName, nil)
+		require.NoError(t, err)
+
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte("hello world"),
+		}, nil)
+
+		var sbErr *Error
+		require.ErrorAs(t, err, &sbErr)
+		require.Equal(t, CodeUnauthorizedAccess, sbErr.Code)
+		require.Contains(t, err.Error(), "Description: Unauthorized access. 'Send' claim(s) are required to perform this operation")
+	})
+
+	t.Run("SenderOnly with Receiver", func(t *testing.T) {
+		cs := test.GetConnectionStringSendOnly(t)
+
+		client, err := NewClientFromConnectionString(cs, nil)
+		require.NoError(t, err)
+
+		defer test.RequireClose(t, client)
+
+		receiver, err := client.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+
+		messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.Empty(t, messages)
+
+		var sbErr *Error
+		require.ErrorAs(t, err, &sbErr)
+		require.Equal(t, CodeUnauthorizedAccess, sbErr.Code)
+		require.Contains(t, err.Error(), "Description: Unauthorized access. 'Listen' claim(s) are required to perform this operation")
+	})
+
+	t.Run("Expired SAS", func(t *testing.T) {
+		expiredCS, err := sas.CreateConnectionStringWithSASUsingExpiry(allPowerfulCS, time.Now().Add(-10*time.Minute))
+		require.NoError(t, err)
+
+		client, err := NewClientFromConnectionString(expiredCS, nil)
+		require.NoError(t, err)
+
+		defer test.RequireClose(t, client)
+
+		sender, err := client.NewSender(queueName, nil)
+		require.NoError(t, err)
+
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte("hello world"),
+		}, nil)
+
+		var sbErr *Error
+		require.ErrorAs(t, err, &sbErr)
+		require.Equal(t, CodeUnauthorizedAccess, sbErr.Code)
+		require.Contains(t, err.Error(), "rpc: failed, status code 401 and description: ExpiredToken: The token is expired. Expiration time:")
+
+		receiver, err := client.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+
+		messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.Empty(t, messages)
+
+		sbErr = nil
+		require.ErrorAs(t, err, &sbErr)
+		require.Equal(t, CodeUnauthorizedAccess, sbErr.Code)
+		require.Contains(t, err.Error(), "rpc: failed, status code 401 and description: ExpiredToken: The token is expired. Expiration time:")
+	})
+
+	t.Run("invalid identity creds", func(t *testing.T) {
+		tenantID := os.Getenv("AZURE_TENANT_ID")
+		clientID := os.Getenv("AZURE_CLIENT_ID")
+		endpoint := os.Getenv("SERVICEBUS_ENDPOINT")
+
+		cliCred, err := azidentity.NewClientSecretCredential(tenantID, clientID, "bogus-client-secret", nil)
+		require.NoError(t, err)
+
+		client, err := NewClient(endpoint, cliCred, nil)
+		require.NoError(t, err)
+
+		defer test.RequireClose(t, client)
+
+		sender, err := client.NewSender(queueName, nil)
+		require.NoError(t, err)
+
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte("hello world"),
+		}, nil)
+		var authFailedErr *azidentity.AuthenticationFailedError
+		require.ErrorAs(t, err, &authFailedErr)
+
+		receiver, err := client.NewReceiverForQueue(queueName, nil)
+		require.NoError(t, err)
+
+		messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+		require.ErrorAs(t, err, &authFailedErr)
+		require.Empty(t, messages)
+	})
 }
 
 func TestNewClientUnitTests(t *testing.T) {

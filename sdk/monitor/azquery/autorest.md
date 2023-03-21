@@ -19,7 +19,7 @@ openapi-type: "data-plane"
 output-folder: ../azquery
 override-client-name: LogsClient
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.44"
+use: "@autorest/go@4.0.0-preview.46"
 version: "^3.0.0"
 
 directive:
@@ -204,15 +204,9 @@ directive:
   - from: logs_client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewLogsClient.+\{\s(?:.+\s)+\}\s/, "");
-  - from: logs_client.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+type LogsClient struct.+\{\s(?:.+\s)+\}\s/, "");
   - from: metrics_client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewMetricsClient.+\{\s(?:.+\s)+\}\s/, "");
-  - from: metrics_client.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+type MetricsClient.+\{\s(?:.+\s)+\}\s/, "");
 
   # point the clients to the correct host url
   - from: logs_client.go
@@ -221,6 +215,12 @@ directive:
   - from: metrics_client.go
     where: $
     transform: return $.replace(/host/g, "client.host");
+  - from: logs_client.go
+    where: $
+    transform: return $.replace(/internal \*azcore.Client/g, "host string\n internal *azcore.Client");
+  - from: metrics_client.go
+    where: $
+    transform: return $.replace(/internal \*azcore.Client/g, "host string\n internal *azcore.Client");
 
   # delete generated host url
   - from: constants.go
@@ -230,15 +230,15 @@ directive:
   # change Table.Rows from type [][]interface{} to type []Row
   - from: models.go
     where: $
-    transform: return $.replace(/Rows \[\]\[\]interface{}/, "Rows []Row");
+    transform: return $.replace(/Rows \[\]\[\]any/, "Rows []Row");
 
   # change render and statistics type to []byte
   - from: models.go
     where: $
-    transform: return $.replace(/Statistics interface{}/g, "Statistics []byte");
+    transform: return $.replace(/Statistics any/g, "Statistics []byte");
   - from: models.go
     where: $
-    transform: return $.replace(/Visualization interface{}/g, "Visualization []byte");
+    transform: return $.replace(/Visualization any/g, "Visualization []byte");
   - from: models_serde.go
     where: $
     transform: return 

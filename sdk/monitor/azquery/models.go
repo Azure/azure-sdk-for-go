@@ -266,13 +266,13 @@ type MetricValue struct {
 	Total *float64 `json:"total,omitempty"`
 }
 
-// MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.ListDefinitions method.
+// MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.NewListDefinitionsPager method.
 type MetricsClientListDefinitionsOptions struct {
 	// Metric namespace to query metric definitions for.
 	MetricNamespace *string
 }
 
-// MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.ListNamespaces method.
+// MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.NewListNamespacesPager method.
 type MetricsClientListNamespacesOptions struct {
 	// The ISO 8601 conform Date start time from which to query for metric namespaces.
 	StartTime *string

@@ -12,6 +12,7 @@ package azquery
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -19,17 +20,25 @@ import (
 	"strings"
 )
 
+// LogsClient contains the methods for the Logs group.
+// Don't use this type directly, use a constructor function instead.
+type LogsClient struct {
+	host     string
+	internal *azcore.Client
+}
+
 // QueryBatch - Executes a batch of Analytics queries for data.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-27_Preview
-// body - The batch request body
-// options - LogsClientQueryBatchOptions contains the optional parameters for the LogsClient.QueryBatch method.
+//   - body - The batch request body
+//   - options - LogsClientQueryBatchOptions contains the optional parameters for the LogsClient.QueryBatch method.
 func (client *LogsClient) QueryBatch(ctx context.Context, body BatchRequest, options *LogsClientQueryBatchOptions) (LogsClientQueryBatchResponse, error) {
 	req, err := client.queryBatchCreateRequest(ctx, body, options)
 	if err != nil {
 		return LogsClientQueryBatchResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LogsClientQueryBatchResponse{}, err
 	}
@@ -63,16 +72,17 @@ func (client *LogsClient) queryBatchHandleResponse(resp *http.Response) (LogsCli
 // is an example for using POST with an Analytics
 // query.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-27_Preview
-// resourceID - The identifier of the resource.
-// body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
-// options - LogsClientQueryResourceOptions contains the optional parameters for the LogsClient.QueryResource method.
+//   - resourceID - The identifier of the resource.
+//   - body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
+//   - options - LogsClientQueryResourceOptions contains the optional parameters for the LogsClient.QueryResource method.
 func (client *LogsClient) QueryResource(ctx context.Context, resourceID string, body Body, options *LogsClientQueryResourceOptions) (LogsClientQueryResourceResponse, error) {
 	req, err := client.queryResourceCreateRequest(ctx, resourceID, body, options)
 	if err != nil {
 		return LogsClientQueryResourceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LogsClientQueryResourceResponse{}, err
 	}
@@ -108,16 +118,17 @@ func (client *LogsClient) queryResourceHandleResponse(resp *http.Response) (Logs
 
 // QueryWorkspace - Executes an Analytics query for data.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-27_Preview
-// workspaceID - Primary Workspace ID of the query. This is Workspace ID from the Properties blade in the Azure portal
-// body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
-// options - LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
+//   - workspaceID - Primary Workspace ID of the query. This is Workspace ID from the Properties blade in the Azure portal
+//   - body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
+//   - options - LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
 func (client *LogsClient) QueryWorkspace(ctx context.Context, workspaceID string, body Body, options *LogsClientQueryWorkspaceOptions) (LogsClientQueryWorkspaceResponse, error) {
 	req, err := client.queryWorkspaceCreateRequest(ctx, workspaceID, body, options)
 	if err != nil {
 		return LogsClientQueryWorkspaceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LogsClientQueryWorkspaceResponse{}, err
 	}

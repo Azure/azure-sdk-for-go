@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2023-03-01)
+## 1.0.0 (2023-03-24)
 ### Breaking Changes
 
 - Function `NewContactsClient` has been removed

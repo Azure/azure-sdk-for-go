@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0 (2023-03-24)
+## 2.2.0 (2023-03-21)
 ### Features Added
 
 - New value `ApplicationGatewayCustomErrorStatusCodeHTTPStatus400`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus404`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus405`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus408`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus499`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus500`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus503`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus504` added to enum type `ApplicationGatewayCustomErrorStatusCode`
